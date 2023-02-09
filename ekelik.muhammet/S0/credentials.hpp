@@ -4,6 +4,6 @@
 
 namespace ekelik
 {
-  std::ostream &  outCredentials(std::ostream & out);
+  std::ostream & outCredentials(std::ostream & out);
 }
 #endif
