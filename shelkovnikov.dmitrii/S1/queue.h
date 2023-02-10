@@ -3,7 +3,7 @@
 #include <cstddef>
 namespace dimkashelk
 {
-  template <typename T>
+  template < typename T >
   class Queue
   {
   public:
@@ -11,8 +11,8 @@ namespace dimkashelk
     void push(T rhs);
     T drop();
   private:
-    size_t size;
-    size_t capacity;
+    size_t size_;
+    size_t capacity_;
     T *data_;
   };
 }
