@@ -14,6 +14,10 @@ namespace dimkashelk
       capacity_(10),
       data_(new T[capacity_])
     {}
+    ~Queue()
+    {
+      delete[] data_;
+    }
     void push(T rhs)
     {
       if (size_ == capacity_)
