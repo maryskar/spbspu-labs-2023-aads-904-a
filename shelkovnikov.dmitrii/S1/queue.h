@@ -43,8 +43,13 @@ namespace dimkashelk
     }
     T drop()
     {
+      T element = data_[0];
+      for (size_t i = 0; i < size_ - 1; i++)
+      {
+        data_[i] = data_[i + 1];
+      }
       size_--;
-      return data_[size_ + 1];
+      return element;
     }
     bool empty()
     {
