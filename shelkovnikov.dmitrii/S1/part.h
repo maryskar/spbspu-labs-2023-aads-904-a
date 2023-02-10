@@ -5,7 +5,7 @@ namespace dimkashelk
 {
   union part
   {
-    bool isDigit_ = false;
+    bool isDigit_;
     int operand_;
     char operator_;
   };
