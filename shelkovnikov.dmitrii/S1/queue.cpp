@@ -18,8 +18,20 @@ namespace
   }
 }
 template< typename T>
-dimkashelk::Queue<T>::Queue():
+dimkashelk::Queue< T >::Queue():
   size_(0),
   capacity_(10),
   data_(new T[capacity])
 {}
+template< typename T >
+void dimkashelk::Queue<T>::push(T rhs)
+{
+  if (size_ == capacity_)
+  {
+    T *new_data = expand(data, size_, capacity_ + 10);
+    delete[] data;
+    data = new_data;
+    capacity_ += 10;
+  }
+  data_[size_++] = rhs;
+}
