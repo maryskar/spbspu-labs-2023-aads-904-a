@@ -31,7 +31,6 @@ namespace dimkashelk
     }
     T drop()
     {
-      delete data_[size_ - 1];
       size_--;
       return data_[size_];
     }
