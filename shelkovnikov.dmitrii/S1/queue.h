@@ -41,7 +41,11 @@ namespace dimkashelk
       }
       data_[size_++] = rhs;
     }
-    T drop();
+    T drop()
+    {
+      size_--;
+      return data_[size_ + 1];
+    }
   private:
     size_t size_;
     size_t capacity_;
