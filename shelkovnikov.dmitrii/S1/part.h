@@ -3,7 +3,7 @@
 #include <string>
 namespace dimkashelk
 {
-  union part
+  struct part
   {
     bool isDigit_;
     int operand_;
