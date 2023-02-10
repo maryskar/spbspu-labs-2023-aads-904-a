@@ -1,14 +1,14 @@
 #include "parser.h"
 #include <stdexcept>
 dimkashelk::Parser::Parser(std::string str):
-  begin(str.begin()),
-  end(str.end())
+  data_(str.data()),
+  i_(0)
 {
-  while (begin != end && *begin == ' ')
+  while (data_[i_] == ' ')
   {
-    begin++;
+    i_++;
   }
-  if (begin == end)
+  if (data_[i_] == '\0')
   {
     throw std::logic_error("String must contains elements");
   }
@@ -16,17 +16,18 @@ dimkashelk::Parser::Parser(std::string str):
 std::string dimkashelk::Parser::operator()()
 {
   std::string res = "";
-  while (begin != end && *begin != ' ')
+  while (data_[i_] && data_[i_] != ' ')
   {
-    res.push_back(*begin);
+    res.push_back(data_[i_]);
+    i_++;
   }
   return res;
 }
 bool dimkashelk::Parser::hasNext()
 {
-  while (begin != end && *begin == ' ')
+  while (data_[i_] && data_[i_] == ' ')
   {
-    begin++;
+    i_++;
   }
-  return begin != end;
+  return data_[i_] != '\0';
 }

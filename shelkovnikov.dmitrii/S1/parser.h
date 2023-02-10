@@ -11,8 +11,8 @@ namespace dimkashelk
     std::string operator()();
     bool hasNext();
   private:
-    std::string::iterator begin;
-    std::string::iterator end;
+    const char *data_;
+    size_t i_;
   };
 }
 #endif
