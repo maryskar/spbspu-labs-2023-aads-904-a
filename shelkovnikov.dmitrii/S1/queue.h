@@ -46,6 +46,10 @@ namespace dimkashelk
       size_--;
       return data_[size_ + 1];
     }
+    bool empty()
+    {
+      return size_ == 0;
+    }
   private:
     size_t size_;
     size_t capacity_;
