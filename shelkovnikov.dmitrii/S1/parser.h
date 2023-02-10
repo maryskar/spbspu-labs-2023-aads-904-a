@@ -11,7 +11,7 @@ namespace dimkashelk
     std::string operator()();
     bool hasNext();
   private:
-    const char *data_;
+    std::string data_;
     size_t i_;
   };
 }
