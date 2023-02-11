@@ -49,9 +49,10 @@ int main(int argc, char *argv[])
       return 1;
     }
   }
+  std::cout << " " << answer.drop().operand_;
   while (!answer.empty())
   {
-    std::cout << answer.drop().operand_ << " ";
+    std::cout << " " << answer.drop().operand_;
   }
   return 0;
 }
