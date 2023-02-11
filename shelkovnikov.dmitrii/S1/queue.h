@@ -14,6 +14,16 @@ namespace dimkashelk
       capacity_(10),
       data_(new T[capacity_])
     {}
+    Queue< T > (const Queue< T > &queue):
+      size_(queue.size_),
+      capacity_(queue.capacity_),
+      data_(new T[capacity_])
+    {
+      for (size_t i = 0; i < queue.size_; i++)
+      {
+        data_[i] = queue.data_[i];
+      }
+    }
     ~Queue()
     {
       delete[] data_;
