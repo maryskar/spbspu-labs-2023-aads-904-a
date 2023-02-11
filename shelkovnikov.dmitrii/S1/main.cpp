@@ -6,34 +6,33 @@
 #include "functions.h"
 #include "getPolandArithmeticExpression.h"
 #include "getQueueOfArithmeticExpression.h"
+#include "getResultArithmeticExpression.h"
 int main(int argc, char *argv[])
 {
   namespace dsk = dimkashelk;
+  std::basic_istream<char> *istream = std::addressof(std::cin);
+  if (argc == 1)
+  {
+
+  }
   std::string element = "";
   dsk::Stack< dsk::part > answer;
-  while (std::cin)
+  while (*istream)
   {
-    std::getline(std::cin, element);
+    std::getline(*istream, element);
+    if (!*istream)
+    {
+      break;
+    }
+    if (element.find_first_not_of(" \t\n\v\f\r") == std::string::npos)
+    {
+      continue;
+    }
     try
     {
       dsk::Queue< dsk::part > data = dsk::getQueueOfArithmeticExpression< dsk::part >(element);
       dsk::Queue< dsk::part > polandExpression = dsk::getPolandArithmeticExpression(data);
-      dsk::Stack< dsk::part > remains;
-      while (!polandExpression.empty())
-      {
-        dsk::part p = polandExpression.drop();
-        if (p.isDigit_)
-        {
-          remains.push(p);
-        }
-        else
-        {
-          dsk::part p2 = remains.drop();
-          dsk::part p1 = remains.drop();
-          remains.push(dsk::makePart(dsk::getResult(p1.operand_, p2.operand_, p.operator_)));
-        }
-      }
-      answer.push(remains.drop());
+      answer.push(dsk::makePart(dsk::getResultArithmeticExpression(polandExpression)));
     }
     catch (const std::logic_error &e)
     {
