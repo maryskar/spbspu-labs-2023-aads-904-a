@@ -19,6 +19,10 @@ int dimkashelk::getResult(int first, int second, char oper)
   }
   if (oper == '/')
   {
+    if (second == 0)
+    {
+      throw std::logic_error("Division by 0");
+    }
     return first / second;
   }
   if (oper == '%')
