@@ -27,7 +27,14 @@ int dimkashelk::getResult(int first, int second, char oper)
   }
   if (oper == '%')
   {
-    return first % second;
+    if (first > 0)
+    {
+      return first % second;
+    }
+    else
+    {
+      return second - (-first) % second;
+    }
   }
   throw std::logic_error("Not supported this operator");
 }
