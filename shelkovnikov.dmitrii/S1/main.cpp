@@ -33,12 +33,11 @@ int main()
       }
       std::cout << remains.drop().operand_ << "\n";
     }
-    catch (const std::runtime_error &e)
+    catch (const std::logic_error &e)
     {
       std::cout << e.what();
+      return 1;
     }
-    catch (...)
-    {}
   }
   return 0;
 }
