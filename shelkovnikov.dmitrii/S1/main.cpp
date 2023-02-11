@@ -14,78 +14,11 @@ int main()
     std::getline(std::cin, element);
     try
     {
-      dsk::Parser parser(element);
-      dsk::Queue< dsk::part > data;
-      while (parser.hasNext())
+      dsk::Queue< dsk::part > data = dsk::getQueueOfArithmeticExpression< dsk::part >(element);
+      dsk::Queue< dsk::part > polandExpression = dsk::getPolandArithmeticExpression(data);
+      while (!polandExpression.empty())
       {
-        data.push(dsk::makePart(parser()));
-      }
-      dsk::Queue< dsk::part > queue;
-      dsk::Stack< dsk::part > stack;
-      while (!data.empty())
-      {
-        dsk::part p = data.drop();
-        if (!p.isDigit_)
-        {
-          if (p.operator_ == ')')
-          {
-            if (stack.empty())
-            {
-              std::cerr << "Check";
-              return 1;
-            }
-            dsk::part p1 = stack.drop();
-            while (p1.operator_ != '(')
-            {
-              queue.push(p1);
-              if (stack.empty())
-              {
-                std::cerr << "Check";
-                return 1;
-              }
-              p1 = stack.drop();
-            }
-          }
-          else if (stack.empty())
-          {
-            stack.push(p);
-          }
-          else
-          {
-            dsk::part p1 = stack.drop();
-            stack.push(p1);
-            if (dsk::isPriorityOperation(p1.operator_, p.operator_) || p1.operator_ == '(')
-            {
-              stack.push(p);
-            }
-            else
-            {
-              p1 = stack.drop();
-              while (!dsk::isPriorityOperation(p1.operator_, p.operator_))
-              {
-                queue.push(p1);
-                if (stack.empty())
-                {
-                  break;
-                }
-                p1 = stack.drop();
-              }
-              stack.push(p);
-            }
-          }
-        }
-        else
-        {
-          queue.push(p);
-        }
-      }
-      while (!stack.empty())
-      {
-        queue.push(stack.drop());
-      }
-      while (!queue.empty())
-      {
-        dsk::part p = queue.drop();
+        dsk::part p = polandExpression.drop();
         if (p.isDigit_)
         {
           std::cout << p.operand_ << " ";
