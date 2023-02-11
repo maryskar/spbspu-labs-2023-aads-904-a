@@ -8,6 +8,7 @@
 namespace dimkashelk
 {
   bool isPriorityOperation(char first, char second);
+  int getResult(int first, int second, char oper);
   template< typename T >
   Queue< T > getQueueOfArithmeticExpression(std::string element)
   {
