@@ -14,6 +14,16 @@ namespace dimkashelk
       capacity_(10),
       data_(new T[capacity_])
     {}
+    Stack< T > (const Stack< T > &stack):
+      size_(stack.size_),
+      capacity_(stack.capacity_),
+      data_(new T[capacity_])
+    {
+      for (size_t i = 0; i < stack.size_; i++)
+      {
+        data_[i] = stack.data_[i];
+      }
+    }
     ~Stack()
     {
       delete[] data_;
