@@ -16,19 +16,26 @@ int main()
     {
       dsk::Queue< dsk::part > data = dsk::getQueueOfArithmeticExpression< dsk::part >(element);
       dsk::Queue< dsk::part > polandExpression = dsk::getPolandArithmeticExpression(data);
+      dsk::Stack< dsk::part > remains;
       while (!polandExpression.empty())
       {
         dsk::part p = polandExpression.drop();
         if (p.isDigit_)
         {
-          std::cout << p.operand_ << " ";
+          remains.push(p);
         }
         else
         {
-          std::cout << p.operator_ << " ";
+          dsk::part p2 = remains.drop();
+          dsk::part p1 = remains.drop();
+          remains.push(dsk::makePart(dsk::getResult(p1.operand_, p2.operand_, p.operator_)));
         }
       }
-      std::cout << "\n";
+      std::cout << remains.drop().operand_ << "\n";
+    }
+    catch (const std::runtime_error &e)
+    {
+      std::cout << e.what();
     }
     catch (...)
     {}
