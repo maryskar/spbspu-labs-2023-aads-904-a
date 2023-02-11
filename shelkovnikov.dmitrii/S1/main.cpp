@@ -4,6 +4,8 @@
 #include "stack.h"
 #include "part.h"
 #include "functions.h"
+#include "getPolandArithmeticExpression.h"
+#include "getQueueOfArithmeticExpression.h"
 int main()
 {
   namespace dsk = dimkashelk;
