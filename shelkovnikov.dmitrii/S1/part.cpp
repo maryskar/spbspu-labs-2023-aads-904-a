@@ -12,12 +12,12 @@ dimkashelk::part dimkashelk::makePart(std::string str)
   else
   {
     p.isDigit_ = true;
-    p.operand_ = std::stoi(str);
+    p.operand_ = std::stoll(str);
     p.operator_ = '+';
   }
   return p;
 }
-dimkashelk::part dimkashelk::makePart(int number)
+dimkashelk::part dimkashelk::makePart(long long number)
 {
   part p;
   p.isDigit_ = true;

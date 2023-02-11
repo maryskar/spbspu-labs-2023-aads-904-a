@@ -6,10 +6,10 @@ namespace dimkashelk
   struct part
   {
     bool isDigit_;
-    int operand_;
+    long long operand_;
     char operator_;
   };
   part makePart(std::string str);
-  part makePart(int number);
+  part makePart(long long number);
 }
 #endif
