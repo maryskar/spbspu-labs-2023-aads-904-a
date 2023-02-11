@@ -1,7 +1,7 @@
 #include "part.h"
 dimkashelk::part dimkashelk::makePart(std::string str)
 {
-  std::string data("+-*/()");
+  std::string data("+-*/()%");
   part p;
   if (str.size() == 1 && data.find(str) != std::string::npos)
   {

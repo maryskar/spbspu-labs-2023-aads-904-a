@@ -10,7 +10,7 @@
 int main(int argc, char *argv[])
 {
   namespace dsk = dimkashelk;
-  std::basic_istream< char > *istream = std::addressof(std::cin);
+  std::istream< char > *istream = std::addressof(std::cin);
   if (argc == 2)
   {
     std::ifstream in(argv[1]);
