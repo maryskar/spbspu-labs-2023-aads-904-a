@@ -1,7 +1,14 @@
 #include "functions.h"
 bool dimkashelk::isPriorityOperation(char first, char second)
 {
-  return (first == '+' || first == '-') && (second == '*' || second == '/' || second == '%' || second == '(');
+  if (first == '+' || first == '-')
+  {
+    return second == '*' || second == '/' || second == '%' || second == '(';
+  }
+  else
+  {
+    return second == '(';
+  }
 }
 int dimkashelk::getResult(int first, int second, char oper)
 {
