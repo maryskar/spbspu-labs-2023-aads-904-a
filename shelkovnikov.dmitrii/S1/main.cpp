@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include "queue.h"
-#include "parser.h"
 #include "stack.h"
 #include "part.h"
 #include "functions.h"
