@@ -10,7 +10,7 @@ bool dimkashelk::isPriorityOperation(char first, char second)
     return second == '(';
   }
 }
-int dimkashelk::getResult(int first, int second, char oper)
+long long dimkashelk::getResult(long long first, long long second, char oper)
 {
   if (oper == '+')
   {

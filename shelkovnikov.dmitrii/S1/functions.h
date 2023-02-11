@@ -8,6 +8,6 @@
 namespace dimkashelk
 {
   bool isPriorityOperation(char first, char second);
-  int getResult(int first, int second, char oper);
+  long long getResult(long long first, long long second, char oper);
 }
 #endif
