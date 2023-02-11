@@ -43,7 +43,7 @@ namespace dimkashelk
     {
       if (size_ == 0)
       {
-        throw std::runtime_error("Check");
+        throw std::logic_error("Check");
       }
       T element = data_[0];
       for (size_t i = 0; i < size_ - 1; i++)

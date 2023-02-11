@@ -33,7 +33,7 @@ namespace dimkashelk
     {
       if (size_ == 0)
       {
-        throw std::runtime_error("Check");
+        throw std::logic_error("Check");
       }
       size_--;
       return data_[size_];
