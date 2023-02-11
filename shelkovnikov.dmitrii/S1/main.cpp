@@ -1,19 +1,28 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include "queue.h"
 #include "stack.h"
 #include "part.h"
-#include "functions.h"
 #include "getPolandArithmeticExpression.h"
 #include "getQueueOfArithmeticExpression.h"
 #include "getResultArithmeticExpression.h"
 int main(int argc, char *argv[])
 {
   namespace dsk = dimkashelk;
-  std::basic_istream<char> *istream = std::addressof(std::cin);
-  if (argc == 1)
+  std::basic_istream< char > *istream = std::addressof(std::cin);
+  if (argc == 2)
   {
-
+    std::ifstream in(argv[1]);
+    if (in.is_open())
+    {
+      istream = std::addressof(in);
+    }
+    else
+    {
+      std::cerr << "Cannot open file";
+      return 2;
+    }
   }
   std::string element = "";
   dsk::Stack< dsk::part > answer;
