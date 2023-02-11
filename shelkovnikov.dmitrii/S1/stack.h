@@ -31,6 +31,10 @@ namespace dimkashelk
     }
     T drop()
     {
+      if (size_ == 0)
+      {
+        throw std::runtime_error("Check");
+      }
       size_--;
       return data_[size_];
     }
