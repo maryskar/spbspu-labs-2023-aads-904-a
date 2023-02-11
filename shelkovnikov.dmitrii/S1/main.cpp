@@ -46,7 +46,7 @@ int main()
               p1 = stack.drop();
             }
           }
-          if (stack.empty())
+          else if (stack.empty())
           {
             stack.push(p);
           }
@@ -54,7 +54,7 @@ int main()
           {
             dsk::part p1 = stack.drop();
             stack.push(p1);
-            if (dsk::isPriorityOperation(p1.operator_, p.operator_))
+            if (dsk::isPriorityOperation(p1.operator_, p.operator_) || p1.operator_ == '(')
             {
               stack.push(p);
             }
@@ -95,6 +95,7 @@ int main()
           std::cout << p.operator_ << " ";
         }
       }
+      std::cout << "\n";
     }
     catch (...)
     {}
