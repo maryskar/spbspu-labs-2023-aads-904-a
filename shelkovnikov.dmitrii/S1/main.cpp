@@ -6,10 +6,11 @@
 #include "functions.h"
 #include "getPolandArithmeticExpression.h"
 #include "getQueueOfArithmeticExpression.h"
-int main()
+int main(int argc, char *argv[])
 {
   namespace dsk = dimkashelk;
   std::string element = "";
+  dsk::Stack< dsk::part > answer;
   while (std::cin)
   {
     std::getline(std::cin, element);
@@ -32,13 +33,17 @@ int main()
           remains.push(dsk::makePart(dsk::getResult(p1.operand_, p2.operand_, p.operator_)));
         }
       }
-      std::cout << remains.drop().operand_ << "\n";
+      answer.push(remains.drop());
     }
     catch (const std::logic_error &e)
     {
       std::cout << e.what();
       return 1;
     }
+  }
+  while (!answer.empty())
+  {
+    std::cout << answer.drop().operand_ << " ";
   }
   return 0;
 }
