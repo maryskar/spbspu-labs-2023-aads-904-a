@@ -10,5 +10,6 @@ namespace dimkashelk
     char operator_;
   };
   part makePart(std::string str);
+  part makePart(int number);
 }
 #endif

@@ -17,3 +17,11 @@ dimkashelk::part dimkashelk::makePart(std::string str)
   }
   return p;
 }
+dimkashelk::part dimkashelk::makePart(int number)
+{
+  part p;
+  p.isDigit_ = true;
+  p.operand_ = number;
+  p.operator_ = '+';
+  return p;
+}
