@@ -1,6 +1,5 @@
 #ifndef STACK_H
 #define STACK_H
-
 #include <cstddef>
 #include <stdexcept>
 #include <limits>
