@@ -47,14 +47,26 @@ long long dimkashelk::getResult(long long first, long long second, char oper)
 {
   if (oper == '+')
   {
+    if (isOverflowedAdd(first, second))
+    {
+      throw std::logic_error("Overflow");
+    }
     return first + second;
   }
   if (oper == '-')
   {
+    if (isOverflowedAdd(first, second))
+    {
+      throw std::logic_error("Overflow");
+    }
     return first - second;
   }
   if (oper == '*')
   {
+    if (isOverflowedMult(first, second))
+    {
+      throw std::logic_error("Overflow");
+    }
     return first * second;
   }
   if (oper == '/')
