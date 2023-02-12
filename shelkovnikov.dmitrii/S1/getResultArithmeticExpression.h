@@ -7,7 +7,7 @@
 namespace dimkashelk
 {
   template< typename T >
-  int getResultArithmeticExpression(Queue< T > polandExpression)
+  long long getResultArithmeticExpression(Queue< T > polandExpression)
   {
     namespace dsk = dimkashelk;
     dsk::Stack< dsk::part > remains;
