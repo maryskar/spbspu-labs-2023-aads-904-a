@@ -10,9 +10,10 @@
 int main(int argc, char *argv[])
 {
   namespace dsk = dimkashelk;
+  std::ifstream in;
   if (argc == 2)
   {
-    std::ifstream in(argv[1]);
+    in.open(argv[1]);
     std::cin.rdbuf(in.rdbuf());
   }
   std::string element = "";
