@@ -10,26 +10,17 @@
 int main(int argc, char *argv[])
 {
   namespace dsk = dimkashelk;
-  std::istream *istream = std::addressof(std::cin);
   if (argc == 2)
   {
     std::ifstream in(argv[1]);
-    if (in.is_open())
-    {
-      istream = std::addressof(in);
-    }
-    else
-    {
-      std::cerr << "Cannot open file";
-      return 2;
-    }
+    std::cin.rdbuf(in.rdbuf());
   }
   std::string element = "";
   dsk::Stack< dsk::part > answer;
-  while (*istream)
+  while (std::cin)
   {
-    std::getline(*istream, element);
-    if (!*istream)
+    std::getline(std::cin, element);
+    if (!std::cin)
     {
       break;
     }
