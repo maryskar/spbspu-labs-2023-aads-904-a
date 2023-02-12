@@ -1,4 +1,25 @@
 #include "functions.h"
+#include <limits>
+namespace
+{
+  constexpr long long max_long_long = std::numeric_limits< long long >::max();
+  constexpr long long min_long_long = std::numeric_limits< long long >::min();
+  namespace
+  {
+    bool isOverAdd(long long first, long long second)
+    {
+      return first > 0 && second > 0 && second > (max_long_long - first);
+    }
+    bool isUnderAdd(long long first, long long second)
+    {
+      return first < 0 && second < 0 && first < (min_long_long - second);
+    }
+  }
+  bool isOverflowedAdd(long long first, long long second)
+  {
+    return isOverAdd(first, second) || isUnderAdd(first, second);
+  }
+}
 bool dimkashelk::isPriorityOperation(char first, char second)
 {
   if (first == '+' || first == '-')
