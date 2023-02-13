@@ -6,8 +6,11 @@ namespace dimkashelk
   struct part
   {
     bool isDigit_;
-    long long operand_;
-    char operator_;
+    union
+    {
+      long long operand_;
+      char operator_;
+    } element_;
   };
   part makePart(std::string str);
   part makePart(long long number);

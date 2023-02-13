@@ -6,14 +6,12 @@ dimkashelk::part dimkashelk::makePart(std::string str)
   if (str.size() == 1 && data.find(str) != std::string::npos)
   {
     p.isDigit_ = false;
-    p.operand_ = 0;
-    p.operator_ = str[0];
+    p.element_.operator_ = str[0];
   }
   else
   {
     p.isDigit_ = true;
-    p.operand_ = std::stoll(str);
-    p.operator_ = '+';
+    p.element_.operand_ = std::stoll(str);
   }
   return p;
 }
@@ -21,7 +19,6 @@ dimkashelk::part dimkashelk::makePart(long long number)
 {
   part p;
   p.isDigit_ = true;
-  p.operand_ = number;
-  p.operator_ = '+';
+  p.element_.operand_ = number;
   return p;
 }
