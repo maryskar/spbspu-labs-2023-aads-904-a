@@ -3,10 +3,11 @@
 #include <cstddef>
 #include <stdexcept>
 #include "expand.h"
+#include "container.h"
 namespace dimkashelk
 {
   template < typename T >
-  class Queue
+  class Queue: Container< T >
   {
   public:
     Queue():
@@ -53,7 +54,7 @@ namespace dimkashelk
       size_--;
       return element;
     }
-    bool empty()
+    bool empty() const
     {
       return size_ == 0;
     }

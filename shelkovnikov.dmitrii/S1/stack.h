@@ -3,10 +3,11 @@
 #include <cstddef>
 #include <stdexcept>
 #include "expand.h"
+#include "container.h"
 namespace dimkashelk
 {
   template < typename T >
-  class Stack
+  class Stack: public Container< T >
   {
   public:
     Stack():
@@ -38,7 +39,7 @@ namespace dimkashelk
       size_--;
       return data_[size_];
     }
-    bool empty()
+    bool empty() const
     {
       return size_ == 0;
     }
