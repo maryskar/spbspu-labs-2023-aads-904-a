@@ -2,6 +2,7 @@
 #define SPBSPU_LABS_2023_AADS_904_A_STACK_H
 #include <cstddef>
 #include <stdexcept>
+#include <list>
 #include "expand.h"
 #include "container.h"
 namespace dimkashelk
@@ -10,43 +11,32 @@ namespace dimkashelk
   class Stack: public Container< T >
   {
   public:
-    Stack():
-      size_(0),
-      capacity_(10),
-      data_(new T[capacity_])
+    Stack()
     {}
     ~Stack()
     {
-      delete[] data_;
+      delete data;
     }
     void push(T rhs)
     {
-      if (size_ == capacity_)
-      {
-        T *new_data = expand< T >(data_, size_, capacity_ + 10);
-        delete[] data_;
-        data_ = new_data;
-        capacity_ += 10;
-      }
-      data_[size_++] = rhs;
+      data.push_back(rhs);
     }
     T drop()
     {
-      if (size_ == 0)
+      if (data.size() == 0)
       {
         throw std::logic_error("Check");
       }
-      size_--;
-      return data_[size_];
+      T obj = data.back();
+      data.pop_back();
+      return obj;
     }
     bool empty() const
     {
-      return size_ == 0;
+      return data.size() == 0;
     }
   private:
-    size_t size_;
-    size_t capacity_;
-    T *data_;
+    std::list< T > data;
   };
 }
 #endif
