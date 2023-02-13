@@ -14,28 +14,28 @@ namespace dimkashelk
     Queue()
     {}
     Queue< T > (const Queue< T > &queue):
-      data(queue.data)
+      data_(queue.data_)
     {}
     ~Queue()
     {
-      delete data;
+      delete data_;
     }
     void push(T rhs)
     {
-      data.push_back(rhs);
+      data_.push_back(rhs);
     }
     T drop()
     {
-      T obj = data.front();
-      data.pop_front();
+      T obj = data_.front();
+      data_.pop_front();
       return obj;
     }
     bool empty() const
     {
-      return data.size() == 0;
+      return data_.size() == 0;
     }
   private:
-    std::list< T > data;
+    std::list< T > data_;
   };
 }
 #endif
