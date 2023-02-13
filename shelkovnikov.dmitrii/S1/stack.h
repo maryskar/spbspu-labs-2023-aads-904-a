@@ -13,10 +13,6 @@ namespace dimkashelk
   public:
     Stack()
     {}
-    ~Stack()
-    {
-      delete data_;
-    }
     void push(T rhs)
     {
       data_.push_back(rhs);

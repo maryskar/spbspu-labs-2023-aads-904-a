@@ -16,10 +16,6 @@ namespace dimkashelk
     Queue< T > (const Queue< T > &queue):
       data_(queue.data_)
     {}
-    ~Queue()
-    {
-      delete data_;
-    }
     void push(T rhs)
     {
       data_.push_back(rhs);
