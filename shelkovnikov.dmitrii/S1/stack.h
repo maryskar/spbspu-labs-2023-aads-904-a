@@ -13,6 +13,13 @@ namespace dimkashelk
     Stack():
       begin_(nullptr)
     {}
+    ~Stack()
+    {
+      while (begin_)
+      {
+        drop();
+      }
+    }
     void push(T rhs)
     {
       Node *node = new Node(rhs);

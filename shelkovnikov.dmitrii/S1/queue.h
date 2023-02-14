@@ -23,6 +23,13 @@ namespace dimkashelk
         start = start->next_;
       }
     }
+    ~Queue()
+    {
+      while (begin_)
+      {
+        drop();
+      }
+    }
     void push(T rhs)
     {
       Node *node = new Node(rhs);
