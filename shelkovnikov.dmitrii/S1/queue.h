@@ -10,27 +10,61 @@ namespace dimkashelk
   class Queue
   {
   public:
-    Queue()
+    Queue():
+      begin(nullptr)
     {}
     Queue< T > (const Queue< T > &queue):
-      data_(queue.data_)
-    {}
+      begin(nullptr)
+    {
+      Node *start = queue.begin;
+      while (start != nullptr)
+      {
+        push(start->data);
+        start = start->next;
+      }
+    }
     void push(T rhs)
     {
-      data_.push_back(rhs);
+      Node *node = new Node(rhs);
+      Node *first = begin;
+      if (empty())
+      {
+        begin = node;
+      }
+      else
+      {
+        while (first->next)
+        {
+          first = first->next;
+        }
+        first->next = node;
+      }
     }
     T drop()
     {
-      T obj = data_.front();
-      data_.pop_front();
-      return obj;
+      if (begin == nullptr)
+      {
+        throw std::logic_error("Check");
+      }
+      Node obj = *begin;
+      begin = begin->next;
+      return obj.data;
     }
     bool empty() const
     {
-      return data_.size() == 0;
+      return begin == nullptr;
     }
   private:
-    std::list< T > data_;
+    struct Node
+    {
+      T data;
+      Node *next;
+      explicit Node(T rhs):
+        data(rhs),
+        next(nullptr)
+      {}
+    };
+    Node *begin;
   };
 }
 #endif
