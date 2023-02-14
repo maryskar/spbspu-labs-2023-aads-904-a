@@ -11,62 +11,62 @@ namespace dimkashelk
   {
   public:
     Queue():
-      begin(nullptr)
+      begin_(nullptr)
     {}
     Queue< T > (const Queue< T > &queue):
-      begin(nullptr)
+      begin_(nullptr)
     {
-      Node *start = queue.begin;
+      Node *start = queue.begin_;
       while (start != nullptr)
       {
-        push(start->data);
-        start = start->next;
+        push(start->data_);
+        start = start->next_;
       }
     }
     void push(T rhs)
     {
       Node *node = new Node(rhs);
-      Node *first = begin;
+      Node *first = begin_;
       if (empty())
       {
-        begin = node;
+        begin_ = node;
       }
       else
       {
-        while (first->next)
+        while (first->next_)
         {
-          first = first->next;
+          first = first->next_;
         }
-        first->next = node;
+        first->next_ = node;
       }
     }
     T drop()
     {
-      if (begin == nullptr)
+      if (begin_ == nullptr)
       {
         throw std::logic_error("Check");
       }
-      Node *obj = begin;
-      T data = obj->data;
-      begin = begin->next;
+      Node *obj = begin_;
+      T data = obj->data_;
+      begin_ = begin_->next_;
       delete obj;
       return data;
     }
     bool empty() const
     {
-      return begin == nullptr;
+      return begin_ == nullptr;
     }
   private:
     struct Node
     {
-      T data;
-      Node *next;
+      T data_;
+      Node *next_;
       explicit Node(T rhs):
-        data(rhs),
-        next(nullptr)
+        data_(rhs),
+        next_(nullptr)
       {}
     };
-    Node *begin;
+    Node *begin_;
   };
 }
 #endif

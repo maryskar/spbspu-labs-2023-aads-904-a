@@ -11,23 +11,23 @@ namespace dimkashelk
   {
   public:
     Stack():
-      begin(nullptr)
+      begin_(nullptr)
     {}
     void push(T rhs)
     {
       Node *node = new Node(rhs);
       if (empty())
       {
-        begin = node;
+        begin_ = node;
       }
       else
       {
-        Node *last = begin;
-        while (last->next)
+        Node *last = begin_;
+        while (last->next_)
         {
-          last = last->next;
+          last = last->next_;
         }
-        last->next = node;
+        last->next_ = node;
       }
     }
     T drop()
@@ -36,41 +36,41 @@ namespace dimkashelk
       {
         throw std::logic_error("Check");
       }
-      Node *cur = begin;
+      Node *cur = begin_;
       Node *last = nullptr;
-      while (cur->next)
+      while (cur->next_)
       {
         last = cur;
-        cur = cur->next;
+        cur = cur->next_;
       }
-      T data = cur->data;
+      T data = cur->data_;
       if (last == nullptr)
       {
-        delete begin;
-        begin = nullptr;
+        delete begin_;
+        begin_ = nullptr;
       }
       else
       {
         delete cur;
-        last->next = nullptr;
+        last->next_ = nullptr;
       }
       return data;
     }
     bool empty() const
     {
-      return begin == nullptr;
+      return begin_ == nullptr;
     }
   private:
     struct Node
     {
-      T data;
-      Node *next;
+      T data_;
+      Node *next_;
       explicit Node(T rhs):
-        data(rhs),
-        next(nullptr)
+        data_(rhs),
+        next_(nullptr)
       {}
     };
-    Node *begin;
+    Node *begin_;
   };
 }
 #endif
