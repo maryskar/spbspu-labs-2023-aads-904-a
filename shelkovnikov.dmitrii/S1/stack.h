@@ -22,7 +22,11 @@ namespace dimkashelk
       }
       else
       {
-        Node *last = getLast();
+        Node *last = begin;
+        while (last->next)
+        {
+          last = last->next;
+        }
         last->next = node;
       }
     }
@@ -32,9 +36,24 @@ namespace dimkashelk
       {
         throw std::logic_error("Check");
       }
-      Node *obj = getLast();
-      T data = obj->data;
-      delete obj;
+      Node *cur = begin;
+      Node *last = nullptr;
+      while (cur->next)
+      {
+        last = cur;
+        cur = cur->next;
+      }
+      T data = cur->data;
+      if (last == nullptr)
+      {
+        delete begin;
+        begin = nullptr;
+      }
+      else
+      {
+        delete cur;
+        last->next = nullptr;
+      }
       return data;
     }
     bool empty() const
@@ -52,15 +71,6 @@ namespace dimkashelk
       {}
     };
     Node *begin;
-    Node* getLast()
-    {
-      Node *first = begin;
-      while (first->next)
-      {
-        first = first->next;
-      }
-      return first;
-    }
   };
 }
 #endif
