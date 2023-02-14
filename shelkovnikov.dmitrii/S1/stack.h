@@ -4,11 +4,10 @@
 #include <stdexcept>
 #include <list>
 #include "expand.h"
-#include "container.h"
 namespace dimkashelk
 {
   template < typename T >
-  class Stack: public Container< T >
+  class Stack
   {
   public:
     Stack()

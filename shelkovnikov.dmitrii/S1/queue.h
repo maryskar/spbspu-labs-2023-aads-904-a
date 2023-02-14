@@ -4,11 +4,10 @@
 #include <stdexcept>
 #include <list>
 #include "expand.h"
-#include "container.h"
 namespace dimkashelk
 {
   template < typename T >
-  class Queue: Container< T >
+  class Queue
   {
   public:
     Queue()
