@@ -34,7 +34,7 @@ namespace dimkashelk
       }
       Node *obj = getLast();
       T data = obj->data;
-      delete[] obj;
+      delete obj;
       return data;
     }
     bool empty() const

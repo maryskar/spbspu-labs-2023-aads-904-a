@@ -46,9 +46,11 @@ namespace dimkashelk
       {
         throw std::logic_error("Check");
       }
-      Node obj = *begin;
+      Node *obj = begin;
+      T data = obj->data;
       begin = begin->next;
-      return obj.data;
+      delete obj;
+      return data;
     }
     bool empty() const
     {
