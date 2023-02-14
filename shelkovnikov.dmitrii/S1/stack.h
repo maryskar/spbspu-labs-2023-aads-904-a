@@ -10,28 +10,57 @@ namespace dimkashelk
   class Stack
   {
   public:
-    Stack()
+    Stack():
+      begin(nullptr)
     {}
     void push(T rhs)
     {
-      data_.push_back(rhs);
+      Node *node = new Node(rhs);
+      if (empty())
+      {
+        begin = node;
+      }
+      else
+      {
+        Node *last = getLast();
+        last->next = node;
+      }
     }
     T drop()
     {
-      if (data_.size() == 0)
+      if (empty())
       {
         throw std::logic_error("Check");
       }
-      T obj = data_.back();
-      data_.pop_back();
-      return obj;
+      Node *obj = getLast();
+      T data = obj->data;
+      delete[] obj;
+      return data;
     }
     bool empty() const
     {
-      return data_.size() == 0;
+      return begin == nullptr;
     }
   private:
-    std::list< T > data_;
+    struct Node
+    {
+      T data;
+      Node *next;
+      explicit Node(T rhs):
+        data(rhs),
+        next(nullptr)
+      {}
+    };
+    Node *begin;
+    Node* getLast()
+    {
+      Node *first = begin;
+      while (first->next)
+      {
+        first = first->next;
+      }
+      return first;
+    }
   };
 }
 #endif
