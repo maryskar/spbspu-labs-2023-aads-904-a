@@ -22,14 +22,14 @@ namespace dimkashelk
     }
     void push(T rhs)
     {
-      Node *node = new Node(rhs);
+      Node< T > *node = new Node< T >(rhs);
       if (empty())
       {
         begin_ = node;
       }
       else
       {
-        Node *last = begin_;
+        Node< T > *last = begin_;
         while (last->next_)
         {
           last = last->next_;
@@ -43,8 +43,8 @@ namespace dimkashelk
       {
         throw std::logic_error("Check");
       }
-      Node *cur = begin_;
-      Node *last = nullptr;
+      Node< T > *cur = begin_;
+      Node< T > *last = nullptr;
       while (cur->next_)
       {
         last = cur;
@@ -68,16 +68,7 @@ namespace dimkashelk
       return begin_ == nullptr;
     }
   private:
-    struct Node
-    {
-      T data_;
-      Node *next_;
-      explicit Node(T rhs):
-        data_(rhs),
-        next_(nullptr)
-      {}
-    };
-    Node *begin_;
+    Node< T > *begin_;
   };
 }
 #endif

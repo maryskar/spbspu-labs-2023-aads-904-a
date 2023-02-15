@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <list>
 #include "expand.h"
+#include "node.h"
 namespace dimkashelk
 {
   template < typename T >
@@ -16,7 +17,7 @@ namespace dimkashelk
     Queue< T > (const Queue< T > &queue):
       begin_(nullptr)
     {
-      Node *start = queue.begin_;
+      Node< T > *start = queue.begin_;
       while (start != nullptr)
       {
         push(start->data_);
@@ -32,8 +33,8 @@ namespace dimkashelk
     }
     void push(T rhs)
     {
-      Node *node = new Node(rhs);
-      Node *first = begin_;
+      Node< T >  *node = new Node< T >(rhs);
+      Node< T > *first = begin_;
       if (empty())
       {
         begin_ = node;
@@ -53,7 +54,7 @@ namespace dimkashelk
       {
         throw std::logic_error("Check");
       }
-      Node *obj = begin_;
+      Node< T > *obj = begin_;
       T data = obj->data_;
       begin_ = begin_->next_;
       delete obj;
@@ -64,16 +65,7 @@ namespace dimkashelk
       return begin_ == nullptr;
     }
   private:
-    struct Node
-    {
-      T data_;
-      Node *next_;
-      explicit Node(T rhs):
-        data_(rhs),
-        next_(nullptr)
-      {}
-    };
-    Node *begin_;
+    Node< T > *begin_;
   };
 }
 #endif
