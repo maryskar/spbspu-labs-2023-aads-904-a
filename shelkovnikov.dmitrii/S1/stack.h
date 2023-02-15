@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <list>
 #include "expand.h"
+#include "node.h"
 namespace dimkashelk
 {
   template < typename T >
