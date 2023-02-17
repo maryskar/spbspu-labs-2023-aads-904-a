@@ -12,13 +12,15 @@ namespace dimkashelk
   {
   public:
     Queue():
-      begin_(nullptr)
+      begin_(nullptr),
+      end_(nullptr)
     {}
     Queue< T > (const Queue< T > &queue):
-      begin_(nullptr)
+      begin_(nullptr),
+      end_(nullptr)
     {
       Node< T > *start = queue.begin_;
-      while (start != nullptr)
+      while (start)
       {
         push(start->data_);
         start = start->next_;
@@ -33,19 +35,20 @@ namespace dimkashelk
     }
     void push(T rhs)
     {
-      Node< T >  *node = new Node< T >(rhs);
-      Node< T > *first = begin_;
+      auto  *node = new Node< T >(rhs);
       if (empty())
       {
         begin_ = node;
       }
+      else if (!end_)
+      {
+        end_ = node;
+        begin_->next_ = end_;
+      }
       else
       {
-        while (first->next_)
-        {
-          first = first->next_;
-        }
-        first->next_ = node;
+        end_->next_ = node;
+        end_ = end_->next_;
       }
     }
     T drop()
@@ -66,6 +69,7 @@ namespace dimkashelk
     }
   private:
     Node< T > *begin_;
+    Node< T > *end_;
   };
 }
 #endif
