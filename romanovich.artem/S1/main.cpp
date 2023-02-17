@@ -1,6 +1,14 @@
 #include <iostream>
 #include <fstream>
 #include "stack.h"
+template < typename T >
+void Stack< T >::push(const T &value)
+{
+}
+template < typename T >
+T Stack< T >::pop()
+{
+}
 int main(int argc, char **argv)
 {
   if ((argc != 1) && (argc != 2))
@@ -8,7 +16,8 @@ int main(int argc, char **argv)
     std::cerr << "Not appropriate parameters number.\n";
     return 1;
   }
-  else if (argc == 2)
+  Stack< std::string > stack = Stack< std::string >();
+  if (argc == 2)
   {
     std::string fileIn = argv[1];
     std::fstream fileInput(fileIn);
@@ -20,7 +29,7 @@ int main(int argc, char **argv)
     for (std::string line; std::getline(fileInput, line);)
     {
       std::cout << line << "\n";
-      Stack< std::string >().push(line);
+      stack.push(line);
     }
   }
   else
@@ -28,7 +37,7 @@ int main(int argc, char **argv)
     for (std::string line; std::getline(std::cin, line);)
     {
       std::cout << line << "\n";
-      Stack< std::string >().push(line);
+      stack.push(line);
     }
   }
   return 0;

@@ -7,7 +7,7 @@ class Stack
 public:
   Stack();
   ~Stack();
-  T push(const T &value);
+  void push(const T &value);
   T pop();
 private:
   T *array_;
