@@ -12,8 +12,7 @@ namespace dimkashelk
   {
   public:
     Stack():
-      begin_(nullptr),
-      end_(nullptr)
+      begin_(nullptr)
     {}
     ~Stack()
     {
@@ -29,15 +28,14 @@ namespace dimkashelk
       {
         begin_ = node;
       }
-      else if (!end_)
-      {
-        end_ = node;
-        begin_->next_ = end_;
-      }
       else
       {
-        end_->next_ = node;
-        end_ = end_->next_;
+        Node< T > *last = begin_;
+        while (last->next_)
+        {
+          last = last->next_;
+        }
+        last->next_ = node;
       }
     }
     T drop()
@@ -72,7 +70,6 @@ namespace dimkashelk
     }
   private:
     Node< T > *begin_;
-    Node< T > *end_;
   };
 }
 #endif
