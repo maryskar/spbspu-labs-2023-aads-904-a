@@ -1,5 +1,5 @@
-#ifndef ROMANOVICH_ARTEM_STACK_H
-#define ROMANOVICH_ARTEM_STACK_H
+#ifndef STACK_H
+#define STACK_H
 #include <stdexcept>
 template < typename T >
 class Stack
