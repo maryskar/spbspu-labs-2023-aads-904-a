@@ -1,0 +1,6 @@
+#ifndef ROMANOVICH_ARTEM_STACK_H
+#define ROMANOVICH_ARTEM_STACK_H
+class Stack
+{
+};
+#endif //ROMANOVICH_ARTEM_STACK_H
