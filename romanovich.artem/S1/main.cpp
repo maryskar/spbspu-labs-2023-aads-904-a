@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include "stack.h"
 int main(int argc, char **argv)
 {
   if ((argc != 1) && (argc != 2))
@@ -19,11 +20,15 @@ int main(int argc, char **argv)
     for (std::string line; std::getline(fileInput, line);)
     {
       std::cout << line << "\n";
+      Stack< std::string >().push(line);
     }
-  } else {
+  }
+  else
+  {
     for (std::string line; std::getline(std::cin, line);)
     {
       std::cout << line << "\n";
+      Stack< std::string >().push(line);
     }
   }
   return 0;
