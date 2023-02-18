@@ -5,7 +5,6 @@
 #include "queue.h"
 #include "stack.h"
 #include "elem.h"
-#include "chartoint.h"
 #include "getpriority.h"
 #include "calculate.h"
 
