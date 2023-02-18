@@ -10,13 +10,16 @@ public:
  ~Queue();
  void push(T rhs);
  T drop();
+ bool isEmpty();
 private:
   Node< T >* head;
+  size_t size;
 };
 
 template< typename T >
 Queue< T >::Queue():
- head(nullptr)
+ head(nullptr),
+ size(0)
 {}
 
 template< typename T >
@@ -26,6 +29,12 @@ Queue< T >::~Queue()
   {
     drop();
   }
+}
+
+template< typename T >
+bool Queue< T >::isEmpty()
+{
+  return size;
 }
 
 template< typename T >
@@ -44,16 +53,21 @@ void Queue< T >::push(T rhs)
     }
     current->p_next = new Node< T >(rhs);
   }
+  size++;
 }
 
 template< typename T >
 T Queue< T >::drop()
 {
-  Node< T >* temp = head;
-  head = head->p_next;
-  T temp_val = temp->value;
-  delete temp;
-  return temp_val;
+  if (size)
+  {
+    Node< T >* temp = head;
+    head = head->p_next;
+    T temp_val = temp->value;
+    delete temp;
+    size--;
+    return temp_val;
+  }
 }
 
 #endif
