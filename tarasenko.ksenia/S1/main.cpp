@@ -2,9 +2,9 @@
 #include <string>
 #include <cctype>
 #include "fstream"
-#include "node.h"
 #include "queue.h"
 #include "stack.h"
+#include "chartoint.h"
 
 union Types
 {
