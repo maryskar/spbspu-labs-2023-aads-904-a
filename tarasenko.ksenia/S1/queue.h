@@ -34,7 +34,7 @@ Queue< T >::~Queue()
 template< typename T >
 bool Queue< T >::isEmpty()
 {
-  return size;
+  return size == 0;
 }
 
 template< typename T >
@@ -59,15 +59,16 @@ void Queue< T >::push(T rhs)
 template< typename T >
 T Queue< T >::drop()
 {
-  if (size)
+  if (!size)
   {
-    Node< T >* temp = head;
-    head = head->p_next;
-    T temp_val = temp->value;
-    delete temp;
-    size--;
-    return temp_val;
+    throw std::underflow_error("Underflow!\n");
   }
+  Node< T >* temp = head;
+  head = head->p_next;
+  T temp_val = temp->value;
+  delete temp;
+  size--;
+  return temp_val;
 }
 
 #endif
