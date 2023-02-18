@@ -19,6 +19,12 @@ struct Elem
   Types union_elem;
 } elem;
 
+std::ostream& operator<<(std::ostream& out, Elem e)
+{
+  if (e.is_int) return out << e.union_elem.operand;
+  else return out << e.union_elem.operation;
+}
+
 int main(int argc, char *argv[])
 {
   Queue<Elem> q_infix;
@@ -81,7 +87,7 @@ int main(int argc, char *argv[])
         }
         else
         {
-          while (!s.isEmpty() && (getPriority(elem.union_elem.operation) >= getPriority(s.getTopElem().union_elem.operation)))
+          while (!s.isEmpty() && (getPriority(elem.union_elem.operation) <= getPriority(s.getTopElem().union_elem.operation)))
           {
             q_postfix.push(s.drop());
           }
@@ -94,6 +100,12 @@ int main(int argc, char *argv[])
   {
     q_postfix.push(s.drop());
   }
+
+  while (!q_postfix.isEmpty())
+  {
+    std::cout << q_postfix.drop();
+  }
+  std::cout << "\n";
   // (с помощью стека) вычисляем результат
   // выводим результат
 }
