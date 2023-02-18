@@ -7,6 +7,13 @@
 #include "elem.h"
 #include "chartoint.h"
 #include "getpriority.h"
+#include "calculate.h"
+
+std::ostream& operator<<(std::ostream& out, Elem e)
+{
+  if (e.is_int) return out << e.union_elem.operand;
+  else return out << e.union_elem.operation;
+}
 
 int main(int argc, char *argv[])
 {
@@ -18,21 +25,34 @@ int main(int argc, char *argv[])
   // строка -> очередь(инфикс)
   while(std::getline(input,str))
   {
-    for (size_t i = 0; i < str.size(); i++)
+    size_t i = 0;
+    while (i < str.size())
     {
       if (!std::isspace(str[i]))
       {
-        if (std::isdigit(str[i]))
-        {
-          elem.union_elem.operand = charToInt(str[i]);
-          elem.is_int = true;
-        }
-        else
+        std::string digit = "";
+        if (!std::isdigit(str[i]))
         {
           elem.union_elem.operation = str[i];
           elem.is_int = false;
+          i++;
+        }
+        else
+        {
+          do
+          {
+            digit += str[i];
+            i++;
+          }
+          while (std::isdigit(str[i]));
+          elem.union_elem.operand = std::stoi(digit);
+          elem.is_int = true;
         }
         q_infix.push(elem);
+      }
+      else
+      {
+        i++;
       }
     }
   }
@@ -84,8 +104,43 @@ int main(int argc, char *argv[])
   {
     q_postfix.push(s.drop());
   }
-
+  //
+  /*
+  while (!q_postfix.isEmpty())
+  {
+    std::cout << q_postfix.drop();
+  }
+  std::cout << "\n";*/
   // (с помощью стека) вычисляем результат
-
+  while (!q_postfix.isEmpty())
+  {
+    elem = q_postfix.drop();
+    std::cout << elem << "\n";
+    if (elem.is_int)
+    {
+      std::cout << elem << "stack\n";
+      s.push(elem);
+    }
+    else
+    {
+      if (!s.isEmpty())
+      {
+        Elem res{true, 0};
+        int b = s.drop().union_elem.operand;
+        int a = s.drop().union_elem.operand;
+        try
+        {
+          res.union_elem.operand = calculate< int >(a, b, elem.union_elem.operation);
+          s.push(res);
+          std::cout << res << "stack\n";
+        }
+        catch (const std::exception& e)
+        {
+          std::cout << e.what() << "\n";
+        }
+      }
+    }
+  }
   // выводим результат
+  std::cout << s.drop().union_elem.operand << "\n";
 }
