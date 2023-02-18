@@ -1,5 +1,6 @@
 #ifndef QUEUE_H
 #define QUEUE_H
+#include <stdexcept>
 #include "node.h"
 
 template< typename T>

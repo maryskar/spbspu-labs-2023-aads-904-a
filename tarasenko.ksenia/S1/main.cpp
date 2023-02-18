@@ -4,29 +4,13 @@
 #include "fstream"
 #include "queue.h"
 #include "stack.h"
+#include "elem.h"
 #include "chartoint.h"
 #include "getpriority.h"
 
-union Types
-{
-  int operand;
-  char operation;
-};
-
-struct Elem
-{
-  bool is_int;
-  Types union_elem;
-} elem;
-
-std::ostream& operator<<(std::ostream& out, Elem e)
-{
-  if (e.is_int) return out << e.union_elem.operand;
-  else return out << e.union_elem.operation;
-}
-
 int main(int argc, char *argv[])
 {
+  Elem elem;
   Queue<Elem> q_infix;
   Stack<Elem> s;
   std::string str = "";
@@ -101,11 +85,7 @@ int main(int argc, char *argv[])
     q_postfix.push(s.drop());
   }
 
-  while (!q_postfix.isEmpty())
-  {
-    std::cout << q_postfix.drop();
-  }
-  std::cout << "\n";
   // (с помощью стека) вычисляем результат
+
   // выводим результат
 }
