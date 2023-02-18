@@ -5,6 +5,7 @@
 #include "queue.h"
 #include "stack.h"
 #include "chartoint.h"
+#include "getpriority.h"
 
 union Types
 {
@@ -12,15 +13,11 @@ union Types
   char operation;
 };
 
-struct Elem{
+struct Elem
+{
   bool is_int;
   Types union_elem;
 } elem;
-
-int getPriority(char op)
-{
-  // ...
-}
 
 int main(int argc, char *argv[])
 {
