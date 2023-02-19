@@ -36,8 +36,7 @@ Stack< T >::~Stack()
 template< typename T >
 void Stack< T >::push(T rhs)
 {
-  OneWayList< T > * element = new OneWayList< T > {rhs, value_};
-  value_ = element;
+  value_ = new OneWayList< T > {rhs, value_};
 }
 
 template< typename T >
