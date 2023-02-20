@@ -34,19 +34,20 @@ namespace dimkashelk
         ptr_ = ptr_->next_;
         return *this;
       }
-      Iterator &operator++(T)
+      Iterator &operator++(int)
       {
         ptr_ = ptr_->next_;
         return *this;
       }
       friend bool operator==(const Iterator &a, const Iterator &b)
       {
-        return a.ptr_ == b.ptr_->next_;
+        return a.ptr_ == b.ptr_;
       };
       friend bool operator!=(const Iterator &a, const Iterator &b)
       {
-        return a.ptr_ != b.ptr_->next_;
+        return a.ptr_ != b.ptr_;
       };
+    private:
       Node *ptr_;
     };
     ForwardList():
@@ -81,13 +82,38 @@ namespace dimkashelk
         iterator.ptr_->next_->prev_ = new_node;
       }
     }
+    void pushFront(T data)
+    {
+      Node *new_node = new Node(data);
+      if (!begin_)
+      {
+        begin_ = new_node;
+      }
+      else if (!end_)
+      {
+        end_ = begin_;
+        end_->prev_ = new_node;
+        new_node->next_ = end_;
+        begin_ = new_node;
+      }
+      else
+      {
+        new_node->next_ = begin_;
+        begin_->prev_ = new_node;
+        begin_ = new_node;
+      }
+    }
     Iterator begin()
     {
       return Iterator(begin_);
     }
     Iterator end()
     {
-      return Iterator(end_);
+      return Iterator(end_->next_);
+    }
+    bool empty()
+    {
+      return begin_ == nullptr;
     }
   private:
     Node *begin_;
