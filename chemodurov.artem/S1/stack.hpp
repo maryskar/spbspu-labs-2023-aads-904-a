@@ -33,4 +33,35 @@ chemodurov::Stack< T >::~Stack()
   delete [] value_;
 }
 
+template< typename T >
+void chemodurov::Stack< T >::push(const T & rhs)
+{
+  if (capacity_ == size_)
+  {
+    T * new_value = new T[capacity_ + 1];
+    try
+    {
+      for (size_t i = 0; i < size_; ++i)
+      {
+        new_value[i] = value_[i];
+      }
+      value_[size_] = rhs;
+    }
+    catch (...)
+    {
+      delete [] new_value;
+      throw;
+    }
+    delete [] value_;
+    value_ = new_value;
+    ++capacity_;
+    ++size_;
+  }
+  else
+  {
+    value_[size_] = rhs;
+    ++size_;
+  }
+}
+
 #endif
