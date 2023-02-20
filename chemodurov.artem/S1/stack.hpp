@@ -2,6 +2,7 @@
 #define STACK_HPP
 #include <cstddef>
 #include <stdexcept>
+
 namespace chemodurov
 {
   template< typename T >
@@ -69,10 +70,20 @@ void chemodurov::Stack< T >::pop()
 {
   if (!size_)
   {
-    throw std::logic_error("Empty");
+    throw std::logic_error("Empty stack");
   }
   value_[size_ - 1] = T();
   --size_;
+}
+
+template< typename T >
+T & chemodurov::Stack< T >::getLast()
+{
+  if (!size_)
+  {
+    throw std::logic_error("Empty stack");
+  }
+  return *value_;
 }
 
 #endif
