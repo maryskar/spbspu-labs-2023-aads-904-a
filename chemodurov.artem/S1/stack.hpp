@@ -13,7 +13,7 @@ namespace chemodurov
     ~Stack();
     void push(const T & rhs);
     void pop();
-    T & getLast();
+    T & getFromStack();
    private:
     T * value_;
     size_t size_;
@@ -77,7 +77,7 @@ void chemodurov::Stack< T >::pop()
 }
 
 template< typename T >
-T & chemodurov::Stack< T >::getLast()
+T & chemodurov::Stack< T >::getFromStack()
 {
   if (!size_)
   {
