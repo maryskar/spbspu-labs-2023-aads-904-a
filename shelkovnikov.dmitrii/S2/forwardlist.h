@@ -4,118 +4,95 @@
 #include <iterator>
 namespace dimkashelk
 {
-  template < typename Key, typename Value, typename Compare >
+  template < typename T >
   class ForwardList
   {
   public:
     struct Node
     {
-      Key key_;
-      Value data_;
+      T data_;
       Node *next_;
       Node *prev_;
-      Node(Key key, Value value):
-        key_(key),
-        data_(value),
+      explicit Node(T &data):
+        data_(data),
         next_(nullptr),
         prev_(nullptr)
       {}
     };
-    struct Iterator
+    class Iterator
     {
+    friend class ForwardList< T >;
     public:
       explicit Iterator(Node *ptr):
         ptr_(ptr)
       {}
-      std::pair< Key, Value > &operator*() const
+      T &operator*() const
       {
-        auto *pair = new std::pair< Key, Value >(ptr_->key_, ptr_->data_);
-        return *pair;
+        return ptr_->data_;
       }
       Iterator operator++()
       {
         ptr_ = ptr_->next_;
         return *this;
       }
-      Iterator &operator++(Key)
+      Iterator &operator++(T)
       {
         ptr_ = ptr_->next_;
         return *this;
       }
       friend bool operator==(const Iterator &a, const Iterator &b)
       {
-        return a.ptr_ == b.ptr_;
+        return a.ptr_ == b.ptr_->next_;
       };
       friend bool operator!=(const Iterator &a, const Iterator &b)
       {
-        return a.ptr_ != b.ptr_;
+        return a.ptr_ != b.ptr_->next_;
       };
-    private:
       Node *ptr_;
     };
     ForwardList() :
       begin_(nullptr),
-      end_(nullptr),
-      compare_(std::less< Key >())
+      end_(nullptr)
     {}
-    void insert(Key key, Value value)
+    void insertAfter(ForwardList< T >::Iterator iterator, T data)
     {
-      Node *new_node = new Node(key, value);
+      Node *new_node = new Node(data);
       if (!begin_)
       {
         begin_ = new_node;
+        iterator.ptr_ = new_node;
+        return;
       }
-      else if (!end_)
+      if (!iterator.ptr_)
       {
-        if (compare_(begin_->key_, new_node->key_))
-        {
-          end_ = begin_;
-          begin_ = new_node;
-          begin_->next_ = end_;
-          end_->prev_ = begin_;
-        }
-        else
-        {
-          end_ = new_node;
-          begin_->next_ = end_;
-          end_->prev_ = begin_;
-        }
+        throw std::runtime_error("Don't know where to insert it");
       }
-      else
+      if (!end_)
       {
-        Node *cur = begin_;
-        while (cur)
-        {
-          if (compare_(cur->key_, new_node->key_))
-          {
-            new_node->next_ = cur;
-            new_node->prev_ = cur->prev_;
-            if (cur->prev_)
-            {
-              cur->prev_->next_ = new_node;
-            }
-            if (cur->next_)
-            {
-              cur->next_->prev_ = new_node;
-            }
-            break;
-          }
-          cur = cur->next_;
-        }
+        end_ = new_node;
+        begin_->next_ = end_;
+        end_->prev_ = begin_;
+        return;
+      }
+      new_node->next_ = iterator.ptr_->next_;
+      new_node->prev_ = iterator.ptr_;
+      if (iterator.ptr_->next_)
+      {
+        iterator.ptr_->next_ = new_node;
+        iterator.ptr_->next_->prev_ = new_node;
       }
     }
     Iterator begin()
     {
-      return Iterator(std::addressof(*begin_));
+      return Iterator(begin_);
     }
     Iterator end()
     {
-      return Iterator(std::addressof(*end_->next_));
+      return Iterator(end_);
     }
   private:
     Node *begin_;
     Node *end_;
-    Compare compare_;
   };
 }
 #endif
