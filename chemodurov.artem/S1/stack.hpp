@@ -1,7 +1,7 @@
 #ifndef STACK_HPP
 #define STACK_HPP
 #include <cstddef>
-
+#include <stdexcept>
 namespace chemodurov
 {
   template< typename T >
@@ -62,6 +62,17 @@ void chemodurov::Stack< T >::push(const T & rhs)
     value_[size_] = rhs;
     ++size_;
   }
+}
+
+template< typename T >
+void chemodurov::Stack< T >::pop()
+{
+  if (!size_)
+  {
+    throw std::logic_error("Empty");
+  }
+  value_[size_ - 1] = T();
+  --size_;
 }
 
 #endif
