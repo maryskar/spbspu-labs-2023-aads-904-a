@@ -1,7 +1,6 @@
 #ifndef SPBSPU_LABS_2023_AADS_904_A_FORWARDLIST_H
 #define SPBSPU_LABS_2023_AADS_904_A_FORWARDLIST_H
 #include <cstddef>
-#include <iterator>
 namespace dimkashelk
 {
   template < typename T >
@@ -50,7 +49,7 @@ namespace dimkashelk
       };
       Node *ptr_;
     };
-    ForwardList() :
+    ForwardList():
       begin_(nullptr),
       end_(nullptr)
     {}
