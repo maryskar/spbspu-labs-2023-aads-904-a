@@ -4,7 +4,7 @@
 #include <iterator>
 namespace dimkashelk
 {
-  template < typename Key, typename Value >
+  template < typename Key, typename Value, typename Compare >
   class ForwardList
   {
   public:
@@ -55,9 +55,10 @@ namespace dimkashelk
     };
     ForwardList() :
       begin_(nullptr),
-      end_(nullptr)
+      end_(nullptr),
+      compare_(std::less< Key >())
     {}
-    void push_back(Key key, Value value)
+    void insert(Key key, Value value)
     {
       Node *new_node = new Node(key, value);
       if (!begin_)
@@ -66,15 +67,41 @@ namespace dimkashelk
       }
       else if (!end_)
       {
-        end_ = new_node;
-        begin_->next_ = end_;
-        end_->prev_ = begin_;
+        if (compare_(begin_->key_, new_node->key_))
+        {
+          end_ = begin_;
+          begin_ = new_node;
+          begin_->next_ = end_;
+          end_->prev_ = begin_;
+        }
+        else
+        {
+          end_ = new_node;
+          begin_->next_ = end_;
+          end_->prev_ = begin_;
+        }
       }
       else
       {
-        end_->next_ = new_node;
-        new_node->prev_ = end_;
-        end_ = new_node;
+        Node *cur = begin_;
+        while (cur)
+        {
+          if (compare_(cur->key_, new_node->key_))
+          {
+            new_node->next_ = cur;
+            new_node->prev_ = cur->prev_;
+            if (cur->prev_)
+            {
+              cur->prev_->next_ = new_node;
+            }
+            if (cur->next_)
+            {
+              cur->next_->prev_ = new_node;
+            }
+            break;
+          }
+          cur = cur->next_;
+        }
       }
     }
     Iterator begin()
@@ -88,6 +115,7 @@ namespace dimkashelk
   private:
     Node *begin_;
     Node *end_;
+    Compare compare_;
   };
 }
 #endif
