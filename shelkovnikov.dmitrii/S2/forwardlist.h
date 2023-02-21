@@ -109,10 +109,6 @@ namespace dimkashelk
     {
       return Iterator(nullptr);
     }
-    bool empty()
-    {
-      return begin_ == nullptr;
-    }
   private:
     Node *begin_;
     Node *end_;
