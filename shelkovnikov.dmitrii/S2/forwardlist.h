@@ -39,20 +39,6 @@ namespace dimkashelk
         ptr_ = ptr_->next_;
         return *this;
       }
-      Iterator operator--()
-      {
-        ptr_ = ptr_->prev_;
-        return *this;
-      }
-      Iterator &operator--(int)
-      {
-        if (!ptr_)
-        {
-          throw std::runtime_error("Error");
-        }
-        ptr_ = ptr_->prev_;
-        return *this;
-      }
       friend bool operator==(const Iterator &a, const Iterator &b)
       {
         return a.ptr_ == b.ptr_;
@@ -68,7 +54,7 @@ namespace dimkashelk
       begin_(nullptr),
       end_(nullptr)
     {}
-    void insertAfter(ForwardList< T >::Iterator iterator, T data)
+    void insertBefore(ForwardList< T >::Iterator iterator, T data)
     {
       Node *new_node = new Node(data);
       if (!begin_)
@@ -77,64 +63,42 @@ namespace dimkashelk
         iterator.ptr_ = new_node;
         return;
       }
-      if (!iterator.ptr_)
+      if (iterator.ptr_ == begin_)
       {
-        throw std::runtime_error("Don't know where to insert it");
-      }
-      if (!end_)
-      {
-        end_ = new_node;
-        begin_->next_ = end_;
-        end_->prev_ = begin_;
+        if (begin_->next_)
+        {
+          begin_->prev_ = new_node;
+          new_node->next_ = begin_;
+          begin_ = new_node;
+        }
+        else
+        {
+          end_ = begin_;
+          end_->prev_ = new_node;
+          new_node->next_ = end_;
+          begin_ = new_node;
+        }
         return;
       }
-      new_node->next_ = iterator.ptr_->next_;
-      new_node->prev_ = iterator.ptr_;
-      if (iterator.ptr_->next_)
+      if (iterator.ptr_)
       {
-        iterator.ptr_->next_ = new_node;
-        iterator.ptr_->next_->prev_ = new_node;
-      }
-    }
-    void pushFront(T data)
-    {
-      Node *new_node = new Node(data);
-      if (!begin_)
-      {
-        begin_ = new_node;
-      }
-      else if (!end_)
-      {
-        end_ = begin_;
-        end_->prev_ = new_node;
-        new_node->next_ = end_;
-        begin_ = new_node;
+        new_node->next_ = iterator.ptr_;
+        new_node->prev_ = iterator.ptr_->prev_;
+        iterator.ptr_->prev_->next_ = new_node;
+        iterator.ptr_->prev_ = new_node;
       }
       else
       {
-        new_node->next_ = begin_;
-        begin_->prev_ = new_node;
-        begin_ = new_node;
-      }
-    }
-    void pushBack(T data)
-    {
-      Node *new_node = new Node(data);
-      if (!begin_)
-      {
-        begin_ = new_node;
-      }
-      else if (!end_)
-      {
-        end_ = new_node;
-        begin_->next_ = end_;
-        end_->prev_ = begin_;
-      }
-      else
-      {
-        end_->next_ = new_node;
-        new_node->prev_ = end_;
-        end_ = new_node;
+        if (end_)
+        {
+          end_->next_ = new_node;
+          new_node->prev_ = end_;
+          end_ = new_node;
+        }
+        else
+        {
+
+        }
       }
     }
     Iterator begin()
