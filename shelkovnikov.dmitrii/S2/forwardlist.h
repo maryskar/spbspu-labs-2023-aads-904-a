@@ -101,6 +101,43 @@ namespace dimkashelk
         }
       }
     }
+    void remove(ForwardList< T >::Iterator iterator)
+    {
+      if (iterator.ptr_)
+      {
+        if (iterator.ptr_ == begin_)
+        {
+          end_->prev_ = nullptr;
+          delete begin_;
+          begin_ = end_;
+          end_ = nullptr;
+          iterator.ptr_ = begin_;
+        }
+        else if (iterator.ptr_ == end_)
+        {
+          end_->prev_->next_ = nullptr;
+          Node *new_node = end_->prev_;
+          delete end_;
+          if (new_node != begin_)
+          {
+            end_ = new_node;
+          }
+          else
+          {
+            end_ = nullptr;
+          }
+          iterator.ptr_ = nullptr;
+        }
+        else
+        {
+          iterator.ptr_->prev_->next_ = iterator.ptr_->next_;
+          iterator.ptr_->next_->prev_ = iterator.ptr_->prev_;
+          Node *new_ptr_ = iterator.ptr_->next_;
+          delete iterator.ptr_;
+          iterator.ptr_ = new_ptr_;
+        }
+      }
+    }
     Iterator begin()
     {
       return Iterator(begin_);
