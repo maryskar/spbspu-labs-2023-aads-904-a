@@ -16,35 +16,24 @@ namespace dimkashelk
     {}
     void push(Key k, Value value)
     {
-      if (list_.empty())
-      {
-        list_.pushFront(std::pair< Key, Value >(k, value));
-        return;
-      }
-      if (compare_((*list_.begin()).first, k))
-      {
-        list_.pushFront(std::pair< Key, Value >(k, value));
-        return;
-      }
       auto it = list_.begin();
       auto end = list_.end();
       while (it != end && compare_(k, (*it).first))
       {
         it++;
       }
-      if (it == end)
-      {
-        list_.pushBack(std::pair< Key, Value >(k, value));
-      }
-      else
-      {
-        it--;
-        list_.insertAfter(it, std::pair< Key, Value >(k, value));
-      }
+      list_.insertBefore(it, std::pair<Key, Value>(k, value));
     }
     Value get(Key k)
     {
-
+      for (auto i = list_.begin(), end = list_.end(); i != end; i++)
+      {
+        if ((*i).first == k)
+        {
+          return (*i).second;
+        }
+      }
+      throw std::runtime_error("Nothing to return");
     }
     Value drop(Key k)
     {
