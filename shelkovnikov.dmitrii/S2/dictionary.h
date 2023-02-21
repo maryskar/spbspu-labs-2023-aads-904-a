@@ -37,7 +37,16 @@ namespace dimkashelk
     }
     Value drop(Key k)
     {
-
+      for (auto i = list_.begin(), end = list_.end(); i != end; i++)
+      {
+        if ((*i).first == k)
+        {
+          std::pair< Key, Value > data = *i;
+          list_.remove(i);
+          return data.second;
+        }
+      }
+      throw std::runtime_error("Nothing to return");
     }
     friend std::ostream &operator<<(std::ostream &out, Dictionary< Key, Value, Compare > dict)
     {
