@@ -13,10 +13,3 @@ out
 .config.cache
 # Helpers
 update-stats.sh
-# Visual Studio project files
-.vs
-x64
-*.vcxproj.user
-*.vcxproj.filters
-*.vcxproj
-*.sln
