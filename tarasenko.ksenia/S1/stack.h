@@ -8,6 +8,7 @@ class Stack
 {
 public:
  Stack();
+ Stack(const Stack< T >& s);
  ~Stack();
  void push(T rhs);
  T drop();
@@ -26,11 +27,24 @@ Stack< T >::Stack():
 {}
 
 template< typename T >
+Stack< T >::Stack(const Stack< T >& s):
+ top(nullptr),
+ size(s.size)
+{
+   Node< T >* copy = s.top;
+   while (copy)
+   {
+     push(copy->value);
+     copy = copy->p_next;
+   }
+}
+
+template< typename T >
 Stack< T >::~Stack()
 {
   while (top)
   {
-    drop();
+    pop();
   }
 }
 
@@ -50,13 +64,13 @@ void Stack< T >::push(T rhs)
 template< typename T >
 T Stack< T >::drop()
 {
-  if (!size)
+  if (size == 0)
   {
     throw std::underflow_error("Underflow!\n");
   }
   Node< T >* temp = top;
-  top = top->p_next;
   T temp_val = temp->value;
+  top = top->p_next;
   delete temp;
   size--;
   return temp_val;
@@ -65,7 +79,7 @@ T Stack< T >::drop()
 template< typename T >
 T& Stack< T >::getTopElem()
 {
-  if (!size)
+  if (size == 0)
   {
     throw std::underflow_error("Underflow!\n");
   }
@@ -75,7 +89,7 @@ T& Stack< T >::getTopElem()
 template< typename T >
 void Stack< T >::pop()
 {
-  if (!size)
+  if (size == 0)
   {
     throw std::underflow_error("Underflow!\n");
   }
