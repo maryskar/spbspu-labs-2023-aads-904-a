@@ -9,7 +9,7 @@ template< typename T >
 Queue< T > transformStringToInfixQueue(std::string str)
 {
   Queue< T > q_infix;
-  Elem elem1;
+  Elem elem;
   size_t i = 0;
   while (i < str.size())
   {
@@ -18,8 +18,8 @@ Queue< T > transformStringToInfixQueue(std::string str)
       std::string digit = "";
       if (!std::isdigit(str[i]))
       {
-        elem1.union_elem.operation = str[i];
-        elem1.is_int = false;
+        elem.union_elem.operation = str[i];
+        elem.is_int = false;
         i++;
       }
       else
@@ -30,10 +30,10 @@ Queue< T > transformStringToInfixQueue(std::string str)
           i++;
         }
         while (std::isdigit(str[i]));
-        elem1.union_elem.operand = std::stoi(digit);
-        elem1.is_int = true;
+        elem.union_elem.operand = std::stoi(digit);
+        elem.is_int = true;
       }
-      q_infix.push(elem1);
+      q_infix.push(elem);
     }
     else
     {
