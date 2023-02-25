@@ -1,6 +1,7 @@
 #ifndef CALCULATEBYPOSTFIXQUEUE_H
 #define CALCULATEBYPOSTFIXQUEUE_H
 #include "queue.h"
+#include "calculate.h"
 
 template< typename T >
 int calculateByPostfixQueue(Queue< T >& q_postfix)
