@@ -12,7 +12,7 @@ bool isdigit(std::string str)
   {
     if (std::isdigit(str[0])) return true;
   }
-  else if (isdigit(str[0]) || (str[0] == '-' || str[0] == '+') && isdigit(str.erase(0,1)))
+  else if ((std::isdigit(str[0]) || str[0] == '-' || str[0] == '+') && isdigit(str.erase(0,1)))
   {
     return true;
   }
