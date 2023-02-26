@@ -16,15 +16,15 @@ int main(int argc, char *argv[])
     std::cin.rdbuf(input.rdbuf());
   }
   std::string str = "";
+  Stack< int > results;
   while (std::getline(std::cin,str))
   {
+    if (str.find_first_not_of(" \n\t") == std::string::npos) continue;
     try
     {
       Queue< Elem > q_infix = transformStringToInfixQueue< Elem >(str);
       Queue< Elem > q_postfix = transformInfixQueueToPostfix(q_infix);
-      // buffer of answers
-      int result = calculateByPostfixQueue< Elem >(q_postfix);
-      std::cout << result << "\n";
+      results.push(calculateByPostfixQueue< Elem >(q_postfix));
     }
     catch (const std::exception& e)
     {
@@ -32,4 +32,9 @@ int main(int argc, char *argv[])
       return 1;
     }
   }
+  while (!results.isEmpty())
+  {
+    std::cout << results.drop() << " ";
+  }
+  std::cout << "\n";
 }
