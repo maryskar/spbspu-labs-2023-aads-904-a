@@ -3,7 +3,7 @@
 
 union Types
 {
-  int operand;
+  long long int operand;
   char operation;
 };
 

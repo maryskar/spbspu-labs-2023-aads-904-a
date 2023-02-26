@@ -32,9 +32,13 @@ int main(int argc, char *argv[])
       return 1;
     }
   }
+  if (!results.isEmpty())
+  {
+    std::cout << results.drop();
+  }
   while (!results.isEmpty())
   {
-    std::cout << results.drop() << " ";
+    std::cout << " " << results.drop();
   }
   std::cout << "\n";
 }

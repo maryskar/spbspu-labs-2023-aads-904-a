@@ -2,6 +2,14 @@
 #define CALCULATE_H
 #include <stdexcept>
 
+int mod(int n, int d)
+{
+  int result = n % d;
+  if (result * d < 0)
+    result += d;
+  return result;
+}
+
 template< typename T >
 T calculate(T a, T b, char op)
 {
@@ -22,7 +30,7 @@ T calculate(T a, T b, char op)
       return a / b;
     }
     case '%':
-      return a % b;
+      return mod(a, b);
     default:
       throw std::invalid_argument("Incorrect input");
   }
