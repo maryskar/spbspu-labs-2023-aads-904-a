@@ -17,14 +17,14 @@ T calculate(T a, T b, char op)
     {
       if (b == 0)
       {
-        throw std::logic_error("Division by zero\n");
+        throw std::logic_error("Division by zero");
       }
       return a / b;
     }
     case '%':
       return a % b;
     default:
-      throw std::invalid_argument("Incorrect input\n");
+      throw std::invalid_argument("Incorrect input");
   }
 }
 

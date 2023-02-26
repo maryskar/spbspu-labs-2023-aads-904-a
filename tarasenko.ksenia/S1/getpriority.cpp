@@ -14,6 +14,6 @@ int getPriority(char op)
     case '*': case '/': case '%':
       return 3;
     default:
-      throw std::invalid_argument("Incorrect input\n");
+      throw std::invalid_argument("Incorrect input");
   }
 }

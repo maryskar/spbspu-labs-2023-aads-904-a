@@ -1,13 +1,15 @@
 #ifndef CALCULATEBYPOSTFIXQUEUE_H
 #define CALCULATEBYPOSTFIXQUEUE_H
 #include "queue.h"
+#include "stack.h"
+#include "elem.h"
 #include "calculate.h"
 
 template< typename T >
 int calculateByPostfixQueue(Queue< T >& q_postfix)
 {
   Elem elem;
-  Stack<Elem> s;
+  Stack< Elem > s;
   while (!q_postfix.isEmpty())
   {
     elem = q_postfix.drop();
@@ -29,7 +31,7 @@ int calculateByPostfixQueue(Queue< T >& q_postfix)
         }
         catch (const std::exception& e)
         {
-          std::cout << e.what() << "\n";
+          throw;
         }
       }
     }

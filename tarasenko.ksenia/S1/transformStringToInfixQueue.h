@@ -12,7 +12,7 @@ bool isdigit(std::string str)
   {
     if (std::isdigit(str[0])) return true;
   }
-  else if ((std::isdigit(str[0]) || str[0] == '-' || str[0] == '+') && isdigit(str.erase(0,1)))
+  else if ((std::isdigit(str[0]) || str[0] == '-' || str[0] == '+') && isdigit(str.erase(0, 1)))
   {
     return true;
   }
@@ -25,7 +25,6 @@ Queue< T > transformStringToInfixQueue(std::string str)
   Queue< T > q_infix;
   Elem elem;
   size_t i = 0;
-
   while (i < str.size())
   {
     std::string element = "";
