@@ -24,19 +24,8 @@ namespace dimkashelk
     void push(T rhs)
     {
       Node< T > *node = new Node< T >(rhs);
-      if (empty())
-      {
-        begin_ = node;
-      }
-      else
-      {
-        Node< T > *last = begin_;
-        while (last->next_)
-        {
-          last = last->next_;
-        }
-        last->next_ = node;
-      }
+      begin_->next_ = node;
+      begin_ = node;
     }
     T drop()
     {
@@ -44,24 +33,10 @@ namespace dimkashelk
       {
         throw std::logic_error("Check");
       }
-      Node< T > *cur = begin_;
-      Node< T > *last = nullptr;
-      while (cur->next_)
-      {
-        last = cur;
-        cur = cur->next_;
-      }
-      T data = cur->data_;
-      if (last == nullptr)
-      {
-        delete begin_;
-        begin_ = nullptr;
-      }
-      else
-      {
-        delete cur;
-        last->next_ = nullptr;
-      }
+      T data = begin_->data_;
+      auto *node = begin_;
+      begin_ = begin_->next_;
+      delete node;
       return data;
     }
     bool empty() const
