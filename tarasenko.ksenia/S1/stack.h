@@ -66,7 +66,7 @@ T Stack< T >::drop()
 {
   if (size == 0)
   {
-    throw std::underflow_error("Underflow!\n");
+    throw std::underflow_error("Underflow!");
   }
   Node< T >* temp = top;
   T temp_val = temp->value;
@@ -81,7 +81,7 @@ T& Stack< T >::getTopElem()
 {
   if (size == 0)
   {
-    throw std::underflow_error("Underflow!\n");
+    throw std::underflow_error("Underflow!");
   }
   return top->value;
 }
@@ -91,7 +91,7 @@ void Stack< T >::pop()
 {
   if (size == 0)
   {
-    throw std::underflow_error("Underflow!\n");
+    throw std::underflow_error("Underflow!");
   }
   Node< T >* temp = top;
   top = top->p_next;

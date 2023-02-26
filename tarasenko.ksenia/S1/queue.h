@@ -76,7 +76,7 @@ T Queue< T >::drop()
 {
   if (size == 0)
   {
-    throw std::underflow_error("Underflow!\n");
+    throw std::underflow_error("Underflow!");
   }
   Node< T >* temp = head;
   T temp_val = temp->value;
