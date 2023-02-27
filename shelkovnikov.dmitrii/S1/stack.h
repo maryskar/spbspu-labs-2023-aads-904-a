@@ -24,7 +24,7 @@ namespace dimkashelk
     void push(T rhs)
     {
       Node< T > *node = new Node< T >(rhs);
-      begin_->next_ = node;
+      node->next_ = begin_;
       begin_ = node;
     }
     T drop()
