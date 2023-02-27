@@ -10,15 +10,13 @@ public:
   void push(const T &value);
   T pop();
 private:
-  T *array_;
-  size_t top_;
+  T *top_;
   size_t size_;
 };
 template < typename T >
 Stack< T >::Stack():
-  array_(new T),
-  size_(0),
-  top_(-1)
+  top_(new T),
+  size_(0)
 {
 }
 template < typename T >

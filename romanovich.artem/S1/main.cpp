@@ -5,10 +5,12 @@
 template < typename T >
 void Stack< T >::push(const T &value)
 {
-  if (top_ == size_)
-  {
-    throw;
-  }
+  //if (top_ == size_)
+  //{
+  //  throw;
+  //}
+  Node< int > * node = new Node< int >{ -1, nullptr };
+
   array_[++top_] = value;
 }
 template < typename T >
@@ -60,7 +62,6 @@ int main(int argc, char **argv)
     {
       std::cout << line << "\n";
       splitLine(line);
-      stack.push(line);
     }
   }
   else
@@ -69,7 +70,6 @@ int main(int argc, char **argv)
     {
       std::cout << line << "\n";
       splitLine(line);
-      stack.push(line);
     }
   }
   return 0;
