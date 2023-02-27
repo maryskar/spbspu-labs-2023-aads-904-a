@@ -2,6 +2,7 @@
 #include <fstream>
 #include "stack.h"
 #include "queue.h"
+#include "node.h"
 template < typename T >
 void Stack< T >::push(const T &value)
 {
@@ -9,9 +10,6 @@ void Stack< T >::push(const T &value)
   //{
   //  throw;
   //}
-  Node< int > * node = new Node< int >{ -1, nullptr };
-
-  array_[++top_] = value;
 }
 template < typename T >
 T Stack< T >::pop()
@@ -20,15 +18,16 @@ T Stack< T >::pop()
 template < typename T >
 void Queue< T >::push(T rhs)
 {
-  //if (top_ == size_) {
-  //  throw;
-  //}
-  array_[++top_] = rhs;
-  //for (int i = 0; i < top_; ++i)
-  //{
-  //  std::cout << array_[i];
-  //}
-  //std::cout << "\n";
+  if (head_ == nullptr)
+  {
+    head_ = new Node< T >{rhs, nullptr};
+    tail_ = head_;
+  }
+  else
+  {
+    tail_ = head_->next_;
+    tail_ = new Node< T >{1, nullptr};
+  }
 }
 void splitLine(const std::string &string)
 {

@@ -2,13 +2,9 @@
 #define NODE_H
 #include <stdexcept>
 template < typename T >
-class Node
+struct Node
 {
-public:
-  Node();
-  ~Node();
-private:
-  T *top_;
-  size_t size_;
+  T data_;
+  Node< T > *next_;
 };
 #endif

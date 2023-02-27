@@ -1,5 +1,6 @@
 #ifndef QUEUE_H
 #define QUEUE_H
+#include "node.h"
 template< typename T >
 class Queue {
 public:
@@ -8,7 +9,8 @@ public:
   void push(T rhs);
   T drop();
 private:
-  T *head;
+  Node< T >* head_;
+  Node< T >* tail_;
   size_t size_;
 };
 
@@ -20,7 +22,8 @@ T Queue< T >::drop()
 
 template < typename T >
 Queue< T >::Queue():
-  head(new T),
+  head_(nullptr),
+  tail_(nullptr),
   size_(0)
 {
 }
