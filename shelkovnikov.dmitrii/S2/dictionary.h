@@ -14,8 +14,7 @@ namespace dimkashelk
       list_(),
       compare_(compare)
     {}
-    ~Dictionary()
-    {}
+    ~Dictionary() = default;
     void push(Key k, Value value)
     {
       auto it = list_.begin();
