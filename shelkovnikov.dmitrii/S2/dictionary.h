@@ -6,13 +6,13 @@
 #include "forwardlist.h"
 namespace dimkashelk
 {
-  template< class Key, class Value, class Compare >
+  template< typename Key, typename Value, typename Compare >
   class Dictionary
   {
   public:
-    explicit Dictionary(Compare compare):
+    Dictionary():
       list_(),
-      compare_(compare)
+      compare_(Compare{})
     {}
     ~Dictionary() = default;
     void push(Key k, Value value)
@@ -23,7 +23,8 @@ namespace dimkashelk
       {
         it++;
       }
-      list_.insertBefore(it, std::pair<Key, Value>(k, value));
+      auto *pair = new std::pair< Key, Value >(k, value);
+      list_.insertBefore(it, *pair);
     }
     Value get(Key k)
     {
@@ -42,9 +43,10 @@ namespace dimkashelk
       {
         if ((*i).first == k)
         {
-          std::pair< Key, Value > data = *i;
-          list_.remove(i);
-          return data.second;
+          std::pair< Key, Value > *data = list_.remove(i);
+          Value value = data->second;
+          delete data;
+          return value;
         }
       }
       throw std::runtime_error("Nothing to return");
