@@ -1,14 +1,6 @@
 #ifndef CALCULATE_H
 #define CALCULATE_H
-#include <stdexcept>
-
-int mod(int n, int d)
-{
-  int result = n % d;
-  if (result * d < 0)
-    result += d;
-  return result;
-}
+#include "mathfunc.h"
 
 template< typename T >
 T calculate(T a, T b, char op)
@@ -16,21 +8,17 @@ T calculate(T a, T b, char op)
   switch (op)
   {
     case '+':
-      return a + b;
+      return summarize< T >(a, b);
     case '-':
-      return a - b;
+      return subtract< T >(a, b);
     case '*':
-      return a * b;
+      return multiply< T >(a, b);
     case '/':
     {
-      if (b == 0)
-      {
-        throw std::logic_error("Division by zero");
-      }
-      return a / b;
+      return divide< T >(a, b);
     }
     case '%':
-      return mod(a, b);
+      return mod< T >(a, b);
     default:
       throw std::invalid_argument("Incorrect input");
   }
