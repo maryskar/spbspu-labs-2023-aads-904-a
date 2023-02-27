@@ -96,7 +96,9 @@ T mod(T a, T b)
   }
   T result = a % b;
   if (sign(result) * sign(b) < 0)
+  {
     result = summarize< T >(result, b);
+  }
   return result;
 }
 #endif

@@ -19,7 +19,10 @@ int main(int argc, char *argv[])
   Stack< int > results;
   while (std::getline(std::cin,str))
   {
-    if (str.find_first_not_of(" \n\t") == std::string::npos) continue;
+    if (str.find_first_not_of(" \n\t") == std::string::npos)
+    {
+      continue;
+    }
     try
     {
       Queue< Elem > q_infix = transformStringToInfixQueue< Elem >(str);
