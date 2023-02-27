@@ -27,9 +27,9 @@ namespace dimkashelk
       {}
       T &operator*() const
       {
-        return ptr_->data_;
+        return *(ptr_->data_);
       }
-      Iterator operator++()
+      Iterator &operator++()
       {
         ptr_ = ptr_->next_;
         return *this;
@@ -60,6 +60,7 @@ namespace dimkashelk
       {
         Node *node = begin_;
         begin_ = begin_->next_;
+        delete node->data_;
         delete node;
       }
     }
@@ -116,22 +117,25 @@ namespace dimkashelk
         }
       }
     }
-    void remove(ForwardList< T >::Iterator iterator)
+    T *remove(ForwardList< T >::Iterator iterator)
     {
       if (iterator.ptr_)
       {
         if (iterator.ptr_ == begin_)
         {
           end_->prev_ = nullptr;
+          T *data = begin_->data_;
           delete begin_;
           begin_ = end_;
           end_ = nullptr;
           iterator.ptr_ = begin_;
+          return data;
         }
         else if (iterator.ptr_ == end_)
         {
           end_->prev_->next_ = nullptr;
           Node *new_node = end_->prev_;
+          T *data = end_->data_;
           delete end_;
           if (new_node != begin_)
           {
@@ -142,14 +146,17 @@ namespace dimkashelk
             end_ = nullptr;
           }
           iterator.ptr_ = nullptr;
+          return data;
         }
         else
         {
           iterator.ptr_->prev_->next_ = iterator.ptr_->next_;
           iterator.ptr_->next_->prev_ = iterator.ptr_->prev_;
           Node *new_ptr_ = iterator.ptr_->next_;
+          T *data =  iterator.ptr_->data_;
           delete iterator.ptr_;
           iterator.ptr_ = new_ptr_;
+          return data;
         }
       }
     }
