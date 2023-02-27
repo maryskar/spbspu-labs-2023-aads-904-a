@@ -9,11 +9,11 @@ namespace dimkashelk
   public:
     struct Node
     {
-      T data_;
+      T *data_;
       Node *next_;
       Node *prev_;
       explicit Node(T &data):
-        data_(data),
+        data_(std::addressof(data)),
         next_(nullptr),
         prev_(nullptr)
       {}
@@ -62,6 +62,10 @@ namespace dimkashelk
         begin_ = begin_->next_;
         delete node;
       }
+    }
+    void push(T &data)
+    {
+      insertBefore(end(), data);
     }
     void insertBefore(ForwardList< T >::Iterator iterator, T data)
     {
