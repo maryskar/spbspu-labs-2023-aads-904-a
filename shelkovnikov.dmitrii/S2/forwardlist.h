@@ -3,7 +3,7 @@
 #include <cstddef>
 namespace dimkashelk
 {
-  template < typename T >
+  template < class T >
   class ForwardList
   {
   public:

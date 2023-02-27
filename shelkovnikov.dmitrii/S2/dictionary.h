@@ -6,18 +6,16 @@
 #include "forwardlist.h"
 namespace dimkashelk
 {
-  template< typename Key, typename Value, typename Compare >
+  template< class Key, class Value, class Compare >
   class Dictionary
   {
   public:
-    Dictionary():
+    explicit Dictionary(Compare compare):
       list_(),
-      compare_(std::less< Key >())
+      compare_(compare)
     {}
     ~Dictionary()
-    {
-      delete list_;
-    }
+    {}
     void push(Key k, Value value)
     {
       auto it = list_.begin();
