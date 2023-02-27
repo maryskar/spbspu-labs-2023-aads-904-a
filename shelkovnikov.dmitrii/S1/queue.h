@@ -2,8 +2,6 @@
 #define SPBSPU_LABS_2023_AADS_904_A_QUEUE_H
 #include <cstddef>
 #include <stdexcept>
-#include <list>
-#include "expand.h"
 #include "node.h"
 namespace dimkashelk
 {
