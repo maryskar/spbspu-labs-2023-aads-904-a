@@ -63,7 +63,7 @@ namespace dimkashelk
         delete node;
       }
     }
-    void push(T &data)
+    void pushBack(T &data)
     {
       insertBefore(end(), data);
     }
