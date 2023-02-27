@@ -67,7 +67,7 @@ namespace dimkashelk
     {
       insertBefore(end(), data);
     }
-    void insertBefore(ForwardList< T >::Iterator iterator, T data)
+    void insertBefore(ForwardList< T >::Iterator iterator, T &data)
     {
       Node *new_node = new Node(data);
       if (!begin_)
@@ -110,7 +110,9 @@ namespace dimkashelk
         }
         else
         {
-
+          begin_->next_ = new_node;
+          new_node->prev_ = begin_;
+          end_ = new_node;
         }
       }
     }
