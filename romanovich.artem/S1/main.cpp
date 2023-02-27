@@ -1,13 +1,43 @@
 #include <iostream>
 #include <fstream>
 #include "stack.h"
+#include "queue.h"
 template < typename T >
 void Stack< T >::push(const T &value)
 {
+  if (top_ == size_)
+  {
+    throw;
+  }
+  array_[++top_] = value;
 }
 template < typename T >
 T Stack< T >::pop()
 {
+}
+template < typename T >
+void Queue< T >::push(T rhs)
+{
+  //if (top_ == size_) {
+  //  throw;
+  //}
+  array_[++top_] = rhs;
+  //for (int i = 0; i < top_; ++i)
+  //{
+  //  std::cout << array_[i];
+  //}
+  //std::cout << "\n";
+}
+void splitLine(const std::string &string)
+{
+  Queue< char > queue = Queue< char >();
+  for (char c: string)
+  {
+    if (c != '\t' && c != '\n' && c != ' ')
+    {
+      queue.push(c);
+    }
+  }
 }
 int main(int argc, char **argv)
 {
@@ -29,6 +59,7 @@ int main(int argc, char **argv)
     for (std::string line; std::getline(fileInput, line);)
     {
       std::cout << line << "\n";
+      splitLine(line);
       stack.push(line);
     }
   }
@@ -37,6 +68,7 @@ int main(int argc, char **argv)
     for (std::string line; std::getline(std::cin, line);)
     {
       std::cout << line << "\n";
+      splitLine(line);
       stack.push(line);
     }
   }

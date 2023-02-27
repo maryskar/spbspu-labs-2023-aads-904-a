@@ -16,7 +16,9 @@ private:
 };
 template < typename T >
 Stack< T >::Stack():
-  array_(new T)
+  array_(new T),
+  size_(0),
+  top_(-1)
 {
 }
 template < typename T >
