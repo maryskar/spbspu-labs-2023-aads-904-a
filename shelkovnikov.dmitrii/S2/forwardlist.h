@@ -54,6 +54,15 @@ namespace dimkashelk
       begin_(nullptr),
       end_(nullptr)
     {}
+    ~ForwardList()
+    {
+      while (begin_)
+      {
+        Node *node = begin_;
+        begin_ = begin_->next_;
+        delete node;
+      }
+    }
     void insertBefore(ForwardList< T >::Iterator iterator, T data)
     {
       Node *new_node = new Node(data);
