@@ -14,6 +14,10 @@ namespace dimkashelk
       list_(),
       compare_(std::less< Key >())
     {}
+    ~Dictionary()
+    {
+      delete list_;
+    }
     void push(Key k, Value value)
     {
       auto it = list_.begin();
