@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     std::cin.rdbuf(input.rdbuf());
   }
   std::string str = "";
-  Stack< int > results;
+  Stack< long long > results;
   while (std::getline(std::cin,str))
   {
     if (str.find_first_not_of(" \n\t") == std::string::npos)

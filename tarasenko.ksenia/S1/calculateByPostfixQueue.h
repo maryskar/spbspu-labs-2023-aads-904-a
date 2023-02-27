@@ -6,7 +6,7 @@
 #include "calculate.h"
 
 template< typename T >
-int calculateByPostfixQueue(Queue< T >& q_postfix)
+long long calculateByPostfixQueue(Queue< T >& q_postfix)
 {
   Elem elem;
   Stack< Elem > s;
@@ -22,11 +22,11 @@ int calculateByPostfixQueue(Queue< T >& q_postfix)
       if (!s.isEmpty())
       {
         Elem res{true, 0};
-        int b = s.drop().union_elem.operand;
-        int a = s.drop().union_elem.operand;
+        long long b = s.drop().union_elem.operand;
+        long long a = s.drop().union_elem.operand;
         try
         {
-          res.union_elem.operand = calculate< int >(a, b, elem.union_elem.operation);
+          res.union_elem.operand = calculate< long long >(a, b, elem.union_elem.operation);
           s.push(res);
         }
         catch (const std::exception& e)

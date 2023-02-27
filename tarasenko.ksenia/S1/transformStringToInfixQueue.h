@@ -38,7 +38,7 @@ Queue< T > transformStringToInfixQueue(std::string str)
     }
     if (isdigit(element))
     {
-      elem.union_elem.operand = std::stoi(element);
+      elem.union_elem.operand = std::stoll(element);
       elem.is_int = true;
     }
     else if (element.size() == 1 && element.find_first_of("()-+/*%") != std::string::npos)
