@@ -4,39 +4,40 @@
 #include "stack.h"
 #include "elem.h"
 #include "calculate.h"
-
-template< typename T >
-long long calculateByPostfixQueue(Queue< T >& q_postfix)
+namespace tarasenko
 {
-  Elem elem;
-  Stack< Elem > s;
-  while (!q_postfix.isEmpty())
+  template< typename T >
+  long long calculateByPostfixQueue(Queue< T >& q_postfix)
   {
-    elem = q_postfix.drop();
-    if (elem.is_int)
+    Elem elem;
+    Stack< Elem > s;
+    while (!q_postfix.isEmpty())
     {
-      s.push(elem);
-    }
-    else
-    {
-      if (!s.isEmpty())
+      elem = q_postfix.drop();
+      if (elem.is_int)
       {
-        Elem res{true, 0};
-        long long b = s.drop().union_elem.operand;
-        long long a = s.drop().union_elem.operand;
-        try
+        s.push(elem);
+      }
+      else
+      {
+        if (!s.isEmpty())
         {
-          res.union_elem.operand = calculate< long long >(a, b, elem.union_elem.operation);
-          s.push(res);
-        }
-        catch (const std::exception& e)
-        {
-          throw;
+          Elem res{true, 0};
+          long long b = s.drop().union_elem.operand;
+          long long a = s.drop().union_elem.operand;
+          try
+          {
+            res.union_elem.operand = calculate< long long >(a, b, elem.union_elem.operation);
+            s.push(res);
+          }
+          catch (const std::exception& e)
+          {
+            throw;
+          }
         }
       }
     }
-  }
-  return s.drop().union_elem.operand;
-};
-
+    return s.drop().union_elem.operand;
+  };
+}
 #endif

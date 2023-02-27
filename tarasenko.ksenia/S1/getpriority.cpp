@@ -1,7 +1,7 @@
 #include "getpriority.h"
 #include <stdexcept>
 
-int getPriority(char op)
+int tarasenko::getPriority(char op)
 {
   switch (op)
   {

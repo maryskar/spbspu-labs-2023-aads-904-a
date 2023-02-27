@@ -1,19 +1,20 @@
 #ifndef NODE_H
 #define NODE_H
-
-template< typename T >
-struct Node
+namespace tarasenko
 {
-  T value;
-  Node* p_next;
+  template< typename T >
+  struct Node
+  {
+    T value;
+    Node* p_next;
 
-  Node(T value, Node* p_next = nullptr);
-};
+    Node(T value, Node* p_next = nullptr);
+  };
 
-template< typename T >
-Node< T >::Node(T value, Node* p_next):
- value(value),
- p_next(p_next)
-{}
-
+  template< typename T >
+  Node< T >::Node(T value, Node* p_next):
+   value(value),
+   p_next(p_next)
+  {}
+}
 #endif

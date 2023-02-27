@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     std::cin.rdbuf(input.rdbuf());
   }
   std::string str = "";
-  Stack< long long > results;
+  tarasenko::Stack< long long > results;
   while (std::getline(std::cin,str))
   {
     if (str.find_first_not_of(" \n\t") == std::string::npos)
@@ -25,9 +25,9 @@ int main(int argc, char *argv[])
     }
     try
     {
-      Queue< Elem > q_infix = transformStringToInfixQueue< Elem >(str);
-      Queue< Elem > q_postfix = transformInfixQueueToPostfix(q_infix);
-      results.push(calculateByPostfixQueue< Elem >(q_postfix));
+      tarasenko::Queue< tarasenko::Elem > q_infix = tarasenko::transformStringToInfixQueue< tarasenko::Elem >(str);
+      tarasenko::Queue< tarasenko::Elem > q_postfix = tarasenko::transformInfixQueueToPostfix(q_infix);
+      results.push(tarasenko::calculateByPostfixQueue< tarasenko::Elem >(q_postfix));
     }
     catch (const std::exception& e)
     {

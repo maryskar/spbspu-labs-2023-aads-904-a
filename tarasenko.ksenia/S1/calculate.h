@@ -1,27 +1,28 @@
 #ifndef CALCULATE_H
 #define CALCULATE_H
 #include "mathfunc.h"
-
-template< typename T >
-T calculate(T a, T b, char op)
+namespace tarasenko
 {
-  switch (op)
+  template< typename T >
+  T calculate(T a, T b, char op)
   {
-    case '+':
-      return summarize< T >(a, b);
-    case '-':
-      return subtract< T >(a, b);
-    case '*':
-      return multiply< T >(a, b);
-    case '/':
+    switch (op)
     {
-      return divide< T >(a, b);
+      case '+':
+        return summarize< T >(a, b);
+      case '-':
+        return subtract< T >(a, b);
+      case '*':
+        return multiply< T >(a, b);
+      case '/':
+      {
+        return divide< T >(a, b);
+      }
+      case '%':
+        return mod< T >(a, b);
+      default:
+        throw std::invalid_argument("Incorrect input");
     }
-    case '%':
-      return mod< T >(a, b);
-    default:
-      throw std::invalid_argument("Incorrect input");
   }
 }
-
 #endif

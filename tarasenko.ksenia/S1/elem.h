@@ -1,16 +1,17 @@
 #ifndef ELEM_H
 #define ELEM_H
-
-union Types
+namespace tarasenko
 {
-  long long int operand;
-  char operation;
-};
+  union Types
+  {
+    long long int operand;
+    char operation;
+  };
 
-struct Elem
-{
-  bool is_int;
-  Types union_elem;
-};
-
+  struct Elem
+  {
+    bool is_int;
+    Types union_elem;
+  };
+}
 #endif

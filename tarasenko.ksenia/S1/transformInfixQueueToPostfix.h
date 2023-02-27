@@ -5,64 +5,64 @@
 #include "elem.h"
 #include "stack.h"
 #include "getpriority.h"
-
-
-template< typename T >
-Queue< T > transformInfixQueueToPostfix(Queue< T >& q_infix)
+namespace tarasenko
 {
-  Stack< Elem > s;
-  Queue< Elem > q_postfix;
-  bool was_open_bracket = false;
-  while (!q_infix.isEmpty())
+  template< typename T >
+  Queue< T > transformInfixQueueToPostfix(Queue< T >& q_infix)
   {
-    Elem elem = q_infix.drop();
-    if (elem.is_int)
+    Stack< Elem > s;
+    Queue< Elem > q_postfix;
+    bool was_open_bracket = false;
+    while (!q_infix.isEmpty())
     {
-      q_postfix.push(elem);
-    }
-    else
-    {
-      if (s.isEmpty())
+      Elem elem = q_infix.drop();
+      if (elem.is_int)
       {
-        s.push(elem);
-      }
-      else if (elem.union_elem.operation == '(')
-      {
-        s.push(elem);
-      }
-      else if (elem.union_elem.operation == ')')
-      {
-        while (!s.isEmpty())
-        {
-          if (s.getTopElem().union_elem.operation == '(')
-          {
-            was_open_bracket = true;
-            s.pop();
-            break;
-          }
-          q_postfix.push(s.drop());
-        }
-        if (!was_open_bracket)
-        {
-          throw std::logic_error("Incorrect input");
-        }
-        was_open_bracket = false;
+        q_postfix.push(elem);
       }
       else
       {
-        while (!s.isEmpty() && (getPriority(elem.union_elem.operation) <= getPriority(s.getTopElem().union_elem.operation)))
+        if (s.isEmpty())
         {
-          q_postfix.push(s.drop());
+          s.push(elem);
         }
-        s.push(elem);
+        else if (elem.union_elem.operation == '(')
+        {
+          s.push(elem);
+        }
+        else if (elem.union_elem.operation == ')')
+        {
+          while (!s.isEmpty())
+          {
+            if (s.getTopElem().union_elem.operation == '(')
+            {
+              was_open_bracket = true;
+              s.pop();
+              break;
+            }
+            q_postfix.push(s.drop());
+          }
+          if (!was_open_bracket)
+          {
+            throw std::logic_error("Incorrect input");
+          }
+          was_open_bracket = false;
+        }
+        else
+        {
+          while (!s.isEmpty() && (getPriority(elem.union_elem.operation) <= getPriority(s.getTopElem().union_elem.operation)))
+          {
+            q_postfix.push(s.drop());
+          }
+          s.push(elem);
+        }
       }
     }
+    while (!s.isEmpty())
+    {
+      q_postfix.push(s.drop());
+    }
+    return q_postfix;
   }
-  while (!s.isEmpty())
-  {
-    q_postfix.push(s.drop());
-  }
-  return q_postfix;
 }
-
 #endif
