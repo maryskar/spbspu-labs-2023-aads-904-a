@@ -54,7 +54,7 @@ namespace dimkashelk
     friend std::ostream &operator<<(std::ostream &out, Dictionary< Key, Value, Compare > dict)
     {
       for (auto it = dict.list_.begin(), end = dict.list_.end(); it != end; it++) {
-        out << (*it).first << " " << (*it).second << "\n";
+        out << (*it).first << " " << (*it).second << " ";
       }
       return out;
     }

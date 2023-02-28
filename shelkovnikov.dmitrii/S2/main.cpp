@@ -25,8 +25,7 @@ int main(int argc, char *argv[])
     std::cin >> dict_name;
     if (!std::cin)
     {
-      std::cerr << "Check file";
-      return 1;
+      break;
     }
     dsk::Dictionary< int, std::string, std::less< > > dict;
     int key = 0;
@@ -40,9 +39,13 @@ int main(int argc, char *argv[])
       }
       dict.push(key, value);
     }
+    std::cin.clear();
     data_type pair(dict_name, dict);
     list.pushBack(pair);
   }
   auto iterator = list.begin();
-  std::cout << (*iterator).first;
+  std::cout << (*iterator).first << " " <<  (*iterator).second << "\n";
+  iterator++;
+  std::cout << (*iterator).first << " " <<  (*iterator).second;
+  return 0;
 }
