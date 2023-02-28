@@ -8,7 +8,7 @@ public:
   Queue();
   ~Queue();
   void push(T rhs);
-  T drop();
+  T pop();
   void splitLine(const std::string &string);
   void parseQueue();
 private:
@@ -17,9 +17,13 @@ private:
   size_t size_;
 };
 template < typename T >
-T Queue< T >::drop()
+T Queue< T >::pop()
 {
-  return nullptr;
+  T el = head_->data_;
+  Node< T > *subHead = head_->next_;
+  delete head_;
+  head_ = subHead;
+  return el;
 }
 template < typename T >
 Queue< T >::Queue():
@@ -46,8 +50,11 @@ void Queue< T >::splitLine(const std::string &string)
 template < typename T >
 void Queue< T >::parseQueue()
 {
-  T nextEl = head_->data_;
-  std::cout << "First: " << nextEl << "\n";
+  while (head_->next_ != nullptr)
+  {
+    std::cout << pop() << "-";
+  }
+  std::cout << pop();
 }
 template < typename T >
 void Queue< T >::push(T rhs)
@@ -59,9 +66,8 @@ void Queue< T >::push(T rhs)
   }
   else
   {
+    tail_->next_ = new Node< T >{rhs, nullptr};
     tail_ = tail_->next_;
-    tail_ = new Node< T >{rhs, nullptr};
-    std::cout << rhs << " " << head_->data_ << " " << tail_->data_ << "\n";
   }
 }
 #endif
