@@ -3,6 +3,7 @@
 #include "stack.h"
 #include "queue.h"
 #include "node.h"
+#include "stringparsing.h"
 template < typename T >
 void Stack< T >::push(const T &value)
 {
@@ -29,17 +30,6 @@ void Queue< T >::push(T rhs)
     tail_ = tail_->next_;
     tail_ = new Node< T >{rhs, nullptr};
     std::cout << rhs << " " << head_->data_ << " " << tail_->data_ << "\n";
-  }
-}
-void splitLine(const std::string &string)
-{
-  Queue< char > queue = Queue< char >();
-  for (char c: string)
-  {
-    if (c != '\t' && c != '\n' && c != ' ')
-    {
-      queue.push(c);
-    }
   }
 }
 int main(int argc, char **argv)
