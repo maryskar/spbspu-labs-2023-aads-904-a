@@ -22,11 +22,13 @@ void Queue< T >::push(T rhs)
   {
     head_ = new Node< T >{rhs, nullptr};
     tail_ = head_;
+    std::cout << rhs << " " << head_->data_ << " " << tail_->data_ << "!\n";
   }
   else
   {
-    tail_ = head_->next_;
-    tail_ = new Node< T >{1, nullptr};
+    tail_ = tail_->next_;
+    tail_ = new Node< T >{rhs, nullptr};
+    std::cout << rhs << " " << head_->data_ << " " << tail_->data_ << "\n";
   }
 }
 void splitLine(const std::string &string)
@@ -73,3 +75,4 @@ int main(int argc, char **argv)
   }
   return 0;
 }
+//afds gsdfg dfsg df gdfgdsd fsdgt
