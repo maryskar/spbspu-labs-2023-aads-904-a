@@ -11,28 +11,38 @@ int main(int argc, char *argv[])
     std::cerr << "No filename";
     return 1;
   }
-  dsk::ForwardList< dimkashelk::Dictionary< int, std::string, std::less< > > > list;
-  std::ifstream in(argv[1]);
-  if (!in.is_open())
-  {
-    std::cerr << "File not open";
-    return 1;
-  }
-  while (in)
+  using data_type = std::pair< std::string, dsk::Dictionary< int, std::string, std::less< > > >;
+  dsk::ForwardList< data_type > list;
+  //std::ifstream in(argv[1]);
+  //if (!in.is_open())
+  //{
+  //  std::cerr << "File not open";
+  //  return 1;
+  //}
+  while (std::cin)
   {
     std::string dict_name = "";
-    in >> dict_name;
-    if (!in)
+    std::cin >> dict_name;
+    if (!std::cin)
     {
       std::cerr << "Check file";
       return 1;
     }
-    dsk::Dictionary< int, std::string, std::less< > > dict(std::less< int >);
+    dsk::Dictionary< int, std::string, std::less< > > dict;
     int key = 0;
     std::string value = "";
-    while (in)
+    while (std::cin)
     {
-      in >> key >> value;
+      std::cin >> key >> value;
+      if (!std::cin)
+      {
+        break;
+      }
+      dict.push(key, value);
     }
+    data_type pair(dict_name, dict);
+    list.pushBack(pair);
   }
+  auto iterator = list.begin();
+  std::cout << (*iterator).first;
 }

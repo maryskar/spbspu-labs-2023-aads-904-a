@@ -9,14 +9,15 @@ namespace dimkashelk
   public:
     struct Node
     {
-      T *data_;
+      T data_;
       Node *next_;
       Node *prev_;
       explicit Node(T &data):
-        data_(std::addressof(data)),
+        data_(data),
         next_(nullptr),
         prev_(nullptr)
       {}
+      ~Node() = default;
     };
     class Iterator
     {
@@ -27,7 +28,7 @@ namespace dimkashelk
       {}
       T &operator*() const
       {
-        return *(ptr_->data_);
+        return ptr_->data_;
       }
       Iterator &operator++()
       {
@@ -60,7 +61,6 @@ namespace dimkashelk
       {
         Node *node = begin_;
         begin_ = begin_->next_;
-        delete node->data_;
         delete node;
       }
     }
@@ -79,19 +79,13 @@ namespace dimkashelk
       }
       if (iterator.ptr_ == begin_)
       {
-        if (begin_->next_)
-        {
-          begin_->prev_ = new_node;
-          new_node->next_ = begin_;
-          begin_ = new_node;
-        }
-        else
+        begin_->prev_ = new_node;
+        new_node->next_ = begin_;
+        if (!end_)
         {
           end_ = begin_;
-          end_->prev_ = new_node;
-          new_node->next_ = end_;
-          begin_ = new_node;
         }
+        begin_ = new_node;
         return;
       }
       if (iterator.ptr_)

@@ -23,8 +23,8 @@ namespace dimkashelk
       {
         it++;
       }
-      auto *pair = new std::pair< Key, Value >(k, value);
-      list_.insertBefore(it, *pair);
+      std::pair< Key, Value > pair(k, value);
+      list_.insertBefore(it, pair);
     }
     Value get(Key k)
     {
