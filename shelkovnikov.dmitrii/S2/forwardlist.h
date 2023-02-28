@@ -12,12 +12,11 @@ namespace dimkashelk
       T data_;
       Node *next_;
       Node *prev_;
-      explicit Node(T &data):
+      explicit Node(T data):
         data_(data),
         next_(nullptr),
         prev_(nullptr)
       {}
-      ~Node() = default;
     };
     class Iterator
     {
@@ -26,7 +25,7 @@ namespace dimkashelk
       explicit Iterator(Node *ptr):
         ptr_(ptr)
       {}
-      T &operator*() const
+      T operator*() const
       {
         return ptr_->data_;
       }
@@ -55,20 +54,29 @@ namespace dimkashelk
       begin_(nullptr),
       end_(nullptr)
     {}
+    ForwardList(const ForwardList< T > &forwardList):
+      begin_(nullptr),
+      end_(nullptr)
+    {
+      Node *start = forwardList.begin_;
+      while (start)
+      {
+        pushBack(start->data_);
+        start = start->next_;
+      }
+    }
     ~ForwardList()
     {
       while (begin_)
       {
-        Node *node = begin_;
-        begin_ = begin_->next_;
-        delete node;
+        remove(begin());
       }
     }
-    void pushBack(T &data)
+    void pushBack(T data)
     {
       insertBefore(end(), data);
     }
-    void insertBefore(ForwardList< T >::Iterator iterator, T &data)
+    void insertBefore(ForwardList< T >::Iterator iterator, T data)
     {
       Node *new_node = new Node(data);
       if (!begin_)
@@ -111,25 +119,25 @@ namespace dimkashelk
         }
       }
     }
-    T *remove(ForwardList< T >::Iterator iterator)
+    void remove(ForwardList< T >::Iterator iterator)
     {
       if (iterator.ptr_)
       {
         if (iterator.ptr_ == begin_)
         {
-          end_->prev_ = nullptr;
-          T *data = begin_->data_;
+          Node *node = begin_->next_;
           delete begin_;
-          begin_ = end_;
-          end_ = nullptr;
+          begin_ = node;
+          if (begin_)
+          {
+            begin_->prev_ = nullptr;
+          }
           iterator.ptr_ = begin_;
-          return data;
         }
         else if (iterator.ptr_ == end_)
         {
           end_->prev_->next_ = nullptr;
           Node *new_node = end_->prev_;
-          T *data = end_->data_;
           delete end_;
           if (new_node != begin_)
           {
@@ -140,17 +148,14 @@ namespace dimkashelk
             end_ = nullptr;
           }
           iterator.ptr_ = nullptr;
-          return data;
         }
         else
         {
           iterator.ptr_->prev_->next_ = iterator.ptr_->next_;
           iterator.ptr_->next_->prev_ = iterator.ptr_->prev_;
           Node *new_ptr_ = iterator.ptr_->next_;
-          T *data =  iterator.ptr_->data_;
           delete iterator.ptr_;
           iterator.ptr_ = new_ptr_;
-          return data;
         }
       }
     }
