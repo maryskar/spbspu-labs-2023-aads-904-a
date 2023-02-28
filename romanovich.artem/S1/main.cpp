@@ -3,7 +3,6 @@
 #include "stack.h"
 #include "queue.h"
 #include "node.h"
-#include "stringparsing.h"
 template < typename T >
 void Stack< T >::push(const T &value)
 {
@@ -15,22 +14,6 @@ void Stack< T >::push(const T &value)
 template < typename T >
 T Stack< T >::pop()
 {
-}
-template < typename T >
-void Queue< T >::push(T rhs)
-{
-  if (head_ == nullptr)
-  {
-    head_ = new Node< T >{rhs, nullptr};
-    tail_ = head_;
-    std::cout << rhs << " " << head_->data_ << " " << tail_->data_ << "!\n";
-  }
-  else
-  {
-    tail_ = tail_->next_;
-    tail_ = new Node< T >{rhs, nullptr};
-    std::cout << rhs << " " << head_->data_ << " " << tail_->data_ << "\n";
-  }
 }
 int main(int argc, char **argv)
 {
@@ -52,17 +35,17 @@ int main(int argc, char **argv)
     for (std::string line; std::getline(fileInput, line);)
     {
       std::cout << line << "\n";
-      splitLine(line);
+      //splitLine(line);
     }
   }
   else
   {
     for (std::string line; std::getline(std::cin, line);)
     {
-      std::cout << line << "\n";
-      splitLine(line);
+      Queue< char > infixNotation = Queue< char >();
+      infixNotation.splitLine(line);
+      infixNotation.parseQueue();
     }
   }
   return 0;
 }
-//afds gsdfg dfsg df gdfgdsd fsdgt
