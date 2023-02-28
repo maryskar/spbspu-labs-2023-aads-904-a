@@ -52,7 +52,29 @@ void Queue< T >::parseQueue()
 {
   while (head_->next_ != nullptr)
   {
-    std::cout << pop() << "-";
+    T el = pop();
+    std::cout << pop();
+    if (el == '(')
+    {
+      //добавить в стек
+    }
+    else if (el == ')')
+    {
+      //вытащить все из стека до открывающей
+      //удалить два верхних элемента стека
+    }
+    else if (std::isdigit(static_cast<unsigned char>(el)))
+    {
+      //to result
+    }
+    else if (isOperator(el))
+    {
+      //определить операцию в очереди
+      //определить операцию в стеке
+      //выталкиваем или нет операции из стека
+      //помещаем операцию в стек
+      //выталкиваем операции из стека
+    }
   }
   std::cout << pop();
 }
@@ -69,5 +91,9 @@ void Queue< T >::push(T rhs)
     tail_->next_ = new Node< T >{rhs, nullptr};
     tail_ = tail_->next_;
   }
+}
+bool isOperator(char c)
+{
+  return (c == '+' || c == '-' || c == '*' || c == '/' || c == '^');
 }
 #endif
