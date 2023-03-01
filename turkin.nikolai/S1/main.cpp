@@ -25,7 +25,8 @@ int main(int argc, char * argv[])
       std::cerr << "cannot open file\n";
       return 1;
     }
-    std::getline(file, dirt);
+    std::cin.rdbuf(file.rdbuf());
+    std::getline(std::cin, dirt);
   }
   dirt += '\n';
   for (auto symbol : dirt)
@@ -104,42 +105,50 @@ int main(int argc, char * argv[])
     output.push(buffer.drop());
   }
 //////////////////////////////////////////////////////////////
-  while (!output.isEmpty())
+  try
   {
-    calc_t opt = output.drop();
-    if (opt.isgigit)
+    while (!output.isEmpty())
     {
-      buffer.push(opt);
+      calc_t opt = output.drop();
+      if (opt.isgigit)
+      {
+        buffer.push(opt);
+      }
+      else
+      {
+        calc_t a = buffer.drop();
+        calc_t b = buffer.drop();
+        calc_t c;
+        if (opt.calc.sign == '+')
+        {
+          c = a.calc.num + b.calc.num;
+        }
+        if (opt.calc.sign == '-')
+        {
+          c = a.calc.num - b.calc.num;
+        }
+        if (opt.calc.sign == '*')
+        {
+          c = a.calc.num * b.calc.num;
+        }
+        if (opt.calc.sign == '/')
+        {
+          c = a.calc.num / b.calc.num;
+        }
+        if (opt.calc.sign == '%')
+        {
+          c = a.calc.num % b.calc.num;
+        }
+        buffer.push(c);
+      }
     }
-    else
-    {
-      calc_t a = buffer.drop();
-      calc_t b = buffer.drop();
-      calc_t c;
-      if (opt.calc.sign == '+')
-      {
-        c = a.calc.num + b.calc.num;
-      }
-      if (opt.calc.sign == '-')
-      {
-        c = a.calc.num - b.calc.num;
-      }
-      if (opt.calc.sign == '*')
-      {
-        c = a.calc.num * b.calc.num;
-      }
-      if (opt.calc.sign == '/')
-      {
-        c = a.calc.num / b.calc.num;
-      }
-      if (opt.calc.sign == '%')
-      {
-        c = a.calc.num % b.calc.num;
-      }
-      buffer.push(c);
-    }
+    std::cout << buffer.drop().calc.num << "\n";
   }
-  std::cout << buffer.drop().calc.num << "\n";
+  catch (...)
+  {
+    std::cerr << "ERROR AAAAAAAAAAAA\n";
+    return 1;
+  }
   return 0;
 }
 
