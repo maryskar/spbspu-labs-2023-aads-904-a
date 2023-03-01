@@ -142,3 +142,4 @@ int main(int argc, char * argv[])
   std::cout << buffer.drop().calc.num << "\n";
   return 0;
 }
+
