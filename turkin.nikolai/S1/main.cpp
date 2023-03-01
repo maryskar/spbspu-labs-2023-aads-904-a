@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 #include <queue.h>
 #include <stack.h>
 #include "data-type.h"
@@ -9,14 +10,23 @@ bool prt(char data)
   return !(data == '+' || data == '-');
 }
 
-int main()
+int main(int argc, char * argv[])
 {
   Queue< calc_t > input;
   Stack< calc_t > buffer;
   Queue< calc_t > output;
   std::string dirt, temp;
   calc_t data;
-  std::getline(std::cin, dirt);
+  if (argc == 2)
+  {
+    std::fstream file(argv[1]);
+    if (!file.is_open())
+    {
+      std::cerr << "cannot open file\n";
+      return 1;
+    }
+    std::getline(file, dirt);
+  }
   dirt += '\n';
   for (auto symbol : dirt)
   {
@@ -96,15 +106,39 @@ int main()
 //////////////////////////////////////////////////////////////
   while (!output.isEmpty())
   {
-    calc_t hh = output.drop();
-    if (hh.isgigit)
+    calc_t opt = output.drop();
+    if (opt.isgigit)
     {
-      std::cout << hh.calc.num << " ";
+      buffer.push(opt);
     }
     else
     {
-      std::cout << hh.calc.sign << " ";
+      calc_t a = buffer.drop();
+      calc_t b = buffer.drop();
+      calc_t c;
+      if (opt.calc.sign == '+')
+      {
+        c = a.calc.num + b.calc.num;
+      }
+      if (opt.calc.sign == '-')
+      {
+        c = a.calc.num - b.calc.num;
+      }
+      if (opt.calc.sign == '*')
+      {
+        c = a.calc.num * b.calc.num;
+      }
+      if (opt.calc.sign == '/')
+      {
+        c = a.calc.num / b.calc.num;
+      }
+      if (opt.calc.sign == '%')
+      {
+        c = a.calc.num % b.calc.num;
+      }
+      buffer.push(c);
     }
   }
+  std::cout << buffer.drop().calc.num << "\n";
   return 0;
 }
