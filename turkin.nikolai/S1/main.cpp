@@ -4,20 +4,33 @@
 #include <stack.h>
 #include "data-type.h"
 
+bool prt(char data)
+{
+  return !(data == '+' || data == '-');
+}
+
 int main()
 {
   Queue< calc_t > input;
   Stack< calc_t > buffer;
   Queue< calc_t > output;
   std::string dirt, temp;
-  calc_t data, opt;
+  calc_t data;
   std::getline(std::cin, dirt);
   dirt += '\n';
   for (auto symbol : dirt)
   {
     if (symbol == ' ' || symbol == '\n')
     {
-
+      try
+      {
+        data = std::stoll(temp);
+      }
+      catch (...)
+      {
+        data = temp.c_str()[0];
+      }
+      input.push(data);
       temp = "";
     }
     else
@@ -25,32 +38,48 @@ int main()
       temp += symbol;
     }
   }
+/////////////////////////////////////////////////////////////
   while (!input.isEmpty())
   {
     data = input.drop();
-    try
+    if (data.isgigit)
+    {
+      output.push(data);
+    }
+    else
+    {
+      if (data.calc.sign == '(')
       {
-        data = temp.c_str()[0];
-        if (data.calc.sign == ')' && !buffer.isEmpty())
+        buffer.push(data);
+      }
+      else if (data.calc.sign == ')')
+      {
+        while (!buffer.isEmpty())
         {
           calc_t opt = buffer.drop();
-          while (opt.calc.sign != '(' && !buffer.isEmpty())
+          if (opt.calc.sign == '(')
           {
-            output.push(opt);
-            opt = buffer.drop();
+            break;
           }
+          output.push(opt);
         }
-        else if (buffer.isEmpty())
+      }
+      else if (buffer.isEmpty())
+      {
+        buffer.push(data);
+      }
+      else
+      {
+        calc_t opt = buffer.drop();
+        buffer.push(opt);
+        if (prt(data.calc.sign) < prt(opt.calc.sign) || opt.calc.sign == '(')
         {
           buffer.push(data);
         }
         else
         {
           opt = buffer.drop();
-          buffer.push(opt);
-          char one = opt.calc.sign;
-          char two = data.calc.sign;
-          while (two == '(' || ((one == '+' || one == '-') && (two == '*' || two == '/' || two == '%')))
+          while (prt(data.calc.sign) >= prt(opt.calc.sign))
           {
             output.push(opt);
             if (buffer.isEmpty())
@@ -62,18 +91,13 @@ int main()
           buffer.push(data);
         }
       }
-      catch (...)
-      {
-        data = std::stoll(temp);
-        output.push(data);
-      }
+    }
   }
   while (!buffer.isEmpty())
   {
     output.push(buffer.drop());
   }
-  ///////////////////////////////////////////////
-  ///////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
   while (!output.isEmpty())
   {
     calc_t hh = output.drop();
