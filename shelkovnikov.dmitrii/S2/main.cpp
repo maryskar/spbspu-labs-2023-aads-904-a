@@ -43,9 +43,22 @@ int main(int argc, char *argv[])
     data_type pair(dict_name, dict);
     list.pushBack(pair);
   }
-  auto iterator = list.begin();
-  std::cout << (*iterator).first << " " <<  (*iterator).second << "\n";
-  iterator++;
-  std::cout << (*iterator).first << " " <<  (*iterator).second;
+  while (std::cin)
+  {
+    std::string command = "";
+    std::cin >> command;
+    if (command == "print")
+    {
+      std::string dataset_name = "";
+      std::cin >> dataset_name;
+      for (auto && begin : list)
+      {
+        if ((begin).first == dataset_name)
+        {
+          std::cout << (begin).second;
+        }
+      }
+    }
+  }
   return 0;
 }
