@@ -53,11 +53,25 @@ int main(int argc, char *argv[])
       std::cin >> dataset_name;
       for (auto && begin : list)
       {
-        if ((begin).first == dataset_name)
+        if (begin.first == dataset_name)
         {
-          std::cout << (begin).second;
+          if (begin.second.empty())
+          {
+            std::cout << "<EMPTY>";
+          }
+          else
+          {
+            std::cout << begin.second;
+          }
         }
       }
+    }
+    else if (command == "complement")
+    {
+      std::string new_dataset_name = "";
+      std::string dataset_1 = "";
+      std::string dataset_2 = "";
+      
     }
   }
   return 0;
