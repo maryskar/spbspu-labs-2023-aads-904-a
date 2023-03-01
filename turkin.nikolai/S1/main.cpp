@@ -48,11 +48,7 @@ int main()
     }
     else
     {
-      if (data.calc.sign == '(')
-      {
-        buffer.push(data);
-      }
-      else if (data.calc.sign == ')')
+      if (data.calc.sign == ')')
       {
         while (!buffer.isEmpty())
         {
@@ -64,11 +60,7 @@ int main()
           output.push(opt);
         }
       }
-      else if (buffer.isEmpty())
-      {
-        buffer.push(data);
-      }
-      else
+      else if (!buffer.isEmpty() && data.calc.sign != '(')
       {
         calc_t opt = buffer.drop();
         buffer.push(opt);
@@ -90,6 +82,10 @@ int main()
           }
           buffer.push(data);
         }
+      }
+      else
+      {
+        buffer.push(data);
       }
     }
   }
