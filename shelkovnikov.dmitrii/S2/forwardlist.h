@@ -159,6 +159,10 @@ namespace dimkashelk
         }
       }
     }
+    bool empty()
+    {
+      return begin_ == nullptr;
+    }
     Iterator begin()
     {
       return Iterator(begin_);
