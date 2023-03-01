@@ -51,6 +51,10 @@ namespace dimkashelk
       }
       throw std::runtime_error("Nothing to return");
     }
+    bool empty()
+    {
+      return list_.empty();
+    }
     friend std::ostream &operator<<(std::ostream &out, Dictionary< Key, Value, Compare > dict)
     {
       for (auto it = dict.list_.begin(), end = dict.list_.end(); it != end; it++) {
