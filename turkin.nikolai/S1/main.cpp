@@ -28,6 +28,7 @@ int main(int argc, char * argv[])
     std::getline(file, dirt);
   }
   dirt += '\n';
+  std::cout << dirt;
   for (auto symbol : dirt)
   {
     if (symbol == ' ' || symbol == '\n')
@@ -118,23 +119,23 @@ int main(int argc, char * argv[])
       calc_t c;
       if (opt.calc.sign == '+')
       {
-        c = a.calc.num + b.calc.num;
+        c = b.calc.num + a.calc.num;
       }
       if (opt.calc.sign == '-')
       {
-        c = a.calc.num - b.calc.num;
+        c = b.calc.num - a.calc.num;
       }
       if (opt.calc.sign == '*')
       {
-        c = a.calc.num * b.calc.num;
+        c = b.calc.num * a.calc.num;
       }
       if (opt.calc.sign == '/')
       {
-        c = a.calc.num / b.calc.num;
+        c = b.calc.num / a.calc.num;
       }
       if (opt.calc.sign == '%')
       {
-        c = a.calc.num % b.calc.num;
+        c = b.calc.num % a.calc.num;
       }
       buffer.push(c);
     }
