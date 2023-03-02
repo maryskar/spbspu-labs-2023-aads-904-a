@@ -10,8 +10,8 @@ public:
   ~Stack();
   void push(const T &value);
   T pop();
+  Node< T > *top_;
 private:
-  Node< T >* top_;
   size_t size_;
 };
 template < typename T >
@@ -24,5 +24,22 @@ template < typename T >
 Stack< T >::~Stack()
 {
   //delete ;
+}
+template < typename T >
+void Stack< T >::push(const T &value)
+{
+  if (top_ == nullptr)
+  {
+    top_ = new Node< T >{value, nullptr};
+  }
+  else
+  {
+    Node< T > *newNode = new Node< T >{value, top_};
+    top_ = newNode;
+  }
+}
+template < typename T >
+T Stack< T >::pop()
+{
 }
 #endif

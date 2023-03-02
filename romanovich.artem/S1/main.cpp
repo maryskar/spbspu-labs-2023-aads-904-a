@@ -3,18 +3,6 @@
 #include "stack.h"
 #include "queue.h"
 #include "node.h"
-template < typename T >
-void Stack< T >::push(const T &value)
-{
-  //if (top_ == size_)
-  //{
-  //  throw;
-  //}
-}
-template < typename T >
-T Stack< T >::pop()
-{
-}
 int main(int argc, char **argv)
 {
   if ((argc != 1) && (argc != 2))

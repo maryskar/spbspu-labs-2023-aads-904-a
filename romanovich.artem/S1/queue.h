@@ -1,6 +1,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 #include "node.h"
+#include "stack.h"
 template < typename T >
 class Queue
 {
@@ -15,6 +16,10 @@ private:
   Node< T > *head_;
   Node< T > *tail_;
   size_t size_;
+  bool isOperator(char c)
+  {
+    return (c == '+' || c == '-' || c == '*' || c == '/');
+  }
 };
 template < typename T >
 T Queue< T >::pop()
@@ -50,13 +55,17 @@ void Queue< T >::splitLine(const std::string &string)
 template < typename T >
 void Queue< T >::parseQueue()
 {
+  Stack<char> *stack = new Stack<char>;
   while (head_->next_ != nullptr)
   {
     T el = pop();
-    std::cout << pop();
+    std::cout << el << " ";
+
+    //std::cout << stack->top_->data_ << "\n";
+
     if (el == '(')
     {
-      //добавить в стек
+      stack->push(el);
     }
     else if (el == ')')
     {
@@ -91,9 +100,5 @@ void Queue< T >::push(T rhs)
     tail_->next_ = new Node< T >{rhs, nullptr};
     tail_ = tail_->next_;
   }
-}
-bool isOperator(char c)
-{
-  return (c == '+' || c == '-' || c == '*' || c == '/' || c == '^');
 }
 #endif
