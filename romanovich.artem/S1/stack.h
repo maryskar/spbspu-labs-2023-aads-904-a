@@ -41,5 +41,10 @@ void Stack< T >::push(const T &value)
 template < typename T >
 T Stack< T >::pop()
 {
+  T el = top_->data_;
+  Node< T > *subTop = top_->next_;
+  delete top_;
+  top_ = subTop;
+  return el;
 }
 #endif
