@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     {
       std::string dataset_name = "";
       std::cin >> dataset_name;
-      for (auto && begin : list)
+      for (auto &&begin : list)
       {
         if (begin.first == dataset_name)
         {
@@ -71,7 +71,23 @@ int main(int argc, char *argv[])
       std::string new_dataset_name = "";
       std::string dataset_1 = "";
       std::string dataset_2 = "";
-      
+      std::cin >> new_dataset_name >> dataset_1 >> dataset_2;
+      dsk::Dictionary< int, std::string, std::less< > > data_1;
+      dsk::Dictionary< int, std::string, std::less< > > data_2;
+      auto iter = list.begin();
+      auto end = list.end();
+      while (iter != end)
+      {
+        if ((*iter).first == dataset_1)
+        {
+          data_1 = (*iter).second;
+        }
+        if ((*iter).first == dataset_2)
+        {
+          data_2 = (*iter).second;
+        }
+        iter++;
+      }
     }
   }
   return 0;
