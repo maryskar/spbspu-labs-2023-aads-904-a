@@ -1,10 +1,11 @@
 #ifndef QUEUE_H
 #define QUEUE_H
+#include <stdexcept>
 #include "node.h"
 
 namespace gelaz
 {
-  template< typename T >
+  template < typename T >
   class Queue
   {
     public:
@@ -19,13 +20,13 @@ namespace gelaz
       Node< T > *tail_;
   };
 
-  template< typename T >
+  template < typename T >
   Queue< T >::Queue():
     head_(nullptr),
     tail_(nullptr)
   {}
 
-  template< typename T >
+  template < typename T >
   Queue< T >::Queue(const Queue< T > &queue):
     head_(nullptr),
     tail_(nullptr)
@@ -38,7 +39,7 @@ namespace gelaz
     }
   }
 
-  template< typename T >
+  template < typename T >
   Queue< T >::~Queue()
   {
     while (head_)
@@ -47,7 +48,7 @@ namespace gelaz
     }
   }
 
-  template< typename T >
+  template < typename T >
   void Queue< T >::push(T rhs)
   {
     Node< T > *new_node = new Node< T >(rhs);
@@ -63,7 +64,7 @@ namespace gelaz
     }
   }
 
-  template< typename T >
+  template < typename T >
   T Queue< T >::drop()
   {
     Node< T > *current = tail_;
@@ -84,7 +85,7 @@ namespace gelaz
     }
   }
 
-  template< typename T >
+  template < typename T >
   bool Queue< T >::isEmpty()
   {
    return head_ == nullptr;
