@@ -20,6 +20,10 @@ private:
   {
     return (c == '+' || c == '-' || c == '*' || c == '/');
   }
+  bool operationStackPopCondition(char q, char s)
+  {
+    return (q != '+' && q != '-') || (s != '*' && s != '/');
+  }
 };
 template < typename T >
 T Queue< T >::pop()
@@ -58,34 +62,43 @@ void Queue< T >::parseQueue()
   Stack<char> *stack = new Stack<char>;
   while (head_->next_ != nullptr)
   {
-    T el = pop();
-    std::cout << el << " ";
+    T qEl = pop();
+    T sEl = '_';
+    if (!stack->isEmpty()) sEl = stack->top_->data_;
+    //std::cout << qEl << " " << sEl << "\n";
 
-    //std::cout << stack->top_->data_ << "\n";
-
-    if (el == '(')
+    if (qEl == '(')
     {
-      stack->push(el);
+      stack->push(qEl);
     }
-    else if (el == ')')
+    else if (qEl == ')')
     {
       //вытащить все из стека до открывающей
-      //удалить два верхних элемента стека
+      while (sEl != '(')
+      {
+        sEl = stack->top_->data_;
+        std::cout << sEl << " ";
+        stack->pop();
+      }
+      pop();
+      stack->pop();
+      sEl = stack->top_->data_;
     }
-    else if (std::isdigit(static_cast<unsigned char>(el)))
+    else if (std::isdigit(static_cast<unsigned char>(qEl)))
     {
-      //to result
+      std::cout << qEl << " ";
     }
-    else if (isOperator(el))
+    else if (isOperator(qEl))
     {
-      //определить операцию в очереди
-      //определить операцию в стеке
-      //выталкиваем или нет операции из стека
-      //помещаем операцию в стек
-      //выталкиваем операции из стека
+      while (isOperator(sEl) && operationStackPopCondition(qEl, sEl))
+      {
+        sEl = stack->top_->data_;
+        std::cout << sEl << " ";
+        stack->pop();
+      }
+      stack->push(qEl);
     }
   }
-  std::cout << pop();
 }
 template < typename T >
 void Queue< T >::push(T rhs)

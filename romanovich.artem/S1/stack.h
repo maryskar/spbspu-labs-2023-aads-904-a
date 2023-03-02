@@ -11,6 +11,10 @@ public:
   void push(const T &value);
   T pop();
   Node< T > *top_;
+  bool isEmpty()
+  {
+    return size_==0;
+  }
 private:
   size_t size_;
 };
@@ -37,6 +41,7 @@ void Stack< T >::push(const T &value)
     Node< T > *newNode = new Node< T >{value, top_};
     top_ = newNode;
   }
+  size_++;
 }
 template < typename T >
 T Stack< T >::pop()
@@ -45,6 +50,7 @@ T Stack< T >::pop()
   Node< T > *subTop = top_->next_;
   delete top_;
   top_ = subTop;
+  size_--;
   return el;
 }
 #endif
