@@ -79,8 +79,8 @@ void post2Result(Queue< calc_t> & output, long long & result)
     }
     else
     {
-      calc_t a = buffer.drop();
       calc_t b = buffer.drop();
+      calc_t a = buffer.drop();
       calc_t c;
       if (opt.calc.sign == '+')
       {
