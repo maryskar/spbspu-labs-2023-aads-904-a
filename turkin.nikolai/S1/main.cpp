@@ -140,6 +140,7 @@ int main(int argc, char * argv[])
           c = a.calc.num % b.calc.num;
         }
         buffer.push(c);
+        std::cout << c.calc.num << "\n";
       }
     }
     std::cout << buffer.drop().calc.num << "\n";
