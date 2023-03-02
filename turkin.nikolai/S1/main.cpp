@@ -4,16 +4,11 @@
 #include <queue.h>
 #include <stack.h>
 #include "data-type.h"
-
-bool prt(char data)
-{
-  return !(data == '+' || data == '-');
-}
+#include "exp-work.h"
 
 int main(int argc, char * argv[])
 {
   Queue< calc_t > input;
-  Stack< calc_t > buffer;
   Queue< calc_t > output;
   std::string dirt, temp;
   calc_t data;
@@ -52,100 +47,12 @@ int main(int argc, char * argv[])
       temp += symbol;
     }
   }
-/////////////////////////////////////////////////////////////
-  while (!input.isEmpty())
-  {
-    data = input.drop();
-    if (data.isgigit)
-    {
-      output.push(data);
-    }
-    else
-    {
-      if (data.calc.sign == ')')
-      {
-        while (!buffer.isEmpty())
-        {
-          calc_t opt = buffer.drop();
-          if (opt.calc.sign == '(')
-          {
-            break;
-          }
-          output.push(opt);
-        }
-      }
-      else if (!buffer.isEmpty() && data.calc.sign != '(')
-      {
-        calc_t opt = buffer.drop();
-        buffer.push(opt);
-        if (prt(data.calc.sign) < prt(opt.calc.sign) || opt.calc.sign == '(')
-        {
-          buffer.push(data);
-        }
-        else
-        {
-          opt = buffer.drop();
-          while (prt(data.calc.sign) >= prt(opt.calc.sign))
-          {
-            output.push(opt);
-            if (buffer.isEmpty())
-            {
-              break;
-            }
-            opt = buffer.drop();
-          }
-          buffer.push(data);
-        }
-      }
-      else
-      {
-        buffer.push(data);
-      }
-    }
-  }
-  while (!buffer.isEmpty())
-  {
-    output.push(buffer.drop());
-  }
-//////////////////////////////////////////////////////////////
   try
   {
-    while (!output.isEmpty())
-    {
-      calc_t opt = output.drop();
-      if (opt.isgigit)
-      {
-        buffer.push(opt);
-      }
-      else
-      {
-        calc_t a = buffer.drop();
-        calc_t b = buffer.drop();
-        calc_t c;
-        if (opt.calc.sign == '+')
-        {
-          c = a.calc.num + b.calc.num;
-        }
-        if (opt.calc.sign == '-')
-        {
-          c = a.calc.num - b.calc.num;
-        }
-        if (opt.calc.sign == '*')
-        {
-          c = a.calc.num * b.calc.num;
-        }
-        if (opt.calc.sign == '/')
-        {
-          c = a.calc.num / b.calc.num;
-        }
-        if (opt.calc.sign == '%')
-        {
-          c = a.calc.num % b.calc.num;
-        }
-        buffer.push(c);
-      }
-    }
-    std::cout << buffer.drop().calc.num << "\n";
+    long long result = 0;
+    inf2Post(input, output);
+    post2Result(output, result);
+    std::cout << result << "\n";
   }
   catch (...)
   {
