@@ -62,6 +62,27 @@ namespace dimkashelk
       }
       return out;
     }
+    friend Dictionary< Key, Value, Compare > operator-(const Dictionary< Key, Value, Compare > &first, const Dictionary< Key, Value, Compare > &second)
+    {
+      Dictionary< Key, Value, Compare > new_dict;
+      auto first_begin = first.begin();
+      auto first_end = first.end();
+      auto second_begin = second.begin();
+      auto second_end = second.end();
+      while (first_begin != first_end && second_begin != second_end)
+      {
+        while (first_begin != first_end && (*first_begin).first > (*second_begin).first)
+        {
+          first_begin++;
+        }
+        if (first_begin != first_end && (*first_begin).first != (*second_begin).first)
+        {
+          new_dict.push((*first_begin).first, (*first_begin).second);
+        }
+        second_begin++;
+      }
+      return new_dict;
+    }
   private:
     ForwardList< std::pair< Key, Value > > list_;
     Compare compare_;
