@@ -67,10 +67,7 @@ namespace dimkashelk
     }
     ~ForwardList()
     {
-      while (begin_)
-      {
-        remove(begin());
-      }
+      free();
     }
     void pushBack(T data)
     {
@@ -157,6 +154,13 @@ namespace dimkashelk
           delete iterator.ptr_;
           iterator.ptr_ = new_ptr_;
         }
+      }
+    }
+    void free()
+    {
+      while (begin_)
+      {
+        remove(begin());
       }
     }
     bool empty()
