@@ -12,13 +12,27 @@ public:
   T pop();
   void splitLine(const std::string &string);
   void parseQueue();
+  bool isEmpty()
+  {
+    return size_ == 0;
+  }
+  void print()
+  {
+    Node< T > *e = head_;
+    while (e != nullptr)
+    {
+      std::cout << e->data_;
+      e = e->next_;
+    }
+    std::cout << "\n";
+  }
 private:
   Node< T > *head_;
   Node< T > *tail_;
   size_t size_;
   bool isOperator(char c)
   {
-    return (c == '+' || c == '-' || c == '*' || c == '/');
+    return (c == '+' || c == '-' || c == '*' || c == '/' || c == '%');
   }
   bool operationStackPopCondition(char q, char s)
   {
@@ -33,6 +47,7 @@ T Queue< T >::pop()
   Node< T > *subHead = head_->next_;
   delete head_;
   head_ = subHead;
+  size_--;
   return el;
 }
 template < typename T >
@@ -61,47 +76,38 @@ template < typename T >
 void Queue< T >::parseQueue()
 {
   std::string checkresult = "";
-
-  Stack<char> *stack = new Stack<char>;
-  while (head_->next_ != nullptr)
+  Stack< char > *stack = new Stack< char >;
+  while (!isEmpty())
   {
     T qEl = pop();
-    T sEl = '_';
-    if (!stack->isEmpty()) sEl = stack->top_->data_;
-    std::cout << "queue:" << qEl << " stack:" << sEl << "\n";
+
     std::cout << checkresult << "\n";
 
     if (qEl == '(')
     {
       stack->push(qEl);
     }
-    else if (qEl == ')')
+    if (qEl == ')')
     {
-      while (sEl != '(')
+      while (stack->top_->data_ != '(')
       {
-        sEl = stack->pop();
-        checkresult.push_back(sEl);
+        checkresult.push_back(stack->pop());
       }
-      //pop();
     }
-    else if (std::isdigit(static_cast<unsigned char>(qEl)))
+    if (std::isdigit(static_cast<unsigned char>(qEl)))
     {
       checkresult.push_back(qEl);
     }
-    else if (isOperator(qEl))
+    if (isOperator(qEl))
     {
-      while (operationStackPopCondition(qEl, sEl))
+      while (operationStackPopCondition(qEl, stack->top_->data_))//( 5 + 9 ) / ( 4 + 7 – 1 )
       {
-        sEl = stack->top_->data_;
-        checkresult.push_back(sEl);
-        stack->pop();
+        checkresult.push_back(stack->pop());
       }
       stack->push(qEl);
-      while (isOperator(sEl))
+      while (!operationStackPopCondition(qEl, stack->top_->data_))
       {
-        sEl = stack->pop();
-        checkresult.push_back(sEl);
-        stack->pop();
+        checkresult.push_back(stack->pop());
       }
     }
   }
@@ -119,5 +125,6 @@ void Queue< T >::push(T rhs)
     tail_->next_ = new Node< T >{rhs, nullptr};
     tail_ = tail_->next_;
   }
+  size_++;
 }
 #endif

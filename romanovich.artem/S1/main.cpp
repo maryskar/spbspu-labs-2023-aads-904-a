@@ -33,6 +33,7 @@ int main(int argc, char **argv)
       Queue< char > infixNotation = Queue< char >();
       infixNotation.splitLine(line);
       infixNotation.parseQueue();
+      break;
     }
   }
   return 0;

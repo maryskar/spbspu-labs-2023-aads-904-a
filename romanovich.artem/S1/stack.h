@@ -15,6 +15,16 @@ public:
   {
     return size_==0;
   }
+  void print()
+  {
+    Node< T > *e = top_;
+    while (e != nullptr)
+    {
+      std::cout << e->data_;
+      e = e->next_;
+    }
+    std::cout << "\n";
+  }
 private:
   size_t size_;
 };
