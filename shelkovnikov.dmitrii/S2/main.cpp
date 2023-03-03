@@ -4,6 +4,7 @@
 #include "dictionary.h"
 #include "forwardlist.h"
 using pair_type = std::pair< std::string, dimkashelk::Dictionary< int, std::string, std::less< > > >;
+using dict_type = dimkashelk::Dictionary< int, std::string, std::less< > >;
 int main(int argc, char *argv[])
 {
   namespace dsk = dimkashelk;
