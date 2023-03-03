@@ -79,35 +79,16 @@ namespace dimkashelk
     }
     friend dict_type operator-(const dict_type &first, const dict_type &second)
     {
-      dict_type new_dict;
-      auto iter_first = first.list_.begin();
-      auto iter_first_end = first.list_.end();
-      auto iter_second = second.list_.begin();
-      auto iter_second_end = second.list_.end();
-      while (iter_first != iter_first_end && iter_second != iter_second_end)
-      {
-        while (iter_second != iter_second_end && Compare{}((*iter_first).first, (*iter_second).first))
-        {
-          iter_second++;
-        }
-        if (iter_second == iter_second_end)
-        {
-          break;
-        }
-        if ((*iter_first).first != (*iter_second).first)
-        {
-          new_dict.push((*iter_first).first, (*iter_first).second);
-        }
-        iter_first++;
-      }
-      while (iter_first != iter_first_end)
-      {
-        new_dict.push((*iter_first).first, (*iter_first).second);
-        iter_first++;
-      }
-      return new_dict;
+      return getResult(first, second, "-");
     }
     friend dict_type operator&(const dict_type &first, const dict_type &second)
+    {
+      return getResult(first, second, "&");
+    }
+  private:
+    ForwardList< std::pair< Key, Value > > list_;
+    Compare compare_;
+    static dict_type getResult(const dict_type &first, const dict_type &second, const std::string& operation)
     {
       dict_type new_dict;
       auto iter_first = first.list_.begin();
@@ -124,7 +105,9 @@ namespace dimkashelk
         {
           break;
         }
-        if ((*iter_first).first == (*iter_second).first)
+        bool operand_and = operation == "&" && (*iter_first).first == (*iter_second).first;
+        bool operand_minus = operation == "-" && (*iter_first).first != (*iter_second).first;
+        if (operand_and || operand_minus)
         {
           new_dict.push((*iter_first).first, (*iter_first).second);
         }
@@ -132,9 +115,6 @@ namespace dimkashelk
       }
       return new_dict;
     }
-  private:
-    ForwardList< std::pair< Key, Value > > list_;
-    Compare compare_;
   };
 }
 #endif
