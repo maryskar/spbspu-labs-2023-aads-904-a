@@ -22,7 +22,8 @@ private:
   }
   bool operationStackPopCondition(char q, char s)
   {
-    return (q != '+' && q != '-') || (s != '*' && s != '/');
+    bool areOperations = isOperator(q) && isOperator(s);
+    return (areOperations && !((q == '+' || q == '-') && (s == '*' || s == '/')));
   }
 };
 template < typename T >
@@ -59,13 +60,16 @@ void Queue< T >::splitLine(const std::string &string)
 template < typename T >
 void Queue< T >::parseQueue()
 {
+  std::string checkresult = "";
+
   Stack<char> *stack = new Stack<char>;
   while (head_->next_ != nullptr)
   {
     T qEl = pop();
     T sEl = '_';
     if (!stack->isEmpty()) sEl = stack->top_->data_;
-    //std::cout << qEl << " " << sEl << "\n";
+    std::cout << "queue:" << qEl << " stack:" << sEl << "\n";
+    std::cout << checkresult << "\n";
 
     if (qEl == '(')
     {
@@ -73,30 +77,32 @@ void Queue< T >::parseQueue()
     }
     else if (qEl == ')')
     {
-      //вытащить все из стека до открывающей
       while (sEl != '(')
       {
-        sEl = stack->top_->data_;
-        std::cout << sEl << " ";
-        stack->pop();
+        sEl = stack->pop();
+        checkresult.push_back(sEl);
       }
-      pop();
-      stack->pop();
-      sEl = stack->top_->data_;
+      //pop();
     }
     else if (std::isdigit(static_cast<unsigned char>(qEl)))
     {
-      std::cout << qEl << " ";
+      checkresult.push_back(qEl);
     }
     else if (isOperator(qEl))
     {
-      while (isOperator(sEl) && operationStackPopCondition(qEl, sEl))
+      while (operationStackPopCondition(qEl, sEl))
       {
         sEl = stack->top_->data_;
-        std::cout << sEl << " ";
+        checkresult.push_back(sEl);
         stack->pop();
       }
       stack->push(qEl);
+      while (isOperator(sEl))
+      {
+        sEl = stack->pop();
+        checkresult.push_back(sEl);
+        stack->pop();
+      }
     }
   }
 }
