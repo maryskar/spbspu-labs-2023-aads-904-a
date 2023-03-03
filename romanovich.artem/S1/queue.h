@@ -37,7 +37,7 @@ private:
   bool operationStackPopCondition(char q, char s)
   {
     bool areOperations = isOperator(q) && isOperator(s);
-    return (areOperations && !((q == '+' || q == '-') && (s == '*' || s == '/')));
+    return (areOperations && !((q == '+' || q == '-') && (s == '*' || s == '/' || s == '%')));
   }
 };
 template < typename T >
@@ -82,12 +82,6 @@ void Queue< T >::parseQueue()
     if (!isEmpty())
     {
       T qEl = pop();
-
-      //std::cout << "size: " << size_  << "\n";
-      std::cout << "queue: ";
-      print();
-      std::cout << "stack: ";
-      stack->print();
       if (qEl == '(')
       {
         stack->push(qEl);
@@ -106,7 +100,15 @@ void Queue< T >::parseQueue()
       }
       if (isOperator(qEl))
       {
-        if (!stack->isEmpty())
+        //
+        if ((qEl == '+' || qEl == '-') &&
+            (stack->top_->data_ == '*' || stack->top_->data_ == '/' || stack->top_->data_ == '%'))
+        {
+          checkresult.push_back(stack->pop());
+        }
+        stack->push(qEl);
+
+        /*if (!stack->isEmpty())
         {
           while (operationStackPopCondition(qEl, stack->top_->data_))
           {
@@ -114,10 +116,18 @@ void Queue< T >::parseQueue()
           }
         }
         stack->push(qEl);
-        while (!operationStackPopCondition(qEl, stack->top_->data_))
+        if (!stack->isEmpty())
         {
-          checkresult.push_back(stack->pop());
-        }
+          T s = stack->top_->data_;
+          while (!operationStackPopCondition(qEl, s))
+          {
+            if (stack->isEmpty())
+            {
+              break;
+            }
+            checkresult.push_back(stack->pop());
+          }
+        }*/
       }
     }
     else
@@ -128,6 +138,10 @@ void Queue< T >::parseQueue()
         checkresult.push_back(e);
       }
     }
+    std::cout << "queue: ";
+    print();
+    std::cout << "stack: ";
+    stack->print();
     std::cout << "result: " << checkresult << "\n";
     std::cout << "\n";
   }
