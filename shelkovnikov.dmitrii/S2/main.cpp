@@ -64,21 +64,26 @@ int main(int argc, char *argv[])
     {
       std::string dataset_name = "";
       std::cin >> dataset_name;
-      for (auto &&begin : list)
+      if (!std::cin)
       {
-        if (begin.first == dataset_name)
+        std::cerr << "<INVALID COMMAND>";
+      }
+      try
+      {
+        dict_type dict = search(list, dataset_name);
+        if (dict.empty())
         {
-          if (begin.second.empty())
-          {
-            std::cout << "<EMPTY>";
-          }
-          else
-          {
-            std::cout << begin.second;
-          }
+          std::cout << "<EMPTY>\n";
+        }
+        else
+        {
+          std::cout << dict << "\n";
         }
       }
-      std::cout << "\n";
+      catch (const std::runtime_error &e)
+      {
+        std::cerr << "<INVALID COMMAND>";
+      }
     }
     else if (command == "complement")
     {
