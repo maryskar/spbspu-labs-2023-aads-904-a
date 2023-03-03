@@ -35,6 +35,11 @@ int main(int argc, char *argv[])
       return 1;
     }
   }
+  if (!std::cin)
+  {
+    std::cout << "Incorrect input\n";
+    return 1;
+  }
   if (!results.isEmpty())
   {
     std::cout << results.drop();
