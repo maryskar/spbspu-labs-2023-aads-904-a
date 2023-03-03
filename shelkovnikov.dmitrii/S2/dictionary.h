@@ -15,6 +15,20 @@ namespace dimkashelk
       compare_(Compare{})
     {}
     ~Dictionary() = default;
+    Dictionary< Key, Value, Compare > &operator=(const Dictionary< Key, Value, Compare > &other)
+    {
+      list_.free();
+      compare_ = other.compare_;
+      auto it = list_.begin();
+      auto begin = other.list_.begin();
+      auto end = other.list_.end();
+      while (begin != end)
+      {
+        list_.insertBefore(it, (*begin));
+        begin++;
+      }
+      return *this;
+    }
     void push(Key k, Value value)
     {
       auto it = list_.begin();
@@ -62,13 +76,13 @@ namespace dimkashelk
       }
       return out;
     }
-    friend Dictionary< Key, Value, Compare > operator-(const Dictionary< Key, Value, Compare > &first, const Dictionary< Key, Value, Compare > &second)
+    friend Dictionary< Key, Value, Compare > operator-(Dictionary< Key, Value, Compare > &first, Dictionary< Key, Value, Compare > &second)
     {
       Dictionary< Key, Value, Compare > new_dict;
-      auto first_begin = first.begin();
-      auto first_end = first.end();
-      auto second_begin = second.begin();
-      auto second_end = second.end();
+      auto first_begin = first.list_.begin();
+      auto first_end = first.list_.end();
+      auto second_begin = second.list_.begin();
+      auto second_end = second.list_.end();
       while (first_begin != first_end && second_begin != second_end)
       {
         while (first_begin != first_end && (*first_begin).first > (*second_begin).first)
