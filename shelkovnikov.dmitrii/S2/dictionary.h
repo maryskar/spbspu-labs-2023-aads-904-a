@@ -76,7 +76,7 @@ namespace dimkashelk
       }
       return out;
     }
-    friend Dictionary< Key, Value, Compare > operator-(Dictionary< Key, Value, Compare > &first, Dictionary< Key, Value, Compare > &second)
+    friend Dictionary< Key, Value, Compare > operator-(const Dictionary< Key, Value, Compare > &first, const Dictionary< Key, Value, Compare > &second)
     {
       Dictionary< Key, Value, Compare > new_dict;
       auto iter_first = first.list_.begin();
