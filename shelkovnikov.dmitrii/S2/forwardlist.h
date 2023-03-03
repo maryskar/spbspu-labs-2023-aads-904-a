@@ -167,11 +167,11 @@ namespace dimkashelk
     {
       return begin_ == nullptr;
     }
-    Iterator begin()
+    Iterator begin() const
     {
       return Iterator(begin_);
     }
-    Iterator end()
+    Iterator end() const
     {
       return Iterator(nullptr);
     }
