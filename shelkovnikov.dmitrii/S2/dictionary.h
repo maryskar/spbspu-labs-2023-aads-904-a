@@ -79,21 +79,21 @@ namespace dimkashelk
     friend Dictionary< Key, Value, Compare > operator-(Dictionary< Key, Value, Compare > &first, Dictionary< Key, Value, Compare > &second)
     {
       Dictionary< Key, Value, Compare > new_dict;
-      auto first_begin = first.list_.begin();
-      auto first_end = first.list_.end();
-      auto second_begin = second.list_.begin();
-      auto second_end = second.list_.end();
-      while (first_begin != first_end && second_begin != second_end)
+      for (auto &&iter_first: first.list_)
       {
-        while (first_begin != first_end && (*first_begin).first > (*second_begin).first)
+        bool contains = false;
+        for (auto &&iter_second: second.list_)
         {
-          first_begin++;
+          if (iter_first.first == iter_second.first)
+          {
+            contains = true;
+            break;
+          }
         }
-        if (first_begin != first_end && (*first_begin).first != (*second_begin).first)
+        if (!contains)
         {
-          new_dict.push((*first_begin).first, (*first_begin).second);
+          new_dict.push(iter_first.first, iter_first.second);
         }
-        second_begin++;
       }
       return new_dict;
     }
