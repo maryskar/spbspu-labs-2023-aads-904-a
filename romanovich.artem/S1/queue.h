@@ -77,39 +77,59 @@ void Queue< T >::parseQueue()
 {
   std::string checkresult = "";
   Stack< char > *stack = new Stack< char >;
-  while (!isEmpty())
+  while (!isEmpty() or !stack->isEmpty())
   {
-    T qEl = pop();
+    if (!isEmpty())
+    {
+      T qEl = pop();
 
-    std::cout << checkresult << "\n";
-
-    if (qEl == '(')
-    {
-      stack->push(qEl);
-    }
-    if (qEl == ')')
-    {
-      while (stack->top_->data_ != '(')
+      //std::cout << "size: " << size_  << "\n";
+      std::cout << "queue: ";
+      print();
+      std::cout << "stack: ";
+      stack->print();
+      if (qEl == '(')
       {
-        checkresult.push_back(stack->pop());
+        stack->push(qEl);
+      }
+      if (qEl == ')')
+      {
+        while (stack->top_->data_ != '(')
+        {
+          checkresult.push_back(stack->pop());
+        }
+        stack->pop();
+      }
+      if (std::isdigit(static_cast<unsigned char>(qEl)))
+      {
+        checkresult.push_back(qEl);
+      }
+      if (isOperator(qEl))
+      {
+        if (!stack->isEmpty())
+        {
+          while (operationStackPopCondition(qEl, stack->top_->data_))
+          {
+            checkresult.push_back(stack->pop());
+          }
+        }
+        stack->push(qEl);
+        while (!operationStackPopCondition(qEl, stack->top_->data_))
+        {
+          checkresult.push_back(stack->pop());
+        }
       }
     }
-    if (std::isdigit(static_cast<unsigned char>(qEl)))
+    else
     {
-      checkresult.push_back(qEl);
-    }
-    if (isOperator(qEl))
-    {
-      while (operationStackPopCondition(qEl, stack->top_->data_))//( 5 + 9 ) / ( 4 + 7 – 1 )
+      while (!stack->isEmpty())
       {
-        checkresult.push_back(stack->pop());
-      }
-      stack->push(qEl);
-      while (!operationStackPopCondition(qEl, stack->top_->data_))
-      {
-        checkresult.push_back(stack->pop());
+        T e = stack->pop();
+        checkresult.push_back(e);
       }
     }
+    std::cout << "result: " << checkresult << "\n";
+    std::cout << "\n";
   }
 }
 template < typename T >
