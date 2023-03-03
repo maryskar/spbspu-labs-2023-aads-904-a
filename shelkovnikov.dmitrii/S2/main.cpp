@@ -6,6 +6,17 @@
 using pair_type = std::pair< std::string, dimkashelk::Dictionary< int, std::string, std::less< > > >;
 using dict_type = dimkashelk::Dictionary< int, std::string, std::less< > >;
 using list_type = dimkashelk::ForwardList< pair_type >;
+dict_type search(const list_type &list, const std::string& name)
+{
+  for (auto &&iter: list)
+  {
+    if (iter.first == name)
+    {
+      return iter.second;
+    }
+  }
+  throw std::runtime_error("Nothing to return");
+}
 int main(int argc, char *argv[])
 {
   namespace dsk = dimkashelk;
