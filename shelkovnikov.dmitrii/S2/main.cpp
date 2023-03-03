@@ -11,8 +11,8 @@ int main(int argc, char *argv[])
     std::cerr << "No filename";
     return 1;
   }
-  using data_type = std::pair< std::string, dsk::Dictionary< int, std::string, std::less< > > >;
-  dsk::ForwardList< data_type > list;
+  using pair_type = std::pair< std::string, dsk::Dictionary< int, std::string, std::less< > > >;
+  dsk::ForwardList< pair_type > list;
   std::ifstream in(argv[1]);
   if (!in.is_open())
   {
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
       dict.push(key, value);
     }
     in.clear();
-    data_type pair(dict_name, dict);
+    pair_type pair(dict_name, dict);
     list.pushBack(pair);
   }
   while (std::cin)
@@ -90,7 +90,11 @@ int main(int argc, char *argv[])
         iter++;
       }
       auto new_dict = data_1 - data_2;
-      list.pushBack(data_type(new_dataset_name, new_dict));
+      list.pushBack(pair_type(new_dataset_name, new_dict));
+    }
+    else if (command == "intersect")
+    {
+
     }
   }
   return 0;
