@@ -2,6 +2,7 @@
 #define QUEUE_H
 #include "node.h"
 #include "stack.h"
+#include <iostream>
 template < typename T >
 class Queue
 {
