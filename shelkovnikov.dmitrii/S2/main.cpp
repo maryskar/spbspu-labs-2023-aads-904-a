@@ -13,33 +13,33 @@ int main(int argc, char *argv[])
   }
   using data_type = std::pair< std::string, dsk::Dictionary< int, std::string, std::less< > > >;
   dsk::ForwardList< data_type > list;
-  //std::ifstream in(argv[1]);
-  //if (!in.is_open())
-  //{
-  //  std::cerr << "File not open";
-  //  return 1;
-  //}
-  while (std::cin)
+  std::ifstream in(argv[1]);
+  if (!in.is_open())
+  {
+    std::cerr << "File not open";
+    return 1;
+  }
+  while (in)
   {
     std::string dict_name = "";
-    std::cin >> dict_name;
-    if (!std::cin)
+    in >> dict_name;
+    if (!in)
     {
       break;
     }
     dsk::Dictionary< int, std::string, std::less< > > dict;
     int key = 0;
     std::string value = "";
-    while (std::cin)
+    while (in)
     {
-      std::cin >> key >> value;
-      if (!std::cin)
+      in >> key >> value;
+      if (!in)
       {
         break;
       }
       dict.push(key, value);
     }
-    std::cin.clear();
+    in.clear();
     data_type pair(dict_name, dict);
     list.pushBack(pair);
   }
@@ -65,6 +65,7 @@ int main(int argc, char *argv[])
           }
         }
       }
+      std::cout << "\n";
     }
     else if (command == "complement")
     {
@@ -88,6 +89,8 @@ int main(int argc, char *argv[])
         }
         iter++;
       }
+      auto new_dict = data_1 - data_2;
+      list.pushBack(data_type(new_dataset_name, new_dict));
     }
   }
   return 0;
