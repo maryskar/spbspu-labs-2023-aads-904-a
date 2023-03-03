@@ -86,24 +86,22 @@ int main(int argc, char *argv[])
       std::string dataset_1 = "";
       std::string dataset_2 = "";
       std::cin >> new_dataset_name >> dataset_1 >> dataset_2;
-      dict_type data_1;
-      dict_type data_2;
-      auto iter = list.begin();
-      auto end = list.end();
-      while (iter != end)
+      if (!std::cin)
       {
-        if ((*iter).first == dataset_1)
-        {
-          data_1 = (*iter).second;
-        }
-        if ((*iter).first == dataset_2)
-        {
-          data_2 = (*iter).second;
-        }
-        iter++;
+        std::cerr << "<INVALID COMMAND>";
+        continue;
       }
-      auto new_dict = data_1 - data_2;
-      list.pushBack(pair_type(new_dataset_name, new_dict));
+      try
+      {
+        dict_type data_1 = search(list, dataset_1);
+        dict_type data_2 = search(list, dataset_2);
+        dict_type new_dict = data_1 - data_2;
+        list.pushBack(pair_type(new_dataset_name, new_dict));
+      }
+      catch (const std::runtime_error &e)
+      {
+        std::cerr << "<INVALID COMMAND>";
+      }
     }
     else if (command == "intersect")
     {
