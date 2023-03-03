@@ -85,6 +85,10 @@ namespace dimkashelk
     {
       return getResult(first, second, "&");
     }
+    friend dict_type operator|(const dict_type &first, const dict_type &second)
+    {
+
+    }
   private:
     ForwardList< std::pair< Key, Value > > list_;
     Compare compare_;
@@ -111,6 +115,11 @@ namespace dimkashelk
         {
           new_dict.push((*iter_first).first, (*iter_first).second);
         }
+        iter_first++;
+      }
+      while (operation == "-" && iter_first != iter_first_end)
+      {
+        new_dict.push((*iter_first).first, (*iter_first).second);
         iter_first++;
       }
       return new_dict;
