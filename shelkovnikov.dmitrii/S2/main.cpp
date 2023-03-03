@@ -3,6 +3,7 @@
 #include <fstream>
 #include "dictionary.h"
 #include "forwardlist.h"
+using pair_type = std::pair< std::string, dimkashelk::Dictionary< int, std::string, std::less< > > >;
 int main(int argc, char *argv[])
 {
   namespace dsk = dimkashelk;
@@ -11,7 +12,6 @@ int main(int argc, char *argv[])
     std::cerr << "No filename";
     return 1;
   }
-  using pair_type = std::pair< std::string, dsk::Dictionary< int, std::string, std::less< > > >;
   dsk::ForwardList< pair_type > list;
   std::ifstream in(argv[1]);
   if (!in.is_open())
