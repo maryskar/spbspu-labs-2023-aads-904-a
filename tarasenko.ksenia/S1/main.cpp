@@ -13,6 +13,11 @@ int main(int argc, char *argv[])
   if (argc == 2)
   {
     input.open(argv[1]);
+    if (!(input.is_open()))
+    {
+      std::cout << "File not found\n";
+      return 1;
+    }
     std::cin.rdbuf(input.rdbuf());
   }
   std::string str = "";
@@ -34,11 +39,6 @@ int main(int argc, char *argv[])
       std::cout << e.what() << "\n";
       return 1;
     }
-  }
-  if (!std::cin)
-  {
-    std::cout << "Incorrect input\n";
-    return 1;
   }
   if (!results.isEmpty())
   {
