@@ -101,13 +101,15 @@ void Queue< T >::parseQueue()
       if (isOperator(qEl))
       {
         //
-        if ((qEl == '+' || qEl == '-') &&
-            (stack->top_->data_ == '*' || stack->top_->data_ == '/' || stack->top_->data_ == '%'))
+        if (!stack->isEmpty())
         {
-          checkresult.push_back(stack->pop());
+          if ((qEl == '+' || qEl == '-') &&
+              (stack->top_->data_ == '*' || stack->top_->data_ == '/' || stack->top_->data_ == '%'))
+          {
+            checkresult.push_back(stack->pop());
+          }
         }
         stack->push(qEl);
-
         /*if (!stack->isEmpty())
         {
           while (operationStackPopCondition(qEl, stack->top_->data_))
