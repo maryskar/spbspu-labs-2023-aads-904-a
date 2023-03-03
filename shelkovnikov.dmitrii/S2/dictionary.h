@@ -10,12 +10,13 @@ namespace dimkashelk
   class Dictionary
   {
   public:
+    using dict_type = Dictionary< Key, Value, Compare >;
     Dictionary():
       list_(),
       compare_(Compare{})
     {}
     ~Dictionary() = default;
-    Dictionary< Key, Value, Compare > &operator=(const Dictionary< Key, Value, Compare > &other)
+    dict_type &operator=(const dict_type &other)
     {
       list_.free();
       compare_ = other.compare_;
@@ -69,16 +70,16 @@ namespace dimkashelk
     {
       return list_.empty();
     }
-    friend std::ostream &operator<<(std::ostream &out, Dictionary< Key, Value, Compare > dict)
+    friend std::ostream &operator<<(std::ostream &out, dict_type dict)
     {
       for (auto it = dict.list_.begin(), end = dict.list_.end(); it != end; it++) {
         out << (*it).first << " " << (*it).second << " ";
       }
       return out;
     }
-    friend Dictionary< Key, Value, Compare > operator-(const Dictionary< Key, Value, Compare > &first, const Dictionary< Key, Value, Compare > &second)
+    friend dict_type operator-(const dict_type &first, const dict_type &second)
     {
-      Dictionary< Key, Value, Compare > new_dict;
+      dict_type new_dict;
       auto iter_first = first.list_.begin();
       auto iter_first_end = first.list_.end();
       auto iter_second = second.list_.begin();
@@ -106,9 +107,9 @@ namespace dimkashelk
       }
       return new_dict;
     }
-    friend Dictionary< Key, Value, Compare > operator&(const Dictionary< Key, Value, Compare > &first, const Dictionary< Key, Value, Compare > &second)
+    friend dict_type operator&(const dict_type &first, const dict_type &second)
     {
-      Dictionary< Key, Value, Compare > new_dict;
+      dict_type new_dict;
       auto iter_first = first.list_.begin();
       auto iter_first_end = first.list_.end();
       auto iter_second = second.list_.begin();
