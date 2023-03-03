@@ -31,11 +31,13 @@ namespace dimkashelk
       }
       Iterator &operator++()
       {
+        assert(ptr_ != nullptr);
         ptr_ = ptr_->next_;
         return *this;
       }
       Iterator &operator++(int)
       {
+        assert(ptr_ != nullptr);
         ptr_ = ptr_->next_;
         return *this;
       }
