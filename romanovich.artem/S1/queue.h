@@ -12,7 +12,7 @@ public:
   void push(T rhs);
   T pop();
   void splitLine(const std::string &string);
-  void parseQueue();
+  std::basic_string< char > parseQueue();
   bool isEmpty()
   {
     return size_ == 0;
@@ -74,7 +74,7 @@ void Queue< T >::splitLine(const std::string &string)
   }
 }
 template < typename T >
-void Queue< T >::parseQueue()
+std::basic_string< char > Queue< T >::parseQueue()
 {
   std::string checkresult = "";
   Stack< char > *stack = new Stack< char >;
@@ -141,13 +141,14 @@ void Queue< T >::parseQueue()
         checkresult.push_back(e);
       }
     }
-    std::cout << "queue: ";
-    print();
-    std::cout << "stack: ";
-    stack->print();
-    std::cout << "result: " << checkresult << "\n";
-    std::cout << "\n";
+    //std::cout << "queue: ";
+    //print();
+    //std::cout << "stack: ";
+    //stack->print();
+    //std::cout << "result: " << checkresult << "\n";
+    //std::cout << "\n";
   }
+  return checkresult;
 }
 template < typename T >
 void Queue< T >::push(T rhs)
