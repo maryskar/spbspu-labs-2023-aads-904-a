@@ -5,6 +5,7 @@
 #include "forwardlist.h"
 using pair_type = std::pair< std::string, dimkashelk::Dictionary< int, std::string, std::less< > > >;
 using dict_type = dimkashelk::Dictionary< int, std::string, std::less< > >;
+using list_type = dimkashelk::ForwardList< pair_type >;
 int main(int argc, char *argv[])
 {
   namespace dsk = dimkashelk;
@@ -13,7 +14,7 @@ int main(int argc, char *argv[])
     std::cerr << "No filename";
     return 1;
   }
-  dsk::ForwardList< pair_type > list;
+  list_type list;
   std::ifstream in(argv[1]);
   if (!in.is_open())
   {
@@ -28,7 +29,7 @@ int main(int argc, char *argv[])
     {
       break;
     }
-    dsk::Dictionary< int, std::string, std::less< > > dict;
+    dict_type dict;
     int key = 0;
     std::string value = "";
     while (in)
@@ -74,8 +75,8 @@ int main(int argc, char *argv[])
       std::string dataset_1 = "";
       std::string dataset_2 = "";
       std::cin >> new_dataset_name >> dataset_1 >> dataset_2;
-      dsk::Dictionary< int, std::string, std::less< > > data_1;
-      dsk::Dictionary< int, std::string, std::less< > > data_2;
+      dict_type data_1;
+      dict_type data_2;
       auto iter = list.begin();
       auto end = list.end();
       while (iter != end)
