@@ -68,6 +68,13 @@ namespace dimkashelk
         start = start->next_;
       }
     }
+    ForwardList(ForwardList< T > &&forwardList):
+      begin_(forwardList.begin_),
+      end_(forwardList.end_)
+    {
+      forwardList.begin_ = nullptr;
+      forwardList.end_ = nullptr;
+    }
     ~ForwardList()
     {
       free();
