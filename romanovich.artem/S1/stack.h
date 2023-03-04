@@ -16,6 +16,10 @@ public:
   {
     return size_==0;
   }
+  int getSize()
+  {
+    return size_;
+  }
   void print()
   {
     Node< T > *e = top_;
