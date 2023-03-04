@@ -8,6 +8,18 @@ bool prt(char data)
   return !(data == '+' || data == '-');
 }
 
+bool isOverflow(long long a, long long b)
+{
+    if (a == 0 || b == 0)
+        return false;
+
+    long long result = a * b;
+    if (a == result / b)
+        return false;
+    else
+        return true;
+}
+
 void str2Inf(std::string & dirt, Queue< calc_t > & input)
 {
   calc_t data;
@@ -126,7 +138,7 @@ void post2Result(Queue< calc_t> & output, long long & result)
       }
       if (opt.calc.sign == '*')
       {
-        if ((a.calc.num != 0 && b.calc.num != 0) && a.calc.num == (a.calc.num * b.calc.num) / b.calc.num)
+        if (isOverflow(a.calc.num, b.calc.num))
         {
           throw std::overflow_error("multiply error");
         }
