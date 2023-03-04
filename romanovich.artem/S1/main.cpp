@@ -226,7 +226,7 @@ int main(int argc, char **argv)
             std::string y = calcStack->pop();
             calcStack->push(doOperation(std::stol(x, nullptr, 10), std::stol(y, nullptr, 10), el));
           }
-          catch (const std::exception &e)
+          catch (...)
           {
             delete calcStack;
             std::cerr << "Error while calc.\n";

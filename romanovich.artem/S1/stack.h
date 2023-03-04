@@ -66,7 +66,7 @@ T Stack< T >::pop()
 {
   if (top_ == nullptr)
   {
-    throw;/* std::invalid_argument("An error occurred!");;*/
+    throw;
   }
   T el = top_->data_;
   Node< T > *subTop = top_->next_;
