@@ -1,6 +1,7 @@
 #ifndef QUEUE_HPP
 #define QUEUE_HPP
 #include <cstddef>
+#include <stdexcept>
 #include "list.hpp"
 
 namespace chemodurov
@@ -55,12 +56,20 @@ void chemodurov::Queue< T >::push(const T & rhs)
 template< typename T >
 T & chemodurov::Queue< T >::getFromQueue()
 {
+  if (!head_)
+  {
+    throw std::logic_error("Empty queue");
+  }
   return *head_;
 }
 
 template< typename T >
 void chemodurov::Queue< T >::pop()
 {
+  if (!head_)
+  {
+    throw std::logic_error("Empty queue");
+  }
   List< T > * temp = head_->next;
   delete head_;
   head_ = temp;
