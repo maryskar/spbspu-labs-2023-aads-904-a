@@ -23,17 +23,18 @@ int main(int argc, char **argv)
     for (std::string line; std::getline(fileInput, line);)
     {
       std::cout << line << "\n";
-      //splitLine(line);
     }
   }
   else
   {
     for (std::string line; std::getline(std::cin, line);)
     {
-      Queue< char > infixNotation = Queue< char >();
+      Queue< std::string > infixNotation = Queue< std::string >();
       infixNotation.splitLine(line);
-      std::cout << infixNotation.parseQueue();
-      break;
+      Stack< std::string > *postfixStack = new Stack< std::string >;
+      infixNotation.parseQueue(postfixStack);
+      postfixStack->print();
+      delete postfixStack;
     }
   }
   return 0;

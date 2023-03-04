@@ -3,6 +3,7 @@
 #include "node.h"
 #include "stack.h"
 #include <iostream>
+#include <algorithm>
 template < typename T >
 class Queue
 {
@@ -12,7 +13,7 @@ public:
   void push(T rhs);
   T pop();
   void splitLine(const std::string &string);
-  std::basic_string< char > parseQueue();
+  void parseQueue(Stack< T > *postfixStack);
   bool isEmpty()
   {
     return size_ == 0;
@@ -31,9 +32,9 @@ private:
   Node< T > *head_;
   Node< T > *tail_;
   size_t size_;
-  bool isOperator(char c)
+  bool isOperator(std::string c)
   {
-    return (c == '+' || c == '-' || c == '*' || c == '/' || c == '%');
+    return (c == "+" || c == "-" || c == "*" || c == "/" || c == "%");
   }
   bool operationStackPopCondition(char q, char s)
   {
@@ -65,90 +66,77 @@ Queue< T >::~Queue()
 template < typename T >
 void Queue< T >::splitLine(const std::string &string)
 {
-  for (char c: string)
+  size_t begin = 0;
+  size_t end = string.find(" ");
+  while (end != -1)
   {
-    if (c != ' ')
-    {
-      push(c);
-    }
+    push(string.substr(begin, end - begin));
+    begin = end + 1;
+    end = string.find(" ", begin);
   }
+  push(string.substr(begin, end - begin));
 }
 template < typename T >
-std::basic_string< char > Queue< T >::parseQueue()
+void Queue< T >::parseQueue(Stack< T > *postfixStack)
 {
-  std::string checkresult = "";
-  Stack< char > *stack = new Stack< char >;
+  Stack< T > *stack = new Stack< T >;
   while (!isEmpty() or !stack->isEmpty())
   {
     if (!isEmpty())
     {
       T qEl = pop();
-      if (qEl == '(')
+      if (qEl == "(")
       {
         stack->push(qEl);
       }
-      if (qEl == ')')
+      if (qEl == ")")
       {
-        while (stack->top_->data_ != '(')
+        while (stack->top_->data_ != "(")
         {
-          checkresult.push_back(stack->pop());
+          std::cout << stack->pop();
+          //postfixStack->push(stack->pop());
+          if (stack->isEmpty())
+          {
+            break;
+          }
         }
         stack->pop();
       }
-      if (std::isdigit(static_cast<unsigned char>(qEl)))
+      if (std::all_of(qEl.begin(), qEl.end(), ::isdigit))
       {
-        checkresult.push_back(qEl);
+        std::cout << qEl;
+        //postfixStack->push(stack->pop());
       }
       if (isOperator(qEl))
       {
-        //
         if (!stack->isEmpty())
         {
-          if ((qEl == '+' || qEl == '-') &&
-              (stack->top_->data_ == '*' || stack->top_->data_ == '/' || stack->top_->data_ == '%'))
+          if ((qEl == "+" || qEl == "-") &&
+              (stack->top_->data_ == "*" || stack->top_->data_ == "/" || stack->top_->data_ == "%"))
           {
-            checkresult.push_back(stack->pop());
+            std::cout << stack->pop();
+            //postfixStack->push(stack->pop());
           }
         }
         stack->push(qEl);
-        /*if (!stack->isEmpty())
-        {
-          while (operationStackPopCondition(qEl, stack->top_->data_))
-          {
-            checkresult.push_back(stack->pop());
-          }
-        }
-        stack->push(qEl);
-        if (!stack->isEmpty())
-        {
-          T s = stack->top_->data_;
-          while (!operationStackPopCondition(qEl, s))
-          {
-            if (stack->isEmpty())
-            {
-              break;
-            }
-            checkresult.push_back(stack->pop());
-          }
-        }*/
       }
     }
     else
     {
       while (!stack->isEmpty())
       {
-        T e = stack->pop();
-        checkresult.push_back(e);
+        std::cout << stack->pop();
+        //postfixStack->push(stack->pop());
       }
     }
     //std::cout << "queue: ";
     //print();
     //std::cout << "stack: ";
     //stack->print();
-    //std::cout << "result: " << checkresult << "\n";
+    ////std::cout << "result: " << checkresult << "\n";
     //std::cout << "\n";
   }
-  return checkresult;
+  delete stack;
 }
 template < typename T >
 void Queue< T >::push(T rhs)
