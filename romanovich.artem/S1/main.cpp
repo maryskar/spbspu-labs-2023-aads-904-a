@@ -155,9 +155,9 @@ int main(int argc, char **argv)
       /////////////////////////////std::cout << "!!!\n";
 
       ///
-      Stack< std::string > *stack = new Stack< std::string >;
-      stack->push(postfixQueue.pop());
-      while (stack->getSize() >= 1)
+      Stack< std::string > *calcStack = new Stack< std::string >;
+      calcStack->push(postfixQueue.pop());
+      while (calcStack->getSize() >= 1)
       {
         std::string el;
         if (!postfixQueue.isEmpty())
@@ -173,18 +173,19 @@ int main(int argc, char **argv)
         //std::cout << "\n";
         if (isDigit(el))
         {
-          stack->push(el);
+          calcStack->push(el);
         }
         else
         {
-          std::string x = stack->pop();
-          std::string y = stack->pop();
-          stack->push(doOperation(std::stol(x, nullptr, 10), std::stol(y, nullptr, 10), el));
+          std::string x = calcStack->pop();
+          std::string y = calcStack->pop();
+          calcStack->push(doOperation(std::stol(x, nullptr, 10), std::stol(y, nullptr, 10), el));
         }
       }
       ///
 
-      std::cout << std::stol(stack->top_->data_, nullptr, 10);
+      std::cout << std::stol(calcStack->top_->data_, nullptr, 10);
+      delete calcStack;
       //std::cout << calcPostfixExpression(infixNotation);
     }
   }
