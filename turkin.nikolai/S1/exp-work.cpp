@@ -107,7 +107,7 @@ void inf2Post(Queue< calc_t > & input, Queue< calc_t > & output)
 
 void post2Result(Queue< calc_t> & output, long long & result)
 {
-  Stack< calc_t > buffer;
+  Stack< long long > buffer;
   while (!output.isEmpty())
   {
     calc_t opt = output.drop();
@@ -117,40 +117,40 @@ void post2Result(Queue< calc_t> & output, long long & result)
     }
     else
     {
-      calc_t b = buffer.drop();
-      calc_t a = buffer.drop();
-      calc_t c;
+      long long b = buffer.drop();
+      long long  a = buffer.drop();
+      long long c = 0;
       if (opt.calc.sign == '+')
       {
-        if (a.calc.num > 0 && b.calc.num > 0 && (a.calc.num + b.calc.num < 0))
+        if (a > 0 && b > 0 && (a + b < 0))
         {
           throw std::overflow_error("sum error");
         }
-        c = a.calc.num + b.calc.num;
+        c = a + b;
       }
       if (opt.calc.sign == '-')
       {
-        if (a.calc.num < 0 && b.calc.num < 0 && (a.calc.num + b.calc.num > 0))
+        if (a < 0 && b < 0 && (a + b > 0))
         {
           throw std::overflow_error("sum error");
         }
-        c = a.calc.num - b.calc.num;
+        c = a - b;
       }
       if (opt.calc.sign == '*')
       {
-        if (isOverflow(a.calc.num, b.calc.num))
+        if (isOverflow(a, b))
         {
           throw std::overflow_error("multiply error");
         }
-        c = a.calc.num * b.calc.num;
+        c = a * b;
       }
       if (opt.calc.sign == '/')
       {
-        c = a.calc.num / b.calc.num;
+        c = a / b;
       }
       if (opt.calc.sign == '%')
       {
-        c = a.calc.num % b.calc.num;
+        c = (a > 0) ? a % b : b - (-a) % b;
       }
       buffer.push(c);
     }

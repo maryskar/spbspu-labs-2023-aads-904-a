@@ -50,6 +50,7 @@ int main(int argc, char * argv[])
     std::cerr << error.what() << "\n";
     return 1;
   }
+
   if (!answers.isEmpty())
   {
     std::cout << answers.drop();
