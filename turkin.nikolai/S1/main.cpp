@@ -9,9 +9,10 @@
 
 int main(int argc, char * argv[])
 {
+  std::ifstream file;
   if (argc == 2)
   {
-    std::ifstream file(argv[1]);
+    file.open(argv[1]);
     if (!file.is_open())
     {
       std::cerr << "cannot open file\n";
@@ -49,7 +50,10 @@ int main(int argc, char * argv[])
     std::cerr << error.what() << "\n";
     return 1;
   }
-  std::cout << answers.drop();
+  if (!answers.isEmpty())
+  {
+    std::cout << answers.drop();
+  }
   while (!answers.isEmpty())
   {
     std::cout << " " << answers.drop();
