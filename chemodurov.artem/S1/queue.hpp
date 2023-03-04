@@ -26,4 +26,8 @@ chemodurov::Queue< T >::Queue():
  size_(0)
 {}
 
+template< typename T >
+chemodurov::Queue< T >::~Queue()
+{}
+
 #endif
