@@ -126,7 +126,7 @@ void post2Result(Queue< calc_t> & output, long long & result)
       }
       if (opt.calc.sign == '*')
       {
-        if (a.calc.num != 0 && (a.calc.num * b.calc.num) / a.calc.num != b.calc.num)
+        if ((a.calc.num != 0 && b.calc.num != 0) && a.calc.num == (a.calc.num * b.calc.num) / b.calc.num)
         {
           throw std::overflow_error("multiply error");
         }
