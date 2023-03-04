@@ -13,7 +13,7 @@ public:
   void push(T rhs);
   T pop();
   void splitLine(const std::string &string);
-  void parseQueue(Stack< T > *postfixStack);
+  void parseQueue(Queue< T > *postfixQueue);
   bool isEmpty()
   {
     return size_ == 0;
@@ -32,14 +32,13 @@ private:
   Node< T > *head_;
   Node< T > *tail_;
   size_t size_;
-  bool isOperator(std::string c)
+  bool isOperator(const std::string& c)
   {
     return (c == "+" || c == "-" || c == "*" || c == "/" || c == "%");
   }
-  bool operationStackPopCondition(char q, char s)
+  bool operationStackPopCondition(const std::string& q, const std::string& s)
   {
-    bool areOperations = isOperator(q) && isOperator(s);
-    return (areOperations && !((q == '+' || q == '-') && (s == '*' || s == '/' || s == '%')));
+    return ((q == "+" || q == "-") && (s == "*" || s == "/" || s == "%"));
   }
 };
 template < typename T >
@@ -77,7 +76,7 @@ void Queue< T >::splitLine(const std::string &string)
   push(string.substr(begin, end - begin));
 }
 template < typename T >
-void Queue< T >::parseQueue(Stack< T > *postfixStack)
+void Queue< T >::parseQueue(Queue< T > *postfixQueue)
 {
   Stack< T > *stack = new Stack< T >;
   while (!isEmpty() or !stack->isEmpty())
@@ -93,7 +92,7 @@ void Queue< T >::parseQueue(Stack< T > *postfixStack)
       {
         while (stack->top_->data_ != "(")
         {
-          postfixStack->push(stack->pop());
+          postfixQueue->push(stack->pop());
           if (stack->isEmpty())
           {
             break;
@@ -103,16 +102,15 @@ void Queue< T >::parseQueue(Stack< T > *postfixStack)
       }
       if (std::all_of(qEl.begin(), qEl.end(), ::isdigit))
       {
-        postfixStack->push(stack->pop());
+        postfixQueue->push(qEl);
       }
       if (isOperator(qEl))
       {
         if (!stack->isEmpty())
         {
-          if ((qEl == "+" || qEl == "-") &&
-              (stack->top_->data_ == "*" || stack->top_->data_ == "/" || stack->top_->data_ == "%"))
+          if (operationStackPopCondition(qEl, stack->top_->data_))
           {
-            postfixStack->push(stack->pop());
+            postfixQueue->push(stack->pop());
           }
         }
         stack->push(qEl);
@@ -122,15 +120,15 @@ void Queue< T >::parseQueue(Stack< T > *postfixStack)
     {
       while (!stack->isEmpty())
       {
-        postfixStack->push(stack->pop());
+        postfixQueue->push(stack->pop());
       }
     }
-    //std::cout << "queue: ";
-    //print();
-    //std::cout << "stack: ";
-    //stack->print();
-    ////std::cout << "result: " << checkresult << "\n";
-    //std::cout << "\n";
+    std::cout << "queue: ";
+    print();
+    std::cout << "stack: ";
+    stack->print();
+      std::cout << "result: "; postfixQueue->print();
+    std::cout << "\n";
   }
   delete stack;
 }

@@ -31,10 +31,10 @@ int main(int argc, char **argv)
     {
       Queue< std::string > infixNotation = Queue< std::string >();
       infixNotation.splitLine(line);
-      Stack< std::string > *postfixStack = new Stack< std::string >;
-      infixNotation.parseQueue(postfixStack);
-      postfixStack->print();
-      delete postfixStack;
+      Queue< std::string > *postfixQueue = new Queue< std::string >;
+      infixNotation.parseQueue(postfixQueue);
+      postfixQueue->print();
+      delete postfixQueue;
     }
   }
   return 0;
