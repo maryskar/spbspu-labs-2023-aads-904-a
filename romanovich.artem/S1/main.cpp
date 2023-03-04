@@ -3,6 +3,7 @@
 #include "stack.h"
 #include "queue.h"
 #include "node.h"
+#include "notations.h"
 int main(int argc, char **argv)
 {
   if ((argc != 1) && (argc != 2))
@@ -29,10 +30,9 @@ int main(int argc, char **argv)
   {
     for (std::string line; std::getline(std::cin, line);)
     {
-      Queue< std::string > infixNotation = Queue< std::string >();
-      infixNotation.splitLine(line);
+      Queue< std::string > infixNotation = splitLine(line);
       Queue< std::string > *postfixQueue = new Queue< std::string >;
-      infixNotation.parseQueue(postfixQueue);
+      parseQueue(postfixQueue, &infixNotation);
       postfixQueue->print();
       delete postfixQueue;
     }
