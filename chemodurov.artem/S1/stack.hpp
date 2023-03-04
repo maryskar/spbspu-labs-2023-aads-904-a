@@ -2,6 +2,7 @@
 #define STACK_HPP
 #include <cstddef>
 #include <stdexcept>
+#include "list.hpp"
 
 namespace chemodurov
 {
@@ -15,23 +16,24 @@ namespace chemodurov
     void pop();
     T & getFromStack();
    private:
-    T * value_;
-    size_t size_;
-    size_t capacity_;
+    List< T > * head_;
   };
 }
 
 template< typename T >
 chemodurov::Stack< T >::Stack():
- value_(new T[1]),
- size_(0),
- capacity_(1)
+ head_(nullptr)
 {}
 
 template< typename T >
 chemodurov::Stack< T >::~Stack()
 {
-  delete [] value_;
+  while (head_)
+  {
+    List< T > * temp = head_->next;
+    delete head_;
+    head_ = temp;
+  }
 }
 
 template< typename T >
