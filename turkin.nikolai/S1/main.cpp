@@ -54,6 +54,7 @@ int main(int argc, char * argv[])
   {
     std::cout << " " << answers.drop();
   }
+  std::cout << "\n";
   return 0;
 }
 
