@@ -220,13 +220,13 @@ int main(int argc, char **argv)
         }
         else
         {
-          std::string x = calcStack->pop();
-          std::string y = calcStack->pop();
           try
           {
+            std::string x = calcStack->pop();
+            std::string y = calcStack->pop();
             calcStack->push(doOperation(std::stol(x, nullptr, 10), std::stol(y, nullptr, 10), el));
           }
-          catch (std::out_of_range &e)
+          catch (const std::exception &e)
           {
             delete calcStack;
             std::cerr << "Error while calc.\n";
@@ -237,7 +237,7 @@ int main(int argc, char **argv)
       ///
 
       //std::cout << std::stol(calcStack->top_->data_, nullptr, 10);
-      std::cout << calcStack->top_->data_/* << " "*/;
+      std::cout << calcStack->top_->data_ << "\n";
       delete calcStack;
       //std::cout << calcPostfixExpression(infixNotation);
     }
