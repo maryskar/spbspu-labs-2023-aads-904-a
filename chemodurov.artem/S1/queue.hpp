@@ -37,4 +37,10 @@ void chemodurov::Queue< T >::push(const T & rhs)
   last_ = last_->next;
 }
 
+template< typename T >
+T & chemodurov::Queue< T >::getFromQueue()
+{
+  return *head_;
+}
+
 #endif
