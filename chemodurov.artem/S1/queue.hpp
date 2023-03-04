@@ -40,8 +40,16 @@ chemodurov::Queue< T >::~Queue()
 template< typename T >
 void chemodurov::Queue< T >::push(const T & rhs)
 {
-  last_->next = new List< T >{rhs, nullptr};
-  last_ = last_->next;
+  if (!last_)
+  {
+    last_->next = new List< T >{rhs, nullptr};
+    last_ = last_->next;
+  }
+  else
+  {
+    last_ = new List< T >{rhs, nullptr};
+    head_ = last_;
+  }
 }
 
 template< typename T >
