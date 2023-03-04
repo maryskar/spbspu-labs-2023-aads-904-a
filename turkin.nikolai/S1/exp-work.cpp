@@ -110,6 +110,10 @@ void post2Result(Queue< calc_t> & output, long long & result)
       calc_t c;
       if (opt.calc.sign == '+')
       {
+        if (a.calc.num > 0 && b.calc.num > 0 && (a.calc.num + b.calc.num < 0))
+        {
+          throw std::overflow_error("sum error");
+        }
         c = a.calc.num + b.calc.num;
       }
       if (opt.calc.sign == '-')
