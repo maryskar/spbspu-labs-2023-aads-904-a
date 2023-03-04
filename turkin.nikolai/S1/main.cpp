@@ -49,9 +49,10 @@ int main(int argc, char * argv[])
     std::cerr << error.what() << "\n";
     return 1;
   }
+  std::cout << answers.drop();
   while (!answers.isEmpty())
   {
-    std::cout << answers.drop() << " ";
+    std::cout << " " << answers.drop();
   }
   return 0;
 }
