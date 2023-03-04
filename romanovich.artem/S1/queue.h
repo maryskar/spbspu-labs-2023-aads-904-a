@@ -66,13 +66,13 @@ Queue< T >::~Queue()
 template < typename T >
 void Queue< T >::splitLine(const std::string &string)
 {
-  size_t begin = 0;
-  size_t end = string.find(" ");
+  int begin = 0;
+  int end = string.find(' ');
   while (end != -1)
   {
     push(string.substr(begin, end - begin));
     begin = end + 1;
-    end = string.find(" ", begin);
+    end = string.find(' ', begin);
   }
   push(string.substr(begin, end - begin));
 }
