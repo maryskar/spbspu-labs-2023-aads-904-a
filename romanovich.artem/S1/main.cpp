@@ -11,6 +11,21 @@
 //
 //
 //
+long long maxLongLong = std::numeric_limits< long long >::max();
+long long minLongLong = std::numeric_limits< long long >::min();
+bool overflowMult(long long a, long long b)
+{
+  return ((b > 0 && a > maxLongLong - b) || (b < 0 && a < minLongLong - b));
+}
+bool overflowAdd(long long a, long long b)
+{
+  return ((a != 0 && b != 0) && ((a > maxLongLong / b) || (a < minLongLong / b)));
+}
+bool overflowSubt(long long a, long long b)
+{
+  return ((b < 0 && a > maxLongLong + b) || (b > 0 && a < minLongLong + b));
+}
+///
 bool isOperator(const std::string &c)
 {
   return (c == "+" || c == "-" || c == "*" || c == "/" || c == "%");
@@ -100,19 +115,47 @@ std::string doOperation(long long b, long long a, const std::string &oper)
 {
   if (oper == "+")
   {
-    return std::to_string(a + b);
+    if (!overflowAdd(a, b))
+    {
+      return std::to_string(a + b);
+    }
+    else
+    {
+      throw;
+    }
   }
   if (oper == "-")
   {
-    return std::to_string(a - b);
+    if (!overflowSubt(a, b))
+    {
+      return std::to_string(a - b);
+    }
+    else
+    {
+      throw;
+    }
   }
   if (oper == "*")
   {
-    return std::to_string(a * b);
+    if (!overflowAdd(a, b))
+    {
+      return std::to_string(a * b);
+    }
+    else
+    {
+      throw;
+    }
   }
   if (oper == "/")
   {
-    return std::to_string(a / b);
+    if (b != 0)
+    {
+      return std::to_string(a / b);
+    }
+    else
+    {
+      throw;
+    }
   }
   return std::to_string(a % b);
 }
@@ -179,12 +222,22 @@ int main(int argc, char **argv)
         {
           std::string x = calcStack->pop();
           std::string y = calcStack->pop();
-          calcStack->push(doOperation(std::stol(x, nullptr, 10), std::stol(y, nullptr, 10), el));
+          try
+          {
+            calcStack->push(doOperation(std::stol(x, nullptr, 10), std::stol(y, nullptr, 10), el));
+          }
+          catch (std::out_of_range &e)
+          {
+            delete calcStack;
+            std::cerr << "Error while calc.\n";
+            return 2;
+          }
         }
       }
       ///
 
-      std::cout << std::stol(calcStack->top_->data_, nullptr, 10);
+      //std::cout << std::stol(calcStack->top_->data_, nullptr, 10);
+      std::cout << calcStack->top_->data_/* << " "*/;
       delete calcStack;
       //std::cout << calcPostfixExpression(infixNotation);
     }
