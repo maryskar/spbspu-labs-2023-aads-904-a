@@ -14,7 +14,7 @@ public:
   Node< T > *top_;
   bool isEmpty()
   {
-    return size_==0;
+    return size_ == 0;
   }
   int getSize()
   {
@@ -42,7 +42,10 @@ Stack< T >::Stack():
 template < typename T >
 Stack< T >::~Stack()
 {
-  //delete ;
+  while (!isEmpty())
+  {
+    pop();
+  }
 }
 template < typename T >
 void Stack< T >::push(const T &value)

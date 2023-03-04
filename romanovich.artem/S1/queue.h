@@ -71,6 +71,10 @@ T Queue< T >::pop()
 template < typename T >
 Queue< T >::~Queue()
 {
+  while (!isEmpty())
+  {
+    pop();
+  }
 }
 template < typename T >
 void Queue< T >::push(T rhs)

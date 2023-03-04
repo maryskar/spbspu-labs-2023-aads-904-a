@@ -32,11 +32,41 @@ int main(int argc, char **argv)
     {
       Queue< std::string > infixNotation = splitLine(line);
       Queue< std::string > postfixQueue = getPostfixFromInfix(infixNotation);
-      //postfixQueue->print();
+      /////////////////////////////postfixQueue.print();
+      /////////////////////////////std::cout << "!!!\n";
 
-      std::cout << calcPostfixExpression(postfixQueue);
-/*      delete infixNotation;
-      delete postfixQueue;*/
+      ///
+      Stack< std::string > *stack = new Stack< std::string >;
+      stack->push(postfixQueue.pop());
+      while (stack->getSize() >= 1)
+      {
+        std::string el;
+        if (!postfixQueue.isEmpty())
+        {
+          el = postfixQueue.pop();
+        }
+        else
+        {
+          break;
+        }
+        //std::cout << "  " << el << std::endl;
+        //stack->print();
+        //std::cout << "\n";
+        if (isDigit(el))
+        {
+          stack->push(el);
+        }
+        else
+        {
+          std::string x = stack->pop();
+          std::string y = stack->pop();
+          stack->push(doOperation(std::stol(x, nullptr, 10), std::stol(y, nullptr, 10), el));
+        }
+      }
+      ///
+
+      std::cout << std::stol(stack->top_->data_, nullptr, 10);
+      //std::cout << calcPostfixExpression(infixNotation);
     }
   }
   return 0;
