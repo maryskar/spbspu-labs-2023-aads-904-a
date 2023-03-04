@@ -16,18 +16,25 @@ namespace chemodurov
     T & getFromQueue();
    private:
     List< T > * head_;
-    size_t size_;
+    List< T > * last_;
   };
 }
 
 template< typename T >
 chemodurov::Queue< T >::Queue():
  head_(nullptr),
- size_(0)
+ last_(nullptr)
 {}
 
 template< typename T >
 chemodurov::Queue< T >::~Queue()
 {}
+
+template< typename T >
+void chemodurov::Queue< T >::push(const T & rhs)
+{
+  last_->next = new List< T >{rhs, nullptr};
+  last_ = last_->next;
+}
 
 #endif
