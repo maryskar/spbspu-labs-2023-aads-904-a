@@ -30,11 +30,8 @@ int main(int argc, char **argv)
   {
     for (std::string line; std::getline(std::cin, line);)
     {
-      //Queue< std::string > infixNotation = splitLine(line);
-      Queue< Node<std::string> > infixNotation(Queue< Node<std::string> >);
-      splitLine(infixNotation, line);
-      Queue< std::string > postfixQueue = new Queue< std::string >;
-      getPostfixFromInfix(postfixQueue, infixNotation);
+      Queue< std::string > infixNotation = splitLine(line);
+      Queue< std::string > postfixQueue = getPostfixFromInfix(infixNotation);
       //postfixQueue->print();
 
       std::cout << calcPostfixExpression(postfixQueue);

@@ -9,7 +9,7 @@ class Queue
 {
 public:
   Queue();
-  Queue(Queue< Node< std::string>> *pQueue);
+  Queue(const Queue< std::string>& pQueue);
 /*Queue(const Queue< T >& input):
     head_(nullptr),
     tail_(nullptr),
@@ -39,16 +39,16 @@ private:
   size_t size_;
 };
 template < typename T >
-Queue< T >::Queue(Queue< Node< std::string>> *pQueue):
+Queue< T >::Queue(const Queue< std::string>& pQueue):
   head_(nullptr),
   tail_(nullptr),
   size_(0)
 {
-  Node< T > *tmp = pQueue->head_;
+  Node< T > *tmp = pQueue.head_;
   while (tmp != nullptr)
   {
-    push(tmp->value);
-    tmp = tmp->p_next;
+    push(tmp->data_);
+    tmp = tmp->next_;
   }
 }
 template < typename T >
