@@ -175,73 +175,68 @@ int main(int argc, char **argv)
     return 1;
   }
   Stack< std::string > stack = Stack< std::string >();
+  std::fstream fileInput;
+  std::string fileIn = argv[1];
   if (argc == 2)
   {
-    std::string fileIn = argv[1];
-    std::fstream fileInput(fileIn);
+    fileInput.open(fileIn);
     if (!fileInput.is_open())
     {
       std::cerr << "Error while opening file " << fileIn << ".\n";
       return 1;
     }
-    for (std::string line; std::getline(fileInput, line);)
-    {
-      std::cout << line << "\n";
-    }
+    std::cin.rdbuf(fileInput.rdbuf());
   }
-  else
+  for (std::string line; std::getline(std::cin, line);)
   {
-    for (std::string line; std::getline(std::cin, line);)
-    {
-      Queue< std::string > infixNotation = splitLine(line);
-      Queue< std::string > postfixQueue = getPostfixFromInfix(infixNotation);
-      /////////////////////////////postfixQueue.print();
-      /////////////////////////////std::cout << "!!!\n";
+    Queue< std::string > infixNotation = splitLine(line);
+    Queue< std::string > postfixQueue = getPostfixFromInfix(infixNotation);
+    /////////////////////////////postfixQueue.print();
+    /////////////////////////////std::cout << "!!!\n";
 
-      ///
-      Stack< std::string > *calcStack = new Stack< std::string >;
-      calcStack->push(postfixQueue.pop());
-      while (calcStack->getSize() >= 1)
+    ///
+    Stack< std::string > *calcStack = new Stack< std::string >;
+    calcStack->push(postfixQueue.pop());
+    while (calcStack->getSize() >= 1)
+    {
+      std::string el;
+      if (!postfixQueue.isEmpty())
       {
-        std::string el;
-        if (!postfixQueue.isEmpty())
+        el = postfixQueue.pop();
+      }
+      else
+      {
+        break;
+      }
+      //std::cout << "  " << el << std::endl;
+      //stack->print();
+      //std::cout << "\n";
+      if (isDigit(el))
+      {
+        calcStack->push(el);
+      }
+      else
+      {
+        try
         {
-          el = postfixQueue.pop();
+          std::string x = calcStack->pop();
+          std::string y = calcStack->pop();
+          calcStack->push(doOperation(std::stol(x, nullptr, 10), std::stol(y, nullptr, 10), el));
         }
-        else
+        catch (...)
         {
-          break;
-        }
-        //std::cout << "  " << el << std::endl;
-        //stack->print();
-        //std::cout << "\n";
-        if (isDigit(el))
-        {
-          calcStack->push(el);
-        }
-        else
-        {
-          try
-          {
-            std::string x = calcStack->pop();
-            std::string y = calcStack->pop();
-            calcStack->push(doOperation(std::stol(x, nullptr, 10), std::stol(y, nullptr, 10), el));
-          }
-          catch (...)
-          {
-            delete calcStack;
-            std::cerr << "Error while calc.\n";
-            return 2;
-          }
+          delete calcStack;
+          std::cerr << "Error while calc.\n";
+          return 2;
         }
       }
-      ///
-
-      //std::cout << std::stol(calcStack->top_->data_, nullptr, 10);
-      std::cout << calcStack->top_->data_ << "\n";
-      delete calcStack;
-      //std::cout << calcPostfixExpression(infixNotation);
     }
+    ///
+
+    //std::cout << std::stol(calcStack->top_->data_, nullptr, 10);
+    std::cout << calcStack->top_->data_ << "\n";
+    delete calcStack;
+    //std::cout << calcPostfixExpression(infixNotation);
   }
   return 0;
 }
