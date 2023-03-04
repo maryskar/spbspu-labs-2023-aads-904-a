@@ -128,8 +128,9 @@ void post2Result(Queue< calc_t> & output, long long & result)
       {
         if (a.calc.num != 0 && (a.calc.num * b.calc.num) / a.calc.num != b.calc.num)
         {
-          c = a.calc.num * b.calc.num;
+          throw std::overflow_error("multiply error");
         }
+        c = a.calc.num * b.calc.num;
       }
       if (opt.calc.sign == '/')
       {
