@@ -58,4 +58,12 @@ T & chemodurov::Queue< T >::getFromQueue()
   return *head_;
 }
 
+template< typename T >
+void chemodurov::Queue< T >::pop()
+{
+  List< T > * temp = head_->next;
+  delete head_;
+  head_ = temp;
+}
+
 #endif
