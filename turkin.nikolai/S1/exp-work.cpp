@@ -8,6 +8,32 @@ bool prt(char data)
   return !(data == '+' || data == '-');
 }
 
+void str2Inf(std::string & dirt, Queue< calc_t > & input)
+{
+  calc_t data;
+  std::string temp;
+  for (auto symbol : dirt)
+  {
+    if (symbol == ' ' || symbol == '\n')
+    {
+      try
+      {
+        data = std::stoll(temp);
+      }
+      catch (...)
+      {
+        data = temp.c_str()[0];
+      }
+      input.push(data);
+      temp = "";
+    }
+    else
+    {
+      temp += symbol;
+    }
+  }
+}
+
 void inf2Post(Queue< calc_t > & input, Queue< calc_t > & output)
 {
   Stack< calc_t > buffer;
