@@ -9,9 +9,9 @@
 
 int main(int argc, char * argv[])
 {
+  std::ifstream file(argv[1]);
   if (argc == 2)
   {
-    std::ifstream file(argv[1]);
     if (!file.is_open())
     {
       std::cerr << "cannot open file\n";
@@ -21,6 +21,7 @@ int main(int argc, char * argv[])
   }
 
   Queue< calc_t > input, output;
+  Stack< long long > answers;
   std::string dirt;
   long long result = 0;
   try
@@ -28,6 +29,10 @@ int main(int argc, char * argv[])
     while (std::cin)
     {
       std::getline(std::cin, dirt);
+      if (!std::cin)
+      {
+        break;
+      }
       if (!dirt.length())
       {
         continue;
@@ -36,14 +41,17 @@ int main(int argc, char * argv[])
       str2Inf(dirt, input);
       inf2Post(input, output);
       post2Result(output, result);
-      std::cout << result << " ";
+      answers.push(result);
     }
-    std::cout << "\n";
   }
   catch (const std::exception & error)
   {
     std::cerr << error.what() << "\n";
     return 1;
+  }
+  while (!answers.isEmpty())
+  {
+    std::cout << answers.drop() << " ";
   }
   return 0;
 }
