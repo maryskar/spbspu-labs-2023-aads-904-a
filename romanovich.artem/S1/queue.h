@@ -93,8 +93,7 @@ void Queue< T >::parseQueue(Stack< T > *postfixStack)
       {
         while (stack->top_->data_ != "(")
         {
-          std::cout << stack->pop();
-          //postfixStack->push(stack->pop());
+          postfixStack->push(stack->pop());
           if (stack->isEmpty())
           {
             break;
@@ -104,8 +103,7 @@ void Queue< T >::parseQueue(Stack< T > *postfixStack)
       }
       if (std::all_of(qEl.begin(), qEl.end(), ::isdigit))
       {
-        std::cout << qEl;
-        //postfixStack->push(stack->pop());
+        postfixStack->push(stack->pop());
       }
       if (isOperator(qEl))
       {
@@ -114,8 +112,7 @@ void Queue< T >::parseQueue(Stack< T > *postfixStack)
           if ((qEl == "+" || qEl == "-") &&
               (stack->top_->data_ == "*" || stack->top_->data_ == "/" || stack->top_->data_ == "%"))
           {
-            std::cout << stack->pop();
-            //postfixStack->push(stack->pop());
+            postfixStack->push(stack->pop());
           }
         }
         stack->push(qEl);
@@ -125,8 +122,7 @@ void Queue< T >::parseQueue(Stack< T > *postfixStack)
     {
       while (!stack->isEmpty())
       {
-        std::cout << stack->pop();
-        //postfixStack->push(stack->pop());
+        postfixStack->push(stack->pop());
       }
     }
     //std::cout << "queue: ";
