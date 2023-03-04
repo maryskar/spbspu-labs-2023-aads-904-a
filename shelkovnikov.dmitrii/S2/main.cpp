@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
         std::cerr << "<INVALID COMMAND>";
       }
     }
-    else if (command == "complement")
+    else if (command == "complement" || command == "intersect")
     {
       std::string new_dataset_name = "";
       std::string dataset_1 = "";
@@ -100,7 +100,15 @@ int main(int argc, char *argv[])
       {
         dict_type data_1 = search(list, dataset_1);
         dict_type data_2 = search(list, dataset_2);
-        dict_type new_dict = data_1 - data_2;
+        dict_type new_dict;
+        if (command == "complement")
+        {
+          new_dict = data_1 - data_2;
+        }
+        else
+        {
+          new_dict = data_1 & data_2;
+        }
         list.pushBack(pair_type(new_dataset_name, new_dict));
       }
       catch (const std::runtime_error &e)
