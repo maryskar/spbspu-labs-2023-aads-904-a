@@ -28,7 +28,14 @@ chemodurov::Queue< T >::Queue():
 
 template< typename T >
 chemodurov::Queue< T >::~Queue()
-{}
+{
+  while (head_)
+  {
+    List< T > * temp = head_->next;
+    delete head_;
+    head_ = temp;
+  }
+}
 
 template< typename T >
 void chemodurov::Queue< T >::push(const T & rhs)
