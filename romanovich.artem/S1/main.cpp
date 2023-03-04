@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <limits>
 #include "stack.h"
 #include "queue.h"
 #include "node.h"
@@ -13,11 +14,11 @@
 //
 long long maxLongLong = std::numeric_limits< long long >::max();
 long long minLongLong = std::numeric_limits< long long >::min();
-bool overflowMult(long long a, long long b)
+bool overflowAdd(long long a, long long b)
 {
   return ((b > 0 && a > maxLongLong - b) || (b < 0 && a < minLongLong - b));
 }
-bool overflowAdd(long long a, long long b)
+bool overflowMult(long long a, long long b)
 {
   return ((a != 0 && b != 0) && ((a > maxLongLong / b) || (a < minLongLong / b)));
 }
@@ -121,7 +122,7 @@ std::string doOperation(long long b, long long a, const std::string &oper)
     }
     else
     {
-      throw;
+      throw std::overflow_error("");
     }
   }
   if (oper == "-")
@@ -132,18 +133,18 @@ std::string doOperation(long long b, long long a, const std::string &oper)
     }
     else
     {
-      throw;
+      throw std::overflow_error("");
     }
   }
   if (oper == "*")
   {
-    if (!overflowAdd(a, b))
+    if (!overflowMult(a, b))
     {
       return std::to_string(a * b);
     }
     else
     {
-      throw;
+      throw std::overflow_error("");
     }
   }
   if (oper == "/")
@@ -154,7 +155,7 @@ std::string doOperation(long long b, long long a, const std::string &oper)
     }
     else
     {
-      throw;
+      throw std::overflow_error("");
     }
   }
   return std::to_string(a % b);
