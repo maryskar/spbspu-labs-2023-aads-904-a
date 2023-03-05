@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
         }
         else
         {
-          std::cout << dict << "\n";
+          std::cout << dataset_name << " " << dict << "\n";
         }
       }
       catch (const std::runtime_error &e)
