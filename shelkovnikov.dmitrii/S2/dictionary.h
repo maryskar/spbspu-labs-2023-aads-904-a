@@ -52,6 +52,10 @@ namespace dimkashelk
         std::pair< Key, Value > pair(k, value);
         list_.insertBefore(it, pair);
       }
+      else
+      {
+        (*it).second = value;
+      }
     }
     Value get(Key k)
     {
