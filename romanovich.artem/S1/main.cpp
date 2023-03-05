@@ -182,6 +182,9 @@ int main(int argc, char **argv)
       std::cerr << "Error while opening file.\n";
       return 1;
     }
+    if (fileInput.peek() == std::ifstream::traits_type::eof()) {
+      return 0;
+    }
     std::cin.rdbuf(fileInput.rdbuf());
   }
   Stack< std::string > answer;
@@ -212,18 +215,18 @@ int main(int argc, char **argv)
       }
       else
       {
-        //try
-        //{
+        try
+        {
           std::string x = calcStack->pop();
           std::string y = calcStack->pop();
           calcStack->push(doOperation(std::stoll(x, nullptr, 10), std::stoll(y, nullptr, 10), el));
-        //}
-        //catch (...)
-        //{
-        //  delete calcStack;
-        //  std::cerr << "Error while calc.\n";
-        //  return 2;
-        //}
+        }
+        catch (...)
+        {
+          delete calcStack;
+          std::cerr << "Error while calc.\n";
+          return 2;
+        }
       }
     }
     answer.push(calcStack->top_->data_);
@@ -238,5 +241,6 @@ int main(int argc, char **argv)
     }
     std::cout << "\n";
   }
+  std::cout << "ExCode = 0";
   return 0;
 }
