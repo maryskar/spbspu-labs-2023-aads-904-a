@@ -72,7 +72,7 @@ Queue< std::string > getPostfixFromInfix(Queue< std::string > queue)
       {
         if (!stack->isEmpty())
         {
-          if (!operationStackPopCondition(qEl, stack->top_->data_))
+          if (operationStackPopCondition(qEl, stack->top_->data_))
           {
             postfixQueue.push(stack->pop());
           }
@@ -183,7 +183,7 @@ int main(int argc, char **argv)
       return 1;
     }
     if (fileInput.peek() == std::ifstream::traits_type::eof()) {
-      return 0;
+      return 1;
     }
     std::cin.rdbuf(fileInput.rdbuf());
   }
@@ -241,6 +241,5 @@ int main(int argc, char **argv)
     }
     std::cout << "\n";
   }
-  std::cout << "ExCode = 0";
   return 0;
 }
