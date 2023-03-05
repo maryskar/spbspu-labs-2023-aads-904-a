@@ -11,7 +11,6 @@ public:
   ~Stack();
   void push(const T &value);
   T pop();
-  Node< T > *top_;
   bool isEmpty()
   {
     return size_ == 0;
@@ -20,25 +19,22 @@ public:
   {
     return size_;
   }
-  void print()
+  T getTop()
   {
-    Node< T > *e = top_;
-    while (e != nullptr)
-    {
-      std::cout << e->data_;
-      e = e->next_;
-    }
-    std::cout << "\n";
+    return top_->data_;
   }
 private:
+  Node< T > *top_;
   size_t size_;
 };
+
 template < typename T >
 Stack< T >::Stack():
   top_(nullptr),
   size_(0)
 {
 }
+
 template < typename T >
 Stack< T >::~Stack()
 {
@@ -47,6 +43,7 @@ Stack< T >::~Stack()
     pop();
   }
 }
+
 template < typename T >
 void Stack< T >::push(const T &value)
 {
@@ -61,6 +58,7 @@ void Stack< T >::push(const T &value)
   }
   size_++;
 }
+
 template < typename T >
 T Stack< T >::pop()
 {
