@@ -15,6 +15,10 @@ namespace dimkashelk
       list_(),
       compare_(Compare{})
     {}
+    Dictionary(const dict_type &dict):
+      list_(dict.list_),
+      compare_(dict.compare_)
+    {}
     ~Dictionary() = default;
     dict_type &operator=(const dict_type &other)
     {
