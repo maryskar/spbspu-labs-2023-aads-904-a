@@ -87,13 +87,6 @@ Queue< std::string > getPostfixFromInfix(Queue< std::string > queue)
         postfixQueue.push(stack->pop());
       }
     }
-    //std::cout << "queue: ";
-    //queue.print();
-    //std::cout << "stack: ";
-    //stack->print();
-    //std::cout << "result: ";
-    //postfixQueue.print();
-    //std::cout << "\n";
   }
   delete stack;
   return postfixQueue;
@@ -176,7 +169,6 @@ int main(int argc, char **argv)
   }
   Stack< std::string > stack = Stack< std::string >();
   std::fstream fileInput;
-  std::basic_streambuf< char, std::char_traits< char>> *buf;
   if (argc == 2)
   {
     fileInput.open(argv[1]);
@@ -192,7 +184,6 @@ int main(int argc, char **argv)
   {
     Queue< std::string > infixNotation = splitLine(line);
     Queue< std::string > postfixQueue = getPostfixFromInfix(infixNotation);
-
     Stack< std::string > *calcStack = new Stack< std::string >;
     calcStack->push(postfixQueue.pop());
     while (calcStack->getSize() >= 1)
@@ -229,7 +220,6 @@ int main(int argc, char **argv)
     answer.push(calcStack->top_->data_);
     delete calcStack;
   }
-  std::cout << answer.isEmpty();
   if (!answer.isEmpty())
   {
     std::cout << answer.pop();
