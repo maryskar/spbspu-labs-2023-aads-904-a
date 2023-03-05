@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
         std::cerr << "<INVALID COMMAND>";
       }
     }
-    else if (command == "complement" || command == "intersect")
+    else if (command == "complement" || command == "intersect" || command == "union")
     {
       std::string new_dataset_name = "";
       std::string dataset_1 = "";
@@ -108,6 +108,10 @@ int main(int argc, char *argv[])
         else if (command == "intersect")
         {
           new_dict = data_1 & data_2;
+        }
+        else if (command == "union")
+        {
+          new_dict = data_1 | data_2;
         }
         list.pushBack(pair_type(new_dataset_name, new_dict));
       }
