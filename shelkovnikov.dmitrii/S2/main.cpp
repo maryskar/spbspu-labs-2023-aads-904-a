@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
         {
           new_dict = data_1 - data_2;
         }
-        else
+        else if (command == "intersect")
         {
           new_dict = data_1 & data_2;
         }
@@ -115,10 +115,6 @@ int main(int argc, char *argv[])
       {
         std::cerr << "<INVALID COMMAND>";
       }
-    }
-    else if (command == "intersect")
-    {
-
     }
   }
   return 0;
