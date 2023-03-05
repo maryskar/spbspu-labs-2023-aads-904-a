@@ -176,25 +176,23 @@ int main(int argc, char **argv)
   }
   Stack< std::string > stack = Stack< std::string >();
   std::fstream fileInput;
-  std::string fileIn = argv[1];
+  std::basic_streambuf< char, std::char_traits< char>> *buf;
   if (argc == 2)
   {
-    fileInput.open(fileIn);
+    fileInput.open(argv[1]);
     if (!fileInput.is_open())
     {
-      std::cerr << "Error while opening file " << fileIn << ".\n";
+      std::cerr << "Error while opening file.\n";
       return 1;
     }
     std::cin.rdbuf(fileInput.rdbuf());
   }
+  Stack< std::string > answer;
   for (std::string line; std::getline(std::cin, line);)
   {
     Queue< std::string > infixNotation = splitLine(line);
     Queue< std::string > postfixQueue = getPostfixFromInfix(infixNotation);
-    /////////////////////////////postfixQueue.print();
-    /////////////////////////////std::cout << "!!!\n";
 
-    ///
     Stack< std::string > *calcStack = new Stack< std::string >;
     calcStack->push(postfixQueue.pop());
     while (calcStack->getSize() >= 1)
@@ -208,9 +206,6 @@ int main(int argc, char **argv)
       {
         break;
       }
-      //std::cout << "  " << el << std::endl;
-      //stack->print();
-      //std::cout << "\n";
       if (isDigit(el))
       {
         calcStack->push(el);
@@ -231,12 +226,18 @@ int main(int argc, char **argv)
         }
       }
     }
-    ///
-
-    //std::cout << std::stol(calcStack->top_->data_, nullptr, 10);
-    std::cout << calcStack->top_->data_ << "\n";
+    answer.push(calcStack->top_->data_);
     delete calcStack;
-    //std::cout << calcPostfixExpression(infixNotation);
+  }
+  std::cout << answer.isEmpty();
+  if (!answer.isEmpty())
+  {
+    std::cout << answer.pop();
+    while (!answer.isEmpty())
+    {
+      std::cout << " " << answer.pop();
+    }
+    std::cout << "\n";
   }
   return 0;
 }
