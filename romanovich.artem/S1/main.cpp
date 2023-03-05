@@ -35,9 +35,9 @@ bool isDigit(const std::string &str)
 {
   return std::all_of(str.begin(), str.end(), ::isdigit);
 }
-bool operationStackPopCondition(const std::string &q, const std::string &s)
+bool stackPopCondition(const std::string &q, const std::string &s)
 {
-  return ((q == "+" || q == "-") && (s == "*" || s == "/" || s == "%"));
+  return (!((q == "+" || q == "-") && (s == "*" || s == "/" || s == "%")) && isOperator(s) && !isDigit(s));
 }
 Queue< std::string > getPostfixFromInfix(Queue< std::string > queue)
 {
@@ -64,7 +64,7 @@ Queue< std::string > getPostfixFromInfix(Queue< std::string > queue)
         }
         stack->pop();
       }
-      if (std::all_of(qEl.begin(), qEl.end(), ::isdigit))
+      if (std::all_of(qEl.begin(), qEl.end(), ::isdigit))// && !isDigit(q)
       {
         postfixQueue.push(qEl);
       }
@@ -72,13 +72,17 @@ Queue< std::string > getPostfixFromInfix(Queue< std::string > queue)
       {
         if (!stack->isEmpty())
         {
-          if (operationStackPopCondition(qEl, stack->top_->data_))
+          if (stackPopCondition(qEl, stack->top_->data_))
           {
-            postfixQueue.push(stack->pop());
+            postfixQueue.push(stack->pop());//( 8 * 6 ) - ( 10 + 6 )
           }
         }
         stack->push(qEl);
       }
+      /*stack->print();
+      queue.print();
+      postfixQueue.print();
+      std::cout << "\n";*/
     }
     else
     {
@@ -87,8 +91,8 @@ Queue< std::string > getPostfixFromInfix(Queue< std::string > queue)
         postfixQueue.push(stack->pop());
       }
     }
-    //postfixQueue.print();
   }
+  //postfixQueue.print();
   delete stack;
   return postfixQueue;
 }
@@ -182,7 +186,8 @@ int main(int argc, char **argv)
       std::cerr << "Error while opening file.\n";
       return 1;
     }
-    if (fileInput.peek() == std::ifstream::traits_type::eof()) {
+    if (fileInput.peek() == std::ifstream::traits_type::eof())
+    {
       return 1;
     }
     std::cin.rdbuf(fileInput.rdbuf());
