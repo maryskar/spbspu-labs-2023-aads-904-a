@@ -72,7 +72,7 @@ Queue< std::string > getPostfixFromInfix(Queue< std::string > queue)
       {
         if (!stack->isEmpty())
         {
-          if (operationStackPopCondition(qEl, stack->top_->data_))
+          if (!operationStackPopCondition(qEl, stack->top_->data_))
           {
             postfixQueue.push(stack->pop());
           }
@@ -87,6 +87,7 @@ Queue< std::string > getPostfixFromInfix(Queue< std::string > queue)
         postfixQueue.push(stack->pop());
       }
     }
+    //postfixQueue.print();
   }
   delete stack;
   return postfixQueue;
@@ -151,6 +152,10 @@ std::string doOperation(long long b, long long a, const std::string &oper)
       throw std::overflow_error("");
     }
   }
+  if (a < 0)
+  {
+    return std::to_string((a % b) + b);
+  }
   return std::to_string(a % b);
 }
 //
@@ -182,6 +187,10 @@ int main(int argc, char **argv)
   Stack< std::string > answer;
   for (std::string line; std::getline(std::cin, line);)
   {
+    if (line.empty())
+    {
+      continue;
+    }
     Queue< std::string > infixNotation = splitLine(line);
     Queue< std::string > postfixQueue = getPostfixFromInfix(infixNotation);
     Stack< std::string > *calcStack = new Stack< std::string >;
@@ -203,18 +212,18 @@ int main(int argc, char **argv)
       }
       else
       {
-        try
-        {
+        //try
+        //{
           std::string x = calcStack->pop();
           std::string y = calcStack->pop();
-          calcStack->push(doOperation(std::stol(x, nullptr, 10), std::stol(y, nullptr, 10), el));
-        }
-        catch (...)
-        {
-          delete calcStack;
-          std::cerr << "Error while calc.\n";
-          return 2;
-        }
+          calcStack->push(doOperation(std::stoll(x, nullptr, 10), std::stoll(y, nullptr, 10), el));
+        //}
+        //catch (...)
+        //{
+        //  delete calcStack;
+        //  std::cerr << "Error while calc.\n";
+        //  return 2;
+        //}
       }
     }
     answer.push(calcStack->top_->data_);

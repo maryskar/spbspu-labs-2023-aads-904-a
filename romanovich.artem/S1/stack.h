@@ -16,7 +16,7 @@ public:
   {
     return size_ == 0;
   }
-  int getSize()
+  long long getSize()
   {
     return size_;
   }
