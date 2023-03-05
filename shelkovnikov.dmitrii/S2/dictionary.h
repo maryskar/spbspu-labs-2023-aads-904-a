@@ -38,8 +38,11 @@ namespace dimkashelk
       {
         it++;
       }
-      std::pair< Key, Value > pair(k, value);
-      list_.insertBefore(it, pair);
+      if ((*it).first != k)
+      {
+        std::pair< Key, Value > pair(k, value);
+        list_.insertBefore(it, pair);
+      }
     }
     Value get(Key k)
     {
@@ -102,8 +105,6 @@ namespace dimkashelk
         {
           break;
         }
-        bool operand_and = operation == "&" && (*iter_first).first == (*iter_second).first;
-        bool operand_minus = operation == "-" && (*iter_first).first != (*iter_second).first;
         if (operand_and || operand_minus)
         {
           new_dict.push((*iter_first).first, (*iter_first).second);
