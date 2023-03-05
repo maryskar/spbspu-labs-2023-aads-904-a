@@ -38,7 +38,12 @@ namespace dimkashelk
       {
         it++;
       }
-      if ((*it).first != k)
+      if (it == end)
+      {
+        std::pair< Key, Value > pair(k, value);
+        list_.insertBefore(it, pair);
+      }
+      else if ((*it).first != k)
       {
         std::pair< Key, Value > pair(k, value);
         list_.insertBefore(it, pair);
@@ -105,17 +110,17 @@ namespace dimkashelk
         {
           break;
         }
-        if (operand_and || operand_minus)
-        {
-          new_dict.push((*iter_first).first, (*iter_first).second);
-        }
+        //if (operand_and || operand_minus)
+        //{
+        //  new_dict.push((*iter_first).first, (*iter_first).second);
+        //}
         iter_first++;
       }
-      while (operation == "-" && iter_first != iter_first_end)
-      {
-        new_dict.push((*iter_first).first, (*iter_first).second);
-        iter_first++;
-      }
+      //while (operation == "-" && iter_first != iter_first_end)
+      //{
+      //  new_dict.push((*iter_first).first, (*iter_first).second);
+      //  iter_first++;
+      //}
       return new_dict;
     }
   private:
