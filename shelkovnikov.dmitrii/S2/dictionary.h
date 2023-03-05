@@ -98,29 +98,18 @@ namespace dimkashelk
       dict_type new_dict;
       auto iter_first = first.list_.begin();
       auto iter_first_end = first.list_.end();
-      auto iter_second = second.list_.begin();
-      auto iter_second_end = second.list_.end();
-      while (iter_first != iter_first_end && iter_second != iter_second_end)
+      while (iter_first != iter_first_end)
       {
-        while (iter_second != iter_second_end && Compare{}((*iter_first).first, (*iter_second).first))
-        {
-          iter_second++;
-        }
-        if (iter_second == iter_second_end)
-        {
-          break;
-        }
-        //if (operand_and || operand_minus)
-        //{
-        //  new_dict.push((*iter_first).first, (*iter_first).second);
-        //}
+        new_dict.push((*iter_first).first, (*iter_first).second);
         iter_first++;
       }
-      //while (operation == "-" && iter_first != iter_first_end)
-      //{
-      //  new_dict.push((*iter_first).first, (*iter_first).second);
-      //  iter_first++;
-      //}
+      auto iter_second = second.list_.begin();
+      auto iter_second_end = second.list_.end();
+      while (iter_second != iter_second_end)
+      {
+        new_dict.push((*iter_second).first, (*iter_second).second);
+        iter_second++;
+      }
       return new_dict;
     }
   private:
