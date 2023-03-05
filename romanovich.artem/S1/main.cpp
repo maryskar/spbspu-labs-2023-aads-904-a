@@ -188,7 +188,8 @@ int main(int argc, char **argv)
     }
     if (fileInput.peek() == std::ifstream::traits_type::eof())
     {
-      return 1;
+      std::cout << "n";
+      return 0;
     }
     std::cin.rdbuf(fileInput.rdbuf());
   }
