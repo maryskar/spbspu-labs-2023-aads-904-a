@@ -42,6 +42,7 @@ content:
 
 build:
   stage: build
+  needs: []
   script:
     - '"$TEST_DIR"/build.sh'
   rules:
@@ -57,6 +58,7 @@ build:
 
 acceptance:
   stage: test
+  needs: ["build"]
   script:
     - 'if test -d out ; then find out -type f -exec touch {} + ; fi'
     - '"$TEST_DIR"/acceptance-tests.sh'
