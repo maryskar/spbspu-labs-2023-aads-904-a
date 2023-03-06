@@ -13,7 +13,7 @@ namespace tarasenko
    ~Queue();
    void push(T rhs);
    T drop();
-   bool isEmpty();
+   bool isEmpty() const;
   private:
    Node< T >* head;
    size_t size;
@@ -21,14 +21,14 @@ namespace tarasenko
 
   template< typename T >
   Queue< T >::Queue():
-          head(nullptr),
-          size(0)
+    head(nullptr),
+    size(0)
   {}
 
   template< typename T >
   Queue< T >::Queue(const Queue< T >& q):
-          head(nullptr),
-          size(q.size)
+    head(nullptr),
+    size(q.size)
   {
     Node< T >* copy = q.head;
     while (copy)

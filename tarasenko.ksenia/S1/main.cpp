@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
   }
   std::string str = "";
   tarasenko::Stack< long long > results;
-  while (std::getline(std::cin,str))
+  while (std::getline(std::cin, str))
   {
     if (str.find_first_not_of(" \n\t") == std::string::npos)
     {
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     {
       tarasenko::Queue< tarasenko::Elem > q_infix = tarasenko::transformStringToInfixQueue< tarasenko::Elem >(str);
       tarasenko::Queue< tarasenko::Elem > q_postfix = tarasenko::transformInfixQueueToPostfix(q_infix);
-      results.push(tarasenko::calculateByPostfixQueue< tarasenko::Elem >(q_postfix));
+      results.push(tarasenko::calculateByPostfixQueue(q_postfix));
     }
     catch (const std::exception& e)
     {

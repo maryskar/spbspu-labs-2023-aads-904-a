@@ -6,8 +6,7 @@
 #include "calculate.h"
 namespace tarasenko
 {
-  template< typename T >
-  long long calculateByPostfixQueue(Queue< T >& q_postfix)
+  long long calculateByPostfixQueue(Queue< Elem >& q_postfix)
   {
     Elem elem;
     Stack< Elem > s;
@@ -25,7 +24,7 @@ namespace tarasenko
           Elem res{true, 0};
           long long b = s.drop().union_elem.operand;
           long long a = s.drop().union_elem.operand;
-          res.union_elem.operand = calculate< long long >(a, b, elem.union_elem.operation);
+          res.union_elem.operand = calculate(a, b, elem.union_elem.operation);
           s.push(res);
         }
       }

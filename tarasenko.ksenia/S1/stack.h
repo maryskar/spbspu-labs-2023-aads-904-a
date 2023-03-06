@@ -13,9 +13,9 @@ namespace tarasenko
    ~Stack();
    void push(T rhs);
    T drop();
-   T& getTopElem();
+   T& getTopElem() const;
    void pop();
-   bool isEmpty();
+   bool isEmpty() const;
   private:
    Node< T >* top;
    size_t size;
@@ -23,14 +23,14 @@ namespace tarasenko
 
   template< typename T >
   Stack< T >::Stack():
-          top(nullptr),
-          size(0)
+    top(nullptr),
+    size(0)
   {}
 
   template< typename T >
   Stack< T >::Stack(const Stack< T >& s):
-          top(nullptr),
-          size(s.size)
+    top(nullptr),
+    size(s.size)
   {
     Node< T >* copy = s.top;
     while (copy)
@@ -50,7 +50,7 @@ namespace tarasenko
   }
 
   template< typename T >
-  bool Stack< T >::isEmpty()
+  bool Stack< T >::isEmpty() const
   {
     return size == 0;
   }
@@ -78,7 +78,7 @@ namespace tarasenko
   }
 
   template< typename T >
-  T& Stack< T >::getTopElem()
+  T& Stack< T >::getTopElem() const
   {
     if (size == 0)
     {
