@@ -3,5 +3,5 @@
 
 void sayMyName(std::ostream& out)
 {
-  out << "mashkin.andrew/S0";
+  out << "mashkin.andrew";
 }
