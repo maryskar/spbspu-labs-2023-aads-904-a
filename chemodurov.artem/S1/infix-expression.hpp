@@ -18,14 +18,16 @@ namespace chemodurov
     BRACE_RIGHT = ')'
   };
 
+  union OperationsOperandsBraces
+  {
+    int operand;
+    OPERATION operation;
+    BRACE brace;
+  };
+
   struct InfixExpr
   {
-    union OperationsOperandsBraces
-    {
-      int operand;
-      OPERATION operation;
-      BRACE brace;
-    };
+    OperationsOperandsBraces data;
     bool isOperand;
     bool isOperation;
   };
