@@ -3,23 +3,22 @@
 #include "mathfunc.h"
 namespace tarasenko
 {
-  template< typename T >
-  T calculate(T a, T b, char op)
+  long long calculate(long long a, long long b, char op)
   {
     switch (op)
     {
       case '+':
-        return summarize< T >(a, b);
+        return summarize(a, b);
       case '-':
-        return subtract< T >(a, b);
+        return subtract(a, b);
       case '*':
-        return multiply< T >(a, b);
+        return multiply(a, b);
       case '/':
       {
-        return divide< T >(a, b);
+        return divide(a, b);
       }
       case '%':
-        return mod< T >(a, b);
+        return mod(a, b);
       default:
         throw std::invalid_argument("Incorrect input");
     }

@@ -48,7 +48,7 @@ namespace tarasenko
   }
 
   template< typename T >
-  bool Queue< T >::isEmpty()
+  bool Queue< T >::isEmpty() const
   {
     return size == 0;
   }
