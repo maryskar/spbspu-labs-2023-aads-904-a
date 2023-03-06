@@ -15,7 +15,7 @@ int main(int argc, char ** argv)
   }
   else
   {
-    std::ifstream input;
+    std::ifstream input(argv[1]);
     if (!input)
     {
       std::cerr << "Error while reading\n";
