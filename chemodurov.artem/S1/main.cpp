@@ -23,32 +23,37 @@ int main(int argc, char ** argv)
       std::cerr << "Error while reading\n";
       return 1;
     }
-    size_t inf_size = 0;
     do
     {
       std::getline(input, line);
+      if (!input)
+      {
+        break;
+      }
+      size_t inf_size = 0;
       chemodurov::InfixExpr * inf = new chemodurov::InfixExpr[line.size() / 2 + 1];
       size_t size1 = 0;
       size_t size2 = 0;
-      while (size1)
-      try
+      while (size2 < line.size())
       {
-        int a = std::stoi(line, std::addressof(size1));
-        size1 += size2;
-        size_t temp = size1;
-        size1 = size2;
-        size2 = temp;
-        inf[inf_size++] = {a, true, false};
-      }
-      catch (const std::invalid_argument & e)
-      {
-        bool isBrace = false;
-        if (line[size1] == '(' || line[size1] == ')')
+        try
         {
-          isBrace = true;
+          int a = std::stoi(line, std::addressof(size1));
+          size1 += size2;
+          size2 = size1;
+          inf[inf_size++] = {a, true, false};
         }
-        inf[inf_size++] = {line[size1], false, !isBrace};
+        catch (const std::invalid_argument & e)
+        {
+          bool isBrace = false;
+          if (line[size1] == '(' || line[size1] == ')')
+          {
+            isBrace = true;
+          }
+          inf[inf_size++] = {line[size1], false, !isBrace};
+        }
       }
+      delete [] inf;
     }
     while (input);
   }
