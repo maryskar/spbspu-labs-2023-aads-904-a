@@ -7,7 +7,7 @@ namespace details
   {
     T data;
     NodeOfDataClass *next;
-    explicit NodeOfDataClass(T rhs):
+    explicit NodeOfDataClass(const T &rhs):
       data(rhs),
       next(nullptr)
     {}

@@ -19,13 +19,13 @@ namespace dimkashelk
         drop();
       }
     }
-    void push(T rhs)
+    void push(const T &rhs)
     {
       auto *node = new details::NodeOfDataClass< T >(rhs);
       node->next = begin_;
       begin_ = node;
     }
-    T drop()
+    T &drop()
     {
       if (empty())
       {
