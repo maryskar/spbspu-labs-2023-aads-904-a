@@ -6,8 +6,7 @@
 #include "parser.h"
 namespace dimkashelk
 {
-  template< typename T >
-  Queue< T > getQueueOfArithmeticExpression(std::string element)
+  Queue< part > getQueueOfArithmeticExpression(std::string element)
   {
     Parser parser(element);
     Queue< part > data;

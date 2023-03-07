@@ -7,8 +7,7 @@
 #include "functions.h"
 namespace dimkashelk
 {
-  template< typename T >
-  Queue< T > getPolandArithmeticExpression(Queue< T > data)
+  Queue< part > getPolandArithmeticExpression(Queue< part > data)
   {
     Queue< part > queue;
     Stack< part > stack;

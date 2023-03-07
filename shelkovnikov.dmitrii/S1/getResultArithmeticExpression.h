@@ -6,8 +6,7 @@
 #include "functions.h"
 namespace dimkashelk
 {
-  template< typename T >
-  long long getResultArithmeticExpression(Queue< T > polandExpression)
+  long long getResultArithmeticExpression(Queue< part > polandExpression)
   {
     namespace dsk = dimkashelk;
     dsk::Stack< dsk::part > remains;

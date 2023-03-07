@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     }
     try
     {
-      dsk::Queue< dsk::part > data = dsk::getQueueOfArithmeticExpression< dsk::part >(element);
+      dsk::Queue< dsk::part > data = dsk::getQueueOfArithmeticExpression(element);
       dsk::Queue< dsk::part > polandExpression = dsk::getPolandArithmeticExpression(data);
       answer.push(dsk::makePart(dsk::getResultArithmeticExpression(polandExpression)));
     }
