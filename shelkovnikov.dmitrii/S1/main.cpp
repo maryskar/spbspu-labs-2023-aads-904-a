@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     {
       break;
     }
-    if (element.find_first_not_of(" \t\n\v\f\r") == std::string::npos)
+    if (element.find_first_not_of(" \n") == std::string::npos)
     {
       continue;
     }
