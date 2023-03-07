@@ -1,4 +1,4 @@
-#include "functions.h"
+#include "getResult.h"
 #include <limits>
 #include <stdexcept>
 namespace

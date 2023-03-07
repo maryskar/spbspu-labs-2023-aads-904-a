@@ -4,7 +4,7 @@
 #include "queue.h"
 #include "partOfArithmeticExpression.h"
 #include "stack.h"
-#include "functions.h"
+#include "getResult.h"
 namespace dimkashelk
 {
   Queue< PartOfArithmeticExpression > getPolandArithmeticExpression(Queue< PartOfArithmeticExpression > data)

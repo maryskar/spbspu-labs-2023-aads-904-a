@@ -3,7 +3,7 @@
 #include "queue.h"
 #include "partOfArithmeticExpression.h"
 #include "stack.h"
-#include "functions.h"
+#include "getResult.h"
 namespace dimkashelk
 {
   long long getResultArithmeticExpression(Queue< PartOfArithmeticExpression > polandExpression)
