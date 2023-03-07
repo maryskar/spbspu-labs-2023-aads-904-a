@@ -8,12 +8,11 @@ namespace tarasenko
 {
   long long calculateByPostfixQueue(Queue< Elem >& q_postfix)
   {
-    Elem elem;
     Stack< Elem > s;
     while (!q_postfix.isEmpty())
     {
-      elem = q_postfix.drop();
-      if (elem.is_int)
+      Elem elem = q_postfix.drop();
+      if (elem.isDigit())
       {
         s.push(elem);
       }
@@ -21,15 +20,15 @@ namespace tarasenko
       {
         if (!s.isEmpty())
         {
-          Elem res{true, 0};
-          long long b = s.drop().union_elem.operand;
-          long long a = s.drop().union_elem.operand;
-          res.union_elem.operand = calculate(a, b, elem.union_elem.operation);
+          Elem res(0ll);
+          long long b = s.drop().getValueOfOperand();
+          long long a = s.drop().getValueOfOperand();
+          res = calculate(a, b, elem.getValueOfOperation());
           s.push(res);
         }
       }
     }
-    return s.drop().union_elem.operand;
+    return s.drop().getValueOfOperand();
   };
 }
 #endif

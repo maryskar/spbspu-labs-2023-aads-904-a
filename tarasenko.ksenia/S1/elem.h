@@ -2,16 +2,22 @@
 #define ELEM_H
 namespace tarasenko
 {
-  union Types
-  {
-    long long int operand;
-    char operation;
-  };
-
   struct Elem
   {
-    bool is_int;
-    Types union_elem;
+  public:
+   Elem(long long digit);
+   Elem(char op);
+   bool isDigit() const;
+   long long getValueOfOperand() const;
+   char getValueOfOperation() const;
+  private:
+   union Types
+   {
+     long long int operand;
+     char operation; // OPERATION operation
+   };
+   Types union_elem;
+   bool is_int;
   };
 }
 #endif

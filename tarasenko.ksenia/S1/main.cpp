@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     }
     try
     {
-      tarasenko::Queue< tarasenko::Elem > q_infix = tarasenko::transformStringToInfixQueue< tarasenko::Elem >(str);
+      tarasenko::Queue< tarasenko::Elem > q_infix = tarasenko::transformStringToInfixQueue(str);
       tarasenko::Queue< tarasenko::Elem > q_postfix = tarasenko::transformInfixQueueToPostfix(q_infix);
       results.push(tarasenko::calculateByPostfixQueue(q_postfix));
     }

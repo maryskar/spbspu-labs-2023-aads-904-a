@@ -23,11 +23,9 @@ namespace tarasenko
     return false;
   }
 
-  template< typename T >
-  Queue< T > transformStringToInfixQueue(std::string str)
+  Queue< Elem > transformStringToInfixQueue(std::string str)
   {
-    Queue< T > q_infix;
-    Elem elem;
+    Queue< Elem > q_infix;
     size_t i = 0;
     while (i < str.size())
     {
@@ -39,19 +37,18 @@ namespace tarasenko
       }
       if (isDigit(element))
       {
-        elem.union_elem.operand = std::stoll(element);
-        elem.is_int = true;
+        Elem elem(std::stoll(element));
+        q_infix.push(elem);
       }
       else if (element.size() == 1 && element.find_first_of("()-+/*%") != std::string::npos)
       {
-        elem.union_elem.operation = element[0];
-        elem.is_int = false;
+        Elem elem(element[0]);
+        q_infix.push(elem);
       }
       else
       {
         throw std::logic_error("Incorrect input");
       }
-      q_infix.push(elem);
       i++;
     }
     return q_infix;

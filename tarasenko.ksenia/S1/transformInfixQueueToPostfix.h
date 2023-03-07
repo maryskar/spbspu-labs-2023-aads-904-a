@@ -16,7 +16,7 @@ namespace tarasenko
     while (!q_infix.isEmpty())
     {
       Elem elem = q_infix.drop();
-      if (elem.is_int)
+      if (elem.isDigit())
       {
         q_postfix.push(elem);
       }
@@ -26,15 +26,15 @@ namespace tarasenko
         {
           s.push(elem);
         }
-        else if (elem.union_elem.operation == '(')
+        else if (elem.getValueOfOperation() == '(')
         {
           s.push(elem);
         }
-        else if (elem.union_elem.operation == ')')
+        else if (elem.getValueOfOperation() == ')')
         {
           while (!s.isEmpty())
           {
-            if (s.getTopElem().union_elem.operation == '(')
+            if (s.getTopElem().getValueOfOperation() == '(')
             {
               was_open_bracket = true;
               s.pop();
@@ -50,7 +50,7 @@ namespace tarasenko
         }
         else
         {
-          while (!s.isEmpty() && (getPriority(elem.union_elem.operation) <= getPriority(s.getTopElem().union_elem.operation)))
+          while (!s.isEmpty() && (getPriority(elem.getValueOfOperation()) <= getPriority(s.getTopElem().getValueOfOperation())))
           {
             q_postfix.push(s.drop());
           }
