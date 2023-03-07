@@ -1,4 +1,4 @@
-#include "getResult.h"
+#include "getResultOfArithmeticExpression.h"
 #include <limits>
 #include <stdexcept>
 namespace
