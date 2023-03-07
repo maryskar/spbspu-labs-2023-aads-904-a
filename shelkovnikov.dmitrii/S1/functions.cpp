@@ -33,17 +33,6 @@ namespace
     return isOverMult(first, second) || isUnderMult(first, second);
   }
 }
-bool dimkashelk::isPriorityOperation(char first, char second)
-{
-  if (first == '+' || first == '-')
-  {
-    return second == '*' || second == '/' || second == '%' || second == '(';
-  }
-  else
-  {
-    return second == '(';
-  }
-}
 long long dimkashelk::getResult(long long first, long long second, char oper)
 {
   if (oper == '+')

@@ -41,14 +41,14 @@ namespace dimkashelk
         {
           PartOfArithmeticExpression p1 = stack.drop();
           stack.push(p1);
-          if (isPriorityOperation(p1.element.operator_, p.element.operator_) || p1.element.operator_ == '(')
+          if (isGreaterPriority(p1, p) || p1.element.operator_ == '(')
           {
             stack.push(p);
           }
           else
           {
             p1 = stack.drop();
-            while (!isPriorityOperation(p1.element.operator_, p.element.operator_))
+            while (!isGreaterPriority(p1, p))
             {
               queue.push(p1);
               if (stack.empty())
