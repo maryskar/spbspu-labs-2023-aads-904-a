@@ -12,7 +12,8 @@ namespace dimkashelk
     Queue< PartOfArithmeticExpression > data;
     while (parser.hasNext())
     {
-      data.push(PartOfArithmeticExpression(parser()));
+      PartOfArithmeticExpression part(parser());
+      data.push(part);
     }
     return data;
   }

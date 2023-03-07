@@ -20,6 +20,9 @@ namespace dimkashelk
     } element;
     explicit PartOfArithmeticExpression(const std::string &str);
     explicit PartOfArithmeticExpression(long long number);
+    PartOfArithmeticExpression(const PartOfArithmeticExpression &part);
+    PartOfArithmeticExpression(PartOfArithmeticExpression &&part);
+    PartOfArithmeticExpression &operator=(const PartOfArithmeticExpression &part);
   };
   bool isGreaterPriority(const PartOfArithmeticExpression &lhs, const PartOfArithmeticExpression &rhs);
 }

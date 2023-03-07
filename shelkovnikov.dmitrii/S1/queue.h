@@ -77,17 +77,27 @@ namespace dimkashelk
         end_ = end_->next;
       }
     }
-    T &drop()
+    T &front()
     {
       if (begin_ == nullptr)
       {
         throw std::logic_error("Check");
       }
-      details::NodeOfDataClass< T > *obj = begin_;
-      T &data = obj->data;
+      return begin_->data;
+    }
+    void pop_front()
+    {
+      if (begin_ == nullptr)
+      {
+        throw std::logic_error("Check");
+      }
+      details::NodeOfDataClass< T > *node = begin_;
       begin_ = begin_->next;
-      delete obj;
-      return data;
+      if (begin_ == end_)
+      {
+        end_ = nullptr;
+      }
+      delete node;
     }
     bool empty() const
     {

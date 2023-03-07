@@ -12,19 +12,19 @@ namespace dimkashelk
     dsk::Stack< dsk::PartOfArithmeticExpression > remains;
     while (!polandExpression.empty())
     {
-      dsk::PartOfArithmeticExpression p = polandExpression.drop();
+      dsk::PartOfArithmeticExpression p = polandExpression.front();
       if (p.isDigit)
       {
         remains.push(p);
       }
       else
       {
-        dsk::PartOfArithmeticExpression p2 = remains.drop();
-        dsk::PartOfArithmeticExpression p1 = remains.drop();
+        dsk::PartOfArithmeticExpression p2 = remains.last();
+        dsk::PartOfArithmeticExpression p1 = remains.last();
         remains.push(dsk::PartOfArithmeticExpression(details::getResult(p1.element.operand_, p2.element.operand_, p.element.operator_)));
       }
     }
-    return remains.drop().element.operand_;
+    return remains.last().element.operand_;
   }
 }
 #endif

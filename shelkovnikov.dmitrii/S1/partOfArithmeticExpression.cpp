@@ -27,6 +27,20 @@ dimkashelk::PartOfArithmeticExpression::PartOfArithmeticExpression(long long num
   isDigit(true),
   element(number)
 {}
+dimkashelk::PartOfArithmeticExpression::PartOfArithmeticExpression(const PartOfArithmeticExpression &part):
+  isDigit(part.isDigit),
+  element(part.element)
+{}
+dimkashelk::PartOfArithmeticExpression::PartOfArithmeticExpression(PartOfArithmeticExpression &&part):
+  isDigit(part.isDigit),
+  element(part.element)
+{}
+dimkashelk::PartOfArithmeticExpression &dimkashelk::PartOfArithmeticExpression::operator=(const PartOfArithmeticExpression &part)
+{
+  isDigit = part.isDigit;
+  element = part.element;
+  return *this;
+}
 bool dimkashelk::isGreaterPriority(const PartOfArithmeticExpression &lhs, const PartOfArithmeticExpression &rhs)
 {
   if (lhs.isDigit || rhs.isDigit)
