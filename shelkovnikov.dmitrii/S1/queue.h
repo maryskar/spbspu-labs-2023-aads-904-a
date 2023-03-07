@@ -14,7 +14,7 @@ namespace dimkashelk
       begin_(nullptr),
       end_(nullptr)
     {}
-    Queue< T > (const Queue< T > &queue):
+    Queue< T >(const Queue< T > &queue):
       begin_(nullptr),
       end_(nullptr)
     {
@@ -24,6 +24,13 @@ namespace dimkashelk
         push(start->data);
         start = start->next;
       }
+    }
+    Queue< T >(Queue< T > &&queue):
+      begin_(queue.begin_),
+      end_(queue.end_)
+    {
+      queue.begin_ = nullptr;
+      queue.end_ = nullptr;
     }
     ~Queue()
     {
@@ -38,6 +45,19 @@ namespace dimkashelk
         push(start->data);
         start = start->next;
       }
+      return *this;
+    }
+    Queue< T > &operator=(Queue< T > &&queue)
+    {
+      if (this == std::addressof(queue))
+      {
+        return *this;
+      }
+      free();
+      begin_ = queue.begin_;
+      end_ = queue.end_;
+      queue.begin_ = nullptr;
+      queue.end_ = nullptr;
     }
     void push(const T &rhs)
     {
