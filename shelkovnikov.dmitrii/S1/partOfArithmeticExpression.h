@@ -5,14 +5,21 @@ namespace dimkashelk
 {
   struct PartOfArithmeticExpression
   {
-    explicit PartOfArithmeticExpression(std::string str);
-    explicit PartOfArithmeticExpression(long long number);
     bool isDigit;
-    union
+    union element
     {
       long long operand_;
       char operator_;
+      explicit element(long long o):
+        operand_(o)
+      {}
+      explicit element(char o):
+        operator_(o)
+      {}
+      explicit element(const std::string &str);
     } element;
+    explicit PartOfArithmeticExpression(const std::string &str);
+    explicit PartOfArithmeticExpression(long long number);
   };
 }
 #endif

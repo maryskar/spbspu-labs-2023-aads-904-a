@@ -1,20 +1,28 @@
 #include "partOfArithmeticExpression.h"
-dimkashelk::PartOfArithmeticExpression::PartOfArithmeticExpression(std::string str)
+#include <algorithm>
+namespace
 {
-  std::string data("+-*/()%");
-  if (str.size() == 1 && data.find(str) != std::string::npos)
+  bool checkDigit(const std::string &str)
   {
-    isDigit = false;
-    element.operator_ = str[0];
+    return str.find_first_not_of("0123456789") == std::string::npos;
+  }
+}
+dimkashelk::PartOfArithmeticExpression::element::element(const std::string &str)
+{
+  if (checkDigit(str))
+  {
+    operand_ = std::stoll(str);
   }
   else
   {
-    isDigit = true;
-    element.operand_ = std::stoll(str);
+    operator_ = str[0];
   }
 }
-dimkashelk::PartOfArithmeticExpression::PartOfArithmeticExpression(long long number)
-{
-  isDigit = true;
-  element.operand_ = number;
-}
+dimkashelk::PartOfArithmeticExpression::PartOfArithmeticExpression(const std::string &str):
+  isDigit(checkDigit(str)),
+  element(str)
+{}
+dimkashelk::PartOfArithmeticExpression::PartOfArithmeticExpression(long long number):
+  isDigit(true),
+  element(number)
+{}
