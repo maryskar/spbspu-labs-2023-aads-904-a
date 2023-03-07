@@ -26,10 +26,7 @@ namespace dimkashelk
     }
     ~Queue()
     {
-      while (begin_)
-      {
-        drop();
-      }
+      free();
     }
     void push(const T &rhs)
     {
@@ -64,6 +61,15 @@ namespace dimkashelk
     bool empty() const
     {
       return begin_ == nullptr;
+    }
+    void free()
+    {
+      while (begin_)
+      {
+        drop();
+      }
+      begin_ = nullptr;
+      end_ = nullptr;
     }
   private:
     details::NodeOfDataClass< T > *begin_;
