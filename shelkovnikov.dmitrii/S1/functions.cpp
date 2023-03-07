@@ -1,5 +1,6 @@
 #include "functions.h"
 #include <limits>
+#include <stdexcept>
 namespace
 {
   constexpr long long max_long_long = std::numeric_limits< long long >::max();
