@@ -1,5 +1,6 @@
 #include "partOfArithmeticExpression.h"
 #include <algorithm>
+#include <stdexcept>
 namespace
 {
   bool checkDigit(const std::string &str)
@@ -26,3 +27,15 @@ dimkashelk::PartOfArithmeticExpression::PartOfArithmeticExpression(long long num
   isDigit(true),
   element(number)
 {}
+bool dimkashelk::isGreaterPriority(const PartOfArithmeticExpression &lhs, const PartOfArithmeticExpression &rhs)
+{
+  if (lhs.isDigit || rhs.isDigit)
+  {
+    throw std::logic_error("Must be operator, not operand");
+  }
+  if (lhs.element.operator_ == '+' || lhs.element.operator_ == '-')
+  {
+    return rhs.element.operator_ == '*' || rhs.element.operator_ == '/' || rhs.element.operator_ == '%';
+  }
+  return false;
+}

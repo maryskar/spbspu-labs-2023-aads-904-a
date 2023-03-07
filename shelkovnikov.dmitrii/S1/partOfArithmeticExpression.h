@@ -21,5 +21,6 @@ namespace dimkashelk
     explicit PartOfArithmeticExpression(const std::string &str);
     explicit PartOfArithmeticExpression(long long number);
   };
+  bool isGreaterPriority(const PartOfArithmeticExpression &lhs, const PartOfArithmeticExpression &rhs);
 }
 #endif
