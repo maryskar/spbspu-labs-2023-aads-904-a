@@ -20,8 +20,8 @@ namespace dimkashelk
       details::Node< T > *start = queue.begin_;
       while (start)
       {
-        push(start->data_);
-        start = start->next_;
+        push(start->data);
+        start = start->next;
       }
     }
     ~Queue()
@@ -41,12 +41,12 @@ namespace dimkashelk
       else if (!end_)
       {
         end_ = node;
-        begin_->next_ = end_;
+        begin_->next = end_;
       }
       else
       {
-        end_->next_ = node;
-        end_ = end_->next_;
+        end_->next = node;
+        end_ = end_->next;
       }
     }
     T drop()
@@ -56,8 +56,8 @@ namespace dimkashelk
         throw std::logic_error("Check");
       }
       details::Node< T > *obj = begin_;
-      T data = obj->data_;
-      begin_ = begin_->next_;
+      T data = obj->data;
+      begin_ = begin_->next;
       delete obj;
       return data;
     }

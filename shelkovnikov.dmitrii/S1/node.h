@@ -5,11 +5,11 @@ namespace details
   template< typename T >
   struct Node
   {
-    T data_;
-    Node *next_;
+    T data;
+    Node *next;
     explicit Node(T rhs):
-      data_(rhs),
-      next_(nullptr)
+      data(rhs),
+      next(nullptr)
     {}
   };
 }

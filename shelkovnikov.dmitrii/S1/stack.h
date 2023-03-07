@@ -22,7 +22,7 @@ namespace dimkashelk
     void push(T rhs)
     {
       auto *node = new details::Node< T >(rhs);
-      node->next_ = begin_;
+      node->next = begin_;
       begin_ = node;
     }
     T drop()
@@ -31,9 +31,9 @@ namespace dimkashelk
       {
         throw std::logic_error("Check");
       }
-      T data = begin_->data_;
+      T data = begin_->data;
       auto *node = begin_;
-      begin_ = begin_->next_;
+      begin_ = begin_->next;
       delete node;
       return data;
     }
