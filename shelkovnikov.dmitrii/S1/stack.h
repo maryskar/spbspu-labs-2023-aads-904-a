@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <stdexcept>
 #include "nodeOfDataClass.h"
+#include "freeList.h"
 namespace dimkashelk
 {
   template < typename T >
@@ -14,10 +15,8 @@ namespace dimkashelk
     {}
     ~Stack()
     {
-      while (begin_)
-      {
-        drop();
-      }
+      details::freeList< T >(begin_);
+      begin_ = nullptr;
     }
     void push(const T &rhs)
     {

@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <stdexcept>
 #include "nodeOfDataClass.h"
+#include "freeList.h"
 namespace dimkashelk
 {
   template < typename T >
@@ -72,18 +73,15 @@ namespace dimkashelk
     {
       return begin_ == nullptr;
     }
-    void free()
-    {
-      while (begin_)
-      {
-        drop();
-      }
-      begin_ = nullptr;
-      end_ = nullptr;
-    }
   private:
     details::NodeOfDataClass< T > *begin_;
     details::NodeOfDataClass< T > *end_;
+    void free()
+    {
+      details::freeList< T >(begin_);
+      begin_ = nullptr;
+      end_ = nullptr;
+    }
   };
 }
 #endif
