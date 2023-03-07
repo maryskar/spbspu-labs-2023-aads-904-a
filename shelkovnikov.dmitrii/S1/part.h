@@ -5,14 +5,14 @@ namespace dimkashelk
 {
   struct part
   {
+    explicit part(std::string str);
+    explicit part(long long number);
     bool isDigit_;
     union
     {
       long long operand_;
       char operator_;
-    } element_;
+    } element_{};
   };
-  part makePart(std::string str);
-  part makePart(long long number);
 }
 #endif

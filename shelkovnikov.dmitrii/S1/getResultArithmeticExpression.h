@@ -21,7 +21,7 @@ namespace dimkashelk
       {
         dsk::part p2 = remains.drop();
         dsk::part p1 = remains.drop();
-        remains.push(dsk::makePart(dsk::getResult(p1.element_.operand_, p2.element_.operand_, p.element_.operator_)));
+        remains.push(dsk::part(dsk::getResult(p1.element_.operand_, p2.element_.operand_, p.element_.operator_)));
       }
     }
     return remains.drop().element_.operand_;

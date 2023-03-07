@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     {
       dsk::Queue< dsk::part > data = dsk::getQueueOfArithmeticExpression(element);
       dsk::Queue< dsk::part > polandExpression = dsk::getPolandArithmeticExpression(data);
-      answer.push(dsk::makePart(dsk::getResultArithmeticExpression(polandExpression)));
+      answer.push(dsk::part(dsk::getResultArithmeticExpression(polandExpression)));
     }
     catch (const std::logic_error &e)
     {

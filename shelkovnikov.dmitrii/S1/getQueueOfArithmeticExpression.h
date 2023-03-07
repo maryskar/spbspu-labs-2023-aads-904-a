@@ -12,7 +12,7 @@ namespace dimkashelk
     Queue< part > data;
     while (parser.hasNext())
     {
-      data.push(makePart(parser()));
+      data.push(part(parser()));
     }
     return data;
   }
