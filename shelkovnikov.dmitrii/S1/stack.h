@@ -2,7 +2,7 @@
 #define SPBSPU_LABS_2023_AADS_904_A_STACK_H
 #include <cstddef>
 #include <stdexcept>
-#include "node.h"
+#include "nodeOfDataClass.h"
 namespace dimkashelk
 {
   template < typename T >
@@ -21,7 +21,7 @@ namespace dimkashelk
     }
     void push(T rhs)
     {
-      auto *node = new details::NodeOfDataStruct< T >(rhs);
+      auto *node = new details::NodeOfDataClass< T >(rhs);
       node->next = begin_;
       begin_ = node;
     }
@@ -42,7 +42,7 @@ namespace dimkashelk
       return begin_ == nullptr;
     }
   private:
-    details::NodeOfDataStruct< T > *begin_;
+    details::NodeOfDataClass< T > *begin_;
   };
 }
 #endif

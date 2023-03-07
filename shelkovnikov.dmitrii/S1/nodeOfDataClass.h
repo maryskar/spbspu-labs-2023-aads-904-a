@@ -3,11 +3,11 @@
 namespace details
 {
   template< typename T >
-  struct NodeOfDataStruct
+  struct NodeOfDataClass
   {
     T data;
-    NodeOfDataStruct *next;
-    explicit NodeOfDataStruct(T rhs):
+    NodeOfDataClass *next;
+    explicit NodeOfDataClass(T rhs):
       data(rhs),
       next(nullptr)
     {}

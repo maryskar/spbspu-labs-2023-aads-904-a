@@ -2,7 +2,7 @@
 #define SPBSPU_LABS_2023_AADS_904_A_QUEUE_H
 #include <cstddef>
 #include <stdexcept>
-#include "node.h"
+#include "nodeOfDataClass.h"
 namespace dimkashelk
 {
   template < typename T >
@@ -17,7 +17,7 @@ namespace dimkashelk
       begin_(nullptr),
       end_(nullptr)
     {
-      details::NodeOfDataStruct< T > *start = queue.begin_;
+      details::NodeOfDataClass< T > *start = queue.begin_;
       while (start)
       {
         push(start->data);
@@ -33,7 +33,7 @@ namespace dimkashelk
     }
     void push(T rhs)
     {
-      auto  *node = new details::NodeOfDataStruct< T >(rhs);
+      auto  *node = new details::NodeOfDataClass< T >(rhs);
       if (empty())
       {
         begin_ = node;
@@ -55,7 +55,7 @@ namespace dimkashelk
       {
         throw std::logic_error("Check");
       }
-      details::NodeOfDataStruct< T > *obj = begin_;
+      details::NodeOfDataClass< T > *obj = begin_;
       T data = obj->data;
       begin_ = begin_->next;
       delete obj;
@@ -66,8 +66,8 @@ namespace dimkashelk
       return begin_ == nullptr;
     }
   private:
-    details::NodeOfDataStruct< T > *begin_;
-    details::NodeOfDataStruct< T > *end_;
+    details::NodeOfDataClass< T > *begin_;
+    details::NodeOfDataClass< T > *end_;
   };
 }
 #endif
