@@ -7,7 +7,7 @@
 #include "getResultOfArithmeticExpression.h"
 namespace dimkashelk
 {
-  Queue< PartOfArithmeticExpression > getPolandArithmeticExpression(Queue< PartOfArithmeticExpression > data)
+  Queue< PartOfArithmeticExpression > getPolandArithmeticExpression(Queue< PartOfArithmeticExpression > &data)
   {
     Queue< PartOfArithmeticExpression > queue;
     Stack< PartOfArithmeticExpression > stack;

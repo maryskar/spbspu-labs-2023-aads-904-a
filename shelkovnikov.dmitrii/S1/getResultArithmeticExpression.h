@@ -6,7 +6,7 @@
 #include "getResultOfArithmeticExpression.h"
 namespace dimkashelk
 {
-  long long getResultArithmeticExpression(Queue< PartOfArithmeticExpression > polandExpression)
+  long long getResultArithmeticExpression(Queue< PartOfArithmeticExpression > &polandExpression)
   {
     namespace dsk = dimkashelk;
     dsk::Stack< dsk::PartOfArithmeticExpression > remains;
@@ -21,7 +21,7 @@ namespace dimkashelk
       {
         dsk::PartOfArithmeticExpression p2 = remains.drop();
         dsk::PartOfArithmeticExpression p1 = remains.drop();
-        remains.push(dsk::PartOfArithmeticExpression(dsk::getResult(p1.element.operand_, p2.element.operand_, p.element.operator_)));
+        remains.push(dsk::PartOfArithmeticExpression(details::getResult(p1.element.operand_, p2.element.operand_, p.element.operator_)));
       }
     }
     return remains.drop().element.operand_;

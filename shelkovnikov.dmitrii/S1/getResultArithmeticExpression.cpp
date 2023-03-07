@@ -33,7 +33,7 @@ namespace
     return isOverMult(first, second) || isUnderMult(first, second);
   }
 }
-long long dimkashelk::getResult(long long first, long long second, char oper)
+long long details::getResult(long long first, long long second, char oper)
 {
   if (oper == '+')
   {
