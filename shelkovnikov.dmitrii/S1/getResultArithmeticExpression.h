@@ -1,27 +1,27 @@
 #ifndef SPBSPU_LABS_2023_AADS_904_A_GETRESULTARITHMETICEXPRESSION_H
 #define SPBSPU_LABS_2023_AADS_904_A_GETRESULTARITHMETICEXPRESSION_H
 #include "queue.h"
-#include "part.h"
+#include "partOfArithmeticExpression.h"
 #include "stack.h"
 #include "functions.h"
 namespace dimkashelk
 {
-  long long getResultArithmeticExpression(Queue< part > polandExpression)
+  long long getResultArithmeticExpression(Queue< PartOfArithmeticExpression > polandExpression)
   {
     namespace dsk = dimkashelk;
-    dsk::Stack< dsk::part > remains;
+    dsk::Stack< dsk::PartOfArithmeticExpression > remains;
     while (!polandExpression.empty())
     {
-      dsk::part p = polandExpression.drop();
+      dsk::PartOfArithmeticExpression p = polandExpression.drop();
       if (p.isDigit_)
       {
         remains.push(p);
       }
       else
       {
-        dsk::part p2 = remains.drop();
-        dsk::part p1 = remains.drop();
-        remains.push(dsk::part(dsk::getResult(p1.element_.operand_, p2.element_.operand_, p.element_.operator_)));
+        dsk::PartOfArithmeticExpression p2 = remains.drop();
+        dsk::PartOfArithmeticExpression p1 = remains.drop();
+        remains.push(dsk::PartOfArithmeticExpression(dsk::getResult(p1.element_.operand_, p2.element_.operand_, p.element_.operator_)));
       }
     }
     return remains.drop().element_.operand_;

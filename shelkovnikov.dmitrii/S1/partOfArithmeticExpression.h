@@ -3,10 +3,10 @@
 #include <string>
 namespace dimkashelk
 {
-  struct part
+  struct PartOfArithmeticExpression
   {
-    explicit part(std::string str);
-    explicit part(long long number);
+    explicit PartOfArithmeticExpression(std::string str);
+    explicit PartOfArithmeticExpression(long long number);
     bool isDigit_;
     union
     {

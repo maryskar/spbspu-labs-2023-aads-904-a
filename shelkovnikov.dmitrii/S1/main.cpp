@@ -3,7 +3,7 @@
 #include <string>
 #include "queue.h"
 #include "stack.h"
-#include "part.h"
+#include "partOfArithmeticExpression.h"
 #include "getPolandArithmeticExpression.h"
 #include "getQueueOfArithmeticExpression.h"
 #include "getResultArithmeticExpression.h"
@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     std::cin.rdbuf(in.rdbuf());
   }
   std::string element;
-  dsk::Stack< dsk::part > answer;
+  dsk::Stack< dsk::PartOfArithmeticExpression > answer;
   while (std::cin)
   {
     std::getline(std::cin, element);
@@ -31,9 +31,9 @@ int main(int argc, char *argv[])
     }
     try
     {
-      dsk::Queue< dsk::part > data = dsk::getQueueOfArithmeticExpression(element);
-      dsk::Queue< dsk::part > polandExpression = dsk::getPolandArithmeticExpression(data);
-      answer.push(dsk::part(dsk::getResultArithmeticExpression(polandExpression)));
+      dsk::Queue< dsk::PartOfArithmeticExpression > data = dsk::getQueueOfArithmeticExpression(element);
+      dsk::Queue< dsk::PartOfArithmeticExpression > polandExpression = dsk::getPolandArithmeticExpression(data);
+      answer.push(dsk::PartOfArithmeticExpression(dsk::getResultArithmeticExpression(polandExpression)));
     }
     catch (const std::logic_error &e)
     {

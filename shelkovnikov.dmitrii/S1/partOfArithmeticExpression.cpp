@@ -1,5 +1,5 @@
-#include "part.h"
-dimkashelk::part::part(std::string str)
+#include "partOfArithmeticExpression.h"
+dimkashelk::PartOfArithmeticExpression::PartOfArithmeticExpression(std::string str)
 {
   std::string data("+-*/()%");
   if (str.size() == 1 && data.find(str) != std::string::npos)
@@ -13,7 +13,7 @@ dimkashelk::part::part(std::string str)
     element_.operand_ = std::stoll(str);
   }
 }
-dimkashelk::part::part(long long number)
+dimkashelk::PartOfArithmeticExpression::PartOfArithmeticExpression(long long number)
 {
   isDigit_ = true;
   element_.operand_ = number;

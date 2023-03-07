@@ -2,17 +2,17 @@
 #define SPBSPU_LABS_2023_AADS_904_A_GETQUEUEOFARITHMETICEXPRESSION_H
 #include <string>
 #include "queue.h"
-#include "part.h"
+#include "partOfArithmeticExpression.h"
 #include "parser.h"
 namespace dimkashelk
 {
-  Queue< part > getQueueOfArithmeticExpression(std::string element)
+  Queue< PartOfArithmeticExpression > getQueueOfArithmeticExpression(std::string element)
   {
     Parser parser(element);
-    Queue< part > data;
+    Queue< PartOfArithmeticExpression > data;
     while (parser.hasNext())
     {
-      data.push(part(parser()));
+      data.push(PartOfArithmeticExpression(parser()));
     }
     return data;
   }
