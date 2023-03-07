@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     in.open(argv[1]);
     std::cin.rdbuf(in.rdbuf());
   }
-  std::string element = "";
+  std::string element;
   dsk::Stack< dsk::part > answer;
   while (std::cin)
   {

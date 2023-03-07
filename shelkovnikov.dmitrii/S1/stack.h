@@ -21,7 +21,7 @@ namespace dimkashelk
     }
     void push(T rhs)
     {
-      Node< T > *node = new Node< T >(rhs);
+      auto *node = new details::Node< T >(rhs);
       node->next_ = begin_;
       begin_ = node;
     }
@@ -42,7 +42,7 @@ namespace dimkashelk
       return begin_ == nullptr;
     }
   private:
-    Node< T > *begin_;
+    details::Node< T > *begin_;
   };
 }
 #endif

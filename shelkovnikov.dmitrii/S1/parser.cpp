@@ -15,7 +15,7 @@ dimkashelk::Parser::Parser(std::string str):
 }
 std::string dimkashelk::Parser::operator()()
 {
-  std::string res = "";
+  std::string res;
   while (data_[i_] && !std::isspace(data_[i_]))
   {
     res.push_back(data_[i_]);
