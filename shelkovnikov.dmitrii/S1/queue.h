@@ -28,6 +28,16 @@ namespace dimkashelk
     {
       free();
     }
+    Queue< T > &operator=(const Queue< T > &queue)
+    {
+      free();
+      details::NodeOfDataClass< T > *start = queue.begin_;
+      while (start)
+      {
+        push(start->data);
+        start = start->next;
+      }
+    }
     void push(const T &rhs)
     {
       auto  *node = new details::NodeOfDataClass< T >(rhs);
