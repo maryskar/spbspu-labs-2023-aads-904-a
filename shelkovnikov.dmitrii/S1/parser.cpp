@@ -1,17 +1,15 @@
 #include "parser.h"
 #include <stdexcept>
 dimkashelk::Parser::Parser(std::string str):
-  data_(str),
+  data_(std::move(str)),
   i_(0)
 {
-  while (std::isspace(data_[i_]))
-  {
-    i_++;
-  }
-  if (!data_[i_])
+  size_t firstNotSpace = data_.find_first_not_of(" \n");
+  if (firstNotSpace == std::string::npos)
   {
     throw std::logic_error("String must contains elements");
   }
+  data_ = data_.substr(firstNotSpace);
 }
 std::string dimkashelk::Parser::operator()()
 {
