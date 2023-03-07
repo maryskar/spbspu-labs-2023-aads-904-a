@@ -49,7 +49,7 @@ namespace dimkashelk
         end_ = end_->next;
       }
     }
-    T drop()
+    T &drop()
     {
       if (begin_ == nullptr)
       {
