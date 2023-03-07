@@ -43,11 +43,11 @@ int main(int argc, char *argv[])
   }
   if (!answer.empty())
   {
-    std::cout << answer.drop().element_.operand_;
+    std::cout << answer.drop().element.operand_;
   }
   while (!answer.empty())
   {
-    std::cout << " " << answer.drop().element_.operand_;
+    std::cout << " " << answer.drop().element.operand_;
   }
   std::cout << "\n";
   return 0;

@@ -13,7 +13,7 @@ namespace dimkashelk
     while (!polandExpression.empty())
     {
       dsk::PartOfArithmeticExpression p = polandExpression.drop();
-      if (p.isDigit_)
+      if (p.isDigit)
       {
         remains.push(p);
       }
@@ -21,10 +21,10 @@ namespace dimkashelk
       {
         dsk::PartOfArithmeticExpression p2 = remains.drop();
         dsk::PartOfArithmeticExpression p1 = remains.drop();
-        remains.push(dsk::PartOfArithmeticExpression(dsk::getResult(p1.element_.operand_, p2.element_.operand_, p.element_.operator_)));
+        remains.push(dsk::PartOfArithmeticExpression(dsk::getResult(p1.element.operand_, p2.element.operand_, p.element.operator_)));
       }
     }
-    return remains.drop().element_.operand_;
+    return remains.drop().element.operand_;
   }
 }
 #endif

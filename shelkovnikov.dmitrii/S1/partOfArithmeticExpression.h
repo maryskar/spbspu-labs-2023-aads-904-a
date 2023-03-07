@@ -7,12 +7,12 @@ namespace dimkashelk
   {
     explicit PartOfArithmeticExpression(std::string str);
     explicit PartOfArithmeticExpression(long long number);
-    bool isDigit_;
+    bool isDigit;
     union
     {
       long long operand_;
       char operator_;
-    } element_{};
+    } element;
   };
 }
 #endif

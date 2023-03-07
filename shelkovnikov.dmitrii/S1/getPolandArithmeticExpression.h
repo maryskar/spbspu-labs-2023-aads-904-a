@@ -14,16 +14,16 @@ namespace dimkashelk
     while (!data.empty())
     {
       PartOfArithmeticExpression p = data.drop();
-      if (!p.isDigit_)
+      if (!p.isDigit)
       {
-        if (p.element_.operator_ == ')')
+        if (p.element.operator_ == ')')
         {
           if (stack.empty())
           {
             throw std::logic_error("Check expression");
           }
           PartOfArithmeticExpression p1 = stack.drop();
-          while (p1.element_.operator_ != '(')
+          while (p1.element.operator_ != '(')
           {
             queue.push(p1);
             if (stack.empty())
@@ -41,14 +41,14 @@ namespace dimkashelk
         {
           PartOfArithmeticExpression p1 = stack.drop();
           stack.push(p1);
-          if (isPriorityOperation(p1.element_.operator_, p.element_.operator_) || p1.element_.operator_ == '(')
+          if (isPriorityOperation(p1.element.operator_, p.element.operator_) || p1.element.operator_ == '(')
           {
             stack.push(p);
           }
           else
           {
             p1 = stack.drop();
-            while (!isPriorityOperation(p1.element_.operator_, p.element_.operator_))
+            while (!isPriorityOperation(p1.element.operator_, p.element.operator_))
             {
               queue.push(p1);
               if (stack.empty())

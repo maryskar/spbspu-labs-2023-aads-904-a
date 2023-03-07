@@ -4,17 +4,17 @@ dimkashelk::PartOfArithmeticExpression::PartOfArithmeticExpression(std::string s
   std::string data("+-*/()%");
   if (str.size() == 1 && data.find(str) != std::string::npos)
   {
-    isDigit_ = false;
-    element_.operator_ = str[0];
+    isDigit = false;
+    element.operator_ = str[0];
   }
   else
   {
-    isDigit_ = true;
-    element_.operand_ = std::stoll(str);
+    isDigit = true;
+    element.operand_ = std::stoll(str);
   }
 }
 dimkashelk::PartOfArithmeticExpression::PartOfArithmeticExpression(long long number)
 {
-  isDigit_ = true;
-  element_.operand_ = number;
+  isDigit = true;
+  element.operand_ = number;
 }
