@@ -31,7 +31,7 @@ namespace dimkashelk
       {
         throw std::logic_error("Check");
       }
-      T data = begin_->data;
+      T &data = begin_->data;
       auto *node = begin_;
       begin_ = begin_->next;
       delete node;

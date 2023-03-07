@@ -63,7 +63,7 @@ namespace dimkashelk
         throw std::logic_error("Check");
       }
       details::NodeOfDataClass< T > *obj = begin_;
-      T data = obj->data;
+      T &data = obj->data;
       begin_ = begin_->next;
       delete obj;
       return data;
