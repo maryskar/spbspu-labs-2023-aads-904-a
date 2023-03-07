@@ -17,7 +17,7 @@ namespace dimkashelk
       begin_(nullptr),
       end_(nullptr)
     {
-      details::Node< T > *start = queue.begin_;
+      details::NodeOfDataStruct< T > *start = queue.begin_;
       while (start)
       {
         push(start->data);
@@ -33,7 +33,7 @@ namespace dimkashelk
     }
     void push(T rhs)
     {
-      auto  *node = new details::Node< T >(rhs);
+      auto  *node = new details::NodeOfDataStruct< T >(rhs);
       if (empty())
       {
         begin_ = node;
@@ -55,7 +55,7 @@ namespace dimkashelk
       {
         throw std::logic_error("Check");
       }
-      details::Node< T > *obj = begin_;
+      details::NodeOfDataStruct< T > *obj = begin_;
       T data = obj->data;
       begin_ = begin_->next;
       delete obj;
@@ -66,8 +66,8 @@ namespace dimkashelk
       return begin_ == nullptr;
     }
   private:
-    details::Node< T > *begin_;
-    details::Node< T > *end_;
+    details::NodeOfDataStruct< T > *begin_;
+    details::NodeOfDataStruct< T > *end_;
   };
 }
 #endif
