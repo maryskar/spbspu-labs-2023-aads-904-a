@@ -16,18 +16,24 @@ dimkashelk::Parser::Parser(std::string str):
 std::string dimkashelk::Parser::operator()()
 {
   std::string res;
-  while (data_[i_] && !std::isspace(data_[i_]))
+  size_t start = data_.find_first_not_of(" \n");
+  if (start == std::string::npos)
   {
-    res.push_back(data_[i_]);
-    i_++;
+    return res;
   }
+  data_ = data_.substr(start);
+  size_t end = data_.find_first_of(" \n");
+  if (end == std::string::npos)
+  {
+    res = data_;
+    data_ = "";
+    return res;
+  }
+  res = data_.substr(0, end);
+  data_ = data_.substr(end);
   return res;
 }
-bool dimkashelk::Parser::hasNext()
+bool dimkashelk::Parser::hasNext() const
 {
-  while (data_[i_] && std::isspace(data_[i_]))
-  {
-    i_++;
-  }
-  return data_[i_];
+  return data_.find_first_not_of(" \n") != std::string::npos;
 }

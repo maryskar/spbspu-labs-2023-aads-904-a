@@ -9,7 +9,7 @@ namespace dimkashelk
   public:
     explicit Parser(std::string str);
     std::string operator()();
-    bool hasNext();
+    bool hasNext() const;
   private:
     std::string data_;
     size_t i_;
