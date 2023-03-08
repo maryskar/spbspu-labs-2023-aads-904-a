@@ -10,7 +10,7 @@
 int main(int argc, char *argv[])
 {
   std::ifstream input;
-  if (argc == 2)
+  if (argc > 1)
   {
     input.open(argv[1]);
     if (!(input.is_open()))
@@ -18,11 +18,11 @@ int main(int argc, char *argv[])
       std::cout << "File not found\n";
       return 1;
     }
-    std::cin.rdbuf(input.rdbuf());
   }
+  std::istream& in = (argc == 2) ? input : std::cin;
   std::string str = "";
   tarasenko::Stack< long long > results;
-  while (std::getline(std::cin, str))
+  while (std::getline(in, str))
   {
     if (str.find_first_not_of(" \n\t") == std::string::npos)
     {
