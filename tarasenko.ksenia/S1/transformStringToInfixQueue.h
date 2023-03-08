@@ -42,7 +42,8 @@ namespace tarasenko
       }
       else if (element.size() == 1 && element.find_first_of("()-+/*%") != std::string::npos)
       {
-        Elem elem(element[0]);
+        Operation op(element[0]);
+        Elem elem(op);
         q_infix.push(elem);
       }
       else

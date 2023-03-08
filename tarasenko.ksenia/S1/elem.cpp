@@ -1,23 +1,23 @@
 #include "elem.h"
 #include <stdexcept>
 
-tarasenko::Elem::Elem(long long digit)
-{
-  union_elem.operand = digit;
-  is_int = true;
-}
+tarasenko::Elem::Elem(long long digit):
+  union_elem{digit},
+  is_int(true)
+{}
 
-tarasenko::Elem::Elem(char op)
+tarasenko::Elem::Elem(tarasenko::Operation op):
+  union_elem{0ll},
+  is_int(false)
 {
-  union_elem.operation = op;
-  is_int = false;
+  union_elem.operation = Operation(op);
 }
 bool tarasenko::Elem::isDigit() const
 {
   return is_int;
 }
 
-long long tarasenko::Elem::getValueOfOperand() const
+long long tarasenko::Elem::getOperand() const
 {
   if (is_int)
   {
@@ -29,7 +29,7 @@ long long tarasenko::Elem::getValueOfOperand() const
   }
 }
 
-char tarasenko::Elem::getValueOfOperation() const
+tarasenko::Operation tarasenko::Elem::getOperation() const
 {
   if (is_int)
   {

@@ -1,21 +1,23 @@
 #ifndef ELEM_H
 #define ELEM_H
+#include "type_operation.h"
 namespace tarasenko
 {
-  struct Elem
+  union Types
+  {
+    long long operand;
+    Operation operation;
+  };
+
+  class Elem
   {
   public:
    Elem(long long digit);
-   Elem(char op);
+   Elem(Operation op);
    bool isDigit() const;
-   long long getValueOfOperand() const;
-   char getValueOfOperation() const;
+   long long getOperand() const;
+   Operation getOperation() const;
   private:
-   union Types
-   {
-     long long int operand;
-     char operation; // OPERATION operation
-   };
    Types union_elem;
    bool is_int;
   };

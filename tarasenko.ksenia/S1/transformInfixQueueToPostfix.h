@@ -4,7 +4,6 @@
 #include "queue.h"
 #include "elem.h"
 #include "stack.h"
-#include "getpriority.h"
 namespace tarasenko
 {
   template< typename T >
@@ -26,15 +25,15 @@ namespace tarasenko
         {
           s.push(elem);
         }
-        else if (elem.getValueOfOperation() == '(')
+        else if (elem.getOperation().getValue() == '(')
         {
           s.push(elem);
         }
-        else if (elem.getValueOfOperation() == ')')
+        else if (elem.getOperation().getValue() == ')')
         {
           while (!s.isEmpty())
           {
-            if (s.getTopElem().getValueOfOperation() == '(')
+            if (s.getTopElem().getOperation().getValue() == '(')
             {
               was_open_bracket = true;
               s.pop();
@@ -50,7 +49,7 @@ namespace tarasenko
         }
         else
         {
-          while (!s.isEmpty() && (getPriority(elem.getValueOfOperation()) <= getPriority(s.getTopElem().getValueOfOperation())))
+          while (!s.isEmpty() && (elem.getOperation() <= s.getTopElem().getOperation()))
           {
             q_postfix.push(s.drop());
           }

@@ -20,15 +20,14 @@ namespace tarasenko
       {
         if (!s.isEmpty())
         {
-          Elem res(0ll);
-          long long b = s.drop().getValueOfOperand();
-          long long a = s.drop().getValueOfOperand();
-          res = calculate(a, b, elem.getValueOfOperation());
+          long long b = s.drop().getOperand();
+          long long a = s.drop().getOperand();
+          Elem res = calculate(a, b, elem.getOperation().getValue());
           s.push(res);
         }
       }
     }
-    return s.drop().getValueOfOperand();
+    return s.drop().getOperand();
   };
 }
 #endif
