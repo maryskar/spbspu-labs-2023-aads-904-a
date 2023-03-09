@@ -43,9 +43,7 @@ namespace dimkashelk
         else
         {
           PartOfArithmeticExpression p1 = stack.last();
-          stack.pop_back();
-          stack.push(p1);
-          if (isGreaterPriority(p1, p) || p1.element.operator_ == '(')
+          if (isGreaterPriority(p1, p) || p1.element.operator_ == '(' || p.element.operator_ == '(')
           {
             stack.push(p);
           }
