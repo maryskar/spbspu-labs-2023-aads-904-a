@@ -17,7 +17,7 @@ namespace dimkashelk
       data.pop_front();
       if (!p.isDigit)
       {
-        if (p.element.operator_ == ')')
+        if (p.isBracket && p.element.operator_ == ')')
         {
           if (stack.empty())
           {
@@ -25,7 +25,7 @@ namespace dimkashelk
           }
           PartOfArithmeticExpression p1 = stack.last();
           stack.pop_back();
-          while (p1.element.operator_ != '(')
+          while (!p1.isBracket && p1.element.bracket_ != '(')
           {
             queue.push(p1);
             if (stack.empty())
@@ -43,7 +43,7 @@ namespace dimkashelk
         else
         {
           PartOfArithmeticExpression p1 = stack.last();
-          if (isGreaterPriority(p1, p) || p1.element.operator_ == '(' || p.element.operator_ == '(')
+          if (p1.isBracket || p.isBracket || isGreaterPriority(p1, p))
           {
             stack.push(p);
           }
