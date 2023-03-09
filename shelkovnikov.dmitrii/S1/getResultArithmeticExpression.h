@@ -20,11 +20,15 @@ namespace dimkashelk
       else
       {
         dsk::PartOfArithmeticExpression p2 = remains.last();
+        remains.pop_back();
         dsk::PartOfArithmeticExpression p1 = remains.last();
+        remains.pop_back();
         remains.push(dsk::PartOfArithmeticExpression(details::getResult(p1.element.operand_, p2.element.operand_, p.element.operator_)));
       }
     }
-    return remains.last().element.operand_;
+    auto res = remains.last().element.operand_;
+    remains.pop_back();
+    return res;
   }
 }
 #endif

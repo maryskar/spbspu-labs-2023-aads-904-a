@@ -23,6 +23,7 @@ namespace dimkashelk
             throw std::logic_error("Check expression");
           }
           PartOfArithmeticExpression p1 = stack.last();
+          stack.pop_back();
           while (p1.element.operator_ != '(')
           {
             queue.push(p1);
@@ -31,6 +32,7 @@ namespace dimkashelk
               throw std::logic_error("Check expression");
             }
             p1 = stack.last();
+            stack.pop_back();
           }
         }
         else if (stack.empty())
@@ -40,6 +42,7 @@ namespace dimkashelk
         else
         {
           PartOfArithmeticExpression p1 = stack.last();
+          stack.pop_back();
           stack.push(p1);
           if (isGreaterPriority(p1, p) || p1.element.operator_ == '(')
           {
@@ -48,6 +51,7 @@ namespace dimkashelk
           else
           {
             p1 = stack.last();
+            stack.pop_back();
             while (!isGreaterPriority(p1, p))
             {
               queue.push(p1);
@@ -56,6 +60,7 @@ namespace dimkashelk
                 break;
               }
               p1 = stack.last();
+              stack.pop_back();
             }
             stack.push(p);
           }
@@ -69,6 +74,7 @@ namespace dimkashelk
     while (!stack.empty())
     {
       queue.push(stack.last());
+      stack.pop_back();
     }
     return queue;
   }

@@ -24,17 +24,23 @@ namespace dimkashelk
       node->next = begin_;
       begin_ = node;
     }
-    T &drop()
+    T &last()
     {
       if (empty())
       {
         throw std::logic_error("Check");
       }
-      T &data = begin_->data;
-      auto *node = begin_;
+      return begin_->data;
+    }
+    void pop_back()
+    {
+      if (empty())
+      {
+        throw std::logic_error("Check");
+      }
+      details::NodeOfDataClass< T > *node = begin_;
       begin_ = begin_->next;
       delete node;
-      return data;
     }
     bool empty() const
     {
