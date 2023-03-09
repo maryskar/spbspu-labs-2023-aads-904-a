@@ -14,6 +14,7 @@ namespace dimkashelk
     while (!data.empty())
     {
       PartOfArithmeticExpression p = data.front();
+      data.pop_front();
       if (!p.isDigit)
       {
         if (p.element.operator_ == ')')

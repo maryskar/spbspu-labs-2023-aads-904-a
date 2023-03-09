@@ -13,6 +13,7 @@ namespace dimkashelk
     while (!polandExpression.empty())
     {
       dsk::PartOfArithmeticExpression p = polandExpression.front();
+      polandExpression.pop_front();
       if (p.isDigit)
       {
         remains.push(p);
