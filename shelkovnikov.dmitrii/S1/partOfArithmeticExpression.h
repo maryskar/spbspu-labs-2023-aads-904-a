@@ -6,10 +6,12 @@ namespace dimkashelk
   struct PartOfArithmeticExpression
   {
     bool isDigit;
+    bool isBracket;
     union element
     {
       long long operand_;
       char operator_;
+      char bracket_;
       explicit element(long long o):
         operand_(o)
       {}
