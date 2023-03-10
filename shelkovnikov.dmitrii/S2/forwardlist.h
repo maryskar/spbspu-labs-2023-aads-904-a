@@ -2,28 +2,32 @@
 #define SPBSPU_LABS_2023_AADS_904_A_FORWARDLIST_H
 #include <cstddef>
 #include <cassert>
+namespace details
+{
+  template< typename T >
+  struct Node
+  {
+    T data_;
+    Node *next_;
+    Node *prev_;
+    explicit Node(const T &data):
+      data_(data),
+      next_(nullptr),
+      prev_(nullptr)
+    {}
+  };
+}
 namespace dimkashelk
 {
   template < class T >
   class ForwardList
   {
   public:
-    struct Node
-    {
-      T data_;
-      Node *next_;
-      Node *prev_;
-      explicit Node(T data):
-        data_(data),
-        next_(nullptr),
-        prev_(nullptr)
-      {}
-    };
     class Iterator
     {
     friend class ForwardList< T >;
     public:
-      explicit Iterator(Node *ptr):
+      explicit Iterator(details::Node< T > *ptr):
         ptr_(ptr)
       {}
       T operator*() const
@@ -51,7 +55,7 @@ namespace dimkashelk
         return a.ptr_ != b.ptr_;
       };
     private:
-      Node *ptr_;
+      details::Node< T > *ptr_;
     };
     ForwardList():
       begin_(nullptr),
@@ -61,7 +65,7 @@ namespace dimkashelk
       begin_(nullptr),
       end_(nullptr)
     {
-      Node *start = forwardList.begin_;
+      details::Node< T > *start = forwardList.begin_;
       while (start)
       {
         pushBack(start->data_);
@@ -79,13 +83,13 @@ namespace dimkashelk
     {
       free();
     }
-    void pushBack(T data)
+    void pushBack(const T &data)
     {
       insertBefore(end(), data);
     }
-    void insertBefore(ForwardList< T >::Iterator iterator, T data)
+    void insertBefore(ForwardList< T >::Iterator iterator, const T &data)
     {
-      Node *new_node = new Node(data);
+      auto *new_node = new details::Node< T >(data);
       if (!begin_)
       {
         begin_ = new_node;
@@ -132,7 +136,7 @@ namespace dimkashelk
       {
         if (iterator.ptr_ == begin_)
         {
-          Node *node = begin_->next_;
+          details::Node< T > *node = begin_->next_;
           delete begin_;
           begin_ = node;
           if (begin_)
@@ -144,7 +148,7 @@ namespace dimkashelk
         else if (iterator.ptr_ == end_)
         {
           end_->prev_->next_ = nullptr;
-          Node *new_node = end_->prev_;
+          details::Node< T > *new_node = end_->prev_;
           delete end_;
           if (new_node != begin_)
           {
@@ -160,7 +164,7 @@ namespace dimkashelk
         {
           iterator.ptr_->prev_->next_ = iterator.ptr_->next_;
           iterator.ptr_->next_->prev_ = iterator.ptr_->prev_;
-          Node *new_ptr_ = iterator.ptr_->next_;
+          details::Node< T > *new_ptr_ = iterator.ptr_->next_;
           delete iterator.ptr_;
           iterator.ptr_ = new_ptr_;
         }
@@ -186,8 +190,8 @@ namespace dimkashelk
       return Iterator(nullptr);
     }
   private:
-    Node *begin_;
-    Node *end_;
+    details::Node< T > *begin_;
+    details::Node< T > *end_;
   };
 }
 #endif

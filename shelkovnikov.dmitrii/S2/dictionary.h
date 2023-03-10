@@ -34,7 +34,7 @@ namespace dimkashelk
       }
       return *this;
     }
-    void push(Key k, Value value)
+    void push(const Key &k, const Value &value)
     {
       auto it = list_.begin();
       auto end = list_.end();
@@ -57,27 +57,13 @@ namespace dimkashelk
         (*it).second = value;
       }
     }
-    Value get(Key k)
+    Value get(const Key &k)
     {
       for (auto i = list_.begin(), end = list_.end(); i != end; i++)
       {
         if ((*i).first == k)
         {
           return (*i).second;
-        }
-      }
-      throw std::runtime_error("Nothing to return");
-    }
-    Value drop(Key k)
-    {
-      for (auto i = list_.begin(), end = list_.end(); i != end; i++)
-      {
-        if ((*i).first == k)
-        {
-          std::pair< Key, Value > *data = list_.remove(i);
-          Value value = data->second;
-          delete data;
-          return value;
         }
       }
       throw std::runtime_error("Nothing to return");
