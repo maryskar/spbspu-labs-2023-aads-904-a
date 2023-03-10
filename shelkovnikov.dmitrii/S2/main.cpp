@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   }
   while (in)
   {
-    std::string dict_name = "";
+    std::string dict_name;
     in >> dict_name;
     if (!in)
     {
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     }
     dict_type dict;
     int key = 0;
-    std::string value = "";
+    std::string value;
     while (in)
     {
       in >> key >> value;
@@ -58,11 +58,11 @@ int main(int argc, char *argv[])
   }
   while (std::cin)
   {
-    std::string command = "";
+    std::string command;
     std::cin >> command;
     if (command == "print")
     {
-      std::string dataset_name = "";
+      std::string dataset_name;
       std::cin >> dataset_name;
       if (!std::cin)
       {
@@ -87,9 +87,9 @@ int main(int argc, char *argv[])
     }
     else if (command == "complement" || command == "intersect" || command == "union")
     {
-      std::string new_dataset_name = "";
-      std::string dataset_1 = "";
-      std::string dataset_2 = "";
+      std::string new_dataset_name;
+      std::string dataset_1;
+      std::string dataset_2;
       std::cin >> new_dataset_name >> dataset_1 >> dataset_2;
       if (!std::cin)
       {
