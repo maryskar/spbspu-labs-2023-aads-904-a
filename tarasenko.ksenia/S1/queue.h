@@ -11,7 +11,7 @@ namespace tarasenko
    Queue();
    Queue(const Queue< T >& q);
    ~Queue();
-   void push(T rhs);
+   void push(T& rhs);
    T drop();
    bool isEmpty() const;
   private:
@@ -51,7 +51,7 @@ namespace tarasenko
   }
 
   template< typename T >
-  void Queue< T >::push(T rhs)
+  void Queue< T >::push(T& rhs)
   {
     details::pushBack(&head, rhs);
   }

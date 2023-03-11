@@ -11,7 +11,7 @@ namespace tarasenko
    Stack();
    Stack(const Stack< T >& s);
    ~Stack();
-   void push(T rhs);
+   void push(T& rhs);
    T drop();
    T getTopElem() const;
    void pop();
@@ -53,7 +53,7 @@ namespace tarasenko
   }
 
   template< typename T >
-  void Stack< T >::push(T rhs)
+  void Stack< T >::push(T& rhs)
   {
     details::pushFront(&top, rhs);
   }

@@ -7,7 +7,7 @@ namespace tarasenko
     template< typename T >
     struct NodeOfList
     {
-      NodeOfList(T data, NodeOfList< T >* next) :
+      NodeOfList(T& data, NodeOfList< T >* next) :
         data(data),
         next(next)
       {}
@@ -23,13 +23,13 @@ namespace tarasenko
     }
 
     template< typename T >
-    void pushFront(NodeOfList< T >** plist, T d)
+    void pushFront(NodeOfList< T >** plist, T& d)
     {
       *plist = new NodeOfList< T >(d, *plist);
     }
 
     template< typename T >
-    void pushBack(NodeOfList< T >** plist, T data)
+    void pushBack(NodeOfList< T >** plist, T& data)
     {
       if (*plist == nullptr)
       {
