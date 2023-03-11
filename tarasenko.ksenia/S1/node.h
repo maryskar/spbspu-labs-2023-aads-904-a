@@ -46,6 +46,16 @@ namespace tarasenko
         current->next = new NodeOfList< T >(data, nullptr);
       }
     }
+
+    template< typename T >
+    T drop_front(NodeOfList< T >** plist)
+    {
+      NodeOfList< T >* p = *plist;
+      T res = p->data;
+      *plist = p->next;
+      delete p;
+      return res;
+    }
   };
 }
 #endif
