@@ -2,19 +2,19 @@
 #define NODE_H
 namespace tarasenko
 {
-  template< typename T >
-  struct Node
+  namespace details
   {
-    T value;
-    Node* p_next;
+    template< typename T >
+    struct NodeOfList
+    {
+      NodeOfList(T data, NodeOfList< T >* next) :
+        data(data),
+        next(next)
+      {}
 
-    Node(T value, Node* p_next = nullptr);
+      T data;
+      NodeOfList< T >* next;
+    };
   };
-
-  template< typename T >
-  Node< T >::Node(T value, Node* p_next):
-   value(value),
-   p_next(p_next)
-  {}
 }
 #endif
