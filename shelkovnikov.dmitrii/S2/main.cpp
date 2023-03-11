@@ -3,8 +3,8 @@
 #include <fstream>
 #include "dictionary.h"
 #include "forwardlist.h"
-using pair_type = std::pair< std::string, dimkashelk::Dictionary< int, std::string, std::less< > > >;
-using dict_type = dimkashelk::Dictionary< int, std::string, std::less< > >;
+using pair_type = std::pair< std::string, dimkashelk::Dictionary< int, std::string, std::greater< > > >;
+using dict_type = dimkashelk::Dictionary< int, std::string, std::greater< > >;
 using list_type = dimkashelk::ForwardList< pair_type >;
 dict_type search(const list_type &list, const std::string& name)
 {
