@@ -83,11 +83,11 @@ namespace dimkashelk
     {
       free();
     }
-    void pushBack(const T &data)
+    void pushBack(T &data)
     {
       insertBefore(end(), data);
     }
-    void insertBefore(ForwardList< T >::Iterator iterator, const T &data)
+    void insertBefore(ForwardList< T >::Iterator iterator, T data)
     {
       auto *new_node = new details::Node< T >(data);
       if (!begin_)
