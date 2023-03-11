@@ -74,8 +74,12 @@ namespace dimkashelk
     }
     friend std::ostream &operator<<(std::ostream &out, dict_type dict)
     {
-      for (auto it = dict.list_.begin(), end = dict.list_.end(); it != end; it++) {
-        out << (*it).first << " " << (*it).second << " ";
+      auto it = dict.list_.begin();
+      auto end = dict.list_.end();
+      out << (*it).first << " " << (*it).second;
+      it++;
+      for (; it != end; it++) {
+        out << " " << (*it).first << " " << (*it).second;
       }
       return out;
     }
