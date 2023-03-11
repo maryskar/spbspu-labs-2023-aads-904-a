@@ -55,7 +55,7 @@ namespace tarasenko
   template< typename T >
   void Stack< T >::push(T rhs)
   {
-    top = new details::NodeOfList< T >(rhs, top);
+    details::pushFront(&top, rhs);
   }
 
   template< typename T >
@@ -65,11 +65,7 @@ namespace tarasenko
     {
       throw std::underflow_error("Underflow!");
     }
-    details::NodeOfList< T >* temp = top;
-    T temp_val = temp->data;
-    top = top->next;
-    delete temp;
-    return temp_val;
+    return details::dropFront(&top);
   }
 
   template< typename T >
@@ -89,9 +85,7 @@ namespace tarasenko
     {
       throw std::underflow_error("Underflow!");
     }
-    details::NodeOfList< T >* temp = top;
-    top = top->next;
-    delete temp;
+    details::popFront(&top);
   }
 };
 #endif
