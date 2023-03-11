@@ -26,8 +26,24 @@ namespace tarasenko
    {
      s.top = nullptr;
    }
-   Stack< T >& operator=(const Stack< T >& s);
-   Stack< T >& operator=(Stack< T >&& s);
+   Stack< T >& operator=(const Stack< T >& s)
+   {
+     details::clear(&top);
+     details::NodeOfList< T >* temp = s.top;
+     while (temp)
+     {
+       push(temp->data);
+       temp = temp->next;
+     }
+     return *this;
+   }
+   Stack< T >& operator=(Stack< T >&& s)
+   {
+     details::clear(&top);
+     top = s.top;
+     s.top = nullptr;
+     return *this;
+   }
    ~Stack()
    {
      details::clear(&top);
