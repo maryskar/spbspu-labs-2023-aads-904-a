@@ -15,7 +15,7 @@ namespace tarasenko
    T drop();
    bool isEmpty() const;
   private:
-   Node< T >* head;
+   details::NodeOfList< T >* head;
    size_t size;
   };
 
@@ -30,11 +30,11 @@ namespace tarasenko
     head(nullptr),
     size(q.size)
   {
-    Node< T >* copy = q.head;
+    details::NodeOfList< T >* copy = q.head;
     while (copy)
     {
-      push(copy->value);
-      copy = copy->p_next;
+      push(copy->data);
+      copy = copy->next;
     }
   }
 
@@ -43,32 +43,20 @@ namespace tarasenko
   {
     while (head)
     {
-      drop();
+      details::popFront(&head);
     }
   }
 
   template< typename T >
   bool Queue< T >::isEmpty() const
   {
-    return size == 0;
+    return details::isEmpty(head);
   }
 
   template< typename T >
   void Queue< T >::push(T rhs)
   {
-    if (head == nullptr)
-    {
-      head = new Node< T >(rhs);
-    }
-    else
-    {
-      Node< T >* current = head;
-      while (current->p_next != nullptr)
-      {
-        current = current->p_next;
-      }
-      current->p_next = new Node< T >(rhs);
-    }
+    details::pushBack(&head, rhs);
     size++;
   }
 
@@ -79,12 +67,8 @@ namespace tarasenko
     {
       throw std::underflow_error("Underflow!");
     }
-    Node< T >* temp = head;
-    T temp_val = temp->value;
-    head = head->p_next;
-    delete temp;
     size--;
-    return temp_val;
+    return details::dropFront(&head);
   }
 }
 #endif
