@@ -48,7 +48,7 @@ namespace tarasenko
     }
 
     template< typename T >
-    T& getFront(NodeOfList< T >* list)
+    T getFront(NodeOfList< T >* list)
     {
       T res = list->data;
       return res;

@@ -49,7 +49,6 @@ namespace tarasenko
      details::clear(&top);
    }
    void push(T& rhs);
-   T drop();
    T getTopElem() const;
    void pop();
    bool isEmpty() const;
@@ -70,23 +69,13 @@ namespace tarasenko
   }
 
   template< typename T >
-  T Stack< T >::drop()
-  {
-    if (details::isEmpty(top))
-    {
-      throw std::underflow_error("Underflow!");
-    }
-    return details::dropFront(&top);
-  }
-
-  template< typename T >
   T Stack< T >::getTopElem() const
   {
     if (details::isEmpty(top))
     {
       throw std::underflow_error("Underflow!");
     }
-    return top->data;
+    return details::getFront(top);
   }
 
   template< typename T >
