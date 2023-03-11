@@ -39,7 +39,10 @@ namespace tarasenko
    }
    Queue< T >& operator=(Queue< T >&& q)
    {
-
+     details::clear(&head);
+     head = q.head;
+     q.head = nullptr;
+     return *this;
    }
    ~Queue()
    {
