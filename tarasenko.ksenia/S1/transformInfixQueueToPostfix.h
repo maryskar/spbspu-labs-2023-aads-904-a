@@ -39,7 +39,8 @@ namespace tarasenko
               s.pop();
               break;
             }
-            q_postfix.push(s.drop());
+            Elem s_elem = s.drop();
+            q_postfix.push(s_elem);
           }
           if (!was_open_bracket)
           {
@@ -51,7 +52,8 @@ namespace tarasenko
         {
           while (!s.isEmpty() && (elem.getOperation() <= s.getTopElem().getOperation()))
           {
-            q_postfix.push(s.drop());
+            Elem s_elem = s.drop();
+            q_postfix.push(s_elem);
           }
           s.push(elem);
         }
@@ -59,7 +61,8 @@ namespace tarasenko
     }
     while (!s.isEmpty())
     {
-      q_postfix.push(s.drop());
+      Elem s_elem = s.drop();
+      q_postfix.push(s_elem);
     }
     return q_postfix;
   }

@@ -32,7 +32,8 @@ int main(int argc, char *argv[])
     {
       tarasenko::Queue< tarasenko::Elem > q_infix = tarasenko::transformStringToInfixQueue(str);
       tarasenko::Queue< tarasenko::Elem > q_postfix = tarasenko::transformInfixQueueToPostfix(q_infix);
-      results.push(tarasenko::calculateByPostfixQueue(q_postfix));
+      long long res = tarasenko::calculateByPostfixQueue(q_postfix);
+      results.push(res);
     }
     catch (const std::exception& e)
     {
