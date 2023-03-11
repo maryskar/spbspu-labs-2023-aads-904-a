@@ -8,9 +8,30 @@ namespace tarasenko
   class Stack
   {
   public:
-   Stack();
-   Stack(const Stack< T >& s);
-   ~Stack();
+   Stack():
+     top(nullptr)
+   {}
+   Stack(const Stack< T >& s):
+     top(nullptr)
+   {
+     details::NodeOfList< T >* copy = s.top;
+     while (copy)
+     {
+       push(copy->data);
+       copy = copy->next;
+     }
+   }
+   Stack(Stack< T >&& s):
+     top(s.top)
+   {
+     s.top = nullptr;
+   }
+   Stack< T >& operator=(const Stack< T >& s);
+   Stack< T >& operator=(Stack< T >&& s);
+   ~Stack()
+   {
+     details::clear(&top);
+   }
    void push(T& rhs);
    T drop();
    T getTopElem() const;
@@ -19,32 +40,6 @@ namespace tarasenko
   private:
    details::NodeOfList< T >* top;
   };
-
-  template< typename T >
-  Stack< T >::Stack():
-    top(nullptr)
-  {}
-
-  template< typename T >
-  Stack< T >::Stack(const Stack< T >& s):
-    top(nullptr)
-  {
-    details::NodeOfList< T >* copy = s.top;
-    while (copy)
-    {
-      push(copy->data);
-      copy = copy->next;
-    }
-  }
-
-  template< typename T >
-  Stack< T >::~Stack()
-  {
-    while (top)
-    {
-      pop();
-    }
-  }
 
   template< typename T >
   bool Stack< T >::isEmpty() const
