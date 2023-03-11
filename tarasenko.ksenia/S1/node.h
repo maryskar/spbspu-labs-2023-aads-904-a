@@ -27,6 +27,25 @@ namespace tarasenko
     {
       *plist = new NodeOfList< T >(d, *plist);
     }
+
+    template< typename T >
+    void pushBack(NodeOfList< T >** plist, T data)
+    {
+      if (*plist == nullptr)
+      {
+        *plist = new NodeOfList< T >(data, nullptr);
+      }
+      else
+      {
+        NodeOfList< T >* current = *plist;
+
+        while (current->next != nullptr)
+        {
+          current = current->next;
+        }
+        current->next = new NodeOfList< T >(data, nullptr);
+      }
+    }
   };
 }
 #endif
