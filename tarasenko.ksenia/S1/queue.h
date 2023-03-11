@@ -8,41 +8,39 @@ namespace tarasenko
   class Queue
   {
   public:
-   Queue();
-   Queue(const Queue< T >& q);
-   ~Queue();
+   Queue():
+     head(nullptr)
+   {}
+   Queue(const Queue< T >& q):
+     head(nullptr)
+   {
+     details::NodeOfList< T >* copy = q.head;
+     while (copy)
+     {
+       push(copy->data);
+       copy = copy->next;
+     }
+   }
+   Queue(Queue< T >&& q):
+     head(q.head)
+   {
+     q.head = nullptr;
+   }
+   Queue< T >& operator=(const Queue< T >& q);
+   Queue< T >& operator=(Queue< T >&& q);
+   ~Queue()
+   {
+     while (head)
+     {
+       details::popFront(&head);
+     }
+   }
    void push(T& rhs);
    T drop();
    bool isEmpty() const;
   private:
    details::NodeOfList< T >* head;
   };
-
-  template< typename T >
-  Queue< T >::Queue():
-    head(nullptr)
-  {}
-
-  template< typename T >
-  Queue< T >::Queue(const Queue< T >& q):
-    head(nullptr)
-  {
-    details::NodeOfList< T >* copy = q.head;
-    while (copy)
-    {
-      push(copy->data);
-      copy = copy->next;
-    }
-  }
-
-  template< typename T >
-  Queue< T >::~Queue()
-  {
-    while (head)
-    {
-      details::popFront(&head);
-    }
-  }
 
   template< typename T >
   bool Queue< T >::isEmpty() const
