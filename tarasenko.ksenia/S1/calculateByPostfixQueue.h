@@ -11,7 +11,8 @@ namespace tarasenko
     Stack< Elem > s;
     while (!q_postfix.isEmpty())
     {
-      Elem elem = q_postfix.drop();
+      Elem elem = q_postfix.getHeadElem();
+      q_postfix.popFront();
       if (elem.isDigit())
       {
         s.push(elem);
@@ -20,14 +21,18 @@ namespace tarasenko
       {
         if (!s.isEmpty())
         {
-          long long b = s.drop().getOperand();
-          long long a = s.drop().getOperand();
+          long long b = s.getTopElem().getOperand();
+          s.pop();
+          long long a = s.getTopElem().getOperand();
+          s.pop();
           Elem res = calculate(a, b, elem.getOperation().getValue());
           s.push(res);
         }
       }
     }
-    return s.drop().getOperand();
+    Elem res = s.getTopElem();
+    s.pop();
+    return res.getOperand();
   };
 }
 #endif

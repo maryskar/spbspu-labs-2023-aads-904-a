@@ -43,11 +43,13 @@ int main(int argc, char *argv[])
   }
   if (!results.isEmpty())
   {
-    std::cout << results.drop();
+    std::cout << results.getTopElem();
+    results.pop();
   }
   while (!results.isEmpty())
   {
-    std::cout << " " << results.drop();
+    std::cout << " " << results.getTopElem();
+    results.pop();
   }
   std::cout << "\n";
 }
