@@ -26,14 +26,24 @@ namespace tarasenko
    {
      q.head = nullptr;
    }
-   Queue< T >& operator=(const Queue< T >& q);
-   Queue< T >& operator=(Queue< T >&& q);
+   Queue< T >& operator=(const Queue< T >& q)
+   {
+     details::clear(&head);
+     details::NodeOfList< T >* temp = q.head;
+     while (temp)
+     {
+       push(temp->data);
+       temp = temp->next;
+     }
+     return *this;
+   }
+   Queue< T >& operator=(Queue< T >&& q)
+   {
+
+   }
    ~Queue()
    {
-     while (head)
-     {
-       details::popFront(&head);
-     }
+     details::clear(&head);
    }
    void push(T& rhs);
    T drop();
