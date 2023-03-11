@@ -49,7 +49,8 @@ namespace tarasenko
      details::clear(&head);
    }
    void push(T& rhs);
-   T drop();
+   T getHeadElem() const;
+   void popFront();
    bool isEmpty() const;
   private:
    details::NodeOfList< T >* head;
@@ -68,13 +69,23 @@ namespace tarasenko
   }
 
   template< typename T >
-  T Queue< T >::drop()
+  T Queue< T >::getHeadElem() const
   {
     if (details::isEmpty(head))
     {
       throw std::underflow_error("Underflow!");
     }
-    return details::dropFront(&head);
+    return details::getFront(head);
+  }
+
+  template< typename T >
+  void Queue< T >::popFront()
+  {
+    if (details::isEmpty(head))
+    {
+      throw std::underflow_error("Underflow!");
+    }
+    details::popFront(&head);
   }
 }
 #endif
