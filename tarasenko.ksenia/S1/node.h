@@ -48,13 +48,21 @@ namespace tarasenko
     }
 
     template< typename T >
-    T drop_front(NodeOfList< T >** plist)
+    T dropFront(NodeOfList< T >** plist)
     {
       NodeOfList< T >* p = *plist;
       T res = p->data;
       *plist = p->next;
       delete p;
       return res;
+    }
+
+    template< typename T >
+    void popFront(NodeOfList< T >** plist)
+    {
+      NodeOfList< T >* p = *plist;
+      *plist = p->next;
+      delete p;
     }
   };
 }
