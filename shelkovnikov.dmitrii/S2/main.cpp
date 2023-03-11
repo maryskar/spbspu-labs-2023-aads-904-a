@@ -2,21 +2,8 @@
 #include <functional>
 #include <fstream>
 #include "dictionary.h"
-#include "forwardlist.h"
-using pair_type = std::pair< std::string, dimkashelk::Dictionary< int, std::string, std::greater< > > >;
 using dict_type = dimkashelk::Dictionary< int, std::string, std::greater< > >;
-using list_type = dimkashelk::ForwardList< pair_type >;
-dict_type search(const list_type &list, const std::string& name)
-{
-  for (auto &&iter: list)
-  {
-    if (iter.first == name)
-    {
-      return iter.second;
-    }
-  }
-  throw std::runtime_error("Nothing to return");
-}
+using container_type = dimkashelk::Dictionary< std::string, dict_type, std::greater< > >;
 int main(int argc, char *argv[])
 {
   namespace dsk = dimkashelk;
@@ -25,7 +12,7 @@ int main(int argc, char *argv[])
     std::cerr << "No filename";
     return 1;
   }
-  list_type list;
+  container_type list;
   std::ifstream in(argv[1]);
   if (!in.is_open())
   {
@@ -53,8 +40,7 @@ int main(int argc, char *argv[])
       dict.push(key, value);
     }
     in.clear();
-    pair_type pair(dict_name, dict);
-    list.pushBack(pair);
+    list.push(dict_name, dict);
   }
   while (std::cin)
   {
@@ -70,7 +56,7 @@ int main(int argc, char *argv[])
       }
       try
       {
-        dict_type dict = search(list, dataset_name);
+        dict_type dict = list.get(dataset_name);
         if (dict.empty())
         {
           std::cout << "<EMPTY>\n";
@@ -98,8 +84,8 @@ int main(int argc, char *argv[])
       }
       try
       {
-        dict_type data_1 = search(list, dataset_1);
-        dict_type data_2 = search(list, dataset_2);
+        dict_type data_1 = list.get(dataset_1);
+        dict_type data_2 = list.get(dataset_2);
         dict_type new_dict;
         if (command == "complement")
         {
@@ -113,7 +99,7 @@ int main(int argc, char *argv[])
         {
           new_dict = data_1 | data_2;
         }
-        list.pushBack(pair_type(new_dataset_name, new_dict));
+        list.push(new_dataset_name, new_dict);
       }
       catch (const std::runtime_error &e)
       {
