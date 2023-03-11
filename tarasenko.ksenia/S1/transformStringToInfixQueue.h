@@ -20,8 +20,8 @@ namespace tarasenko
       }
       if (element.size() == 1 && element.find_first_of("()-+/*%") != std::string::npos)
       {
-        Operation op(element[0]);
-        Elem elem(op);
+        MathSymbols ms(element[0]);
+        Elem elem(ms);
         q_infix.push(elem);
       }
       else

@@ -6,17 +6,17 @@ namespace tarasenko
   union Types
   {
     long long operand;
-    Operation operation;
+    MathSymbols math_sym;
   };
 
   class Elem
   {
   public:
    Elem(long long digit);
-   Elem(Operation op);
+   Elem(MathSymbols symbols);
    bool isDigit() const;
    long long getOperand() const;
-   Operation getOperation() const;
+   MathSymbols getOperation() const;
   private:
    Types union_elem;
    bool is_int;

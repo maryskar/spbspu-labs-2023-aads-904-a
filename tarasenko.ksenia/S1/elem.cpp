@@ -6,11 +6,11 @@ tarasenko::Elem::Elem(long long digit):
   is_int(true)
 {}
 
-tarasenko::Elem::Elem(tarasenko::Operation op):
+tarasenko::Elem::Elem(tarasenko::MathSymbols ms):
   union_elem{0ll},
   is_int(false)
 {
-  union_elem.operation = Operation(op);
+  union_elem.math_sym = MathSymbols(ms);
 }
 bool tarasenko::Elem::isDigit() const
 {
@@ -29,7 +29,7 @@ long long tarasenko::Elem::getOperand() const
   }
 }
 
-tarasenko::Operation tarasenko::Elem::getOperation() const
+tarasenko::MathSymbols tarasenko::Elem::getOperation() const
 {
   if (is_int)
   {
@@ -37,6 +37,6 @@ tarasenko::Operation tarasenko::Elem::getOperation() const
   }
   else
   {
-    return union_elem.operation;
+    return union_elem.math_sym;
   }
 }
