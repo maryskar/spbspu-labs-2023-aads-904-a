@@ -1,6 +1,6 @@
 #ifndef ELEM_H
 #define ELEM_H
-#include "type_operation.h"
+#include "math_sym.h"
 namespace tarasenko
 {
   union Types
