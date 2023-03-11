@@ -18,19 +18,16 @@ namespace tarasenko
    bool isEmpty() const;
   private:
    details::NodeOfList< T >* top;
-   size_t size;
   };
 
   template< typename T >
   Stack< T >::Stack():
-    top(nullptr),
-    size(0)
+    top(nullptr)
   {}
 
   template< typename T >
   Stack< T >::Stack(const Stack< T >& s):
-    top(nullptr),
-    size(s.size)
+    top(nullptr)
   {
     details::NodeOfList< T >* copy = s.top;
     while (copy)
@@ -52,20 +49,19 @@ namespace tarasenko
   template< typename T >
   bool Stack< T >::isEmpty() const
   {
-    return size == 0;
+    return details::isEmpty(top);
   }
 
   template< typename T >
   void Stack< T >::push(T rhs)
   {
     top = new details::NodeOfList< T >(rhs, top);
-    size++;
   }
 
   template< typename T >
   T Stack< T >::drop()
   {
-    if (size == 0)
+    if (details::isEmpty(top))
     {
       throw std::underflow_error("Underflow!");
     }
@@ -73,14 +69,13 @@ namespace tarasenko
     T temp_val = temp->data;
     top = top->next;
     delete temp;
-    size--;
     return temp_val;
   }
 
   template< typename T >
   T Stack< T >::getTopElem() const
   {
-    if (size == 0)
+    if (details::isEmpty(top))
     {
       throw std::underflow_error("Underflow!");
     }
@@ -90,14 +85,13 @@ namespace tarasenko
   template< typename T >
   void Stack< T >::pop()
   {
-    if (size == 0)
+    if (details::isEmpty(top))
     {
       throw std::underflow_error("Underflow!");
     }
     details::NodeOfList< T >* temp = top;
     top = top->next;
     delete temp;
-    size--;
   }
 };
 #endif
