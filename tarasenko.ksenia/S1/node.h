@@ -64,6 +64,16 @@ namespace tarasenko
       *plist = p->next;
       delete p;
     }
+
+    template< typename T >
+    void clear(NodeOfList< T >** plist)
+    {
+      while (*plist)
+      {
+        details::popFront(plist);
+      }
+      *plist = nullptr;
+    }
   };
 }
 #endif
