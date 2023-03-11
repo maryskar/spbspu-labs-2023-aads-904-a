@@ -15,6 +15,12 @@ namespace tarasenko
       T data;
       NodeOfList< T >* next;
     };
+
+    template< typename T >
+    bool isEmpty(details::NodeOfList< T >* list)
+    {
+      return list == nullptr;
+    }
   };
 }
 #endif
