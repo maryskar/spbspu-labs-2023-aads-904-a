@@ -17,9 +17,15 @@ namespace tarasenko
     };
 
     template< typename T >
-    bool isEmpty(details::NodeOfList< T >* list)
+    bool isEmpty(NodeOfList< T >* list)
     {
       return list == nullptr;
+    }
+
+    template< typename T >
+    void pushFront(NodeOfList< T >** plist, T d)
+    {
+      *plist = new NodeOfList< T >(d, *plist);
     }
   };
 }
