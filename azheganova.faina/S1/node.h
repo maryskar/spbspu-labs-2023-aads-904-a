@@ -8,4 +8,5 @@ struct Node
   Node< T > *next_;
 };
 
+
 #endif
