@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
       std::cin >> dataset_name;
       if (!std::cin)
       {
-        std::cerr << "<INVALID COMMAND>\n";
+        std::cerr << "<INVALID COMMAND>";
       }
       try
       {
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
       std::cin >> new_dataset_name >> dataset_1 >> dataset_2;
       if (!std::cin)
       {
-        std::cerr << "<INVALID COMMAND>\n";
+        std::cerr << "<INVALID COMMAND>";
         continue;
       }
       try
@@ -112,7 +112,8 @@ int main(int argc, char *argv[])
     }
     else
     {
-      std::cout << "<INVALID COMMAND>\n";
+      std::cout << "<INVALID COMMAND>";
+      std::getline(std::cin, command);
     }
   }
   return 0;
