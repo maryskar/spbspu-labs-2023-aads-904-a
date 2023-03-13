@@ -30,7 +30,7 @@ namespace dimkashelk
       explicit Iterator(details::Node< T > *ptr):
         ptr_(ptr)
       {}
-      T operator*() const
+      T &operator*() const
       {
         return ptr_->data_;
       }
