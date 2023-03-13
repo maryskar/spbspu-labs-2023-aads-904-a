@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
       }
       catch (const std::runtime_error &e)
       {
-        std::cerr << "<INVALID COMMAND>\n";
+        std::cerr << "<INVALID COMMAND>";
       }
     }
     else if (command == "complement" || command == "intersect" || command == "union")

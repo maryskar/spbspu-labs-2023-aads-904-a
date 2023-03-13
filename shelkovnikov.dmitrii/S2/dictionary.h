@@ -57,7 +57,7 @@ namespace dimkashelk
         (*it).second = value;
       }
     }
-    Value get(const Key &k)
+    Value &get(const Key &k)
     {
       for (auto i = list_.begin(), end = list_.end(); i != end; i++)
       {
