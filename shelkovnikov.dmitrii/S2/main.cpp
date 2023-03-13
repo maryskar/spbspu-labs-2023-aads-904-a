@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
       std::cin >> dataset_name;
       if (!std::cin)
       {
-        std::cerr << "<INVALID COMMAND>";
+        std::cerr << "<INVALID COMMAND>\n";
       }
       try
       {
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
       }
       catch (const std::runtime_error &e)
       {
-        std::cerr << "<INVALID COMMAND>";
+        std::cerr << "<INVALID COMMAND>\n";
       }
     }
     else if (command == "complement" || command == "intersect" || command == "union")
