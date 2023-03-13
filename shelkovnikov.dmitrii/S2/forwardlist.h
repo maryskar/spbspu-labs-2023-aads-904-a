@@ -83,11 +83,11 @@ namespace dimkashelk
     {
       free();
     }
-    void pushBack(T &data)
+    void pushBack(const T &data)
     {
       insertBefore(end(), data);
     }
-    void insertBefore(ForwardList< T >::Iterator iterator, T &data)
+    void insertBefore(ForwardList< T >::Iterator iterator, const T &data)
     {
       auto *new_node = new details::Node< T >(data);
       if (!begin_)
@@ -130,7 +130,7 @@ namespace dimkashelk
         }
       }
     }
-    void remove(ForwardList< T >::Iterator iterator)
+    void remove(ForwardList< T >::Iterator &iterator)
     {
       if (iterator.ptr_)
       {
@@ -174,7 +174,8 @@ namespace dimkashelk
     {
       while (begin_)
       {
-        remove(begin());
+        auto iter = begin();
+        remove(iter);
       }
     }
     bool empty()

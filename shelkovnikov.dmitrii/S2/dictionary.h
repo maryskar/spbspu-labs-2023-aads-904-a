@@ -34,7 +34,7 @@ namespace dimkashelk
       }
       return *this;
     }
-    void push(Key &k, Value &value)
+    void push(const Key &k, const Value &value)
     {
       auto it = list_.begin();
       auto end = list_.end();
