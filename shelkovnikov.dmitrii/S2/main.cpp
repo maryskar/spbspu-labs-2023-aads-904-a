@@ -46,6 +46,10 @@ int main(int argc, char *argv[])
   {
     std::string command;
     std::cin >> command;
+    if (!std::cin)
+    {
+      break;
+    }
     if (command == "print")
     {
       std::string dataset_name;
