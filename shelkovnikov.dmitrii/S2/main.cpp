@@ -106,6 +106,10 @@ int main(int argc, char *argv[])
         std::cerr << "<INVALID COMMAND>\n";
       }
     }
+    else
+    {
+      std::cout << "<INVALID COMMAND>\n";
+    }
   }
   return 0;
 }
