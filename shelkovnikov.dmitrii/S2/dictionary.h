@@ -94,6 +94,15 @@ namespace dimkashelk
     friend dict_type operator|(const dict_type &first, const dict_type &second)
     {
       dict_type new_dict;
+      auto iter_second = second.list_.begin();
+      auto iter_second_end = second.list_.end();
+      while (iter_second != iter_second_end)
+      {
+        Key key = (*iter_second).first;
+        Value value = (*iter_second).second;
+        new_dict.push(key, value);
+        iter_second++;
+      }
       auto iter_first = first.list_.begin();
       auto iter_first_end = first.list_.end();
       while (iter_first != iter_first_end)
@@ -102,15 +111,6 @@ namespace dimkashelk
         Value value = (*iter_first).second;
         new_dict.push(key, value);
         iter_first++;
-      }
-      auto iter_second = second.list_.begin();
-      auto iter_second_end = second.list_.end();
-      while (iter_second != iter_second_end)
-      {
-        Key key = (*iter_first).first;
-        Value value = (*iter_first).second;
-        new_dict.push(key, value);
-        iter_second++;
       }
       return new_dict;
     }
