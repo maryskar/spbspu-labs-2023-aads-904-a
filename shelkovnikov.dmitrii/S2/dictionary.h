@@ -98,14 +98,18 @@ namespace dimkashelk
       auto iter_first_end = first.list_.end();
       while (iter_first != iter_first_end)
       {
-        new_dict.push((*iter_first).first, (*iter_first).second);
+        Key key = (*iter_first).first;
+        Value value = (*iter_first).second;
+        new_dict.push(key, value);
         iter_first++;
       }
       auto iter_second = second.list_.begin();
       auto iter_second_end = second.list_.end();
       while (iter_second != iter_second_end)
       {
-        new_dict.push((*iter_second).first, (*iter_second).second);
+        Key key = (*iter_first).first;
+        Value value = (*iter_first).second;
+        new_dict.push(key, value);
         iter_second++;
       }
       return new_dict;
@@ -138,13 +142,17 @@ namespace dimkashelk
         bool operand_minus = operation == "-" && (*iter_first).first != (*iter_second).first;
         if (operand_and || operand_minus)
         {
-          new_dict.push((*iter_first).first, (*iter_first).second);
+          Key key = (*iter_first).first;
+          Value value = (*iter_first).second;
+          new_dict.push(key, value);
         }
         iter_first++;
       }
       while (operation == "-" && iter_first != iter_first_end)
       {
-        new_dict.push((*iter_first).first, (*iter_first).second);
+        Key key = (*iter_first).first;
+        Value value = (*iter_first).second;
+        new_dict.push(key, value);
         iter_first++;
       }
       return new_dict;
