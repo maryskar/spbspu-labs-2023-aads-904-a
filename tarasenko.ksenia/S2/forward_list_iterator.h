@@ -41,5 +41,17 @@ namespace tarasenko
     ++(*this);
     return result;
   }
+
+  template< typename T >
+  bool ForwardListIterator< T >::operator==(const this_t & rhs) const
+  {
+    return node == rhs.node;
+  }
+
+  template< typename T >
+  bool ForwardListIterator< T >::operator!=(const this_t & rhs) const
+  {
+    return !(rhs == *this);
+  }
 }
 #endif
