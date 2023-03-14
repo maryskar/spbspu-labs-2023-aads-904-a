@@ -10,14 +10,10 @@ bool getPriorityLevel(char data)
 
 bool isOverflow(long long a, long long b)
 {
-    if (a == 0 || b == 0)
-        return false;
-
-    long long result = a * b;
-    if (a == result / b)
-        return false;
-    else
-        return true;
+  if (a == 0 || b == 0)
+    return false;
+  long long result = a * b;
+  return !(a == result / b);
 }
 
 void str2Inf(std::string & dirt, Queue< calc_t > & input)
