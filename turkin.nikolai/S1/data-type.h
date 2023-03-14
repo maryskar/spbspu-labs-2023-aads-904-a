@@ -7,6 +7,10 @@ struct calc_t
   operator char() const;
   calc_t operator=(long long num);
   calc_t operator=(char sign);
+  bool operator==(long long num);
+  bool operator==(char sign);
+  bool operator!=(long long num);
+  bool operator!=(char sign);
   union
   {
     long long num;

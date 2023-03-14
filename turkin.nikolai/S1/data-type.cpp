@@ -32,3 +32,39 @@ calc_t calc_t::operator=(char sign)
   isgigit = false;
   return * this;
 }
+
+bool calc_t::operator==(long long num)
+{
+  if (!isgigit)
+  {
+    throw std::runtime_error("isnt digit");
+  }
+  return calc.num == num;
+}
+
+bool calc_t::operator==(char sign)
+{
+  if (isgigit)
+  {
+    throw std::runtime_error("isnt char");
+  }
+  return calc.sign == sign;
+}
+
+bool calc_t::operator!=(long long num)
+{
+  if (!isgigit)
+  {
+    throw std::runtime_error("isnt digit");
+  }
+  return calc.num != num;
+}
+
+bool calc_t::operator!=(char sign)
+{
+  if (isgigit)
+  {
+    throw std::runtime_error("isnt char");
+  }
+  return calc.sign != sign;
+}
