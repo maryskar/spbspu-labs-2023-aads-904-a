@@ -10,7 +10,7 @@ class Stack
   public:
     Stack();
     ~Stack();
-    void push(T rhs);
+    void push(const T & rhs);
     T drop();
     bool isEmpty() const;
   private:
@@ -34,7 +34,7 @@ Stack< T >::~Stack()
 }
 
 template< typename T >
-void Stack< T >::push(T rhs)
+void Stack< T >::push(const T & rhs)
 {
   value_ = new OneWayList< T > {rhs, value_};
 }
