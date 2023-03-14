@@ -146,10 +146,18 @@ void post2Result(Queue< calc_t > & output, long long & result)
       }
       if (opt == '/')
       {
+        if (!b)
+        {
+          throw std::runtime_error("zero division");
+        }
         c = a / b;
       }
       if (opt == '%')
       {
+        if (!b)
+        {
+          throw std::runtime_error("zero division");
+        }
         c = (a > 0) ? a % b : b - (-a) % b;
       }
       buffer.push(c);
