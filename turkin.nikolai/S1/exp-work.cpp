@@ -58,30 +58,30 @@ void inf2Post(Queue< calc_t > & input, Queue< calc_t > & output)
     }
     else
     {
-      if (data.calc.sign == ')')
+      if (data == ')')
       {
         while (!buffer.isEmpty())
         {
           calc_t opt = buffer.drop();
-          if (opt.calc.sign == '(')
+          if (opt == '(')
           {
             break;
           }
           output.push(opt);
         }
       }
-      else if (!buffer.isEmpty() && data.calc.sign != '(')
+      else if (!buffer.isEmpty() && data != '(')
       {
         calc_t opt = buffer.drop();
         buffer.push(opt);
-        if (getPriorityLevel(data.calc.sign) < getPriorityLevel(opt.calc.sign) || opt.calc.sign == '(')
+        if (getPriorityLevel(data) < getPriorityLevel(opt) || opt == '(')
         {
           buffer.push(data);
         }
         else
         {
           opt = buffer.drop();
-          while (getPriorityLevel(data.calc.sign) >= getPriorityLevel(opt.calc.sign))
+          while (getPriorityLevel(data) >= getPriorityLevel(opt))
           {
             output.push(opt);
             if (buffer.isEmpty())
@@ -105,7 +105,7 @@ void inf2Post(Queue< calc_t > & input, Queue< calc_t > & output)
   }
 }
 
-void post2Result(Queue< calc_t> & output, long long & result)
+void post2Result(Queue< calc_t > & output, long long & result)
 {
   Stack< long long > buffer;
   while (!output.isEmpty())
@@ -120,7 +120,7 @@ void post2Result(Queue< calc_t> & output, long long & result)
       long long b = buffer.drop();
       long long  a = buffer.drop();
       long long c = 0;
-      if (opt.calc.sign == '+')
+      if (opt == '+')
       {
         if (a > 0 && b > 0 && (a + b < 0))
         {
@@ -128,7 +128,7 @@ void post2Result(Queue< calc_t> & output, long long & result)
         }
         c = a + b;
       }
-      if (opt.calc.sign == '-')
+      if (opt == '-')
       {
         if (a < 0 && b < 0 && (a + b > 0))
         {
@@ -136,7 +136,7 @@ void post2Result(Queue< calc_t> & output, long long & result)
         }
         c = a - b;
       }
-      if (opt.calc.sign == '*')
+      if (opt == '*')
       {
         if (isOverflow(a, b))
         {
@@ -144,11 +144,11 @@ void post2Result(Queue< calc_t> & output, long long & result)
         }
         c = a * b;
       }
-      if (opt.calc.sign == '/')
+      if (opt == '/')
       {
         c = a / b;
       }
-      if (opt.calc.sign == '%')
+      if (opt == '%')
       {
         c = (a > 0) ? a % b : b - (-a) % b;
       }
