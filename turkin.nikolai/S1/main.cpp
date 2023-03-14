@@ -24,7 +24,6 @@ int main(int argc, char * argv[])
   Queue< calc_t > input, output;
   Stack< long long > answers;
   std::string dirt;
-  long long result = 0;
   try
   {
     while (std::cin)
@@ -41,8 +40,7 @@ int main(int argc, char * argv[])
       dirt += "\n";
       str2Inf(dirt, input);
       inf2Post(input, output);
-      post2Result(output, result);
-      answers.push(result);
+      answers.push(post2Result(output));
     }
   }
   catch (const std::exception & error)
