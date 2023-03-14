@@ -10,7 +10,7 @@ class Queue
   public:
     Queue();
     ~Queue();
-    void push(T rhs);
+    void push(const T & rhs);
     T drop();
     bool isEmpty() const;
   private:
@@ -34,7 +34,7 @@ Queue< T >::~Queue()
 }
 
 template< typename T >
-void Queue< T >::push(T rhs)
+void Queue< T >::push(const T & rhs)
 {
   if (isEmpty())
   {
