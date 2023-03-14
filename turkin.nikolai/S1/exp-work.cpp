@@ -3,7 +3,7 @@
 #include <stack.h>
 #include "data-type.h"
 
-bool prt(char data)
+bool getPriorityLevel(char data)
 {
   return !(data == '+' || data == '-');
 }
@@ -74,14 +74,14 @@ void inf2Post(Queue< calc_t > & input, Queue< calc_t > & output)
       {
         calc_t opt = buffer.drop();
         buffer.push(opt);
-        if (prt(data.calc.sign) < prt(opt.calc.sign) || opt.calc.sign == '(')
+        if (getPriorityLevel(data.calc.sign) < getPriorityLevel(opt.calc.sign) || opt.calc.sign == '(')
         {
           buffer.push(data);
         }
         else
         {
           opt = buffer.drop();
-          while (prt(data.calc.sign) >= prt(opt.calc.sign))
+          while (getPriorityLevel(data.calc.sign) >= getPriorityLevel(opt.calc.sign))
           {
             output.push(opt);
             if (buffer.isEmpty())
