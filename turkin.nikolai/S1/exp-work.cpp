@@ -101,7 +101,7 @@ void inf2Post(Queue< calc_t > & input, Queue< calc_t > & output)
   }
 }
 
-void post2Result(Queue< calc_t > & output, long long & result)
+long long post2Result(Queue< calc_t > & output)
 {
   Stack< long long > buffer;
   while (!output.isEmpty())
@@ -159,5 +159,5 @@ void post2Result(Queue< calc_t > & output, long long & result)
       buffer.push(c);
     }
   }
-  result = buffer.drop();
+  return buffer.drop();
 }

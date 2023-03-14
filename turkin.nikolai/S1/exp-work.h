@@ -7,6 +7,6 @@
 
 void str2Inf(std::string & dirt, Queue< calc_t > & input);
 void inf2Post(Queue< calc_t > & input, Queue < calc_t > & output);
-void post2Result(Queue< calc_t > & output, long long & result);
+long long post2Result(Queue< calc_t > & output);
 
 #endif
