@@ -12,7 +12,8 @@ public:
   bool isEmpty() const;
   T drop();
 private:
-  T* stack_;
-  size_t top_[50];
+  static const size_t OVERFLOW = 50;
+  T* stack_[OVERFLOW];
+  size_t top_;
 };
 #endif
