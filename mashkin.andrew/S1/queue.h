@@ -10,7 +10,6 @@ public:
   void enqueue(T rhs);
   void dequeue();
   T drop();
-  bool isEmpty() const;
 private:
   static const size_t OVERFLOW = 50;
   T* queue_[OVERFLOW];
