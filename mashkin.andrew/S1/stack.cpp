@@ -25,7 +25,14 @@ void Stack< T >::pop()
   {
     throw std::underflow_error("Stack underflow");
   }
-  stack_(top_--);
+  --top_;
+}
+
+template< typename T >
+T Stack< T >::drop()
+{
+  pop();
+  return stack_[top_ + 1];
 }
 
 template< typename T >
