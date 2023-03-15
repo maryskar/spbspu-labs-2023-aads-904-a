@@ -13,9 +13,19 @@ void Stack< T >::push(T rhs)
 {
   if (top_ == OVERFLOW)
   {
-    throw std::overflow_error("Stackoverflow");
+    throw std::overflow_error("Stack overflow");
   }
   stack_[top_++] = rhs;
+}
+
+template< typename T >
+void Stack< T >::pop()
+{
+  if (isEmpty())
+  {
+    throw std::underflow_error("Stack underflow");
+  }
+  stack_(top_--);
 }
 
 template< typename T >
