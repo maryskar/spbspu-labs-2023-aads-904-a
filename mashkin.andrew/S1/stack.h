@@ -13,8 +13,7 @@ public:
   bool isEmpty() const;
   T drop();
 
-  Stack* operator[](size_t id) const;
-  Stack* at(size_t id) const;
+  Stack* at() const;
 private:
   static const size_t OVERFLOW = 50;
   T* stack_[OVERFLOW];
