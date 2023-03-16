@@ -1,11 +1,12 @@
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <stdexcept>
-#include "convertToPostfixNotation.h"
-#include "stack.h"
-#include "queue.h"
 
-int main(int argc, char ** argv)
+#include "convertToPostfixNotation.h"
+#include "queue.h"
+#include "stack.h"
+
+int main(int argc, char** argv)
 {
   if (argc != 2 && argc != 3)
   {
@@ -41,7 +42,6 @@ int main(int argc, char ** argv)
   }
   else
   {
-
   }
   return 0;
 }

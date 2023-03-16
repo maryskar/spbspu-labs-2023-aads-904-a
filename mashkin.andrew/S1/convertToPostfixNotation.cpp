@@ -1,6 +1,7 @@
 #include "convertToPostfixNotation.h"
-#include "stack.h"
+
 #include "queue.h"
+#include "stack.h"
 
 void convertToPostfixNotation(std::ifstream& inpFile, Stack< char > stc, Queue< char > que)
 {
@@ -16,7 +17,8 @@ void convertToPostfixNotation(std::ifstream& inpFile, Stack< char > stc, Queue< 
     {
       char symb = stc.drop();
       while (symb != '(')
-      {}
+      {
+      }
     }
   }
 }
