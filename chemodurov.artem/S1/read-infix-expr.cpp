@@ -17,47 +17,58 @@ chemodurov::InfixExpr * chemodurov::readInfixExpr(std::istream & in, size_t & in
   size_t size2 = 0;
   while (size2 < line.size())
   {
-    try
+    if (line[size2] == '(')
     {
-      int a = std::stoi(line, std::addressof(size1));
-      size1 += size2;
-      size2 = size1;
-      inf[inf_size++] = {a, true, false};
+      inf[inf_size++] = {chemodurov::BRACE_LEFT, false, false};
+      ++size2;
     }
-    catch (const std::invalid_argument & e)
+    else if (line[size2] == ')')
     {
-      if (line[size1] == '(')
+      inf[inf_size++] = {chemodurov::BRACE_RIGHT, false, false};
+      ++size2;
+    }
+    else if (line[size2] == '+')
+    {
+      inf[inf_size++] = {chemodurov::OPERATION_PLUS, false, true};
+      ++size2;
+    }
+    else if (line[size2] == '-')
+    {
+      inf[inf_size++] = {chemodurov::OPERATION_MINUS, false, true};
+      ++size2;
+    }
+    else if (line[size2] == '*')
+    {
+      inf[inf_size++] = {chemodurov::OPERATION_MULTIPLICATION, false, true};
+      ++size2;
+    }
+    else if (line[size2] == '/')
+    {
+      inf[inf_size++] = {chemodurov::OPERATION_DIVIDE, false, true};
+      ++size2;
+    }
+    else if (line[size2] == '%')
+    {
+      inf[inf_size++] = {chemodurov::OPERATION_REMINDER_OF_DIVISION, false, true};
+      ++size2;
+    }
+    else if (line[size2] == ' ')
+    {
+      ++size2;
+    }
+    else
+    {
+      try
       {
-        inf[inf_size++] = {chemodurov::BRACE_LEFT, false, false};
+        int a = std::stoi(line, std::addressof(size1));
+        size1 += size2;
+        size2 = size1;
+        inf[inf_size++] = {a, true, false};
       }
-      else if (line[size1] == ')')
-      {
-        inf[inf_size++] = {chemodurov::BRACE_RIGHT, false, false};
-      }
-      else if (line[size1] == '+')
-      {
-        inf[inf_size++] = {chemodurov::OPERATION_PLUS, false, true};
-      }
-      else if (line[size1] == '-')
-      {
-        inf[inf_size++] = {chemodurov::OPERATION_MINUS, false, true};
-      }
-      else if (line[size1] == '*')
-      {
-        inf[inf_size++] = {chemodurov::OPERATION_MULTIPLICATION, false, true};
-      }
-      else if (line[size1] == '/')
-      {
-        inf[inf_size++] = {chemodurov::OPERATION_DIVIDE, false, true};
-      }
-      else if (line[size1] == '%')
-      {
-        inf[inf_size++] = {chemodurov::OPERATION_REMINDER_OF_DIVISION, false, true};
-      }
-      else
+      catch (const std::invalid_argument & e)
       {
         delete [] inf;
-        throw std::runtime_error("Wrong input");
+        throw;
       }
     }
   }

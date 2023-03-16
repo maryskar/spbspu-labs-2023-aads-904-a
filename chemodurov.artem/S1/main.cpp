@@ -13,8 +13,10 @@ int main(int argc, char ** argv)
   std::string line;
   if (argc == 1)
   {
-    std::getline(std::cin, line);
-    chemodurov::InfixExpr * inf = new chemodurov::InfixExpr[line.size() / 2 + 1];
+    size_t inf_size = 0;
+    chemodurov::InfixExpr * inf = chemodurov::readInfixExpr(std::cin, inf_size);
+    //
+    delete [] inf;
   }
   else
   {
