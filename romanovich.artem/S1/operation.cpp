@@ -1,5 +1,6 @@
 #include <cstddef>
-#include "operations.h"
+#include <iostream>
+#include "operation.h"
 size_t Operation::getPriority(const std::string &op)
 {
   if (op == "+" || op == "-")
@@ -10,11 +11,7 @@ size_t Operation::getPriority(const std::string &op)
   {
     return 2;
   }
-  return 0;
-}
-bool Operation::isGreaterPriority(const Operation &lhs, const Operation &rhs)
-{
-  return getPriority(lhs.operation_) > getPriority(rhs.operation_);
+  throw std::invalid_argument("Operation parse error");
 }
 bool Operation::operator<=(const Operation& rhs) const
 {

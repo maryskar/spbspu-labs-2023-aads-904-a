@@ -42,7 +42,7 @@ int main(int argc, char **argv)
     }
     catch (...)
     {
-      std::cerr << "Error while calc.\n";
+      std::cerr << "Error while calculation.\n";
       return 2;
     }
   }
