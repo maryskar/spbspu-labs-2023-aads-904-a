@@ -5,7 +5,7 @@ class Operation
 {
 public:
   explicit Operation(const std::string &op);
-  bool operator<=(const Operation &op) const;
+  bool operator>=(const Operation &op) const;
 private:
   size_t getPriority(const std::string &basicString);
   size_t priority_;
