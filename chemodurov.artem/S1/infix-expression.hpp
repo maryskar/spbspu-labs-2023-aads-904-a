@@ -3,7 +3,7 @@
 
 namespace chemodurov
 {
-  enum OPERATION
+  enum Operation
   {
     OPERATION_PLUS = '+',
     OPERATION_MINUS = '-',
@@ -12,7 +12,7 @@ namespace chemodurov
     OPERATION_REMINDER_OF_DIVISION = '%'
   };
 
-  enum BRACE
+  enum Brace
   {
     BRACE_LEFT = '(',
     BRACE_RIGHT = ')'
@@ -21,8 +21,8 @@ namespace chemodurov
   union OperationsOperandsBraces
   {
     int operand;
-    OPERATION operation;
-    BRACE brace;
+    Operation operation;
+    Brace brace;
   };
 
   struct InfixExpr

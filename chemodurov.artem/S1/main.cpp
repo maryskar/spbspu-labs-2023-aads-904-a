@@ -45,12 +45,39 @@ int main(int argc, char ** argv)
         }
         catch (const std::invalid_argument & e)
         {
-          bool isBrace = false;
-          if (line[size1] == '(' || line[size1] == ')')
+          if (line[size1] == '(')
           {
-            isBrace = true;
+            inf[inf_size++] = {chemodurov::BRACE_LEFT, false, false};
           }
-          inf[inf_size++] = {line[size1], false, !isBrace};
+          else if (line[size1] == ')')
+          {
+            inf[inf_size++] = {chemodurov::BRACE_RIGHT, false, false};
+          }
+          else if (line[size1] == '+')
+          {
+            inf[inf_size++] = {chemodurov::OPERATION_PLUS, false, true};
+          }
+          else if (line[size1] == '-')
+          {
+            inf[inf_size++] = {chemodurov::OPERATION_MINUS, false, true};
+          }
+          else if (line[size1] == '*')
+          {
+            inf[inf_size++] = {chemodurov::OPERATION_MULTIPLICATION, false, true};
+          }
+          else if (line[size1] == '/')
+          {
+            inf[inf_size++] = {chemodurov::OPERATION_DIVIDE, false, true};
+          }
+          else if (line[size1] == '%')
+          {
+            inf[inf_size++] = {chemodurov::OPERATION_REMINDER_OF_DIVISION, false, true};
+          }
+          else
+          {
+            std::cerr << "Wrong input\n";
+            return 1;
+          }
         }
       }
       delete [] inf;
