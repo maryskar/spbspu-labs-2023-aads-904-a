@@ -17,11 +17,10 @@ void Stack< T >::push(T rhs)
 template< typename T >
 void Stack< T >::pop()
 {
-  if (isEmpty())
-  {
-    throw std::underflow_error("Stack underflow");
-  }
-  --top_;
+  list_t< T >* var = stack_.next;
+  while (var->next)
+  {}
+  delete var;
 }
 
 template< typename T >
