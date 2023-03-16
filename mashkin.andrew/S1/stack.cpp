@@ -1,5 +1,4 @@
 #include "stack.h"
-
 #include <cstddef>
 #include <stdexcept>
 

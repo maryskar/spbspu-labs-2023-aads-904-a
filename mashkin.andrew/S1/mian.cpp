@@ -1,7 +1,6 @@
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
-
 #include "convertToPostfixNotation.h"
 #include "queue.h"
 #include "stack.h"
