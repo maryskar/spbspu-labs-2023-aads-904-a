@@ -24,6 +24,7 @@ void Stack< T >::pop()
   list_t< T >* var = stack_.next;
   while (var->next)
   {
+    var = var->next;
   }
   delete var;
 }
