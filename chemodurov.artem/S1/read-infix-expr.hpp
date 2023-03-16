@@ -5,7 +5,7 @@
 
 namespace chemodurov
 {
-  InfixExpr * readInfixExpr(std::istream & in, size_t & inf_size);
+  InfixExpr * readInfixExpr(std::string & line, size_t & inf_size);
 }
 
 #endif

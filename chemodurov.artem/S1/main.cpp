@@ -13,10 +13,19 @@ int main(int argc, char ** argv)
   std::string line;
   if (argc == 1)
   {
-    size_t inf_size = 0;
-    chemodurov::InfixExpr * inf = chemodurov::readInfixExpr(std::cin, inf_size);
-    //
-    delete [] inf;
+    do
+    {
+      std::getline(std::cin, line);
+      if (!std::cin)
+      {
+        break;
+      }
+      size_t inf_size = 0;
+      chemodurov::InfixExpr * inf = chemodurov::readInfixExpr(line, inf_size);
+      //
+      delete[] inf;
+    }
+    while (std::cin);
   }
   else
   {
@@ -28,8 +37,13 @@ int main(int argc, char ** argv)
     }
     do
     {
+      std::getline(input, line);
+      if (!input)
+      {
+        break;
+      }
       size_t inf_size = 0;
-      chemodurov::InfixExpr * inf = chemodurov::readInfixExpr(input, inf_size);
+      chemodurov::InfixExpr * inf = chemodurov::readInfixExpr(line, inf_size);
       //
       delete [] inf;
     }
