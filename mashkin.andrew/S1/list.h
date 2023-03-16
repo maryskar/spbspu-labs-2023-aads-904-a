@@ -4,5 +4,7 @@
 template < typename T >
 struct list_t
 {
+  T data;
+  list_t< T >* next;
 };
 #endif
