@@ -2,7 +2,7 @@
 #define STACK_H
 #include <cstddef>
 
-template < typename T >
+template< typename T >
 class Stack
 {
 public:
