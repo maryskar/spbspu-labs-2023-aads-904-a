@@ -3,20 +3,15 @@
 #include <stdexcept>
 
 template< typename T >
-Stack< T >::Stack():
-  stack_{0},
-  top_(0)
+Stack< T >::Stack(T symb):
+  stack_(new list_t< T >{symb, nullptr})
 {
 }
 
 template< typename T >
 void Stack< T >::push(T rhs)
 {
-  if (top_ == OVERFLOW)
-  {
-    throw std::overflow_error("Stack overflow");
-  }
-  stack_[top_++] = rhs;
+  stack_.next = new list_t< T >{rhs, nullptr};
 }
 
 template< typename T >

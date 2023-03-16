@@ -7,7 +7,7 @@ template< typename T >
 class Stack
 {
 public:
-  explicit Stack();
+  explicit Stack(T symb);
 
   void push(T rhs);
   void pop();
@@ -15,5 +15,6 @@ public:
   T drop();
 
 private:
+  list_t< T > stack_;
 };
 #endif
