@@ -40,3 +40,9 @@ bool Stack< T >::isEmpty() const
 {
   return top_;
 }
+
+template< typename T >
+Stack< T >* Stack< T >::operator[](size_t id) const
+{
+  return stack_[id];
+}
