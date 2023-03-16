@@ -64,7 +64,7 @@ T Stack< T >::pop()
 {
   if (top_ == nullptr)
   {
-    throw;//nen jib,rf
+    throw;
   }
   T el = top_->data_;
   Node< T > *subTop = top_->next_;
