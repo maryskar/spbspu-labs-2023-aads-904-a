@@ -7,10 +7,14 @@ class Stack
 {
 public:
   explicit Stack();
+
   void push(T rhs);
   void pop();
   bool isEmpty() const;
   T drop();
+
+  Stack* operator[](size_t id) const;
+  Stack* at(size_t id) const;
 private:
   static const size_t OVERFLOW = 50;
   T* stack_[OVERFLOW];
