@@ -12,8 +12,6 @@ public:
   void pop();
   bool isEmpty() const;
   T drop();
-
-  Stack* at() const;
 private:
   static const size_t OVERFLOW = 50;
   T* stack_[OVERFLOW];

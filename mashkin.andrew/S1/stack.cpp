@@ -40,9 +40,3 @@ bool Stack< T >::isEmpty() const
 {
   return top_;
 }
-
-template< typename T >
-Stack< T >* Stack< T >::at() const
-{
-  return stack_[top_];
-}
