@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <stdexcept>
 
-template < typename T >
+template< typename T >
 Queue< T >::Queue():
   queue_{0},
   head_(0),
@@ -11,7 +11,7 @@ Queue< T >::Queue():
 {
 }
 
-template < typename T >
+template< typename T >
 void Queue< T >::enqueue(T rhs)
 {
   if (tail_ == OVERFLOW)
@@ -21,7 +21,7 @@ void Queue< T >::enqueue(T rhs)
   queue_[tail_++];
 }
 
-template < typename T >
+template< typename T >
 void Queue< T >::dequeue()
 {
   if (tail_ + 1 == head_)
@@ -31,7 +31,7 @@ void Queue< T >::dequeue()
   queue_[head_++];
 }
 
-template < typename T >
+template< typename T >
 T Queue< T >::drop()
 {
   dequeue();

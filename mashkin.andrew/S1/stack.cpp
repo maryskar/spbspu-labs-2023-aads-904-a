@@ -3,14 +3,14 @@
 #include <cstddef>
 #include <stdexcept>
 
-template < typename T >
+template< typename T >
 Stack< T >::Stack():
   stack_{0},
   top_(0)
 {
 }
 
-template < typename T >
+template< typename T >
 void Stack< T >::push(T rhs)
 {
   if (top_ == OVERFLOW)
@@ -20,7 +20,7 @@ void Stack< T >::push(T rhs)
   stack_[top_++] = rhs;
 }
 
-template < typename T >
+template< typename T >
 void Stack< T >::pop()
 {
   if (isEmpty())
@@ -30,14 +30,14 @@ void Stack< T >::pop()
   --top_;
 }
 
-template < typename T >
+template< typename T >
 T Stack< T >::drop()
 {
   pop();
   return stack_[top_ + 1];
 }
 
-template < typename T >
+template< typename T >
 bool Stack< T >::isEmpty() const
 {
   return top_;
