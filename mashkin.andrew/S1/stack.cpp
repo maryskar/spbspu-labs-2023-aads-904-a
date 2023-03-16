@@ -46,3 +46,13 @@ Stack< T >* Stack< T >::operator[](size_t id) const
 {
   return stack_[id];
 }
+
+template< typename T >
+Stack< T >* Stack< T >::at(size_t id) const
+{
+  if (id >= OVERFLOW)
+  {
+    throw std::out_of_range("Out of range");
+  }
+  return stack_[id];
+}
