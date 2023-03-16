@@ -1,5 +1,4 @@
 #include "notations.h"
-#include "operation.h"
 #include <limits>
 #include <algorithm>
 long long maxLongLong = std::numeric_limits< long long >::max();
@@ -26,15 +25,7 @@ bool isDigit(const std::string &str)
 }
 bool stackPopCondition(const std::string &q, const std::string &s)
 {
-  // throw
-  if (!isOperator(s) || isDigit(s))
-  {
-    return false;
-  }
-  Operation qOp(q);
-  Operation sOp(s);
-  return (!(qOp <= sOp));
-  //return (!((q == "+" || q == "-") && (s == "*" || s == "/" || s == "%")) && isOperator(s) && !isDigit(s));
+  return (!((q == "+" || q == "-") && (s == "*" || s == "/" || s == "%")) && isOperator(s) && !isDigit(s));
 }
 Queue< std::string > getPostfixFromInfix(Queue< std::string > queue)
 {
@@ -177,9 +168,9 @@ void calcPostfixExpression(Queue< std::string > postfixQueue, Stack< std::string
     {
       try
       {
-        long long x = std::stoll(calcStack->pop(), nullptr, 10);
-        long long y = std::stoll(calcStack->pop(), nullptr, 10);
-        calcStack->push(doOperation(x, y, el));
+        std::string x = calcStack->pop();
+        std::string y = calcStack->pop();
+        calcStack->push(doOperation(std::stoll(x, nullptr, 10), std::stoll(y, nullptr, 10), el));
       }
       catch (...)
       {

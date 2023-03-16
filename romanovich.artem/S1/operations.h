@@ -8,9 +8,12 @@ public:
   bool operator<=(const Operation &op) const;
 private:
   size_t getPriority(const std::string &basicString);
+  bool isGreaterPriority(const Operation &lhs, const Operation &rhs);
+  std::string operation_;
   size_t priority_;
 };
-inline Operation::Operation(const std::string &op):
+Operation::Operation(const std::string &op):
+  operation_(op),
   priority_(Operation::getPriority(op))
 {
 }
