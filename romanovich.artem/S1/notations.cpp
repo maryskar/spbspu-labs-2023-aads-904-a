@@ -176,9 +176,9 @@ void calcPostfixExpression(Queue< std::string > postfixQueue, Stack< std::string
     {
       try
       {
-        std::string x = calcStack->pop();
-        std::string y = calcStack->pop();
-        calcStack->push(doOperation(std::stoll(x, nullptr, 10), std::stoll(y, nullptr, 10), el));
+        long long x = std::stoll(calcStack->pop(), nullptr, 10);
+        long long y = std::stoll(calcStack->pop(), nullptr, 10);
+        calcStack->push(doOperation(x, y, el));
       }
       catch (...)
       {
