@@ -16,8 +16,8 @@ public:
     return size_ == 0;
   }
 private:
-  Node< T > *head_;
-  Node< T > *tail_;
+  details::ListNode< T > *head_;
+  details::ListNode< T > *tail_;
   size_t size_;
 };
 
@@ -35,7 +35,7 @@ Queue< T >::Queue(const Queue< std::string>& pQueue):
   tail_(nullptr),
   size_(0)
 {
-  Node< T > *tmp = pQueue.head_;
+  details::ListNode< T > *tmp = pQueue.head_;
   while (tmp != nullptr)
   {
     push(tmp->data_);
@@ -57,12 +57,12 @@ void Queue< T >::push(T rhs)
 {
   if (head_ == nullptr)
   {
-    head_ = new Node< T >{rhs, nullptr};
+    head_ = new details::ListNode< T >{rhs, nullptr};
     tail_ = head_;
   }
   else
   {
-    tail_->next_ = new Node< T >{rhs, nullptr};
+    tail_->next_ = new details::ListNode< T >{rhs, nullptr};
     tail_ = tail_->next_;
   }
   size_++;
@@ -72,7 +72,7 @@ template < typename T >
 T Queue< T >::pop()
 {
   T el = head_->data_;
-  Node< T > *subHead = head_->next_;
+  details::ListNode< T > *subHead = head_->next_;
   delete head_;
   head_ = subHead;
   size_--;

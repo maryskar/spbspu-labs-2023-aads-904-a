@@ -4,9 +4,17 @@
 #include <algorithm>
 long long maxLongLong = std::numeric_limits< long long >::max();
 long long minLongLong = std::numeric_limits< long long >::min();
+int sgn(long long n)
+{
+  return (n > 0) - (n < 0);// (n > 0) ? 1 : ((n < 0) ? -1 : 0);
+}
 bool overflowAdd(long long a, long long b)
 {
-  return ((b > 0 && a > maxLongLong - b) || (b < 0 && a < minLongLong - b));
+  if (sgn(a) == sgn(b))
+  {
+    return ((b > 0 && a > maxLongLong - b) || (b < 0 && a < minLongLong - b));
+  }
+  return false;
 }
 bool overflowMult(long long a, long long b)
 {

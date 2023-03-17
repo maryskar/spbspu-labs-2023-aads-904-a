@@ -24,7 +24,7 @@ public:
     return top_->data_;
   }
 private:
-  Node< T > *top_;
+  ListNode< T > *top_;
   size_t size_;
 };
 
@@ -49,11 +49,11 @@ void Stack< T >::push(const T &value)
 {
   if (top_ == nullptr)
   {
-    top_ = new Node< T >{value, nullptr};
+    top_ = new ListNode< T >{value, nullptr};
   }
   else
   {
-    Node< T > *newNode = new Node< T >{value, top_};
+    ListNode< T > *newNode = new ListNode< T >{value, top_};
     top_ = newNode;
   }
   size_++;
@@ -67,7 +67,7 @@ T Stack< T >::pop()
     throw;
   }
   T el = top_->data_;
-  Node< T > *subTop = top_->next_;
+  ListNode< T > *subTop = top_->next_;
   delete top_;
   top_ = subTop;
   size_--;

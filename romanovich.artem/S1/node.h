@@ -1,10 +1,13 @@
 #ifndef NODE_H
 #define NODE_H
 #include <stdexcept>
-template < typename T >
-struct Node
+namespace details
 {
-  T data_;
-  Node< T > *next_;
-};
+  template < typename T >
+  struct ListNode
+  {
+    T data_;
+    ListNode< T > *next_;
+  };
+}
 #endif
