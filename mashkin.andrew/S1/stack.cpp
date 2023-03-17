@@ -4,14 +4,16 @@
 
 template< typename T >
 Stack< T >::Stack(T symb):
-  stack_(new list_t< T >{symb, nullptr})
+  stack_(new list_t< T >{symb, nullptr}),
+  top_(stack_)
 {
 }
 
 template< typename T >
 void Stack< T >::push(T rhs)
 {
-  stack_.next = new list_t< T >{rhs, nullptr};
+  top_.next = new list_t< T >{rhs, nullptr};
+  top_ = top_.next;
 }
 
 template< typename T >
@@ -21,23 +23,18 @@ void Stack< T >::pop()
   {
     throw std::underflow_error("Stack underflow");
   }
-  list_t< T >* var = stack_.next;
-  while (var->next)
+  delete top_;
+  top_ = stack_.next;
+  while (top_.next)
   {
-    var = var->next;
+    top_ = top_.next;
   }
-  delete var;
 }
 
 template< typename T >
 T Stack< T >::drop()
 {
+  T var = top_.data;
   pop();
-  return stack_[top_ + 1];
-}
-
-template< typename T >
-bool Stack< T >::isEmpty() const
-{
-  return top_;
+  return var;
 }
