@@ -19,7 +19,6 @@ private:
   list_t< T >* top_;
 };
 
-
 template< typename T >
 Stack< T >::Stack():
   stack_(nullptr),
@@ -30,26 +29,40 @@ Stack< T >::Stack():
 template< typename T >
 void Stack< T >::push(T rhs)
 {
-  if (!top_->data)
+  if (!stack_)
   {
-    top_ = new list_t< T >{rhs, nullptr};
+    stack_ = new list_t< T >{rhs, nullptr};
+    top_ = stack_;
   }
-  top_->next = new list_t< T >{rhs, nullptr};
-  top_ = top_->next;
+  else
+  {
+    top_->next = new list_t< T >{rhs, nullptr};
+    top_ = top_->next;
+  }
 }
 
 template< typename T >
 void Stack< T >::pop()
 {
-  if (!stack_->data)
+  if (!stack_)
   {
     throw std::underflow_error("Stack underflow");
   }
-  delete top_;
-  top_ = stack_->next;
-  while (top_->next)
+  else if (top_ == stack_)
   {
-    top_ = top_->next;
+    delete top_;
+    stack_ = nullptr;
+  }
+  else
+  {
+    list_t< T >* predTop = stack_;
+    while (predTop->next != top_)
+    {
+      predTop = predTop->next;
+    }
+    delete top_;
+    top_ = predTop;
+    top_->next = nullptr;
   }
 }
 
