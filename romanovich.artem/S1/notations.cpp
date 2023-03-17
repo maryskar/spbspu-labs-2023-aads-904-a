@@ -6,7 +6,7 @@ long long maxLongLong = std::numeric_limits< long long >::max();
 long long minLongLong = std::numeric_limits< long long >::min();
 int sgn(long long n)
 {
-  return (n > 0) - (n < 0);// (n > 0) ? 1 : ((n < 0) ? -1 : 0);
+  return (n > 0) - (n < 0);
 }
 bool overflowAdd(long long a, long long b)
 {
@@ -76,7 +76,7 @@ Queue< std::string > getPostfixFromInfix(Queue< std::string > queue)
         }
         stack->pop();
       }
-      if (std::all_of(qEl.begin(), qEl.end(), ::isdigit))// && !isDigit(q)
+      if (isDigit(qEl))
       {
         postfixQueue.push(qEl);
       }
@@ -106,15 +106,22 @@ Queue< std::string > getPostfixFromInfix(Queue< std::string > queue)
 Queue< std::string > splitLine(const std::string &string)
 {
   Queue< std::string > queue;
-  int begin = 0;
-  int end = string.find(' ');
-  while (end != -1)
-  {
-    queue.push(string.substr(begin, end - begin));
-    begin = end + 1;
-    end = string.find(' ', begin);
+  int intBegin = 0;
+  int intEnd = 0;
+  std::string::size_type end = string.find(' ');
+  if (end != std::string::npos) {
+    intEnd = static_cast<int>(end);
   }
-  queue.push(string.substr(begin, end - begin));
+  while (intEnd != -1)
+  {
+    queue.push(string.substr(intBegin, intEnd - intBegin));
+    intBegin = intEnd + 1;
+    end = string.find(' ', intBegin);
+    if (end != std::string::npos) {
+      intEnd = static_cast<int>(end);
+    }
+  }
+  queue.push(string.substr(intBegin, intEnd - intBegin));
   return queue;
 }
 std::string doOperation(long long b, long long a, const std::string &oper)

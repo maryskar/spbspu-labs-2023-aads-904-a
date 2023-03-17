@@ -7,7 +7,7 @@ public:
   explicit Priority(const std::string &op);
   bool operator>=(const Priority &op) const;
 private:
-  size_t getPriority(const std::string &basicString);
+  static size_t getPriority(const std::string &basicString);
   size_t priority_;
 };
 inline Priority::Priority(const std::string &op):
