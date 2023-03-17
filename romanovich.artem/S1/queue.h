@@ -7,7 +7,7 @@ class Queue
 {
 public:
   Queue();
-  Queue(const Queue< std::string>& pQueue);
+  Queue(const Queue< T >& pQueue);
   ~Queue();
   void push(const T &rhs);
   T pop();
@@ -30,7 +30,7 @@ Queue< T >::Queue():
 }
 
 template < typename T >
-Queue< T >::Queue(const Queue< std::string>& pQueue):
+Queue< T >::Queue(const Queue< T >& pQueue):
   head_(nullptr),
   tail_(nullptr),
   size_(0)
