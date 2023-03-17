@@ -1,23 +1,9 @@
 #ifndef INFIX_EXPRESSION_HPP
 #define INFIX_EXPRESSION_HPP
+#include "operation-and-brace.hpp"
 
 namespace chemodurov
 {
-  enum Operation
-  {
-    OPERATION_PLUS = '+',
-    OPERATION_MINUS = '-',
-    OPERATION_MULTIPLICATION = '*',
-    OPERATION_DIVIDE = '/',
-    OPERATION_REMINDER_OF_DIVISION = '%'
-  };
-
-  enum Brace
-  {
-    BRACE_LEFT = '(',
-    BRACE_RIGHT = ')'
-  };
-
   union OperationsOperandsBraces
   {
     int operand;
