@@ -17,7 +17,13 @@ void convertToPostfixNotation(std::ifstream& inpFile, Stack< char > stc, Queue< 
       char symb = stc.drop();
       while (symb != '(')
       {
+        que.enqueue(symb);
+        symb = stc.drop();
       }
+    }
+    else
+    {
+      que.enqueue(var);
     }
   }
 }
