@@ -1,5 +1,6 @@
 #include "notations.h"
-#include "priority.h"
+#include "operation.h"
+#include "expressionelem.h"
 #include <limits>
 #include <algorithm>
 long long maxLongLong = std::numeric_limits< long long >::max();
@@ -43,8 +44,8 @@ bool stackPopCondition(const std::string &q, const std::string &s)
 {
   try
   {
-    Priority priorQ(q);
-    Priority priorS(s);
+    Operation priorQ(q);
+    Operation priorS(s);
     return (priorQ >= priorS);
   } catch (...)
   {
@@ -59,6 +60,7 @@ Queue< std::string > getPostfixFromInfix(Queue< std::string > queue)
   {
     if (!queue.isEmpty())
     {
+      //ExpressionElem queueElem(queue.pop());
       std::string qEl = queue.pop();
       if (qEl == "(")
       {
