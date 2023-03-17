@@ -7,11 +7,11 @@ class Queue
 {
 public:
   Queue();
-  Queue(const Queue< std::string>& pQueue);
+  explicit Queue(const Queue< std::string>* pQueue);
   ~Queue();
   void push(T rhs);
   T pop();
-  bool isEmpty()
+  bool isEmpty() const
   {
     return size_ == 0;
   }
@@ -30,12 +30,12 @@ Queue< T >::Queue():
 }
 
 template < typename T >
-Queue< T >::Queue(const Queue< std::string>& pQueue):
+Queue< T >::Queue(const Queue< std::string>* pQueue):
   head_(nullptr),
   tail_(nullptr),
   size_(0)
 {
-  details::ListNode< T > *tmp = pQueue.head_;
+  details::ListNode< T > *tmp = pQueue->head_;
   while (tmp != nullptr)
   {
     push(tmp->data_);

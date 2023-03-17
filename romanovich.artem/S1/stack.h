@@ -11,20 +11,20 @@ public:
   ~Stack();
   void push(const T &value);
   T pop();
-  bool isEmpty()
+  bool isEmpty() const
   {
     return size_ == 0;
   }
-  long long getSize()
+  long long getSize() const
   {
     return size_;
   }
-  T getTop()
+  T getTop() const
   {
     return top_->data_;
   }
 private:
-  ListNode< T > *top_;
+  details::ListNode< T > *top_;
   size_t size_;
 };
 
@@ -49,11 +49,11 @@ void Stack< T >::push(const T &value)
 {
   if (top_ == nullptr)
   {
-    top_ = new ListNode< T >{value, nullptr};
+    top_ = new details::ListNode< T >{value, nullptr};
   }
   else
   {
-    ListNode< T > *newNode = new ListNode< T >{value, top_};
+    details::ListNode< T > *newNode = new details::ListNode< T >{value, top_};
     top_ = newNode;
   }
   size_++;
@@ -67,7 +67,7 @@ T Stack< T >::pop()
     throw;
   }
   T el = top_->data_;
-  ListNode< T > *subTop = top_->next_;
+  details::ListNode< T > *subTop = top_->next_;
   delete top_;
   top_ = subTop;
   size_--;

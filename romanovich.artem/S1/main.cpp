@@ -27,8 +27,9 @@ int main(int argc, char **argv)
     }
     std::cin.rdbuf(fileInput.rdbuf());
   }
+  std::istream& in = (argc == 2) ? fileInput : std::cin;
   Stack< std::string > answer;
-  for (std::string line; std::getline(std::cin, line);)
+  for (std::string line; std::getline(in, line);)
   {
     if (line.empty())
     {
