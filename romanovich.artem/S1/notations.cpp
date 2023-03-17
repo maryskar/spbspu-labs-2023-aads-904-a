@@ -180,7 +180,7 @@ void calcPostfixExpression(Queue< std::string > postfixQueue, Stack< std::string
       break;
     }
     //if (isDigit(el))
-    if (std::isdigit((int) std::stoll(el, nullptr, 10)))
+    if (std::isdigit(static_cast<int> (std::stoll(el, nullptr, 10))))
     {
       calcStack->push(el);
     }
