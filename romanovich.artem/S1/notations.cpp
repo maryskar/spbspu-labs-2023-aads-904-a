@@ -1,5 +1,5 @@
 #include "notations.h"
-#include "operation.h"
+#include "priority.h"
 #include <limits>
 #include <algorithm>
 long long maxLongLong = std::numeric_limits< long long >::max();
@@ -26,14 +26,17 @@ bool isDigit(const std::string &str)
 }
 bool stackPopCondition(const std::string &q, const std::string &s)
 {
-  if (isOperator(s) && !isDigit(s))
+  //if (isOperator(s) && !isDigit(s))
+  //{
+  try
   {
-    Operation operQ(q);
-    Operation operS(s);
-    return (operQ >= operS);
+    Priority priorQ(q);
+    Priority priorS(s);
+    return (priorQ >= priorS);
+  } catch (...)
+  {
+    return false;
   }
-  return false;
-  //return (!((q == "+" || q == "-") && (s == "*" || s == "/" || s == "%")) && isOperator(s) && !isDigit(s));
 }
 Queue< std::string > getPostfixFromInfix(Queue< std::string > queue)
 {
