@@ -1,7 +1,6 @@
 #ifndef CONVERTTOPOSTFIXNOTATION_H
 #define CONVERTTOPOSTFIXNOTATION_H
 #include <fstream>
-
 #include "queue.h"
 #include "stack.h"
 
