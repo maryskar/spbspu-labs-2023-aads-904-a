@@ -1,20 +1,19 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 #include <cstddef>
+#include "list.h"
 
 template< typename T >
 class Queue
 {
 public:
-  explicit Queue();
+  explicit Queue(T symb);
   void enqueue(T rhs);
   void dequeue();
   T drop();
 
 private:
-  static const size_t OVERFLOW = 50;
-  T* queue_[OVERFLOW];
-  size_t head_;
-  size_t tail_;
+  list_t< T > head_;
+  list_t< T > tail_;
 };
 #endif
