@@ -17,6 +17,18 @@ namespace chemodurov
     BRACE_LEFT = '(',
     BRACE_RIGHT = ')'
   };
+
+  union OperationBrace
+  {
+    Brace brace;
+    Operation operation;
+  };
+
+  struct OperationAndBrace
+  {
+    OperationBrace data;
+    bool isBrace;
+  };
 }
 
 #endif
