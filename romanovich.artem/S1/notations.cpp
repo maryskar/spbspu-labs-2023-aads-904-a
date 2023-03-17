@@ -107,19 +107,12 @@ Queue< std::string > splitLine(const std::string &string)
 {
   Queue< std::string > queue;
   int intBegin = 0;
-  int intEnd = 0;
-  std::string::size_type end = string.find(' ');
-  if (end != std::string::npos) {
-    intEnd = static_cast<int>(end);
-  }
+  int intEnd = string.find(' ');
   while (intEnd != -1)
   {
     queue.push(string.substr(intBegin, intEnd - intBegin));
     intBegin = intEnd + 1;
-    end = string.find(' ', intBegin);
-    if (end != std::string::npos) {
-      intEnd = static_cast<int>(end);
-    }
+    intEnd = string.find(' ', intBegin);
   }
   queue.push(string.substr(intBegin, intEnd - intBegin));
   return queue;
