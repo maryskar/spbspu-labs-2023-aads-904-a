@@ -30,21 +30,17 @@ bool isOperator(const std::string &c)
 }
 bool isDigit(const std::string &str)
 {
-  return std::all_of(str.begin(), str.end(), ::isdigit);
-  bool result;
-  //try
-  //{
-    result = std::isdigit(static_cast<int> (std::stoll(str, nullptr, 10)));
-  //} catch (...)
-  //{
-  //  return false;
-  //}
-  return result;
+  try
+  {
+    std::stoll(str, nullptr, 10);
+  } catch (...)
+  {
+    return false;
+  }
+  return true;
 }
 bool stackPopCondition(const std::string &q, const std::string &s)
 {
-  //if (isOperator(s) && !isDigit(s))
-  //{
   try
   {
     Priority priorQ(q);
