@@ -2,6 +2,7 @@
 #include <fstream>
 #include "infix-expression.hpp"
 #include "read-infix-expr.hpp"
+#include "queue.hpp"
 
 int main(int argc, char ** argv)
 {
@@ -44,7 +45,11 @@ int main(int argc, char ** argv)
       }
       size_t inf_size = 0;
       chemodurov::InfixExpr * inf = chemodurov::readInfixExpr(line, inf_size);
-      //
+      chemodurov::Queue< chemodurov::InfixExpr > inf_queue;
+      for (size_t i = 0; i < inf_size; ++i)
+      {
+        inf_queue.push(inf[i]);
+      }
       delete [] inf;
     }
     while (input);
