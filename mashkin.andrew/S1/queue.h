@@ -28,12 +28,16 @@ Queue< T >::Queue():
 template< typename T >
 void Queue< T >::enqueue(T rhs)
 {
-  if (!tail_->data)
+  if (!tail_)
   {
-    tail_ = new list_t< T >{rhs, nullptr};
+    head_ = new list_t< T >{rhs, nullptr};
+    tail_ = head_;
   }
-  tail_->next = new list_t< T >{rhs, nullptr};
-  tail_ = tail_->next;
+  else
+  {
+    tail_->next = new list_t< T >{rhs, nullptr};
+    tail_ = tail_->next;
+  }
 }
 
 template< typename T >
