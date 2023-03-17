@@ -23,8 +23,13 @@ int main(int argc, char ** argv)
       }
       size_t inf_size = 0;
       chemodurov::InfixExpr * inf = chemodurov::readInfixExpr(line, inf_size);
-      //
+      chemodurov::Queue< chemodurov::InfixExpr > inf_queue;
+      for (size_t i = 0; i < inf_size; ++i)
+      {
+        inf_queue.push(inf[i]);
+      }
       delete[] inf;
+
     }
     while (std::cin);
   }
@@ -51,6 +56,7 @@ int main(int argc, char ** argv)
         inf_queue.push(inf[i]);
       }
       delete [] inf;
+
     }
     while (input);
   }
