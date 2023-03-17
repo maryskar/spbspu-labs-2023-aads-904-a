@@ -2,12 +2,16 @@
 #include "queue.h"
 #include "stack.h"
 
-void convertToPostfixNotation(std::ifstream& inpFile, Stack< char > stc, Queue< char > que)
+void convertToPostfixNotation(std::ifstream& inpFile, Stack< char >& stc, Queue< char >& que)
 {
   char var;
-  while (!inpFile)
+  while (inpFile)
   {
     inpFile >> var;
+    if (!inpFile)
+    {
+      break;
+    }
     if (var == '(' || var == '+' || var == '-' || var == '*' || var == '/' || var == '%')
     {
       stc.push(var);
