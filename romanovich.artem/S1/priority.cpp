@@ -11,7 +11,7 @@ size_t Priority::getPriority(const std::string &op)
   {
     return 2;
   }
-  //throw std::invalid_argument("Priority parse error");
+  throw std::invalid_argument("Priority parse error");
 }
 bool Priority::operator>=(const Priority& rhs) const
 {

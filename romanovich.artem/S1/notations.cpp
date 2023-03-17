@@ -131,7 +131,7 @@ std::string doOperation(long long b, long long a, const std::string &oper)
     }
     else
     {
-      //throw std::overflow_error("");
+      throw std::overflow_error("");
     }
   }
   if (oper == "-")
@@ -142,7 +142,7 @@ std::string doOperation(long long b, long long a, const std::string &oper)
     }
     else
     {
-      //throw std::overflow_error("");
+      throw std::overflow_error("");
     }
   }
   if (oper == "*")
@@ -153,7 +153,7 @@ std::string doOperation(long long b, long long a, const std::string &oper)
     }
     else
     {
-      //throw std::overflow_error("");
+      throw std::overflow_error("");
     }
   }
   if (oper == "/")
@@ -164,7 +164,7 @@ std::string doOperation(long long b, long long a, const std::string &oper)
     }
     else
     {
-      //throw std::overflow_error("");
+      throw std::overflow_error("");
     }
   }
   if (a < 0)
@@ -203,7 +203,7 @@ void calcPostfixExpression(Queue< std::string > postfixQueue, Stack< std::string
       catch (...)
       {
         delete calcStack;
-        //throw;
+        throw;
       }
     }
   }
