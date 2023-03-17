@@ -31,6 +31,15 @@ bool isOperator(const std::string &c)
 bool isDigit(const std::string &str)
 {
   return std::all_of(str.begin(), str.end(), ::isdigit);
+  bool result;
+  //try
+  //{
+    result = std::isdigit(static_cast<int> (std::stoll(str, nullptr, 10)));
+  //} catch (...)
+  //{
+  //  return false;
+  //}
+  return result;
 }
 bool stackPopCondition(const std::string &q, const std::string &s)
 {
@@ -122,7 +131,7 @@ std::string doOperation(long long b, long long a, const std::string &oper)
     }
     else
     {
-      throw std::overflow_error("");
+      //throw std::overflow_error("");
     }
   }
   if (oper == "-")
@@ -133,7 +142,7 @@ std::string doOperation(long long b, long long a, const std::string &oper)
     }
     else
     {
-      throw std::overflow_error("");
+      //throw std::overflow_error("");
     }
   }
   if (oper == "*")
@@ -144,7 +153,7 @@ std::string doOperation(long long b, long long a, const std::string &oper)
     }
     else
     {
-      throw std::overflow_error("");
+      //throw std::overflow_error("");
     }
   }
   if (oper == "/")
@@ -155,7 +164,7 @@ std::string doOperation(long long b, long long a, const std::string &oper)
     }
     else
     {
-      throw std::overflow_error("");
+      //throw std::overflow_error("");
     }
   }
   if (a < 0)
@@ -179,8 +188,7 @@ void calcPostfixExpression(Queue< std::string > postfixQueue, Stack< std::string
     {
       break;
     }
-    //if (isDigit(el))
-    if (std::isdigit(static_cast<int> (std::stoll(el, nullptr, 10))))
+    if (isDigit(el))
     {
       calcStack->push(el);
     }
@@ -195,7 +203,7 @@ void calcPostfixExpression(Queue< std::string > postfixQueue, Stack< std::string
       catch (...)
       {
         delete calcStack;
-        throw;
+        //throw;
       }
     }
   }

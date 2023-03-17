@@ -73,7 +73,7 @@ T Queue< T >::pop()
 {
   if (head_ == nullptr)
   {
-    throw;
+    //throw;
   }
   T el = head_->data_;
   details::ListNode< T > *subHead = head_->next_;
