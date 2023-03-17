@@ -60,7 +60,7 @@ T & chemodurov::Queue< T >::getFromQueue()
   {
     throw std::logic_error("Empty queue");
   }
-  return *head_;
+  return (*head_).data;
 }
 
 template< typename T >
