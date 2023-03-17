@@ -11,10 +11,10 @@ public:
 
   void push(T rhs);
   void pop();
-  bool isEmpty() const;
   T drop();
 
 private:
   list_t< T > stack_;
+  list_t< T > top_;
 };
 #endif
