@@ -17,10 +17,14 @@ int main(int argc, char** argv)
     Stack< char > stc;
     Queue< char > que;
     std::ifstream inpFile;
-    inpFile.exceptions(std::ifstream::badbit | std::ifstream::failbit);
     try
     {
       inpFile.open(argv[2]);
+      if (!inpFile.is_open())
+      {
+        std::cerr << "File isn't open\n";
+        return 1;
+      }
       convertToPostfixNotation(inpFile, stc, que);
     }
     catch (const std::overflow_error& ex)
