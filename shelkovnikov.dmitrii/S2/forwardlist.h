@@ -103,7 +103,7 @@ namespace dimkashelk
     void pushFront(const T &data)
     {
       auto *node = new details::Node< T >(data);
-      if (!begin_)
+      if (begin_)
       {
         node->next = begin_;
         begin_->prev = node;
@@ -116,7 +116,23 @@ namespace dimkashelk
     }
     void pushBack(const T &data)
     {
-      insertAfter(Iterator(end_), data);
+      auto *node = new details::Node< T >(data);
+      if (end_)
+      {
+        node->prev = end_;
+        end_->next = node;
+        end_ = node;
+      }
+      else if (!begin_)
+      {
+        begin_ = node;
+      }
+      else
+      {
+        begin_->next = node;
+        node->prev = begin_;
+        end_ = node;
+      }
     }
     void insertAfter(const Iterator& it, const T& data)
     {
