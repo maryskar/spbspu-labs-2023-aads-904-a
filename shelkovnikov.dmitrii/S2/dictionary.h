@@ -23,6 +23,10 @@ namespace dimkashelk
     ~Dictionary() = default;
     dict_type &operator=(const dict_type &other)
     {
+      if (this == std::addressof(other))
+      {
+        return *this;
+      }
       list_.free();
       compare_ = other.compare_;
       auto it = list_.begin();
@@ -30,7 +34,7 @@ namespace dimkashelk
       auto end = other.list_.end();
       while (begin != end)
       {
-        //list_.insertBefore(it, (*begin));
+        list_.insertBefore(it, (*begin));
         begin++;
       }
       return *this;
