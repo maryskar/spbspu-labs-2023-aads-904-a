@@ -116,13 +116,13 @@ namespace dimkashelk
     void insertAfter(const Iterator& it, const T& data)
     {
       auto *newNode = new details::Node< T >(data);
-      newNode->next = it.node->next;
+      newNode->next = it.ptr_->next;
       if (newNode->next)
       {
         newNode->next->prev = newNode;
       }
-      it.node->next = newNode;
-      newNode->prev = it.node;
+      it.ptr_->next = newNode;
+      newNode->prev = it.ptr_;
       if (!newNode->next)
       {
         end_ = newNode;
