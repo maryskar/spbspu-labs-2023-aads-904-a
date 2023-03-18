@@ -48,21 +48,25 @@ namespace dimkashelk
     {
       auto comp = [&](const auto &item)
       {
-        return compare_(item.first, k);
+        return compare_(item.first, k) || item.first == k;
       };
       auto it = std::find_if(list_.begin(), list_.end(), comp);
-      if (it == list_.begin())
+      if (it == list_.end())
+      {
+        list_.pushBack(std::pair< Key, Value >(k, value));
+      }
+      else if ((*it).first == k)
+      {
+        (*it).second = value;
+      }
+      else if (it == list_.begin())
       {
         list_.pushFront(std::pair< Key, Value >(k, value));
       }
-      else if (it != list_.end())
+      else
       {
         it--;
         list_.insertAfter(it, std::pair< Key, Value >(k, value));
-      }
-      else
-      {
-        list_.pushBack(std::pair< Key, Value >(k, value));
       }
     }
     Value &get(const Key &k)
