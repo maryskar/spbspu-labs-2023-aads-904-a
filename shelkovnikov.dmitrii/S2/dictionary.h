@@ -3,6 +3,7 @@
 #include <utility>
 #include <iterator>
 #include <ostream>
+#include <algorithm>
 #include "forwardlist.h"
 namespace dimkashelk
 {
@@ -29,32 +30,30 @@ namespace dimkashelk
       auto end = other.list_.end();
       while (begin != end)
       {
-        list_.insertBefore(it, (*begin));
+        //list_.insertBefore(it, (*begin));
         begin++;
       }
       return *this;
     }
     void push(const Key &k, const Value &value)
     {
-      auto it = list_.begin();
-      auto end = list_.end();
-      while (it != end && compare_(k, (*it).first))
+      auto comp = [&](const auto &item)
       {
-        it++;
+        return m_compare(item.first, k);
+      };
+      auto it = std::find_if(list_.begin(), list_.end(), comp);
+      if (it == list_.begin())
+      {
+        list_.pushFront(std::pair< Key, Value >(k, value));
       }
-      if (it == end)
+      else if (it != list_.end())
       {
-        std::pair< Key, Value > pair(k, value);
-        list_.insertBefore(it, pair);
-      }
-      else if ((*it).first != k)
-      {
-        std::pair< Key, Value > pair(k, value);
-        list_.insertBefore(it, pair);
+        it--;
+        list_.insertAfter(it, std::pair< Key, Value >(k, value));
       }
       else
       {
-        (*it).second = value;
+        list_.pushBack(std::pair< Key, Value >(k, value));
       }
     }
     Value &get(const Key &k)

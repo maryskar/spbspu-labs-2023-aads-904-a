@@ -109,6 +109,10 @@ namespace dimkashelk
         begin_ = node;
       }
     }
+    void pushBack(const T &data)
+    {
+      insertAfter(Iterator(end_), data);
+    }
     void insertAfter(const Iterator& it, const T& data)
     {
       auto *newNode = new details::Node< T >(data);
