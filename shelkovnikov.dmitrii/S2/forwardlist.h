@@ -40,6 +40,16 @@ namespace dimkashelk
         ptr_ = ptr_->next;
         return *this;
       }
+      Iterator &operator--()
+      {
+        ptr_ = ptr_->prev;
+        return *this;
+      }
+      Iterator &operator--(int)
+      {
+        ptr_ = ptr_->prev;
+        return *this;
+      }
       T &operator*() const
       {
         return ptr_->data;
