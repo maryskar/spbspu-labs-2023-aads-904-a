@@ -110,33 +110,11 @@ namespace dimkashelk
         end_ = newNode;
       }
     }
-    void remove(const Iterator &it)
-    {
-      details::Node< T > *node = it.ptr_;
-      if (node->prev != nullptr)
-      {
-        node->prev->next = node->next;
-      }
-      else
-      {
-        begin_ = node->next;
-      }
-      if (node->next != nullptr)
-      {
-        node->next->prev = node->prev;
-      }
-      else
-      {
-        end_ = node->prev;
-      }
-      delete node;
-    }
     void free()
     {
       while (begin_)
       {
-        auto iter = begin();
-        remove(iter);
+
       }
     }
     bool empty()
