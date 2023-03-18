@@ -74,7 +74,7 @@ namespace dimkashelk
       auto it = std::find_if(list_.begin(), list_.end(), comp);
       if (it != list_.end())
       {
-        return *it;
+        return (*it).second;
       }
       throw std::runtime_error("Nothing to return");
     }
