@@ -73,11 +73,15 @@ namespace dimkashelk
       begin_(nullptr),
       end_(nullptr)
     {
-      details::Node< T > *start = forwardList.begin_;
-      while (start)
+      auto iter = forwardList.begin();
+      pushFront(*iter);
+      iter++;
+      auto begin = this->begin();
+      while (iter != forwardList.end())
       {
-        pushFront(start->data);
-        start = start->next;
+        insertAfter(begin, *iter);
+        iter++;
+        begin++;
       }
     }
     ForwardList(ForwardList< T > &&forwardList):
