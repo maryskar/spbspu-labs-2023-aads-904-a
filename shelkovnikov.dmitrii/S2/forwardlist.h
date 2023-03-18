@@ -95,57 +95,39 @@ namespace dimkashelk
     {
       insertBefore(end(), data);
     }
-    void insertAfter(const Iterator& it, const T& data) {
+    void insertAfter(const Iterator& it, const T& data)
+    {
       auto *newNode = new details::Node< T >(data);
       newNode->next = it.node->next;
-      if (newNode->next) {
+      if (newNode->next)
+      {
         newNode->next->prev = newNode;
       }
       it.node->next = newNode;
       newNode->prev = it.node;
-      if (!newNode->next) {
+      if (!newNode->next)
+      {
         end_ = newNode;
       }
     }
-    void remove(ForwardList< T >::Iterator &iterator)
+    void remove(const Iterator &it)
     {
-      if (iterator.ptr_)
+      details::Node< T > *node = it.ptr_;
+      if (node->prev != nullptr)
       {
-        if (iterator.ptr_ == begin_)
-        {
-          details::Node< T > *node = begin_->next;
-          delete begin_;
-          begin_ = node;
-          if (begin_)
-          {
-            begin_->prev = nullptr;
-          }
-          iterator.ptr_ = begin_;
-        }
-        else if (iterator.ptr_ == end_)
-        {
-          end_->prev->next = nullptr;
-          details::Node< T > *new_node = end_->prev;
-          delete end_;
-          if (new_node != begin_)
-          {
-            end_ = new_node;
-          }
-          else
-          {
-            end_ = nullptr;
-          }
-          iterator.ptr_ = nullptr;
-        }
-        else
-        {
-          iterator.ptr_->prev->next = iterator.ptr_->next;
-          iterator.ptr_->next->prev = iterator.ptr_->prev;
-          details::Node< T > *new_ptr_ = iterator.ptr_->next;
-          delete iterator.ptr_;
-          iterator.ptr_ = new_ptr_;
-        }
+        node->prev->next = node->next;
+      } else
+      {
+        begin_ = node->next;
       }
+      if (node->next != nullptr)
+      {
+        node->next->prev = node->prev;
+      } else
+      {
+        end_ = node->prev;
+      }
+      delete node;
     }
     void free()
     {
