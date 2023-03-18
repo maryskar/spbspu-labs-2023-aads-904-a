@@ -12,6 +12,7 @@ public:
 
   void push(T rhs);
   void pop();
+  bool isEmpty() const;
   T drop();
 
 private:
@@ -52,6 +53,7 @@ void Stack< T >::pop()
   {
     delete top_;
     stack_ = nullptr;
+    top_ = stack_;
   }
   else
   {
@@ -72,5 +74,11 @@ T Stack< T >::drop()
   T var = top_->data;
   pop();
   return var;
+}
+
+template< typename T >
+bool Stack< T >::isEmpty() const
+{
+  return stack_;
 }
 #endif
