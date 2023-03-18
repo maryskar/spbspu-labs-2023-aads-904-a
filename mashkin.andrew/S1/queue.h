@@ -11,6 +11,7 @@ public:
   explicit Queue();
   void enqueue(T rhs);
   void dequeue();
+  bool isEmpty() const;
   T drop();
 
 private:
@@ -56,7 +57,7 @@ void Queue< T >::dequeue()
   }
   else
   {
-    list_t< T > var = head_->next;
+    list_t< T >* var = head_->next;
     delete head_;
     head_ = var;
   }
@@ -68,5 +69,11 @@ T Queue< T >::drop()
   T var = head_->data;
   dequeue();
   return var;
+}
+
+template< typename T >
+bool Queue< T >::isEmpty() const
+{
+  return head_;
 }
 #endif
