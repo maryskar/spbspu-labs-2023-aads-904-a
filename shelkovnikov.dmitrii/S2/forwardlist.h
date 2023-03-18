@@ -114,8 +114,11 @@ namespace dimkashelk
     {
       while (begin_)
       {
-
+        details::Node< T > *node = begin_;
+        begin_ = begin_->next;
+        delete node;
       }
+      end_ = nullptr;
     }
     bool empty()
     {
