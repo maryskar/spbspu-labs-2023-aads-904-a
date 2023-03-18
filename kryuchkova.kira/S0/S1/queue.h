@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include "node.h"
 
-namespace gelaz
+namespace kryuchkova
 {
   template < typename T >
   class Queue
@@ -44,7 +44,7 @@ namespace gelaz
   {
     while (head_)
     {
-     drop();
+      drop();
     }
   }
 
@@ -68,16 +68,16 @@ namespace gelaz
   T Queue< T >::drop()
   {
     Node< T > *current = tail_;
-    if (head_ == nullptr)
+    if isEmpty()
     {
       throw std::logic_error("Empty queue");
     }
     else
     {
-     while (current->next_ != head_)
-     {
-       current = current->next;
-     }
+      while (current->next_ != head_)
+      {
+        current = current->next;
+      }
       T data = head_->data_;
       head_ = current;
       delete current->next_;
@@ -88,7 +88,7 @@ namespace gelaz
   template < typename T >
   bool Queue< T >::isEmpty()
   {
-   return head_ == nullptr;
+    return head_ == nullptr;
   }
 }
 
