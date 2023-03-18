@@ -19,40 +19,41 @@ namespace details
 }
 namespace dimkashelk
 {
-  template < class T >
+  template < typename T >
   class ForwardList
   {
   public:
     class Iterator
     {
+    friend class ForwardList< T >;
     public:
       explicit Iterator(details::Node< T > *ptr):
-        node(ptr)
+        ptr_(ptr)
       {}
       Iterator &operator++()
       {
-        node = node->next;
+        ptr_ = ptr_->next;
         return *this;
       }
       Iterator &operator++(int)
       {
-        node = node->next;
+        ptr_ = ptr_->next;
         return *this;
       }
       T &operator*() const
       {
-        return node->data;
+        return ptr_->data;
       }
       bool operator==(const Iterator &other) const
       {
-        return node == other.node;
+        return ptr_ == other.ptr_;
       }
       bool operator!=(const Iterator &other) const
       {
-        return node != other.node;
+        return ptr_ != other.ptr_;
       }
     private:
-      details::Node< T > *node;
+      details::Node< T > *ptr_;
     };
     ForwardList():
       begin_(nullptr),
