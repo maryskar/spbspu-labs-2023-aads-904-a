@@ -48,7 +48,7 @@ namespace dimkashelk
     {
       auto comp = [&](const auto &item)
       {
-        return m_compare(item.first, k);
+        return compare_(item.first, k);
       };
       auto it = std::find_if(list_.begin(), list_.end(), comp);
       if (it == list_.begin())
