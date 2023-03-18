@@ -99,6 +99,10 @@ namespace dimkashelk
     }
     friend dict_type operator-(const dict_type &first, const dict_type &second)
     {
+      if (std::addressof(first) == std::addressof(second))
+      {
+        return dict_type();
+      }
       return getResult(first, second, "-");
     }
     friend dict_type operator&(const dict_type &first, const dict_type &second)
