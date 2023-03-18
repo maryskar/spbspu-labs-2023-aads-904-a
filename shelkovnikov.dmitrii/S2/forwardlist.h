@@ -27,6 +27,11 @@ namespace dimkashelk
     {
     friend class ForwardList< T >;
     public:
+      typedef ptrdiff_t difference_type;
+      typedef T value_type;
+      typedef T* pointer;
+      typedef T& reference;
+      typedef std::input_iterator_tag iterator_category;
       explicit Iterator(details::Node< T > *ptr):
         ptr_(ptr)
       {}
