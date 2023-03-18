@@ -2,6 +2,7 @@
 #define SPBSPU_LABS_2023_AADS_904_A_FORWARDLIST_H
 #include <cstddef>
 #include <cassert>
+#include <iterator>
 namespace details
 {
   template< typename T >
