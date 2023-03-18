@@ -28,7 +28,7 @@ Queue< T >::Queue():
 template< typename T >
 void Queue< T >::enqueue(T rhs)
 {
-  if (!tail_)
+  if (!head_)
   {
     head_ = new list_t< T >{rhs, nullptr};
     tail_ = head_;
@@ -43,13 +43,23 @@ void Queue< T >::enqueue(T rhs)
 template< typename T >
 void Queue< T >::dequeue()
 {
-  if (tail_ == head_)
+
+  if (!head_)
   {
     throw std::underflow_error("Queue underflow");
   }
-  list_t< T > var = head_->next;
-  delete head_;
-  head_ = var;
+  else if (tail_ == head_)
+  {
+    delete tail_;
+    head_ = nullptr;
+    tail_ = head_;
+  }
+  else
+  {
+    list_t< T > var = head_->next;
+    delete head_;
+    head_ = var;
+  }
 }
 
 template< typename T >
