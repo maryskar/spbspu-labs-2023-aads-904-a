@@ -67,12 +67,14 @@ namespace dimkashelk
     }
     Value &get(const Key &k)
     {
-      for (auto i = list_.begin(), end = list_.end(); i != end; i++)
+      auto comp = [&](const auto &item)
       {
-        if ((*i).first == k)
-        {
-          return (*i).second;
-        }
+        return item.first == k;
+      };
+      auto it = std::find_if(list_.begin(), list_.end(), comp);
+      if (it != list_.end())
+      {
+        return *it;
       }
       throw std::runtime_error("Nothing to return");
     }
