@@ -29,12 +29,17 @@ namespace dimkashelk
       }
       list_.free();
       compare_ = other.compare_;
-      auto it = list_.begin();
+      if (other.list_.begin() == other.list_.end())
+      {
+        return *this;
+      }
       auto begin = other.list_.begin();
       auto end = other.list_.end();
+      list_.pushFront(*begin);
+      begin++;
       while (begin != end)
       {
-        list_.insertBefore(it, (*begin));
+        list_.pushBack(*begin);
         begin++;
       }
       return *this;
