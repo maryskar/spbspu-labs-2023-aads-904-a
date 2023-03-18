@@ -76,7 +76,7 @@ namespace dimkashelk
       details::Node< T > *start = forwardList.begin_;
       while (start)
       {
-        pushBack(start->data);
+        pushFront(start->data);
         start = start->next;
       }
     }
@@ -91,9 +91,19 @@ namespace dimkashelk
     {
       free();
     }
-    void pushBack(const T &data)
+    void pushFront(const T &data)
     {
-      insertBefore(end(), data);
+      auto *node = new details::Node< T >(data);
+      if (!begin_)
+      {
+        node->next = begin_;
+        begin_->prev = node;
+        begin_ = node;
+      }
+      else
+      {
+        begin_ = node;
+      }
     }
     void insertAfter(const Iterator& it, const T& data)
     {
