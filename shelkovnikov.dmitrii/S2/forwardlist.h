@@ -116,14 +116,16 @@ namespace dimkashelk
       if (node->prev != nullptr)
       {
         node->prev->next = node->next;
-      } else
+      }
+      else
       {
         begin_ = node->next;
       }
       if (node->next != nullptr)
       {
         node->next->prev = node->prev;
-      } else
+      }
+      else
       {
         end_ = node->prev;
       }
