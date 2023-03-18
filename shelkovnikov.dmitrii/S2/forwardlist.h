@@ -7,13 +7,13 @@ namespace details
   template< typename T >
   struct Node
   {
-    T data_;
-    Node *next_;
-    Node *prev_;
+    T data;
+    Node *next;
+    Node *prev;
     explicit Node(const T &data):
-      data_(data),
-      next_(nullptr),
-      prev_(nullptr)
+      data(data),
+      next(nullptr),
+      prev(nullptr)
     {}
   };
 }
@@ -25,37 +25,34 @@ namespace dimkashelk
   public:
     class Iterator
     {
-    friend class ForwardList< T >;
     public:
       explicit Iterator(details::Node< T > *ptr):
-        ptr_(ptr)
+        node(ptr)
       {}
-      T &operator*() const
-      {
-        return ptr_->data_;
-      }
       Iterator &operator++()
       {
-        assert(ptr_ != nullptr);
-        ptr_ = ptr_->next_;
+        node = node->next;
         return *this;
       }
       Iterator &operator++(int)
       {
-        assert(ptr_ != nullptr);
-        ptr_ = ptr_->next_;
+        node = node->next;
         return *this;
       }
-      friend bool operator==(const Iterator &a, const Iterator &b)
+      T &operator*() const
       {
-        return a.ptr_ == b.ptr_;
-      };
-      friend bool operator!=(const Iterator &a, const Iterator &b)
+        return node->data;
+      }
+      bool operator==(const Iterator &other) const
       {
-        return a.ptr_ != b.ptr_;
-      };
+        return node == other.node;
+      }
+      bool operator!=(const Iterator &other) const
+      {
+        return node != other.node;
+      }
     private:
-      details::Node< T > *ptr_;
+      details::Node< T > *node;
     };
     ForwardList():
       begin_(nullptr),
@@ -68,8 +65,8 @@ namespace dimkashelk
       details::Node< T > *start = forwardList.begin_;
       while (start)
       {
-        pushBack(start->data_);
-        start = start->next_;
+        pushBack(start->data);
+        start = start->next;
       }
     }
     ForwardList(ForwardList< T > &&forwardList):
@@ -98,8 +95,8 @@ namespace dimkashelk
       }
       if (iterator.ptr_ == begin_)
       {
-        begin_->prev_ = new_node;
-        new_node->next_ = begin_;
+        begin_->prev = new_node;
+        new_node->next = begin_;
         if (!end_)
         {
           end_ = begin_;
@@ -109,23 +106,23 @@ namespace dimkashelk
       }
       if (iterator.ptr_ != end().ptr_)
       {
-        new_node->next_ = iterator.ptr_;
-        new_node->prev_ = iterator.ptr_->prev_;
-        iterator.ptr_->prev_->next_ = new_node;
-        iterator.ptr_->prev_ = new_node;
+        new_node->next = iterator.ptr_;
+        new_node->prev = iterator.ptr_->prev;
+        iterator.ptr_->prev->next = new_node;
+        iterator.ptr_->prev = new_node;
       }
       else
       {
         if (end_)
         {
-          end_->next_ = new_node;
-          new_node->prev_ = end_;
+          end_->next = new_node;
+          new_node->prev = end_;
           end_ = new_node;
         }
         else
         {
-          begin_->next_ = new_node;
-          new_node->prev_ = begin_;
+          begin_->next = new_node;
+          new_node->prev = begin_;
           end_ = new_node;
         }
       }
@@ -136,19 +133,19 @@ namespace dimkashelk
       {
         if (iterator.ptr_ == begin_)
         {
-          details::Node< T > *node = begin_->next_;
+          details::Node< T > *node = begin_->next;
           delete begin_;
           begin_ = node;
           if (begin_)
           {
-            begin_->prev_ = nullptr;
+            begin_->prev = nullptr;
           }
           iterator.ptr_ = begin_;
         }
         else if (iterator.ptr_ == end_)
         {
-          end_->prev_->next_ = nullptr;
-          details::Node< T > *new_node = end_->prev_;
+          end_->prev->next = nullptr;
+          details::Node< T > *new_node = end_->prev;
           delete end_;
           if (new_node != begin_)
           {
@@ -162,9 +159,9 @@ namespace dimkashelk
         }
         else
         {
-          iterator.ptr_->prev_->next_ = iterator.ptr_->next_;
-          iterator.ptr_->next_->prev_ = iterator.ptr_->prev_;
-          details::Node< T > *new_ptr_ = iterator.ptr_->next_;
+          iterator.ptr_->prev->next = iterator.ptr_->next;
+          iterator.ptr_->next->prev = iterator.ptr_->prev;
+          details::Node< T > *new_ptr_ = iterator.ptr_->next;
           delete iterator.ptr_;
           iterator.ptr_ = new_ptr_;
         }
