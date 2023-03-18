@@ -30,4 +30,8 @@ void convertToPostfixNotation(std::ifstream& inpFile, Stack< char >& stc, Queue<
       que.enqueue(var);
     }
   }
+  while (stc.isEmpty())
+  {
+    que.enqueue(stc.drop());
+  }
 }
