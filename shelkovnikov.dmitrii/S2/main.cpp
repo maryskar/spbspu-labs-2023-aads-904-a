@@ -61,14 +61,7 @@ int main(int argc, char *argv[])
       try
       {
         dict_type dict = list.get(dataset_name);
-        if (dict.empty())
-        {
-          std::cout << "<EMPTY>\n";
-        }
-        else
-        {
-          std::cout << dataset_name << " " << dict << "\n";
-        }
+        std::cout << dataset_name << " " << dict << "\n";
       }
       catch (const std::runtime_error &e)
       {
