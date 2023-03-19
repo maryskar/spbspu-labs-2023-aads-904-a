@@ -92,9 +92,12 @@ namespace dimkashelk
       {
         return out << "<EMPTY>";
       }
-      for (auto i: dict.list_)
-      {
-        out << i.first << " " << i.second << " " ;
+      auto it = dict.list_.begin();
+      auto end = dict.list_.end();
+      out << (*it).first << " " << (*it).second;
+      it++;
+      for (; it != end; it++) {
+        out << " " << (*it).first << " " << (*it).second;
       }
       return out;
     }
