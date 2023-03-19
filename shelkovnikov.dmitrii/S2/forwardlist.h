@@ -80,14 +80,10 @@ namespace dimkashelk
       end_(nullptr)
     {
       auto iter = forwardList.begin();
-      pushFront(*iter);
-      iter++;
-      auto begin = this->begin();
       while (iter != forwardList.end())
       {
-        insertAfter(begin, *iter);
+        pushBack((*iter));
         iter++;
-        begin++;
       }
     }
     ForwardList(ForwardList< T > &&forwardList):
