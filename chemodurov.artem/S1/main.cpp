@@ -2,7 +2,8 @@
 #include <fstream>
 #include "read-infix-expr.hpp"
 #include "convert-infix-to-postfix.hpp"
-#include "stack.hpp"
+#include "calc-postfix-expr.hpp"
+#include "print-stack-int.hpp"
 
 int main(int argc, char ** argv)
 {
@@ -39,17 +40,17 @@ int main(int argc, char ** argv)
         return 1;
       }
       delete[] inf;
-      chemodurov::Queue< chemodurov::PostfixExpr > post;
+
       try
       {
-        post = chemodurov::convertInfixToPostfix(inf_queue);
+        chemodurov::Queue< chemodurov::PostfixExpr > post = chemodurov::convertInfixToPostfix(inf_queue);
+        res.push(chemodurov::calcPostfixExpr(post));
       }
       catch (...)
       {
         std::cerr << "Error...\n";
         return 1;
       }
-
     }
     while (std::cin);
   }
@@ -61,6 +62,7 @@ int main(int argc, char ** argv)
       std::cerr << "Error while reading\n";
       return 1;
     }
+
     do
     {
       std::getline(input, line);
@@ -71,14 +73,34 @@ int main(int argc, char ** argv)
       size_t inf_size = 0;
       chemodurov::InfixExpr * inf = chemodurov::readInfixExpr(line, inf_size);
       chemodurov::Queue< chemodurov::InfixExpr > inf_queue;
-      for (size_t i = 0; i < inf_size; ++i)
+      try
       {
-        inf_queue.push(inf[i]);
+        for (size_t i = 0; i < inf_size; ++i)
+        {
+          inf_queue.push(inf[i]);
+        }
+      }
+      catch (...)
+      {
+        delete[] inf;
+        std::cerr << "Error...\n";
+        return 1;
       }
       delete[] inf;
 
+      try
+      {
+        chemodurov::Queue< chemodurov::PostfixExpr > post = chemodurov::convertInfixToPostfix(inf_queue);
+        res.push(chemodurov::calcPostfixExpr(post));
+      }
+      catch (...)
+      {
+        std::cerr << "Error...\n";
+        return 1;
+      }
     }
     while (input);
   }
+  chemodurov::printStackInt(std::cout, res);
   return 0;
 }
