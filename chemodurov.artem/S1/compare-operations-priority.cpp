@@ -1,6 +1,6 @@
 #include "compare-operations-priority.hpp"
 
-int chemodurov::compareOperationsPriority(chemodurov::Operation lhs, chemodurov::Operation rhs)
+int chemodurov::compareOperationsPriority(Operation lhs, Operation rhs)
 {
   int lhs_prior = 0;
   int rhs_prior = 0;

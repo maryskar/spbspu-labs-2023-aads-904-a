@@ -4,7 +4,7 @@
 
 namespace chemodurov
 {
-  chemodurov::OperationAndBrace makeOperationAndBrace(chemodurov::Operation op)
+  OperationAndBrace makeOperationAndBrace(Operation op)
   {
     OperationAndBrace temp;
     temp.isBrace = false;
