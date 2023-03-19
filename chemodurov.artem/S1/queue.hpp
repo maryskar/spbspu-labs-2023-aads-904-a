@@ -15,6 +15,7 @@ namespace chemodurov
     void push(const T & rhs);
     void pop();
     T & getFromQueue();
+    bool empty() const noexcept;
    private:
     List< T > * head_;
     List< T > * last_;
@@ -73,6 +74,12 @@ void chemodurov::Queue< T >::pop()
   List< T > * temp = head_->next;
   delete head_;
   head_ = temp;
+}
+
+template< typename T >
+bool chemodurov::Queue< T >::empty() const noexcept
+{
+  return head_;
 }
 
 #endif

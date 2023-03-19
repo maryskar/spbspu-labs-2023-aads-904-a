@@ -19,10 +19,14 @@ chemodurov::Queue< chemodurov::PostfixExpr > chemodurov::convertInfixToPostfix(Q
     }
     else if (next.data.brace == BRACE_RIGHT)
     {
-      while (!stack.getFromStack().isBrace)
+      while (!stack.empty() && !stack.getFromStack().isBrace)
       {
         post.push({stack.getFromStack().data.operation, false});
         stack.pop();
+      }
+      if (stack.empty())
+      {
+        throw std::invalid_argument("Incorrect infix expression");
       }
       stack.pop();
       inf.pop();
