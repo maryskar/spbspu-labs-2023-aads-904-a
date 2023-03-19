@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
       std::cin >> dataset_name;
       if (!std::cin)
       {
-        std::cerr << "<INVALID COMMAND>\n";
+        std::cout << "<INVALID COMMAND>\n";
       }
       try
       {
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
       }
       catch (const std::runtime_error &e)
       {
-        std::cerr << "<INVALID COMMAND>\n";
+        std::cout << "<INVALID COMMAND>\n";
       }
     }
     else if (command == "complement" || command == "intersect" || command == "union")
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
       std::cin >> new_dataset_name >> dataset_1 >> dataset_2;
       if (!std::cin)
       {
-        std::cerr << "<INVALID COMMAND>\n";
+        std::cout << "<INVALID COMMAND>\n";
         continue;
       }
       try
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
       }
       catch (const std::runtime_error &e)
       {
-        std::cerr << "<INVALID COMMAND>\n";
+        std::cout << "<INVALID COMMAND>\n";
       }
     }
     else
