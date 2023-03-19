@@ -86,8 +86,12 @@ namespace dimkashelk
     {
       return list_.empty();
     }
-    friend std::ostream &operator<<(std::ostream &out, dict_type dict)
+    friend std::ostream &operator<<(std::ostream &out, dict_type &dict)
     {
+      if (dict.empty())
+      {
+        return out;
+      }
       auto it = dict.list_.begin();
       auto end = dict.list_.end();
       out << (*it).first << " " << (*it).second;
