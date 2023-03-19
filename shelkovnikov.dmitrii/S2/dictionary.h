@@ -149,7 +149,10 @@ namespace dimkashelk
         auto res = std::find_if(second.list_.begin(), second.list_.end(), comp);
         if (res != second.list_.end())
         {
-          result.push((*res).first, (*res).second);
+          if ((*res).first != (*it_first).first)
+          {
+            result.push((*res).first, (*res).second);
+          }
         }
       }
       return result;
