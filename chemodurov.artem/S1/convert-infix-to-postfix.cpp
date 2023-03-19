@@ -8,8 +8,25 @@ chemodurov::Queue< chemodurov::PostfixExpr > chemodurov::convertInfixToPostfix(Q
   InfixExpr next = inf.getFromQueue();
   if (next.isOperand)
   {
-    PostfixExpr temp = {next.data.operand, true};
-    post.push(temp);
+    post.push({next.data.operand, true});
+    inf.pop();
+  }
+  else if (!next.isOperand && !next.isOperation)
+  {
+    if (next.data.brace == BRACE_LEFT)
+    {
+      stack.push({next.data.brace, true});
+    }
+    else if (next.data.brace == BRACE_RIGHT)
+    {
+      while (!stack.getFromStack().isBrace)
+      {
+        post.push({stack.getFromStack().data.operation, false});
+        stack.pop();
+      }
+      stack.pop();
+      inf.pop();
+    }
   }
   //
   return post;

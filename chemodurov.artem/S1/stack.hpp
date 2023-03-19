@@ -50,7 +50,7 @@ T & chemodurov::Stack< T >::getFromStack()
   {
     throw std::logic_error("Empty stack");
   }
-  return *head_;
+  return (*head_).data;
 }
 
 template< typename T >
