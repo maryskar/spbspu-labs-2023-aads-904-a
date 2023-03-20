@@ -31,7 +31,7 @@ namespace dimkashelk
     Node *root_;
     int getHeight(Node *node) const
     {
-      return node == nullptr ? -1 : node->height;
+      return node == nullptr? -1: node->height;
     }
     int getBalanceFactor(Node *node) const
     {
@@ -39,9 +39,17 @@ namespace dimkashelk
     }
     void rotateLeft(Node *&node)
     {
-      Node* temp = node->right;
+      Node *temp = node->right;
       node->right = temp->left;
       temp->left = node;
+      node->height = std::max(getHeight(node->left), getHeight(node->right)) + 1;
+      temp->height = std::max(getHeight(temp->left), getHeight(temp->right)) + 1;
+      node = temp;
+    }
+    void rotateRight(Node *&node) {
+      Node *temp = node->left;
+      node->left = temp->right;
+      temp->right = node;
       node->height = std::max(getHeight(node->left), getHeight(node->right)) + 1;
       temp->height = std::max(getHeight(temp->left), getHeight(temp->right)) + 1;
       node = temp;
