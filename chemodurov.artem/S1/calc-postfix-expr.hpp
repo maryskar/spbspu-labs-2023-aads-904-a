@@ -1,11 +1,11 @@
 #ifndef CALC_POSTFIX_EXPR_HPP
 #define CALC_POSTFIX_EXPR_HPP
-#include "postfix-expr.hpp"
+#include "postfix-expression.hpp"
 #include "queue.hpp"
 
 namespace chemodurov
 {
-  int calcPostfixExpr(Queue< PostfixExpr > & post);
+  long calcPostfixExpr(Queue< PostfixExpr > & post);
 }
 
 #endif

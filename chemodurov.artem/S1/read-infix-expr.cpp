@@ -53,7 +53,7 @@ chemodurov::InfixExpr * chemodurov::readInfixExpr(std::string & line, size_t & i
     {
       try
       {
-        int a = std::stoi(line.substr(size2), std::addressof(size1));
+        long a = std::stol(line.substr(size2), std::addressof(size1));
         size1 += size2;
         size2 = size1;
         inf[inf_size++] = {a, true, false};
