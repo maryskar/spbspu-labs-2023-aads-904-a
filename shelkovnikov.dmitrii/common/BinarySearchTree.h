@@ -35,27 +35,19 @@ namespace dimkashelk
     public:
       Iterator &operator++()
       {
-        if (!visited_left)
+        if (!node_->right)
         {
-          node_ = node_->left;
-        }
-        else if (!visited_right)
-        {
-          node_ = node_->right;
+          node_ = upToNext(node_);
         }
         else
         {
-          node_ = node_->prev;
+          node_ = downToNext(node_->right);
         }
       }
     private:
       node_type *node_;
-      bool visited_left;
-      bool visited_right;
       explicit Iterator(const node_type *node):
-        node_(node),
-        visited_left(false),
-        visited_right(false)
+        node_(node)
       {};
       node_type *upToNext(node_type *node) const
       {
