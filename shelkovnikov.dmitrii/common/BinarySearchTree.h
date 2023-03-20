@@ -35,14 +35,11 @@ namespace dimkashelk
     public:
       Iterator &operator++()
       {
-        if (!node_->right)
-        {
-          node_ = upToNext(node_);
-        }
-        else
-        {
-          node_ = downToNext(node_->right);
-        }
+        setNext();
+      }
+      Iterator &operator++(int)
+      {
+        setNext();
       }
     private:
       node_type *node_;
@@ -69,6 +66,17 @@ namespace dimkashelk
           node = node->left;
         }
         return node;
+      }
+      void setNext()
+      {
+        if (!node_->right)
+        {
+          node_ = upToNext(node_);
+        }
+        else
+        {
+          node_ = downToNext(node_->right);
+        }
       }
     };
     BinarySearchTree():
