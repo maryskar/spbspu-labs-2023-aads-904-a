@@ -37,6 +37,15 @@ namespace dimkashelk
     {
       return getHeight(node->left) - getHeight(node->right);
     }
+    void rotateLeft(Node *&node)
+    {
+      Node* temp = node->right;
+      node->right = temp->left;
+      temp->left = node;
+      node->height = std::max(getHeight(node->left), getHeight(node->right)) + 1;
+      temp->height = std::max(getHeight(temp->left), getHeight(temp->right)) + 1;
+      node = temp;
+    }
     void rebalance(Node *&node)
     {
       int balanceFactor = getBalanceFactor(node);
