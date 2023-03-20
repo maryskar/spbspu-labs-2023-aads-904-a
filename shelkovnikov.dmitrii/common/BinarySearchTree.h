@@ -7,42 +7,54 @@ namespace dimkashelk
   {
   public:
     BinarySearchTree():
-      root(nullptr)
+      root_(nullptr)
     {}
-    void insert(const T &data)
+    void insert(const Key &key, const Value &value)
     {
-      insert(root, data);
+      insert(root_, key, value);
     }
   private:
     struct Node {
-      T data;
+      Key key;
+      Value value;
       Node *left;
       Node *right;
-      int height;
-      Node(const T &data):
-        data(data),
+      size_t height;
+      Node(const Key &key, const Value &value):
+        key(key),
+        value(value)
         left(nullptr),
         right(nullptr),
         height(0)
       {}
     };
-    Node *root;
-    void insert(Node *&node, const T &data)
+    Node *root_;
+    void insert(Node *&node, const Key &key, const Value &value, bool &needToUpdateHeight)
     {
       if (node == nullptr)
       {
-        node = new Node(data);
+        node = new Node(key, value);
         return;
       }
-      if (data < node->data)
+      int res = compare(data, node->data);
+      if (res == 0)
+      {
+        needToUpdateHeight = false;
+        node->value = value;
+        return;
+      }
+      else if (res < 0)
       {
         insert(node->left, data);
       }
-      else if (data > node->data)
+      else
       {
         insert(node->right, data);
       }
-      node->height = std::max(getHeight(node->left), getHeight(node->right)) + 1;
+      if (needToUpdateHeight)
+      {
+        node->height = std::max(getHeight(node->left), getHeight(node->right)) + 1;
+      }
       //rebalance(node);
     }
   };
