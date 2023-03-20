@@ -13,7 +13,7 @@ int main(int argc, char ** argv)
     return 1;
   }
   std::string line;
-  chemodurov::Stack< int > res;
+  chemodurov::Stack< long > res;
   if (argc == 1)
   {
     do
@@ -102,5 +102,6 @@ int main(int argc, char ** argv)
     while (input);
   }
   chemodurov::printStackInt(std::cout, res);
+  std::cout << "\n";
   return 0;
 }

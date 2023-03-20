@@ -6,7 +6,7 @@ namespace chemodurov
 {
   union OperationsOperandsBraces
   {
-    int operand;
+    long operand;
     Operation operation;
     Brace brace;
   };

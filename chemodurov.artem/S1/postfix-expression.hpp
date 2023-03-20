@@ -1,12 +1,12 @@
-#ifndef POSTFIX_EXPR_HPP
-#define POSTFIX_EXPR_HPP
+#ifndef POSTFIX_EXPRESSION_HPP
+#define POSTFIX_EXPRESSION_HPP
 #include "operation-and-brace.hpp"
 
 namespace chemodurov
 {
   union OperationOperand
   {
-    int operand;
+    long operand;
     Operation operation;
   };
 

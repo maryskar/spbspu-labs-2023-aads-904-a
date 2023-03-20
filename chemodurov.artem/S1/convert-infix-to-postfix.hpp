@@ -2,7 +2,7 @@
 #define CONVERT_INFIX_TO_POSTFIX_HPP
 #include "queue.hpp"
 #include "infix-expression.hpp"
-#include "postfix-expr.hpp"
+#include "postfix-expression.hpp"
 
 namespace chemodurov
 {
