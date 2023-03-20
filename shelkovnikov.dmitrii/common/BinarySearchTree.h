@@ -9,6 +9,24 @@ namespace dimkashelk
     BinarySearchTree():
       root(nullptr)
     {}
+    void insert(Node *&node, const T &data)
+    {
+      if (node == nullptr)
+      {
+        node = new Node(data);
+        return;
+      }
+      if (data < node->data)
+      {
+        insert(node->left, data);
+      }
+      else if (data > node->data)
+      {
+        insert(node->right, data);
+      }
+      node->height = std::max(getHeight(node->left), getHeight(node->right)) + 1;
+      //rebalance(node);
+    }
   private:
     struct Node {
       T data;
