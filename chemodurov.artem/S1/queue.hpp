@@ -79,7 +79,7 @@ void chemodurov::Queue< T >::pop()
 template< typename T >
 bool chemodurov::Queue< T >::empty() const noexcept
 {
-  return head_;
+  return head_ == nullptr;
 }
 
 #endif

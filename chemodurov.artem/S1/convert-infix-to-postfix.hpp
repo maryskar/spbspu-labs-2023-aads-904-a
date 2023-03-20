@@ -6,7 +6,7 @@
 
 namespace chemodurov
 {
-  Queue< PostfixExpr > convertInfixToPostfix(Queue< InfixExpr > inf);
+  Queue< PostfixExpr > convertInfixToPostfix(Queue< InfixExpr > & inf);
 }
 
 #endif

@@ -13,7 +13,7 @@ namespace chemodurov
   }
 }
 
-chemodurov::Queue< chemodurov::PostfixExpr > chemodurov::convertInfixToPostfix(Queue< InfixExpr > inf)
+chemodurov::Queue< chemodurov::PostfixExpr > chemodurov::convertInfixToPostfix(Queue< InfixExpr > & inf)
 {
   Queue< PostfixExpr > post;
   Stack< OperationAndBrace > stack;
