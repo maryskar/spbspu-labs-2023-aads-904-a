@@ -1,5 +1,4 @@
 #include <iostream>
-#include <dictionary.h>
 #include <labList1.h>
 int main(int argc, char *argv[])
 {
