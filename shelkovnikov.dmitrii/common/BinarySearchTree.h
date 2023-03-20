@@ -57,7 +57,7 @@ namespace dimkashelk
         visited_left(false),
         visited_right(false)
       {};
-      node_type *upToNext(node_type *node)
+      node_type *upToNext(node_type *node) const
       {
         node_type *parent = node->prev;
         while (parent)
@@ -70,7 +70,7 @@ namespace dimkashelk
           node = node->prev;
         }
       }
-      node_type *downToNext(node_type *node)
+      node_type *downToNext(node_type *node) const
       {
         while (node->left)
         {
@@ -106,7 +106,8 @@ namespace dimkashelk
       temp->height = std::max(getHeight(temp->left), getHeight(temp->right)) + 1;
       node = temp;
     }
-    void rotateRight(node_type *&node) {
+    void rotateRight(node_type *&node)
+    {
       node_type *temp = node->left;
       node->left = temp->right;
       temp->right = node;
