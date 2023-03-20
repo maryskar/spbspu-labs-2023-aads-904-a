@@ -1,5 +1,6 @@
 #ifndef STACK_H
 #define STACK_H
+#include <stdexcept>
 
 template< typename T >
 struct sBox {
@@ -14,6 +15,7 @@ public:
   ~Stack();
   void push(T rhs);
   T drop();
+  bool isEmpty();
 private:
   sBox< T >* top_;
 };
@@ -34,7 +36,7 @@ Stack< T >::~Stack()
 }
 
 template< typename T >
-void Stack< T >::push(T rhs)
+void Stack< T >::push(const T rhs)
 {
   top_ = new sBox< T >{rhs, top_};
 }
@@ -51,6 +53,12 @@ T Stack< T >::drop()
   delete top_;
   top_ = top;
   return res;
+}
+
+template< typename T >
+bool Stack< T >::isEmpty()
+{
+  return top_ == nullptr;
 }
 
 #endif

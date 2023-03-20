@@ -1,12 +1,12 @@
-#ifndef DATASTRUCTURES_H
-#define DATASTRUCTURES_H
+#ifndef QUEUE_H
+#define QUEUE_H
 #include <stdexcept>
 
 template< typename T >
-struct box {
+struct qBox {
   T value_ = 0;
-  box< T >* prev_ = nullptr;
-  box< T >* next_ = nullptr;
+  qBox< T >* prev_ = nullptr;
+  qBox< T >* next_ = nullptr;
 };
 
 template< typename T >
@@ -17,8 +17,8 @@ public:
   void push(T rhs);
   T drop();
 private:
-  box< T >* head_ = nullptr;
-  box< T >* tail_ = nullptr;
+  qBox< T >* head_ = nullptr;
+  qBox< T >* tail_ = nullptr;
 };
 
 template< typename T >
@@ -31,16 +31,16 @@ template< typename T >
 Queue< T >::~Queue()
 {
   while (head_ != nullptr) {
-    box< T >* next = head_->prev_;
+    qBox< T >* next = head_->prev_;
     delete head_;
     head_ = next;
   }
 }
 
 template < typename T >
-void Queue< T >::push(T rhs)
+void Queue< T >::push(const T rhs)
 {
-  box< T >* head = new box< T >{rhs, head_, nullptr};
+  qBox< T >* head = new qBox< T >{rhs, head_, nullptr};
   if (head_ == nullptr) {
     head_ = head;
     tail_ = head;
@@ -56,7 +56,8 @@ T Queue< T >::drop()
   if (tail_ == nullptr) {
     throw std::length_error("Nothing to drop");
   }
-  box< T >* next = tail_->next_;
+
+  qBox< T >* next = tail_->next_;
   T res = tail_->value_;
   delete tail_;
   tail_ = next;
