@@ -20,27 +20,27 @@ namespace dimkashelk
     {
       throw std::runtime_error("File not open");
     }
-    while (in)
+    while (file_in)
     {
       std::string dict_name;
-      in >> dict_name;
-      if (!in)
+      file_in >> dict_name;
+      if (!file_in)
       {
         break;
       }
       dict_type data;
       int key = 0;
       std::string value;
-      while (in)
+      while (file_in)
       {
-        in >> key >> value;
-        if (!in)
+        file_in >> key >> value;
+        if (!file_in)
         {
           break;
         }
         data.push(key, value);
       }
-      in.clear();
+      file_in.clear();
       dict.push(dict_name, data);
     }
     while (in)
