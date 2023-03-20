@@ -5,6 +5,10 @@ namespace dimkashelk
   template< typename Key, typename Value, typename Compare >
   class BinarySearchTree
   {
+  public:
+    BinarySearchTree():
+      root(nullptr)
+    {}
   private:
     struct Node {
       T data;
