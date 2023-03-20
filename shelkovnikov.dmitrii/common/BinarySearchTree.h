@@ -29,7 +29,15 @@ namespace dimkashelk
       {}
     };
     Node *root_;
-    void rebalance(Node*& node)
+    int getHeight(Node *node) const
+    {
+      return node == nullptr ? -1 : node->height;
+    }
+    int getBalanceFactor(Node *node) const
+    {
+      return getHeight(node->left) - getHeight(node->right);
+    }
+    void rebalance(Node *&node)
     {
       int balanceFactor = getBalanceFactor(node);
       if (balanceFactor > 1)
