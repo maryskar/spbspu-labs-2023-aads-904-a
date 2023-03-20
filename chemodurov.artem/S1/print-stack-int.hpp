@@ -5,7 +5,7 @@
 
 namespace chemodurov
 {
-  void printStackInt(std::ostream & out, Stack< int > stack);
+  void printStackInt(std::ostream & out, Stack< int > & stack);
 }
 
 #endif

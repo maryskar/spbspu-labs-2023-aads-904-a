@@ -1,7 +1,7 @@
 #include "print-stack-int.hpp"
 #include <iostream>
 
-void chemodurov::printStackInt(std::ostream & out, Stack< int > stack)
+void chemodurov::printStackInt(std::ostream & out, Stack< int > & stack)
 {
   if (stack.empty())
   {
