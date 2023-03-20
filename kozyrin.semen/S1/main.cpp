@@ -1,20 +1,17 @@
-#include <iostream>
-#include <string>
-#include <datastructures.h>
+#include "notation.h"
 
-int main()
+int main(int argc, char** argv)
 {
-  std::string str = "";
-  std::cin >> str;
-  int num = 0;
-  Queue< int > queue = Queue< int >();
-  while (true) {
-    std::cin >> str;
-    std::cin >> num;
-    if (str == "drop") {
-      std::cout << queue.drop();
-      continue;
+  std::ifstream fin;
+  if (argc == 2) {
+    fin.open(argv[1]);
+    if (!fin.is_open()) {
+      std::cerr << "Error: input file could not be opened";
     }
-    queue.push(num);
+  } else if (argc != 1) {
+    std::cerr << "Error: incorrect arguments";
+    return 1;
   }
+  std::istream& input = argc == 2 ? fin : std::cin;
+
 }

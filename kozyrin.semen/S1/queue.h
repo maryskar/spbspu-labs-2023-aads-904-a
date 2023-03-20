@@ -16,6 +16,7 @@ public:
   ~Queue();
   void push(T rhs);
   T drop();
+  bool isEmpty();
 private:
   qBox< T >* head_ = nullptr;
   qBox< T >* tail_ = nullptr;
@@ -37,7 +38,7 @@ Queue< T >::~Queue()
   }
 }
 
-template < typename T >
+template< typename T >
 void Queue< T >::push(const T rhs)
 {
   qBox< T >* head = new qBox< T >{rhs, head_, nullptr};
@@ -50,7 +51,7 @@ void Queue< T >::push(const T rhs)
   head_ = head;
 }
 
-template <typename T >
+template<typename T >
 T Queue< T >::drop()
 {
   if (tail_ == nullptr) {
@@ -62,6 +63,12 @@ T Queue< T >::drop()
   delete tail_;
   tail_ = next;
   return res;
+}
+
+template< typename T >
+bool Queue< T >::isEmpty()
+{
+  return head_ == nullptr;
 }
 
 #endif

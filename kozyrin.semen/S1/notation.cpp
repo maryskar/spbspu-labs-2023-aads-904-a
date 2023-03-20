@@ -7,7 +7,7 @@ bool isLowPriority(const char a)
 
 bool isHighPriority(const char a)
 {
-  return a == '*' || a == '/';
+  return a == '*' || a == '/' || a == '%';
 }
 
 bool isLowerPriority(const char a, const char b)
@@ -17,7 +17,7 @@ bool isLowerPriority(const char a, const char b)
 
 bool isOperation(const char chr)
 {
-  return chr == '+' || chr == '-' || chr == '/' || chr == '*';
+  return chr == '+' || chr == '-' || chr == '/' || chr == '*' || chr == '%';
 }
 
 int getPostfix(Queue< char >& queue, std::istream& inStream, std::ostream& errStream)
