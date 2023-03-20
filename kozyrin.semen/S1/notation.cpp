@@ -1,42 +1,51 @@
 #include "notation.h"
+#include <string>
 
-bool isLowPriority(const char a)
+bool isNumber(std::string& str)
 {
-  return a == '-' || a == '+';
+  for (std::string::iterator i = str.begin(); i < str.end(); ++i) {
+    if (!std::isdigit(*i)) {
+      return false;
+    }
+  }
+  return true;
 }
 
-bool isHighPriority(const char a)
+bool isLowPriority(const std::string& a)
 {
-  return a == '*' || a == '/' || a == '%';
+  return a == "-" || a == "+";
 }
 
-bool isLowerPriority(const char a, const char b)
+bool isHighPriority(const std::string& a)
+{
+  return a == "*" || a == "/" || a == "%";
+}
+
+bool isLowerPriority(const std::string& a, const std::string& b)
 {
   return isLowPriority(a) && isHighPriority(b);
 }
 
-bool isOperation(const char chr)
+bool isOperation(const std::string& chr)
 {
-  return chr == '+' || chr == '-' || chr == '/' || chr == '*' || chr == '%';
+  return chr == "+" || chr == "-" || chr == "/" || chr == "*" || chr == "%";
 }
 
-int getPostfix(Queue< char >& queue, std::istream& inStream, std::ostream& errStream)
+int getPostfix(Queue< std::string >& queue, Queue< std::string >& input, std::ostream& errStream)
 {
-  Stack< char > stack = Stack< char >();
-  char chr = ' ';
-  while (!inStream.eof()) {
-    inStream >> chr;
+  Stack< std::string > stack = Stack< std::string >();
+  std::string chr = " ";
 
-    if (chr == '\n') {
-      break;
-    }
-    if (chr == '(') {
+  while (!input.isEmpty()) {
+    chr = input.drop();
+
+    if (chr == "(") {
       stack.push(chr);
-    } else if (chr == ')') {
+    } else if (chr == ")") {
       bool err = true;
       while (!stack.isEmpty()) {
-        char top = stack.drop();
-        if (top == '(') {
+        std::string top = stack.drop();
+        if (top == "(") {
           err = false;
           break;
         }
@@ -46,18 +55,20 @@ int getPostfix(Queue< char >& queue, std::istream& inStream, std::ostream& errSt
         errStream << "Error: non-matching brackets";
         return 1;
       }
-    } else if (std::isdigit(chr)) {
-        queue.push(chr);
+    } else if (isNumber(chr)) {
+      queue.push(chr);
     } else if (!isOperation(chr)) {
-      errStream << "Error: Incorrect characters";
+      errStream << "Error: Incorrect character: ";
       return 1;
     } else {
       while (!stack.isEmpty()) {
-        char top = stack.drop();
-        if (!isLowerPriority(chr, top)) {
+        std::string top = stack.drop();
+        if (top != "(" && !isLowerPriority(top, chr)) {
           queue.push(top);
+
         } else {
           stack.push(top);
+          break;
         }
       }
       stack.push(chr);

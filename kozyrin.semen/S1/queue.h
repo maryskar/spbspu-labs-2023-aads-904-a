@@ -54,7 +54,7 @@ void Queue< T >::push(const T rhs)
 template<typename T >
 T Queue< T >::drop()
 {
-  if (tail_ == nullptr) {
+  if (head_ == nullptr) {
     throw std::length_error("Nothing to drop");
   }
 
@@ -62,6 +62,11 @@ T Queue< T >::drop()
   T res = tail_->value_;
   delete tail_;
   tail_ = next;
+  if (tail_ != nullptr) {
+    tail_->prev_ = nullptr;
+  } else {
+    head_ = nullptr;
+  }
   return res;
 }
 

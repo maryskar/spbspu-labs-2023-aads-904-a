@@ -1,4 +1,4 @@
-#include "notation.h"
+#include "ComputeInput.h"
 
 int main(int argc, char** argv)
 {
@@ -14,4 +14,5 @@ int main(int argc, char** argv)
   }
   std::istream& input = argc == 2 ? fin : std::cin;
 
+  return compute(input, std::cout, std::cerr);
 }
