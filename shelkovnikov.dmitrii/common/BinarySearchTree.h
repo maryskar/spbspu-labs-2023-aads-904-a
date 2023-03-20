@@ -70,6 +70,14 @@ namespace dimkashelk
           node = node->prev;
         }
       }
+      node_type *downToNext(node_type *node)
+      {
+        while (node->left)
+        {
+          node = node->left;
+        }
+        return node;
+      }
     };
     BinarySearchTree():
       root_(nullptr)
