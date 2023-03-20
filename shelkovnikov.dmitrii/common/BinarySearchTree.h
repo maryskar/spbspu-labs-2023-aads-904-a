@@ -29,6 +29,26 @@ namespace dimkashelk
       {}
     };
     Node *root_;
+    void rebalance(Node*& node)
+    {
+      int balanceFactor = getBalanceFactor(node);
+      if (balanceFactor > 1)
+      {
+        if (getBalanceFactor(node->left) < 0)
+        {
+          rotateLeft(node->left);
+        }
+        rotateRight(node);
+      }
+      else if (balanceFactor < -1)
+      {
+        if (getBalanceFactor(node->right) > 0)
+        {
+          rotateRight(node->right);
+        }
+        rotateLeft(node);
+      }
+    }
     void insert(Node *&node, const Key &key, const Value &value, bool &needToUpdateHeight)
     {
       if (node == nullptr)
@@ -55,7 +75,7 @@ namespace dimkashelk
       {
         node->height = std::max(getHeight(node->left), getHeight(node->right)) + 1;
       }
-      //rebalance(node);
+      rebalance(node);
     }
   };
 }
