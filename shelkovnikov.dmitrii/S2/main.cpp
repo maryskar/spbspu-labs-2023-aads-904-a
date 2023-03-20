@@ -1,7 +1,7 @@
 #include <iostream>
 #include <functional>
 #include <fstream>
-#include "dictionary.h"
+#include <dictionary.h>
 using dict_type = dimkashelk::Dictionary< int, std::string, std::greater< > >;
 using container_type = dimkashelk::Dictionary< std::string, dict_type, std::greater< > >;
 int main(int argc, char *argv[])
