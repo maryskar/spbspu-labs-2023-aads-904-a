@@ -69,7 +69,7 @@ void chemodurov::Stack< T >::pop()
 template< typename T >
 bool chemodurov::Stack< T >::empty() const noexcept
 {
-  return head_;
+  return head_ == nullptr;
 }
 
 #endif

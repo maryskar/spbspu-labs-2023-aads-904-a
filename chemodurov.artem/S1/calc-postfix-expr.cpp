@@ -1,7 +1,7 @@
 #include "calc-postfix-expr.hpp"
 #include "stack.hpp"
 
-int chemodurov::calcPostfixExpr(Queue< PostfixExpr > post)
+int chemodurov::calcPostfixExpr(Queue< PostfixExpr > & post)
 {
   Stack< int > calc;
   while (!post.empty())

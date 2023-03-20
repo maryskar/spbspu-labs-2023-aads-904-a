@@ -5,7 +5,7 @@
 
 namespace chemodurov
 {
-  int calcPostfixExpr(Queue< PostfixExpr > post);
+  int calcPostfixExpr(Queue< PostfixExpr > & post);
 }
 
 #endif

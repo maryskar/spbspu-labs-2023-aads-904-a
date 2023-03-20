@@ -33,10 +33,10 @@ int main(int argc, char ** argv)
           inf_queue.push(inf[i]);
         }
       }
-      catch (...)
+      catch (const std::exception & e)
       {
         delete[] inf;
-        std::cerr << "Error...\n";
+        std::cerr << e.what() << "\n";
         return 1;
       }
       delete[] inf;
@@ -46,9 +46,9 @@ int main(int argc, char ** argv)
         chemodurov::Queue< chemodurov::PostfixExpr > post = chemodurov::convertInfixToPostfix(inf_queue);
         res.push(chemodurov::calcPostfixExpr(post));
       }
-      catch (...)
+      catch (const std::exception & e)
       {
-        std::cerr << "Error...\n";
+        std::cerr << e.what() << "\n";
         return 1;
       }
     }
@@ -80,10 +80,10 @@ int main(int argc, char ** argv)
           inf_queue.push(inf[i]);
         }
       }
-      catch (...)
+      catch (const std::exception & e)
       {
         delete[] inf;
-        std::cerr << "Error...\n";
+        std::cerr << e.what() << "\n";
         return 1;
       }
       delete[] inf;
@@ -93,9 +93,9 @@ int main(int argc, char ** argv)
         chemodurov::Queue< chemodurov::PostfixExpr > post = chemodurov::convertInfixToPostfix(inf_queue);
         res.push(chemodurov::calcPostfixExpr(post));
       }
-      catch (...)
+      catch (const std::exception & e)
       {
-        std::cerr << "Error...\n";
+        std::cerr << e.what() << "\n";
         return 1;
       }
     }
