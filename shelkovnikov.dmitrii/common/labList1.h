@@ -2,24 +2,47 @@
 #define SPBSPU_LABS_2023_AADS_904_A_LABLIST1_H
 #include <iostream>
 #include <fstream>
-#include "inputDictionary.h"
+#include "dictionary.h"
 namespace dimkashelk
 {
-  template< typename MainDictType, typename DataDictType >
   void labList1(std::istream &in, std::ostream &out, int argc, char *argv[])
   {
+    using dict_type = dimkashelk::Dictionary< int, std::string, std::greater< > >;
+    using container_type = dimkashelk::Dictionary< std::string, dict_type, std::greater< > >;
     namespace dsk = dimkashelk;
     if (argc != 2)
     {
       throw std::runtime_error("No filename");
     }
-    MainDictType dict;
+    container_type dict;
     std::ifstream file_in(argv[1]);
     if (!file_in.is_open())
     {
       throw std::runtime_error("File not open");
     }
-    dsk::inputDictionary< MainDictType, DataDictType >(file_in, dict);
+    while (in)
+    {
+      std::string dict_name;
+      in >> dict_name;
+      if (!in)
+      {
+        break;
+      }
+      dict_type data;
+      int key = 0;
+      std::string value;
+      while (in)
+      {
+        in >> key >> value;
+        if (!in)
+        {
+          break;
+        }
+        data.push(key, value);
+      }
+      in.clear();
+      dict.push(dict_name, data);
+    }
     while (in)
     {
       std::string command;
@@ -38,7 +61,7 @@ namespace dimkashelk
         }
         try
         {
-          DataDictType d = dict.get(dataset_name);
+          dict_type d = dict.get(dataset_name);
           if (d.empty())
           {
             out << "<EMPTY>\n";
@@ -66,9 +89,9 @@ namespace dimkashelk
         }
         try
         {
-          DataDictType data_1 = dict.get(dataset_1);
-          DataDictType data_2 = dict.get(dataset_2);
-          DataDictType new_dict;
+          dict_type data_1 = dict.get(dataset_1);
+          dict_type data_2 = dict.get(dataset_2);
+          dict_type new_dict;
           if (command == "complement")
           {
             new_dict = data_1 - data_2;

@@ -1,10 +1,16 @@
 #include <iostream>
 #include <dictionary.h>
 #include <labList1.h>
-using dict_type = dimkashelk::Dictionary< int, std::string, std::greater< > >;
-using container_type = dimkashelk::Dictionary< std::string, dict_type, std::greater< > >;
 int main(int argc, char *argv[])
 {
-  dimkashelk::labList1< container_type, dict_type >(std::cin, std::cout, argc, argv);
+  try
+  {
+    dimkashelk::labList1(std::cin, std::cout, argc, argv);
+  }
+  catch (const std::runtime_error &e)
+  {
+    std::cerr << e.what();
+    return 1;
+  }
   return 0;
 }
