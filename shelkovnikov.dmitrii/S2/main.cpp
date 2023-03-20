@@ -2,6 +2,7 @@
 #include <functional>
 #include <fstream>
 #include <dictionary.h>
+#include <inputDictionary.h>
 using dict_type = dimkashelk::Dictionary< int, std::string, std::greater< > >;
 using container_type = dimkashelk::Dictionary< std::string, dict_type, std::greater< > >;
 int main(int argc, char *argv[])
@@ -19,29 +20,7 @@ int main(int argc, char *argv[])
     std::cerr << "File not open";
     return 1;
   }
-  while (in)
-  {
-    std::string dict_name;
-    in >> dict_name;
-    if (!in)
-    {
-      break;
-    }
-    dict_type dict;
-    int key = 0;
-    std::string value;
-    while (in)
-    {
-      in >> key >> value;
-      if (!in)
-      {
-        break;
-      }
-      dict.push(key, value);
-    }
-    in.clear();
-    list.push(dict_name, dict);
-  }
+  dsk::inputDictionary< container_type, dict_type >(in, list);
   while (std::cin)
   {
     std::string command;
