@@ -5,14 +5,14 @@
 namespace details
 {
   template< typename Key, typename Value >
-  struct Node
+  struct NodeOfTwoThreeTree
   {
     Key keys[2];
     Value value[2];
-    Node* children[3];
-    Node* parent;
+    NodeOfTwoThreeTree* children[3];
+    NodeOfTwoThreeTree* parent;
     int keyCount;
-    Node():
+    NodeOfTwoThreeTree():
       keys(),
       children(),
       parent(nullptr),
@@ -25,7 +25,7 @@ namespace dimkashelk
   template< typename Key, typename Value, typename Compare >
   class TwoThreeTree
   {
-  using node_type = details::Node< Key, Value >;
+  using node_type = details::NodeOfTwoThreeTree< Key, Value >;
   public:
     class Iterator
     {
