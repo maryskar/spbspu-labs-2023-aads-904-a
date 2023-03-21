@@ -33,47 +33,49 @@ namespace dimkashelk
     public:
       Iterator &operator++()
       {
-        setNext();
+        next();
+        return *this;
       }
       Iterator &operator++(int)
       {
-        setNext();
+        next();
+        return *this;
       }
     private:
       node_type *node_;
       explicit Iterator(const node_type *node):
         node_(node)
       {};
-      node_type *upToNext(node_type *node) const
+      void *next()
       {
-        node_type *parent = node->prev;
-        while (parent)
+        if (node_->children[0] != nullptr)
         {
-          parent = node->prev;
-          if (parent->left == node)
+          node_ = node_->children[0];
+          while (node_->children[2] != nullptr)
           {
-            return parent;
+            node_ = node_->children[2];
           }
-          node = node->prev;
         }
-      }
-      node_type *downToNext(node_type *node) const
-      {
-        while (node->left)
+        else if (node_->children[1] != nullptr)
         {
-          node = node->left;
+          node_ = node_->children[1];
         }
-        return node;
-      }
-      void setNext()
-      {
-        if (!node_->right)
+        else if (node_->parent != nullptr)
         {
-          node_ = upToNext(node_);
+          node_type *parent = node_->parent;
+          while (node_ == parent->children[1])
+          {
+            node_ = parent;
+            parent = parent->parent;
+          }
+          if (node_ == parent->children[0])
+          {
+            node_ = parent;
+          }
         }
         else
         {
-          node_ = downToNext(node_->right);
+          node_ = nullptr;
         }
       }
     };
