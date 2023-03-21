@@ -1,4 +1,4 @@
-#include "ComputeInput.h"
+#include "computestr.h"
 
 int main(int argc, char** argv)
 {
@@ -14,5 +14,23 @@ int main(int argc, char** argv)
   }
   std::istream& input = argc == 2 ? fin : std::cin;
 
-  return compute(input, std::cout, std::cerr);
+  Stack< int > stack = Stack< int >();
+  std::string str = "";
+
+  while (!input.eof()) {
+    getline(input, str);
+    if (str.empty()) {
+      continue;
+    }
+    try {
+      stack.push(computeString(str));
+    }
+    catch (const std::exception& err) {
+      std::cerr << "Error: " << err.what();
+      return 2;
+    }
+  }
+  while(!stack.isEmpty()) {
+    std::cout << stack.drop() << ' ';
+  }
 }

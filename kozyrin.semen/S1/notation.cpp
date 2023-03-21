@@ -31,7 +31,7 @@ bool isOperation(const std::string& chr)
   return chr == "+" || chr == "-" || chr == "/" || chr == "*" || chr == "%";
 }
 
-int getPostfix(Queue< std::string >& queue, Queue< std::string >& input, std::ostream& errStream)
+int getPostfix(Queue< std::string >& input, Queue< std::string >& queue)
 {
   Stack< std::string > stack = Stack< std::string >();
   std::string chr = " ";
@@ -52,14 +52,12 @@ int getPostfix(Queue< std::string >& queue, Queue< std::string >& input, std::os
         queue.push(top);
       }
       if (err) {
-        errStream << "Error: non-matching brackets";
-        return 1;
+        throw std::logic_error("Non-matching brackets");
       }
     } else if (isNumber(chr)) {
       queue.push(chr);
     } else if (!isOperation(chr)) {
-      errStream << "Error: Incorrect character: ";
-      return 1;
+      throw std::logic_error("Incorrect character");
     } else {
       while (!stack.isEmpty()) {
         std::string top = stack.drop();
