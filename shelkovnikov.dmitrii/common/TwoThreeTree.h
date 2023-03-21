@@ -7,19 +7,16 @@ namespace details
   template< typename Key, typename Value >
   struct Node
   {
-    Key key;
-    Value value;
-    Node *left;
-    Node *right;
-    Node *prev;
-    size_t height;
-    Node(const Key &key, const Value &value):
-      key(key),
-      value(value),
-      left(nullptr),
-      right(nullptr),
-      prev(nullptr),
-      height(0)
+    Key keys[2];
+    Value value[2];
+    Node* children[3];
+    Node* parent;
+    int keyCount;
+    Node():
+      keys(),
+      children(),
+      parent(nullptr),
+      keyCount(0)
     {}
   };
 }
