@@ -5,7 +5,8 @@
 namespace details
 {
   template< typename Key, typename Value >
-  struct Node {
+  struct Node
+  {
     Key key;
     Value value;
     Node *left;
@@ -25,13 +26,13 @@ namespace details
 namespace dimkashelk
 {
   template< typename Key, typename Value, typename Compare >
-  class BinarySearchTree
+  class TwoThreeTree
   {
   using node_type = details::Node< Key, Value >;
   public:
     class Iterator
     {
-    friend class BinarySearchTree< Key, Value, Compare >;
+    friend class TwoThreeTree< Key, Value, Compare >;
     public:
       Iterator &operator++()
       {
@@ -79,7 +80,7 @@ namespace dimkashelk
         }
       }
     };
-    BinarySearchTree():
+    TwoThreeTree():
       root_(nullptr)
     {}
     void insert(const Key &key, const Value &value)
