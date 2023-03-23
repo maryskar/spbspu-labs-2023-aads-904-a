@@ -2,10 +2,13 @@
 #define APPENDABLELIST_HPP
 
 namespace odintsov {
-  template < typename T >
+  template< typename T >
   class AppendableList {
     public:
-      void push(const T& rhs);
+      AppendableList(const T& data);
+      ~AppendableList();
+
+      void push(const T& data);
 
     private:
       struct Node {
@@ -13,7 +16,8 @@ namespace odintsov {
           Node* next;
       };
 
-      Node head_;
+      Node* head_;
+      Node* tail_;
   };
 }
 #endif
