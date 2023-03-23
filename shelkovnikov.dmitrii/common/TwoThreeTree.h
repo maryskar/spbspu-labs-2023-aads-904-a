@@ -63,8 +63,45 @@ namespace dimkashelk
     {}
     void insert(const Key &key, const Value &value)
     {
-      bool needToUpdateHeight = true;
-      insert(root_, key, value, needToUpdateHeight, nullptr);
+      if (!root_) 
+      {
+        root_ = new node_type();
+        root_->keys[0] = key;
+        root_->values[0] = value;
+        root_->keyCount = 1;
+      }
+      else
+      {
+        node_type *node = root_;
+        node_type *parent = nullptr;
+        int index = -1;
+        while (node)
+        {
+          if (node->num_keys == 2)
+          {
+            split(node, parent, index);
+            if (key > parent->keys[index])
+            {
+              node = parent->children[index + 1];
+            }
+            else
+            {
+              node = parent->children[index];
+            }
+          }
+          parent = node;
+          index = find_index(node, key);
+          if (index < node->num_keys && node->keys[index] == key)
+          {
+            node->values[index] = value;
+            return;
+          }
+          node = node->children[index];
+        }
+        parent->keys[parent->num_keys] = key;
+        parent->values[parent->num_keys] = value;
+        parent->num_keys++;
+      }
     }
   private:
     node_type *root_;
