@@ -9,12 +9,13 @@ namespace details
   struct NodeOfTwoThreeTree
   {
     Key keys[2];
-    Value value[2];
+    Value values[2];
     NodeOfTwoThreeTree* children[3];
     NodeOfTwoThreeTree* parent;
     int keyCount;
     NodeOfTwoThreeTree():
       keys(),
+      values(),
       children(),
       parent(nullptr),
       keyCount(0)
@@ -26,11 +27,11 @@ namespace dimkashelk
   template< typename Key, typename Value, typename Compare >
   class TwoThreeTree
   {
-  using node_type = details::NodeOfTwoThreeTree< Key, Value >;
+    using node_type = details::NodeOfTwoThreeTree<Key, Value>;
   public:
     class Iterator
     {
-    friend class TwoThreeTree< Key, Value, Compare >;
+      friend class TwoThreeTree<Key, Value, Compare>;
     public:
       const Key first;
       Value second;
@@ -47,23 +48,24 @@ namespace dimkashelk
     private:
       node_type *node_;
       unsigned index_;
-      explicit Iterator(const node_type *node):
+      explicit Iterator(const node_type *node) :
         node_(node),
         index_(0),
         first(node_->keys[index_]),
         second(node_->value[index_])
-      {};
+      {
+      };
       void next()
       {
-        
       }
     };
-    TwoThreeTree():
+    TwoThreeTree() :
       root_(nullptr)
-    {}
+    {
+    }
     void insert(const Key &key, const Value &value)
     {
-      if (!root_) 
+      if (!root_)
       {
         root_ = new node_type();
         root_->keys[0] = key;
@@ -77,7 +79,7 @@ namespace dimkashelk
         int index = -1;
         while (node)
         {
-          if (node->num_keys == 2)
+          if (node->keyCount == 2)
           {
             split(node, parent, index);
             if (key > parent->keys[index])
@@ -100,85 +102,56 @@ namespace dimkashelk
         }
         parent->keys[parent->num_keys] = key;
         parent->values[parent->num_keys] = value;
-        parent->num_keys++;
+        parent->keyCount++;
       }
     }
   private:
     node_type *root_;
-    int getHeight(node_type *node) const
+    void split(node_type *node, node_type *parent, int index)
     {
-      return node == nullptr? -1: node->height;
-    }
-    int getBalanceFactor(node_type *node) const
-    {
-      return getHeight(node->left) - getHeight(node->right);
-    }
-    void rotateLeft(node_type *&node)
-    {
-      node_type *temp = node->right;
-      node->right = temp->left;
-      temp->left = node;
-      node->height = std::max(getHeight(node->left), getHeight(node->right)) + 1;
-      temp->height = std::max(getHeight(temp->left), getHeight(temp->right)) + 1;
-      node = temp;
-    }
-    void rotateRight(node_type *&node)
-    {
-      node_type *temp = node->left;
-      node->left = temp->right;
-      temp->right = node;
-      node->height = std::max(getHeight(node->left), getHeight(node->right)) + 1;
-      temp->height = std::max(getHeight(temp->left), getHeight(temp->right)) + 1;
-      node = temp;
-    }
-    void rebalance(node_type *&node)
-    {
-      int balanceFactor = getBalanceFactor(node);
-      if (balanceFactor > 1)
+      auto *new_node = new node_type();
+      if (index == -1)
       {
-        if (getBalanceFactor(node->left) < 0)
+        index = 0;
+      }
+      Key middle_key = node->keys[1];
+      if (!node->is_leaf)
+      {
+        new_node->is_leaf = false;
+        new_node->children[0] = node->children[2];
+        node->children[2] = nullptr;
+        new_node->children[1] = node->children[3];
+        node->children[3] = nullptr;
+      }
+      new_node->keys[0] = node->keys[2];
+      new_node->values[0] = node->values[2];
+      node->keys[2] = Key();
+      node->values[2] = Value();
+      new_node->num_keys = 1;
+      node->num_keys = 1;
+      if (parent)
+      {
+        for (int i = parent->num_keys; i > index; i--)
         {
-          rotateLeft(node->left);
+          parent->keys[i] = parent->keys[i - 1];
+          parent->values[i] = parent->values[i - 1];
+          parent->children[i + 1] = parent->children[i];
         }
-        rotateRight(node);
-      }
-      else if (balanceFactor < -1)
-      {
-        if (getBalanceFactor(node->right) > 0)
-        {
-          rotateRight(node->right);
-        }
-        rotateLeft(node);
-      }
-    }
-    void insert(node_type *&node, const Key &key, const Value &value, bool &needToUpdateHeight, node_type *prev)
-    {
-      if (node == nullptr)
-      {
-        node = new node_type(key, value);
-        node->prev = prev;
-        return;
-      }
-      int res = compare(key, node->key);
-      if (res == 0)
-      {
-        needToUpdateHeight = false;
-        node->value = value;
-        return;
-      }
-      else if (res < 0)
-      {
-        insert(node->left, key, value, needToUpdateHeight, node);
+        parent->keys[index] = middle_key;
+        parent->values[index] = node->values[1];
+        parent->children[index + 1] = new_node;
+        parent->num_keys++;
       }
       else
       {
-        insert(node->right, key, value, needToUpdateHeight, node);
+        parent = new node_type();
+        parent->keys[0] = middle_key;
+        parent->values[0] = node->values[1];
+        parent->children[0] = node;
+        parent->children[1] = new_node;
+        parent->num_keys = 1;
+        root_ = parent;
       }
-      if (needToUpdateHeight)
-      {
-        node->height = std::max(getHeight(node->left), getHeight(node->right)) + 1;
-      }
-      rebalance(node);
     }
   };
 }
