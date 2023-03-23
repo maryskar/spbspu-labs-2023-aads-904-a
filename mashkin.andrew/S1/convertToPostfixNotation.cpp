@@ -2,36 +2,39 @@
 #include "queue.h"
 #include "stack.h"
 
-void convertToPostfixNotation(std::ifstream& inpFile, Stack< char >& stc, Queue< char >& que)
+namespace mashkin
 {
-  char var;
-  while (inpFile)
+  void convertToPostfixNotation(std::ifstream& inpFile, Stack< char >& stc, Queue< char >& que)
   {
-    inpFile >> var;
-    if (!inpFile)
+    char var;
+    while (inpFile)
     {
-      break;
-    }
-    if (var == '(' || var == '+' || var == '-' || var == '*' || var == '/' || var == '%')
-    {
-      stc.push(var);
-    }
-    else if (var == ')')
-    {
-      char symb = stc.drop();
-      while (symb != '(')
+      inpFile >> var;
+      if (!inpFile)
       {
-        que.enqueue(symb);
-        symb = stc.drop();
+        break;
+      }
+      if (var == '(' || var == '+' || var == '-' || var == '*' || var == '/' || var == '%')
+      {
+        stc.push(var);
+      }
+      else if (var == ')')
+      {
+        char symb = stc.drop();
+        while (symb != '(')
+        {
+          que.enqueue(symb);
+          symb = stc.drop();
+        }
+      }
+      else
+      {
+        que.enqueue(var);
       }
     }
-    else
+    while (stc.isEmpty())
     {
-      que.enqueue(var);
+      que.enqueue(stc.drop());
     }
-  }
-  while (stc.isEmpty())
-  {
-    que.enqueue(stc.drop());
   }
 }

@@ -4,5 +4,8 @@
 #include "queue.h"
 #include "stack.h"
 
-void convertToPostfixNotation(std::ifstream& inpFile, Stack< char >& stc, Queue< char >& que);
+namespace mashkin
+{
+  void convertToPostfixNotation(std::ifstream& inpFile, Stack< char >& stc, Queue< char >& que);
+}
 #endif
