@@ -2,6 +2,7 @@
 #define COMMON_BINARYSEARCHTREE_H
 #include <cstddef>
 #include <algorithm>
+#include <iterator>
 namespace details
 {
   template< typename Key, typename Value >
@@ -31,6 +32,8 @@ namespace dimkashelk
     {
     friend class TwoThreeTree< Key, Value, Compare >;
     public:
+      const Key first;
+      Value second;
       Iterator &operator++()
       {
         next();
@@ -43,40 +46,16 @@ namespace dimkashelk
       }
     private:
       node_type *node_;
+      unsigned index_;
       explicit Iterator(const node_type *node):
-        node_(node)
+        node_(node),
+        index_(0),
+        first(node_->keys[index_]),
+        second(node_->value[index_])
       {};
-      void *next()
+      void next()
       {
-        if (node_->children[0] != nullptr)
-        {
-          node_ = node_->children[0];
-          while (node_->children[2] != nullptr)
-          {
-            node_ = node_->children[2];
-          }
-        }
-        else if (node_->children[1] != nullptr)
-        {
-          node_ = node_->children[1];
-        }
-        else if (node_->parent != nullptr)
-        {
-          node_type *parent = node_->parent;
-          while (node_ == parent->children[1])
-          {
-            node_ = parent;
-            parent = parent->parent;
-          }
-          if (node_ == parent->children[0])
-          {
-            node_ = parent;
-          }
-        }
-        else
-        {
-          node_ = nullptr;
-        }
+        
       }
     };
     TwoThreeTree():
