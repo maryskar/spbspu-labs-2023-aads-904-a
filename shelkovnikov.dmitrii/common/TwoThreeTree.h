@@ -12,12 +12,12 @@ namespace details
     Value values[2];
     NodeOfTwoThreeTree* children[3];
     NodeOfTwoThreeTree* parent;
-    int keyCount;
+    size_t keyCount;
     bool is_leaf;
     NodeOfTwoThreeTree():
       keys(),
       values(),
-      children(nullptr, nullptr, nullptr),
+      children{nullptr, nullptr, nullptr},
       parent(nullptr),
       keyCount(0),
       is_leaf(true)
@@ -29,11 +29,11 @@ namespace dimkashelk
   template< typename Key, typename Value, typename Compare >
   class TwoThreeTree
   {
-    using node_type = details::NodeOfTwoThreeTree<Key, Value>;
+    using node_type = details::NodeOfTwoThreeTree< Key, Value >;
   public:
     class Iterator
     {
-      friend class TwoThreeTree<Key, Value, Compare>;
+      friend class TwoThreeTree< Key, Value, Compare >;
     public:
       const Key first;
       Value second;
@@ -49,22 +49,18 @@ namespace dimkashelk
       }
     private:
       node_type *node_;
-      unsigned index_;
-      explicit Iterator(const node_type *node) :
+      explicit Iterator(const node_type *node):
         node_(node),
-        index_(0),
-        first(node_->keys[index_]),
-        second(node_->value[index_])
-      {
-      };
+        first(node_->keys[0]),
+        second(node_->value[0])
+      {};
       void next()
-      {
-      }
+      {}
     };
-    TwoThreeTree() :
-      root_(nullptr)
-    {
-    }
+    TwoThreeTree():
+      root_(nullptr),
+      compare_(Compare())
+    {}
     void insert(const Key &key, const Value &value)
     {
       if (!root_)
@@ -78,7 +74,7 @@ namespace dimkashelk
       {
         node_type *node = root_;
         node_type *parent = nullptr;
-        int index = -1;
+        size_t index = 0;
         while (node)
         {
           if (node->keyCount == 2)
@@ -94,22 +90,32 @@ namespace dimkashelk
             }
           }
           parent = node;
-          index = find_index(node, key);
-          if (index < node->num_keys && node->keys[index] == key)
+          index = findIndex(node, key);
+          if (index < node->keyCount && node->keys[index] == key)
           {
             node->values[index] = value;
             return;
           }
           node = node->children[index];
         }
-        parent->keys[parent->num_keys] = key;
-        parent->values[parent->num_keys] = value;
+        parent->keys[parent->keyCount] = key;
+        parent->values[parent->keyCount] = value;
         parent->keyCount++;
       }
     }
   private:
     node_type *root_;
-    void split(node_type *node, node_type *parent, int index)
+    Compare compare_;
+    size_t findIndex(node_type *node, Key key)
+    {
+      size_t index = 0;
+      while (index < node->keyCount && compare_(node->keys[index], key))
+      {
+        index++;
+      }
+      return index;
+    }
+    void split(node_type *node, node_type *parent, size_t index)
     {
       auto *new_node = new node_type();
       if (index == -1)
@@ -129,11 +135,11 @@ namespace dimkashelk
       new_node->values[0] = node->values[2];
       node->keys[2] = Key();
       node->values[2] = Value();
-      new_node->num_keys = 1;
-      node->num_keys = 1;
+      new_node->keyCount = 1;
+      node->keyCount = 1;
       if (parent)
       {
-        for (int i = parent->num_keys; i > index; i--)
+        for (size_t i = parent->keyCount; i > index; i--)
         {
           parent->keys[i] = parent->keys[i - 1];
           parent->values[i] = parent->values[i - 1];
@@ -142,7 +148,7 @@ namespace dimkashelk
         parent->keys[index] = middle_key;
         parent->values[index] = node->values[1];
         parent->children[index + 1] = new_node;
-        parent->num_keys++;
+        parent->keyCount++;
       }
       else
       {
@@ -151,7 +157,7 @@ namespace dimkashelk
         parent->values[0] = node->values[1];
         parent->children[0] = node;
         parent->children[1] = new_node;
-        parent->num_keys = 1;
+        parent->keyCount = 1;
         root_ = parent;
       }
     }
