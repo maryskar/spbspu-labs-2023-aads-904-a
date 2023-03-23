@@ -13,12 +13,14 @@ namespace details
     NodeOfTwoThreeTree* children[3];
     NodeOfTwoThreeTree* parent;
     int keyCount;
+    bool is_leaf;
     NodeOfTwoThreeTree():
       keys(),
       values(),
-      children(),
+      children(nullptr, nullptr, nullptr),
       parent(nullptr),
-      keyCount(0)
+      keyCount(0),
+      is_leaf(true)
     {}
   };
 }
