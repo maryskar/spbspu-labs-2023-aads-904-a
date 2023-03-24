@@ -22,6 +22,10 @@ int long long mashkin::sum(int long long a, int long long b)
     {
       return a + b;
     }
+    else
+    {
+      throw std::overflow_error("Signed overflow");
+    }
   }
   if (same_sign(a, b) && (a <= 0))
   {
@@ -29,6 +33,13 @@ int long long mashkin::sum(int long long a, int long long b)
     {
       return a + b;
     }
+    else
+    {
+      throw std::overflow_error("Signed overflow");
+    }
   }
-  throw std::overflow_error("Signed overflow");
+  else
+  {
+    return a + b;
+  }
 }
