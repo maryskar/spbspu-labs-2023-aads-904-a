@@ -58,7 +58,7 @@ chemodurov::InfixExpr * chemodurov::readInfixExpr(std::string & line, size_t & i
         size2 = size1;
         inf[inf_size++] = {a, true, false};
       }
-      catch (const std::invalid_argument & e)
+      catch (const std::exception & e)
       {
         delete[] inf;
         throw;
