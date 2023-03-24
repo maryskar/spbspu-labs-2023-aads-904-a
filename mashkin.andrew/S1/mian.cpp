@@ -1,7 +1,8 @@
 #include <fstream>
 #include <iostream>
-#include <stdexcept>
 #include <string>
+#include <sstream>
+#include "print.h"
 #include "convertToPostfixNotation.h"
 #include "solvePostfixNotation.h"
 #include "queue.h"
@@ -15,14 +16,20 @@ int main(int argc, char** argv)
     {
       mashkin::Stack< std::string > stc;
       mashkin::Queue< std::string > que;
-      que = convertToPostfixNotation(std::cin, stc, que);
-      if (!que.isEmpty())
+      mashkin::Stack< std::string > result;
+      while (std::cin)
       {
-        std::cout << "\n";
-        return 0;
+        std::string str;
+        std::getline(std::cin, str);
+        if (str.empty())
+        {
+          break;
+        }
+        std::istringstream inpStr(str);
+        que = convertToPostfixNotation(inpStr, stc, que);
+        result.push(solvePostfixNotation(que));
       }
-      std::string result = solvePostfixNotation(que);
-      std::cout << result << "\n";
+      print(result);
     }
     catch (const std::exception& ex)
     {
@@ -43,14 +50,20 @@ int main(int argc, char** argv)
         std::cerr << "File isn't open\n";
         return 1;
       }
-      que = convertToPostfixNotation(inpFile, stc, que);
-      if (!que.isEmpty())
+      mashkin::Stack< std::string > result;
+      while (inpFile)
       {
-        std::cout << "\n";
-        return 0;
+        std::string str;
+        std::getline(inpFile, str);
+        if (str.empty())
+        {
+          break;
+        }
+        std::istringstream inpStr(str);
+        que = convertToPostfixNotation(inpStr, stc, que);
+        result.push(solvePostfixNotation(que));
       }
-      std::string result = solvePostfixNotation(que);
-      std::cout << result << "\n";
+      print(result);
     }
     catch (const std::exception& ex)
     {
@@ -58,5 +71,6 @@ int main(int argc, char** argv)
       return 1;
     }
   }
+  std::cout << "\n";
   return 0;
 }
