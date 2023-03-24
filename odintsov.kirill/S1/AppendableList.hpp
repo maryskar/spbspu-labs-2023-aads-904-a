@@ -5,7 +5,7 @@ namespace odintsov {
   template< typename T >
   class AppendableList {
     public:
-      AppendableList(const T& data);
+      AppendableList();
       ~AppendableList();
 
       void push(const T& data);
