@@ -60,3 +60,13 @@ long chemodurov::calcDivision(long lhs, long rhs)
   }
   return lhs / rhs;
 }
+
+long chemodurov::calcReminderOfDivision(long lhs, long rhs)
+{
+  long result = lhs % rhs;
+  if (lhs * rhs < 0)
+  {
+    result += rhs;
+  }
+  return result;
+}

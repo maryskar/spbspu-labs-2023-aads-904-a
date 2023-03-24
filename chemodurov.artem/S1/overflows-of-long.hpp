@@ -7,6 +7,7 @@ namespace chemodurov
   long calcDiff(long lhs, long rhs);
   long calcMultiplication(long lhs, long rhs);
   long calcDivision(long lhs, long rhs);
+  long calcReminderOfDivision(long lhs, long rhs);
 }
 
 #endif
