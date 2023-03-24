@@ -23,11 +23,11 @@ namespace details
       return (first == nullptr) && (second == nullptr) && (third == nullptr);
     }
   private:
-    void sort(Key &x, Key &y)
+    void sort()
     {
-      if (!Compare(x, y))
+      if (!Compare(key[0], key[1]))
       {
-        std::swap(x, y);
+        std::swap(key[0], key[1]);
       }
     }
   };
