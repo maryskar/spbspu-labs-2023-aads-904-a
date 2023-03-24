@@ -1,4 +1,3 @@
-#include <iostream>
 #include "convert-infix-to-postfix.hpp"
 #include "stack.hpp"
 #include "compare-operations-priority.hpp"
@@ -58,6 +57,10 @@ chemodurov::Queue< chemodurov::PostfixExpr > chemodurov::convertInfixToPostfix(Q
         {
           post.push({stack.getFromStack().data.operation, false});
           stack.pop();
+          if (stack.empty())
+          {
+            break;
+          }
           prior_diff = compareOperationsPriority(next.data.operation, stack.getFromStack().data.operation);
         }
         stack.push(makeOperationAndBrace(next.data.operation));

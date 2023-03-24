@@ -17,7 +17,7 @@ long chemodurov::calcSum(long lhs, long rhs)
   }
   if (isSameSign(lhs, rhs) && lhs < 0 && min_long - lhs > rhs)
   {
-    throw std::overflow_error("Overflow in sum");
+    throw std::overflow_error("Underflow in sum");
   }
   return lhs + rhs;
 }
@@ -32,7 +32,7 @@ long chemodurov::calcDiff(long lhs, long rhs)
   }
   if (!isSameSign(lhs, rhs) && lhs < 0 && min_long + rhs > lhs)
   {
-    throw std::overflow_error("Overflow in diff");
+    throw std::overflow_error("Underflow in diff");
   }
   return lhs - rhs;
 }
@@ -41,13 +41,21 @@ long chemodurov::calcMultiplication(long lhs, long rhs)
 {
   const long max_long = std::numeric_limits< long >::max();
   const long min_long = std::numeric_limits< long >::min();
-  if (isSameSign(lhs, rhs) && max_long / lhs < rhs)
+  if (isSameSign(lhs, rhs) && lhs > 0 && max_long / lhs < rhs)
   {
     throw std::overflow_error("Overflow in multiplication");
   }
-  if (!isSameSign(lhs, rhs) && lhs != 0 && min_long / lhs > rhs)
+  if (isSameSign(lhs, rhs) && lhs < 0 && max_long / lhs > rhs)
   {
     throw std::overflow_error("Overflow in multiplication");
+  }
+  if (!isSameSign(lhs, rhs) && lhs > 0 && min_long / lhs > rhs)
+  {
+    throw std::overflow_error("Underflow in multiplication");
+  }
+  if (!isSameSign(lhs, rhs) && lhs < 0 && min_long / lhs < rhs)
+  {
+    throw std::overflow_error("Underflow in multiplication");
   }
   return lhs * rhs;
 }
