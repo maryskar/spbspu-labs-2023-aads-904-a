@@ -2,5 +2,8 @@
 #define SOLVEPOSTFIXNOTATION_H
 #include "queue.h"
 
-void solvePostfixNotation(Queue< char >& que);
+namespace mashkin
+{
+  char solvePostfixNotation(Queue< char >& que);
+}
 #endif
