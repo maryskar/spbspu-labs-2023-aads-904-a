@@ -167,7 +167,8 @@ namespace dimkashelk
       }
       return split(p);
     }
-    node_type *split(node_type *item) {
+    node_type *split(node_type *item)
+    {
       if (item->size < 3)
       {
         return item;
