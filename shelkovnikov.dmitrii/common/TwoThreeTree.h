@@ -17,6 +17,10 @@ namespace details
     node_type *second;
     node_type *parent;
     node_type *fourth;
+    bool is_leaf()
+    {
+      return (first == nullptr) && (second == nullptr) && (third == nullptr);
+    }
   };
 }
 namespace dimkashelk
