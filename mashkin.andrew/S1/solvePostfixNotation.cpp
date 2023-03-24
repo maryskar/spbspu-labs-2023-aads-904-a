@@ -99,6 +99,12 @@ std::string mashkin::solvePostfixNotation(Queue< std::string >& que)
         throw std::logic_error("Not enough arguments");
       }
     }
+    else
+    {
+      std::string result = list->data;
+      delete list;
+      return result;
+    }
     if (que.isEmpty())
     {
       endList = list->next->next;
