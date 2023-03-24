@@ -133,9 +133,8 @@ int main(int argc, char ** argv)
   }
   catch (const std::invalid_argument & e)
   {
-    std::cerr << e.what() << "\n";
     std::cout << '\n';
-    return 1;
+    return 0;
   }
   catch (const std::exception & e)
   {
