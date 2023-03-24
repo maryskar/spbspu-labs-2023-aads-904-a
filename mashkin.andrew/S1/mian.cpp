@@ -21,9 +21,9 @@ int main(int argc, char** argv)
       {
         std::string str;
         std::getline(std::cin, str);
-        if (str.empty())
+        if (str.find_first_not_of(" \n") == std::string::npos)
         {
-          break;
+          continue;
         }
         std::istringstream inpStr(str);
         que = convertToPostfixNotation(inpStr, stc, que);
@@ -55,9 +55,9 @@ int main(int argc, char** argv)
       {
         std::string str;
         std::getline(inpFile, str);
-        if (str.empty())
+        if (str.find_first_not_of(" \n") == std::string::npos)
         {
-          break;
+          continue;
         }
         std::istringstream inpStr(str);
         que = convertToPostfixNotation(inpStr, stc, que);
