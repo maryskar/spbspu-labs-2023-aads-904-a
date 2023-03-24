@@ -3,6 +3,7 @@
 #include <string>
 #include "list.h"
 #include "queue.h"
+#include "sumNum.h"
 
 void deleteSomeElem(mashkin::list_t< std::string >* endList)
 {
@@ -45,11 +46,11 @@ mashkin::list_t< std::string >* solve(mashkin::list_t< std::string >* endList, m
     }
     else if (endList->next->next->data == "+")
     {
-      endList->data = std::to_string(fNum + sNum);
+      endList->data = std::to_string(mashkin::sum(fNum, sNum));
     }
     else if (endList->next->next->data == "-")
     {
-      endList->data = std::to_string(fNum - sNum);
+      endList->data = std::to_string(mashkin::sum(fNum, sNum * (-1)));
     }
     else if (endList->next->next->data == "*")
     {
