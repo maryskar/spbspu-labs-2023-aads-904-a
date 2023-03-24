@@ -5,21 +5,30 @@
 #include <iterator>
 namespace details
 {
-  template< typename Key, typename Value >
+  template< typename Key, typename Value, typename Compare >
   struct NodeOfTwoThreeTree
   {
-    using node_type = NodeOfTwoThreeTree< Key, Value >;
-    Key key[3];
-    Value value[3];
+  public:
+    using node_type = NodeOfTwoThreeTree< Key, Value, Compare >;
+    Key key[2];
+    Value value[2];
     unsigned size;
-    node_type *third;
     node_type *first;
     node_type *second;
+    node_type *third;
     node_type *parent;
     node_type *fourth;
     bool is_leaf() const
     {
       return (first == nullptr) && (second == nullptr) && (third == nullptr);
+    }
+  private:
+    void sort(Key &x, Key &y)
+    {
+      if (!Compare(x, y))
+      {
+        std::swap(x, y);
+      }
     }
   };
 }
