@@ -110,5 +110,7 @@ std::string mashkin::solvePostfixNotation(Queue< std::string >& que)
       delete toDelete;
     }
   }
-  return list->data;
+  std::string result = list->data;
+  delete list;
+  return result;
 }
