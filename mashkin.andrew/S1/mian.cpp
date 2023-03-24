@@ -9,10 +9,13 @@
 
 int main(int argc, char** argv)
 {
-  if (argc != 2 && argc != 3)
+  if (argc == 1)
   {
-    std::cerr << "Incorrect arguments\n";
-    return 1;
+    mashkin::Stack< std::string > stc;
+    mashkin::Queue< std::string > que;
+    que = convertToPostfixNotation(std::cin, stc, que);
+    std::string result = solvePostfixNotation(que);
+    std::cout << result << "\n";
   }
   else if (argc == 2)
   {
@@ -31,19 +34,11 @@ int main(int argc, char** argv)
       std::string result = solvePostfixNotation(que);
       std::cout << result << "\n";
     }
-    catch (const std::underflow_error& ex)
-    {
-      std::cerr << ex.what() << "\n";
-      return 1;
-    }
     catch (const std::exception& ex)
     {
       std::cerr << ex.what() << "\n";
       return 1;
     }
-  }
-  else
-  {
   }
   return 0;
 }
