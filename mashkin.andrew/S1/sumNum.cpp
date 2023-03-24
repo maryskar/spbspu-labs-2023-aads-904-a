@@ -35,7 +35,7 @@ int long long mashkin::sum(int long long a, int long long b)
     }
     else
     {
-      throw std::overflow_error("Signed overflow");
+      throw std::underflow_error("Signed underflow");
     }
   }
   else
