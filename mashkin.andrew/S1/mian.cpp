@@ -16,6 +16,10 @@ int main(int argc, char** argv)
       mashkin::Stack< std::string > stc;
       mashkin::Queue< std::string > que;
       que = convertToPostfixNotation(std::cin, stc, que);
+      if (!que.isEmpty())
+      {
+        return 0;
+      }
       std::string result = solvePostfixNotation(que);
       std::cout << result << "\n";
     }
@@ -39,6 +43,10 @@ int main(int argc, char** argv)
         return 1;
       }
       que = convertToPostfixNotation(inpFile, stc, que);
+      if (!que.isEmpty())
+      {
+        return 0;
+      }
       std::string result = solvePostfixNotation(que);
       std::cout << result << "\n";
     }
