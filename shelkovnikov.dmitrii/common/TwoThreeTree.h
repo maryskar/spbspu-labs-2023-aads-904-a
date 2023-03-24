@@ -42,6 +42,12 @@ namespace details
       }
       return false;
     }
+    void insert(Key &k)
+    {
+      key[size] = k;
+      size++;
+      sort();
+    }
   private:
     void sort2()
     {
