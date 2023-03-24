@@ -55,7 +55,7 @@ void mashkin::Stack< T >::pop()
   }
   else
   {
-    list_t< char >* newhead = top_->next;
+    list_t< T >* newhead = top_->next;
     delete top_;
     top_ = newhead;
   }
