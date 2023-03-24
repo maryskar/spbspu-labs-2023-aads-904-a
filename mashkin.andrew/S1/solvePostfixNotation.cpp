@@ -95,8 +95,7 @@ std::string mashkin::solvePostfixNotation(Queue< std::string >& que)
   }
   else
   {
-    solve(endList, list);
-    deleteSomeElem(endList);
+    endList = solve(endList, list);
   }
   return list->data;
 }
