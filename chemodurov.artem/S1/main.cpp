@@ -131,6 +131,12 @@ int main(int argc, char ** argv)
   {
     chemodurov::printStackInt(std::cout, res);
   }
+  catch (const std::invalid_argument & e)
+  {
+    std::cerr << e.what() << "\n";
+    std::cout << '\n';
+    return 1;
+  }
   catch (const std::exception & e)
   {
     std::cerr << e.what() << "\n";
