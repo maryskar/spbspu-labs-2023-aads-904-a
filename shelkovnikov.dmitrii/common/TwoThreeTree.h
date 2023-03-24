@@ -42,9 +42,10 @@ namespace details
       }
       return false;
     }
-    void insert(Key &k)
+    void insert(Key &k, Value &v)
     {
       key[size] = k;
+      value[size] = v;
       size++;
       sort();
     }
@@ -93,7 +94,7 @@ namespace dimkashelk
   template< typename Key, typename Value, typename Compare >
   class TwoThreeTree
   {
-  using node_type = details::NodeOfTwoThreeTree< Key, Value >;
+  using node_type = details::NodeOfTwoThreeTree< Key, Value, Compare >;
   public:
     class Iterator
     {
@@ -125,105 +126,35 @@ namespace dimkashelk
       root_(nullptr),
       compare_(Compare())
     {}
-    void insert(const Key &key, const Value &value)
-    {
-      if (!root_)
-      {
-        root_ = new node_type();
-        root_->keys[0] = key;
-        root_->values[0] = value;
-        root_->keyCount = 1;
-      }
-      else
-      {
-        node_type *node = root_;
-        node_type *parent = nullptr;
-        size_t index = 0;
-        while (node)
-        {
-          if (node->keyCount == 2)
-          {
-            split(node, parent, index);
-            if (key > parent->keys[index])
-            {
-              node = parent->children[index + 1];
-            }
-            else
-            {
-              node = parent->children[index];
-            }
-          }
-          parent = node;
-          index = findIndex(node, key);
-          if (index < node->keyCount && node->keys[index] == key)
-          {
-            node->values[index] = value;
-            return;
-          }
-          node = node->children[index];
-        }
-        parent->keys[parent->keyCount] = key;
-        parent->values[parent->keyCount] = value;
-        parent->keyCount++;
-      }
+    void insert(Key &k, Value &v) {
+      root_ = insert(root_, k, v);
     }
   private:
     node_type *root_;
     Compare compare_;
-    size_t findIndex(node_type *node, Key key)
+    node_type *insert(node_type *p, Key &k, Value &v)
     {
-      size_t index = 0;
-      while (index < node->keyCount && compare_(node->keys[index], key))
+      if (!p)
       {
-        index++;
+        return new node_type(k);
       }
-      return index;
-    }
-    void split(node_type *node, node_type *parent, size_t index)
-    {
-      auto *new_node = new node_type();
-      if (index == -1)
+      if (p->is_leaf())
       {
-        index = 0;
+        p->insert_to_node(k);
       }
-      Key middle_key = node->keys[1];
-      if (!node->is_leaf)
+      else if (compare_(k, p->key[0]))
       {
-        new_node->is_leaf = false;
-        new_node->children[0] = node->children[2];
-        node->children[2] = nullptr;
-        new_node->children[1] = node->children[3];
-        node->children[3] = nullptr;
+        insert(p->first, k, v);
       }
-      new_node->keys[0] = node->keys[2];
-      new_node->values[0] = node->values[2];
-      node->keys[2] = Key();
-      node->values[2] = Value();
-      new_node->keyCount = 1;
-      node->keyCount = 1;
-      if (parent)
+      else if ((p->size == 1) || ((p->size == 2) && compare_(k, p->key[1])))
       {
-        for (size_t i = parent->keyCount; i > index; i--)
-        {
-          parent->keys[i] = parent->keys[i - 1];
-          parent->values[i] = parent->values[i - 1];
-          parent->children[i + 1] = parent->children[i];
-        }
-        parent->keys[index] = middle_key;
-        parent->values[index] = node->values[1];
-        parent->children[index + 1] = new_node;
-        parent->keyCount++;
+        insert(p->second, k, v);
       }
       else
       {
-        parent = new node_type();
-        parent->keys[0] = middle_key;
-        parent->values[0] = node->values[1];
-        parent->children[0] = node;
-        parent->children[1] = new_node;
-        parent->keyCount = 1;
-        root_ = parent;
+        insert(p->third, k, v);
       }
+      return split(p);
     }
   };
 }
