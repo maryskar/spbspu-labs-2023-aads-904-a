@@ -7,6 +7,10 @@ void print(mashkin::Stack< std::string >& res)
 {
   while (res.isEmpty())
   {
-    std::cout << res.drop() << " ";
+    std::cout << res.drop();
+    if (!res.isEmpty())
+    {
+      std::cout << " ";
+    }
   }
 }
