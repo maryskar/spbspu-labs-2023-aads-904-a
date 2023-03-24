@@ -167,6 +167,74 @@ namespace dimkashelk
       }
       return split(p);
     }
+    node_type *split(node_type *item) {
+      if (item->size < 3)
+      {
+        return item;
+      }
+      auto *x = new node_type(item->key[0], item->first, item->second, nullptr, nullptr, item->parent);
+      auto *y = new node_type(item->key[2], item->third, item->fourth, nullptr, nullptr, item->parent);
+      if (x->first)
+      {
+        x->first->parent = x;
+      }
+      if (x->second)
+      {
+        x->second->parent = x;
+      }
+      if (y->first)
+      {
+        y->first->parent = y;
+      }
+      if (y->second)
+      {
+        y->second->parent = y;
+      }
+      if (item->parent)
+      {
+        item->parent->insert_to_node(item->key[1]);
+        if (item->parent->first == item)
+        {
+          item->parent->first = nullptr;
+        }
+        else if (item->parent->second == item)
+        {
+          item->parent->second = nullptr;
+        }
+        else if (item->parent->third == item)
+        {
+          item->parent->third = nullptr;
+        }
+        if (item->parent->first == nullptr)
+        {
+          item->parent->fourth = item->parent->third;
+          item->parent->third = item->parent->second;
+          item->parent->second = y;
+          item->parent->first = x;
+        }
+        else if (item->parent->second == nullptr)
+        {
+          item->parent->fourth = item->parent->third;
+          item->parent->third = y;
+          item->parent->second = x;
+        }
+        else
+        {
+          item->parent->fourth = y;
+          item->parent->third = x;
+        }
+        node_type *tmp = item->parent;
+        delete item;
+        return tmp;
+      }
+      else
+      {
+        x->parent = item;
+        y->parent = item;
+        item->become_node2(item->key[1], x, y);
+        return item;
+      }
+    }
   };
 }
 #endif
