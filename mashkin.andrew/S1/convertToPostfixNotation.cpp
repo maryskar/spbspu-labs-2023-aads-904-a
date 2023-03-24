@@ -1,12 +1,13 @@
 #include "convertToPostfixNotation.h"
+#include <string>
 #include "queue.h"
 #include "stack.h"
 
 namespace mashkin
 {
-  void convertToPostfixNotation(std::ifstream& inpFile, Stack< char >& stc, Queue< char >& que)
+  void convertToPostfixNotation(std::ifstream& inpFile, Stack< std::string >& stc, Queue< std::string >& que)
   {
-    char var;
+    std::string var;
     while (inpFile)
     {
       inpFile >> var;
@@ -14,14 +15,14 @@ namespace mashkin
       {
         break;
       }
-      if (var == '(' || var == '+' || var == '-' || var == '*' || var == '/' || var == '%')
+      if (var == "(" || var == "+" || var == "-" || var == "*" || var == "/" || var == "%")
       {
         stc.push(var);
       }
-      else if (var == ')')
+      else if (var == ")")
       {
-        char symb = stc.drop();
-        while (symb != '(')
+        std::string symb = stc.drop();
+        while (symb != "(")
         {
           que.enqueue(symb);
           symb = stc.drop();

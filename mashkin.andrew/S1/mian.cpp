@@ -1,7 +1,9 @@
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
+#include <string>
 #include "convertToPostfixNotation.h"
+#include "solvePostfixNotation.h"
 #include "queue.h"
 #include "stack.h"
 
@@ -14,8 +16,8 @@ int main(int argc, char** argv)
   }
   else if (argc == 3)
   {
-    Stack< char > stc;
-    Queue< char > que;
+    mashkin::Stack< std::string > stc;
+    mashkin::Queue< std::string > que;
     std::ifstream inpFile;
     try
     {
@@ -26,11 +28,8 @@ int main(int argc, char** argv)
         return 1;
       }
       convertToPostfixNotation(inpFile, stc, que);
-    }
-    catch (const std::overflow_error& ex)
-    {
-      std::cerr << ex.what() << "\n";
-      return 1;
+      char result = solvePostfixNotation(que);
+      std::cout << result << "\n";
     }
     catch (const std::underflow_error& ex)
     {

@@ -1,9 +1,10 @@
 #include "solvePostfixNotation.h"
 #include <stdexcept>
+#include <string>
 #include "list.h"
 #include "queue.h"
 
-void setCorrectlyEndList(mashkin::list_t< char >* list, mashkin::list_t< char >* endList)
+void setCorrectlyEndList(mashkin::list_t< std::string >* list, mashkin::list_t< std::string >* endList)
 {
   if (endList != list)
   {
@@ -15,23 +16,55 @@ void setCorrectlyEndList(mashkin::list_t< char >* list, mashkin::list_t< char >*
   }
 }
 
-void deleteSomeElem(mashkin::list_t< char >* endList)
+void deleteSomeElem(mashkin::list_t< std::string >* endList)
 {
   delete endList->next->next;
   delete endList->next;
   endList->next = nullptr;
 }
 
-char mashkin::solvePostfixNotation(Queue< char >& que)
+void solve(mashkin::list_t< std::string >* endList, mashkin::list_t< std::string >* list)
 {
-  list_t< char >* list = new list_t< char >{que.drop(), nullptr};
-  list_t< char >* endList = list;
+  int fNum = std::stoi(endList->data);
+  int sNum = std::stoi(endList->next->data);
+  if (endList->next->next->data == "+")
+  {
+    endList->data = std::to_string(fNum + sNum);
+  }
+  else if (endList->next->next->data == "-")
+  {
+    endList->data = std::to_string(fNum - sNum);
+  }
+  else if (endList->next->next->data == "*")
+  {
+    endList->data = std::to_string(fNum * sNum);
+  }
+  else if (endList->next->next->data == "/")
+  {
+    endList->data = std::to_string(fNum / sNum);
+  }
+  else if (endList->next->next->data == "%")
+  {
+    endList->data = std::to_string(fNum % sNum);
+  }
+  else
+  {
+    return;
+  }
+  deleteSomeElem(endList);
+  setCorrectlyEndList(list, endList);
+}
+
+std::string mashkin::solvePostfixNotation(Queue< std::string >& que)
+{
+  list_t< std::string >* list = new list_t< std::string >{que.drop(), nullptr};
+  list_t< std::string >* endList = list;
   if (que.isEmpty())
   {
-    endList->next = new list_t< char >{que.drop(), nullptr};
+    endList->next = new list_t< std::string >{que.drop(), nullptr};
     if (que.isEmpty())
     {
-      endList->next->next = new list_t< char >{que.drop(), nullptr};
+      endList->next->next = new list_t< std::string >{que.drop(), nullptr};
     }
     else
     {
@@ -46,92 +79,14 @@ char mashkin::solvePostfixNotation(Queue< char >& que)
   {
     while (que.isEmpty())
     {
-      if (endList->next->next->data == '+')
-      {
-        int firstNum = endList->data - '0';
-        int secondNum = endList->next->data - '0';
-        endList->data = firstNum + secondNum + '0';
-        deleteSomeElem(endList);
-        setCorrectlyEndList(list, endList);
-      }
-      else if (endList->next->next->data == '-')
-      {
-        int firstNum = endList->data - '0';
-        int secondNum = endList->next->data - '0';
-        endList->data = firstNum - secondNum + '0';
-        deleteSomeElem(endList);
-        setCorrectlyEndList(list, endList);
-      }
-      else if (endList->next->next->data == '*')
-      {
-        int firstNum = endList->data - '0';
-        int secondNum = endList->next->data - '0';
-        endList->data = firstNum * secondNum + '0';
-        deleteSomeElem(endList);
-        setCorrectlyEndList(list, endList);
-      }
-      else if (endList->next->next->data == '/')
-      {
-        int firstNum = endList->data - '0';
-        int secondNum = endList->next->data - '0';
-        endList->data = firstNum / secondNum + '0';
-        deleteSomeElem(endList);
-        setCorrectlyEndList(list, endList);
-      }
-      else if (endList->next->next->data == '%')
-      {
-        int firstNum = endList->data - '0';
-        int secondNum = endList->next->data - '0';
-        endList->data = firstNum % secondNum + '0';
-        deleteSomeElem(endList);
-        setCorrectlyEndList(list, endList);
-      }
+      solve(endList, list);
       endList = endList->next;
-      endList->next->next = new list_t< char >{que.drop(), nullptr};
+      endList->next->next = new list_t< std::string >{que.drop(), nullptr};
     }
   }
   else
   {
-    if (endList->next->next->data == '+')
-    {
-      int firstNum = endList->data - '0';
-      int secondNum = endList->next->data - '0';
-      endList->data = firstNum + secondNum + '0';
-      deleteSomeElem(endList);
-      setCorrectlyEndList(list, endList);
-    }
-    else if (endList->next->next->data == '-')
-    {
-      int firstNum = endList->data - '0';
-      int secondNum = endList->next->data - '0';
-      endList->data = firstNum - secondNum + '0';
-      deleteSomeElem(endList);
-      setCorrectlyEndList(list, endList);
-    }
-    else if (endList->next->next->data == '*')
-    {
-      int firstNum = endList->data - '0';
-      int secondNum = endList->next->data - '0';
-      endList->data = firstNum * secondNum + '0';
-      deleteSomeElem(endList);
-      setCorrectlyEndList(list, endList);
-    }
-    else if (endList->next->next->data == '/')
-    {
-      int firstNum = endList->data - '0';
-      int secondNum = endList->next->data - '0';
-      endList->data = firstNum / secondNum + '0';
-      deleteSomeElem(endList);
-      setCorrectlyEndList(list, endList);
-    }
-    else if (endList->next->next->data == '%')
-    {
-      int firstNum = endList->data - '0';
-      int secondNum = endList->next->data - '0';
-      endList->data = firstNum % secondNum + '0';
-      deleteSomeElem(endList);
-      setCorrectlyEndList(list, endList);
-    }
+    solve(endList, list);
   }
   return list->data;
 }
