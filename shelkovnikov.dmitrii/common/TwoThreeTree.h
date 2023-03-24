@@ -31,6 +31,17 @@ namespace details
     {
       return (first == nullptr) && (second == nullptr) && (third == nullptr);
     }
+    bool find(Key &k)
+    {
+      for (unsigned i = 0; i < size; ++i)
+      {
+        if (key[i] == k)
+        {
+          return true;
+        }
+      }
+      return false;
+    }
   private:
     void sort2()
     {
