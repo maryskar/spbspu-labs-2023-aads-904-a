@@ -5,7 +5,8 @@
 
 namespace mashkin
 {
-  void convertToPostfixNotation(std::ifstream& inpFile, Stack< std::string >& stc, Queue< std::string >& que)
+  Queue< std::string > convertToPostfixNotation(std::ifstream& inpFile, Stack< std::string >& stc,
+                                                Queue< std::string >& que)
   {
     std::string var;
     while (inpFile)
@@ -37,5 +38,6 @@ namespace mashkin
     {
       que.enqueue(stc.drop());
     }
+    return que;
   }
 }

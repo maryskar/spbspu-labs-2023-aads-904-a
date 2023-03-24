@@ -7,6 +7,6 @@
 
 namespace mashkin
 {
-  void convertToPostfixNotation(std::ifstream& inpFile, Stack< std::string >& stc, Queue< std::string >& que);
+  Queue< std::string > convertToPostfixNotation(std::ifstream& inpFile, Stack< std::string >& stc, Queue< std::string >& que);
 }
 #endif
