@@ -23,8 +23,21 @@ int main(int argc, char ** argv)
       {
         break;
       }
+      if (line.empty())
+      {
+        continue;
+      }
       size_t inf_size = 0;
-      chemodurov::InfixExpr * inf = chemodurov::readInfixExpr(line, inf_size);
+      chemodurov::InfixExpr * inf = nullptr;
+      try
+      {
+        inf = chemodurov::readInfixExpr(line, inf_size);
+      }
+      catch (const std::exception & e)
+      {
+        std::cerr << e.what() << "\n";
+        return 1;
+      }
       chemodurov::Queue< chemodurov::InfixExpr > inf_queue;
       try
       {
@@ -70,8 +83,21 @@ int main(int argc, char ** argv)
       {
         break;
       }
+      if (line.empty())
+      {
+        continue;
+      }
       size_t inf_size = 0;
-      chemodurov::InfixExpr * inf = chemodurov::readInfixExpr(line, inf_size);
+      chemodurov::InfixExpr * inf = nullptr;
+      try
+      {
+        inf = chemodurov::readInfixExpr(line, inf_size);
+      }
+      catch (const std::exception & e)
+      {
+        std::cerr << e.what() << "\n";
+        return 1;
+      }
       chemodurov::Queue< chemodurov::InfixExpr > inf_queue;
       try
       {
@@ -101,7 +127,15 @@ int main(int argc, char ** argv)
     }
     while (input);
   }
-  chemodurov::printStackInt(std::cout, res);
+  try
+  {
+    chemodurov::printStackInt(std::cout, res);
+  }
+  catch (const std::exception & e)
+  {
+    std::cerr << e.what() << "\n";
+    return 1;
+  }
   std::cout << "\n";
   return 0;
 }
