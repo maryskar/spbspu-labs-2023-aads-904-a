@@ -36,7 +36,7 @@ long chemodurov::calcPostfixExpr(Queue< PostfixExpr > & post)
       }
       else if (next.data.operation == OPERATION_REMINDER_OF_DIVISION)
       {
-        calc.push(lhs % rhs);
+        calc.push(calcReminderOfDivision(lhs, rhs));
       }
       else
       {
