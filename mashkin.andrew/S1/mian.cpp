@@ -14,14 +14,14 @@ int main(int argc, char** argv)
     std::cerr << "Incorrect arguments\n";
     return 1;
   }
-  else if (argc == 3)
+  else if (argc == 2)
   {
     mashkin::Stack< std::string > stc;
     mashkin::Queue< std::string > que;
     std::ifstream inpFile;
     try
     {
-      inpFile.open(argv[2]);
+      inpFile.open(argv[1]);
       if (!inpFile.is_open())
       {
         std::cerr << "File isn't open\n";
