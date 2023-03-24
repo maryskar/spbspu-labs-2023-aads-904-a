@@ -27,8 +27,8 @@ int main(int argc, char** argv)
         std::cerr << "File isn't open\n";
         return 1;
       }
-      convertToPostfixNotation(inpFile, stc, que);
-      char result = solvePostfixNotation(que);
+      que = convertToPostfixNotation(inpFile, stc, que);
+      std::string result = solvePostfixNotation(que);
       std::cout << result << "\n";
     }
     catch (const std::underflow_error& ex)

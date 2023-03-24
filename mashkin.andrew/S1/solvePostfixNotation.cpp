@@ -4,30 +4,32 @@
 #include "list.h"
 #include "queue.h"
 
-void setCorrectlyEndList(mashkin::list_t< std::string >* list, mashkin::list_t< std::string >* endList)
+void deleteSomeElem(mashkin::list_t< std::string >* endList)
 {
-  if (endList != list)
+  if (endList->next->next->next)
   {
-    endList = list;
-    while (endList->next->next)
-    {
-      endList = endList->next;
-    }
+    mashkin::list_t< std::string >* var = endList->next->next->next;
+    delete endList->next->next;
+    delete endList->next;
+    endList->next = var;
+  }
+  else
+  {
+    delete endList->next->next;
+    delete endList->next;
+    endList->next = nullptr;
   }
 }
 
-void deleteSomeElem(mashkin::list_t< std::string >* endList)
-{
-  delete endList->next->next;
-  delete endList->next;
-  endList->next = nullptr;
-}
-
-void solve(mashkin::list_t< std::string >* endList, mashkin::list_t< std::string >* list)
+mashkin::list_t< std::string >* solve(mashkin::list_t< std::string >* endList, mashkin::list_t< std::string >* list)
 {
   int fNum = std::stoi(endList->data);
   int sNum = std::stoi(endList->next->data);
-  if (endList->next->next->data == "+")
+  if (!endList->next->next)
+  {
+    return endList;
+  }
+  else if (endList->next->next->data == "+")
   {
     endList->data = std::to_string(fNum + sNum);
   }
@@ -49,10 +51,12 @@ void solve(mashkin::list_t< std::string >* endList, mashkin::list_t< std::string
   }
   else
   {
-    return;
+    endList = endList->next;
+    return endList;
   }
   deleteSomeElem(endList);
-  setCorrectlyEndList(list, endList);
+  endList = list;
+  return endList;
 }
 
 std::string mashkin::solvePostfixNotation(Queue< std::string >& que)
@@ -77,16 +81,22 @@ std::string mashkin::solvePostfixNotation(Queue< std::string >& que)
   }
   if (que.isEmpty())
   {
+    endList = list->next->next;
     while (que.isEmpty())
     {
-      solve(endList, list);
+      endList->next = new list_t< std::string >{que.drop(), nullptr};
       endList = endList->next;
-      endList->next->next = new list_t< std::string >{que.drop(), nullptr};
+    }
+    endList = list;
+    while (list->next)
+    {
+      endList = solve(endList, list);
     }
   }
   else
   {
     solve(endList, list);
+    deleteSomeElem(endList);
   }
   return list->data;
 }
