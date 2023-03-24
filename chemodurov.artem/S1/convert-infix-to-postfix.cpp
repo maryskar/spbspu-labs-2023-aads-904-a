@@ -1,3 +1,4 @@
+#include <iostream>
 #include "convert-infix-to-postfix.hpp"
 #include "stack.hpp"
 #include "compare-operations-priority.hpp"
