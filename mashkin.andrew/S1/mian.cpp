@@ -11,11 +11,18 @@ int main(int argc, char** argv)
 {
   if (argc == 1)
   {
-    mashkin::Stack< std::string > stc;
-    mashkin::Queue< std::string > que;
-    que = convertToPostfixNotation(std::cin, stc, que);
-    std::string result = solvePostfixNotation(que);
-    std::cout << result << "\n";
+    try
+    {
+      mashkin::Stack< std::string > stc;
+      mashkin::Queue< std::string > que;
+      que = convertToPostfixNotation(std::cin, stc, que);
+      std::string result = solvePostfixNotation(que);
+      std::cout << result << "\n";
+    }
+    catch (const std::exception& ex)
+    {
+      std::cerr << ex.what() << "\n";
+    }
   }
   else if (argc == 2)
   {
