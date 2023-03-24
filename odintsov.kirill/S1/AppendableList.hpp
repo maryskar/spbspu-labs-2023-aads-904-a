@@ -10,7 +10,7 @@ namespace odintsov {
 
       void push(const T& data);
 
-    private:
+    protected:
       struct Node {
           T data;
           Node* next;
