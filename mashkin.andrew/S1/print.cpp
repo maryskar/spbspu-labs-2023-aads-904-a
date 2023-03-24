@@ -8,7 +8,7 @@ void print(mashkin::Stack< std::string >& res)
   while (res.isEmpty())
   {
     std::cout << res.drop();
-    if (!res.isEmpty())
+    if (res.isEmpty())
     {
       std::cout << " ";
     }
