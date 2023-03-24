@@ -21,38 +21,58 @@ void deleteSomeElem(mashkin::list_t< std::string >* endList)
   }
 }
 
+void clear(mashkin::list_t< std::string >* list)
+{
+  while (list)
+  {
+    mashkin::list_t< std::string >* toDelete = list;
+    list = list->next;
+    delete toDelete;
+  }
+}
+
 mashkin::list_t< std::string >* solve(mashkin::list_t< std::string >* endList, mashkin::list_t< std::string >* list)
 {
-  int fNum = std::stoi(endList->data);
-  int sNum = std::stoi(endList->next->data);
-  if (!endList->next->next)
+  int long long fNum = 0;
+  int long long sNum = 0;
+  try
   {
-    return endList;
+    fNum = std::stoll(endList->data);
+    sNum = std::stoll(endList->next->data);
+    if (!endList->next->next)
+    {
+      return endList;
+    }
+    else if (endList->next->next->data == "+")
+    {
+      endList->data = std::to_string(fNum + sNum);
+    }
+    else if (endList->next->next->data == "-")
+    {
+      endList->data = std::to_string(fNum - sNum);
+    }
+    else if (endList->next->next->data == "*")
+    {
+      endList->data = std::to_string(fNum * sNum);
+    }
+    else if (endList->next->next->data == "/")
+    {
+      endList->data = std::to_string(fNum / sNum);
+    }
+    else if (endList->next->next->data == "%")
+    {
+      endList->data = std::to_string(fNum % sNum);
+    }
+    else
+    {
+      endList = endList->next;
+      return endList;
+    }
   }
-  else if (endList->next->next->data == "+")
+  catch (const std::exception& exception)
   {
-    endList->data = std::to_string(fNum + sNum);
-  }
-  else if (endList->next->next->data == "-")
-  {
-    endList->data = std::to_string(fNum - sNum);
-  }
-  else if (endList->next->next->data == "*")
-  {
-    endList->data = std::to_string(fNum * sNum);
-  }
-  else if (endList->next->next->data == "/")
-  {
-    endList->data = std::to_string(fNum / sNum);
-  }
-  else if (endList->next->next->data == "%")
-  {
-    endList->data = std::to_string(fNum % sNum);
-  }
-  else
-  {
-    endList = endList->next;
-    return endList;
+    clear(list);
+    throw;
   }
   deleteSomeElem(endList);
   endList = list;
@@ -78,10 +98,6 @@ std::string mashkin::solvePostfixNotation(Queue< std::string >& que)
         throw std::logic_error("Not enough arguments");
       }
     }
-    else
-    {
-      throw std::logic_error("Not enough arguments");
-    }
     if (que.isEmpty())
     {
       endList = list->next->next;
@@ -103,12 +119,8 @@ std::string mashkin::solvePostfixNotation(Queue< std::string >& que)
   }
   catch (const std::bad_alloc& ex)
   {
-    while (list)
-    {
-      list_t< std::string >* toDelete = list;
-      list = list->next;
-      delete toDelete;
-    }
+    clear(list);
+    throw;
   }
   std::string result = list->data;
   delete list;
