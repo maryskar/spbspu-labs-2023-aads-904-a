@@ -8,20 +8,15 @@ namespace details
   template< typename Key, typename Value >
   struct NodeOfTwoThreeTree
   {
-    Key keys[2];
-    Value values[2];
-    NodeOfTwoThreeTree* children[3];
-    NodeOfTwoThreeTree* parent;
-    size_t keyCount;
-    bool is_leaf;
-    NodeOfTwoThreeTree():
-      keys(),
-      values(),
-      children{nullptr, nullptr, nullptr},
-      parent(nullptr),
-      keyCount(0),
-      is_leaf(true)
-    {}
+    using node_type = NodeOfTwoThreeTree< Key, Value >;
+    Key key[3];
+    Value value[3];
+    unsigned size;
+    node_type *third;
+    node_type *first;
+    node_type *second;
+    node_type *parent;
+    node_type *fourth;
   };
 }
 namespace dimkashelk
@@ -29,7 +24,7 @@ namespace dimkashelk
   template< typename Key, typename Value, typename Compare >
   class TwoThreeTree
   {
-    using node_type = details::NodeOfTwoThreeTree< Key, Value >;
+  using node_type = details::NodeOfTwoThreeTree< Key, Value >;
   public:
     class Iterator
     {
