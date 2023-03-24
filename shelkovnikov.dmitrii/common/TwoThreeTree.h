@@ -32,11 +32,41 @@ namespace details
       return (first == nullptr) && (second == nullptr) && (third == nullptr);
     }
   private:
-    void sort()
+    void sort2()
     {
       if (!Compare(key[0], key[1]))
       {
         std::swap(key[0], key[1]);
+        std::swap(value[0], value[1]);
+      };
+    }
+    void sort3()
+    {
+      if (!Compare(key[0], key[1]))
+      {
+        std::swap(key[0], key[1]);
+        std::swap(value[0], value[1]);
+      }
+      if (!Compare(key[0], key[2]))
+      {
+        std::swap(key[0], key[2]);
+        std::swap(value[0], value[2]);
+      }
+      if (!Compare(key[1], key[2]))
+      {
+        std::swap(key[1], key[2]);
+        std::swap(value[1], value[2]);
+      }
+    }
+    void sort()
+    {
+      if (size == 2)
+      {
+        sort2();
+      }
+      else if (size == 3)
+      {
+        sort3();
       }
     }
   };
