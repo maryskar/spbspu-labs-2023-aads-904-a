@@ -62,7 +62,7 @@ mashkin::list_t< std::string >* solve(mashkin::list_t< std::string >* endList, m
     }
     else if (endList->next->next->data == "%")
     {
-      endList->data = std::to_string(fNum % sNum);
+      endList->data = std::to_string(mashkin::divide(fNum, sNum));
     }
     else
     {

@@ -76,3 +76,14 @@ int long long mashkin::multiplicate(long long a, long long b)
   }
 }
 
+int long long mashkin::divide(long long a, long long b)
+{
+  if (a >= 0)
+  {
+    return a % b;
+  }
+  else
+  {
+    return a % b + b;
+  }
+}

@@ -5,5 +5,6 @@ namespace mashkin
 {
   int long long sum(int long long a, int long long b);
   int long long multiplicate(int long long a, int long long b);
+  int long long divide(int long long a, int long long b);
 }
 #endif
