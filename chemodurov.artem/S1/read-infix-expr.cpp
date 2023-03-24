@@ -1,6 +1,5 @@
 #include "read-infix-expr.hpp"
 #include <string>
-#include <stdexcept>
 
 chemodurov::InfixExpr * chemodurov::readInfixExpr(std::string & line, size_t & inf_size)
 {
@@ -8,7 +7,7 @@ chemodurov::InfixExpr * chemodurov::readInfixExpr(std::string & line, size_t & i
   inf_size = 0;
   size_t size1 = 0;
   size_t size2 = 0;
-  while (size2 < line.size() - 1)
+  while (size2 < line.size())
   {
     if (line[size2] == '(')
     {
