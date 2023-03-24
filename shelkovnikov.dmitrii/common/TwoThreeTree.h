@@ -10,14 +10,23 @@ namespace details
   {
   public:
     using node_type = NodeOfTwoThreeTree< Key, Value, Compare >;
-    Key key[2];
-    Value value[2];
+    Key key[3];
+    Value value[3];
     unsigned size;
     node_type *first;
     node_type *second;
     node_type *third;
     node_type *parent;
     node_type *fourth;
+    NodeOfTwoThreeTree():
+      key{Key(), Key(), Key()},
+      Value{Value(), Value(), Value()},
+      size(0),
+      first(nullptr),
+      second(nullptr),
+      third(nullptr),
+      fourth(nullptr)
+    {}
     bool is_leaf() const
     {
       return (first == nullptr) && (second == nullptr) && (third == nullptr);
