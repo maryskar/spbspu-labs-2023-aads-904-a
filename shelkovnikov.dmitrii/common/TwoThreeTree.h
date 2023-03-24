@@ -17,7 +17,7 @@ namespace details
     node_type *second;
     node_type *parent;
     node_type *fourth;
-    bool is_leaf()
+    bool is_leaf() const
     {
       return (first == nullptr) && (second == nullptr) && (third == nullptr);
     }
