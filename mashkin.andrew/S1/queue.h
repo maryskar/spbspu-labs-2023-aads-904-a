@@ -4,30 +4,33 @@
 #include <stdexcept>
 #include "list.h"
 
-template< typename T >
-class Queue
+namespace mashkin
 {
-public:
-  explicit Queue();
-  void enqueue(T rhs);
-  void dequeue();
-  bool isEmpty() const;
-  T drop();
+  template< typename T >
+  class Queue
+  {
+  public:
+    explicit Queue();
+    void enqueue(T rhs);
+    void dequeue();
+    bool isEmpty() const;
+    T drop();
 
-private:
-  list_t< T >* head_;
-  list_t< T >* tail_;
-};
+  private:
+    list_t< T >* head_;
+    list_t< T >* tail_;
+  };
+}
 
 template< typename T >
-Queue< T >::Queue():
+mashkin::Queue< T >::Queue():
   head_(nullptr),
   tail_(head_)
 {
 }
 
 template< typename T >
-void Queue< T >::enqueue(T rhs)
+void mashkin::Queue< T >::enqueue(T rhs)
 {
   if (!head_)
   {
@@ -42,7 +45,7 @@ void Queue< T >::enqueue(T rhs)
 }
 
 template< typename T >
-void Queue< T >::dequeue()
+void mashkin::Queue< T >::dequeue()
 {
 
   if (!head_)
@@ -64,7 +67,7 @@ void Queue< T >::dequeue()
 }
 
 template< typename T >
-T Queue< T >::drop()
+T mashkin::Queue< T >::drop()
 {
   T var = head_->data;
   dequeue();
@@ -72,7 +75,7 @@ T Queue< T >::drop()
 }
 
 template< typename T >
-bool Queue< T >::isEmpty() const
+bool mashkin::Queue< T >::isEmpty() const
 {
   return head_;
 }

@@ -4,72 +4,65 @@
 #include <stdexcept>
 #include "list.h"
 
-template< typename T >
-class Stack
+namespace mashkin
 {
-public:
-  explicit Stack();
+  template< typename T >
+  class Stack
+  {
+  public:
+    explicit Stack();
 
-  void push(T rhs);
-  void pop();
-  bool isEmpty() const;
-  T drop();
+    void push(T rhs);
+    void pop();
+    bool isEmpty() const;
+    T drop();
 
-private:
-  list_t< T >* stack_;
-  list_t< T >* top_;
-};
+  private:
+    list_t< T >* top_;
+  };
+}
 
 template< typename T >
-Stack< T >::Stack():
-  stack_(nullptr),
-  top_(stack_)
+mashkin::Stack< T >::Stack():
+  top_(nullptr)
 {
 }
 
 template< typename T >
-void Stack< T >::push(T rhs)
+void mashkin::Stack< T >::push(T rhs)
 {
-  if (!stack_)
+  if (!top_)
   {
-    stack_ = new list_t< T >{rhs, nullptr};
-    top_ = stack_;
+    top_ = new list_t< T >{rhs, nullptr};
   }
   else
   {
-    top_->next = new list_t< T >{rhs, nullptr};
-    top_ = top_->next;
+    top_ = new list_t< T >{rhs, top_};
   }
 }
 
 template< typename T >
-void Stack< T >::pop()
+void mashkin::Stack< T >::pop()
 {
-  if (!stack_)
+  if (!top_)
   {
     throw std::underflow_error("Stack underflow");
   }
-  else if (top_ == stack_)
+  else if (!top_->next)
   {
     delete top_;
-    stack_ = nullptr;
-    top_ = stack_;
+    top_ = nullptr;
   }
   else
   {
-    list_t< T >* predTop = stack_;
-    while (predTop->next != top_)
-    {
-      predTop = predTop->next;
-    }
+    list_t< char >* newhead = top_->next;
     delete top_;
-    top_ = predTop;
-    top_->next = nullptr;
+    top_ = newhead;
   }
 }
 
 template< typename T >
-T Stack< T >::drop()
+T mashkin::Stack< T >::drop()
 {
   T var = top_->data;
   pop();
@@ -77,8 +70,8 @@ T Stack< T >::drop()
 }
 
 template< typename T >
-bool Stack< T >::isEmpty() const
+bool mashkin::Stack< T >::isEmpty() const
 {
-  return stack_;
+  return top_;
 }
 #endif
