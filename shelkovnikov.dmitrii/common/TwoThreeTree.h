@@ -16,8 +16,8 @@ namespace details
     node_type *first;
     node_type *second;
     node_type *third;
-    node_type *parent;
     node_type *fourth;
+    node_type *parent;
     NodeOfTwoThreeTree():
       key{Key(), Key(), Key()},
       Value{Value(), Value(), Value()},
@@ -25,7 +25,18 @@ namespace details
       first(nullptr),
       second(nullptr),
       third(nullptr),
-      fourth(nullptr)
+      fourth(nullptr),
+      parent(nullptr)
+    {}
+    NodeOfTwoThreeTree(Key &k, Value &v, node_type *fi, node_type *s, node_type *t, node_type *fo, node_type *p):
+      key{k, Key(), Key()},
+      value{v, Value(), Value()},
+      size(1),
+      first(fi),
+      second(s),
+      third(t),
+      fourth(fo),
+      parent(p)
     {}
     bool is_leaf() const
     {
