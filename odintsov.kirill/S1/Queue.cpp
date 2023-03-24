@@ -5,11 +5,8 @@
 #include "AppendableList.hpp"
 
 template< typename T >
-void odintsov::Queue< T >::pop()
+void odintsov::Queue< T >::unsafePop()
 {
-  if (!this->head_) {
-    throw std::runtime_error("Cannot pop empty queue");
-  }
   typename AppendableList< T >::Node* next = this->head_->next;
   delete this->head_;
   this->head_ = next;

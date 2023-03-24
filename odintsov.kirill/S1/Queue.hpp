@@ -8,7 +8,7 @@ namespace odintsov {
   class Queue: public AppendableList< T > {
     public:
       T& head();
-      void pop();
+      void unsafePop();
   };
 }
 

@@ -9,6 +9,8 @@ namespace odintsov {
       ~AppendableList();
 
       void push(const T& data);
+      void pop();
+      virtual void unsafePop() = 0;
 
     protected:
       struct Node {

@@ -1,5 +1,7 @@
 #include "AppendableList.hpp"
 
+#include <stdexcept>
+
 template< typename T >
 odintsov::AppendableList< T >::AppendableList():
   head_(nullptr),
@@ -20,10 +22,19 @@ template< typename T >
 void odintsov::AppendableList< T >::push(const T& data)
 {
   Node* next = new Node{data, nullptr};
-  if (tail_) {
-    tail_->next = next;
-  } else {
+  if (!head_) {
     head_ = next;
+  } else {
+    tail_->next = next;
   }
   tail_ = next;
+}
+
+template< typename T >
+void odintsov::AppendableList< T >::pop()
+{
+  if (!head_ || !tail_) {
+    throw std::runtime_error("Cannot pop empty list");
+  }
+  unsafePop();
 }
