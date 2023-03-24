@@ -61,41 +61,54 @@ mashkin::list_t< std::string >* solve(mashkin::list_t< std::string >* endList, m
 
 std::string mashkin::solvePostfixNotation(Queue< std::string >& que)
 {
-  list_t< std::string >* list = new list_t< std::string >{que.drop(), nullptr};
-  list_t< std::string >* endList = list;
-  if (que.isEmpty())
+  list_t< std::string >* list = nullptr;
+  try
   {
-    endList->next = new list_t< std::string >{que.drop(), nullptr};
+    list = new list_t< std::string >{que.drop(), nullptr};
+    list_t< std::string >* endList = list;
     if (que.isEmpty())
     {
-      endList->next->next = new list_t< std::string >{que.drop(), nullptr};
+      endList->next = new list_t< std::string >{que.drop(), nullptr};
+      if (que.isEmpty())
+      {
+        endList->next->next = new list_t< std::string >{que.drop(), nullptr};
+      }
+      else
+      {
+        throw std::logic_error("Not enough arguments");
+      }
     }
     else
     {
       throw std::logic_error("Not enough arguments");
     }
-  }
-  else
-  {
-    throw std::logic_error("Not enough arguments");
-  }
-  if (que.isEmpty())
-  {
-    endList = list->next->next;
-    while (que.isEmpty())
+    if (que.isEmpty())
     {
-      endList->next = new list_t< std::string >{que.drop(), nullptr};
-      endList = endList->next;
+      endList = list->next->next;
+      while (que.isEmpty())
+      {
+        endList->next = new list_t< std::string >{que.drop(), nullptr};
+        endList = endList->next;
+      }
+      endList = list;
+      while (list->next)
+      {
+        endList = solve(endList, list);
+      }
     }
-    endList = list;
-    while (list->next)
+    else
     {
       endList = solve(endList, list);
     }
   }
-  else
+  catch (const std::bad_alloc& ex)
   {
-    endList = solve(endList, list);
+    while (list)
+    {
+      list_t< std::string >* toDelete = list;
+      list = list->next;
+      delete toDelete;
+    }
   }
   return list->data;
 }

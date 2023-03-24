@@ -37,7 +37,18 @@ void mashkin::Stack< T >::push(T rhs)
   }
   else
   {
-    top_ = new list_t< T >{rhs, top_};
+    try
+    {
+      top_ = new list_t< T >{rhs, top_};
+    }
+    catch (const std::bad_alloc& ex)
+    {
+      while (top_)
+      {
+        pop();
+        throw;
+      }
+    }
   }
 }
 
