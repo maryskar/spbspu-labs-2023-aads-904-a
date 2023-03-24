@@ -3,7 +3,7 @@
 #include <string>
 #include "list.h"
 #include "queue.h"
-#include "sumNum.h"
+#include "solving.h"
 
 void deleteSomeElem(mashkin::list_t< std::string >* endList)
 {
