@@ -18,6 +18,7 @@ int main(int argc, char** argv)
       que = convertToPostfixNotation(std::cin, stc, que);
       if (!que.isEmpty())
       {
+        std::cout << "\n";
         return 0;
       }
       std::string result = solvePostfixNotation(que);
@@ -45,6 +46,7 @@ int main(int argc, char** argv)
       que = convertToPostfixNotation(inpFile, stc, que);
       if (!que.isEmpty())
       {
+        std::cout << "\n";
         return 0;
       }
       std::string result = solvePostfixNotation(que);
