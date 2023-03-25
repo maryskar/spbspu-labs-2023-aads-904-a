@@ -156,10 +156,16 @@ namespace dimkashelk
       node_type *goUp(node_type *node)
       {
         node_type *parent = node->parent;
-        while ((node != parent->first && node != parent->second && parent->size == 3) || (node != parent->first && parent))
+        if (parent->size == 1)
         {
-
+          return parent;
         }
+        while (parent && parent->getLastChildren() == node)
+        {
+          node = parent;
+          parent = parent->parent;
+        }
+        return parent;
       }
       node_type *goDown(node_type *node)
       {
