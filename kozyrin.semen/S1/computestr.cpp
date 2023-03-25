@@ -26,10 +26,10 @@ long long mod(long long a, long long b)
 
 bool isOverflow(long long a, long long b, char op)
 {
-  if (op == '+') {
+  if (op == '+' && a > 0 && b > 0) {
     return std::numeric_limits< long long >::max() - a < b;
   }
-  if (op == '-') {
+  if (op == '-' && a < 0 && b < 0) {
     return a - std::numeric_limits< long long >::min() < b;
   }
   if (op == '*') {
