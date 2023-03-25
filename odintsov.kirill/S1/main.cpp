@@ -141,8 +141,14 @@ int main(int argc, char* argv[])
     std::cerr << e.what() << '\n';
     return 1;
   }
+  if (results.empty()) {
+    return 0;
+  }
+  std::cout << results.tail();
+  results.pop();
   while (!results.empty()) {
-    std::cout << results.tail() << '\n';
+    std::cout << ' ' << results.tail();
     results.pop();
   }
+  std::cout << '\n';
 }
