@@ -10,6 +10,8 @@ namespace odintsov {
 
     StringSplitter& operator>>(std::string& ostr);
 
+    bool empty() const;
+
    private:
     std::string str_;
   };

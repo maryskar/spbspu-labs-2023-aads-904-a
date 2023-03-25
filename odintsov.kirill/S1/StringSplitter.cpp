@@ -22,3 +22,8 @@ odintsov::StringSplitter& odintsov::StringSplitter::operator>>(std::string& ostr
   }
   return *this;
 }
+
+bool odintsov::StringSplitter::empty() const
+{
+  return str_.empty();
+}
