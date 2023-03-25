@@ -1,6 +1,6 @@
-#include "Queue.hpp"
-
 #include <stdexcept>
+
+#include "Queue.hpp"
 
 template< typename T >
 odintsov::Queue< T >::Queue():
@@ -56,7 +56,7 @@ const T& odintsov::Queue< T >::head() const
   if (empty()) {
     throw std::runtime_error("Attempt to get head of empty queue");
   }
-  return head_->data_;
+  return head_->data;
 }
 
 template< typename T >

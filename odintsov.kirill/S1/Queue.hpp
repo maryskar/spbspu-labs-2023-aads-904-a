@@ -25,4 +25,6 @@ namespace odintsov {
   };
 }
 
+#include "Queue.tcc"
+
 #endif
