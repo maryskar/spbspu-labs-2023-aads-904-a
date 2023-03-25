@@ -1,4 +1,5 @@
 #include "computestr.h"
+#include <limits>
 
 Queue< std::string > split(std::string in)
 {
@@ -18,24 +19,46 @@ Queue< std::string > split(std::string in)
   return res;
 }
 
-int calcBinary(int a, int b, const std::string& op)
+long long mod(long long a, long long b)
 {
-  if (op == "+") {
-    return a + b;
-  }
-  if (op == "-") {
-    return a - b;
-  }
-  if (op == "*") {
-    return a * b;
-  }
-  if (op == "/") {
-    return a / b;
-  }
-  return a % b;
+  return (a > 0) == (b > 0) ? a - b * (a / b) : a - b * (a / b - 1);
 }
 
-int computeString(std::string& str)
+bool isOverflow(long long a, long long b, char op)
+{
+  if (op == '+') {
+    return std::numeric_limits< long long >::max() - a < b;
+  }
+  if (op == '-') {
+    return a - std::numeric_limits< long long >::min() < b;
+  }
+  if (op == '*') {
+    return std::abs(std::numeric_limits< long long >::max()) / a < std::abs(b);
+  }
+  return false;
+}
+
+long long calcBinary(long long a, long long b, char op)
+{
+  if (isOverflow(a, b, op)) {
+    throw std::overflow_error("Overflow");
+  }
+  if (op == '+') {
+    return a + b;
+  }
+  if (op == '-') {
+    return a - b;
+  }
+  if (op == '*') {
+    return a * b;
+  }
+  if (op == '/') {
+    return a / b;
+  }
+  return mod(a, b);
+}
+
+long long computeString(std::string& str)
 {
   Queue< std::string > queue = Queue< std::string >();
 
@@ -43,21 +66,21 @@ int computeString(std::string& str)
   if (getPostfix(input, queue)) {
     return 1;
   }
-  Stack< int > stack = Stack< int >();
+  Stack< long long > stack = Stack< long long >();
 
   while (!queue.isEmpty()) {
     std::string chr = queue.drop();
     if (isNumber(chr)) {
-      stack.push(stoi(chr));
+      stack.push(std::stoll(chr));
     } else if (isOperation(chr)) {
-      int b = stack.drop();
-      int a = stack.drop();
-      stack.push(calcBinary(a, b, chr));
+      long long b = stack.drop();
+      long long a = stack.drop();
+      stack.push(calcBinary(a, b, chr[0]));
     } else {
       throw std::logic_error("Incorrect expression");
     }
   }
-  int res = 0;
+  long long res = 0;
   if (!stack.isEmpty()) {
     res = stack.drop();
     if (!stack.isEmpty()) {
