@@ -60,6 +60,17 @@ namespace details
       size++;
       sort();
     }
+    void become_node2(const Key &k, const Value &v, node_type *first_, node_type *second_)
+    {
+      key[0] = k;
+      value[0] = v;
+      first = first_;
+      second = second_;
+      third = nullptr;
+      fourth = nullptr;
+      parent = nullptr;
+      size = 1;
+    }
   private:
     void sort2()
     {
@@ -232,7 +243,7 @@ namespace dimkashelk
       {
         x->parent = item;
         y->parent = item;
-        item->become_node2(item->key[1], x, y);
+        item->become_node2(item->key[1], item->value[1], x, y);
         return item;
       }
     }
