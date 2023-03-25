@@ -54,5 +54,14 @@ void odintsov::Stack< T >::pop()
   }
   Node* oldTail = tail_;
   tail_ = tail_->prev;
+  if (!tail_) {
+    head_ = nullptr;
+  }
   delete oldTail;
+}
+
+template< typename T >
+bool odintsov::Stack< T >::empty() const
+{
+  return !tail_ || !head_
 }
