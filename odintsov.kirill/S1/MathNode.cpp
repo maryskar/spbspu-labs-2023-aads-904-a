@@ -20,7 +20,7 @@ odintsov::MathNode getMathNodeFromString(const std::string& str)
     return odintsov::MathNode(c);
   } catch (const std::invalid_argument& e) {
   }
-  return odintsov::MathNode(c);
+  return odintsov::MathNode(odintsov::Operator(c));
 }
 
 odintsov::MathNode getMathNodeFromStream(std::istream& in)
