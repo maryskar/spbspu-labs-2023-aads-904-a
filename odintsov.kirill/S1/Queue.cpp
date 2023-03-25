@@ -47,10 +47,7 @@ void odintsov::Queue< T >::pop()
 template< typename T >
 T& odintsov::Queue< T >::head()
 {
-  if (empty()) {
-    throw std::runtime_error("Attempt to get head of empty queue");
-  }
-  return head_->data_;
+  return const_cast< T& >(const_cast< const Queue< T >* >(this)->head());
 }
 
 template< typename T >

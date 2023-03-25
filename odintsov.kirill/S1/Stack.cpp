@@ -21,10 +21,7 @@ odintsov::Stack< T >::~Stack()
 template< typename T >
 T& odintsov::Stack< T >::tail()
 {
-  if (empty()) {
-    throw std::runtime_error("Attempt to get tail of empty stack");
-  }
-  return tail_->data;
+  return const_cast< T& >(const_cast< const Stack< T >* >(this)->tail());
 }
 
 template< typename T >
@@ -63,5 +60,5 @@ void odintsov::Stack< T >::pop()
 template< typename T >
 bool odintsov::Stack< T >::empty() const
 {
-  return !tail_ || !head_
+  return !tail_ || !head_;
 }
