@@ -71,6 +71,10 @@ namespace details
       parent = nullptr;
       size = 1;
     }
+    node_type *getLastChildren()
+    {
+      return (third)? third: (second)? second: first;
+    }
   private:
     void sort2()
     {
@@ -120,7 +124,7 @@ namespace dimkashelk
   public:
     class Iterator
     {
-      friend class TwoThreeTree< Key, Value, Compare >;
+    friend class TwoThreeTree< Key, Value, Compare >;
     public:
       const Key first;
       Value second;
@@ -142,7 +146,21 @@ namespace dimkashelk
         second(node_->value[0])
       {};
       void next()
-      {}
+      {
+        node_type *parent = node_->parent;
+        if (parent->size == 2 && parent->second == node_ || parent->size == 3 && parent->third)
+        {
+
+        }
+      }
+      node_type *goUp(node_type *node)
+      {
+        node_type *parent = node->parent;
+        while ((node != parent->first && node != parent->second && parent->size == 3) || (node != parent->first && parent))
+        {
+
+        }
+      }
     };
     TwoThreeTree():
       root_(nullptr),
