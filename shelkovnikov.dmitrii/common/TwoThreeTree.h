@@ -148,9 +148,9 @@ namespace dimkashelk
       void next()
       {
         node_type *parent = node_->parent;
-        if (parent->size == 2 && parent->second == node_ || parent->size == 3 && parent->third)
+        if (parent->getLastChildren() == node_)
         {
-
+          node_ = goUp(node_);
         }
       }
       node_type *goUp(node_type *node)
@@ -160,6 +160,14 @@ namespace dimkashelk
         {
 
         }
+      }
+      node_type *goDown(node_type *node)
+      {
+        while (node->first)
+        {
+          node = node->first;
+        }
+        return node;
       }
     };
     TwoThreeTree():
