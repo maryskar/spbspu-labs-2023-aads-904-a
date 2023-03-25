@@ -28,7 +28,7 @@ namespace details
       fourth(nullptr),
       parent(nullptr)
     {}
-    NodeOfTwoThreeTree(Key &k, Value &v, node_type *fi, node_type *s, node_type *t, node_type *fo, node_type *p):
+    NodeOfTwoThreeTree(const Key &k, const Value &v, node_type *fi, node_type *s, node_type *t, node_type *fo, node_type *p):
       key{k, Key(), Key()},
       value{v, Value(), Value()},
       size(1),
@@ -38,11 +38,11 @@ namespace details
       fourth(fo),
       parent(p)
     {}
-    bool is_leaf() const
+    bool isList() const
     {
       return (first == nullptr) && (second == nullptr) && (third == nullptr);
     }
-    bool find(Key &k)
+    bool find(const Key &k) const
     {
       for (unsigned i = 0; i < size; ++i)
       {
@@ -53,14 +53,14 @@ namespace details
       }
       return false;
     }
-    void insert(Key &k, Value &v)
+    void insert(const Key &k, const Value &v)
     {
       key[size] = k;
       value[size] = v;
       size++;
       sort();
     }
-    void become_node2(const Key &k, const Value &v, node_type *first_, node_type *second_)
+    void becomeNode2(const Key &k, const Value &v, node_type *first_, node_type *second_)
     {
       key[0] = k;
       value[0] = v;
@@ -160,7 +160,7 @@ namespace dimkashelk
       {
         return new node_type(k);
       }
-      if (p->is_leaf())
+      if (p->isList())
       {
         p->insert_to_node(k);
       }
@@ -243,7 +243,7 @@ namespace dimkashelk
       {
         x->parent = item;
         y->parent = item;
-        item->become_node2(item->key[1], item->value[1], x, y);
+        item->becomeNode2(item->key[1], item->value[1], x, y);
         return item;
       }
     }
