@@ -122,8 +122,8 @@ int main(int argc, char* argv[])
       MathSolver addToSolution;
       std::string exprStr;
       std::getline(*in, exprStr);
-      if (!in->good()) {
-        break;
+      if (!in) {
+        throw std::runtime_error("Input error");
       }
       if (exprStr.empty()) {
         continue;
