@@ -23,16 +23,6 @@ odintsov::MathNode getMathNodeFromString(const std::string& str)
   return odintsov::MathNode(odintsov::Operator(c));
 }
 
-odintsov::MathNode getMathNodeFromStream(std::istream& in)
-{
-  std::string data;
-  in >> data;
-  if (!in) {
-    throw std::runtime_error("Input error");
-  }
-  return getMathNodeFromString(data);
-}
-
 odintsov::MathNode::MathNode(double operand):
   tag(Tag::Operand),
   data{.operand = operand}
@@ -54,8 +44,4 @@ odintsov::MathNode::MathNode(char paren):
 
 odintsov::MathNode::MathNode(const std::string& str):
   MathNode(getMathNodeFromString(str))
-{}
-
-odintsov::MathNode::MathNode(std::istream& in):
-  MathNode(getMathNodeFromStream(in))
 {}
