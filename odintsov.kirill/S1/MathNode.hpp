@@ -21,7 +21,9 @@ namespace odintsov {
       char paren;
     } data;
 
-    MathNode(Tag& t, Data& d);
+    MathNode(double operand);
+    MathNode(const odintsov::Operator& oper);
+    MathNode(char paren);
     MathNode(const std::string& str);
     MathNode(std::istream& in);
   };

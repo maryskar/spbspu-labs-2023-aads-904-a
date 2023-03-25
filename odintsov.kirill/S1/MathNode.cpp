@@ -6,45 +6,21 @@
 
 #include "Operator.hpp"
 
-odintsov::MathNode getOperand(double d)
-{
-  odintsov::MathNode::Tag tag = odintsov::MathNode::Tag::Operand;
-  odintsov::MathNode::Data data{.operand = d};
-  return odintsov::MathNode(tag, data);
-}
-
-odintsov::MathNode getOperator(char c)
-{
-  odintsov::MathNode::Tag tag = odintsov::MathNode::Tag::Operator;
-  odintsov::MathNode::Data data{.oper = odintsov::Operator(c)};
-  return odintsov::MathNode(tag, data);
-}
-
-odintsov::MathNode getParen(char c)
-{
-  if (c != '(' && c != ')') {
-    throw std::invalid_argument("Incorrect parenthesis");
-  }
-  odintsov::MathNode::Tag tag = odintsov::MathNode::Tag::Paren;
-  odintsov::MathNode::Data data{.paren = c};
-  return odintsov::MathNode(tag, data);
-}
-
 odintsov::MathNode getMathNodeFromString(const std::string& str)
 {
   try {
-    return getOperand(stod(str));
+    return odintsov::MathNode(stod(str));
   } catch (const std::invalid_argument& e) {
   }
   if (str.size() != 1) {
-    throw std::invalid_argument("Unknown operator/operand");
+    throw std::invalid_argument("Incorrect operator/operand");
   }
   char c = str[0];
   try {
-    return getParen(c);
+    return odintsov::MathNode(c);
   } catch (const std::invalid_argument& e) {
   }
-  return getOperator(c);
+  return odintsov::MathNode(c);
 }
 
 odintsov::MathNode getMathNodeFromStream(std::istream& in)
@@ -57,10 +33,24 @@ odintsov::MathNode getMathNodeFromStream(std::istream& in)
   return getMathNodeFromString(data);
 }
 
-odintsov::MathNode::MathNode(Tag& t, Data& d):
-  tag(t),
-  data(d)
+odintsov::MathNode::MathNode(double operand):
+  tag(Tag::Operand),
+  data{.operand = operand}
 {}
+
+odintsov::MathNode::MathNode(const odintsov::Operator& oper):
+  tag(Tag::Operator),
+  data{.oper = oper}
+{}
+
+odintsov::MathNode::MathNode(char paren):
+  tag(Tag::Paren),
+  data{.paren = paren}
+{
+  if (paren != '(' && paren != ')') {
+    throw std::invalid_argument("Incorrect parenthesis");
+  }
+}
 
 odintsov::MathNode::MathNode(const std::string& str):
   MathNode(getMathNodeFromString(str))
