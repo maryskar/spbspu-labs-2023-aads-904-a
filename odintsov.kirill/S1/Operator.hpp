@@ -2,15 +2,15 @@
 #define OPERATOR_HPP
 
 namespace odintsov {
-  double add(double lhs, double rhs);
-  double subtract(double lhs, double rhs);
-  double multiply(double lhs, double rhs);
-  double divide(double lhs, double rhs);
-  double modulo(double lhs, double rhs);
+  long long add(long long lhs, long long rhs);
+  long long subtract(long long lhs, long long rhs);
+  long long multiply(long long lhs, long long rhs);
+  long long divide(long long lhs, long long rhs);
+  long long modulo(long long lhs, long long rhs);
 
   class Operator {
    public:
-    double (*const exec)(double, double);
+    long long (*const exec)(long long, long long);
     Operator(char o);
     bool operator>=(Operator& rhs) const;
 

@@ -9,7 +9,7 @@
 odintsov::MathNode getMathNodeFromString(const std::string& str)
 {
   try {
-    return odintsov::MathNode(stod(str));
+    return odintsov::MathNode(stoll(str));
   } catch (const std::invalid_argument& e) {
   }
   if (str.size() != 1) {
@@ -23,7 +23,7 @@ odintsov::MathNode getMathNodeFromString(const std::string& str)
   return odintsov::MathNode(odintsov::Operator(c));
 }
 
-odintsov::MathNode::MathNode(double operand):
+odintsov::MathNode::MathNode(long long operand):
   tag(Tag::Operand),
   data{.operand = operand}
 {}

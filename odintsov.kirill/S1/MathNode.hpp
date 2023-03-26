@@ -16,12 +16,12 @@ namespace odintsov {
     } tag;
 
     union Data {
-      double operand;
+      long long operand;
       odintsov::Operator oper;
       char paren;
     } data;
 
-    MathNode(double operand);
+    MathNode(long long operand);
     MathNode(const odintsov::Operator& oper);
     MathNode(char paren);
     MathNode(const std::string& str);

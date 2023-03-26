@@ -74,11 +74,11 @@ struct MathSolver {
     while (!result_.empty()) {
       odintsov::MathNode node = result_.head();
       if (node.tag == odintsov::MathNode::Operator) {
-        double rhs = solver.tail().data.operand;
+        long long rhs = solver.tail().data.operand;
         solver.pop();
-        double lhs = solver.tail().data.operand;
+        long long lhs = solver.tail().data.operand;
         solver.pop();
-        double res = node.data.oper.exec(lhs, rhs);
+        long long res = node.data.oper.exec(lhs, rhs);
         solver.push(odintsov::MathNode(res));
       } else {
         solver.push(result_.head());
@@ -116,7 +116,7 @@ int main(int argc, char* argv[])
     return 1;
   }
 
-  odintsov::Stack< double > results;
+  odintsov::Stack< long long > results;
   try {
     while (in->good()) {
       MathSolver addToSolution;
