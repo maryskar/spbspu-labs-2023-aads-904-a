@@ -104,8 +104,9 @@ struct MathSolver {
 int main(int argc, char* argv[])
 {
   std::istream* in = &std::cin;
+  std::ifstream inFile;
   if (argc == 2) {
-    std::ifstream inFile(argv[1]);
+    inFile = std::ifstream(argv[1]);
     if (!inFile.is_open()) {
       std::cerr << "Can't open file\n";
       return 1;
