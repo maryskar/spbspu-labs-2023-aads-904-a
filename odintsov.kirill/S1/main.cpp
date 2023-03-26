@@ -64,7 +64,7 @@ struct MathSolver {
     }
   }
 
-  double getResult()
+  long long getResult()
   {
     sendOperatorsOver();
     if (!opers_.empty()) {
@@ -88,7 +88,7 @@ struct MathSolver {
     if (solver.empty()) {
       throw std::runtime_error("Empty expression");
     }
-    double res = solver.tail().data.operand;
+    long long res = solver.tail().data.operand;
     solver.pop();
     if (!solver.empty()) {
       throw std::runtime_error("Syntax error");
