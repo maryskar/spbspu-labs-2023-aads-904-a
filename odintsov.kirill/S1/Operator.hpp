@@ -4,11 +4,12 @@
 namespace odintsov {
   class Operator {
    public:
-    long long (*const exec)(long long, long long);
     Operator(char o);
     bool operator>=(Operator& rhs) const;
+    long long exec(long long lhs, long long rhs) const;
 
    private:
+    long long (*exec_)(long long, long long);
     unsigned short priority_;
   };
 }

@@ -90,9 +90,14 @@ long long (*getOperatorFunction(char c))(long long, long long)
 }
 
 odintsov::Operator::Operator(char c):
-  exec(getOperatorFunction(c)),
+  exec_(getOperatorFunction(c)),
   priority_(getOperatorPriority(c))
 {}
+
+long long odintsov::Operator::exec(long long lhs, long long rhs) const
+{
+  return exec_(lhs, rhs);
+}
 
 bool odintsov::Operator::operator>=(odintsov::Operator& rhs) const
 {
