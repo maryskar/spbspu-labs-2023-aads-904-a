@@ -120,7 +120,6 @@ int main(int argc, char* argv[])
   odintsov::Stack< long long > results;
   try {
     while (in->good()) {
-      MathSolver addToSolution;
       std::string exprStr;
       std::getline(*in, exprStr);
       if (!in) {
@@ -130,6 +129,7 @@ int main(int argc, char* argv[])
         continue;
       }
       odintsov::StringSplitter splitter(exprStr);
+      MathSolver addToSolution;
       while (!splitter.empty()) {
         std::string nodeStr;
         splitter >> nodeStr;
