@@ -7,7 +7,7 @@
 
 namespace odintsov {
   struct MathNode {
-    enum Tag {
+    enum class Tag {
       Operand,
       Operator,
       Paren
