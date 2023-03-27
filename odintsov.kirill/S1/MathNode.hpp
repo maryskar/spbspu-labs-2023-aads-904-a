@@ -1,8 +1,6 @@
 #ifndef MATHNODE_HPP
 #define MATHNODE_HPP
 
-#include <initializer_list>
-#include <iosfwd>
 #include <string>
 
 #include "Operator.hpp"
