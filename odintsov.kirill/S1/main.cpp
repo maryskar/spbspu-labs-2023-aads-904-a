@@ -25,7 +25,7 @@ struct MathSolver {
     odintsov::Stack< odintsov::MathNode > solver;
     while (!result_.empty()) {
       odintsov::MathNode node = result_.head();
-      if (node.tag == odintsov::MathNode::Operator) {
+      if (node.tag == odintsov::MathNode::Tag::Operator) {
         long long rhs = solver.tail().data.operand;
         solver.pop();
         long long lhs = solver.tail().data.operand;
