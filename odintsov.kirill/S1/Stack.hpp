@@ -11,6 +11,7 @@ namespace odintsov {
     T& tail();
     const T& tail() const;
     void push(const T& data);
+    void push(T&& data);
     void pop();
     bool empty() const;
 
@@ -22,6 +23,8 @@ namespace odintsov {
 
     Node* head_;
     Node* tail_;
+
+    void push(Node* n);
   };
 }
 

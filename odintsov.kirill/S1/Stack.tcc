@@ -34,11 +34,22 @@ const T& odintsov::Stack< T >::tail() const
 template< typename T >
 void odintsov::Stack< T >::push(const T& data)
 {
-  Node* newNode = new Node{data, tail_};
+  push(new Node{data, tail_});
+}
+
+template< typename T >
+void odintsov::Stack< T >::push(T&& data)
+{
+  push(new Node{data, tail_});
+}
+
+template< typename T >
+void odintsov::Stack< T >::push(Node* n)
+{
   if (empty()) {
-    head_ = newNode;
+    head_ = n;
   }
-  tail_ = newNode;
+  tail_ = n;
 }
 
 template< typename T >

@@ -19,13 +19,24 @@ odintsov::Queue< T >::~Queue()
 template< typename T >
 void odintsov::Queue< T >::push(const T& data)
 {
-  Node* newNode = new Node{data, nullptr};
+  push(new Node{data, nullptr});
+}
+
+template< typename T >
+void odintsov::Queue< T >::push(T&& data)
+{
+  push(new Node{data, nullptr});
+}
+
+template< typename T >
+void odintsov::Queue< T >::push(Node* n)
+{
   if (empty()) {
-    head_ = newNode;
+    head_ = n;
   } else {
-    tail_->next = newNode;
+    tail_->next = n;
   }
-  tail_ = newNode;
+  tail_ = n;
 }
 
 template< typename T >
