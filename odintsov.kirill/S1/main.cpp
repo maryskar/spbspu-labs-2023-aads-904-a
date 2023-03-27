@@ -16,6 +16,42 @@ struct MathSolver {
     processOperator(node);
   }
 
+  long long getResult()
+  {
+    sendOperatorsOver();
+    if (!opers_.empty()) {
+      throw std::runtime_error("Syntax error");
+    }
+    odintsov::Stack< odintsov::MathNode > solver;
+    while (!result_.empty()) {
+      odintsov::MathNode node = result_.head();
+      if (node.tag == odintsov::MathNode::Operator) {
+        long long rhs = solver.tail().data.operand;
+        solver.pop();
+        long long lhs = solver.tail().data.operand;
+        solver.pop();
+        long long res = node.data.oper.exec(lhs, rhs);
+        solver.push(odintsov::MathNode(res));
+      } else {
+        solver.push(result_.head());
+      }
+      result_.pop();
+    }
+    if (solver.empty()) {
+      throw std::runtime_error("Empty expression");
+    }
+    long long res = solver.tail().data.operand;
+    solver.pop();
+    if (!solver.empty()) {
+      throw std::runtime_error("Syntax error");
+    }
+    return res;
+  }
+
+ private:
+  odintsov::Stack< odintsov::MathNode > opers_;
+  odintsov::Queue< odintsov::MathNode > result_;
+
   void processParen(odintsov::MathNode& paren)
   {
     if (paren.tag != odintsov::MathNode::Tag::Paren) {
@@ -63,42 +99,6 @@ struct MathSolver {
       opers_.pop();
     }
   }
-
-  long long getResult()
-  {
-    sendOperatorsOver();
-    if (!opers_.empty()) {
-      throw std::runtime_error("Syntax error");
-    }
-    odintsov::Stack< odintsov::MathNode > solver;
-    while (!result_.empty()) {
-      odintsov::MathNode node = result_.head();
-      if (node.tag == odintsov::MathNode::Operator) {
-        long long rhs = solver.tail().data.operand;
-        solver.pop();
-        long long lhs = solver.tail().data.operand;
-        solver.pop();
-        long long res = node.data.oper.exec(lhs, rhs);
-        solver.push(odintsov::MathNode(res));
-      } else {
-        solver.push(result_.head());
-      }
-      result_.pop();
-    }
-    if (solver.empty()) {
-      throw std::runtime_error("Empty expression");
-    }
-    long long res = solver.tail().data.operand;
-    solver.pop();
-    if (!solver.empty()) {
-      throw std::runtime_error("Syntax error");
-    }
-    return res;
-  }
-
- private:
-  odintsov::Stack< odintsov::MathNode > opers_;
-  odintsov::Queue< odintsov::MathNode > result_;
 };
 
 int main(int argc, char* argv[])
