@@ -4,6 +4,62 @@
 #include <limits>
 #include <stdexcept>
 
+constexpr long long minLL = std::numeric_limits< long long >::min();
+constexpr long long maxLL = std::numeric_limits< long long >::max();
+
+long long add(long long lhs, long long rhs)
+{
+  if (rhs > 0 && lhs > maxLL - rhs) {
+    throw std::overflow_error("Addition overflow");
+  }
+  if (rhs < 0 && lhs < minLL - rhs) {
+    throw std::underflow_error("Addition underflow");
+  }
+  return lhs + rhs;
+}
+
+long long subtract(long long lhs, long long rhs)
+{
+  if (rhs < 0 && lhs > maxLL + rhs) {
+    throw std::overflow_error("Subtraction overflow");
+  }
+  if (rhs > 0 && lhs < minLL + rhs) {
+    throw std::underflow_error("Subtraction underflow");
+  }
+  return lhs - rhs;
+}
+
+long long multiply(long long lhs, long long rhs)
+{
+  if ((rhs < 0 && lhs < maxLL / rhs) || (rhs > 0 && lhs > maxLL / rhs)) {
+    throw std::overflow_error("Multiplication overflow");
+  }
+  if ((rhs > 0 && lhs < minLL / rhs) || (rhs < 0 && lhs > maxLL / rhs)) {
+    throw std::underflow_error("Multiplication underflow");
+  }
+  return lhs * rhs;
+}
+
+long long divide(long long lhs, long long rhs)
+{
+  if (rhs == 0) {
+    throw std::invalid_argument("Division by 0");
+  }
+  if (rhs == -1 && lhs < maxLL * rhs) {
+    throw std::overflow_error("Division overflow");
+  }
+  return lhs / rhs;
+}
+
+long long modulo(long long lhs, long long rhs)
+{
+  long long res = lhs % rhs;
+  if (res < 0) {
+    res += rhs;
+  }
+  return res;
+}
+
 unsigned short getOperatorPriority(char c)
 {
   if (c == '+' || c == '-') {
@@ -19,15 +75,15 @@ long long (*getOperatorFunction(char c))(long long, long long)
 {
   switch (c) {
   case '+':
-    return &odintsov::add;
+    return &add;
   case '-':
-    return &odintsov::subtract;
+    return &subtract;
   case '*':
-    return &odintsov::multiply;
+    return &multiply;
   case '/':
-    return &odintsov::divide;
+    return &divide;
   case '%':
-    return &odintsov::modulo;
+    return &modulo;
   default:
     throw std::invalid_argument("Undefined operator");
   }
@@ -41,60 +97,4 @@ odintsov::Operator::Operator(char c):
 bool odintsov::Operator::operator>=(odintsov::Operator& rhs) const
 {
   return priority_ >= rhs.priority_;
-}
-
-constexpr long long minLL = std::numeric_limits< long long >::min();
-constexpr long long maxLL = std::numeric_limits< long long >::max();
-
-long long odintsov::add(long long lhs, long long rhs)
-{
-  if (rhs > 0 && lhs > maxLL - rhs) {
-    throw std::overflow_error("Addition overflow");
-  }
-  if (rhs < 0 && lhs < minLL - rhs) {
-    throw std::underflow_error("Addition underflow");
-  }
-  return lhs + rhs;
-}
-
-long long odintsov::subtract(long long lhs, long long rhs)
-{
-  if (rhs < 0 && lhs > maxLL + rhs) {
-    throw std::overflow_error("Subtraction overflow");
-  }
-  if (rhs > 0 && lhs < minLL + rhs) {
-    throw std::underflow_error("Subtraction underflow");
-  }
-  return lhs - rhs;
-}
-
-long long odintsov::multiply(long long lhs, long long rhs)
-{
-  if ((rhs < 0 && lhs < maxLL / rhs) || (rhs > 0 && lhs > maxLL / rhs)) {
-    throw std::overflow_error("Multiplication overflow");
-  }
-  if ((rhs > 0 && lhs < minLL / rhs) || (rhs < 0 && lhs > maxLL / rhs)) {
-    throw std::underflow_error("Multiplication underflow");
-  }
-  return lhs * rhs;
-}
-
-long long odintsov::divide(long long lhs, long long rhs)
-{
-  if (rhs == 0) {
-    throw std::invalid_argument("Division by 0");
-  }
-  if (rhs == -1 && lhs < maxLL * rhs) {
-    throw std::overflow_error("Division overflow");
-  }
-  return lhs / rhs;
-}
-
-long long odintsov::modulo(long long lhs, long long rhs)
-{
-  long long res = lhs % rhs;
-  if (res < 0) {
-    res += rhs;
-  }
-  return res;
 }
