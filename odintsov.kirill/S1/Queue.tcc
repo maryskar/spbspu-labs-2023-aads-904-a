@@ -1,7 +1,5 @@
 #include <stdexcept>
 
-#include "Queue.hpp"
-
 template< typename T >
 odintsov::Queue< T >::Queue():
   head_(nullptr),

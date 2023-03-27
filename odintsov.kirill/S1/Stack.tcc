@@ -1,5 +1,3 @@
-#include "Stack.hpp"
-
 #include <stdexcept>
 
 template< typename T >
