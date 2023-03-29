@@ -4,6 +4,7 @@
 #include <stdexcept>
 
 #include "MathNode.hpp"
+#include "Operator.hpp"
 #include "Queue.hpp"
 #include "Stack.hpp"
 #include "StringSplitter.hpp"
@@ -65,7 +66,7 @@ struct MathSolver {
         throw std::runtime_error("Parenthesis error");
       }
       odintsov::MathNode openParen = opers_.tail();
-      if (openParen.isDataType(odintsov::MathNode::Tag::Paren) || openParen.getParen() != '(') {
+      if (!openParen.isDataType(odintsov::MathNode::Tag::Paren) || openParen.getParen() != '(') {
         throw std::runtime_error("Parenthesis error");
       }
       opers_.pop();
@@ -85,18 +86,29 @@ struct MathSolver {
     if (!oper.isDataType(odintsov::MathNode::Tag::Operator)) {
       return;
     }
-    while (!opers_.empty() && opers_.tail().isDataType(odintsov::MathNode::Tag::Operator) &&
-           opers_.tail().getOperator() >= oper.getOperator()) {
-      result_.push(opers_.tail());
-      opers_.pop();
-    }
+    const odintsov::Operator& operPriority = oper.getOperator();
+    sendOperatorsOver([&operPriority](const odintsov::Operator& stackOper) {
+      return stackOper >= operPriority;
+    });
     opers_.push(oper);
   }
 
   void sendOperatorsOver()
   {
-    while (!opers_.empty() && opers_.tail().isDataType(odintsov::MathNode::Tag::Operator)) {
-      result_.push(opers_.tail());
+    sendOperatorsOver([](const odintsov::Operator&) {
+      return true;
+    });
+  }
+
+  template< typename F >
+  void sendOperatorsOver(F confirmSend)
+  {
+    while (!opers_.empty()) {
+      odintsov::MathNode oper = opers_.tail();
+      if (!(oper.isDataType(odintsov::MathNode::Tag::Operator) && confirmSend(oper.getOperator()))) {
+        break;
+      }
+      result_.push(oper);
       opers_.pop();
     }
   }

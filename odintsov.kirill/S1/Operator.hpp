@@ -5,7 +5,7 @@ namespace odintsov {
   class Operator {
    public:
     Operator(char o);
-    bool operator>=(Operator& rhs) const;
+    bool operator>=(const Operator& rhs) const;
     long long exec(long long lhs, long long rhs) const;
 
    private:

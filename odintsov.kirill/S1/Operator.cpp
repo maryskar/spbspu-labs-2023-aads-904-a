@@ -99,7 +99,7 @@ long long odintsov::Operator::exec(long long lhs, long long rhs) const
   return exec_(lhs, rhs);
 }
 
-bool odintsov::Operator::operator>=(odintsov::Operator& rhs) const
+bool odintsov::Operator::operator>=(const odintsov::Operator& rhs) const
 {
   return priority_ >= rhs.priority_;
 }
