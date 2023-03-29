@@ -25,12 +25,12 @@ struct MathSolver {
     odintsov::Stack< odintsov::MathNode > solver;
     while (!result_.empty()) {
       odintsov::MathNode node = result_.head();
-      if (node.tag == odintsov::MathNode::Tag::Operator) {
-        long long rhs = solver.tail().data.operand;
+      if (node.isDataType(odintsov::MathNode::Tag::Operator)) {
+        long long rhs = solver.tail().getOperand();
         solver.pop();
-        long long lhs = solver.tail().data.operand;
+        long long lhs = solver.tail().getOperand();
         solver.pop();
-        long long res = node.data.oper.exec(lhs, rhs);
+        long long res = node.getOperator().exec(lhs, rhs);
         solver.push(odintsov::MathNode(res));
       } else {
         solver.push(result_.head());
@@ -40,7 +40,7 @@ struct MathSolver {
     if (solver.empty()) {
       throw std::runtime_error("Empty expression");
     }
-    long long res = solver.tail().data.operand;
+    long long res = solver.tail().getOperand();
     solver.pop();
     if (!solver.empty()) {
       throw std::runtime_error("Syntax error");
@@ -54,10 +54,10 @@ struct MathSolver {
 
   void processParen(odintsov::MathNode& paren)
   {
-    if (paren.tag != odintsov::MathNode::Tag::Paren) {
+    if (!paren.isDataType(odintsov::MathNode::Tag::Paren)) {
       return;
     }
-    if (paren.data.paren == '(') {
+    if (paren.getParen() == '(') {
       opers_.push(paren);
     } else {
       sendOperatorsOver();
@@ -65,7 +65,7 @@ struct MathSolver {
         throw std::runtime_error("Parenthesis error");
       }
       odintsov::MathNode openParen = opers_.tail();
-      if (openParen.tag != paren.tag || openParen.data.paren != '(') {
+      if (openParen.isDataType(odintsov::MathNode::Tag::Paren) || openParen.getParen() != '(') {
         throw std::runtime_error("Parenthesis error");
       }
       opers_.pop();
@@ -74,7 +74,7 @@ struct MathSolver {
 
   void processOperand(odintsov::MathNode& operand)
   {
-    if (operand.tag != odintsov::MathNode::Tag::Operand) {
+    if (!operand.isDataType(odintsov::MathNode::Tag::Operand)) {
       return;
     }
     result_.push(operand);
@@ -82,10 +82,11 @@ struct MathSolver {
 
   void processOperator(odintsov::MathNode& oper)
   {
-    if (oper.tag != odintsov::MathNode::Tag::Operator) {
+    if (!oper.isDataType(odintsov::MathNode::Tag::Operator)) {
       return;
     }
-    while (!opers_.empty() && opers_.tail().tag == oper.tag && opers_.tail().data.oper >= oper.data.oper) {
+    while (!opers_.empty() && opers_.tail().isDataType(odintsov::MathNode::Tag::Operator) &&
+           opers_.tail().getOperator() >= oper.getOperator()) {
       result_.push(opers_.tail());
       opers_.pop();
     }
@@ -94,7 +95,7 @@ struct MathSolver {
 
   void sendOperatorsOver()
   {
-    while (!opers_.empty() && opers_.tail().tag == odintsov::MathNode::Tag::Operator) {
+    while (!opers_.empty() && opers_.tail().isDataType(odintsov::MathNode::Tag::Operator)) {
       result_.push(opers_.tail());
       opers_.pop();
     }

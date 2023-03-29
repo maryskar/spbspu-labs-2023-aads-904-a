@@ -6,23 +6,34 @@
 #include "Operator.hpp"
 
 namespace odintsov {
-  struct MathNode {
+  class MathNode {
+   public:
     enum class Tag {
       Operand,
       Operator,
       Paren
-    } tag;
-
-    union Data {
-      long long operand;
-      odintsov::Operator oper;
-      char paren;
-    } data;
+    };
 
     MathNode(long long operand);
     MathNode(const odintsov::Operator& oper);
     MathNode(char paren);
     MathNode(const std::string& str);
+
+    bool isDataType(Tag tag) const;
+
+    long long getOperand() const;
+    odintsov::Operator& getOperator();
+    const odintsov::Operator& getOperator() const;
+    char getParen() const;
+
+   private:
+    Tag tag_;
+
+    union Data {
+      long long operand;
+      odintsov::Operator oper;
+      char paren;
+    } data_;
   };
 }
 
