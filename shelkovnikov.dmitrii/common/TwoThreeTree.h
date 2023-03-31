@@ -26,7 +26,19 @@ namespace details
       second(nullptr),
       third(nullptr),
       fourth(nullptr),
-      parent(nullptr)
+      parent(nullptr),
+      compare_(Compare{})
+    {}
+    NodeOfTwoThreeTree(const Key &k, const Value &v):
+      key{k, Key(), Key()},
+      value{v, Value(), Value()},
+      size(0),
+      first(nullptr),
+      second(nullptr),
+      third(nullptr),
+      fourth(nullptr),
+      parent(nullptr),
+      compare_(Compare{})
     {}
     NodeOfTwoThreeTree(const Key &k, const Value &v, node_type *fi, node_type *s, node_type *t, node_type *fo, node_type *p):
       key{k, Key(), Key()},
@@ -36,7 +48,8 @@ namespace details
       second(s),
       third(t),
       fourth(fo),
-      parent(p)
+      parent(p),
+      compare_(Compare{})
     {}
     bool isList() const
     {
@@ -76,9 +89,10 @@ namespace details
       return (third)? third: (second)? second: first;
     }
   private:
+    Compare compare_;
     void sort2()
     {
-      if (!Compare(key[0], key[1]))
+      if (!compare_(key[0], key[1]))
       {
         std::swap(key[0], key[1]);
         std::swap(value[0], value[1]);
@@ -86,17 +100,17 @@ namespace details
     }
     void sort3()
     {
-      if (!Compare(key[0], key[1]))
+      if (!compare_(key[0], key[1]))
       {
         std::swap(key[0], key[1]);
         std::swap(value[0], value[1]);
       }
-      if (!Compare(key[0], key[2]))
+      if (!compare_(key[0], key[2]))
       {
         std::swap(key[0], key[2]);
         std::swap(value[0], value[2]);
       }
-      if (!Compare(key[1], key[2]))
+      if (!compare_(key[1], key[2]))
       {
         std::swap(key[1], key[2]);
         std::swap(value[1], value[2]);
@@ -126,8 +140,14 @@ namespace dimkashelk
     {
     friend class TwoThreeTree< Key, Value, Compare >;
     public:
-      const Key first;
+      Key first;
       Value second;
+      explicit Iterator(node_type *node):
+        node_(goDown(node)),
+        prev_(nullptr),
+        first(node->key[0]),
+        second(node->value[0])
+      {};
       Iterator &operator++()
       {
         next();
@@ -140,32 +160,83 @@ namespace dimkashelk
       }
     private:
       node_type *node_;
-      explicit Iterator(const node_type *node):
-        node_(node),
-        first(node_->keys[0]),
-        second(node_->value[0])
-      {};
+      node_type *prev_;
       void next()
       {
-        node_type *parent = node_->parent;
-        if (parent->getLastChildren() == node_)
+        if (node_->getLastChildren() == nullptr)
         {
-          node_ = goUp(node_);
+          if (node_->size == 1)
+          {
+            node_type *new_node = goUp(node_);
+            if (new_node->parent == nullptr)
+            {
+              throw std::runtime_error("End of tree");
+            }
+            node_ = new_node->parent;
+            prev_ = new_node;
+            if (prev_ == node_->first)
+            {
+              set(0);
+            }
+            else if (prev_ == node_->second && node_->size == 2)
+            {
+              set(1);
+            }
+          }
+          else
+          {
+            if (first == node_->key[1])
+            {
+              prev_ = goUp(node_);
+              node_ = prev_->parent;
+              if (node_ == nullptr)
+              {
+                throw std::runtime_error("No parent");
+              }
+              if (node_->first == prev_)
+              {
+                set(0);
+              }
+              else
+              {
+                set(1);
+              }
+            }
+            else
+            {
+              set(1);
+            }
+          }
+        }
+        else
+        {
+          if (node_->first == prev_)
+          {
+            node_ = goDown(node_->second);
+          }
+          else if (node_->second == prev_ && node_->size == 2)
+          {
+            node_ = goDown(node_->third);
+          }
+          prev_ = node_->parent;
+          set(0);
         }
       }
       node_type *goUp(node_type *node)
       {
+        // правильная версия!!!!!!!!!!!!!!!! НЕ ТРОГАЙ!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // родитель возвращаемого - результат
         node_type *parent = node->parent;
         if (parent->size == 1)
         {
-          return parent;
+          return node;
         }
         while (parent && parent->getLastChildren() == node)
         {
           node = parent;
           parent = parent->parent;
         }
-        return parent;
+        return node;
       }
       node_type *goDown(node_type *node)
       {
@@ -175,26 +246,35 @@ namespace dimkashelk
         }
         return node;
       }
+      void set(unsigned ind)
+      {
+        first = node_->key[ind];
+        second = node_->value[ind];
+      }
     };
     TwoThreeTree():
       root_(nullptr),
       compare_(Compare())
     {}
-    void insert(Key &k, Value &v) {
+    void insert(const Key &k, const Value &v) {
       root_ = insert(root_, k, v);
+    }
+    Iterator begin()
+    {
+      return Iterator(root_);
     }
   private:
     node_type *root_;
     Compare compare_;
-    node_type *insert(node_type *p, Key &k, Value &v)
+    node_type *insert(node_type *p, const Key &k, const Value &v)
     {
       if (!p)
       {
-        return new node_type(k);
+        return new node_type(k, v);
       }
       if (p->isList())
       {
-        p->insert_to_node(k);
+        p->insert(k, v);
       }
       else if (compare_(k, p->key[0]))
       {
@@ -216,8 +296,8 @@ namespace dimkashelk
       {
         return item;
       }
-      auto *x = new node_type(item->key[0], item->first, item->second, nullptr, nullptr, item->parent);
-      auto *y = new node_type(item->key[2], item->third, item->fourth, nullptr, nullptr, item->parent);
+      auto *x = new node_type(item->key[0], item->value[0], item->first, item->second, nullptr, nullptr, item->parent);
+      auto *y = new node_type(item->key[2], item->value[2], item->third, item->fourth, nullptr, nullptr, item->parent);
       if (x->first)
       {
         x->first->parent = x;
@@ -236,7 +316,7 @@ namespace dimkashelk
       }
       if (item->parent)
       {
-        item->parent->insert_to_node(item->key[1]);
+        item->parent->insert(item->key[1], item->key[2]);
         if (item->parent->first == item)
         {
           item->parent->first = nullptr;
