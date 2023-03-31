@@ -20,7 +20,7 @@ namespace details
     node_type *parent;
     NodeOfTwoThreeTree():
       key{Key(), Key(), Key()},
-      Value{Value(), Value(), Value()},
+      value{Value(), Value(), Value()},
       size(0),
       first(nullptr),
       second(nullptr),
