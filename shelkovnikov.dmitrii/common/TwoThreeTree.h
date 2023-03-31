@@ -143,10 +143,10 @@ namespace dimkashelk
       Key first;
       Value second;
       explicit Iterator(node_type *node):
-        node_(goDown(node)),
-        prev_(nullptr),
-        first(node->key[0]),
-        second(node->value[0])
+        first(node_->key[0]),
+        second(node_->value[0]),
+        node_(node),
+        prev_(nullptr)
       {};
       Iterator &operator++()
       {
@@ -238,7 +238,7 @@ namespace dimkashelk
         }
         return node;
       }
-      node_type *goDown(node_type *node)
+      static node_type *goDown(node_type *node)
       {
         while (node->first)
         {
