@@ -3,19 +3,15 @@
 
 int getPriority(char operation)
 {
-  switch (operation)
-  {
-    case '(':
-      return 0;
-    case ')':
+    if(operation == '+' || operation == '-')
+    {
       return 1;
-    case '+': case '-':
+    }
+    if(operation == '*' || operation == '/' || operation == '%')
+    {
       return 2;
-    case '*': case '/':
-      return 3;
-    default:
-      throw std::invalid_argument("error");
-  }
+    }
+  throw std::invalid_argument("error");
 }
 
 template< typename T >

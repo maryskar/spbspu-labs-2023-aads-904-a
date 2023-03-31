@@ -1,5 +1,6 @@
 #ifndef QUEUE_H
 #define QUEUE_H
+#include "node.h"
 
 template< typename T >
 class Queue
@@ -7,9 +8,12 @@ class Queue
 public:
   Queue();
   ~Queue();
-  void push(T rhs);
-  T drop;
+  void push(const T & rhs);
+  void pop();
   bool isEmpty();
+private:
+  ListNode< T > * top_;
+  ListNode< T > * last_;
 };
 
 #endif
