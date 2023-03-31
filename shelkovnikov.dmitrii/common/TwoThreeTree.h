@@ -261,7 +261,7 @@ namespace dimkashelk
     }
     Iterator begin()
     {
-      return Iterator(root_);
+      return Iterator(Iterator::goDown(root_));
     }
   private:
     node_type *root_;
