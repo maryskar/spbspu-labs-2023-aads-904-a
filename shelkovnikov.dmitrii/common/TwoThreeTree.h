@@ -227,10 +227,6 @@ namespace dimkashelk
         // правильная версия!!!!!!!!!!!!!!!! НЕ ТРОГАЙ!!!!!!!!!!!!!!!!!!!!!!!!!!
         // родитель возвращаемого - результат
         node_type *parent = node->parent;
-        if (parent->size == 1)
-        {
-          return node;
-        }
         while (parent && parent->getLastChildren() == node)
         {
           node = parent;
