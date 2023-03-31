@@ -143,8 +143,8 @@ namespace dimkashelk
       Key first;
       Value second;
       explicit Iterator(node_type *node):
-        first(node_->key[0]),
-        second(node_->value[0]),
+        first(node->key[0]),
+        second(node->value[0]),
         node_(node),
         prev_(nullptr)
       {};
