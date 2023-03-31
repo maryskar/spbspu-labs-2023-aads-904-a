@@ -40,3 +40,9 @@ bool Stack< T >::isEmpty()
 {
   return top_;
 }
+
+template< typename T >
+T Stack< T >::drop()
+{
+  return top_->data_;
+}

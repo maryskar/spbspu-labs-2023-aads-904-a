@@ -11,6 +11,7 @@ public:
   void push(const T & rhs);
   void pop();
   bool isEmpty();
+  T drop();
 private:
   ListNode< T > * top_;
 };
