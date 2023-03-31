@@ -32,7 +32,7 @@ namespace details
     NodeOfTwoThreeTree(const Key &k, const Value &v):
       key{k, Key(), Key()},
       value{v, Value(), Value()},
-      size(0),
+      size(1),
       first(nullptr),
       second(nullptr),
       third(nullptr),
