@@ -119,6 +119,7 @@ namespace dimkashelk
   class TwoThreeTree
   {
   using node_type = details::NodeOfTwoThreeTree< Key, Value, Compare >;
+  using two_three_tree_type = TwoThreeTree< Key, Value, Compare >;
   public:
     class Iterator
     {
@@ -258,17 +259,23 @@ namespace dimkashelk
       root_(nullptr),
       compare_(Compare())
     {}
-    TwoThreeTree(const TwoThreeTree< Key, Value, Compare > &tree)
+    TwoThreeTree(const two_three_tree_type &tree)
     {
       if (std::addressof(tree) == this)
       {
         return;
       }
       free(root_);
-      for (auto iter = tree.begin(); iter != tree.end(); iter++)
+      copy(tree);
+    }
+    two_three_tree_type &operator=(const two_three_tree_type &tree)
+    {
+      if (std::addressof(tree) == this)
       {
-        insert(*iter, iter.value);
+        return *this;
       }
+      free();
+      copy(tree);
     }
     ~TwoThreeTree()
     {
@@ -449,6 +456,13 @@ namespace dimkashelk
       }
       delete node;
       node = nullptr;
+    }
+    void copy(const two_three_tree_type &tree)
+    {
+      for (auto iter = tree.begin(); iter != tree.end(); iter++)
+      {
+        insert(*iter, iter.value);
+      }
     }
   };
 }

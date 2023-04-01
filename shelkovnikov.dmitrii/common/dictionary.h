@@ -27,21 +27,7 @@ namespace dimkashelk
       {
         return *this;
       }
-      list_.free();
-      compare_ = other.compare_;
-      if (other.list_.begin() == other.list_.end())
-      {
-        return *this;
-      }
-      auto begin = other.list_.begin();
-      auto end = other.list_.end();
-      list_.insert(*begin, begin.value);
-      begin++;
-      while (begin != end)
-      {
-        list_.insert(*begin, begin.value);
-        begin++;
-      }
+      list_ = other.list_;
       return *this;
     }
     void push(const Key &k, const Value &v)
