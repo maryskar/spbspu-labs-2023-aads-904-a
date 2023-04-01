@@ -84,7 +84,7 @@ namespace dimkashelk
       auto iter_second_end = second.list_.end();
       while (iter_first != iter_first_end && iter_second != iter_second_end)
       {
-        while (iter_second != iter_second_end && Compare{}((*iter_first).first, (*iter_second).first))
+        while (iter_second != iter_second_end && Compare{}(iter_first.first, iter_second.first))
         {
           iter_second++;
         }
@@ -92,17 +92,17 @@ namespace dimkashelk
         {
           break;
         }
-        if ((*iter_first).first != (*iter_second).first)
+        if (iter_first.first != iter_second.first)
         {
-          Key key = (*iter_first).first;
-          Value value = (*iter_first).second;
+          Key key = iter_first.first;
+          Value value = iter_first.second;
           new_dict.push(key, value);
         }
         iter_first++;
       }
       while (iter_first != iter_first_end)
       {
-        new_dict.push((*iter_first).first, (*iter_first).second);
+        new_dict.push(iter_first.first, iter_first.second);
         iter_first++;
       }
       return new_dict;
@@ -119,7 +119,7 @@ namespace dimkashelk
         auto res = std::find_if(first.list_.begin(), first.list_.end(), comp);
         if (res != second.list_.end())
         {
-          result.push((*res).first, (*res).second);
+          result.push(res.first, res.second);
         }
       }
       return result;
@@ -131,8 +131,8 @@ namespace dimkashelk
       auto iter_second_end = second.list_.end();
       while (iter_second != iter_second_end)
       {
-        Key key = (*iter_second).first;
-        Value value = (*iter_second).second;
+        Key key = iter_second.first;
+        Value value = iter_second.second;
         new_dict.push(key, value);
         iter_second++;
       }
