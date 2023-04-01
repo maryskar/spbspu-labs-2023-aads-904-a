@@ -362,6 +362,29 @@ namespace dimkashelk
         return item;
       }
     }
+    node_type *search(node_type *node, const Key &k)
+    {
+      if (!node)
+      {
+        return nullptr;
+      }
+      if (node->contains(k))
+      {
+        return node;
+      }
+      else if (compare_(k < node->key[0]))
+      {
+        return search(node->first, k);
+      }
+      else if ((node->size == 2) && (compare_(k < node->key[1])) || (node->size == 1))
+      {
+        return search(node->second, k);
+      }
+      else if (node->size == 2)
+      {
+        return search(node->third, k);
+      }
+    }
     void free(node_type *node)
     {
       if (node->getLastChildren() == nullptr)
