@@ -10,8 +10,8 @@ class Queue
     Queue();
     ~Queue();
     void push(const T& value);
-    void popOutOfTheQueue();
-    T& getInQueue();
+    void pop();
+    T& gete();
     bool isEmpty() const;
   private:
     List< T >* begin_;
