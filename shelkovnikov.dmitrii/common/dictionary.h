@@ -44,43 +44,13 @@ namespace dimkashelk
       }
       return *this;
     }
-    void push(const Key &k, const Value &value)
+    void push(const Key &k, const Value &v)
     {
-      auto comp = [&](const auto &item)
-      {
-        return compare_(item.first, k) || item.first == k;
-      };
-      auto it = std::find_if(list_.begin(), list_.end(), comp);
-      if (it == list_.end())
-      {
-        list_.pushBack(std::pair< Key, Value >(k, value));
-      }
-      else if ((*it).first == k)
-      {
-        (*it).second = value;
-      }
-      else if (it == list_.begin())
-      {
-        list_.pushFront(std::pair< Key, Value >(k, value));
-      }
-      else
-      {
-        it--;
-        list_.insertAfter(it, std::pair< Key, Value >(k, value));
-      }
+      list_.insert(k, v);
     }
     Value &get(const Key &k)
     {
-      auto comp = [&](const auto &item)
-      {
-        return item.first == k;
-      };
-      auto it = std::find_if(list_.begin(), list_.end(), comp);
-      if (it != list_.end())
-      {
-        return (*it).second;
-      }
-      throw std::runtime_error("Nothing to return");
+      return list_.get(k);
     }
     bool empty()
     {
@@ -94,10 +64,10 @@ namespace dimkashelk
       }
       auto it = dict.list_.begin();
       auto end = dict.list_.end();
-      out << (*it).first << " " << (*it).second;
+      out << it.first << " " << it.second;
       it++;
       for (; it != end; it++) {
-        out << " " << (*it).first << " " << (*it).second;
+        out << " " << it.first << " " << it.second;
       }
       return out;
     }
