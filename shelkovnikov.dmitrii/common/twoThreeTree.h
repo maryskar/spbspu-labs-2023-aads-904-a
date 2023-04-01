@@ -143,7 +143,8 @@ namespace dimkashelk
             node_type *new_node = goUp(node_);
             if (new_node->parent == nullptr)
             {
-              throw std::runtime_error("End of tree");
+              node_ = nullptr;
+              return;
             }
             node_ = new_node->parent;
             prev_ = new_node;
@@ -164,7 +165,7 @@ namespace dimkashelk
               node_ = prev_->parent;
               if (node_ == nullptr)
               {
-                throw std::runtime_error("No parent");
+                return;
               }
               if (node_->first == prev_)
               {
