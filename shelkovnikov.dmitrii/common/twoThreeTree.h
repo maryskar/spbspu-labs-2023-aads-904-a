@@ -142,7 +142,7 @@ namespace dimkashelk
       }
       const Key &operator*() const
       {
-        return first;
+        return key;
       }
       bool operator==(const Iterator &other) const
       {
@@ -153,17 +153,17 @@ namespace dimkashelk
         return node_ != other.node_;
       }
     private:
-      Key first;
+      Key key;
       node_type *node_;
       node_type *prev_;
       Iterator():
-        first(Key()),
+        key(Key()),
         value(Value()),
         node_(nullptr),
         prev_(nullptr)
       {};
       explicit Iterator(node_type *node):
-        first(node->key[0]),
+        key(node->key[0]),
         value(node->value[0]),
         node_(node),
         prev_(nullptr)
@@ -193,7 +193,7 @@ namespace dimkashelk
           }
           else
           {
-            if (first == node_->key[1])
+            if (key == node_->key[1])
             {
               prev_ = goUp(node_);
               node_ = prev_->parent;
@@ -250,7 +250,7 @@ namespace dimkashelk
       }
       void set(unsigned ind)
       {
-        first = node_->key[ind];
+        key = node_->key[ind];
         value = node_->value[ind];
       }
     };

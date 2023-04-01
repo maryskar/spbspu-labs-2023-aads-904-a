@@ -35,11 +35,11 @@ namespace dimkashelk
       }
       auto begin = other.list_.begin();
       auto end = other.list_.end();
-      list_.insert(begin.first, begin.value);
+      list_.insert(*begin, begin.value);
       begin++;
       while (begin != end)
       {
-        list_.insert(begin.first, begin.value);
+        list_.insert(*begin, begin.value);
         begin++;
       }
       return *this;
@@ -64,10 +64,10 @@ namespace dimkashelk
       }
       auto it = dict.list_.begin();
       auto end = dict.list_.end();
-      out << it.first << " " << it.value;
+      out << *it << " " << it.value;
       it++;
       for (; it != end; it++) {
-        out << " " << it.first << " " << it.value;
+        out << " " << *it << " " << it.value;
       }
       return out;
     }
@@ -84,7 +84,7 @@ namespace dimkashelk
       auto iter_second_end = second.list_.end();
       while (iter_first != iter_first_end && iter_second != iter_second_end)
       {
-        while (iter_second != iter_second_end && Compare{}(iter_first.first, iter_second.first))
+        while (iter_second != iter_second_end && Compare{}(*iter_first, *iter_second))
         {
           iter_second++;
         }
@@ -92,9 +92,9 @@ namespace dimkashelk
         {
           break;
         }
-        if (iter_first.first != iter_second.first)
+        if (*iter_first != *iter_second)
         {
-          Key key = iter_first.first;
+          Key key = *iter_first;
           Value value = iter_first.value;
           new_dict.push(key, value);
         }
@@ -102,7 +102,7 @@ namespace dimkashelk
       }
       while (iter_first != iter_first_end)
       {
-        new_dict.push(iter_first.first, iter_first.value);
+        new_dict.push(*iter_first, iter_first.value);
         iter_first++;
       }
       return new_dict;
@@ -114,12 +114,12 @@ namespace dimkashelk
       {
         auto comp = [&](const auto &item)
         {
-          return item == it_first.first;
+          return item == *it_first;
         };
         auto res = std::find_if(first.list_.begin(), first.list_.end(), comp);
         if (res != second.list_.end())
         {
-          result.push(res.first, res.value);
+          result.push(*res, res.value);
         }
       }
       return result;
@@ -131,7 +131,7 @@ namespace dimkashelk
       auto iter_second_end = second.list_.end();
       while (iter_second != iter_second_end)
       {
-        Key key = iter_second.first;
+        Key key = *iter_second;
         Value value = iter_second.value;
         new_dict.push(key, value);
         iter_second++;
@@ -140,7 +140,7 @@ namespace dimkashelk
       auto iter_first_end = first.list_.end();
       while (iter_first != iter_first_end)
       {
-        Key key = iter_first.first;
+        Key key = *iter_first;
         Value value = iter_first.value;
         new_dict.push(key, value);
         iter_first++;
