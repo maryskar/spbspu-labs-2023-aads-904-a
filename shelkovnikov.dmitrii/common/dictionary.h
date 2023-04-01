@@ -35,11 +35,11 @@ namespace dimkashelk
       }
       auto begin = other.list_.begin();
       auto end = other.list_.end();
-      list_.pushFront(*begin);
+      list_.insert(begin.first, begin.second);
       begin++;
       while (begin != end)
       {
-        list_.pushBack(*begin);
+        list_.insert(begin.first, begin.second);
         begin++;
       }
       return *this;
@@ -114,7 +114,7 @@ namespace dimkashelk
       {
         auto comp = [&](const auto &item)
         {
-          return item.first == (*it_first).first;
+          return item.first == it_first.first;
         };
         auto res = std::find_if(first.list_.begin(), first.list_.end(), comp);
         if (res != second.list_.end())
@@ -140,8 +140,8 @@ namespace dimkashelk
       auto iter_first_end = first.list_.end();
       while (iter_first != iter_first_end)
       {
-        Key key = (*iter_first).first;
-        Value value = (*iter_first).second;
+        Key key = iter_first.first;
+        Value value = iter_first.second;
         new_dict.push(key, value);
         iter_first++;
       }

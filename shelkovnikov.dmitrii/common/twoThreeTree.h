@@ -393,11 +393,11 @@ namespace dimkashelk
       {
         return node;
       }
-      else if (compare_(k < node->key[0]))
+      else if (compare_(k, node->key[0]))
       {
         return search(node->first, k);
       }
-      else if ((node->size == 2) && (compare_(k < node->key[1])) || (node->size == 1))
+      else if (node->size == 2 && compare_(k, node->key[1]) || node->size == 1)
       {
         return search(node->second, k);
       }
