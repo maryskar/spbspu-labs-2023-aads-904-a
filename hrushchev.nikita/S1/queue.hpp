@@ -1,3 +1,6 @@
+#ifndef QUEUE_HPP
+#define QUEUE_HPP
+
 template< typename T >
 class Queue 
 {
@@ -5,3 +8,5 @@ class Queue
   void push(T rhs);
   T drop();
 }
+
+#endif

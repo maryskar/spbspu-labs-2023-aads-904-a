@@ -1,3 +1,6 @@
+#ifndef STACK_HPP
+#define STACK_HPP
+
 template< typename T >
 class Stack
 {
@@ -8,7 +11,9 @@ class Stack
     void popOutOfTheStack();
     T& getInStack();
     T drop();
-    bool empty_() const;
+    bool isEmpty() const;
   private:
     T * value_;
 }
+
+#endif
