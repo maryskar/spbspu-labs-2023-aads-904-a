@@ -240,6 +240,10 @@ namespace dimkashelk
     void insert(const Key &k, const Value &v) {
       root_ = insert(root_, k, v);
     }
+    bool empty()
+    {
+      return root_ == nullptr;
+    }
     Iterator begin()
     {
       return Iterator(Iterator::goDown(root_));
