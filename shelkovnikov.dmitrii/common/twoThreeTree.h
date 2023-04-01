@@ -124,6 +124,11 @@ namespace dimkashelk
     {
     friend class TwoThreeTree< Key, Value, Compare >;
     public:
+      using iterator_category = std::forward_iterator_tag;
+      using difference_type = std::ptrdiff_t;
+      using value_type = Key;
+      using pointer = Key*;
+      using reference = Key&;
       Key first;
       Value second;
       Iterator &operator++()
@@ -135,6 +140,10 @@ namespace dimkashelk
       {
         next();
         return *this;
+      }
+      const Key &operator*() const
+      {
+        return first;
       }
       bool operator==(const Iterator &other) const
       {
@@ -405,6 +414,7 @@ namespace dimkashelk
       {
         return search(node->third, k);
       }
+      return nullptr;
     }
     void free(node_type *node)
     {

@@ -114,7 +114,7 @@ namespace dimkashelk
       {
         auto comp = [&](const auto &item)
         {
-          return item.first == it_first.first;
+          return item == it_first.first;
         };
         auto res = std::find_if(first.list_.begin(), first.list_.end(), comp);
         if (res != second.list_.end())
