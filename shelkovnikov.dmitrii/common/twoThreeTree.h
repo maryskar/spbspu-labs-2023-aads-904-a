@@ -264,7 +264,11 @@ namespace dimkashelk
       {
         return;
       }
-      free();
+      free(root_);
+      for (auto iter = tree.begin(); iter != tree.end(); iter++)
+      {
+        insert(*iter, iter.second);
+      }
     }
     ~TwoThreeTree()
     {
