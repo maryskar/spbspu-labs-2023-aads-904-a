@@ -125,6 +125,14 @@ namespace dimkashelk
         next();
         return *this;
       }
+      bool operator==(const Iterator &other) const
+      {
+        return node_ == other.node_;
+      }
+      bool operator!=(const Iterator &other) const
+      {
+        return node_ != other.node_;
+      }
     private:
       node_type *node_;
       node_type *prev_;
