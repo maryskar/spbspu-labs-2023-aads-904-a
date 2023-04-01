@@ -252,6 +252,11 @@ namespace dimkashelk
       root_(nullptr),
       compare_(Compare())
     {}
+    ~TwoThreeTree()
+    {
+      free(root_);
+      delete root_;
+    }
     void insert(const Key &k, const Value &v) {
       root_ = insert(root_, k, v);
     }
@@ -262,8 +267,7 @@ namespace dimkashelk
   private:
     node_type *root_;
     Compare compare_;
-    node_type *insert(node_type *p, const Key &k, const Value &v)
-    {
+    node_type *insert(node_type *p, const Key &k, const Value &v) {
       if (!p)
       {
         return new node_type(k, v);
@@ -312,7 +316,7 @@ namespace dimkashelk
       }
       if (item->parent)
       {
-        item->parent->insert(item->key[1], item->key[2]);
+        item->parent->insert(item->key[1], item->value[1]);
         if (item->parent->first == item)
         {
           item->parent->first = nullptr;
@@ -370,6 +374,7 @@ namespace dimkashelk
         free(node->third);
         delete node->third;
       }
+      delete node;
       return;
     }
   };
