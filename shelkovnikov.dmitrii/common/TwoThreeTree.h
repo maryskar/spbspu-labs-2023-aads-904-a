@@ -90,41 +90,25 @@ namespace details
     }
   private:
     Compare compare_;
-    void sort2()
+    void sort()
     {
       if (!compare_(key[0], key[1]))
       {
         std::swap(key[0], key[1]);
         std::swap(value[0], value[1]);
       };
-    }
-    void sort3()
-    {
-      if (!compare_(key[0], key[1]))
+      if (size == 3)
       {
-        std::swap(key[0], key[1]);
-        std::swap(value[0], value[1]);
-      }
-      if (!compare_(key[0], key[2]))
-      {
-        std::swap(key[0], key[2]);
-        std::swap(value[0], value[2]);
-      }
-      if (!compare_(key[1], key[2]))
-      {
-        std::swap(key[1], key[2]);
-        std::swap(value[1], value[2]);
-      }
-    }
-    void sort()
-    {
-      if (size == 2)
-      {
-        sort2();
-      }
-      else if (size == 3)
-      {
-        sort3();
+        if (!compare_(key[0], key[2]))
+        {
+          std::swap(key[0], key[2]);
+          std::swap(value[0], value[2]);
+        }
+        if (!compare_(key[1], key[2]))
+        {
+          std::swap(key[1], key[2]);
+          std::swap(value[1], value[2]);
+        }
       }
     }
   };
