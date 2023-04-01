@@ -259,14 +259,17 @@ namespace dimkashelk
       root_(nullptr),
       compare_(Compare())
     {}
-    TwoThreeTree(const two_three_tree_type &tree)
+    TwoThreeTree(const two_three_tree_type &tree):
+      root_(nullptr),
+      compare_(Compare{})
     {
-      if (std::addressof(tree) == this)
-      {
-        return;
-      }
-      free(root_);
       copy(tree);
+    }
+    TwoThreeTree(two_three_tree_type &&tree):
+      root_(tree.root_),
+      compare_(Compare{})
+    {
+      tree.root_ = nullptr;
     }
     two_three_tree_type &operator=(const two_three_tree_type &tree)
     {
