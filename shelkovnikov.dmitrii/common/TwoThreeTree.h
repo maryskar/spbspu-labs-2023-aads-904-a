@@ -208,8 +208,6 @@ namespace dimkashelk
       }
       node_type *goUp(node_type *node)
       {
-        // правильная версия!!!!!!!!!!!!!!!! НЕ ТРОГАЙ!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // родитель возвращаемого - результат
         node_type *parent = node->parent;
         while (parent && parent->getLastChildren() == node)
         {
