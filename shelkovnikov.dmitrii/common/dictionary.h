@@ -4,7 +4,7 @@
 #include <iterator>
 #include <ostream>
 #include <algorithm>
-#include "forwardlist.h"
+#include "twoThreeTree.h"
 namespace dimkashelk
 {
   template< typename Key, typename Value, typename Compare >
@@ -182,7 +182,7 @@ namespace dimkashelk
       return first.list_ > second.list_;
     }
   private:
-    ForwardList< std::pair< Key, Value > > list_;
+    TwoThreeTree< Key, Value, Compare > list_;
     Compare compare_;
   };
 }
