@@ -258,6 +258,14 @@ namespace dimkashelk
       root_(nullptr),
       compare_(Compare())
     {}
+    TwoThreeTree(const TwoThreeTree< Key, Value, Compare > &tree)
+    {
+      if (std::addressof(tree) == this)
+      {
+        return;
+      }
+      free();
+    }
     ~TwoThreeTree()
     {
       free(root_);
@@ -418,6 +426,10 @@ namespace dimkashelk
     }
     void free(node_type *node)
     {
+      if (node == nullptr)
+      {
+        return;
+      }
       if (node->getLastChildren() == nullptr)
       {
         return;
@@ -432,7 +444,7 @@ namespace dimkashelk
         delete node->third;
       }
       delete node;
-      return;
+      node = nullptr;
     }
   };
 }
