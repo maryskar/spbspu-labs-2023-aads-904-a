@@ -55,17 +55,6 @@ namespace details
     {
       return (first == nullptr) && (second == nullptr) && (third == nullptr);
     }
-    bool find(const Key &k) const
-    {
-      for (unsigned i = 0; i < size; ++i)
-      {
-        if (key[i] == k)
-        {
-          return true;
-        }
-      }
-      return false;
-    }
     void insert(const Key &k, const Value &v)
     {
       key[size] = k;
