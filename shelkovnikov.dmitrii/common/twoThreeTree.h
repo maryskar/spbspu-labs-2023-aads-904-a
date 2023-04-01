@@ -129,8 +129,7 @@ namespace dimkashelk
       using value_type = Key;
       using pointer = Key*;
       using reference = Key&;
-      Key first;
-      Value second;
+      Value value;
       Iterator &operator++()
       {
         next();
@@ -154,17 +153,18 @@ namespace dimkashelk
         return node_ != other.node_;
       }
     private:
+      Key first;
       node_type *node_;
       node_type *prev_;
       Iterator():
         first(Key()),
-        second(Value()),
+        value(Value()),
         node_(nullptr),
         prev_(nullptr)
       {};
       explicit Iterator(node_type *node):
         first(node->key[0]),
-        second(node->value[0]),
+        value(node->value[0]),
         node_(node),
         prev_(nullptr)
       {};
@@ -251,7 +251,7 @@ namespace dimkashelk
       void set(unsigned ind)
       {
         first = node_->key[ind];
-        second = node_->value[ind];
+        value = node_->value[ind];
       }
     };
     TwoThreeTree():
@@ -267,7 +267,7 @@ namespace dimkashelk
       free(root_);
       for (auto iter = tree.begin(); iter != tree.end(); iter++)
       {
-        insert(*iter, iter.second);
+        insert(*iter, iter.value);
       }
     }
     ~TwoThreeTree()

@@ -35,11 +35,11 @@ namespace dimkashelk
       }
       auto begin = other.list_.begin();
       auto end = other.list_.end();
-      list_.insert(begin.first, begin.second);
+      list_.insert(begin.first, begin.value);
       begin++;
       while (begin != end)
       {
-        list_.insert(begin.first, begin.second);
+        list_.insert(begin.first, begin.value);
         begin++;
       }
       return *this;
@@ -64,10 +64,10 @@ namespace dimkashelk
       }
       auto it = dict.list_.begin();
       auto end = dict.list_.end();
-      out << it.first << " " << it.second;
+      out << it.first << " " << it.value;
       it++;
       for (; it != end; it++) {
-        out << " " << it.first << " " << it.second;
+        out << " " << it.first << " " << it.value;
       }
       return out;
     }
@@ -95,14 +95,14 @@ namespace dimkashelk
         if (iter_first.first != iter_second.first)
         {
           Key key = iter_first.first;
-          Value value = iter_first.second;
+          Value value = iter_first.value;
           new_dict.push(key, value);
         }
         iter_first++;
       }
       while (iter_first != iter_first_end)
       {
-        new_dict.push(iter_first.first, iter_first.second);
+        new_dict.push(iter_first.first, iter_first.value);
         iter_first++;
       }
       return new_dict;
@@ -119,7 +119,7 @@ namespace dimkashelk
         auto res = std::find_if(first.list_.begin(), first.list_.end(), comp);
         if (res != second.list_.end())
         {
-          result.push(res.first, res.second);
+          result.push(res.first, res.value);
         }
       }
       return result;
@@ -132,7 +132,7 @@ namespace dimkashelk
       while (iter_second != iter_second_end)
       {
         Key key = iter_second.first;
-        Value value = iter_second.second;
+        Value value = iter_second.value;
         new_dict.push(key, value);
         iter_second++;
       }
@@ -141,7 +141,7 @@ namespace dimkashelk
       while (iter_first != iter_first_end)
       {
         Key key = iter_first.first;
-        Value value = iter_first.second;
+        Value value = iter_first.value;
         new_dict.push(key, value);
         iter_first++;
       }
