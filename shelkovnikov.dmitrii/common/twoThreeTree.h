@@ -280,6 +280,16 @@ namespace dimkashelk
       free();
       copy(tree);
     }
+    two_three_tree_type &operator=(two_three_tree_type &&tree)
+    {
+      if (std::addressof(tree) == this)
+      {
+        return *this;
+      }
+      free();
+      root_ = tree.root_;
+      tree.root_ = nullptr;
+    }
     ~TwoThreeTree()
     {
       free(root_);
