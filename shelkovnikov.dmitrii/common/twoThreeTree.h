@@ -77,6 +77,17 @@ namespace details
     {
       return (third)? third: (second)? second: first;
     }
+    bool contains(const Key &k)
+    {
+      for (int i = 0; i < size; ++i)
+      {
+        if (key[i] == k)
+        {
+          return true;
+        }
+      }
+      return false;
+    }
   private:
     Compare compare_;
     void sort()
@@ -243,6 +254,10 @@ namespace dimkashelk
     bool empty() const
     {
       return root_ == nullptr;
+    }
+    Value &get(const Key &k)
+    {
+
     }
     Iterator begin()
     {
