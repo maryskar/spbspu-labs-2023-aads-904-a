@@ -1,6 +1,7 @@
 #ifndef STACK_HPP
 #define STACK_HPP
 #include "list.hpp"
+#include <cstddef> 
 
 template< typename T >
 class Stack
@@ -14,6 +15,13 @@ class Stack
     bool isEmpty() const;
   private:
     List< T >* value_;
+    size_t size_;
 };
 
+template< typename T>
+Stack< T >::Stack():
+  value_(nullptr),
+  size_(0)
+{
+}
 #endif

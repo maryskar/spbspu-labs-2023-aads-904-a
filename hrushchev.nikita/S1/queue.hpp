@@ -16,7 +16,7 @@ class Queue
   private:
     List< T >* begin_;
     List< T >* end_;
-    size_t size;
+    size_t size_;
 };
 
 
