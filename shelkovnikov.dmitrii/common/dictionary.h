@@ -20,7 +20,10 @@ namespace dimkashelk
       list_(dict.list_),
       compare_(dict.compare_)
     {}
-    ~Dictionary() = default;
+    Dictionary(dict_type &&dict):
+      list_(dict.list_),
+      compare_(dict.compare_)
+    {}
     dict_type &operator=(const dict_type &other)
     {
       if (this == std::addressof(other))
@@ -30,6 +33,16 @@ namespace dimkashelk
       list_ = other.list_;
       return *this;
     }
+    dict_type &operator=(dict_type &&other)
+    {
+      if (this == std::addressof(other))
+      {
+        return *this;
+      }
+      list_ = other.list_;
+      return *this;
+    }
+    ~Dictionary() = default;
     void push(const Key &k, const Value &v)
     {
       list_.insert(k, v);
