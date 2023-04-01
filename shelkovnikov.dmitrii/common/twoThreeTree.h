@@ -236,6 +236,10 @@ namespace dimkashelk
     {
       return Iterator(Iterator::goDown(root_));
     }
+    Iterator end()
+    {
+      return Iterator();
+    }
   private:
     node_type *root_;
     Compare compare_;
