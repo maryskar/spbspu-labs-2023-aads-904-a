@@ -71,7 +71,7 @@ namespace dimkashelk
             out << dataset_name << " " << d << "\n";
           }
         }
-        catch (const std::runtime_error &e)
+        catch (...)
         {
           out << "<INVALID COMMAND>\n";
         }
@@ -106,7 +106,7 @@ namespace dimkashelk
           }
           dict.push(new_dataset_name, new_dict);
         }
-        catch (const std::runtime_error &e)
+        catch (...)
         {
           out << "<INVALID COMMAND>\n";
         }
