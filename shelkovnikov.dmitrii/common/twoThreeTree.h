@@ -257,7 +257,12 @@ namespace dimkashelk
     }
     Value &get(const Key &k)
     {
-
+      node_type *node = search(root_, k);
+      if (node)
+      {
+        return node->second;
+      }
+      throw std::logic_error("No element");
     }
     Iterator begin()
     {
