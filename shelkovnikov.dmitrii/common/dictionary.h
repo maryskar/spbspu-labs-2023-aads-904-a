@@ -150,6 +150,10 @@ namespace dimkashelk
     {
       return first.list_ > second.list_;
     }
+    friend bool operator<(const dict_type &first, const dict_type &second)
+    {
+      return first.list_ < second.list_;
+    }
   private:
     TwoThreeTree< Key, Value, Compare > list_;
     Compare compare_;
