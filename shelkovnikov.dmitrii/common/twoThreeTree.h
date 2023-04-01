@@ -296,7 +296,8 @@ namespace dimkashelk
     {
       free(root_);
     }
-    void insert(const Key &k, const Value &v) {
+    void insert(const Key &k, const Value &v)
+    {
       root_ = insert(root_, k, v);
     }
     bool empty() const
