@@ -2,10 +2,10 @@
 #define LIST_HPP
 
 template < typename T >
-struct ListNode
+struct List
 {
   T data_;
   List< T > *next_;
-}
+};
 
 #endif

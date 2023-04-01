@@ -1,5 +1,6 @@
 #ifndef STACK_HPP
 #define STACK_HPP
+#include "list.hpp"
 
 template< typename T >
 class Stack
@@ -7,13 +8,12 @@ class Stack
   public:
     Stack();
     ~Stack();
-    void putInTheStack(const T& value);
+    void push(const T& value);
     void popOutOfTheStack();
     T& getInStack();
-    T drop();
     bool isEmpty() const;
   private:
-    T * value_;
-}
+    List< T >* value_;
+};
 
 #endif

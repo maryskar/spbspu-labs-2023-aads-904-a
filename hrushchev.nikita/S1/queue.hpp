@@ -1,12 +1,23 @@
 #ifndef QUEUE_HPP
 #define QUEUE_HPP
+#include "list.hpp"
 
 template< typename T >
 class Queue 
 {
-  public:
-  void push(T rhs);
-  T drop();
-}
+ public:
+    Queue();
+    ~Queue();
+    void push(const T& value);
+    void popOutOfTheQueue();
+    T& getInQueue();
+    bool isEmpty() const;
+  private:
+    List< T >* begin_;
+    List< T >* end_;
+    size_t size;
+};
+
+
 
 #endif
