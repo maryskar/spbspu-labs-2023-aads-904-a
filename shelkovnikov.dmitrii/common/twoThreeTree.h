@@ -115,12 +115,6 @@ namespace dimkashelk
     public:
       Key first;
       Value second;
-      explicit Iterator(node_type *node):
-        first(node->key[0]),
-        second(node->value[0]),
-        node_(node),
-        prev_(nullptr)
-      {};
       Iterator &operator++()
       {
         next();
@@ -134,6 +128,12 @@ namespace dimkashelk
     private:
       node_type *node_;
       node_type *prev_;
+      explicit Iterator(node_type *node):
+        first(node->key[0]),
+        second(node->value[0]),
+        node_(node),
+        prev_(nullptr)
+      {};
       void next()
       {
         if (node_->getLastChildren() == nullptr)
