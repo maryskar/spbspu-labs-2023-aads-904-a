@@ -240,7 +240,7 @@ namespace dimkashelk
     void insert(const Key &k, const Value &v) {
       root_ = insert(root_, k, v);
     }
-    bool empty()
+    bool empty() const
     {
       return root_ == nullptr;
     }
