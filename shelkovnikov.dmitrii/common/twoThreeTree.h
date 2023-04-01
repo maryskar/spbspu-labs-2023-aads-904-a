@@ -276,6 +276,10 @@ namespace dimkashelk
       }
       throw std::logic_error("No element");
     }
+    void free()
+    {
+      free(root_);
+    }
     Iterator begin() const
     {
       return Iterator(Iterator::goDown(root_));
