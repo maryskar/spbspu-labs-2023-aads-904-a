@@ -147,6 +147,12 @@ namespace dimkashelk
     private:
       node_type *node_;
       node_type *prev_;
+      Iterator():
+        first(Key()),
+        second(Value()),
+        node_(nullptr),
+        prev_(nullptr)
+      {};
       explicit Iterator(node_type *node):
         first(node->key[0]),
         second(node->value[0]),
