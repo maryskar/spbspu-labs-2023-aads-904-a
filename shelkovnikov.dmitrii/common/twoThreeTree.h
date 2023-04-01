@@ -265,15 +265,22 @@ namespace dimkashelk
       node_type *node = search(root_, k);
       if (node)
       {
-        return node->second;
+        if (compare_(k, node->key[0]))
+        {
+          return node->value[0];
+        }
+        else if (node->size == 2 && compare_(k, node->key[1]))
+        {
+          return node->value[1];
+        }
       }
       throw std::logic_error("No element");
     }
-    Iterator begin()
+    Iterator begin() const
     {
       return Iterator(Iterator::goDown(root_));
     }
-    Iterator end()
+    Iterator end() const
     {
       return Iterator();
     }
