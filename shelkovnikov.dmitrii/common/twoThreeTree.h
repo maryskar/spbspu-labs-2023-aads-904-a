@@ -279,6 +279,7 @@ namespace dimkashelk
       }
       free();
       copy(tree);
+      return *this;
     }
     two_three_tree_type &operator=(two_three_tree_type &&tree)
     {
@@ -289,6 +290,7 @@ namespace dimkashelk
       free();
       root_ = tree.root_;
       tree.root_ = nullptr;
+      return *this;
     }
     ~TwoThreeTree()
     {
