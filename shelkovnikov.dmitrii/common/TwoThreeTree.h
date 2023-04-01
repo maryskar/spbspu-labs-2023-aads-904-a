@@ -355,6 +355,23 @@ namespace dimkashelk
         return item;
       }
     }
+    void free(node_type *node)
+    {
+      if (node->getLastChildren() == nullptr)
+      {
+        return;
+      }
+      free(node->first);
+      delete node->first;
+      free(node->second);
+      delete node->second;
+      if (node->size == 2)
+      {
+        free(node->third);
+        delete node->third;
+      }
+      return;
+    }
   };
 }
 #endif
