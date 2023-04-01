@@ -252,7 +252,6 @@ namespace dimkashelk
     ~TwoThreeTree()
     {
       free(root_);
-      delete root_;
     }
     void insert(const Key &k, const Value &v) {
       root_ = insert(root_, k, v);
