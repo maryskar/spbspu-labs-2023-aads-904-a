@@ -28,6 +28,11 @@ bool Stack< T >::isEmpty() const
   return (value_ == nullptr);
 }
 
-
+template< typename T >
+void Stack< T >::push(const T& value)
+{
+  List< T >* temp = new List< T >{value, value_};
+  value_ = temp;
+}
 
 #endif
