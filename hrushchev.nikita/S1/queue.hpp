@@ -1,6 +1,7 @@
 #ifndef QUEUE_HPP
 #define QUEUE_HPP
 #include "list.hpp"
+#include <stdexcept>
 
 template< typename T >
 class Queue 
@@ -33,8 +34,8 @@ bool Queue< T >::isEmpty() const
 template< typename T >
 void Queue< T >::push(const T& value)
 {
-  List< T >* temp = new List< T >{value, end_};
-  if (isEmpty)
+  List< T >* temp = new List< T >{value, nullptr};
+  if (isEmpty())
   {
     begin_ = temp;
   }
@@ -44,4 +45,15 @@ void Queue< T >::push(const T& value)
   }
   end_ = temp;
 }
+
+template< typename T >
+T& Queue< T >::get() const
+{
+  if(isEmpty())
+  {
+    throw std::logic_error("Empty queue");
+  }
+  return begin_->data_;
+}
+
 #endif
