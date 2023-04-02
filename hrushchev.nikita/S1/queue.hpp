@@ -30,4 +30,10 @@ bool Queue< T >::isEmpty() const
   return (begin_ == nullptr);
 }
 
+template< typename T >
+void Queue< T >::push(const T& value)
+{
+  List< T >* temp = new List< T >{end_, value};
+  end_ = temp;
+}
 #endif
