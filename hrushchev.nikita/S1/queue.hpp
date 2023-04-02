@@ -33,7 +33,15 @@ bool Queue< T >::isEmpty() const
 template< typename T >
 void Queue< T >::push(const T& value)
 {
-  List< T >* temp = new List< T >{end_, value};
+  List< T >* temp = new List< T >{value, end_};
+  if (isEmpty)
+  {
+    begin_ = temp;
+  }
+  else
+  {
+    end_->next_ = temp;
+  }
   end_ = temp;
 }
 #endif
