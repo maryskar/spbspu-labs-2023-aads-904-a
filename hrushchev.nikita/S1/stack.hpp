@@ -43,7 +43,7 @@ T& Stack< T >::get() const
   {
     throw std::logic_error("Empty stack");
   }
-  return value_->data;
+  return value_->data_;
 }
 
 template< typename T >
@@ -53,7 +53,7 @@ void Stack< T >::pop()
   {
     throw std::logic_error("Empty stack");
   }
-  List< T >* temp = value_->data;
+  List< T >* temp = value_->next_;
   delete value_;
   value_ = temp;
 }
