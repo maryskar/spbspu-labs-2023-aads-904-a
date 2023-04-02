@@ -6,7 +6,7 @@
 template< typename T >
 class Queue 
 {
- public:
+  public:
     Queue();
     ~Queue();
     void push(const T& value);
@@ -54,6 +54,18 @@ T& Queue< T >::get() const
     throw std::logic_error("Empty queue");
   }
   return begin_->data_;
+}
+
+template< typename T >
+void Queue< T >::pop()
+{
+  if(isEmpty())
+  {
+    throw std::logic_error("Empty queue");
+  }
+  List< T > temp = begin_->next_;
+  delete begin_;
+  begin_ = temp;
 }
 
 #endif
