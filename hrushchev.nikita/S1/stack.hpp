@@ -43,7 +43,19 @@ T& Stack< T >::get() const
   {
     throw std::logic_error("Empty stack");
   }
-  return (*value_).data;
+  return value_->data;
+}
+
+template< typename T >
+void Stack< T >::pop();
+{
+  if(isEmpty())
+  {
+    throw std::logic_error("Empty stack");
+  }
+  List< T >* temp = value_->data;
+  value_ = temp;
+  delete value_
 }
 
 #endif
