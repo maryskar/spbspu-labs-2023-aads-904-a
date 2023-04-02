@@ -1,6 +1,7 @@
 #ifndef STACK_HPP
 #define STACK_HPP
 #include "list.hpp"
+#include <stdexcept>
 
 template< typename T >
 class Stack
@@ -10,7 +11,7 @@ class Stack
     ~Stack();
     void push(const T& value);
     void pop();
-    T& get();
+    T& get() const;
     bool isEmpty() const;
   private:
     List< T >* value_;
@@ -33,6 +34,16 @@ void Stack< T >::push(const T& value)
 {
   List< T >* temp = new List< T >{value, value_};
   value_ = temp;
+}
+
+template< typename T >
+T& Stack< T >::get() const
+{
+  if(isEmpty())
+  {
+    throw std::logic_error("Empty stack");
+  }
+  return (*value_).data;
 }
 
 #endif
