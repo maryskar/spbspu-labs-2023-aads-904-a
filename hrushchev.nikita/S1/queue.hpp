@@ -68,4 +68,12 @@ void Queue< T >::pop()
   begin_ = temp;
 }
 
+template< typename T >
+Queue< T >::~Queue()
+{
+  while(!isEmpty())
+  {
+    pop();
+  }
+}
 #endif
