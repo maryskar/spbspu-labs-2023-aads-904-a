@@ -47,7 +47,7 @@ T& Stack< T >::get() const
 }
 
 template< typename T >
-void Stack< T >::pop();
+void Stack< T >::pop()
 {
   if(isEmpty())
   {
@@ -58,4 +58,12 @@ void Stack< T >::pop();
   value_ = temp;
 }
 
+template< typename T >
+Stack< T >::~Stack()
+{
+  while(!isEmpty())
+  {
+    pop();
+  }
+}
 #endif
