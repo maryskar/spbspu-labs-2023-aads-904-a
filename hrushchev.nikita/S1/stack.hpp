@@ -54,8 +54,8 @@ void Stack< T >::pop();
     throw std::logic_error("Empty stack");
   }
   List< T >* temp = value_->data;
+  delete value_;
   value_ = temp;
-  delete value_
 }
 
 #endif
