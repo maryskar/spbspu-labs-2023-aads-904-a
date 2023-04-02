@@ -10,7 +10,7 @@ class Queue
     ~Queue();
     void push(const T& value);
     void pop();
-    T& gete();
+    T& get() const;
     bool isEmpty() const;
   private:
     List< T >* begin_;
@@ -24,5 +24,10 @@ end_(nullptr)
 {
 }
 
+template< typename T >
+bool Queue< T >::isEmpty() const
+{
+  return (begin_ == nullptr);
+}
 
 #endif
