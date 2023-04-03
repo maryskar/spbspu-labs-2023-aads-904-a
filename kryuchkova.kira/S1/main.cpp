@@ -13,9 +13,15 @@ int main()
   // int b = stack.drop();
   // std::cout << b << ' ' << stack.drop() << '\n';
   kryuchkova::Queue <int> queue;
-  int a = 2;
-  queue.push(a);
-  queue.push(a + 1);
-  std::cout << queue.drop() << queue.drop() << '\n';
+  int a = 1;
+  for (int i = 0; i < 5; i++)
+  {
+    std::cin >> a;
+    queue.push(a);
+  }
+  while (!queue.isEmpty())
+  {
+    std::cout << queue.drop() << ' ';
+  }
   return 0;
 }
