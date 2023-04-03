@@ -1,6 +1,7 @@
-#include "getResultOfArithmeticExpression.h"
+#include "getResultArithmeticExpression.h"
 #include <limits>
 #include <stdexcept>
+#include "stack.h"
 namespace
 {
   constexpr long long max_long_long = std::numeric_limits< long long >::max();
@@ -79,4 +80,29 @@ long long details::getResult(long long first, long long second, char oper)
     }
   }
   throw std::logic_error("Not supported this operator");
+}
+long long dimkashelk::getResultArithmeticExpression(dimkashelk::Queue< dimkashelk::PartOfArithExpr > &polandExpression)
+{
+  namespace dsk = dimkashelk;
+  dsk::Stack< dsk::PartOfArithExpr > remains;
+  while (!polandExpression.empty())
+  {
+    dsk::PartOfArithExpr p = polandExpression.front();
+    polandExpression.pop_front();
+    if (p.isDigit)
+    {
+      remains.push(p);
+    }
+    else
+    {
+      dsk::PartOfArithExpr p2 = remains.last();
+      remains.pop_back();
+      dsk::PartOfArithExpr p1 = remains.last();
+      remains.pop_back();
+      remains.push(dsk::PartOfArithExpr(details::getResult(p1.element.operand_, p2.element.operand_, p.element.operator_)));
+    }
+  }
+  auto res = remains.last().element.operand_;
+  remains.pop_back();
+  return res;
 }
