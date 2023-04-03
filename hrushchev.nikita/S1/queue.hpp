@@ -63,7 +63,7 @@ void Queue< T >::pop()
   {
     throw std::logic_error("Empty queue");
   }
-  List< T > temp = begin_->next_;
+  List< T >* temp = begin_->next_;
   delete begin_;
   begin_ = temp;
 }
@@ -76,4 +76,5 @@ Queue< T >::~Queue()
     pop();
   }
 }
+
 #endif
