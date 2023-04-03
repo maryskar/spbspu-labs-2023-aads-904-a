@@ -4,7 +4,7 @@
 #include <stdexcept>
 
 template< typename T >
-class Queue 
+class Queue
 {
   public:
     Queue();
