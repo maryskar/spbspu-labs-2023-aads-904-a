@@ -2,7 +2,6 @@
 
 int main()
 {
-  std::cout << "dmitriev.arseny" << '\n';
-
+  std::cout << "zhuravlev.ivan\n";
   return 0;
 }
