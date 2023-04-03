@@ -38,7 +38,7 @@ namespace details
       third(nullptr),
       fourth(nullptr),
       parent(nullptr),
-      compare_(Compare{})
+      compare_(Compare())
     {}
     NodeOfTwoThreeTree(const Key &k, const Value &v, node_type *fi, node_type *s, node_type *t, node_type *fo, node_type *p):
       key{k, Key(), Key()},
@@ -261,7 +261,7 @@ namespace dimkashelk
     {}
     TwoThreeTree(const two_three_tree_type &tree):
       root_(nullptr),
-      compare_(Compare{})
+      compare_(Compare())
     {
       copy(tree);
     }
@@ -309,11 +309,11 @@ namespace dimkashelk
       node_type *node = search(root_, k);
       if (node)
       {
-        if (compare_(k, node->key[0]))
+        if (k == node->key[0])
         {
           return node->value[0];
         }
-        else if (node->size == 2 && compare_(k, node->key[1]))
+        else if (node->size == 2 && k == node->key[1])
         {
           return node->value[1];
         }
@@ -368,19 +368,31 @@ namespace dimkashelk
       {
         return new node_type(k, v);
       }
+      if (p->contains(k))
+      {
+        if (p->key[0] == k)
+        {
+          p->value[0] = v;
+        }
+        else if (p->key[1] == k)
+        {
+          p->value[1] = v;
+        }
+        return split(p);
+      }
       if (p->isList())
       {
         p->insert(k, v);
       }
-      else if (compare_(k, p->key[0]))
+      else if (compare_(k, p->key[0]) && k != p->key[0])
       {
         insert(p->first, k, v);
       }
-      else if ((p->size == 1) || ((p->size == 2) && compare_(k, p->key[1])))
+      else if (((p->size == 1) || ((p->size == 2) && compare_(k, p->key[1]))) && k != p->key[1])
       {
         insert(p->second, k, v);
       }
-      else
+      else if (k != p->key[2])
       {
         insert(p->third, k, v);
       }
