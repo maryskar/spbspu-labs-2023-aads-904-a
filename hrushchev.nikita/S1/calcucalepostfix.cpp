@@ -16,6 +16,16 @@ long long sum(long long a, long long b)
   return a + b
 }
 
+long long subtraction(long long a, long long b)
+{
+  const long long min = std::numeric_limits< int long long >::min();
+  if(min - a < b)
+  {
+    throw std::overflow_error("Subtraction overflow");
+  }
+  return a - b
+}
+
 long long calculatePostfix(Queue<std::string>& postfixQueue)
 {
   Stack< int > stack;
