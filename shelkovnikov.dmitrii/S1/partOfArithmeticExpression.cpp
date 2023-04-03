@@ -1,5 +1,4 @@
 #include "partOfArithmeticExpression.h"
-#include <algorithm>
 #include <stdexcept>
 namespace
 {
