@@ -16,7 +16,7 @@ long long sum(long long a, long long b)
   return a + b
 }
 
-long long subtraction(long long a, long long b)
+long long subtract(long long a, long long b)
 {
   const long long min = std::numeric_limits< int long long >::min();
   if(min - a < b)
@@ -24,6 +24,29 @@ long long subtraction(long long a, long long b)
     throw std::overflow_error("Subtraction overflow");
   }
   return a - b
+}
+
+long long multiply(long long a, long long b)
+{
+  const long long max = std::numeric_limits< int long long >::max();
+  const long long min = std::numeric_limits< int long long >::min();
+  if((a > 0) && ((max / a) > b))
+  {
+    throw std::overflow_error("Multiplyoverflow");
+  }
+  else if((a < 0) && ((max / a) < b))
+  {
+    throw std::overflow_error("Multiplyoverflow");
+  }  
+  else if((a > 0) && ((min / a) < b))
+  {
+    throw std::overflow_error("Multiplyoverflow");
+  }
+  else if((a < 0) && ((min / a) > b))
+  {
+    throw std::overflow_error("Multiplyoverflow");
+  }
+  return a * b
 }
 
 long long calculatePostfix(Queue<std::string>& postfixQueue)
@@ -50,7 +73,7 @@ long long calculatePostfix(Queue<std::string>& postfixQueue)
       }
       else if (token == "-")
       {
-        result = subtraction(operand1, operand2)
+        result = subtract(operand1, operand2)
       }
       else if (token == "*")
       {
