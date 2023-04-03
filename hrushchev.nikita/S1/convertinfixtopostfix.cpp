@@ -18,7 +18,7 @@ Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
     } 
     else if (token == "+" || token == "-")
     {
-      while (!stack.isEmpty() && (stack.get() == "+" || stack.get() == "-" || stack.get() == "*" || stack.get() == "/"))
+      while (!stack.isEmpty() && (stack.get() == "+" || stack.get() == "-" || stack.get() == "*" || stack.get() == "/" || stack.get() == "%"))
       {
         postfixQueue.push(stack.get());
         stack.pop();
@@ -27,7 +27,7 @@ Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
     } 
     else if (token == "*" || token == "/")
     {
-      while (!stack.isEmpty() && (stack.get() == "*" || stack.get() == "/"))
+      while (!stack.isEmpty() && ((stack.get() == "*" || stack.get() == "/" || stack.get() == "%")))
       {
         postfixQueue.push(stack.get());
         stack.pop();
@@ -47,10 +47,6 @@ Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
       }
       stack.pop();
     } 
-    else 
-    {
-      std::logic_error("Ivalid token");
-    }
   }
   while (!stack.isEmpty())
   {
