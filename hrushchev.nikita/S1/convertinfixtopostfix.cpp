@@ -15,7 +15,7 @@ Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
     if (isdigit(token[0]))
     {
       postfixQueue.push(token);
-    } 
+    }
     else if (token == "+" || token == "-")
     {
       while (!stack.isEmpty() && (stack.get() == "+" || stack.get() == "-" || stack.get() == "*" || stack.get() == "/" || stack.get() == "%"))
@@ -24,7 +24,7 @@ Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
         stack.pop();
       }
       stack.push(token);
-    } 
+    }
     else if (token == "*" || token == "/")
     {
       while (!stack.isEmpty() && ((stack.get() == "*" || stack.get() == "/" || stack.get() == "%")))
@@ -46,7 +46,7 @@ Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
         stack.pop();
       }
       stack.pop();
-    } 
+    }
   }
   while (!stack.isEmpty())
   {

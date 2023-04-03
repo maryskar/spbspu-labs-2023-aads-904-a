@@ -35,7 +35,7 @@ long long multiply(long long a, long long b)
   else if((a < 0) && ((max / a) > b))
   {
     throw std::overflow_error("Multiply overflow");
-  }  
+  }
   else if((a > 0) && ((min / a) > b))
   {
     throw std::overflow_error("Multiply overflow");
