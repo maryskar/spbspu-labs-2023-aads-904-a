@@ -5,7 +5,7 @@
 long long sum(long long a, long long b)
 {
   const long long max = std::numeric_limits< int long long >::max();
-  if(max - a > b)
+  if(max - a < b)
   {
     throw std::overflow_error("Sum overflow");
   }
@@ -14,9 +14,11 @@ long long sum(long long a, long long b)
 
 long long subtract(long long a, long long b)
 {
-  const long long min = std::numeric_limits< int long long >::min();
-  if(min - a < b)
-  {
+  const long long min = std::numeric_limits<long long>::min();
+  if (b > 0 && a < min + b) {
+    throw std::overflow_error("Subtraction overflow");
+  }
+  if (b < 0 && a > min + b) {
     throw std::overflow_error("Subtraction overflow");
   }
   return a - b;
@@ -26,19 +28,19 @@ long long multiply(long long a, long long b)
 {
   const long long max = std::numeric_limits< int long long >::max();
   const long long min = std::numeric_limits< int long long >::min();
-  if((a > 0) && ((max / a) > b))
+  if((a > 0) && ((max / a) < b))
   {
     throw std::overflow_error("Multiply overflow");
   }
-  else if((a < 0) && ((max / a) < b))
+  else if((a < 0) && ((max / a) > b))
   {
     throw std::overflow_error("Multiply overflow");
   }  
-  else if((a > 0) && ((min / a) < b))
+  else if((a > 0) && ((min / a) > b))
   {
     throw std::overflow_error("Multiply overflow");
   }
-  else if((a < 0) && ((min / a) > b))
+  else if((a < 0) && ((min / a) < b))
   {
     throw std::overflow_error("Multiply overflow");
   }
