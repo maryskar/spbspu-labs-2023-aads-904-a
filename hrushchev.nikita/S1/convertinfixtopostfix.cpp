@@ -6,7 +6,7 @@
 Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
 {
   Queue< std::string > postfixQueue;
-  Stack< std::string > s;
+  Stack< std::string > stack;
   while (!infixQueue.isEmpty())
   {
     std::string token = infixQueue.get();
@@ -17,44 +17,45 @@ Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
     } 
     else if (token == "+" || token == "-")
     {
-      while (!s.isEmpty() && (s.get() == "+" || s.get() == "-" || s.get() == "*" || s.get() == "/"))
+      while (!stack.isEmpty() && (stack.get() == "+" || stack.get() == "-" || stack.get() == "*" || stack.get() == "/"))
       {
-        postfixQueue.push(s.get());
-        s.pop();
+        postfixQueue.push(stack.get());
+        stack.pop();
       }
-      s.push(token);
+      stack.push(token);
     } 
     else if (token == "*" || token == "/")
     {
-      while (!s.isEmpty() && (s.get() == "*" || s.get() == "/"))
+      while (!stack.isEmpty() && (stack.get() == "*" || stack.get() == "/"))
       {
-        postfixQueue.push(s.get());
-        s.pop();
+        postfixQueue.push(stack.get());
+        stack.pop();
       }
-      s.push(token);
+      stack.push(token);
     }
     else if (token == "(")
     {
-      s.push(token);
+      stack.push(token);
     }
     else if (token == ")")
     {
-      while (!s.isEmpty() && s.get() != "(")
+      while (!stack.isEmpty() && stack.get() != "(")
       {
-        postfixQueue.push(s.get());
-        s.pop();
+        postfixQueue.push(stack.get());
+        stack.pop();
       }
-      s.pop();
+      stack.pop();
     } 
     else 
     {
       std::logic_error("Ivalid token");
     }
   }
-  while (!s.isEmpty())
+  while (!stack.isEmpty())
   {
-    postfixQueue.push(s.get());
-    s.pop();
+    postfixQueue.push(stack.get());
+    stack.pop();
   }
   return postfixQueue;
 }
+
