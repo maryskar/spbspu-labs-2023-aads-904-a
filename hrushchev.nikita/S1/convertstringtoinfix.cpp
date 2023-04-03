@@ -13,3 +13,4 @@ Queue< std::string > convertStringToInfix(std::string str)
   }
   return infix_queue;
 }
+
