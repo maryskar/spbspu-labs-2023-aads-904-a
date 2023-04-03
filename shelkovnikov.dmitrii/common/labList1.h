@@ -69,6 +69,7 @@ namespace dimkashelk
           else
           {
             out << dataset_name << " " << d << "\n";
+            return;
           }
         }
         catch (...)

@@ -294,7 +294,7 @@ namespace dimkashelk
     }
     ~TwoThreeTree()
     {
-      free(root_);
+      free();
     }
     void insert(const Key &k, const Value &v)
     {
@@ -320,7 +320,7 @@ namespace dimkashelk
       }
       throw std::logic_error("No element");
     }
-    bool contains(const Key &k)
+    bool contains(const Key &k) const
     {
       node_type *node = search(root_, k);
       return node && (k == node->key[0] || node->size == 2 && k == node->key[1]);
@@ -328,6 +328,8 @@ namespace dimkashelk
     void free()
     {
       free(root_);
+      delete root_;
+      root_ = nullptr;
     }
     Iterator begin() const
     {
@@ -472,7 +474,7 @@ namespace dimkashelk
         return item;
       }
     }
-    node_type *search(node_type *node, const Key &k)
+    node_type *search(node_type *node, const Key &k) const
     {
       if (!node)
       {
@@ -508,15 +510,16 @@ namespace dimkashelk
       }
       free(node->first);
       delete node->first;
+      node->first = nullptr;
       free(node->second);
       delete node->second;
+      node->second = nullptr;
       if (node->size == 2)
       {
         free(node->third);
         delete node->third;
+        node->third = nullptr;
       }
-      delete node;
-      node = nullptr;
     }
     void copy(const two_three_tree_type &tree)
     {

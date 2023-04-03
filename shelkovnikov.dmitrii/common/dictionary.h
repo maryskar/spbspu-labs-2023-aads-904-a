@@ -109,16 +109,11 @@ namespace dimkashelk
     friend dict_type operator&(const dict_type &first, const dict_type &second)
     {
       dict_type result;
-      for (auto it_first = second.list_.begin(); it_first != second.list_.end(); it_first++)
+      for (auto it_first = first.list_.begin(); it_first != first.list_.end(); it_first++)
       {
-        auto comp = [&](const auto &item)
+        if (second.list_.contains(*it_first))
         {
-          return item == *it_first;
-        };
-        auto res = std::find_if(first.list_.begin(), first.list_.end(), comp);
-        if (res != second.list_.end())
-        {
-          result.push(*res, res.value);
+          result.push(*it_first, it_first.value);
         }
       }
       return result;
