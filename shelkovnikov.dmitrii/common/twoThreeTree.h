@@ -320,6 +320,11 @@ namespace dimkashelk
       }
       throw std::logic_error("No element");
     }
+    bool contains(const Key &k)
+    {
+      node_type *node = search(root_, k);
+      return node && (k == node->key[0] || node->size == 2 && k == node->key[1]);
+    }
     void free()
     {
       free(root_);
