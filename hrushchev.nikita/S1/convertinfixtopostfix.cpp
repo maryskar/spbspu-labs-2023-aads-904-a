@@ -2,6 +2,7 @@
 #include <string>
 #include "queue.hpp"
 #include "stack.hpp"
+#include <stdexcept>
 
 Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
 {
