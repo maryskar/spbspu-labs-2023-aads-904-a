@@ -96,7 +96,7 @@ namespace details
       {
         std::swap(key[0], key[1]);
         std::swap(value[0], value[1]);
-      };
+      }
       if (size == 3)
       {
         if (!compare_(key[0], key[2]))
@@ -267,7 +267,7 @@ namespace dimkashelk
     }
     TwoThreeTree(two_three_tree_type &&tree):
       root_(tree.root_),
-      compare_(Compare{})
+      compare_(Compare())
     {
       tree.root_ = nullptr;
     }

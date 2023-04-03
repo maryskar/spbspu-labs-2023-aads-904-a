@@ -21,7 +21,7 @@ namespace dimkashelk
       compare_(dict.compare_)
     {}
     Dictionary(dict_type &&dict):
-      list_(dict.list_),
+      list_(std::move(dict.list_)),
       compare_(dict.compare_)
     {}
     dict_type &operator=(const dict_type &other)
@@ -39,7 +39,7 @@ namespace dimkashelk
       {
         return *this;
       }
-      list_ = other.list_;
+      list_ = std::move(other.list_);
       return *this;
     }
     ~Dictionary() = default;
