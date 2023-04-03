@@ -77,32 +77,12 @@ namespace dimkashelk
         return dict_type();
       }
       dict_type new_dict;
-      auto iter_first = first.list_.begin();
-      auto iter_first_end = first.list_.end();
-      auto iter_second = second.list_.begin();
-      auto iter_second_end = second.list_.end();
-      while (iter_first != iter_first_end && iter_second != iter_second_end)
+      for (auto iter = first.list_.begin(); iter != first.list_.end(); iter++)
       {
-        while (iter_second != iter_second_end && Compare{}(*iter_first, *iter_second))
+        if (!second.list_.contains(*iter))
         {
-          iter_second++;
+          new_dict.push(*iter, iter.value);
         }
-        if (iter_second == iter_second_end)
-        {
-          break;
-        }
-        if (*iter_first != *iter_second)
-        {
-          Key key = *iter_first;
-          Value value = iter_first.value;
-          new_dict.push(key, value);
-        }
-        iter_first++;
-      }
-      while (iter_first != iter_first_end)
-      {
-        new_dict.push(*iter_first, iter_first.value);
-        iter_first++;
       }
       return new_dict;
     }
@@ -121,23 +101,13 @@ namespace dimkashelk
     friend dict_type operator|(const dict_type &first, const dict_type &second)
     {
       dict_type new_dict;
-      auto iter_second = second.list_.begin();
-      auto iter_second_end = second.list_.end();
-      while (iter_second != iter_second_end)
+      for (auto it_second = second.list_.begin(); it_second != second.list_.end(); it_second++)
       {
-        Key key = *iter_second;
-        Value value = iter_second.value;
-        new_dict.push(key, value);
-        iter_second++;
+        new_dict.push(*it_second, it_second.value);
       }
-      auto iter_first = first.list_.begin();
-      auto iter_first_end = first.list_.end();
-      while (iter_first != iter_first_end)
+      for (auto it_first = first.list_.begin(); it_first != first.list_.end(); it_first++)
       {
-        Key key = *iter_first;
-        Value value = iter_first.value;
-        new_dict.push(key, value);
-        iter_first++;
+        new_dict.push(*it_first, it_first.value);
       }
       return new_dict;
     }
