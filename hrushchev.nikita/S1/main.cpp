@@ -9,7 +9,7 @@
 
 int main(int argc, char* argv[])
 {
-  if (argc != 2)
+  if (argc > 2)
   {
     std::cerr << "Error arg\n";
     return 1;
@@ -25,9 +25,16 @@ int main(int argc, char* argv[])
   std::string line;
   while (getline(input, line))
   {
-    Queue< std::string > infix = convertStringToInfix(line);
-    Queue< std::string > postfix = convertInfixToPostfix(infix);
-    std::cout << calculatePostfix(postfix) << "\n";
+    try
+    {
+      Queue< std::string > infix = convertStringToInfix(line);
+      Queue< std::string > postfix = convertInfixToPostfix(infix);
+      std::cout << calculatePostfix(postfix) << "\n";
+    }
+    catch (...)
+    {
+      return 2;
+    }
   }
 
   input.close();
