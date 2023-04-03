@@ -7,13 +7,13 @@
 #include "getResultOfArithmeticExpression.h"
 namespace dimkashelk
 {
-  Queue< PartOfArithmeticExpression > getPolandArithmeticExpression(Queue< PartOfArithmeticExpression > &data)
+  Queue< PartOfArithExpr > getPolandArithmeticExpression(Queue< PartOfArithExpr > &data)
   {
-    Queue< PartOfArithmeticExpression > queue;
-    Stack< PartOfArithmeticExpression > stack;
+    Queue< PartOfArithExpr > queue;
+    Stack< PartOfArithExpr > stack;
     while (!data.empty())
     {
-      PartOfArithmeticExpression p = data.front();
+      PartOfArithExpr p = data.front();
       data.pop_front();
       if (!p.isDigit)
       {
@@ -23,7 +23,7 @@ namespace dimkashelk
           {
             throw std::logic_error("Check expression");
           }
-          PartOfArithmeticExpression p1 = stack.last();
+          PartOfArithExpr p1 = stack.last();
           stack.pop_back();
           while (!p1.isBracket && p1.element.bracket_ != '(')
           {
@@ -42,7 +42,7 @@ namespace dimkashelk
         }
         else
         {
-          PartOfArithmeticExpression p1 = stack.last();
+          PartOfArithExpr p1 = stack.last();
           if (p1.isBracket || p.isBracket || isGreaterPriority(p1, p))
           {
             stack.push(p);

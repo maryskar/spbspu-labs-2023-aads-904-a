@@ -6,13 +6,13 @@
 #include "parser.h"
 namespace dimkashelk
 {
-  Queue< PartOfArithmeticExpression > getQueueOfArithmeticExpression(std::string element)
+  Queue< PartOfArithExpr > getQueueOfArithmeticExpression(std::string element)
   {
     Parser parser(element);
-    Queue< PartOfArithmeticExpression > data;
+    Queue< PartOfArithExpr > data;
     while (parser.hasNext())
     {
-      PartOfArithmeticExpression part(parser());
+      PartOfArithExpr part(parser());
       data.push(part);
     }
     return data;

@@ -6,13 +6,13 @@
 #include "getResultOfArithmeticExpression.h"
 namespace dimkashelk
 {
-  long long getResultArithmeticExpression(Queue< PartOfArithmeticExpression > &polandExpression)
+  long long getResultArithmeticExpression(Queue< PartOfArithExpr > &polandExpression)
   {
     namespace dsk = dimkashelk;
-    dsk::Stack< dsk::PartOfArithmeticExpression > remains;
+    dsk::Stack< dsk::PartOfArithExpr > remains;
     while (!polandExpression.empty())
     {
-      dsk::PartOfArithmeticExpression p = polandExpression.front();
+      dsk::PartOfArithExpr p = polandExpression.front();
       polandExpression.pop_front();
       if (p.isDigit)
       {
@@ -20,11 +20,11 @@ namespace dimkashelk
       }
       else
       {
-        dsk::PartOfArithmeticExpression p2 = remains.last();
+        dsk::PartOfArithExpr p2 = remains.last();
         remains.pop_back();
-        dsk::PartOfArithmeticExpression p1 = remains.last();
+        dsk::PartOfArithExpr p1 = remains.last();
         remains.pop_back();
-        remains.push(dsk::PartOfArithmeticExpression(details::getResult(p1.element.operand_, p2.element.operand_, p.element.operator_)));
+        remains.push(dsk::PartOfArithExpr(details::getResult(p1.element.operand_, p2.element.operand_, p.element.operator_)));
       }
     }
     auto res = remains.last().element.operand_;

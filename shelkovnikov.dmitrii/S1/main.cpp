@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     std::cin.rdbuf(in.rdbuf());
   }
   std::string element;
-  dsk::Stack< dsk::PartOfArithmeticExpression > answer;
+  dsk::Stack< dsk::PartOfArithExpr > answer;
   while (std::cin)
   {
     std::getline(std::cin, element);
@@ -31,9 +31,9 @@ int main(int argc, char *argv[])
     }
     try
     {
-      dsk::Queue< dsk::PartOfArithmeticExpression > data = dsk::getQueueOfArithmeticExpression(element);
-      dsk::Queue< dsk::PartOfArithmeticExpression > polandExpression = dsk::getPolandArithmeticExpression(data);
-      answer.push(dsk::PartOfArithmeticExpression(dsk::getResultArithmeticExpression(polandExpression)));
+      dsk::Queue< dsk::PartOfArithExpr > data = dsk::getQueueOfArithmeticExpression(element);
+      dsk::Queue< dsk::PartOfArithExpr > polandExpression = dsk::getPolandArithmeticExpression(data);
+      answer.push(dsk::PartOfArithExpr(dsk::getResultArithmeticExpression(polandExpression)));
     }
     catch (const std::logic_error &e)
     {

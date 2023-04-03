@@ -12,7 +12,7 @@ namespace
     return str.find_first_not_of("()") == std::string::npos;
   }
 }
-dimkashelk::PartOfArithmeticExpression::element::element(const std::string &str)
+dimkashelk::PartOfArithExpr::element::element(const std::string &str)
 {
   if (checkDigit(str))
   {
@@ -27,34 +27,34 @@ dimkashelk::PartOfArithmeticExpression::element::element(const std::string &str)
     operator_ = str[0];
   }
 }
-dimkashelk::PartOfArithmeticExpression::PartOfArithmeticExpression(const std::string &str):
+dimkashelk::PartOfArithExpr::PartOfArithExpr(const std::string &str):
   isDigit(checkDigit(str)),
   isBracket(checkBracket(str)),
   element(str)
 {}
-dimkashelk::PartOfArithmeticExpression::PartOfArithmeticExpression(long long number):
+dimkashelk::PartOfArithExpr::PartOfArithExpr(long long number):
   isDigit(true),
   isBracket(false),
   element(number)
 {}
-dimkashelk::PartOfArithmeticExpression::PartOfArithmeticExpression(const PartOfArithmeticExpression &part):
+dimkashelk::PartOfArithExpr::PartOfArithExpr(const PartOfArithExpr &part):
   isDigit(part.isDigit),
   isBracket(part.isBracket),
   element(part.element)
 {}
-dimkashelk::PartOfArithmeticExpression::PartOfArithmeticExpression(PartOfArithmeticExpression &&part):
+dimkashelk::PartOfArithExpr::PartOfArithExpr(PartOfArithExpr &&part):
   isDigit(part.isDigit),
   isBracket(part.isBracket),
   element(part.element)
 {}
-dimkashelk::PartOfArithmeticExpression &dimkashelk::PartOfArithmeticExpression::operator=(const PartOfArithmeticExpression &part)
+dimkashelk::PartOfArithExpr &dimkashelk::PartOfArithExpr::operator=(const PartOfArithExpr &part)
 {
   isDigit = part.isDigit;
   isBracket = part.isBracket;
   element = part.element;
   return *this;
 }
-bool dimkashelk::isGreaterPriority(const PartOfArithmeticExpression &lhs, const PartOfArithmeticExpression &rhs)
+bool dimkashelk::isGreaterPriority(const PartOfArithExpr &lhs, const PartOfArithExpr &rhs)
 {
   if (lhs.isDigit || rhs.isDigit || lhs.isBracket || rhs.isBracket)
   {

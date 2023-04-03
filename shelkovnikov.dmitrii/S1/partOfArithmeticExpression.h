@@ -3,7 +3,7 @@
 #include <string>
 namespace dimkashelk
 {
-  struct PartOfArithmeticExpression
+  struct PartOfArithExpr
   {
     bool isDigit;
     bool isBracket;
@@ -20,12 +20,12 @@ namespace dimkashelk
       {}
       explicit element(const std::string &str);
     } element;
-    explicit PartOfArithmeticExpression(const std::string &str);
-    explicit PartOfArithmeticExpression(long long number);
-    PartOfArithmeticExpression(const PartOfArithmeticExpression &part);
-    PartOfArithmeticExpression(PartOfArithmeticExpression &&part);
-    PartOfArithmeticExpression &operator=(const PartOfArithmeticExpression &part);
+    explicit PartOfArithExpr(const std::string &str);
+    explicit PartOfArithExpr(long long number);
+    PartOfArithExpr(const PartOfArithExpr &part);
+    PartOfArithExpr(PartOfArithExpr &&part);
+    PartOfArithExpr &operator=(const PartOfArithExpr &part);
   };
-  bool isGreaterPriority(const PartOfArithmeticExpression &lhs, const PartOfArithmeticExpression &rhs);
+  bool isGreaterPriority(const PartOfArithExpr &lhs, const PartOfArithExpr &rhs);
 }
 #endif
