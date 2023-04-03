@@ -3,7 +3,7 @@
 #include <string>
 #include "queue.hpp"
 
-Queue<std::string> convertInfixToPostfix(Queue<std::string>& infixQueue);
+Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue);
 bool isOperator(char);
 
 #endif
