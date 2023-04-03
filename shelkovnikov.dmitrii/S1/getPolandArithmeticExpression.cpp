@@ -1,5 +1,5 @@
 #include "getPolandArithmeticExpression.h"
-dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(Queue &data)
+dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(dimkashelk::Queue< dimkashelk::PartOfArithExpr > &data)
 {
   namespace dsk = dimkashelk;
   dsk::Queue< dsk::PartOfArithExpr > queue;
