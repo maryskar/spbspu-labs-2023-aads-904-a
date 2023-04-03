@@ -4,5 +4,7 @@
 #include "queue.hpp"
 
 Queue<std::string> convertInfixToPostfix(Queue<std::string>& infixQueue);
+bool isOperator(char);
 
 #endif
+
