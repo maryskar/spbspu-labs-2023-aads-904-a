@@ -157,12 +157,6 @@ namespace dimkashelk
       Key key;
       node_type *node_;
       node_type *prev_;
-      Iterator():
-        value(Value()),
-        key(Key()),
-        node_(nullptr),
-        prev_(nullptr)
-      {};
       explicit Iterator(node_type *node):
         value(getValue(node)),
         key(getKey(node)),
@@ -357,7 +351,7 @@ namespace dimkashelk
     }
     Iterator end() const
     {
-      return Iterator();
+      return Iterator(nullptr);
     }
     friend bool operator>(const two_three_tree_type &first, const two_three_tree_type &second)
     {
