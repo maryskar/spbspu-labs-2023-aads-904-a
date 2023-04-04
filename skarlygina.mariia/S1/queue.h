@@ -21,7 +21,7 @@ Queue< T >::Queue():
 template< typename T >
 void Queue< T >::push(T rhs)
 {
-  Node* temp = new Node;
+  Node< T >* temp = new Node;
   temp->data = rhs;
   temp->next = nullptr;
   if (!head)
