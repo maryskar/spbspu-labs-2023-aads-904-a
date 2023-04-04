@@ -20,9 +20,7 @@ namespace dimkashelk
     }
     void push(const T &rhs)
     {
-      auto *node = new details::NodeOfDataClass< T >(rhs);
-      node->next = begin_;
-      begin_ = node;
+      begin_ = new  details::NodeOfDataClass< T >(rhs, begin_);
     }
     T &last()
     {

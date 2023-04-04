@@ -4,16 +4,19 @@ namespace dimkashelk
 {
   namespace details
   {
-    template <typename T>
+    template < typename T >
     struct NodeOfDataClass
     {
       T data;
       NodeOfDataClass *next;
-      explicit NodeOfDataClass(const T &rhs) :
+      explicit NodeOfDataClass(const T &rhs):
         data(rhs),
         next(nullptr)
-      {
-      }
+      {}
+      NodeOfDataClass(const T &rhs, NodeOfDataClass< T > *next):
+        data(rhs),
+        next(next)
+      {}
     };
   }
 }
