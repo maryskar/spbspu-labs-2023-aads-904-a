@@ -7,14 +7,14 @@
 
 long long calculatePostfix(Queue<std::string>& postfixQueue)
 {
-  Stack< int > stack;
+  Stack< long long > stack;
   while (!postfixQueue.isEmpty())
   {
     std::string token = postfixQueue.get();
     postfixQueue.pop();
     if (isdigit(token[0]))
     {
-      stack.push(std::stoi(token));
+      stack.push(std::stoll(token));
     }
     else
     {

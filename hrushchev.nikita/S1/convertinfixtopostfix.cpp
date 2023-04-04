@@ -25,7 +25,7 @@ Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
       }
       stack.push(token);
     }
-    else if (token == "*" || token == "/")
+    else if (token == "*" || token == "/" || token == "%")
     {
       while (!stack.isEmpty() && ((stack.get() == "*" || stack.get() == "/" || stack.get() == "%")))
       {

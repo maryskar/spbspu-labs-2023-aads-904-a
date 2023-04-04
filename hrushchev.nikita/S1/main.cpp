@@ -40,7 +40,8 @@ int main(int argc, char* argv[])
       {
         Queue< std::string > infix = convertStringToInfix(line);
         Queue< std::string > postfix = convertInfixToPostfix(infix);
-        std::cout << calculatePostfix(postfix) << "\n";
+        long long result = calculatePostfix(postfix);
+        std::cout << result << " ";
       }
       catch (const std::exception& e)
       {
@@ -68,7 +69,8 @@ int main(int argc, char* argv[])
       {
         Queue< std::string > infix = convertStringToInfix(line);
         Queue< std::string > postfix = convertInfixToPostfix(infix);
-        std::cout << calculatePostfix(postfix) << "\n";
+        long long result = calculatePostfix(postfix);
+        std::cout << result << " ";
       }
       catch (const std::exception& e)
       {
