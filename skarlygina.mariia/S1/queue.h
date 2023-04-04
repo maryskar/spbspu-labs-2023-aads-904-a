@@ -38,4 +38,14 @@ void Queue< T >::push(T rhs)
 	current->next = temp;
   }
 }
+
+template< typename T >
+T Queue< T >::drop()
+{
+  if (head == nullptr)
+  {
+    throw std::out_of_range("Queue is empty");
+  }
+  Node< T >* newhead = head->next;
+}
 #endif
