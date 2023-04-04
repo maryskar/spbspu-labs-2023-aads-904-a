@@ -17,12 +17,7 @@ namespace dimkashelk
       begin_(nullptr),
       end_(nullptr)
     {
-      details::NodeOneWayList< T > *start = queue.begin_;
-      while (start)
-      {
-        push(start->data);
-        start = start->next;
-      }
+      copy(queue);
     }
     Queue< T >(Queue< T > &&queue):
       begin_(queue.begin_),
@@ -44,12 +39,7 @@ namespace dimkashelk
       try
       {
         free();
-        details::NodeOneWayList< T > *start = queue.begin_;
-        while (start)
-        {
-          push(start->data);
-          start = start->next;
-        }
+        copy(queue);
         return *this;
       }
       catch (...)
@@ -122,6 +112,15 @@ namespace dimkashelk
       details::freeList< T >(begin_);
       begin_ = nullptr;
       end_ = nullptr;
+    }
+    void copy(const Queue< T > &queue)
+    {
+      details::NodeOneWayList< T > *start = queue.begin_;
+      while (start)
+      {
+        push(start->data);
+        start = start->next;
+      }
     }
   };
 }
