@@ -11,6 +11,12 @@ namespace
     return str.find_first_not_of("()") == std::string::npos;
   }
 }
+dimkashelk::PartOfArithExpr::element::element(long long o):
+  operand_(o)
+{}
+dimkashelk::PartOfArithExpr::element::element(char o):
+  operator_(o)
+{}
 dimkashelk::PartOfArithExpr::element::element(const std::string &str)
 {
   if (checkDigit(str))
