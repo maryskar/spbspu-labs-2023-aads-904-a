@@ -164,11 +164,19 @@ namespace dimkashelk
         prev_(nullptr)
       {};
       explicit Iterator(node_type *node):
-        value(node->value[0]),
+        value(getValue(node)),
         key(node->key[0]),
         node_(node),
         prev_(nullptr)
       {};
+      Value &getValue(node_type *node)
+      {
+        if (node == nullptr)
+        {
+          return Value();
+        }
+        return node->value[0];
+      }
       void next()
       {
         if (node_->getLastChildren() == nullptr)
@@ -243,6 +251,10 @@ namespace dimkashelk
       }
       static node_type *goDown(node_type *node)
       {
+        if (node == nullptr)
+        {
+          return nullptr;
+        }
         while (node->first)
         {
           node = node->first;
