@@ -59,11 +59,11 @@ int main(int argc, char* argv[])
       {
         std::cout << " " << results.get();
         results.pop();
-      } 
+      }
     }
     input.close();
     return 0;
-  } 
+  }
   else
   {
     std::string line;
@@ -79,8 +79,8 @@ int main(int argc, char* argv[])
         continue;
       }
       Queue< std::string > infix = convertStringToInfix(line);
-      Queue< std::string > postfix = convertInfixToPostfix(infix);      
-      try
+      Queue< std::string > postfix = convertInfixToPostfix(infix);
+            try
       {
         long long result = calculatePostfix(postfix);
         results.push(result);
