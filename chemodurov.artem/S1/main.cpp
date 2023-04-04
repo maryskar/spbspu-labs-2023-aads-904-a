@@ -71,7 +71,6 @@ int main(int argc, char ** argv)
       {
         continue;
       }
-      size_t inf_size = 0;
       chemodurov::Queue< chemodurov::InfixExpr > inf;
       try
       {
