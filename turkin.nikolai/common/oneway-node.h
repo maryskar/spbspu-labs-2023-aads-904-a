@@ -5,7 +5,7 @@ template< typename T >
 struct OneWayNode
 {
   T data;
-  OneWayList< T > * next;
+  OneWayNode< T > * next;
 };
 
 #endif
