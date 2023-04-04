@@ -18,7 +18,7 @@ namespace dimkashelk
       begin_(nullptr),
       end_(nullptr)
     {
-      details::NodeOfDataClass< T > *start = queue.begin_;
+      details::NodeOneWayList< T > *start = queue.begin_;
       while (start)
       {
         push(start->data);
@@ -45,7 +45,7 @@ namespace dimkashelk
       try
       {
         free();
-        details::NodeOfDataClass< T > *start = queue.begin_;
+        details::NodeOneWayList< T > *start = queue.begin_;
         while (start)
         {
           push(start->data);
@@ -73,7 +73,7 @@ namespace dimkashelk
     }
     void push(const T &rhs)
     {
-      auto *node = new details::NodeOfDataClass< T >(rhs);
+      auto *node = new details::NodeOneWayList< T >(rhs);
       if (empty())
       {
         begin_ = node;
@@ -103,7 +103,7 @@ namespace dimkashelk
       {
         throw std::logic_error("Check");
       }
-      details::NodeOfDataClass< T > *node = begin_;
+      details::NodeOneWayList< T > *node = begin_;
       begin_ = begin_->next;
       if (begin_ == end_)
       {
@@ -116,8 +116,8 @@ namespace dimkashelk
       return begin_ == nullptr;
     }
   private:
-    details::NodeOfDataClass< T > *begin_;
-    details::NodeOfDataClass< T > *end_;
+    details::NodeOneWayList< T > *begin_;
+    details::NodeOneWayList< T > *end_;
     void free()
     {
       details::freeList< T >(begin_);

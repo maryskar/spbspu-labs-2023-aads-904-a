@@ -20,7 +20,7 @@ namespace dimkashelk
     }
     void push(const T &rhs)
     {
-      begin_ = new  details::NodeOfDataClass< T >(rhs, begin_);
+      begin_ = new  details::NodeOneWayList< T >(rhs, begin_);
     }
     T &last()
     {
@@ -36,7 +36,7 @@ namespace dimkashelk
       {
         throw std::logic_error("Check");
       }
-      details::NodeOfDataClass< T > *node = begin_;
+      details::NodeOneWayList< T > *node = begin_;
       begin_ = begin_->next;
       delete node;
     }
@@ -45,7 +45,7 @@ namespace dimkashelk
       return begin_ == nullptr;
     }
   private:
-    details::NodeOfDataClass< T > *begin_;
+    details::NodeOneWayList< T > *begin_;
   };
 }
 #endif

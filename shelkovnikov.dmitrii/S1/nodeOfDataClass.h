@@ -5,15 +5,15 @@ namespace dimkashelk
   namespace details
   {
     template < typename T >
-    struct NodeOfDataClass
+    struct NodeOneWayList
     {
       T data;
-      NodeOfDataClass *next;
-      explicit NodeOfDataClass(const T &rhs):
+      NodeOneWayList *next;
+      explicit NodeOneWayList(const T &rhs):
         data(rhs),
         next(nullptr)
       {}
-      NodeOfDataClass(const T &rhs, NodeOfDataClass< T > *next):
+      NodeOneWayList(const T &rhs, NodeOneWayList< T > *next):
         data(rhs),
         next(next)
       {}

@@ -6,7 +6,7 @@ namespace dimkashelk
   namespace details
   {
     template <typename T>
-    void freeList(NodeOfDataClass<T> *start)
+    void freeList(NodeOneWayList<T> *start)
     {
       while (start)
       {
