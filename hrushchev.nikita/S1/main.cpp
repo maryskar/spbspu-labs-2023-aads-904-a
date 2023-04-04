@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
       if (line.empty())
       {
         continue;
-      }      
+      }
       try
       {
         Queue< std::string > infix = convertStringToInfix(line);
@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
         std::cerr << "Error: " << e.what() << "\n";
         return 2;
       }
-    } 
+    }
   }
 }
 
