@@ -7,6 +7,7 @@
 #include "convertinfixtopostfix.hpp"
 #include "calcucalepostfix.hpp"
 #include "queue.hpp"
+#include "stack.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -17,7 +18,7 @@ int main(int argc, char* argv[])
   }
 
   if(argc == 2)
-    {
+  {
     std::ifstream input(argv[1]);
     if (!input)
     {
@@ -26,6 +27,7 @@ int main(int argc, char* argv[])
     }
 
     std::string line;
+    Stack < long long > results;
     while (getline(input, line))
     {
       if (!input)
@@ -36,16 +38,12 @@ int main(int argc, char* argv[])
       {
         continue;
       }
+      Queue< std::string > infix = convertStringToInfix(line);
+      Queue< std::string > postfix = convertInfixToPostfix(infix);
       try
       {
-        Queue< std::string > infix = convertStringToInfix(line);
-        Queue< std::string > postfix = convertInfixToPostfix(infix);
         long long result = calculatePostfix(postfix);
-        std::cout << result;
-        if (input)
-        {
-          std::cout << " ";
-        }
+        results.push(result);
       }
       catch (const std::exception& e)
       {
@@ -53,14 +51,25 @@ int main(int argc, char* argv[])
         return 2;
       }
     }
-  input.close();
-  }
+    if(!results.isEmpty())
+    {
+      std::cout << results.get();
+      results.pop();
+      while (!results.isEmpty())
+      {
+        std::cout << " " << results.get();
+        results.pop();
+      } 
+    }
+    input.close();
+    return 0;
+  } 
   else
   {
     std::string line;
+    Stack < long long > results;
     while (std::cin)
     {
-      getline(std::cin, line);
       if (!std::cin)
       {
         break;
@@ -69,16 +78,12 @@ int main(int argc, char* argv[])
       {
         continue;
       }
+      Queue< std::string > infix = convertStringToInfix(line);
+      Queue< std::string > postfix = convertInfixToPostfix(infix);      
       try
       {
-        Queue< std::string > infix = convertStringToInfix(line);
-        Queue< std::string > postfix = convertInfixToPostfix(infix);
         long long result = calculatePostfix(postfix);
-        std::cout << result;
-        if (std::cin)
-        {
-          std::cout << " ";
-        }
+        results.push(result);
       }
       catch (const std::exception& e)
       {
@@ -86,6 +91,18 @@ int main(int argc, char* argv[])
         return 2;
       }
     }
+    if(!results.isEmpty())
+    {
+      std::cout << results.get();
+      results.pop();
+      while (!results.isEmpty())
+      {
+        std::cout << " " << results.get();
+        results.pop();
+      }
+    }
+    return 0;
   }
+  std::cout << "\n";
 }
 

@@ -60,6 +60,10 @@ long long remaind(long long a, long long b)
   {
     throw std::logic_error("Remaind by 0");
   }
+  if(a < 0)
+  {
+    return b + a % b;
+  }
   return a % b;
 }
 
