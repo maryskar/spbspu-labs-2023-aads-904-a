@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
         return 2;
       }
     }
-    if(!results.isEmpty())
+    if (!results.isEmpty())
     {
       std::cout << results.get();
       results.pop();
@@ -62,7 +62,6 @@ int main(int argc, char* argv[])
       }
     }
     input.close();
-    return 0;
   }
   else
   {
@@ -70,6 +69,7 @@ int main(int argc, char* argv[])
     Stack < long long > results;
     while (std::cin)
     {
+      getline(std::cin, line);
       if (!std::cin)
       {
         break;
@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
       }
       Queue< std::string > infix = convertStringToInfix(line);
       Queue< std::string > postfix = convertInfixToPostfix(infix);
-            try
+      try
       {
         long long result = calculatePostfix(postfix);
         results.push(result);
@@ -101,7 +101,6 @@ int main(int argc, char* argv[])
         results.pop();
       }
     }
-    return 0;
   }
   std::cout << "\n";
 }
