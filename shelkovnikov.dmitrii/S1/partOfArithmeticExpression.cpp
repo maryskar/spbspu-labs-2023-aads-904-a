@@ -66,9 +66,13 @@ dimkashelk::PartOfArithExpr &dimkashelk::PartOfArithExpr::operator=(dimkashelk::
   element = part.element;
   return *this;
 }
+bool dimkashelk::PartOfArithExpr::isDigit() const
+{
+  return isDigit_;
+}
 bool dimkashelk::isGreaterPriority(const PartOfArithExpr &lhs, const PartOfArithExpr &rhs)
 {
-  if (lhs.isDigit_ || rhs.isDigit_ || lhs.isBracket || rhs.isBracket)
+  if (lhs.isDigit() || rhs.isDigit() || lhs.isBracket || rhs.isBracket)
   {
     throw std::logic_error("Must be operator, not operand or brackets");
   }

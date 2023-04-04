@@ -9,7 +9,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
   {
     dsk::PartOfArithExpr p = data.front();
     data.popFront();
-    if (!p.isDigit_)
+    if (!p.isDigit())
     {
       if (p.isBracket && p.element.operator_ == ')')
       {

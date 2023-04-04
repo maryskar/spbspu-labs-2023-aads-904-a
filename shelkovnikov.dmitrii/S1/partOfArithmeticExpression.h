@@ -12,7 +12,7 @@ namespace dimkashelk
     PartOfArithExpr(PartOfArithExpr &&part);
     PartOfArithExpr &operator=(const PartOfArithExpr &part);
     PartOfArithExpr &operator=(PartOfArithExpr &&part);
-    bool isDigit();
+    bool isDigit() const;
   private:
     bool isDigit_;
     bool isBracket;

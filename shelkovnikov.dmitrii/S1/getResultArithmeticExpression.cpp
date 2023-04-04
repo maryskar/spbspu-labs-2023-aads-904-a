@@ -89,7 +89,7 @@ long long dimkashelk::getResultArithmeticExpression(dimkashelk::Queue< dimkashel
   {
     dsk::PartOfArithExpr p = polandExpression.front();
     polandExpression.popFront();
-    if (p.isDigit_)
+    if (p.isDigit())
     {
       remains.pushFront(p);
     }
