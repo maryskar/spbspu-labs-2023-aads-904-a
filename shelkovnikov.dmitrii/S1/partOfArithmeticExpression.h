@@ -15,7 +15,7 @@ namespace dimkashelk
     bool isDigit() const;
   private:
     bool isDigit_;
-    bool isBracket;
+    bool isBracket_;
     union element
     {
       long long operand_;

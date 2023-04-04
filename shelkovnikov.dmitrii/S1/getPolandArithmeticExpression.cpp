@@ -11,7 +11,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
     data.popFront();
     if (!p.isDigit())
     {
-      if (p.isBracket && p.element.operator_ == ')')
+      if (p.isBracket_ && p.element.operator_ == ')')
       {
         if (stack.empty())
         {
@@ -19,7 +19,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
         }
         dsk::PartOfArithExpr p1 = stack.last();
         stack.popBack();
-        while (!p1.isBracket && p1.element.bracket_ != '(')
+        while (!p1.isBracket_ && p1.element.bracket_ != '(')
         {
           queue.push(p1);
           if (stack.empty())
@@ -37,7 +37,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
       else
       {
         dsk::PartOfArithExpr p1 = stack.last();
-        if (p1.isBracket || p.isBracket || isGreaterPriority(p1, p))
+        if (p1.isBracket_ || p.isBracket_ || isGreaterPriority(p1, p))
         {
           stack.pushFront(p);
         }

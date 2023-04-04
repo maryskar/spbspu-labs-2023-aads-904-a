@@ -34,35 +34,35 @@ dimkashelk::PartOfArithExpr::element::element(const std::string &str)
 }
 dimkashelk::PartOfArithExpr::PartOfArithExpr(const std::string &str):
   isDigit_(checkDigit(str)),
-  isBracket(checkBracket(str)),
+  isBracket_(checkBracket(str)),
   element(str)
 {}
 dimkashelk::PartOfArithExpr::PartOfArithExpr(long long number):
   isDigit_(true),
-  isBracket(false),
+  isBracket_(false),
   element(number)
 {}
 dimkashelk::PartOfArithExpr::PartOfArithExpr(const PartOfArithExpr &part):
   isDigit_(part.isDigit_),
-  isBracket(part.isBracket),
+  isBracket_(part.isBracket_),
   element(part.element)
 {}
 dimkashelk::PartOfArithExpr::PartOfArithExpr(PartOfArithExpr &&part):
   isDigit_(part.isDigit_),
-  isBracket(part.isBracket),
+  isBracket_(part.isBracket_),
   element(part.element)
 {}
 dimkashelk::PartOfArithExpr &dimkashelk::PartOfArithExpr::operator=(const PartOfArithExpr &part)
 {
   isDigit_ = part.isDigit_;
-  isBracket = part.isBracket;
+  isBracket_ = part.isBracket_;
   element = part.element;
   return *this;
 }
 dimkashelk::PartOfArithExpr &dimkashelk::PartOfArithExpr::operator=(dimkashelk::PartOfArithExpr &&part)
 {
   isDigit_ = part.isDigit_;
-  isBracket = part.isBracket;
+  isBracket_ = part.isBracket_;
   element = part.element;
   return *this;
 }
@@ -72,7 +72,7 @@ bool dimkashelk::PartOfArithExpr::isDigit() const
 }
 bool dimkashelk::isGreaterPriority(const PartOfArithExpr &lhs, const PartOfArithExpr &rhs)
 {
-  if (lhs.isDigit() || rhs.isDigit() || lhs.isBracket || rhs.isBracket)
+  if (lhs.isDigit() || rhs.isDigit() || lhs.isBracket_ || rhs.isBracket_)
   {
     throw std::logic_error("Must be operator, not operand or brackets");
   }
