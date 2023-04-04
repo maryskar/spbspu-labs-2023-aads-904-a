@@ -16,6 +16,7 @@ namespace dimkashelk
     bool isBracket() const;
     char getOperator() const;
     char getBracket() const;
+    long long getOperand() const;
   private:
     bool isDigit_;
     bool isBracket_;

@@ -82,6 +82,10 @@ char dimkashelk::PartOfArithExpr::getBracket() const
 {
   return element.bracket_;
 }
+long long dimkashelk::PartOfArithExpr::getOperand() const
+{
+  return element.operand_;
+}
 bool dimkashelk::isGreaterPriority(const PartOfArithExpr &lhs, const PartOfArithExpr &rhs)
 {
   if (lhs.isDigit() || rhs.isDigit() || lhs.isBracket() || rhs.isBracket())
