@@ -79,7 +79,7 @@ namespace details
     }
     bool contains(const Key &k)
     {
-      for (int i = 0; i < size; ++i)
+      for (unsigned int i = 0; i < size; ++i)
       {
         if (key[i] == k)
         {
@@ -158,14 +158,14 @@ namespace dimkashelk
       node_type *node_;
       node_type *prev_;
       Iterator():
-        key(Key()),
         value(Value()),
+        key(Key()),
         node_(nullptr),
         prev_(nullptr)
       {};
       explicit Iterator(node_type *node):
-        key(node->key[0]),
         value(node->value[0]),
+        key(node->key[0]),
         node_(node),
         prev_(nullptr)
       {};
