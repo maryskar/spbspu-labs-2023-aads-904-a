@@ -158,27 +158,11 @@ namespace dimkashelk
       node_type *node_;
       node_type *prev_;
       explicit Iterator(node_type *node):
-        value(getValue(node)),
-        key(getKey(node)),
+        value((node == nullptr)? Value(): node->value[0]),
+        key((node == nullptr)? Key(): node->key[0]),
         node_(node),
         prev_(nullptr)
       {};
-      Value &getValue(node_type *node)
-      {
-        if (node == nullptr)
-        {
-          return Value();
-        }
-        return node->value[0];
-      }
-      Key &getKey(node_type *node)
-      {
-        if (node == nullptr)
-        {
-          return Key();
-        }
-        return node->key[0];
-      }
       void next()
       {
         if (node_->getLastChildren() == nullptr)
