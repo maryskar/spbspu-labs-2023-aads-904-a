@@ -165,7 +165,7 @@ namespace dimkashelk
       {};
       explicit Iterator(node_type *node):
         value(getValue(node)),
-        key(node->key[0]),
+        key(getKey(node)),
         node_(node),
         prev_(nullptr)
       {};
@@ -176,6 +176,14 @@ namespace dimkashelk
           return Value();
         }
         return node->value[0];
+      }
+      Key &getKey(node_type *node)
+      {
+        if (node == nullptr)
+        {
+          return Key();
+        }
+        return node->key[0];
       }
       void next()
       {
