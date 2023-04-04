@@ -25,7 +25,7 @@ dimkashelk::PartOfArithExpr::element::element(const std::string &str)
   }
   else if (checkBracket(str))
   {
-    bracket_ = str[0];
+    bracket_ = Bracket(str[0]);
   }
   else
   {
@@ -78,7 +78,7 @@ char dimkashelk::PartOfArithExpr::getOperator() const
 {
   return element.operator_;
 }
-char dimkashelk::PartOfArithExpr::getBracket() const
+dimkashelk::Bracket dimkashelk::PartOfArithExpr::getBracket() const
 {
   return element.bracket_;
 }

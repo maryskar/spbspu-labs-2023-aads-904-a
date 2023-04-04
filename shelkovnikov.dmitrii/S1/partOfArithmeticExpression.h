@@ -1,6 +1,7 @@
 #ifndef SPBSPU_LABS_2023_AADS_904_A_PART_H
 #define SPBSPU_LABS_2023_AADS_904_A_PART_H
 #include <string>
+#include "bracket.h"
 namespace dimkashelk
 {
   class PartOfArithExpr
@@ -15,7 +16,7 @@ namespace dimkashelk
     bool isDigit() const;
     bool isBracket() const;
     char getOperator() const;
-    char getBracket() const;
+    Bracket getBracket() const;
     long long getOperand() const;
   private:
     bool isDigit_;
@@ -24,7 +25,7 @@ namespace dimkashelk
     {
       long long operand_;
       char operator_;
-      char bracket_;
+      Bracket bracket_;
       explicit element(long long o);
       explicit element(char o);
       explicit element(const std::string &str);
