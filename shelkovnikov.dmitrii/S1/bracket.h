@@ -5,6 +5,7 @@ namespace dimkashelk
   class Bracket
   {
   public:
+    Bracket();
     Bracket(char c);
     bool isOpen() const;
     bool isClose() const;
