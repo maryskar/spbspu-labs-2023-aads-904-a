@@ -86,7 +86,7 @@ void chemodurov::Stack< T >::deleteStack() noexcept
 }
 
 template< typename T >
-void chemodurov::Stack< T >::copyStack(const chemodurov::Stack< T > & stack)
+void chemodurov::Stack< T >::copyStack(const Stack< T > & stack)
 {
   if (stack.empty())
   {
@@ -110,6 +110,53 @@ void chemodurov::Stack< T >::copyStack(const chemodurov::Stack< T > & stack)
     deleteStack();
     throw;
   }
+}
+
+template< typename T >
+chemodurov::Stack< T >::Stack(const Stack< T > & stack):
+ Stack()
+{
+  copyStack(stack);
+}
+
+template< typename T >
+chemodurov::Stack< T >::Stack(Stack< T > && stack):
+ head_(stack.head_)
+{
+  stack.head_ = nullptr;
+}
+
+template< typename T >
+chemodurov::Stack< T > & chemodurov::Stack< T >::operator=(const Stack< T > & stack)
+{
+  if (this == std::addressof(stack))
+  {
+    return *this;
+  }
+  deleteStack();
+  try
+  {
+    copyStack(stack);
+  }
+  catch (...)
+  {
+    deleteStack();
+    throw;
+  }
+  return *this;
+}
+
+template< typename T >
+chemodurov::Stack< T > & chemodurov::Stack< T >::operator=(Stack< T > && stack)
+{
+  if (this == std::addressof(stack))
+  {
+    return *this;
+  }
+  deleteStack();
+  head_ = stack.head_;
+  stack.head_ = nullptr;
+  return *this;
 }
 
 #endif
