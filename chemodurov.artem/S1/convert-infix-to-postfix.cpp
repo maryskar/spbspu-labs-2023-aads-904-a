@@ -22,9 +22,10 @@ chemodurov::Queue< chemodurov::PostfixExpr > chemodurov::convertInfixToPostfix(Q
     InfixExpr next = inf.getFromQueue();
     if (next.isOperand())
     {
-      post.push({next.getOperand(), true});
+      PostfixExpr temp(next.getOperand());
+      post.push(temp);
     }
-    else if (!next.isOperand() && !next.isOperation())
+    else if (next.isBrace())
     {
       if (next.getBrace() == BRACE_LEFT)
       {
@@ -34,7 +35,8 @@ chemodurov::Queue< chemodurov::PostfixExpr > chemodurov::convertInfixToPostfix(Q
       {
         while (!stack.empty() && !stack.getFromStack().isBrace)
         {
-          post.push({stack.getFromStack().data.operation, false});
+          PostfixExpr temp(stack.getFromStack().data.operation);
+          post.push(temp);
           stack.pop();
         }
         if (stack.empty())
@@ -55,7 +57,8 @@ chemodurov::Queue< chemodurov::PostfixExpr > chemodurov::convertInfixToPostfix(Q
         int prior_diff = compareOperationsPriority(next.getOperation(), stack.getFromStack().data.operation);
         while (!stack.empty() && !stack.getFromStack().isBrace && prior_diff >= 0)
         {
-          post.push({stack.getFromStack().data.operation, false});
+          PostfixExpr temp(stack.getFromStack().data.operation);
+          post.push(temp);
           stack.pop();
           if (stack.empty())
           {
@@ -70,7 +73,8 @@ chemodurov::Queue< chemodurov::PostfixExpr > chemodurov::convertInfixToPostfix(Q
   }
   while (!stack.empty() && !stack.getFromStack().isBrace)
   {
-    post.push({stack.getFromStack().data.operation, false});
+    PostfixExpr temp(stack.getFromStack().data.operation);
+    post.push(temp);
     stack.pop();
   }
   if (!stack.empty() && stack.getFromStack().isBrace)

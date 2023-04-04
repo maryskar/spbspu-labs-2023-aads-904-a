@@ -10,10 +10,18 @@ namespace chemodurov
     Operation operation;
   };
 
-  struct PostfixExpr
+  class PostfixExpr
   {
-    OperationOperand data;
-    bool isOperand;
+   public:
+    explicit PostfixExpr(Operation op);
+    explicit PostfixExpr(long operand);
+    bool isOperation() const noexcept;
+    bool isOperand() const noexcept;
+    Operation getOperation() const;
+    long getOperand() const;
+   private:
+    OperationOperand data_;
+    bool isOperand_;
   };
 }
 

@@ -8,9 +8,9 @@ long chemodurov::calcPostfixExpr(Queue< PostfixExpr > & post)
   while (!post.empty())
   {
     PostfixExpr next = post.getFromQueue();
-    if (next.isOperand)
+    if (next.isOperand())
     {
-      calc.push(next.data.operand);
+      calc.push(next.getOperand());
     }
     else
     {
@@ -18,23 +18,23 @@ long chemodurov::calcPostfixExpr(Queue< PostfixExpr > & post)
       calc.pop();
       long lhs = calc.getFromStack();
       calc.pop();
-      if (next.data.operation == OPERATION_PLUS)
+      if (next.getOperation() == OPERATION_PLUS)
       {
         calc.push(calcSum(lhs, rhs));
       }
-      else if (next.data.operation == OPERATION_MINUS)
+      else if (next.getOperation() == OPERATION_MINUS)
       {
         calc.push(calcDiff(lhs, rhs));
       }
-      else if (next.data.operation == OPERATION_MULTIPLICATION)
+      else if (next.getOperation() == OPERATION_MULTIPLICATION)
       {
         calc.push(calcMultiplication(lhs, rhs));
       }
-      else if (next.data.operation == OPERATION_DIVIDE)
+      else if (next.getOperation() == OPERATION_DIVIDE)
       {
         calc.push(calcDivision(lhs, rhs));
       }
-      else if (next.data.operation == OPERATION_REMINDER_OF_DIVISION)
+      else if (next.getOperation() == OPERATION_REMINDER_OF_DIVISION)
       {
         calc.push(calcReminderOfDivision(lhs, rhs));
       }
