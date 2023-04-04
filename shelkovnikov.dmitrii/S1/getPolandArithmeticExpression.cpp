@@ -11,7 +11,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
     data.popFront();
     if (!p.isDigit())
     {
-      if (p.isBracket() && p.getOperator() == ')')
+      if (p.isBracket() && p.getBracket().isClose())
       {
         if (stack.empty())
         {
@@ -19,7 +19,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
         }
         dsk::PartOfArithExpr p1 = stack.last();
         stack.popBack();
-        while (!p1.isBracket() && p1.getBracket() != '(')
+        while (!p1.isBracket() && p1.getBracket().isOpen())
         {
           queue.push(p1);
           if (stack.empty())
