@@ -32,14 +32,14 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
       }
       else if (stack.empty())
       {
-        stack.push(p);
+        stack.pushFront(p);
       }
       else
       {
         dsk::PartOfArithExpr p1 = stack.last();
         if (p1.isBracket || p.isBracket || isGreaterPriority(p1, p))
         {
-          stack.push(p);
+          stack.pushFront(p);
         }
         else
         {
@@ -55,7 +55,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
             p1 = stack.last();
             stack.popBack();
           }
-          stack.push(p);
+          stack.pushFront(p);
         }
       }
     }

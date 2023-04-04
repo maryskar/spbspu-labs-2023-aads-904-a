@@ -17,7 +17,7 @@ namespace dimkashelk
       details::freeList< T >(begin_);
       begin_ = nullptr;
     }
-    void push(const T &rhs)
+    void pushFront(const T &rhs)
     {
       begin_ = new  details::NodeOneWayList< T >(rhs, begin_);
     }

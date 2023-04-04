@@ -91,7 +91,7 @@ long long dimkashelk::getResultArithmeticExpression(dimkashelk::Queue< dimkashel
     polandExpression.popFront();
     if (p.isDigit)
     {
-      remains.push(p);
+      remains.pushFront(p);
     }
     else
     {
@@ -99,7 +99,8 @@ long long dimkashelk::getResultArithmeticExpression(dimkashelk::Queue< dimkashel
       remains.popBack();
       dsk::PartOfArithExpr p1 = remains.last();
       remains.popBack();
-      remains.push(dsk::PartOfArithExpr(details::getResult(p1.element.operand_, p2.element.operand_, p.element.operator_)));
+      remains.pushFront(
+        dsk::PartOfArithExpr(details::getResult(p1.element.operand_, p2.element.operand_, p.element.operator_)));
     }
   }
   auto res = remains.last().element.operand_;
