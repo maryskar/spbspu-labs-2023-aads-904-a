@@ -86,6 +86,14 @@ namespace dimkashelk
       }
       return begin_->data;
     }
+    const T &front() const
+    {
+      if (begin_ == nullptr)
+      {
+        throw std::logic_error("Check");
+      }
+      return begin_->data;
+    }
     void pop_front()
     {
       if (begin_ == nullptr)
