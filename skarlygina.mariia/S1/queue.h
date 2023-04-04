@@ -12,4 +12,30 @@ public:
 private:
   Node< T >* head;
 };
+
+template< typename T >
+Queue< T >::Queue():
+	begin_(nullptr)
+{}
+
+template< typename T >
+void Queue< T >::push(T rhs)
+{
+  Node* temp = new Node;
+  temp->data = rhs;
+  temp->next = nullptr;
+  if (!head)
+  {
+	head = temp;
+  }
+  else
+  {
+	Node* current = head;
+	while (current->next)
+	{
+      current = current->next;
+	}
+	current->next = temp;
+  }
+}
 #endif
