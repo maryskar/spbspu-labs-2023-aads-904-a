@@ -6,7 +6,11 @@ namespace dimkashelk
   {
   public:
     Bracket();
-    Bracket(char c);
+    Bracket(const Bracket &bracket) = default;
+    Bracket(Bracket &&bracket) = default;
+    explicit Bracket(char c);
+    Bracket &operator=(const Bracket &bracket) = default;
+    Bracket &operator=(Bracket &&bracket) = default;
     bool isOpen() const;
     bool isClose() const;
   private:
