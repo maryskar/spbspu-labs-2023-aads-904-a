@@ -2,12 +2,12 @@
 #define SPBSPU_LABS_2023_AADS_904_A_GETRESULTARITHMETICEXPRESSION_H
 #include "queue.h"
 #include "partOfArithmeticExpression.h"
-namespace details
-{
-  long long getResult(long long first, long long second, char oper);
-}
 namespace dimkashelk
 {
+  namespace details
+  {
+    long long getResult(long long first, long long second, char oper);
+  }
   long long getResultArithmeticExpression(Queue< PartOfArithExpr > &polandExpression);
 }
 #endif
