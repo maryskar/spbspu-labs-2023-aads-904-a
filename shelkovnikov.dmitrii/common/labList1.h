@@ -7,8 +7,8 @@ namespace dimkashelk
 {
   void labList1(std::istream &in, std::ostream &out, int argc, char *argv[])
   {
-    using dict_type = dimkashelk::Dictionary< int, std::string, std::greater< > >;
-    using container_type = dimkashelk::Dictionary< std::string, dict_type, std::greater< > >;
+    using dict_type = dimkashelk::Dictionary< int, std::string, std::less< > >;
+    using container_type = dimkashelk::Dictionary< std::string, dict_type, std::less< > >;
     namespace dsk = dimkashelk;
     if (argc != 2)
     {
