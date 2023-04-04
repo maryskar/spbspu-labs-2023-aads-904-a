@@ -28,7 +28,7 @@ chemodurov::Queue< chemodurov::InfixExpr > chemodurov::readInfixExpr(std::string
     }
     else if (line[size2] == '-')
     {
-      InfixExpr temp(OPERATION_PLUS);
+      InfixExpr temp(OPERATION_MINUS);
       inf.push(temp);
       size2 += 2;
     }
