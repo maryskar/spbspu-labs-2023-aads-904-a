@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
       {
         continue;
       }
-      Queue< std::string > infix = convertStringToInfix(line);      
+      Queue< std::string > infix = convertStringToInfix(line);
       try
       {
         Queue< std::string > postfix = convertInfixToPostfix(infix);
