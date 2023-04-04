@@ -59,6 +59,13 @@ dimkashelk::PartOfArithExpr &dimkashelk::PartOfArithExpr::operator=(const PartOf
   element = part.element;
   return *this;
 }
+dimkashelk::PartOfArithExpr &dimkashelk::PartOfArithExpr::operator=(dimkashelk::PartOfArithExpr &&part)
+{
+  isDigit = part.isDigit;
+  isBracket = part.isBracket;
+  element = part.element;
+  return *this;
+}
 bool dimkashelk::isGreaterPriority(const PartOfArithExpr &lhs, const PartOfArithExpr &rhs)
 {
   if (lhs.isDigit || rhs.isDigit || lhs.isBracket || rhs.isBracket)
