@@ -30,7 +30,7 @@ void Queue< T >::push(T rhs)
   }
   else
   {
-	Node* current = head;
+	Node< T >* current = head;
 	while (current->next)
 	{
       current = current->next;
