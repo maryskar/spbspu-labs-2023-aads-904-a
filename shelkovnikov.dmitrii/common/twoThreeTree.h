@@ -323,7 +323,7 @@ namespace dimkashelk
     bool contains(const Key &k) const
     {
       node_type *node = search(root_, k);
-      return node && (k == node->key[0] || node->size == 2 && k == node->key[1]);
+      return node && (k == node->key[0] || (node->size == 2 && k == node->key[1]));
     }
     void free()
     {
@@ -488,7 +488,7 @@ namespace dimkashelk
       {
         return search(node->first, k);
       }
-      else if (node->size == 2 && compare_(k, node->key[1]) || node->size == 1)
+      else if ((node->size == 2 && compare_(k, node->key[1])) || node->size == 1)
       {
         return search(node->second, k);
       }
