@@ -37,6 +37,17 @@ namespace dimkashelk
       copy(stack);
       return *this;
     }
+    Stack< T > &operator=(Stack< T > &&stack)
+    {
+      if (std::addressof(stack) == this)
+      {
+        return *this;
+      }
+      details::freeList< T >(begin_);
+      begin_ = stack.begin_;
+      stack.begin_ = nullptr;
+      return *this;
+    }
     void pushFront(const T &rhs)
     {
       begin_ = new details::NodeOneWayList< T >(rhs, begin_);
