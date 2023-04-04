@@ -13,9 +13,9 @@ namespace chemodurov
     Queue();
     Queue(const Queue< T > &);
     Queue(Queue< T > &&);
+    ~Queue();
     Queue< T > & operator=(const Queue< T > &);
     Queue< T > & operator=(Queue< T > &&);
-    ~Queue();
     void push(const T & rhs);
     void pop();
     T & getFromQueue() const;
@@ -111,9 +111,11 @@ void chemodurov::Queue< T >::deleteQueue() noexcept
 
 template< typename T >
 chemodurov::Queue< T >::Queue(chemodurov::Queue< T > && queue):
- Queue()
+ head_(queue.head_),
+ last_(queue.last_)
 {
-  copyQueue(queue);
+  queue.head_ = nullptr;
+  queue.last_ = nullptr;
 }
 
 template< typename T >
