@@ -4,6 +4,11 @@
 #include "stack.hpp"
 #include <stdexcept>
 
+bool isOperator(std::string op)
+{
+  return (op == "+") || (op == "-") || (op == "*") || (op == "/") || (op == "%");
+}
+
 Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
 {
   Queue< std::string > postfixQueue;
@@ -18,7 +23,7 @@ Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
     }
     else if (token == "+" || token == "-")
     {
-      while (!stack.isEmpty() && (stack.get() == "+" || stack.get() == "-" || stack.get() == "*" || stack.get() == "/" || stack.get() == "%"))
+      while (!stack.isEmpty() && isOperator(stack.get()))
       {
         postfixQueue.push(stack.get());
         stack.pop();
