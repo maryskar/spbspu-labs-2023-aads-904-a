@@ -14,6 +14,7 @@ namespace dimkashelk
     PartOfArithExpr &operator=(PartOfArithExpr &&part);
     bool isDigit() const;
     bool isBracket() const;
+    char getOperator() const;
   private:
     bool isDigit_;
     bool isBracket_;

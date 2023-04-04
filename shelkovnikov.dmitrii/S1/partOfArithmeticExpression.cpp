@@ -74,15 +74,19 @@ bool dimkashelk::PartOfArithExpr::isBracket() const
 {
   return isBracket_;
 }
+char dimkashelk::PartOfArithExpr::getOperator() const
+{
+  return element.operator_;
+}
 bool dimkashelk::isGreaterPriority(const PartOfArithExpr &lhs, const PartOfArithExpr &rhs)
 {
   if (lhs.isDigit() || rhs.isDigit() || lhs.isBracket() || rhs.isBracket())
   {
     throw std::logic_error("Must be operator, not operand or brackets");
   }
-  if (lhs.element.operator_ == '+' || lhs.element.operator_ == '-')
+  if (lhs.getOperator() == '+' || lhs.getOperator() == '-')
   {
-    return rhs.element.operator_ == '*' || rhs.element.operator_ == '/' || rhs.element.operator_ == '%';
+    return rhs.getOperator() == '*' || rhs.getOperator() == '/' || rhs.getOperator() == '%';
   }
   return false;
 }

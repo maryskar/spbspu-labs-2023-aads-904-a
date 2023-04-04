@@ -11,7 +11,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
     data.popFront();
     if (!p.isDigit())
     {
-      if (p.isBracket() && p.element.operator_ == ')')
+      if (p.isBracket() && p.getOperator() == ')')
       {
         if (stack.empty())
         {

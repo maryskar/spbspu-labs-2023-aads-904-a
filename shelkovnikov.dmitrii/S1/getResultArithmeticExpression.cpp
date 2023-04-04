@@ -100,7 +100,7 @@ long long dimkashelk::getResultArithmeticExpression(dimkashelk::Queue< dimkashel
       dsk::PartOfArithExpr p1 = remains.last();
       remains.popBack();
       remains.pushFront(
-        dsk::PartOfArithExpr(details::getResult(p1.element.operand_, p2.element.operand_, p.element.operator_)));
+        dsk::PartOfArithExpr(details::getResult(p1.element.operand_, p2.element.operand_, p.getOperator())));
     }
   }
   auto res = remains.last().element.operand_;
