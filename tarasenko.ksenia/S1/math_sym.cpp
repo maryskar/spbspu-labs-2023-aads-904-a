@@ -1,7 +1,7 @@
 #include "math_sym.h"
 #include <stdexcept>
 
-tarasenko::MathSymbols::MathSymbols(char ms) :
+tarasenko::MathSymbols::MathSymbols(char ms):
   value_(ms)
 {
   if (ms == '(')
