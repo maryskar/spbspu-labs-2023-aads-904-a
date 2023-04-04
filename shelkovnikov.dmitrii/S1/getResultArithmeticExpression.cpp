@@ -88,7 +88,7 @@ long long dimkashelk::getResultArithmeticExpression(dimkashelk::Queue< dimkashel
   while (!polandExpression.empty())
   {
     dsk::PartOfArithExpr p = polandExpression.front();
-    polandExpression.pop_front();
+    polandExpression.popFront();
     if (p.isDigit)
     {
       remains.push(p);
@@ -96,13 +96,13 @@ long long dimkashelk::getResultArithmeticExpression(dimkashelk::Queue< dimkashel
     else
     {
       dsk::PartOfArithExpr p2 = remains.last();
-      remains.pop_back();
+      remains.popBack();
       dsk::PartOfArithExpr p1 = remains.last();
-      remains.pop_back();
+      remains.popBack();
       remains.push(dsk::PartOfArithExpr(details::getResult(p1.element.operand_, p2.element.operand_, p.element.operator_)));
     }
   }
   auto res = remains.last().element.operand_;
-  remains.pop_back();
+  remains.popBack();
   return res;
 }

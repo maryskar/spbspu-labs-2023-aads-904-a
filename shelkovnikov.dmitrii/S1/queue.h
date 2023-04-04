@@ -94,7 +94,7 @@ namespace dimkashelk
       }
       return begin_->data;
     }
-    void pop_front()
+    void popFront()
     {
       if (begin_ == nullptr)
       {
