@@ -29,6 +29,14 @@ namespace dimkashelk
       }
       return begin_->data;
     }
+    const T &last() const
+    {
+      if (empty())
+      {
+        throw std::logic_error("Check");
+      }
+      return begin_->data;
+    }
     void popBack()
     {
       if (empty())
