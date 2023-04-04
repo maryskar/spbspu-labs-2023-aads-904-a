@@ -18,6 +18,16 @@ namespace dimkashelk
         next(next)
       {}
     };
+    template < typename T >
+    void freeList(NodeOneWayList< T > *start)
+    {
+      while (start)
+      {
+        auto node = start;
+        start = start->next;
+        delete node;
+      }
+    }
   }
 }
 #endif

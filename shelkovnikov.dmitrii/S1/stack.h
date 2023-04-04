@@ -3,7 +3,6 @@
 #include <cstddef>
 #include <stdexcept>
 #include "nodeOfDataClass.h"
-#include "freeList.h"
 namespace dimkashelk
 {
   template < typename T >
