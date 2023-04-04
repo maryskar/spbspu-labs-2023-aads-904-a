@@ -52,7 +52,7 @@ namespace tarasenko
         }
         else
         {
-          while (!s.isEmpty() && (elem.getOperation() <= s.getTopElem().getOperation()))
+          while (!s.isEmpty() && (s.getTopElem().getOperation() >= elem.getOperation()))
           {
             Elem s_elem = s.getTopElem();
             s.pop();

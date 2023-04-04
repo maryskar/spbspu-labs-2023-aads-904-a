@@ -7,7 +7,8 @@ namespace tarasenko
   public:
    MathSymbols(char ms);
    char getValue() const;
-   bool operator<=(const MathSymbols& rhs) const;
+   bool operator<(const MathSymbols& rhs) const;
+   bool operator>=(const MathSymbols& rhs) const;
   private:
    char value_;
    int priority_;
