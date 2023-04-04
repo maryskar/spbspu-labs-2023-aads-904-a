@@ -63,6 +63,18 @@ namespace dimkashelk
     }
   private:
     details::NodeOneWayList< T > *begin_;
+    void copy(const Stack< T > &stack)
+    {
+      details::NodeOneWayList< T > *node = stack.begin_;
+      begin_ = new details::NodeOneWayList< T >(node->data);
+      details::NodeOneWayList< T > *start = begin_;
+      while (node->next)
+      {
+        node = node->next;
+        start->next = new details::NodeOneWayList< T >(node->data);
+        start = start->next;
+      }
+    }
   };
 }
 #endif
