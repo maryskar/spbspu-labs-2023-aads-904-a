@@ -29,7 +29,7 @@ namespace dimkashelk
     }
     void pushFront(const T &rhs)
     {
-      begin_ = new  details::NodeOneWayList< T >(rhs, begin_);
+      begin_ = new details::NodeOneWayList< T >(rhs, begin_);
     }
     T &last()
     {
