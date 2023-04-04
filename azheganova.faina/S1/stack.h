@@ -11,9 +11,10 @@ public:
   void push(const T & rhs);
   void pop();
   bool isEmpty();
-  T drop();
+  int getSize();
 private:
   ListNode< T > * top_;
+  int size;
 };
 
 #endif
