@@ -38,14 +38,26 @@ namespace dimkashelk
     }
     Queue< T > &operator=(const Queue< T > &queue)
     {
-      free();
-      details::NodeOfDataClass< T > *start = queue.begin_;
-      while (start)
+      if (std::addressof(queue) == this)
       {
-        push(start->data);
-        start = start->next;
+        return *this;
       }
-      return *this;
+      try
+      {
+        free();
+        details::NodeOfDataClass< T > *start = queue.begin_;
+        while (start)
+        {
+          push(start->data);
+          start = start->next;
+        }
+        return *this;
+      }
+      catch (...)
+      {
+        free();
+        throw;
+      }
     }
     Queue< T > &operator=(Queue< T > &&queue)
     {
