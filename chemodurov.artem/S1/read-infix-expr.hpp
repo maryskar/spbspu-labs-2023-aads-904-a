@@ -2,10 +2,11 @@
 #define READ_INFIX_EXPR_HPP
 #include <iosfwd>
 #include "infix-expression.hpp"
+#include "queue.hpp"
 
 namespace chemodurov
 {
-  InfixExpr * readInfixExpr(std::string & line, size_t & inf_size);
+  Queue< InfixExpr > readInfixExpr(std::string & line);
 }
 
 #endif

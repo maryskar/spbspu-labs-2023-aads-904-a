@@ -1,47 +1,53 @@
 #include "read-infix-expr.hpp"
 #include <string>
 
-chemodurov::InfixExpr * chemodurov::readInfixExpr(std::string & line, size_t & inf_size)
+chemodurov::Queue< chemodurov::InfixExpr > chemodurov::readInfixExpr(std::string & line)
 {
-  InfixExpr * inf = new InfixExpr[line.size() / 2 + 1];
-  inf_size = 0;
+  Queue< InfixExpr > inf;
   size_t size1 = 0;
   size_t size2 = 0;
   while (size2 < line.size())
   {
     if (line[size2] == '(')
     {
-      inf[inf_size++] = {BRACE_LEFT, false, false};
+      InfixExpr temp(BRACE_LEFT);
+      inf.push(temp);
       size2 += 2;
     }
     else if (line[size2] == ')')
     {
-      inf[inf_size++] = {BRACE_RIGHT, false, false};
+      InfixExpr temp(BRACE_RIGHT);
+      inf.push(temp);
       size2 += 2;
     }
     else if (line[size2] == '+')
     {
-      inf[inf_size++] = {OPERATION_PLUS, false, true};
+      InfixExpr temp(OPERATION_PLUS);
+      inf.push(temp);
       size2 += 2;
     }
     else if (line[size2] == '-')
     {
-      inf[inf_size++] = {OPERATION_MINUS, false, true};
+      InfixExpr temp(OPERATION_PLUS);
+      inf.push(temp);
       size2 += 2;
     }
     else if (line[size2] == '*')
     {
-      inf[inf_size++] = {OPERATION_MULTIPLICATION, false, true};
+      InfixExpr temp(OPERATION_MULTIPLICATION);
+      inf.push(temp);
       size2 += 2;
     }
     else if (line[size2] == '/')
     {
-      inf[inf_size++] = {OPERATION_DIVIDE, false, true};
+      InfixExpr temp(OPERATION_DIVIDE);
+      inf.push(temp);
       size2 += 2;
     }
     else if (line[size2] == '%')
     {
-      inf[inf_size++] = {OPERATION_REMINDER_OF_DIVISION, false, true};
+      InfixExpr temp(OPERATION_REMINDER_OF_DIVISION);
+      inf.push(temp);
       size2 += 2;
     }
     else if (line[size2] == ' ')
@@ -50,18 +56,11 @@ chemodurov::InfixExpr * chemodurov::readInfixExpr(std::string & line, size_t & i
     }
     else
     {
-      try
-      {
-        long a = std::stol(line.substr(size2), std::addressof(size1));
-        size1 += size2;
-        size2 = size1;
-        inf[inf_size++] = {a, true, false};
-      }
-      catch (const std::exception & e)
-      {
-        delete[] inf;
-        throw;
-      }
+      long a = std::stol(line.substr(size2), std::addressof(size1));
+      size1 += size2;
+      size2 = size1;
+      InfixExpr temp(a);
+      inf.push(temp);
     }
   }
   return inf;
