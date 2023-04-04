@@ -2,7 +2,7 @@
 #define ONEWAY_LIST_H
 
 template< typename T >
-struct OneWayList
+struct OneWayNode
 {
   T data;
   OneWayList< T > * next;
