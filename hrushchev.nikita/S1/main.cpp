@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
     std::string line;
     while (getline(input, line))
     {
-      if (!std::cin)
+      if (!input)
       {
         break;
       }
@@ -41,7 +41,11 @@ int main(int argc, char* argv[])
         Queue< std::string > infix = convertStringToInfix(line);
         Queue< std::string > postfix = convertInfixToPostfix(infix);
         long long result = calculatePostfix(postfix);
-        std::cout << result << " ";
+        std::cout << result;
+        if (input)
+        {
+          std::cout << " ";
+        }
       }
       catch (const std::exception& e)
       {
@@ -70,7 +74,11 @@ int main(int argc, char* argv[])
         Queue< std::string > infix = convertStringToInfix(line);
         Queue< std::string > postfix = convertInfixToPostfix(infix);
         long long result = calculatePostfix(postfix);
-        std::cout << result << " ";
+        std::cout << result;
+        if (std::cin)
+        {
+          std::cout << " ";
+        }
       }
       catch (const std::exception& e)
       {
