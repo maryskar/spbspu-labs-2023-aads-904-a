@@ -20,17 +20,17 @@ chemodurov::Queue< chemodurov::PostfixExpr > chemodurov::convertInfixToPostfix(Q
   while (!inf.empty())
   {
     InfixExpr next = inf.getFromQueue();
-    if (next.isOperand)
+    if (next.isOperand())
     {
-      post.push({next.data.operand, true});
+      post.push({next.getOperand(), true});
     }
-    else if (!next.isOperand && !next.isOperation)
+    else if (!next.isOperand() && !next.isOperation())
     {
-      if (next.data.brace == BRACE_LEFT)
+      if (next.getBrace() == BRACE_LEFT)
       {
-        stack.push({next.data.brace, true});
+        stack.push({next.getBrace(), true});
       }
-      else if (next.data.brace == BRACE_RIGHT)
+      else if (next.getBrace() == BRACE_RIGHT)
       {
         while (!stack.empty() && !stack.getFromStack().isBrace)
         {
@@ -44,15 +44,15 @@ chemodurov::Queue< chemodurov::PostfixExpr > chemodurov::convertInfixToPostfix(Q
         stack.pop();
       }
     }
-    else if (next.isOperation)
+    else if (next.isOperation())
     {
       if (stack.empty())
       {
-        stack.push(makeOperationAndBrace(next.data.operation));
+        stack.push(makeOperationAndBrace(next.getOperation()));
       }
       else
       {
-        int prior_diff = compareOperationsPriority(next.data.operation, stack.getFromStack().data.operation);
+        int prior_diff = compareOperationsPriority(next.getOperation(), stack.getFromStack().data.operation);
         while (!stack.empty() && !stack.getFromStack().isBrace && prior_diff >= 0)
         {
           post.push({stack.getFromStack().data.operation, false});
@@ -61,9 +61,9 @@ chemodurov::Queue< chemodurov::PostfixExpr > chemodurov::convertInfixToPostfix(Q
           {
             break;
           }
-          prior_diff = compareOperationsPriority(next.data.operation, stack.getFromStack().data.operation);
+          prior_diff = compareOperationsPriority(next.getOperation(), stack.getFromStack().data.operation);
         }
-        stack.push(makeOperationAndBrace(next.data.operation));
+        stack.push(makeOperationAndBrace(next.getOperation()));
       }
     }
     inf.pop();

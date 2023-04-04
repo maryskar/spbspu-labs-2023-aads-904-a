@@ -27,36 +27,20 @@ int main(int argc, char ** argv)
       {
         continue;
       }
-      size_t inf_size = 0;
-      chemodurov::InfixExpr * inf = nullptr;
+      chemodurov::Queue< chemodurov::InfixExpr > inf;
       try
       {
-        inf = chemodurov::readInfixExpr(line, inf_size);
+        inf = chemodurov::readInfixExpr(line);
       }
       catch (const std::exception & e)
       {
         std::cerr << e.what() << "\n";
         return 1;
       }
-      chemodurov::Queue< chemodurov::InfixExpr > inf_queue;
-      try
-      {
-        for (size_t i = 0; i < inf_size; ++i)
-        {
-          inf_queue.push(inf[i]);
-        }
-      }
-      catch (const std::exception & e)
-      {
-        delete[] inf;
-        std::cerr << e.what() << "\n";
-        return 1;
-      }
-      delete[] inf;
 
       try
       {
-        chemodurov::Queue< chemodurov::PostfixExpr > post = chemodurov::convertInfixToPostfix(inf_queue);
+        chemodurov::Queue< chemodurov::PostfixExpr > post = chemodurov::convertInfixToPostfix(inf);
         res.push(chemodurov::calcPostfixExpr(post));
       }
       catch (const std::exception & e)
@@ -88,35 +72,20 @@ int main(int argc, char ** argv)
         continue;
       }
       size_t inf_size = 0;
-      chemodurov::InfixExpr * inf = nullptr;
+      chemodurov::Queue< chemodurov::InfixExpr > inf;
       try
       {
-        inf = chemodurov::readInfixExpr(line, inf_size);
+        inf = chemodurov::readInfixExpr(line);
       }
       catch (const std::exception & e)
       {
         std::cerr << e.what() << "\n";
         return 1;
       }
-      chemodurov::Queue< chemodurov::InfixExpr > inf_queue;
-      try
-      {
-        for (size_t i = 0; i < inf_size; ++i)
-        {
-          inf_queue.push(inf[i]);
-        }
-      }
-      catch (const std::exception & e)
-      {
-        delete[] inf;
-        std::cerr << e.what() << "\n";
-        return 1;
-      }
-      delete[] inf;
 
       try
       {
-        chemodurov::Queue< chemodurov::PostfixExpr > post = chemodurov::convertInfixToPostfix(inf_queue);
+        chemodurov::Queue< chemodurov::PostfixExpr > post = chemodurov::convertInfixToPostfix(inf);
         res.push(chemodurov::calcPostfixExpr(post));
       }
       catch (const std::exception & e)

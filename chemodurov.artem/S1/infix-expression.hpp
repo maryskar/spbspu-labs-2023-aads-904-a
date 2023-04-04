@@ -11,11 +11,22 @@ namespace chemodurov
     Brace brace;
   };
 
-  struct InfixExpr
+  class InfixExpr
   {
-    OperationsOperandsBraces data;
-    bool isOperand;
-    bool isOperation;
+   public:
+    explicit InfixExpr(Operation op);
+    explicit InfixExpr(long operand);
+    explicit InfixExpr(Brace brace);
+    bool isOperation() const noexcept;
+    bool isOperand() const noexcept;
+    bool isBrace() const noexcept;
+    Operation getOperation() const;
+    long getOperand() const;
+    Brace getBrace() const;
+   private:
+    OperationsOperandsBraces data_;
+    bool isOperand_;
+    bool isOperation_;
   };
 }
 
