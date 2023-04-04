@@ -1,6 +1,5 @@
 #include "calcucalepostfix.hpp"
 #include <string>
-#include <stdexcept>
 #include "queue.hpp"
 #include "stack.hpp"
 #include "arithmetic.hpp"
@@ -42,10 +41,6 @@ long long calculatePostfix(Queue<std::string>& postfixQueue)
       else if (token == "%")
       {
         result = remaind(operand1, operand2);
-      }
-      else
-      {
-        std::logic_error("Ivalid token");
       }
       stack.push(result);
     }

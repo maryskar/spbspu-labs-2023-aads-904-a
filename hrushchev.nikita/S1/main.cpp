@@ -38,10 +38,10 @@ int main(int argc, char* argv[])
       {
         continue;
       }
-      Queue< std::string > infix = convertStringToInfix(line);
-      Queue< std::string > postfix = convertInfixToPostfix(infix);
+      Queue< std::string > infix = convertStringToInfix(line);      
       try
       {
+        Queue< std::string > postfix = convertInfixToPostfix(infix);
         long long result = calculatePostfix(postfix);
         results.push(result);
       }
@@ -79,9 +79,9 @@ int main(int argc, char* argv[])
         continue;
       }
       Queue< std::string > infix = convertStringToInfix(line);
-      Queue< std::string > postfix = convertInfixToPostfix(infix);
       try
       {
+        Queue< std::string > postfix = convertInfixToPostfix(infix);
         long long result = calculatePostfix(postfix);
         results.push(result);
       }

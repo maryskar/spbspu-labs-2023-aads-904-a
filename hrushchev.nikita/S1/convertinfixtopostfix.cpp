@@ -1,8 +1,8 @@
 #include "convertinfixtopostfix.hpp"
 #include <string>
+#include <stdexcept>
 #include "queue.hpp"
 #include "stack.hpp"
-#include <stdexcept>
 
 bool isOperator(std::string op)
 {
@@ -51,6 +51,10 @@ Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
         stack.pop();
       }
       stack.pop();
+    }
+    else
+    {
+      throw std::logic_error("Invalid token");
     }
   }
   while (!stack.isEmpty())
