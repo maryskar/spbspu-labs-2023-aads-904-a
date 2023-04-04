@@ -13,9 +13,9 @@ namespace dimkashelk
     Bracket &operator=(Bracket &&bracket) = default;
     bool isOpen() const;
     bool isClose() const;
+    static bool isBracket(char c);
   private:
     char bracket_;
-    bool isBracket() const;
   };
 }
 #endif

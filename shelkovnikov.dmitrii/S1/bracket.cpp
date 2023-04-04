@@ -19,7 +19,7 @@ bool dimkashelk::Bracket::isClose() const
 {
   return bracket_ == ')';
 }
-bool dimkashelk::Bracket::isBracket() const
+bool dimkashelk::Bracket::isBracket(char c)
 {
-  return isOpen() || isClose();
+  return c == '(' || c == ')';
 }

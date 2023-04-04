@@ -8,7 +8,15 @@ namespace
   }
   bool checkBracket(const std::string &str)
   {
-    return str.find_first_not_of("()") == std::string::npos;
+    try
+    {
+      dimkashelk::Bracket bracket(str[0]);
+      return true;
+    }
+    catch (...)
+    {
+      return false;
+    }
   }
 }
 dimkashelk::PartOfArithExpr::element::element(long long o):
@@ -23,13 +31,16 @@ dimkashelk::PartOfArithExpr::element::element(const std::string &str)
   {
     operand_ = std::stoll(str);
   }
-  else if (checkBracket(str))
-  {
-    bracket_ = Bracket(str[0]);
-  }
   else
   {
-    operator_ = str[0];
+    try
+    {
+      bracket_ = Bracket(str[0]);
+    }
+    catch (...)
+    {
+      operator_ = str[0];
+    }
   }
 }
 dimkashelk::PartOfArithExpr::PartOfArithExpr(const std::string &str):
