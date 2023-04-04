@@ -6,8 +6,11 @@ namespace dimkashelk
   {
   public:
     Bracket(char c);
+    bool isOpen() const;
+    bool isClose() const;
   private:
     char bracket_;
+    bool isBracket() const;
   };
 }
 #endif
