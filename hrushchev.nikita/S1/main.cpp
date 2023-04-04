@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
     std::string line;
     while (std::cin)
     {
-      getline(std::cin, line)
+      getline(std::cin, line);
       if (!std::cin)
       {
         break;
