@@ -11,5 +11,6 @@ public:
   ~Stack();
 private:
   Node< T >* head;
+  Node< T >* tail;
 };
 #endif

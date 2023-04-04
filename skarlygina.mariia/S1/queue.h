@@ -11,6 +11,7 @@ public:
   ~Queue();
 private:
   Node< T >* head;
+  Node< T >* tail;
 };
 
 template< typename T >
