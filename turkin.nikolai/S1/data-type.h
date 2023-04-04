@@ -1,5 +1,5 @@
-#ifndef DATA_TYPE
-#define DATA_TYPE
+#ifndef DATA_TYPE_H
+#define DATA_TYPE_H
 
 struct calc_t
 {

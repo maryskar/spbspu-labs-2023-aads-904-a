@@ -1,5 +1,5 @@
-#ifndef ONEWAY_LIST
-#define ONEWAY_LIST
+#ifndef ONEWAY_LIST_H
+#define ONEWAY_LIST_H
 
 template< typename T >
 struct OneWayList

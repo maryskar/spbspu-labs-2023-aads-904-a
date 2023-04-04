@@ -1,5 +1,5 @@
-#ifndef EXP_WORK
-#define EXP_WORK
+#ifndef EXP_WORK_H
+#define EXP_WORK_H
 
 #include <string>
 #include <queue.h>
