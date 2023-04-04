@@ -11,14 +11,20 @@ namespace chemodurov
   {
    public:
     Queue();
+    Queue(const Queue< T > &);
+    Queue(Queue< T > &&);
+    Queue< T > & operator=(const Queue< T > &);
+    Queue< T > & operator=(Queue< T > &&);
     ~Queue();
     void push(const T & rhs);
     void pop();
-    T & getFromQueue();
+    T & getFromQueue() const;
     bool empty() const noexcept;
    private:
     List< T > * head_;
     List< T > * last_;
+    void copyQueue(const Queue< T > &);
+    void deleteQueue() noexcept;
   };
 }
 
@@ -31,12 +37,7 @@ chemodurov::Queue< T >::Queue():
 template< typename T >
 chemodurov::Queue< T >::~Queue()
 {
-  while (head_)
-  {
-    List< T > * temp = head_->next;
-    delete head_;
-    head_ = temp;
-  }
+  deleteQueue();
 }
 
 template< typename T >
@@ -55,7 +56,7 @@ void chemodurov::Queue< T >::push(const T & rhs)
 }
 
 template< typename T >
-T & chemodurov::Queue< T >::getFromQueue()
+T & chemodurov::Queue< T >::getFromQueue() const
 {
   if (!head_)
   {
@@ -80,6 +81,74 @@ template< typename T >
 bool chemodurov::Queue< T >::empty() const noexcept
 {
   return head_ == nullptr;
+}
+
+template< typename T >
+chemodurov::Queue< T >::Queue(const chemodurov::Queue< T > & queue):
+ Queue()
+{
+  copyQueue();
+}
+
+template< typename T >
+void chemodurov::Queue< T >::copyQueue(const Queue< T > & queue)
+{
+  List< T > * temp = queue.head_;
+  while (!queue.empty())
+  {
+    push(temp->data);
+    temp = temp->next;
+  }
+}
+
+template< typename T >
+void chemodurov::Queue< T >::deleteQueue() noexcept
+{
+  deleteList(head_);
+  head_ = nullptr;
+  last_ = nullptr;
+}
+
+template< typename T >
+chemodurov::Queue< T >::Queue(chemodurov::Queue< T > && queue):
+ Queue()
+{
+  copyQueue(queue);
+}
+
+template< typename T >
+chemodurov::Queue< T > & chemodurov::Queue< T >::operator=(const chemodurov::Queue< T > & queue)
+{
+  if (this == std::addressof(queue))
+  {
+    return *this;
+  }
+  deleteQueue();
+  try
+  {
+    copyQueue(queue);
+  }
+  catch (...)
+  {
+    deleteQueue();
+    throw;
+  }
+  return *this;
+}
+
+template< typename T >
+chemodurov::Queue< T > & chemodurov::Queue< T >::operator=(chemodurov::Queue< T > && queue)
+{
+  if (this == std::addressof(queue))
+  {
+    return *this;
+  }
+  deleteQueue();
+  head_ = queue.head_;
+  last_ = queue.last_;
+  queue.head_ = nullptr;
+  queue.last_ = nullptr;
+  return *this;
 }
 
 #endif

@@ -9,6 +9,17 @@ namespace chemodurov
     T data;
     List< T > * next;
   };
+
+  template< typename T >
+  void deleteList(List< T > * head)
+  {
+    while (head)
+    {
+      List< T > * temp = head->next;
+      delete head;
+      head = temp;
+    }
+  }
 }
 
 #endif
