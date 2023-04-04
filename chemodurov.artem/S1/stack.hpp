@@ -11,13 +11,19 @@ namespace chemodurov
   {
    public:
     Stack();
+    Stack(const Stack< T > &);
+    Stack(Stack< T > &&);
     ~Stack();
+    Stack< T > & operator=(const Stack< T > &);
+    Stack< T > & operator=(Stack< T > &&);
     void push(const T & rhs);
     void pop();
-    T & getFromStack();
+    T & getFromStack() const;
     bool empty() const noexcept;
    private:
     List< T > * head_;
+    void copyStack(const Stack< T > &);
+    void deleteStack() noexcept;
   };
 }
 
@@ -45,7 +51,7 @@ void chemodurov::Stack< T >::push(const T & rhs)
 }
 
 template< typename T >
-T & chemodurov::Stack< T >::getFromStack()
+T & chemodurov::Stack< T >::getFromStack() const
 {
   if (!head_)
   {
@@ -70,6 +76,40 @@ template< typename T >
 bool chemodurov::Stack< T >::empty() const noexcept
 {
   return head_ == nullptr;
+}
+
+template< typename T >
+void chemodurov::Stack< T >::deleteStack() noexcept
+{
+  deleteList(head_);
+  head_ = nullptr;
+}
+
+template< typename T >
+void chemodurov::Stack< T >::copyStack(const chemodurov::Stack< T > & stack)
+{
+  if (stack.empty())
+  {
+    head_ = nullptr;
+    return;
+  }
+  List< T > * source = stack.head_;
+  head_ = new List< T >{source->data, nullptr};
+  List< T > * dest = head_;
+  try
+  {
+    while (source->next)
+    {
+      source = source->next;
+      dest->next = new List< T >{source->data, nullptr};
+      dest = dest->next;
+    }
+  }
+  catch (...)
+  {
+    deleteStack();
+    throw;
+  }
 }
 
 #endif
