@@ -12,6 +12,11 @@ namespace dimkashelk
     Stack():
       begin_(nullptr)
     {}
+    Stack(const Stack< T > &stack):
+      begin_(nullptr)
+    {
+      copy(stack);
+    }
     ~Stack()
     {
       details::freeList< T >(begin_);
