@@ -5,15 +5,15 @@ template< typename T >
 struct List
 {
   T data;
-  List< T >* next;
+  List< T >* other;
 
-  List(T data = T(), List< T >* next = nullptr);
+  List(T data = T(), List< T >* other = nullptr);
 };
 
 template< typename T >
-inline List< T >::List(T data, List< T >* next):
+inline List< T >::List(T data, List< T >* other):
   data(data),
-  next(next)
+  other(other)
 {
 
 }
