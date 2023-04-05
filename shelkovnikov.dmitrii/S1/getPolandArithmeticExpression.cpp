@@ -19,7 +19,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
         }
         dsk::PartOfArithExpr p1 = stack.last();
         stack.popBack();
-        while (!p1.isBracket() && p1.getBracket().isOpen())
+        while (!p1.isBracket())
         {
           queue.push(p1);
           if (stack.empty())
