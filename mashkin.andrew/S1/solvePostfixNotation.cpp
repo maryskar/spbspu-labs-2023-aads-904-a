@@ -86,13 +86,16 @@ std::string mashkin::solvePostfixNotation(Queue< std::string >& que)
   try
   {
     list = new list_t< std::string >{que.drop(), nullptr};
+    que.dequeue();
     list_t< std::string >* endList = list;
     if (que.isEmpty())
     {
       endList->next = new list_t< std::string >{que.drop(), nullptr};
+      que.dequeue();
       if (que.isEmpty())
       {
         endList->next->next = new list_t< std::string >{que.drop(), nullptr};
+        que.dequeue();
       }
       else
       {
@@ -111,6 +114,7 @@ std::string mashkin::solvePostfixNotation(Queue< std::string >& que)
       while (que.isEmpty())
       {
         endList->next = new list_t< std::string >{que.drop(), nullptr};
+        que.dequeue();
         endList = endList->next;
       }
       endList = list;

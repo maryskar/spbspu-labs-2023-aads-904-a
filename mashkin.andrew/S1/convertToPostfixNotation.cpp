@@ -33,6 +33,7 @@ namespace mashkin
       else if (var == ")")
       {
         std::string symb = stc.drop();
+        stc.pop();
         while (symb != "(")
         {
           que.enqueue(symb);
@@ -52,6 +53,7 @@ namespace mashkin
     while (stc.isEmpty())
     {
       que.enqueue(stc.drop());
+      stc.pop();
     }
     return que;
   }
