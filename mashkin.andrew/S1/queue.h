@@ -14,7 +14,7 @@ namespace mashkin
     void enqueue(T rhs);
     void dequeue();
     bool isEmpty() const;
-    T drop();
+    T& drop();
 
   private:
     list_t< T >* head_;
@@ -47,7 +47,6 @@ void mashkin::Queue< T >::enqueue(T rhs)
 template< typename T >
 void mashkin::Queue< T >::dequeue()
 {
-
   if (!head_)
   {
     throw std::underflow_error("Queue underflow");
@@ -67,11 +66,13 @@ void mashkin::Queue< T >::dequeue()
 }
 
 template< typename T >
-T mashkin::Queue< T >::drop()
+T& mashkin::Queue< T >::drop()
 {
-  T var = head_->data;
-  dequeue();
-  return var;
+  if (!head_)
+  {
+    throw std::underflow_error("Queue underflow");
+  }
+  return head_->data;
 }
 
 template< typename T >

@@ -43,11 +43,7 @@ void mashkin::Stack< T >::push(T rhs)
     }
     catch (const std::bad_alloc& ex)
     {
-      while (top_)
-      {
-        pop();
-        throw;
-      }
+      throw;
     }
   }
 }
@@ -75,9 +71,7 @@ void mashkin::Stack< T >::pop()
 template< typename T >
 T mashkin::Stack< T >::drop()
 {
-  T var = top_->data;
-  pop();
-  return var;
+   return top_->data;
 }
 
 template< typename T >

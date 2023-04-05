@@ -26,6 +26,7 @@ namespace mashkin
         if (countOfBrackets == 0 && stc.isEmpty())
         {
           que.enqueue(stc.drop());
+          stc.pop();
         }
         stc.push(var);
       }
@@ -36,6 +37,7 @@ namespace mashkin
         {
           que.enqueue(symb);
           symb = stc.drop();
+          stc.drop();
           if (var == "(")
           {
             countOfBrackets--;
