@@ -5,13 +5,13 @@ template< typename T >
 struct List
 {
   T data;
-  T* next;
+  List< T >* next;
 
-  List(T data = T(), T* next = nullptr);
+  List(T data = T(), List< T >* next = nullptr);
 };
 
-template<typename T>
-inline List<T>::List(T data, T* next):
+template< typename T >
+inline List< T >::List(T data, List< T >* next):
   data(data),
   next(next)
 {
