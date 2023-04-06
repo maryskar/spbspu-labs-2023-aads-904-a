@@ -17,7 +17,8 @@ namespace turkin
       Stack & operator=(Stack< T > && rhs) = delete;
       ~Stack();
       void push(const T & rhs);
-      T drop();
+      T & drop();
+      T & drop() const;
       bool isEmpty() const;
     private:
       OneWayNode< T > * value_;
@@ -47,7 +48,13 @@ void turkin::Stack< T >::push(const T & rhs)
 }
 
 template< typename T >
-T turkin::Stack< T >::drop()
+T & turkin::Stack< T >::drop()
+{
+  return drop();
+}
+
+template< typename T >
+T & turkin::Stack< T >::drop() const
 {
   if (isEmpty())
   {

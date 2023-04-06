@@ -17,7 +17,8 @@ namespace turkin
       Queue & operator=(Queue< T > && rhs) = delete;
       ~Queue();
       void push(const T & rhs);
-      T drop();
+      T & drop();
+      T & drop() const;
       bool isEmpty() const;
     private:
       OneWayNode< T > * value_;
@@ -59,7 +60,13 @@ void turkin::Queue< T >::push(const T & rhs)
 }
 
 template< typename T >
-T turkin::Queue< T >::drop()
+T & turkin::Queue< T >::drop()
+{
+  return drop();
+}
+
+template< typename T >
+T & turkin::Queue< T >::drop() const
 {
   if (isEmpty())
   {
