@@ -31,7 +31,6 @@ namespace mashkin
 {
   Queue< std::string > convertToPostfixNotation(std::istream& inp, Stack< std::string >& stc, Queue< std::string >& que)
   {
-    size_t countOfBrackets = 0;
     std::string var;
     while (inp)
     {
