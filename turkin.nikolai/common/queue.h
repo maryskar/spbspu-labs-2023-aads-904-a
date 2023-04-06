@@ -2,63 +2,70 @@
 #define QUEUE_H
 
 #include <stdexcept>
-#include "oneway-list.h"
+#include "oneway-node.h"
 
-template< typename T >
-class Queue
+namespace turkin
 {
-  public:
-    Queue();
-    ~Queue();
-    void push(const T & rhs);
-    T drop();
-    bool isEmpty() const;
-  private:
-    OneWayList< T > * value_;
-};
+  template< typename T >
+  class Queue
+  {
+    public:
+      Queue();
+      Queue(const Queue< T > & rhs) = delete;
+      Queue(Queue< T > && rhs) = delete;
+      Queue & operator=(const Queue< T > & rhs) = delete;
+      Queue & operator=(Queue< T > && rhs) = delete;
+      ~Queue();
+      void push(const T & rhs);
+      T drop();
+      bool isEmpty() const;
+    private:
+      OneWayNode< T > * value_;
+  };
+}
 
 template< typename T >
-Queue< T >::Queue():
+turkin::Queue< T >::Queue():
   value_(nullptr)
 {}
 
 template< typename T >
-Queue< T >::~Queue()
+turkin::Queue< T >::~Queue()
 {
   while (value_ != nullptr)
   {
-    OneWayList< T > * element = value_;
+    OneWayNode< T > * element = value_;
     value_ = value_->next;
     delete element;
   }
 }
 
 template< typename T >
-void Queue< T >::push(const T & rhs)
+void turkin::Queue< T >::push(const T & rhs)
 {
   if (isEmpty())
   {
-    value_ = new OneWayList< T > {rhs, nullptr};
+    value_ = new OneWayNode< T > {rhs, nullptr};
   }
   else
   {
-    OneWayList< T > * element = value_;
+    OneWayNode< T > * element = value_;
     while (element->next != nullptr)
     {
       element = element->next;
     }
-    element->next = new OneWayList< T > {rhs, nullptr};
+    element->next = new OneWayNode< T > {rhs, nullptr};
   }
 }
 
 template< typename T >
-T Queue< T >::drop()
+T turkin::Queue< T >::drop()
 {
   if (isEmpty())
   {
     throw std::runtime_error("queue is empty");
   }
-  OneWayList< T > * element = value_;
+  OneWayNode< T > * element = value_;
   value_ = element->next;
   T ret = element->data;
   delete element;
@@ -66,7 +73,7 @@ T Queue< T >::drop()
 }
 
 template< typename T >
-bool Queue< T >::isEmpty() const
+bool turkin::Queue< T >::isEmpty() const
 {
   return value_ == nullptr;
 }

@@ -4,71 +4,33 @@
 #include <stdexcept>
 #include "oneway-node.h"
 
-template< typename T >
-class Stack
+namespace turkin
 {
-  public:
-    Stack();
-    Stack(const Stack< T > & rhs);
-    Stack(Stack< T > && rhs);
-    Stack & operator=(const Stack< T > & rhs);
-    Stack & operator=(Stack< T > && rhs);
-    ~Stack();
-    void push(const T & rhs);
-    T drop();
-    bool isEmpty() const;
-  private:
-    OneWayNode< T > * value_;
-};
+  template< typename T >
+  class Stack
+  {
+    public:
+      Stack();
+      Stack(const Stack< T > & rhs) = delete;
+      Stack(Stack< T > && rhs) = delete;
+      Stack & operator=(const Stack< T > & rhs) = delete;
+      Stack & operator=(Stack< T > && rhs) = delete;
+      ~Stack();
+      void push(const T & rhs);
+      T drop();
+      bool isEmpty() const;
+    private:
+      OneWayNode< T > * value_;
+  };
+}
 
 template< typename T >
-Stack< T >::Stack():
+turkin::Stack< T >::Stack():
   value_(nullptr)
 {}
 
 template< typename T >
-Stack< T >::Stack(const Stack< T > & rhs):
-  value_(nullptr)
-{
-  OneWayNode< T > * clone = rhs.value_;
-  while(clone)
-  {
-    push(clone->data);
-    clone = clone->next;
-  }
-}
-
-template< typename T >
-Stack< T >::Stack(Stack< T > && rhs):
-  value_(rhs.value_)
-{
-  rhs.value_ = nullptr;
-}
-
-template< typename T >
-Stack< T > & Stack< T >::operator=(const Stack< T > & rhs)
-{
-  if (this == & rhs)
-  {
-    return * this;
-  }
-  return * this;
-}
-
-template< typename T >
-Stack< T > & Stack< T >::operator=(Stack < T > && rhs)
-{
-  if (this == & rhs)
-  {
-    return * this;
-  }
-  value_ = rhs.value_;
-  rhs.value_ = nullptr;
-  return * this;
-}
-
-template< typename T >
-Stack< T >::~Stack()
+turkin::Stack< T >::~Stack()
 {
   while (value_ != nullptr)
   {
@@ -79,13 +41,13 @@ Stack< T >::~Stack()
 }
 
 template< typename T >
-void Stack< T >::push(const T & rhs)
+void turkin::Stack< T >::push(const T & rhs)
 {
   value_ = new OneWayNode< T > {rhs, value_};
 }
 
 template< typename T >
-T Stack< T >::drop()
+T turkin::Stack< T >::drop()
 {
   if (isEmpty())
   {
@@ -99,7 +61,7 @@ T Stack< T >::drop()
 }
 
 template< typename T >
-bool Stack< T >::isEmpty() const
+bool turkin::Stack< T >::isEmpty() const
 {
   return value_ == nullptr;
 }
