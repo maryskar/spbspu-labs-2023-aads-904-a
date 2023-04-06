@@ -10,7 +10,7 @@ namespace dimkashelk
   template< typename T >
   class ForwardList
   {
-  using iterator = dimkashelk::Iterator< T >;
+  using iterator = dimkashelk::ForwardListIterator< T >;
   public:
     ForwardList():
       begin_(nullptr),

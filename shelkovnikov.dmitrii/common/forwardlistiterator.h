@@ -8,26 +8,26 @@ namespace dimkashelk
   template< typename T >
   class ForwardList;
   template< typename T >
-  class Iterator: public std::iterator< std::input_iterator_tag, T >
+  class ForwardListIterator: public std::iterator< std::input_iterator_tag, T >
   {
   friend class ForwardList< T >;
   public:
-    Iterator &operator++()
+    ForwardListIterator &operator++()
     {
       ptr_ = ptr_->next;
       return *this;
     }
-    Iterator &operator++(int)
+    ForwardListIterator &operator++(int)
     {
       ptr_ = ptr_->next;
       return *this;
     }
-    Iterator &operator--()
+    ForwardListIterator &operator--()
     {
       ptr_ = ptr_->prev;
       return *this;
     }
-    Iterator &operator--(int)
+    ForwardListIterator &operator--(int)
     {
       ptr_ = ptr_->prev;
       return *this;
@@ -40,17 +40,17 @@ namespace dimkashelk
     {
       return ptr_->data;
     }
-    bool operator==(const Iterator< T > &other) const
+    bool operator==(const ForwardListIterator< T > &other) const
     {
       return ptr_ == other.ptr_;
     }
-    bool operator!=(const Iterator &other) const
+    bool operator!=(const ForwardListIterator &other) const
     {
       return ptr_ != other.ptr_;
     }
   private:
     details::Node< T > *ptr_;
-    explicit Iterator(details::Node< T > *ptr):
+    explicit ForwardListIterator(details::Node< T > *ptr):
       ptr_(ptr)
     {}
   };
