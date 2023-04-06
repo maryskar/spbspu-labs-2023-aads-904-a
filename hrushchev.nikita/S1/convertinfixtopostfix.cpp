@@ -17,7 +17,7 @@ Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
   {
     std::string token = infixQueue.get();
     infixQueue.pop();
-    if (isdigit(token[0]))
+    if (std::isdigit(token[0]))
     {
       postfixQueue.push(token);
     }

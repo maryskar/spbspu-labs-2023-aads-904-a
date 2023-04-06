@@ -14,7 +14,7 @@ long long sum(long long a, long long b)
 
 long long subtract(long long a, long long b)
 {
-  const long long min = std::numeric_limits<long long>::min();
+  const long long min = std::numeric_limits< long long >::min();
   if ((b > 0) && (min + b > a))
   {
     throw std::overflow_error("Subtraction overflow");

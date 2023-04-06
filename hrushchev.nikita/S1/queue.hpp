@@ -20,10 +20,9 @@ class Queue
 
 template< typename T >
 Queue< T >::Queue():
-begin_(nullptr),
-end_(nullptr)
-{
-}
+  begin_(nullptr),
+  end_(nullptr)
+{}
 
 template< typename T >
 bool Queue< T >::isEmpty() const

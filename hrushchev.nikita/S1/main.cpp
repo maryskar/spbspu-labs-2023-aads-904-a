@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
 
     std::string line;
     Stack < long long > results;
-    while (getline(input, line))
+    while (std::getline(input, line))
     {
       if (!input)
       {
@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
     Stack < long long > results;
     while (std::cin)
     {
-      getline(std::cin, line);
+      std::getline(std::cin, line);
       if (!std::cin)
       {
         break;
@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
         return 2;
       }
     }
-    if(!results.isEmpty())
+    if (!results.isEmpty())
     {
       std::cout << results.get();
       results.pop();

@@ -20,8 +20,7 @@ class Stack
 template< typename T >
 Stack< T >::Stack():
   value_(nullptr)
-{
-}
+{}
 
 template< typename T >
 bool Stack< T >::isEmpty() const
