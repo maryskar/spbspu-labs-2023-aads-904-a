@@ -18,18 +18,17 @@ int main(int argc, char * argv[])
       std::cerr << "cannot open file\n";
       return 1;
     }
-    std::cin.rdbuf(file.rdbuf());
   }
-
+  std::istream & in = (argc == 2) ? std::cin : file;
   Queue< calc_t > input, output;
   Stack< long long > answers;
   std::string dirt;
   try
   {
-    while (std::cin)
+    while (in)
     {
-      std::getline(std::cin, dirt);
-      if (!std::cin)
+      std::getline(in, dirt);
+      if (!in)
       {
         break;
       }
@@ -58,6 +57,11 @@ int main(int argc, char * argv[])
     std::cout << " " << answers.drop();
   }
   std::cout << "\n";
+
+  Stack< int > a;
+  Stack< int > b;
+  b = a;
+  std::cout << a.drop() << "\n" << b.drop() << "\n";
   return 0;
 }
 
