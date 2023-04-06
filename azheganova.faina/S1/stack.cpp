@@ -3,7 +3,7 @@
 template< typename T >
 Stack< T >::Stack():
   top_(nullptr),
-  size(0)
+  size_(0)
 {}
 
 template< typename T >
@@ -11,7 +11,7 @@ Stack< T >::~Stack()
 {
   while (top_ != nullptr)
   {
-    ListNode< T > * temp = top_->next;
+    ListNode< T > * tmp = top_->next;
     delete top_;
     top_ = tmp;
   }
@@ -20,24 +20,24 @@ Stack< T >::~Stack()
 template< typename T >
 void Stack< T >::push(const T & rhs)
 {
-  ListNode< T > * temp = new ListNode(rhs);
-  temp->next = top_;
-  top_ = temp;
-  size++;
+  ListNode< T > * tmp = new ListNode< T >{rhs, top_};
+  tmp->next = top_;
+  top_ = tmp;
+  size_++;
 }
 
 template< typename T >
-void Stack< T >::pop()
+T Stack< T >::pop()
 {
   if (isEmpty())
   {
-    throw std::logic_error("stack is empty");
+    throw;
   }
-  int value = top_->data_;
-  ListNode< T > * temp = top_;
+  T value = top_->data_;
+  ListNode< T > * tmp = top_;
   top_ = top_->next_;
-  delete temp;
-  size--;
+  delete tmp;
+  size_--;
   return value;
 }
 
@@ -50,7 +50,7 @@ bool Stack< T >::isEmpty()
 template< typename T >
 int Stack< T >::getSize()
 {
-  return size;
+  return size_;
 }
 
 template< typename T >

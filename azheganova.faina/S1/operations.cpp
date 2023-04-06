@@ -1,7 +1,8 @@
 #include "operations.h"
 #include <stdexcept>
 
-int getPriority(char operation)
+template< typename T >
+int getPriority(T operation)
 {
     if(operation == '+' || operation == '-')
     {

@@ -2,10 +2,10 @@
 #define NODE_H
 
 template < typename T >
-struct listNode
+struct ListNode
 {
   T data_;
-  Node< T > *next_;
+  ListNode< T > *next_;
 };
 
 #endif

@@ -9,7 +9,7 @@ public:
   Queue();
   ~Queue();
   void push(const T & rhs);
-  void pop();
+  T pop();
   bool isEmpty();
 private:
   ListNode< T > * top_;

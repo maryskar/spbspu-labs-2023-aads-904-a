@@ -1,5 +1,6 @@
 #include "queue.h"
 
+
 template< typename T >
 Queue< T >::Queue():
  top_(nullptr),
@@ -34,20 +35,22 @@ void Queue< T >::push(const T & rhs)
   }
 }
 
-template< typename T >
-void Queue< T >::pop()
+template < typename T >
+T Queue< T >::pop()
 {
-  if (!top_)
+  if (isEmpty())
   {
-    throw std::logic_error("error");
+    throw;
   }
-  ListNode< T > * tmp = top_->next;
+  T value = top_->data_;
+  ListNode< T > * newhead = top_->next_;
   delete top_;
-  top_ = tmp;
+  top_ = newhead;
+  return value;
 }
 
 template< typename T >
 bool Queue< T >::isEmpty()
 {
-  return top_;
+  return top_ == nullptr;
 }

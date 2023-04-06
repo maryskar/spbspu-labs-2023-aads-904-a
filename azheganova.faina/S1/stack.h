@@ -9,12 +9,13 @@ public:
   Stack();
   ~Stack();
   void push(const T & rhs);
-  void pop();
+  T pop();
   bool isEmpty();
   int getSize();
+  T drop();
 private:
   ListNode< T > * top_;
-  int size;
+  int size_;
 };
 
 #endif
