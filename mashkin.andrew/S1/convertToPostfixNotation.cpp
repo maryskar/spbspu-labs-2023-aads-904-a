@@ -3,10 +3,33 @@
 #include "queue.h"
 #include "stack.h"
 
+short int returnNumbOfOper(std::string var)
+{
+  if (var == "(")
+  {
+    return 0;
+  }
+  else if (var == ")")
+  {
+    return 1;
+  }
+  else if (var == "+" || var == "-")
+  {
+    return 2;
+  }
+  else if (var == "*" || var == "/")
+  {
+    return 3;
+  }
+  else
+  {
+    return 4;
+  }
+}
+
 namespace mashkin
 {
-  Queue< std::string > convertToPostfixNotation(std::istream& inp, Stack< std::string >& stc,
-                                                Queue< std::string >& que)
+  Queue< std::string > convertToPostfixNotation(std::istream& inp, Stack< std::string >& stc, Queue< std::string >& que)
   {
     size_t countOfBrackets = 0;
     std::string var;
@@ -17,35 +40,38 @@ namespace mashkin
       {
         break;
       }
-      if (var == "(" || var == "+" || var == "-" || var == "*" || var == "/" || var == "%")
+      short int NumOfOp = returnNumbOfOper(var);
+      if (NumOfOp == 0)
       {
-        if (var == "(")
-        {
-          countOfBrackets++;
-        }
-        if (countOfBrackets == 0 && stc.isEmpty())
+        stc.push(var);
+      }
+      else if (NumOfOp == 1)
+      {
+        while (stc.drop() != "(")
         {
           que.enqueue(stc.drop());
           stc.pop();
         }
-        stc.push(var);
-      }
-      else if (var == ")")
-      {
-        std::string symb = stc.drop();
         stc.pop();
-        while (symb != "(")
+      }
+      else if (NumOfOp == 2 || NumOfOp == 3)
+      {
+        if (!stc.isEmpty())
         {
-          que.enqueue(symb);
-          symb = stc.drop();
+          stc.push(var);
+        }
+        else if (returnNumbOfOper(stc.drop()) >= NumOfOp)
+        {
+          que.enqueue(stc.drop());
           stc.pop();
-          if (var == "(")
-          {
-            countOfBrackets--;
-          }
+          stc.push(var);
+        }
+        else
+        {
+          stc.push(var);
         }
       }
-      else
+      else if (NumOfOp == 4)
       {
         que.enqueue(var);
       }
