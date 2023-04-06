@@ -1,7 +1,6 @@
 #ifndef SPBSPU_LABS_2023_AADS_904_A_DICTIONARY_H
 #define SPBSPU_LABS_2023_AADS_904_A_DICTIONARY_H
 #include <utility>
-#include <iterator>
 #include <ostream>
 #include <algorithm>
 #include "forwardlist.h"

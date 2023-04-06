@@ -3,74 +3,15 @@
 #include <cstddef>
 #include <cassert>
 #include <iterator>
-namespace details
-{
-  template< typename T >
-  struct Node
-  {
-    T data;
-    Node *next;
-    Node *prev;
-    explicit Node(const T &data):
-      data(data),
-      next(nullptr),
-      prev(nullptr)
-    {}
-  };
-}
+#include "forwardlistiterator.h"
+#include "nodeforwardlist.h"
 namespace dimkashelk
 {
-  template < typename T >
+  template< typename T >
   class ForwardList
   {
+  using iterator = dimkashelk::Iterator< T >;
   public:
-    class Iterator
-    {
-    friend class ForwardList< T >;
-    public:
-      typedef ptrdiff_t difference_type;
-      typedef T value_type;
-      typedef T* pointer;
-      typedef T& reference;
-      typedef std::input_iterator_tag iterator_category;
-      explicit Iterator(details::Node< T > *ptr):
-        ptr_(ptr)
-      {}
-      Iterator &operator++()
-      {
-        ptr_ = ptr_->next;
-        return *this;
-      }
-      Iterator &operator++(int)
-      {
-        ptr_ = ptr_->next;
-        return *this;
-      }
-      Iterator &operator--()
-      {
-        ptr_ = ptr_->prev;
-        return *this;
-      }
-      Iterator &operator--(int)
-      {
-        ptr_ = ptr_->prev;
-        return *this;
-      }
-      T &operator*() const
-      {
-        return ptr_->data;
-      }
-      bool operator==(const Iterator &other) const
-      {
-        return ptr_ == other.ptr_;
-      }
-      bool operator!=(const Iterator &other) const
-      {
-        return ptr_ != other.ptr_;
-      }
-    private:
-      details::Node< T > *ptr_;
-    };
     ForwardList():
       begin_(nullptr),
       end_(nullptr)
@@ -131,7 +72,7 @@ namespace dimkashelk
         end_ = node;
       }
     }
-    void insertAfter(const Iterator& it, const T& data)
+    void insertAfter(const iterator &it, const T &data)
     {
       auto *newNode = new details::Node< T >(data);
       newNode->next = it.ptr_->next;
@@ -160,13 +101,13 @@ namespace dimkashelk
     {
       return begin_ == nullptr;
     }
-    Iterator begin() const
+    iterator begin() const
     {
-      return Iterator(begin_);
+      return iterator(begin_);
     }
-    Iterator end() const
+    iterator end() const
     {
-      return Iterator(nullptr);
+      return iterator(nullptr);
     }
     friend bool operator>(const ForwardList< T > &first, const ForwardList< T > &second)
     {
