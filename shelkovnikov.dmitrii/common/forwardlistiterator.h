@@ -44,7 +44,7 @@ namespace dimkashelk
     {
       return ptr_ == other.ptr_;
     }
-    bool operator!=(const ForwardListIterator &other) const
+    bool operator!=(const ForwardListIterator< T > &other) const
     {
       return ptr_ != other.ptr_;
     }
