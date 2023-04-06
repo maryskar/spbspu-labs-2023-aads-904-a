@@ -49,8 +49,8 @@ namespace dimkashelk
       return ptr_ != other.ptr_;
     }
   private:
-    details::Node< T > *ptr_;
-    explicit ForwardListIterator(details::Node< T > *ptr):
+    details::NodeForwardList< T > *ptr_;
+    explicit ForwardListIterator(details::NodeForwardList< T > *ptr):
       ptr_(ptr)
     {}
   };

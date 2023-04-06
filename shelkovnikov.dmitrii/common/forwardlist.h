@@ -40,7 +40,7 @@ namespace dimkashelk
     }
     void pushFront(const T &data)
     {
-      auto *node = new details::Node< T >(data);
+      auto *node = new details::NodeForwardList< T >(data);
       if (begin_)
       {
         node->next = begin_;
@@ -54,7 +54,7 @@ namespace dimkashelk
     }
     void pushBack(const T &data)
     {
-      auto *node = new details::Node< T >(data);
+      auto *node = new details::NodeForwardList< T >(data);
       if (end_)
       {
         node->prev = end_;
@@ -74,7 +74,7 @@ namespace dimkashelk
     }
     void insertAfter(const iterator &it, const T &data)
     {
-      auto *newNode = new details::Node< T >(data);
+      auto *newNode = new details::NodeForwardList< T >(data);
       newNode->next = it.ptr_->next;
       if (newNode->next)
       {
@@ -91,7 +91,7 @@ namespace dimkashelk
     {
       while (begin_)
       {
-        details::Node< T > *node = begin_;
+        details::NodeForwardList< T > *node = begin_;
         begin_ = begin_->next;
         delete node;
       }
@@ -138,8 +138,8 @@ namespace dimkashelk
       }
     }
   private:
-    details::Node< T > *begin_;
-    details::Node< T > *end_;
+    details::NodeForwardList< T > *begin_;
+    details::NodeForwardList< T > *end_;
   };
 }
 #endif

@@ -5,12 +5,12 @@ namespace dimkashelk
   namespace details
   {
     template <typename T>
-    struct Node
+    struct NodeForwardList
     {
       T data;
-      Node *next;
-      Node *prev;
-      explicit Node(const T &data) :
+      NodeForwardList *next;
+      NodeForwardList *prev;
+      explicit NodeForwardList(const T &data) :
         data(data),
         next(nullptr),
         prev(nullptr)
