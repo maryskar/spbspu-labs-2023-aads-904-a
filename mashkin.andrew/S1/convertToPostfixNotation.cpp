@@ -38,7 +38,7 @@ namespace mashkin
         {
           que.enqueue(symb);
           symb = stc.drop();
-          stc.drop();
+          stc.pop();
           if (var == "(")
           {
             countOfBrackets--;
