@@ -17,7 +17,7 @@ short int returnNumbOfOper(std::string var)
   {
     return 2;
   }
-  else if (var == "*" || var == "/")
+  else if (var == "*" || var == "/" || var == "%")
   {
     return 3;
   }
