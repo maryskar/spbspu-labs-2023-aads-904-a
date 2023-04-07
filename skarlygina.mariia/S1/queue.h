@@ -1,5 +1,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H
+#include <cstddef>
+#include <stdexcept>
 #include "list.h"
 template< typename T >
 class Queue
@@ -56,7 +58,7 @@ void Queue< T >::push(T rhs)
 template< typename T >
 T Queue< T >::drop()
 {
-  if (head == nullptr)
+  if (head_ == nullptr)
   {
     throw std::out_of_range("Queue is empty");
   }
