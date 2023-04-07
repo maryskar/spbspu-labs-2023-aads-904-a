@@ -22,6 +22,23 @@ Queue< T >::Queue():
 {}
 
 template< typename T >
+Queue< T >::Queue(const Queue& other):
+    head_(nullptr),
+    tail_(nullptr)
+{
+  if (other.head_ == nullptr)
+  {
+    return;
+  }
+  List< T >* other_temp = other.head_;
+  while (other_temp != nullptr)
+  {
+    push(other->data);
+    other_temp = other_temp->next;
+  }
+}
+
+template< typename T >
 void Queue< T >::push(T rhs)
 {
   List< T >* new_node = new List< T >{rhs, nullptr, tail_};
