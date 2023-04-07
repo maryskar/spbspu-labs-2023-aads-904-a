@@ -6,7 +6,7 @@ class Queue
 {
 public:
   Queue();
-  Queue(const Queue& rhs);
+  Queue(const Queue< T >& rhs);
   void push(T rhs);
   T drop();
   ~Queue();
@@ -16,9 +16,9 @@ private:
 };
 
 template< typename T >
-Queue< T >::Queue() :
-	head_(nullptr),
-	tail_(nullptr)
+Queue< T >::Queue():
+  head_(nullptr),
+  tail_(nullptr)
 {}
 
 template< typename T >

@@ -6,12 +6,18 @@ class Stack
 {
 public:
   Stack();
-  Stack(const Stack& rhs);
+  Stack(const Stack< T >& rhs);
   void push(T rhs);
   T drop();
   ~Stack();
 private:
-  List< T >* head;
-  List< T >* tail;
+  List< T >* head_;
+  List< T >* tail_;
 };
+
+template< typename T >
+Stack< T >::Stack() :
+	head_(nullptr),
+	tail_(nullptr)
+{}
 #endif
