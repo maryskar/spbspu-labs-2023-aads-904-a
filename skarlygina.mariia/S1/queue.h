@@ -7,7 +7,6 @@ class Queue
 public:
   Queue();
   Queue(const Queue< T >& rhs);
-  bool isEmpty() const;
   void push(T rhs);
   T drop();
   ~Queue();
@@ -21,12 +20,6 @@ Queue< T >::Queue():
   head_(nullptr),
   tail_(nullptr)
 {}
-
-template< typename T >
-bool Queue< T >::isEmpty() const
-{
-  return head_ == nullptr;
-}
 
 template< typename T >
 void Queue< T >::push(T rhs)
@@ -50,6 +43,18 @@ T Queue< T >::drop()
   {
     throw std::out_of_range("Queue is empty");
   }
-  Node< T >* newhead = head->next;
+  T data = head_->data;
+  List< T >* head_temp = head_;
+  head_ = head_->next;
+  if (head_ != nullptr)
+  {
+    head_->prev = nullptr;
+  }
+  else
+  {
+    tail_ = nullptr;
+  }
+  delete head_temp;
+  return data;
 }
 #endif
