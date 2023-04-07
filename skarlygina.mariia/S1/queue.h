@@ -8,7 +8,7 @@ class Queue
 {
 public:
   Queue();
-  Queue(const Queue< T >& rhs);
+  Queue(const Queue< T >& other);
   void push(T rhs);
   T drop();
   ~Queue();
@@ -24,7 +24,7 @@ Queue< T >::Queue():
 {}
 
 template< typename T >
-Queue< T >::Queue(const Queue& other):
+Queue< T >::Queue(const Queue< T >& other):
     head_(nullptr),
     tail_(nullptr)
 {
