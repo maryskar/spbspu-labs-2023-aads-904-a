@@ -7,6 +7,7 @@ class Queue
 public:
   Queue();
   Queue(const Queue< T >& rhs);
+  bool isEmpty() const;
   void push(T rhs);
   T drop();
   ~Queue();
@@ -20,6 +21,12 @@ Queue< T >::Queue():
   head_(nullptr),
   tail_(nullptr)
 {}
+
+template<typename T>
+bool Queue<T>::isEmpty() const
+{
+  return head_ == nullptr;
+}
 
 template< typename T >
 void Queue< T >::push(T rhs)
