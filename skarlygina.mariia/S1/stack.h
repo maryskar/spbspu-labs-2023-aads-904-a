@@ -39,18 +39,21 @@ Stack< T >::Stack(const Stack< T >& other):
   }
 }
 
-template< typename T >
+template< typename T>
 void Stack< T >::push(T rhs)
 {
-  List< T >* new_node = new List< T >{rhs, nullptr, tail_};
-  if (tail_ != nullptr)
-  {
-    tail_->prev = new_node;
-  }
-  tail_ = new_node;
+  List< T >* new_node = new List< T >{rhs, nullptr, nullptr};
   if (head_ == nullptr)
   {
-    head_ = tail_;
+    head_ = new_node;
+    tail_ = new_node;
+  }
+  else
+  {
+    new_node->prev = tail_;
+    tail_->next = new_node;
+    tail_ = new_node;
   }
 }
+
 #endif
