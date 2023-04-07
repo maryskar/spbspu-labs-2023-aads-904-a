@@ -10,8 +10,8 @@ class Queue
 public:
   Queue();
   Queue(const Queue< T >& other);
-  void push(T rhs);
-  T get();
+  void push(const T& rhs);
+  T& get() const;
   void pop();
   ~Queue();
 private:

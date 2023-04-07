@@ -7,8 +7,8 @@ class Stack
 public:
   Stack();
   Stack(const Stack< T >& other);
-  void push(T rhs);
-  T get();
+  void push(const T& rhs);
+  T& get() const;
   void pop();
   ~Stack();
 private:
