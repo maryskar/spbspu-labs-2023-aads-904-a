@@ -15,6 +15,8 @@ public:
 	void popBack();
 	T getTopData();
 
+	bool isEmpty();
+
 private:
 	List< T >* top;
 };
@@ -60,6 +62,12 @@ T Stack< T >::getTopData()
 		throw std::underflow_error("underflow_error");
 	}
 	return top->data;
+}
+
+template< typename T >
+bool Stack< T >::isEmpty()
+{
+	return top == nullptr;
 }
 
 #endif
