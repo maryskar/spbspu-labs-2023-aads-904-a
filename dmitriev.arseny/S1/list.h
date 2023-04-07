@@ -11,7 +11,7 @@ struct List
 };
 
 template< typename T >
-List< T >::List(T data, List< T >* otherList):
+List< T >::List(T data, List< T >* otherList) :
   data(data),
   otherList(otherList)
 {

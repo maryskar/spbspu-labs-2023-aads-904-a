@@ -15,6 +15,8 @@ public:
 	void popBack();
 	T getTopData();
 
+	T unsafeGetTopAndPop();
+
 	bool isEmpty();
 
 private:
@@ -62,6 +64,15 @@ T Stack< T >::getTopData()
 		throw std::underflow_error("underflow_error");
 	}
 	return top->data;
+}
+
+template< typename T >
+T Stack< T >::unsafeGetTopAndPop()
+{
+	T currentData = getTopData();
+	popBack();
+
+	return currentData;
 }
 
 template< typename T >
