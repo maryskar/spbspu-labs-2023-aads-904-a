@@ -17,7 +17,7 @@ private:
 
 template< typename T >
 Stack< T >::Stack() :
-	head_(nullptr),
-	tail_(nullptr)
+  head_(nullptr),
+  tail_(nullptr)
 {}
 #endif
