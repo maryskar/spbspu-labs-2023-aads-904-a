@@ -86,4 +86,13 @@ T Queue< T >::get()
   }
   return head_->data;
 }
+
+template< typename T >
+Queue< T >::~Queue()
+{
+  while (head_ != nullptr)
+  {
+    pop();
+  }
+}
 #endif
