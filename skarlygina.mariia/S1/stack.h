@@ -37,4 +37,19 @@ Stack< T >::Stack(const Stack< T >& other):
     head_temp = head_temp->next;
   }
 }
+
+template< typename T >
+void Stack< T >::push(T rhs)
+{
+  List< T >* new_node = new List< T >{rhs, nullptr, tail_};
+  if (tail_ != nullptr)
+  {
+    tail_->prev = new_node;
+  }
+  tail_ = new_node;
+  if (head_ == nullptr)
+  {
+    head_ = tail_;
+  }
+}
 #endif
