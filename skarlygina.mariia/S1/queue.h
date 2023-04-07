@@ -22,8 +22,8 @@ Queue< T >::Queue():
   tail_(nullptr)
 {}
 
-template<typename T>
-bool Queue<T>::isEmpty() const
+template< typename T >
+bool Queue< T >::isEmpty() const
 {
   return head_ == nullptr;
 }
