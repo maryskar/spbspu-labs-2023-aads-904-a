@@ -1,28 +1,30 @@
 #ifndef QUEUE_H
 #define QUEUE_H
-#include "node.h"
+#include "list.h"
 template< typename T >
 class Queue
 {
 public:
   Queue();
+  Queue(const Queue& rhs);
   void push(T rhs);
   T drop();
   ~Queue();
 private:
-  Node< T >* head;
-  Node< T >* tail;
+  List< T >* head_;
+  List< T >* tail_;
 };
 
 template< typename T >
-Queue< T >::Queue():
-	begin_(nullptr)
+Queue< T >::Queue() :
+	head_(nullptr),
+	tail_(nullptr)
 {}
 
 template< typename T >
 void Queue< T >::push(T rhs)
 {
-  Node< T >* temp = new Node;
+  Node< T >* temp = new List;
   temp->data = rhs;
   temp->next = nullptr;
   if (!head)
