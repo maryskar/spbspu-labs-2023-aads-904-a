@@ -57,13 +57,12 @@ void Queue< T >::push(T rhs)
 }
 
 template< typename T >
-T Queue< T >::drop()
+void Queue< T >::pop()
 {
   if (head_ == nullptr)
   {
     throw std::out_of_range("Queue is empty");
   }
-  T data_ = head_->data;
   List< T >* head_temp = head_;
   head_ = head_->next;
   if (head_ != nullptr)
@@ -75,6 +74,15 @@ T Queue< T >::drop()
     tail_ = nullptr;
   }
   delete head_temp;
-  return data;
+}
+
+template< typename T >
+T Queue< T >::get()
+{
+  if (head == nullptr)
+  {
+    throw std::out_of_range("Queue is empty");
+  }
+  return head_->data;
 }
 #endif
