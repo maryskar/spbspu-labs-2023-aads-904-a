@@ -79,7 +79,7 @@ void Queue< T >::pop()
 template< typename T >
 T Queue< T >::get()
 {
-  if (head == nullptr)
+  if (head_ == nullptr)
   {
     throw std::out_of_range("Queue is empty");
   }
