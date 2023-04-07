@@ -8,7 +8,8 @@ public:
   Stack();
   Stack(const Stack< T >& other);
   void push(T rhs);
-  T drop();
+  T get();
+  void pop();
   ~Stack();
 private:
   List< T >* head_;

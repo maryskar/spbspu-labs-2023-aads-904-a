@@ -10,7 +10,8 @@ public:
   Queue();
   Queue(const Queue< T >& other);
   void push(T rhs);
-  T drop();
+  T get();
+  void pop();
   ~Queue();
 private:
   List< T >* head_;
@@ -62,7 +63,7 @@ T Queue< T >::drop()
   {
     throw std::out_of_range("Queue is empty");
   }
-  T data = head_->data;
+  T data_ = head_->data;
   List< T >* head_temp = head_;
   head_ = head_->next;
   if (head_ != nullptr)
