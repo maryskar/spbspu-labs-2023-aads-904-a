@@ -13,7 +13,7 @@ public:
 
 	void push(T rhs);
 	void popBack();
-
+	T getTopData();
 
 private:
 	List< T >* top;
@@ -52,6 +52,14 @@ void Stack< T >::popBack()
 	delete currentList;
 }
 
-
+template< typename T >
+T Stack< T >::getTopData()
+{
+	if (top == nullptr)
+	{
+		throw std::underflow_error("underflow_error");
+	}
+	return top->data;
+}
 
 #endif
