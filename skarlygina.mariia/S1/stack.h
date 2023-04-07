@@ -85,4 +85,13 @@ void Stack< T >::pop()
   }
   delete node_temp;
 }
+
+template< typename T>
+Stack< T >::~Stack()
+{
+  while (head_ != nullptr)
+  {
+    pop();
+  }
+}
 #endif
