@@ -56,4 +56,33 @@ void Stack< T >::push(T rhs)
   }
 }
 
+template< typename T >
+T Stack< T >::get()
+{
+  if (tail_ == nullptr)
+  {
+    throw std::out_of_range("Stack is empty");
+  }
+  return tail_->data;
+}
+
+template< typename T >
+void Stack< T >::pop()
+{
+  if (tail_ == nullptr)
+  {
+    throw std::out_of_range("Stack is empty");
+  }
+  List< T >* node_temp = tail_;
+  tail_ = tail_->prev;
+  if (tail_ != nullptr)
+  {
+    tail_->next = nullptr;
+  }
+  else
+  {
+    head_ = nullptr;
+  }
+  delete node_temp;
+}
 #endif
