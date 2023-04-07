@@ -31,21 +31,15 @@ bool Queue< T >::isEmpty() const
 template< typename T >
 void Queue< T >::push(T rhs)
 {
-  Node< T >* temp = new List;
-  temp->data = rhs;
-  temp->next = nullptr;
-  if (!head)
+  List< T >* new_node = new List< T >{rhs, nullptr, tail_};
+  if (tail_ != nullptr)
   {
-	head = temp;
+    tail_->next = new_node;
   }
-  else
+  tail_ = new_node;
+  if (head_ == nullptr)
   {
-	Node< T >* current = head;
-	while (current->next)
-	{
-      current = current->next;
-	}
-	current->next = temp;
+    head_ = tail_;
   }
 }
 
