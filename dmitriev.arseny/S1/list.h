@@ -11,7 +11,7 @@ struct List
 };
 
 template< typename T >
-inline List< T >::List(T data, List< T >* other):
+List< T >::List(T data, List< T >* other):
   data(data),
   other(other)
 {

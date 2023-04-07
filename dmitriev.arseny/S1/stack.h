@@ -22,16 +22,30 @@ private:
 };
 
 template< typename T >
-inline Stack< T >::Stack():
+Stack< T >::Stack():
   top(nullptr)
 {
 
 }
 
 template< typename T >
-inline Stack< T >::~Stack()
+Stack< T >::~Stack()
 {
 
+}
+
+template< typename T >
+void Stack< T >::push(T rhs)
+{
+  List< T >* newTop = new List< T >(rhs, top);
+
+  top = newTop;
+}
+
+template< typename T >
+T Stack< T >::drop()
+{
+  return T();
 }
 
 #endif
