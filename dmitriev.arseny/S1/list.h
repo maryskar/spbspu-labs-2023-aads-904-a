@@ -5,15 +5,15 @@ template< typename T >
 struct List
 {
   T data;
-  List< T >* other;
+  List< T >* otherList;
 
-  List(T data = T(), List< T >* other = nullptr);
+  List(T data = T(), List< T >* otherList = nullptr);
 };
 
 template< typename T >
-List< T >::List(T data, List< T >* other):
+List< T >::List(T data, List< T >* otherList):
   data(data),
-  other(other)
+  otherList(otherList)
 {
 
 }

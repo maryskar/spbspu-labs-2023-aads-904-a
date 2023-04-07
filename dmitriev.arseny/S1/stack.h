@@ -2,50 +2,56 @@
 #define STACK_H
 
 #include "list.h"
+#include <iomanip>
 
 template< typename T >
 class Stack
 {
 public:
-  Stack();
-  ~Stack();
+	Stack();
+	~Stack();
 
-  void push(T rhs);
-  T drop();
+	void push(T rhs);
+	void popBack();
 
-  bool isEmpty() const;
-  T top() const;
 
 private:
-  List< T >* top;
-
+	List< T >* top;
 };
 
 template< typename T >
-Stack< T >::Stack():
-  top(nullptr)
+Stack< T >::Stack() :
+	top(nullptr)
 {
 
 }
 
 template< typename T >
-Stack< T >::~Stack()
+Stack<T>::~Stack()
 {
 
 }
 
 template< typename T >
-void Stack< T >::push(T rhs)
+void Stack<T>::push(T rhs)
 {
-  List< T >* newTop = new List< T >(rhs, top);
-
-  top = newTop;
+	List< T >* newTop = new List< T >(rhs, top);
+	top = newTop;
 }
 
 template< typename T >
-T Stack< T >::drop()
+void Stack< T >::popBack()
 {
-  return T();
+	if (top == nullptr)
+	{
+		throw std::underflow_error("underflow_error");
+	}
+	List< T >* currentList = top;
+	top = top->otherList;
+
+	delete currentList;
 }
+
+
 
 #endif
