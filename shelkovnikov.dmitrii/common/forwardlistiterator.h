@@ -31,7 +31,7 @@ namespace dimkashelk
       ptr_ = ptr_->prev;
       return *this;
     }
-    typename ForwardListIterator::reference operator*() const
+    T &operator*() const
     {
       return ptr_->data;
     }
