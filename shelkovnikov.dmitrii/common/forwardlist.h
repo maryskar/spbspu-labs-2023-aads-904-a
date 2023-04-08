@@ -40,6 +40,19 @@ namespace dimkashelk
     {
       free();
     }
+    ForwardList &operator=(const ForwardList< T > &forwardList)
+    {
+      if (std::addressof(forwardList) == this)
+      {
+        return;
+      }
+      auto iter = forwardList.cbegin();
+      while (iter != forwardList.cend())
+      {
+        pushBack((*iter));
+        iter++;
+      }
+    }
     void pushFront(const T &data)
     {
       auto *node = new details::NodeForwardList< T >(data);
