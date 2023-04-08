@@ -28,12 +28,12 @@ namespace dimkashelk
       }
       list_.free();
       compare_ = other.compare_;
-      if (other.list_.begin() == other.list_.end())
+      if (other.list_.cbegin() == other.list_.cend())
       {
         return *this;
       }
-      auto begin = other.list_.begin();
-      auto end = other.list_.end();
+      auto begin = other.list_.cbegin();
+      auto end = other.list_.cend();
       list_.pushFront(*begin);
       begin++;
       while (begin != end)
@@ -107,10 +107,10 @@ namespace dimkashelk
         return dict_type();
       }
       dict_type new_dict;
-      auto iter_first = first.list_.begin();
-      auto iter_first_end = first.list_.end();
-      auto iter_second = second.list_.begin();
-      auto iter_second_end = second.list_.end();
+      auto iter_first = first.list_.cbegin();
+      auto iter_first_end = first.list_.cend();
+      auto iter_second = second.list_.cbegin();
+      auto iter_second_end = second.list_.cend();
       while (iter_first != iter_first_end && iter_second != iter_second_end)
       {
         while (iter_second != iter_second_end && Compare{}((*iter_first).first, (*iter_second).first))
@@ -139,14 +139,14 @@ namespace dimkashelk
     friend dict_type operator&(const dict_type &first, const dict_type &second)
     {
       dict_type result;
-      for (auto it_first = second.list_.begin(); it_first != second.list_.end(); it_first++)
+      for (auto it_first = second.list_.cbegin(); it_first != second.list_.cend(); it_first++)
       {
         auto comp = [&](const auto &item)
         {
           return item.first == (*it_first).first;
         };
-        auto res = std::find_if(first.list_.begin(), first.list_.end(), comp);
-        if (res != second.list_.end())
+        auto res = std::find_if(first.list_.cbegin(), first.list_.cend(), comp);
+        if (res != second.list_.cend())
         {
           result.push((*res).first, (*res).second);
         }
@@ -156,8 +156,8 @@ namespace dimkashelk
     friend dict_type operator|(const dict_type &first, const dict_type &second)
     {
       dict_type new_dict;
-      auto iter_second = second.list_.begin();
-      auto iter_second_end = second.list_.end();
+      auto iter_second = second.list_.cbegin();
+      auto iter_second_end = second.list_.cend();
       while (iter_second != iter_second_end)
       {
         Key key = (*iter_second).first;
@@ -165,8 +165,8 @@ namespace dimkashelk
         new_dict.push(key, value);
         iter_second++;
       }
-      auto iter_first = first.list_.begin();
-      auto iter_first_end = first.list_.end();
+      auto iter_first = first.list_.cbegin();
+      auto iter_first_end = first.list_.cend();
       while (iter_first != iter_first_end)
       {
         Key key = (*iter_first).first;

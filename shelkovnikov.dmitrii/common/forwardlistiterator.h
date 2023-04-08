@@ -32,19 +32,15 @@ namespace dimkashelk
       ptr_ = ptr_->prev;
       return *this;
     }
-    T &operator*()
+    typename ForwardListIterator::reference operator*() const
     {
       return ptr_->data;
     }
-    const T &operator*() const
-    {
-      return ptr_->data;
-    }
-    bool operator==(const ForwardListIterator< T > &other) const
+    bool operator==(const ForwardListIterator &other) const
     {
       return ptr_ == other.ptr_;
     }
-    bool operator!=(const ForwardListIterator< T > &other) const
+    bool operator!=(const ForwardListIterator &other) const
     {
       return ptr_ != other.ptr_;
     }

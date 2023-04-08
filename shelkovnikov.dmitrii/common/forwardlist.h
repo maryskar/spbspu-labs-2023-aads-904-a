@@ -4,6 +4,7 @@
 #include <cassert>
 #include <iterator>
 #include "forwardlistiterator.h"
+#include "forwardlistiteratorconst.h"
 #include "nodeforwardlist.h"
 namespace dimkashelk
 {
@@ -11,6 +12,7 @@ namespace dimkashelk
   class ForwardList
   {
   using iterator = dimkashelk::ForwardListIterator< T >;
+  using const_iterator = dimkashelk::ForwardListIteratorConst< const T >;
   public:
     ForwardList():
       begin_(nullptr),
@@ -20,8 +22,8 @@ namespace dimkashelk
       begin_(nullptr),
       end_(nullptr)
     {
-      auto iter = forwardList.begin();
-      while (iter != forwardList.end())
+      auto iter = forwardList.cbegin();
+      while (iter != forwardList.cend())
       {
         pushBack((*iter));
         iter++;
@@ -87,6 +89,10 @@ namespace dimkashelk
         end_ = newNode;
       }
     }
+    void insertAfter(const const_iterator &it, const T &data)
+    {
+      insertAfter(iterator(it.ptr_), data);
+    }
     void free()
     {
       while (begin_)
@@ -101,20 +107,28 @@ namespace dimkashelk
     {
       return begin_ == nullptr;
     }
-    iterator begin() const
+    iterator begin()
     {
       return iterator(begin_);
     }
-    iterator end() const
+    iterator end()
     {
       return iterator(nullptr);
     }
+    const_iterator cbegin() const
+    {
+      return const_iterator(begin_);
+    }
+    const_iterator cend() const
+    {
+      return const_iterator(nullptr);
+    }
     friend bool operator>(const ForwardList< T > &first, const ForwardList< T > &second)
     {
-      auto first_start = first.begin();
-      auto second_start = second.begin();
-      auto first_end = first.end();
-      auto second_end = second.end();
+      auto first_start = first.cbegin();
+      auto second_start = second.cbegin();
+      auto first_end = first.cend();
+      auto second_end = second.cend();
       while (first_start != first_end && second_start != second_end)
       {
         if (*first_start != *second_start)
