@@ -7,7 +7,7 @@ namespace dimkashelk
   template< typename T >
   class ForwardList;
   template< typename T >
-  class ForwardListIteratorConst: public std::iterator< std::input_iterator_tag, T >
+  class ForwardListIteratorConst: public std::iterator< std::input_iterator_tag, const T >
   {
   friend class ForwardList< T >;
   public:
@@ -31,7 +31,7 @@ namespace dimkashelk
       ptr_ = ptr_->prev;
       return *this;
     }
-    typename ForwardListIteratorConst::reference operator*() const
+    const T &operator*() const
     {
       return ptr_->data;
     }
@@ -45,7 +45,7 @@ namespace dimkashelk
     }
   private:
     details::NodeForwardList< T > *ptr_;
-    explicit ForwardListIteratorConst(details::NodeForwardList< const T > *ptr):
+    explicit ForwardListIteratorConst(details::NodeForwardList< T > *ptr):
       ptr_(ptr)
     {}
   };

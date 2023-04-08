@@ -12,7 +12,7 @@ namespace dimkashelk
   class ForwardList
   {
   using iterator = dimkashelk::ForwardListIterator< T >;
-  using const_iterator = dimkashelk::ForwardListIteratorConst< const T >;
+  using const_iterator = dimkashelk::ForwardListIteratorConst< T >;
   public:
     ForwardList():
       begin_(nullptr),
