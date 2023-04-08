@@ -53,6 +53,17 @@ namespace dimkashelk
         iter++;
       }
     }
+    ForwardList &operator=(ForwardList< T > &&forwardList)
+    {
+      if (std::addressof(forwardList) == this)
+      {
+        return *this;
+      }
+      begin_ = forwardList.begin_;
+      end_ = forwardList.end_;
+      forwardList.begin_ = nullptr;
+      forwardList.end_ = nullptr;
+    }
     void pushFront(const T &data)
     {
       auto *node = new details::NodeForwardList< T >(data);
