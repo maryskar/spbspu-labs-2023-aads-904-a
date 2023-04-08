@@ -2,7 +2,6 @@
 #define SPBSPU_LABS_2023_AADS_904_A_FORWARDLISTITERATORCONST_H
 #include <iterator>
 #include "nodeforwardlist.h"
-#include "forwardlist.h"
 namespace dimkashelk
 {
   template< typename T >
