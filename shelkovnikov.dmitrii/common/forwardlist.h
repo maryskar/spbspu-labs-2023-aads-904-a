@@ -44,7 +44,7 @@ namespace dimkashelk
     {
       if (std::addressof(forwardList) == this)
       {
-        return;
+        return *this;
       }
       auto iter = forwardList.cbegin();
       while (iter != forwardList.cend())
