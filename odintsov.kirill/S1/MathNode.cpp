@@ -43,7 +43,7 @@ odintsov::MathNode::MathNode(const std::string& str):
     tag_ = Tag::Paren;
     return;
   }
-  data_.oper = std::move(odintsov::Operator(c));
+  new (&data_.oper) odintsov::Operator(c);
   tag_ = Tag::Operator;
 }
 
