@@ -41,6 +41,7 @@ namespace dimkashelk
       {
         return *this;
       }
+      free();
       copy(forwardList);
     }
     ForwardList &operator=(ForwardList< T > &&forwardList)
@@ -115,6 +116,7 @@ namespace dimkashelk
         begin_ = begin_->next;
         delete node;
       }
+      begin_ = nullptr;
       end_ = nullptr;
     }
     bool empty()
