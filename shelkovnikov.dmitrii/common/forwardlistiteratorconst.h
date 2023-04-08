@@ -35,6 +35,10 @@ namespace dimkashelk
     {
       return ptr_->data;
     }
+    const T &operator->() const
+    {
+      return ptr_->data;
+    }
     bool operator==(const ForwardListIteratorConst &other) const
     {
       return ptr_ == other.ptr_;
