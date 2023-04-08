@@ -22,12 +22,7 @@ namespace dimkashelk
       begin_(nullptr),
       end_(nullptr)
     {
-      auto iter = forwardList.cbegin();
-      while (iter != forwardList.cend())
-      {
-        pushBack((*iter));
-        iter++;
-      }
+      copy(forwardList);
     }
     ForwardList(ForwardList< T > &&forwardList):
       begin_(forwardList.begin_),
@@ -46,12 +41,7 @@ namespace dimkashelk
       {
         return *this;
       }
-      auto iter = forwardList.cbegin();
-      while (iter != forwardList.cend())
-      {
-        pushBack((*iter));
-        iter++;
-      }
+      copy(forwardList);
     }
     ForwardList &operator=(ForwardList< T > &&forwardList)
     {
@@ -150,6 +140,15 @@ namespace dimkashelk
   private:
     details::NodeForwardList< T > *begin_;
     details::NodeForwardList< T > *end_;
+    void copy(const ForwardList< T > &forwardList)
+    {
+      auto iter = forwardList.cbegin();
+      while (iter != forwardList.cend())
+      {
+        pushBack((*iter));
+        iter++;
+      }
+    }
   };
 }
 #endif
