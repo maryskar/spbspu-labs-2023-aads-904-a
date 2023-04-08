@@ -28,11 +28,10 @@ public:
 private:
 	List< T >* top;
 
-	void clear();
 };
 
 template< typename T >
-Stack< T >::Stack():
+Stack< T >::Stack() :
 	top(nullptr)
 {
 
@@ -41,11 +40,11 @@ Stack< T >::Stack():
 template< typename T >
 Stack<T>::~Stack()
 {
-	clear();
+	clear(top);
 }
 
 template< typename T >
-Stack< T >::Stack(const Stack< T >& otherStack):
+Stack< T >::Stack(const Stack< T >& otherStack) :
 	top(nullptr)
 {
 	if (otherStack.top != nullptr)
@@ -67,7 +66,7 @@ Stack< T >::Stack(const Stack< T >& otherStack):
 }
 
 template< typename T >
-Stack< T >::Stack(Stack< T >&& otherStack):
+Stack< T >::Stack(Stack< T >&& otherStack) :
 	top(otherStack.top)
 {
 	otherStack.top = nullptr;
@@ -80,30 +79,8 @@ Stack< T >& Stack< T >::operator=(const Stack& otherStack)
 	{
 		return *this;
 	}
-	else if (otherStack.top == nullptr)
-	{
-		clear();
-		top = nullptr;
-
-		return *this;
-	}
-	Stack< T > newStack;
-	List< T >* newStackTail = nullptr;
-	List< T >* otherTop = otherStack.top;
-
-	newStack.push(otherTop->data);
-	newStackTail = newStack.top;
-	otherTop = otherTop->otherList;
-
-	while (otherTop != nullptr)
-	{
-		newStackTail->otherList = new List< T >(otherTop->data);
-		newStackTail = newStackTail->otherList;
-		otherTop = otherTop->otherList;
-	}
-
-	clear();
-
+	Stack< T > newStack(otherStack);
+	clear(top);
 	top = newStack.top;
 	newStack.top = nullptr;
 
@@ -117,6 +94,7 @@ inline Stack< T >& Stack< T >::operator=(Stack< T >&& otherStack)
 	{
 		return *this;
 	}
+	clear(top);
 	top = otherStack.top;
 	otherStack.top = nullptr;
 
@@ -166,15 +144,6 @@ template< typename T >
 bool Stack< T >::isEmpty()
 {
 	return top == nullptr;
-}
-
-template< typename T >
-void Stack< T >::clear()
-{
-	while (!isEmpty())
-	{
-		popBack();
-	}
 }
 
 #endif

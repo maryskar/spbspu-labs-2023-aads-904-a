@@ -18,4 +18,16 @@ List< T >::List(T data, List< T >* otherList) :
 
 }
 
+template< typename T >
+void clear(List< T >* topAdress)
+{
+  while (topAdress != nullptr)
+  {
+    List< T >* currentList = topAdress;
+    topAdress = topAdress->otherList;
+
+    delete currentList;
+  }
+}
+
 #endif

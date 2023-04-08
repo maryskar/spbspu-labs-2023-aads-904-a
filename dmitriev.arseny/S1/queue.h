@@ -29,26 +29,25 @@ private:
 	List< T >* head;
 	List< T >* tail;
 
-	void clear();
-
 };
 
-template<typename T>
-Queue<T>::Queue() :
+template< typename T >
+Queue< T >::Queue() :
 	head(nullptr),
 	tail(nullptr)
 {
 
 }
 
-template<typename T>
-Queue<T>::~Queue()
+template< typename T >
+Queue< T >::~Queue()
 {
-	clear();
+	clear(head);
+	tail = nullptr;
 }
 
-template<typename T>
-Queue<T>::Queue(const Queue<T>& otherQueue) :
+template< typename T >
+Queue< T >::Queue(const Queue< T >& otherQueue) :
 	head(nullptr),
 	tail(nullptr)
 {
@@ -83,7 +82,7 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& otherQueue)
 		return *this;
 	}
 	Queue< T > newQueue(otherQueue);
-	clear();
+	clear(head);
 	head = newQueue.head;
 	tail = newQueue.tail;
 
@@ -100,7 +99,7 @@ Queue<T>& Queue<T>::operator=(Queue<T>&& otherQueue)
 	{
 		return *this;
 	}
-	clear();
+	clear(head);
 	head = otherQueue.head;
 	tail = otherQueue.tail;
 
@@ -138,8 +137,8 @@ void Queue< T >::popBack()
 	head = newHead;
 }
 
-template<typename T>
-T Queue<T>::getTopData()
+template< typename T >
+T Queue< T >::getTopData()
 {
 	if (head == nullptr)
 	{
@@ -148,8 +147,8 @@ T Queue<T>::getTopData()
 	return head->data;
 }
 
-template<typename T>
-T Queue<T>::unsafeGetTopAndPop()
+template< typename T >
+T Queue< T >::unsafeGetTopAndPop()
 {
 	T currentData = getTopData();
 	popBack();
@@ -157,19 +156,10 @@ T Queue<T>::unsafeGetTopAndPop()
 	return currentData;
 }
 
-template<typename T>
-inline bool Queue<T>::isEmpty()
+template< typename T >
+inline bool Queue< T >::isEmpty()
 {
 	return head == nullptr;
-}
-
-template<typename T>
-void Queue<T>::clear()
-{
-	while (!isEmpty())
-	{
-		popBack();
-	}
 }
 
 #endif
