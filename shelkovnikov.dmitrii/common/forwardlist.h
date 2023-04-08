@@ -123,34 +123,6 @@ namespace dimkashelk
     {
       return const_iterator(nullptr);
     }
-    friend bool operator>(const ForwardList< T > &first, const ForwardList< T > &second)
-    {
-      auto first_start = first.cbegin();
-      auto second_start = second.cbegin();
-      auto first_end = first.cend();
-      auto second_end = second.cend();
-      while (first_start != first_end && second_start != second_end)
-      {
-        if (*first_start != *second_start)
-        {
-          return *first_start > *second_start;
-        }
-        ++first_start;
-        ++second_start;
-      }
-      if (first_start == first_end && second_start != second_end)
-      {
-        return true;
-      }
-      else if (first_start != first_end && second_start == second_end)
-      {
-        return false;
-      }
-      else
-      {
-        return false;
-      }
-    }
   private:
     details::NodeForwardList< T > *begin_;
     details::NodeForwardList< T > *end_;
