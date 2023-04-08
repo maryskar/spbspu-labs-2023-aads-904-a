@@ -32,7 +32,7 @@ private:
 };
 
 template< typename T >
-Stack< T >::Stack() :
+Stack< T >::Stack():
 	top(nullptr)
 {
 
@@ -45,7 +45,7 @@ Stack<T>::~Stack()
 }
 
 template< typename T >
-Stack< T >::Stack(const Stack< T >& otherStack) :
+Stack< T >::Stack(const Stack< T >& otherStack):
 	top(nullptr)
 {
 	if (otherStack.top != nullptr)
@@ -67,7 +67,7 @@ Stack< T >::Stack(const Stack< T >& otherStack) :
 }
 
 template< typename T >
-Stack< T >::Stack(Stack< T >&& otherStack) :
+Stack< T >::Stack(Stack< T >&& otherStack):
 	top(otherStack.top)
 {
 	otherStack.top = nullptr;
