@@ -47,6 +47,13 @@ odintsov::MathNode::MathNode(const std::string& str):
   tag_ = Tag::Operator;
 }
 
+odintsov::MathNode::~MathNode()
+{
+  if (tag_ == Tag::Operator) {
+    data_.oper.~Operator();
+  }
+}
+
 bool odintsov::MathNode::isDataType(Tag tag) const
 {
   return tag_ == tag;

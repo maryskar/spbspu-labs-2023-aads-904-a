@@ -18,6 +18,7 @@ namespace odintsov {
     MathNode(const odintsov::Operator& oper);
     MathNode(char paren);
     MathNode(const std::string& str);
+    ~MathNode();
 
     bool isDataType(Tag tag) const;
 
