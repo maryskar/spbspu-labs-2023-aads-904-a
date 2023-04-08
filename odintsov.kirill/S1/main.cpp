@@ -4,122 +4,16 @@
 #include <stdexcept>
 
 #include "MathNode.hpp"
-#include "Operator.hpp"
-#include "Queue.hpp"
+#include "MathSolver.hpp"
 #include "Stack.hpp"
 #include "StringSplitter.hpp"
-
-struct MathSolver {
-  void operator()(odintsov::MathNode& node)
-  {
-    processParen(node);
-    processOperand(node);
-    processOperator(node);
-  }
-
-  long long getResult()
-  {
-    sendOperatorsOver();
-    if (!opers_.empty()) {
-      throw std::runtime_error("Syntax error");
-    }
-    odintsov::Stack< odintsov::MathNode > solver;
-    while (!result_.empty()) {
-      odintsov::MathNode node = result_.head();
-      if (node.isDataType(odintsov::MathNode::Tag::Operator)) {
-        long long rhs = solver.tail().getOperand();
-        solver.pop();
-        long long lhs = solver.tail().getOperand();
-        solver.pop();
-        long long res = node.getOperator().exec(lhs, rhs);
-        solver.push(odintsov::MathNode(res));
-      } else {
-        solver.push(result_.head());
-      }
-      result_.pop();
-    }
-    if (solver.empty()) {
-      throw std::runtime_error("Empty expression");
-    }
-    long long res = solver.tail().getOperand();
-    solver.pop();
-    if (!solver.empty()) {
-      throw std::runtime_error("Syntax error");
-    }
-    return res;
-  }
-
- private:
-  odintsov::Stack< odintsov::MathNode > opers_;
-  odintsov::Queue< odintsov::MathNode > result_;
-
-  void processParen(odintsov::MathNode& paren)
-  {
-    if (!paren.isDataType(odintsov::MathNode::Tag::Paren)) {
-      return;
-    }
-    if (paren.getParen() == '(') {
-      opers_.push(paren);
-    } else {
-      sendOperatorsOver();
-      if (opers_.empty()) {
-        throw std::runtime_error("Parenthesis error");
-      }
-      odintsov::MathNode openParen = opers_.tail();
-      if (!openParen.isDataType(odintsov::MathNode::Tag::Paren) || openParen.getParen() != '(') {
-        throw std::runtime_error("Parenthesis error");
-      }
-      opers_.pop();
-    }
-  }
-
-  void processOperand(odintsov::MathNode& operand)
-  {
-    if (!operand.isDataType(odintsov::MathNode::Tag::Operand)) {
-      return;
-    }
-    result_.push(operand);
-  }
-
-  void processOperator(odintsov::MathNode& oper)
-  {
-    if (!oper.isDataType(odintsov::MathNode::Tag::Operator)) {
-      return;
-    }
-    const odintsov::Operator& operPriority = oper.getOperator();
-    sendOperatorsOver([&operPriority](const odintsov::Operator& stackOper) {
-      return stackOper >= operPriority;
-    });
-    opers_.push(oper);
-  }
-
-  void sendOperatorsOver()
-  {
-    sendOperatorsOver([](const odintsov::Operator&) {
-      return true;
-    });
-  }
-
-  template< typename F >
-  void sendOperatorsOver(F confirmSend)
-  {
-    while (!opers_.empty()) {
-      odintsov::MathNode oper = opers_.tail();
-      if (!(oper.isDataType(odintsov::MathNode::Tag::Operator) && confirmSend(oper.getOperator()))) {
-        break;
-      }
-      result_.push(oper);
-      opers_.pop();
-    }
-  }
-};
 
 int main(int argc, char* argv[])
 {
   std::istream* in = &std::cin;
   std::ifstream inFile;
   if (argc == 2) {
-    inFile = std::ifstream(argv[1]);
+    inFile.open(argv[1]);
     if (!inFile.is_open()) {
       std::cerr << "Can't open file\n";
       return 1;
@@ -142,7 +36,7 @@ int main(int argc, char* argv[])
         continue;
       }
       odintsov::StringSplitter splitter(exprStr);
-      MathSolver addToSolution;
+      odintsov::MathSolver addToSolution;
       while (!splitter.empty()) {
         std::string nodeStr;
         splitter >> nodeStr;
