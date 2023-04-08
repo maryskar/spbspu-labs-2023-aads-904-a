@@ -19,6 +19,10 @@ namespace dimkashelk
       list_(dict.list_),
       compare_(dict.compare_)
     {}
+    Dictionary(dict_type &&dict):
+      list_(std::move(dict.list_)),
+      compare_(dict.compare_)
+    {}
     ~Dictionary() = default;
     dict_type &operator=(const dict_type &other)
     {
