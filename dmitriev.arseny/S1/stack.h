@@ -8,131 +8,131 @@ template< typename T >
 class Stack
 {
 public:
-	Stack();
-	~Stack();
+  Stack();
+  ~Stack();
 
-	Stack(const Stack< T >& otherStack);
-	Stack(Stack< T >&& otherStack);
+  Stack(const Stack< T >& otherStack);
+  Stack(Stack< T >&& otherStack);
 
-	Stack< T >& operator=(const Stack< T >& otherStack);
-	Stack< T >& operator=(Stack< T >&& otherStack);
+  Stack< T >& operator=(const Stack< T >& otherStack);
+  Stack< T >& operator=(Stack< T >&& otherStack);
 
-	void push(T rhs);
-	void popBack();
-	T getTopData();
+  void push(T rhs);
+  void popBack();
+  T getTopData();
 
-	bool isEmpty();
+  bool isEmpty();
 
 private:
-	List< T >* top;
+  List< T >* top;
 
 };
 
 template< typename T >
-Stack< T >::Stack() :
-	top(nullptr)
+Stack< T >::Stack():
+  top(nullptr)
 {
 
 }
 
 template< typename T >
-Stack<T>::~Stack()
+Stack< T >::~Stack()
 {
-	clear(top);
+  clear(top);
 }
 
 template< typename T >
-Stack< T >::Stack(const Stack< T >& otherStack) :
-	top(nullptr)
+Stack< T >::Stack(const Stack< T >& otherStack):
+  top(nullptr)
 {
-	if (otherStack.top != nullptr)
-	{
-		List< T >* otherTop = otherStack.top;
-		List< T >* stackTail = nullptr;
+  if (otherStack.top != nullptr)
+  {
+    List< T >* otherTop = otherStack.top;
+    List< T >* stackTail = nullptr;
 
-		push(otherTop->data);
-		stackTail = top;
-		otherTop = otherTop->otherList;
+    push(otherTop->data);
+    stackTail = top;
+    otherTop = otherTop->otherList;
 
-		while (otherTop != nullptr)
-		{
-			stackTail->otherList = new List< T >(otherTop->data);
-			stackTail = stackTail->otherList;
-			otherTop = otherTop->otherList;
-		}
-	}
+    while (otherTop != nullptr)
+    {
+      stackTail->otherList = new List< T >(otherTop->data);
+      stackTail = stackTail->otherList;
+      otherTop = otherTop->otherList;
+    }
+  }
 }
 
 template< typename T >
-Stack< T >::Stack(Stack< T >&& otherStack) :
-	top(otherStack.top)
+Stack< T >::Stack(Stack< T >&& otherStack):
+  top(otherStack.top)
 {
-	otherStack.top = nullptr;
+  otherStack.top = nullptr;
 }
 
 template< typename T >
 Stack< T >& Stack< T >::operator=(const Stack& otherStack)
 {
-	if (this == &otherStack)
-	{
-		return *this;
-	}
-	Stack< T > newStack(otherStack);
-	clear(top);
-	top = newStack.top;
-	newStack.top = nullptr;
+  if (this == &otherStack)
+  {
+    return *this;
+  }
+  Stack< T > newStack(otherStack);
+  clear(top);
+  top = newStack.top;
+  newStack.top = nullptr;
 
-	return *this;
+  return *this;
 }
 
 template< typename T >
 inline Stack< T >& Stack< T >::operator=(Stack< T >&& otherStack)
 {
-	if (this == &otherStack)
-	{
-		return *this;
-	}
-	clear(top);
-	top = otherStack.top;
-	otherStack.top = nullptr;
+  if (this == &otherStack)
+  {
+    return *this;
+  }
+  clear(top);
+  top = otherStack.top;
+  otherStack.top = nullptr;
 
-	return *this;
+  return *this;
 }
 
 template< typename T >
 void Stack< T >::push(T rhs)
 {
-	List< T >* newTop = new List< T >(rhs, top);
-	top = newTop;
+  List< T >* newTop = new List< T >(rhs, top);
+  top = newTop;
 }
 
 template< typename T >
 void Stack< T >::popBack()
 {
-	if (isEmpty())
-	{
-		throw std::underflow_error("underflow_error");
-	}
-	List< T >* currentList = top;
-	top = top->otherList;
+  if (isEmpty())
+  {
+    throw std::underflow_error("underflow_error");
+  }
+  List< T >* currentList = top;
+  top = top->otherList;
 
-	delete currentList;
+  delete currentList;
 }
 
 template< typename T >
 T Stack< T >::getTopData()
 {
-	if (isEmpty())
-	{
-		throw std::underflow_error("underflow_error");
-	}
-	return top->data;
+  if (isEmpty())
+  {
+    throw std::underflow_error("underflow_error");
+  }
+  return top->data;
 }
 
 template< typename T >
 bool Stack< T >::isEmpty()
 {
-	return top == nullptr;
+  return top == nullptr;
 }
 
 #endif

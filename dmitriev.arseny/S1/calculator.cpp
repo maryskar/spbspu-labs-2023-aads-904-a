@@ -16,19 +16,15 @@ double calculateTheExpression(std::istream& istr)
   Stack< std::string > postStack;
   Stack< std::string > stack;
 
-  std::string s2 = "";
-  std::string s1 = "";
-  std::string symbol = "";
-
   infQueue = getQueueFromInput(istr);
 
   while (!infQueue.isEmpty())
   {
-    if (infQueue.getTopData() == "(") //
+    if (infQueue.getTopData() == "(")
     {
       stack.push(drop(infQueue));
     }
-    else if (infQueue.getTopData() == ")") //
+    else if (infQueue.getTopData() == ")")
     {
       while (!(stack.getTopData() == "("))
       {
@@ -38,7 +34,7 @@ double calculateTheExpression(std::istream& istr)
       drop(stack);
       drop(infQueue);
     }
-    else if (definePriority(infQueue.getTopData()) > 0) //
+    else if (definePriority(infQueue.getTopData()) > 0)
     {
       if (stack.isEmpty() || (definePriority(infQueue.getTopData()) > definePriority(stack.getTopData())))
       {
@@ -51,7 +47,7 @@ double calculateTheExpression(std::istream& istr)
         stack.push(drop(infQueue));
       }
     }
-    else //
+    else
     {
       postStack.push(drop(infQueue));
     }
