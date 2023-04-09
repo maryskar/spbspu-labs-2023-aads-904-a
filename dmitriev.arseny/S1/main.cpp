@@ -26,7 +26,7 @@ void print(std::istream& streamInp, std::ostream& streamOut)
 
   if (!arr.isEmpty())
   {
-    std::cout << arr.getTopData() << ' ';
+    std::cout << arr.getTopData();
     arr.popBack();
   }
   while (!arr.isEmpty())
