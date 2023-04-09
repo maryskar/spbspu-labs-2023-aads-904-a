@@ -66,7 +66,7 @@ long long calculateTheExpression(std::string stringInp)
     postStack.push(calculate(drop(postStack), drop(postStack), drop(postStack)));
   }
 
-  return std::stod(drop(postStack));
+  return std::stoll(drop(postStack));
 }
 
 size_t definePriority(std::string inp)
@@ -124,7 +124,7 @@ std::string calculate(std::string s2, std::string s1, std::string symbol)
     {
       throw std::overflow_error("overflow_error");
     }
-    if ((p2 < 0 && p1 > longLongMin / p2) || (p2 > 0 && p1 > longLongMin / p2))
+    if ((p2 < 0 && p1 > longLongMin / p2) || (p2 > 0 && p1 > longLongMax / p2))
     {
       throw std::underflow_error("underflow_error");
     }
