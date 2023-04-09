@@ -1,25 +1,18 @@
 #ifndef STACK_H
 #define STACK_H
 #include <stdexcept>
-#include "node.h"
+#include "forward_list.h"
 namespace tarasenko
 {
   template< typename T >
   class Stack
   {
   public:
-   Stack():
-     top(nullptr)
+   Stack()
    {}
-   Stack(const Stack< T >& s):
-     top(nullptr)
+   Stack(const Stack< T >& s)
    {
-     details::NodeOfList< T >* copy = s.top;
-     while (copy)
-     {
-       push(copy->data);
-       copy = copy->next;
-     }
+     top.copy(s.top);
    }
    Stack(Stack< T >&& s):
      top(s.top)
@@ -28,64 +21,63 @@ namespace tarasenko
    }
    Stack< T >& operator=(const Stack< T >& s)
    {
-     details::clear(&top);
-     details::NodeOfList< T >* temp = s.top;
-     while (temp)
+     try
      {
-       push(temp->data);
-       temp = temp->next;
+       top = s.top;
+     }
+     catch (...)
+     {
+       throw;
      }
      return *this;
    }
    Stack< T >& operator=(Stack< T >&& s)
    {
-     details::clear(&top);
+     top.clear();
      top = s.top;
      s.top = nullptr;
      return *this;
    }
    ~Stack()
-   {
-     details::clear(&top);
-   }
+   {}
    void push(T& rhs);
    T getTopElem() const;
    void pop();
    bool isEmpty() const;
   private:
-   details::NodeOfList< T >* top;
+   ForwardList< T > top;
   };
 
   template< typename T >
   bool Stack< T >::isEmpty() const
   {
-    return details::isEmpty(top);
+    return top.isEmpty();
   }
 
   template< typename T >
   void Stack< T >::push(T& rhs)
   {
-    details::pushFront(&top, rhs);
+    top.pushFront(rhs);
   }
 
   template< typename T >
   T Stack< T >::getTopElem() const
   {
-    if (details::isEmpty(top))
+    if (top.isEmpty())
     {
       throw std::underflow_error("Underflow!");
     }
-    return details::getFront(top);
+    return top.getFront();
   }
 
   template< typename T >
   void Stack< T >::pop()
   {
-    if (details::isEmpty(top))
+    if (top.isEmpty())
     {
       throw std::underflow_error("Underflow!");
     }
-    details::popFront(&top);
+    top.popFront();
   }
 };
 #endif

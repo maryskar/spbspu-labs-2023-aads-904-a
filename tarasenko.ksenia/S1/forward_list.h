@@ -39,7 +39,7 @@ namespace tarasenko
    }
    ForwardList< T >& operator=(ForwardList< T >&& other)
    {
-     details::clear(std::addressof(other));
+     details::clear(std::addressof(first));
      first = other.first;
      other.first = nullptr;
      return *this;
@@ -54,16 +54,8 @@ namespace tarasenko
    T getFront() const;
    void popFront();
    void clear();
+   void copy(const ForwardList< T >& other);
   private:
-   void copy(const ForwardList< T >& other)
-   {
-     details::NodeOfList< T >* copy = other.first;
-     while (copy)
-     {
-       push(copy->data);
-       copy = copy->next;
-     }
-   }
    details::NodeOfList< T >* first;
   };
 
@@ -101,6 +93,17 @@ namespace tarasenko
   void ForwardList< T >::clear()
   {
     details::clear(std::addressof(first));
+  }
+
+  template< typename T >
+  void copy(const ForwardList< T >& other)
+  {
+    details::NodeOfList< T >* copy = other.first;
+    while (copy)
+    {
+      push(copy->data);
+      copy = copy->next;
+    }
   }
 }
 #endif
