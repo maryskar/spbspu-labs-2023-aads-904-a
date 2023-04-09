@@ -16,9 +16,7 @@ namespace tarasenko
    }
    Stack(Stack< T >&& s):
      top(s.top)
-   {
-     s.top = nullptr;
-   }
+   {}
    Stack< T >& operator=(const Stack< T >& s)
    {
      try

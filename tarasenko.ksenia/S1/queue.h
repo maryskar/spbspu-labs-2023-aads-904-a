@@ -2,90 +2,82 @@
 #define QUEUE_H
 #include <stdexcept>
 #include "node.h"
+#include "forward_list.h"
 namespace tarasenko
 {
   template< typename T>
   class Queue
   {
   public:
-   Queue():
-     head(nullptr)
+   Queue()
    {}
-   Queue(const Queue< T >& q):
-     head(nullptr)
+   Queue(const Queue< T >& q)
    {
-     details::NodeOfList< T >* copy = q.head;
-     while (copy)
-     {
-       push(copy->data);
-       copy = copy->next;
-     }
+     head.copy(q.head);
    }
    Queue(Queue< T >&& q):
      head(q.head)
-   {
-     q.head = nullptr;
-   }
+   {}
    Queue< T >& operator=(const Queue< T >& q)
    {
-     details::clear(&head);
-     details::NodeOfList< T >* temp = q.head;
-     while (temp)
+     try
      {
-       push(temp->data);
-       temp = temp->next;
+       head = q.top;
+     }
+     catch (...)
+     {
+       throw;
      }
      return *this;
    }
    Queue< T >& operator=(Queue< T >&& q)
    {
-     details::clear(&head);
-     head = q.head;
-     q.head = nullptr;
+     head = q.top;
+     q.top = nullptr;
      return *this;
    }
    ~Queue()
    {
-     details::clear(&head);
+     head.clear();
    }
    void push(T& rhs);
    T getHeadElem() const;
    void popFront();
    bool isEmpty() const;
   private:
-   details::NodeOfList< T >* head;
+   ForwardList< T > head;
   };
 
   template< typename T >
   bool Queue< T >::isEmpty() const
   {
-    return details::isEmpty(head);
+    return head.isEmpty();
   }
 
   template< typename T >
   void Queue< T >::push(T& rhs)
   {
-    details::pushBack(&head, rhs);
+    head.pushBack(rhs);
   }
 
   template< typename T >
   T Queue< T >::getHeadElem() const
   {
-    if (details::isEmpty(head))
+    if (head.isEmpty())
     {
       throw std::underflow_error("Underflow!");
     }
-    return details::getFront(head);
+    return head.getFront();
   }
 
   template< typename T >
   void Queue< T >::popFront()
   {
-    if (details::isEmpty(head))
+    if (head.isEmpty())
     {
       throw std::underflow_error("Underflow!");
     }
-    details::popFront(&head);
+    head.popFront();
   }
 }
 #endif
