@@ -3,6 +3,6 @@
 
 #include <string>
 
-double calculateTheExpression(std::string stringInp);
+long long calculateTheExpression(std::string stringInp);
 
 #endif

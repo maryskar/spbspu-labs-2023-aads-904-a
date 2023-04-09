@@ -6,7 +6,7 @@
 
 void print(std::istream& streamInp, std::ostream& streamOut)
 {
-  Stack< double > arr;
+  Stack< long long > arr;
   std::string stringInp = "";
 
   do

@@ -10,7 +10,7 @@ Queue< std::string > getQueueFromInput(std::string stringInp);
 std::string drop(Queue< std::string >& queue);
 std::string drop(Stack< std::string >& stack);
 
-double calculateTheExpression(std::string stringInp)
+long long calculateTheExpression(std::string stringInp)
 {
   Queue< std::string > infQueue;
   Stack< std::string > postStack;
@@ -86,9 +86,9 @@ size_t definePriority(std::string inp)
 
 std::string calculate(std::string s2, std::string s1, std::string symbol)
 {
-  double p1 = std::stod(s1);
-  double p2 = std::stod(s2);
-  double result = 0.0;
+  long long p1 = std::stoll(s1);
+  long long p2 = std::stoll(s2);
+  long long result = 0.0;
 
   if (symbol == "+")
   {
@@ -116,8 +116,6 @@ std::string calculate(std::string s2, std::string s1, std::string symbol)
     {
       throw std::logic_error("mod on zero");
     }
-    int a1 = p1;
-    int a2 = p2;
     result = a2 % a1;
   }
 
