@@ -38,6 +38,7 @@ void print(std::istream& streamInp, std::ostream& streamOut)
 
 void signalHandler(int signum)
 {
+  signum = 0;
   exit(signum);
 }
 
@@ -45,7 +46,7 @@ int main(int argv, char** argc)
 {
   try
   {
-    std::signal(SIGINT, signalHandler(0));
+    std::signal(SIGINT, signalHandler);
     if (argv == 2)
     {
       std::ifstream file(argc[1]);
