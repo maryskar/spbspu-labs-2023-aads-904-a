@@ -145,6 +145,10 @@ std::string calculate(std::string s2, std::string s1, std::string symbol)
       throw std::logic_error("mod on zero");
     }
     result = p2 % p1;
+    if (result < 0)
+    {
+      result += p1;
+    }
   }
 
   return std::to_string(result);
