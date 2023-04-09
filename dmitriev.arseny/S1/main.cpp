@@ -1,23 +1,16 @@
 #include <iostream>
+#include <string>
+#include "calculator.h"
 #include "stack.h"
 
 int main()
 {
-  Stack< int > a;
-
   try
   {
-    a.push(1);
-    a.push(2);
-
-    std::cout << a.getTopData() << '\n';
-    std::cout << a.unsafeGetTopAndPop() << '\n';
-    std::cout << a.unsafeGetTopAndPop() << '\n';
-
-    a.push(3);
-    std::cout << a.getTopData() << '\n';
-    std::cout << a.unsafeGetTopAndPop() << '\n';
-    std::cout << a.unsafeGetTopAndPop() << '\n';
+    while (!std::cin.eof())
+    {
+      std::cout << calculateTheExpression(std::cin) << '\n';
+    }
   }
   catch (const std::exception& e)
   {
