@@ -36,7 +36,7 @@ void print(std::istream& streamInp, std::ostream& streamOut)
   }
 }
 
-void signalHandler(int signum)
+void signalHandler()
 {
   exit(0);
 }
