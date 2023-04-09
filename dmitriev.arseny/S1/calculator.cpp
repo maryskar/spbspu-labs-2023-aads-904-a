@@ -3,6 +3,7 @@
 #include "queue.h"
 
 #include <string>
+#include <limits>
 
 constexpr long long longLongMin = std::numeric_limits< long long >::min();
 constexpr long long longLongMax = std::numeric_limits< long long >::max();
@@ -113,7 +114,7 @@ std::string calculate(std::string s2, std::string s1, std::string symbol)
     }
     if (p1 > 0 && p2 < longLongMin + p1)
     {
-      throw std::overflow_error("overflow_error");
+      throw std::underflow_error("underflow_error");
     }
     result = p2 - p1;
   }
