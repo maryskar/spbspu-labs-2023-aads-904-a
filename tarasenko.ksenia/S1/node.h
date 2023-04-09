@@ -23,13 +23,13 @@ namespace tarasenko
     }
 
     template< typename T >
-    void pushFront(NodeOfList< T >** pnode, T& d)
+    void pushFront(NodeOfList< T >** pnode, const T& d)
     {
       *pnode = new NodeOfList< T >(d, *pnode);
     }
 
     template< typename T >
-    void pushBack(NodeOfList< T >** pnode, T& data)
+    void pushBack(NodeOfList< T >** pnode, const T& data)
     {
       if (*pnode == nullptr)
       {

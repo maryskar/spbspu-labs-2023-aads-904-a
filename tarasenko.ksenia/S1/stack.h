@@ -31,14 +31,12 @@ namespace tarasenko
    }
    Stack< T >& operator=(Stack< T >&& s)
    {
-     top.clear();
-     top = s.top;
-     s.top = nullptr;
+     top.move(s.top);
      return *this;
    }
    ~Stack()
    {}
-   void push(T& rhs);
+   void push(const T& rhs);
    T getTopElem() const;
    void pop();
    bool isEmpty() const;
@@ -53,7 +51,7 @@ namespace tarasenko
   }
 
   template< typename T >
-  void Stack< T >::push(T& rhs)
+  void Stack< T >::push(const T& rhs)
   {
     top.pushFront(rhs);
   }

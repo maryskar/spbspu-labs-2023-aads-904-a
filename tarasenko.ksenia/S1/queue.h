@@ -32,15 +32,14 @@ namespace tarasenko
    }
    Queue< T >& operator=(Queue< T >&& q)
    {
-     head = q.top;
-     q.top = nullptr;
+     head.move(q.head);
      return *this;
    }
    ~Queue()
    {
      head.clear();
    }
-   void push(T& rhs);
+   void push(const T& rhs);
    T getHeadElem() const;
    void popFront();
    bool isEmpty() const;
@@ -55,7 +54,7 @@ namespace tarasenko
   }
 
   template< typename T >
-  void Queue< T >::push(T& rhs)
+  void Queue< T >::push(const T& rhs)
   {
     head.pushBack(rhs);
   }

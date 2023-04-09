@@ -39,9 +39,7 @@ namespace tarasenko
    }
    ForwardList< T >& operator=(ForwardList< T >&& other)
    {
-     details::clear(std::addressof(first));
-     first = other.first;
-     other.first = nullptr;
+     move(other);
      return *this;
    }
    ~ForwardList()
@@ -49,12 +47,13 @@ namespace tarasenko
      details::clear(std::addressof(first));
    };
    bool isEmpty() const;
-   void pushFront(T& data);
-   void pushBack(T& data);
+   void pushFront(const T& data);
+   void pushBack(const T& data);
    T getFront() const;
    void popFront();
    void clear();
    void copy(const ForwardList< T >& other);
+   void move(const ForwardList< T >&& other);
   private:
    details::NodeOfList< T >* first;
   };
@@ -66,13 +65,13 @@ namespace tarasenko
   }
 
   template< typename T >
-  void ForwardList< T >::pushFront(T& data)
+  void ForwardList< T >::pushFront(const T& data)
   {
     details::pushFront(std::addressof(first), data);
   }
 
   template< typename T >
-  void ForwardList< T >::pushBack(T& data)
+  void ForwardList< T >::pushBack(const T& data)
   {
     details::pushBack(std::addressof(first), data);
   }
@@ -96,14 +95,21 @@ namespace tarasenko
   }
 
   template< typename T >
-  void copy(const ForwardList< T >& other)
+  void ForwardList< T >::copy(const ForwardList< T >& other)
   {
     details::NodeOfList< T >* copy = other.first;
     while (copy)
     {
-      push(copy->data);
+      pushBack(copy->data);
       copy = copy->next;
     }
+  }
+  template< typename T >
+  void ForwardList< T >::move(const ForwardList< T >&& other)
+  {
+    details::clear(std::addressof(first));
+    first = other.first;
+    other.first = nullptr;
   }
 }
 #endif
