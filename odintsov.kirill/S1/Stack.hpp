@@ -1,12 +1,19 @@
 #ifndef STACK_HPP
 #define STACK_HPP
 
+#include "Node.hpp"
+
 namespace odintsov {
   template< typename T >
   class Stack {
    public:
     Stack();
+    Stack(const Stack< T >& s);
+    Stack(Stack< T >&& s);
     ~Stack();
+
+    Stack< T >& operator=(const Stack< T >& s);
+    Stack< T >& operator=(Stack< T >&& s);
 
     T& tail();
     const T& tail() const;
@@ -16,15 +23,10 @@ namespace odintsov {
     bool empty() const;
 
    private:
-    struct Node {
-      T data;
-      Node* prev;
-    };
+    Node< T >* head_;
+    Node< T >* tail_;
 
-    Node* head_;
-    Node* tail_;
-
-    void push(Node* n);
+    void push(Node< T >* n);
   };
 }
 

@@ -1,12 +1,19 @@
 #ifndef QUEUE_HPP
 #define QUEUE_HPP
 
+#include "Node.hpp"
+
 namespace odintsov {
   template< typename T >
   class Queue {
    public:
     Queue();
+    Queue(const Queue< T >& q);
+    Queue(Queue< T >&& q);
     ~Queue();
+
+    Queue< T >& operator=(const Queue< T >& q);
+    Queue< T >& operator=(Queue< T >&& q);
 
     T& head();
     const T& head() const;
@@ -16,15 +23,10 @@ namespace odintsov {
     bool empty() const;
 
    private:
-    struct Node {
-      T data;
-      Node* next;
-    };
+    Node< T >* head_;
+    Node< T >* tail_;
 
-    Node* head_;
-    Node* tail_;
-
-    void push(Node* n);
+    void push(Node< T >* n);
   };
 }
 
