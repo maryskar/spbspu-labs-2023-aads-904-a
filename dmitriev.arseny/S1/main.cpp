@@ -36,16 +36,16 @@ void print(std::istream& streamInp, std::ostream& streamOut)
   }
 }
 
-void signalHandler()
+void signalHandler(int signum)
 {
-  exit(0);
+  exit(signum);
 }
 
 int main(int argv, char** argc)
 {
   try
   {
-    std::signal(SIGINT, signalHandler);
+    std::signal(SIGINT, signalHandler(0));
     if (argv == 2)
     {
       std::ifstream file(argc[1]);
