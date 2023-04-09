@@ -96,11 +96,11 @@ std::string calculate(std::string s2, std::string s1, std::string symbol)
 
   if (symbol == "+")
   {
-    if (p2 > 0 && p1 > longLongMax - rhs)
+    if (p2 > 0 && p1 > longLongMax - p2)
     {
       throw std::overflow_error("overflow_error");
     }
-    if (p2 < 0 && p1 < longLongMin - rhs)
+    if (p2 < 0 && p1 < longLongMin - p2)
     {
       throw std::underflow_error("underflow_error");
     }
