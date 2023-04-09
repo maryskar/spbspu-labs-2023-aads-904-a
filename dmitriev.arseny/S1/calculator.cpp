@@ -4,6 +4,9 @@
 
 #include <string>
 
+constexpr long long longLongMin = std::numeric_limits< long long >::min();
+constexpr long long longLongMax = std::numeric_limits< long long >::max();
+
 size_t definePriority(std::string inp);
 std::string calculate(std::string s2, std::string s1, std::string symbol);
 Queue< std::string > getQueueFromInput(std::string stringInp);
@@ -92,14 +95,38 @@ std::string calculate(std::string s2, std::string s1, std::string symbol)
 
   if (symbol == "+")
   {
+    if (p2 > 0 && p1 > longLongMax - rhs)
+    {
+      throw std::overflow_error("overflow_error");
+    }
+    if (p2 < 0 && p1 < longLongMin - rhs)
+    {
+      throw std::underflow_error("underflow_error");
+    }
     result = p2 + p1;
   }
   else if (symbol == "-")
   {
+    if (p1 < 0 && p2 > longLongMax + p1)
+    {
+      throw std::overflow_error("overflow_error");
+    }
+    if (p1 > 0 && p2 < longLongMin + p1)
+    {
+      throw std::overflow_error("overflow_error");
+    }
     result = p2 - p1;
   }
   else if (symbol == "*")
   {
+    if ((p2 > 0 && p1 > longLongMax / p2) || (p2 < 0 && p1 > longLongMax / p2))
+    {
+      throw std::overflow_error("overflow_error");
+    }
+    if ((p2 < 0 && p1 > longLongMin / p2) || (p2 > 0 && p1 > longLongMin / p2))
+    {
+      throw std::underflow_error("underflow_error");
+    }
     result = p2 * p1;
   }
   else if (symbol == "/")
@@ -116,7 +143,7 @@ std::string calculate(std::string s2, std::string s1, std::string symbol)
     {
       throw std::logic_error("mod on zero");
     }
-    result = a2 % a1;
+    result = p2 % p1;
   }
 
   return std::to_string(result);
