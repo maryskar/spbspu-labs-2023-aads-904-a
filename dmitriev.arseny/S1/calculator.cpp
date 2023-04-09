@@ -6,17 +6,17 @@
 
 size_t definePriority(std::string inp);
 std::string calculate(std::string s2, std::string s1, std::string symbol);
-Queue< std::string > getQueueFromInput(std::istream& input);
+Queue< std::string > getQueueFromInput(std::string stringInp);
 std::string drop(Queue< std::string >& queue);
 std::string drop(Stack< std::string >& stack);
 
-double calculateTheExpression(std::istream& istr)
+double calculateTheExpression(std::string stringInp)
 {
   Queue< std::string > infQueue;
   Stack< std::string > postStack;
   Stack< std::string > stack;
 
-  infQueue = getQueueFromInput(istr);
+  infQueue = getQueueFromInput(stringInp);
 
   while (!infQueue.isEmpty())
   {
@@ -31,8 +31,8 @@ double calculateTheExpression(std::istream& istr)
         postStack.push(drop(stack));
         postStack.push(calculate(drop(postStack), drop(postStack), drop(postStack)));
       }
-      drop(stack);
-      drop(infQueue);
+      stack.popBack();
+      infQueue.popBack();
     }
     else if (definePriority(infQueue.getTopData()) > 0)
     {
@@ -60,7 +60,6 @@ double calculateTheExpression(std::istream& istr)
     }
     postStack.push(drop(stack));
     postStack.push(calculate(drop(postStack), drop(postStack), drop(postStack)));
-
   }
 
   return std::stod(drop(postStack));
@@ -105,10 +104,18 @@ std::string calculate(std::string s2, std::string s1, std::string symbol)
   }
   else if (symbol == "/")
   {
+    if (p1 == 0)
+    {
+      throw std::logic_error("div on zero");
+    }
     result = p2 / p1;
   }
   else if (symbol == "%")
   {
+    if (p1 == 0)
+    {
+      throw std::logic_error("mod on zero");
+    }
     int a1 = p1;
     int a2 = p2;
     result = a2 % a1;
@@ -117,23 +124,21 @@ std::string calculate(std::string s2, std::string s1, std::string symbol)
   return std::to_string(result);
 }
 
-Queue< std::string > getQueueFromInput(std::istream& istr)
+Queue< std::string > getQueueFromInput(std::string stringInp)
 {
   Queue< std::string > infQueue;
-  std::string inp = "";
   std::string curr = "";
 
-  std::getline(istr, inp);
-  for (size_t i = 0; inp[i] != '\0'; i++)
+  for (size_t i = 0; stringInp[i] != '\0'; i++)
   {
-    if (inp[i] == ' ')
+    if (stringInp[i] == ' ')
     {
       infQueue.push(curr);
       curr = "";
     }
     else
     {
-      curr = curr + inp[i];
+      curr = curr + stringInp[i];
     }
   }
   infQueue.push(curr);

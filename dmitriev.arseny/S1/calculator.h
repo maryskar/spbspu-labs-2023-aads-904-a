@@ -1,8 +1,8 @@
 #ifndef CALCULATOR_H
 #define CALCULATOR_H
 
-#include <iostream>
+#include <string>
 
-double calculateTheExpression(std::istream& in);
+double calculateTheExpression(std::string stringInp);
 
 #endif

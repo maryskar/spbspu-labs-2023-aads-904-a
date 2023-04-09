@@ -12,7 +12,7 @@ public:
   ~Queue();
 
   Queue(const Queue< T >& otherQueue);
-  Queue(Queue< T >&& otherQueue);
+  Queue(Queue< T >&& otherQueue) noexcept;
 
   Queue< T >& operator=(const Queue< T >& otherQueue);
   Queue< T >& operator=(Queue< T >&& otherQueue);
@@ -64,7 +64,7 @@ Queue< T >::Queue(const Queue< T >& otherQueue):
 }
 
 template< typename T >
-Queue< T >::Queue(Queue< T >&& otherQueue):
+Queue< T >::Queue(Queue< T >&& otherQueue) noexcept :
   head(otherQueue.head),
   tail(otherQueue.tail)
 {
