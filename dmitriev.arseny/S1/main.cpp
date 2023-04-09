@@ -9,7 +9,7 @@ void print(std::istream& streamInp, std::ostream& streamOut)
   Stack< double > arr;
   std::string stringInp = "";
 
-  for (std::getline(streamInp, stringInp); !streamInp.eof(); std::getline(streamInp, stringInp))
+  for (std::getline(streamInp, stringInp); streamInp; std::getline(streamInp, stringInp))
   {
     arr.push(calculateTheExpression(stringInp));
   }
