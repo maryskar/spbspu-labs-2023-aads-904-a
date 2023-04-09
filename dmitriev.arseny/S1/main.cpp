@@ -34,6 +34,7 @@ void print(std::istream& streamInp, std::ostream& streamOut)
     streamOut << ' ' << arr.getTopData();
     arr.popBack();
   }
+  streamOut << '\n';
 }
 
 void signalHandler(int signum)
