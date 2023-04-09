@@ -21,8 +21,6 @@ public:
 	void popBack();
 	T getTopData();
 
-	T unsafeGetTopAndPop();
-
 	bool isEmpty();
 
 private:
@@ -102,7 +100,7 @@ inline Stack< T >& Stack< T >::operator=(Stack< T >&& otherStack)
 }
 
 template< typename T >
-void Stack<T>::push(T rhs)
+void Stack< T >::push(T rhs)
 {
 	List< T >* newTop = new List< T >(rhs, top);
 	top = newTop;
@@ -111,7 +109,7 @@ void Stack<T>::push(T rhs)
 template< typename T >
 void Stack< T >::popBack()
 {
-	if (top == nullptr)
+	if (isEmpty())
 	{
 		throw std::underflow_error("underflow_error");
 	}
@@ -124,20 +122,11 @@ void Stack< T >::popBack()
 template< typename T >
 T Stack< T >::getTopData()
 {
-	if (top == nullptr)
+	if (isEmpty())
 	{
 		throw std::underflow_error("underflow_error");
 	}
 	return top->data;
-}
-
-template< typename T >
-T Stack< T >::unsafeGetTopAndPop()
-{
-	T currentData = getTopData();
-	popBack();
-
-	return currentData;
 }
 
 template< typename T >

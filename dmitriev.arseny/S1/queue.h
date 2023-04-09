@@ -21,8 +21,6 @@ public:
 	void popBack();
 	T getTopData();
 
-	T unsafeGetTopAndPop();
-
 	bool isEmpty();
 
 private:
@@ -145,15 +143,6 @@ T Queue< T >::getTopData()
 		throw std::underflow_error("underflow_error");
 	}
 	return head->data;
-}
-
-template< typename T >
-T Queue< T >::unsafeGetTopAndPop()
-{
-	T currentData = getTopData();
-	popBack();
-
-	return currentData;
 }
 
 template< typename T >
