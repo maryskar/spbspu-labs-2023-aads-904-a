@@ -3,12 +3,8 @@
 #include <string>
 #include "queue.h"
 
+bool isDigit(const std::string & str);
 bool isOperator(const std::string & oper);
-
-template< typename T >
-int getPriority(T operation);
-
-bool checkPriority(const std::string & priority1, const std::string & priority2);
 Queue< std::string > convertFromInfixToPostfix(Queue< std::string > queue);
 
 #endif
