@@ -1,27 +1,28 @@
 #ifndef MATHSOLVER_HPP
 #define MATHSOLVER_HPP
 
+#include <functional>
+
 #include "MathNode.hpp"
 #include "Queue.hpp"
 #include "Stack.hpp"
 
 namespace odintsov {
   struct MathSolver {
-    void operator()(odintsov::MathNode& node);
+    void operator()(MathNode& node);
 
     long long getResult();
 
    private:
-    odintsov::Stack< odintsov::MathNode > opers_;
-    odintsov::Queue< odintsov::MathNode > result_;
+    Stack< MathNode > opers_;
+    Queue< MathNode > result_;
 
-    void processParen(odintsov::MathNode& paren);
-    void processOperand(odintsov::MathNode& operand);
-    void processOperator(odintsov::MathNode& oper);
+    void processParen(MathNode& paren);
+    void processOperand(MathNode& operand);
+    void processOperator(MathNode& oper);
     void sendOperatorsOver();
 
-    template< typename F >
-    void sendOperatorsOver(F confirmSend);
+    void sendOperatorsOver(std::function< bool(const Operator&) > confirmSend);
   };
 }
 

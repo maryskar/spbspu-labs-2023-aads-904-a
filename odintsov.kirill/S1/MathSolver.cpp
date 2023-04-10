@@ -1,6 +1,8 @@
 #include "MathSolver.hpp"
 
-void odintsov::MathSolver::operator()(odintsov::MathNode& node)
+#include <functional>
+
+void odintsov::MathSolver::operator()(MathNode& node)
 {
   processParen(node);
   processOperand(node);
@@ -39,7 +41,7 @@ long long odintsov::MathSolver::getResult()
   return res;
 }
 
-void odintsov::MathSolver::processParen(odintsov::MathNode& paren)
+void odintsov::MathSolver::processParen(MathNode& paren)
 {
   if (!paren.isDataType(MathNode::Tag::Paren)) {
     return;
@@ -59,7 +61,7 @@ void odintsov::MathSolver::processParen(odintsov::MathNode& paren)
   }
 }
 
-void odintsov::MathSolver::processOperand(odintsov::MathNode& operand)
+void odintsov::MathSolver::processOperand(MathNode& operand)
 {
   if (!operand.isDataType(MathNode::Tag::Operand)) {
     return;
@@ -67,7 +69,7 @@ void odintsov::MathSolver::processOperand(odintsov::MathNode& operand)
   result_.push(operand);
 }
 
-void odintsov::MathSolver::processOperator(odintsov::MathNode& oper)
+void odintsov::MathSolver::processOperator(MathNode& oper)
 {
   if (!oper.isDataType(MathNode::Tag::Operator)) {
     return;
@@ -86,8 +88,7 @@ void odintsov::MathSolver::sendOperatorsOver()
   });
 }
 
-template< typename F >
-void odintsov::MathSolver::sendOperatorsOver(F confirmSend)
+void odintsov::MathSolver::sendOperatorsOver(std::function< bool(const Operator&) > confirmSend)
 {
   while (!opers_.empty()) {
     MathNode oper = opers_.tail();
