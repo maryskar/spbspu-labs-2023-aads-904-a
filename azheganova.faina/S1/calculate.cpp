@@ -3,16 +3,16 @@
 #include "stack.h"
 
 
-long long calculatePostfix(Queue<std::string>& postfixQueue)
+long long calculatePostfix(Queue<std::string> & postfix)
 {
   Stack< long long > stack;
-  while (!postfixQueue.isEmpty())
+  while (!postfix.isEmpty())
   {
-    std::string token = postfixQueue.drop();
-    postfixQueue.pop();
-    if (isdigit(token[0]))
+    std::string element = postfix.drop();
+    postfix.pop();
+    if (isdigit(element[0]))
     {
-      stack.push(std::stoll(token));
+      stack.push(std::stoll(element));
     }
     else
     {
@@ -21,19 +21,19 @@ long long calculatePostfix(Queue<std::string>& postfixQueue)
       long long firstnum = stack.drop();
       stack.pop();
       long long result;
-      if (token == "+")
+      if (element == "+")
       {
         result = firstnum + secondnum;
       }
-      else if (token == "-")
+      else if (element == "-")
       {
         result = firstnum - secondnum;
       }
-      else if (token == "*")
+      else if (element == "*")
       {
         result = firstnum * secondnum;
       }
-      else if (token == "/")
+      else if (element == "/")
       {
         if (secondnum == 0)
         {
@@ -41,7 +41,7 @@ long long calculatePostfix(Queue<std::string>& postfixQueue)
         }
         result = firstnum / secondnum;
       }
-      else if (token == "%")
+      else if (element == "%")
       {
         if (secondnum == 0)
         {
