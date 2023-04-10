@@ -1,7 +1,6 @@
 #include "MathSolver.hpp"
 
 #include <functional>
-#include <iostream>
 
 void odintsov::MathSolver::operator()(const std::string& nodeStr)
 {
@@ -31,7 +30,6 @@ long long odintsov::MathSolver::getResult()
       solver.push(result_.head());
     }
     result_.pop();
-    std::cout << result_.empty() << '\n';
   }
   if (solver.empty()) {
     throw std::runtime_error("Empty expression");
