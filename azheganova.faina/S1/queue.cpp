@@ -7,6 +7,20 @@ Queue< T >::Queue():
  last_(nullptr)
 {}
 
+template < typename T >
+Queue< T >::Queue(const Queue< T >& queue):
+  top_(nullptr),
+  last_(nullptr)
+{
+  ListNode< T > * tmp = queue.top_;
+  while (tmp != nullptr)
+  {
+    push(tmp->data_);
+    tmp = tmp->next_;
+  }
+}
+
+
 template< typename T >
 Queue< T >::~Queue()
 {

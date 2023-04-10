@@ -7,6 +7,7 @@ class Queue
 {
 public:
   Queue();
+  Queue(const Queue< T > & queue);
   ~Queue();
   void push(const T & rhs);
   T pop();
