@@ -2,7 +2,6 @@
 #include <cctype>
 #include <iostream>
 #include "stack.h"
-#include "operations.h"
 
 bool isDigit(const std::string & str)
 {
