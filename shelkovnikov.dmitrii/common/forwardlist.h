@@ -43,6 +43,7 @@ namespace dimkashelk
       }
       free();
       copy(forwardList);
+      return *this;
     }
     ForwardList &operator=(ForwardList< T > &&forwardList)
     {
@@ -54,6 +55,7 @@ namespace dimkashelk
       end_ = forwardList.end_;
       forwardList.begin_ = nullptr;
       forwardList.end_ = nullptr;
+      return *this;
     }
     void pushFront(const T &data)
     {
