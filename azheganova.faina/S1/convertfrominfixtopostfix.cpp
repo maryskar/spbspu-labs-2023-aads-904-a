@@ -5,7 +5,14 @@
 
 bool isDigit(const std::string & str)
 {
-  std::stoll(str, nullptr, 10);
+  try
+  {
+    std::stoll(str, nullptr, 10);
+  }
+  catch(const std::exception & e)
+  {
+    return false;
+  }
   return true;
 }
 
@@ -20,7 +27,7 @@ Queue< std::string > convertFromInfixToPostfix(Queue< std::string > queue)
   Stack< std::string > stack;
   while (!queue.isEmpty())
   {
-    std::string element = queue.pop();
+    std::string element = queue.drop();
     if (isDigit(element))
     {
       postfix.push(element);
