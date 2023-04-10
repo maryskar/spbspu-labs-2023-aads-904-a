@@ -44,7 +44,7 @@ int main(int argc, char * argv[])
       }
       catch (const std::exception & e)
       {
-        std::cerr << e.what() << "\n";
+        std::cerr << "errrrror" << e.what() << "\n";
         return 2;
       }
     }
@@ -82,7 +82,7 @@ int main(int argc, char * argv[])
       }
       catch (const std::exception & e)
       {
-        std::cerr << e.what() << "\n";
+        std::cerr << "errr" << e.what() << "\n";
         return 2;
       }
     }
