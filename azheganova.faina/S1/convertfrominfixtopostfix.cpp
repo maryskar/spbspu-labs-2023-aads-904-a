@@ -15,6 +15,20 @@ bool isOperator(const std::string & oper)
   return (oper == "+" || oper == "-" || oper == "*" || oper == "/" || oper == "%");
 }
 
+template< typename T >
+int getPriority(T operation)
+{
+    if(operation == '+' || operation == '-')
+    {
+      return 1;
+    }
+    if(operation == '*' || operation == '/' || operation == '%')
+    {
+      return 2;
+    }
+  throw std::invalid_argument("error");
+}
+
 bool checkPriority(const std::string & priority1, const std::string & priority2)
 {
   getPriority(priority1);
@@ -35,14 +49,24 @@ Queue< std::string > convertFromInfixToPostfix(Queue< std::string > queue)
     }
     else if (isOperator(element))
     {
-      if (!stack->isEmpty())
+      if (element == "+" || element == "-")
       {
-        if (checkPriority(element, stack->drop()))
+        while (!stack->isEmpty() && isOperator(stack->drop()))
         {
-          postfix.push(stack->pop());
+          postfix.push(stack->drop());
+          stack->pop();
         }
+        stack->push(element);
       }
-      stack->push(element);
+      else if (element == "*" || element == "/" || element == "%")
+      {
+        while (!stack->isEmpty() && ((stack->drop() == "*" || stack->drop() == "/" || stack->drop() == "%")))
+        {
+          postfix.push(stack->drop());
+          stack->pop();
+        }
+        stack->push(element);
+    }
     }
     else if (element == "(")
     {
@@ -56,7 +80,7 @@ Queue< std::string > convertFromInfixToPostfix(Queue< std::string > queue)
         {
           break;
         }
-        postfix.push(stack->pop());
+        postfix.push(stack->drop());
       }
       stack->pop();
     }

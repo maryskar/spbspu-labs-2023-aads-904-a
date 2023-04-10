@@ -54,3 +54,9 @@ bool Queue< T >::isEmpty()
 {
   return top_ == nullptr;
 }
+
+template< typename T >
+T Queue< T >::drop()
+{
+  return top_->data_;
+}
