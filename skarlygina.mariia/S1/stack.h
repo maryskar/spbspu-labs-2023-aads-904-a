@@ -40,7 +40,7 @@ Stack< T >::Stack(const Stack< T >& other):
 }
 
 template< typename T>
-void Stack< T >::push(T rhs)
+void Stack< T >::push(const T& rhs)
 {
   List< T >* new_node = new List< T >{rhs, nullptr, nullptr};
   if (head_ == nullptr)
@@ -57,7 +57,7 @@ void Stack< T >::push(T rhs)
 }
 
 template< typename T >
-T Stack< T >::get()
+T& Stack< T >::get() const
 {
   if (tail_ == nullptr)
   {

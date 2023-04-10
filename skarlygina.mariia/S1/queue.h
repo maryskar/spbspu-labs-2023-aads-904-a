@@ -43,7 +43,7 @@ Queue< T >::Queue(const Queue< T >& other):
 }
 
 template< typename T >
-void Queue< T >::push(T rhs)
+void Queue< T >::push(const T& rhs)
 {
   List< T >* new_node = new List< T >{rhs, nullptr, tail_};
   if (tail_ != nullptr)
@@ -78,7 +78,7 @@ void Queue< T >::pop()
 }
 
 template< typename T >
-T Queue< T >::get()
+T& Queue< T >::get() const
 {
   if (head_ == nullptr)
   {
