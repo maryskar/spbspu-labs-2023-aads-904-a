@@ -15,27 +15,6 @@ bool isOperator(const std::string & oper)
   return (oper == "+" || oper == "-" || oper == "*" || oper == "/" || oper == "%");
 }
 
-template< typename T >
-int getPriority(T operation)
-{
-    if(operation == '+' || operation == '-')
-    {
-      return 1;
-    }
-    if(operation == '*' || operation == '/' || operation == '%')
-    {
-      return 2;
-    }
-  throw std::invalid_argument("error");
-}
-
-bool checkPriority(const std::string & priority1, const std::string & priority2)
-{
-  getPriority(priority1);
-  getPriority(priority2);
-  return (priority1 >= priority2);
-}
-
 Queue< std::string > convertFromInfixToPostfix(Queue< std::string > queue)
 {
   Queue< std::string > postfix;
