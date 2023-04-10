@@ -14,7 +14,7 @@ odintsov::Queue< T >::Queue(const Queue< T >& q):
   head_(nullptr),
   tail_(nullptr)
 {
-  std::tie(head_, tail_) = duplicateNodes(q.head_);
+  std::tie(head_, tail_) = detail::duplicateNodes(q.head_);
 }
 
 template< typename T >
@@ -29,7 +29,7 @@ odintsov::Queue< T >::Queue(Queue< T >&& q):
 template< typename T >
 odintsov::Queue< T >::~Queue()
 {
-  deleteNodes(head_);
+  detail::deleteNodes(head_);
 }
 
 template< typename T >
@@ -38,16 +38,16 @@ odintsov::Queue< T >& odintsov::Queue< T >::operator=(const Queue< T >& q)
   if (this == &q) {
     return *this;
   }
-  Node< T >* oldHead = head_;
-  std::tie(head_, tail_) = duplicateNodes(q.head_);
-  deleteNodes(oldHead);
+  detail::Node< T >* oldHead = head_;
+  std::tie(head_, tail_) = detail::duplicateNodes(q.head_);
+  detail::deleteNodes(oldHead);
   return *this;
 }
 
 template< typename T >
 odintsov::Queue< T >& odintsov::Queue< T >::operator=(Queue< T >&& q)
 {
-  deleteNodes(head_);
+  detail::deleteNodes(head_);
   head_ = q.head_;
   tail_ = q.tail_;
   q.head_ = nullptr;
@@ -58,17 +58,17 @@ odintsov::Queue< T >& odintsov::Queue< T >::operator=(Queue< T >&& q)
 template< typename T >
 void odintsov::Queue< T >::push(const T& data)
 {
-  push(new Node< T >{data, nullptr});
+  push(new detail::Node< T >{data, nullptr});
 }
 
 template< typename T >
 void odintsov::Queue< T >::push(T&& data)
 {
-  push(new Node< T >{data, nullptr});
+  push(new detail::Node< T >{data, nullptr});
 }
 
 template< typename T >
-void odintsov::Queue< T >::push(Node< T >* n)
+void odintsov::Queue< T >::push(detail::Node< T >* n)
 {
   if (empty()) {
     head_ = n;
@@ -84,7 +84,7 @@ void odintsov::Queue< T >::pop()
   if (empty()) {
     throw std::runtime_error("Attempt to pop empty queue");
   }
-  odintsov::Node< T >* oldHead = head_;
+  detail::Node< T >* oldHead = head_;
   head_ = head_->next;
   if (!head_) {
     tail_ = nullptr;

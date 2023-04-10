@@ -12,7 +12,7 @@ odintsov::Stack< T >::Stack(const Stack< T >& s):
   head_(nullptr),
   tail_(nullptr)
 {
-  std::tie(tail_, head_) = duplicateNodes(s.tail_);
+  std::tie(tail_, head_) = detail::duplicateNodes(s.tail_);
 }
 
 template< typename T >
@@ -27,7 +27,7 @@ odintsov::Stack< T >::Stack(Stack< T >&& s):
 template< typename T >
 odintsov::Stack< T >::~Stack()
 {
-  deleteNodes(tail_);
+  detail::deleteNodes(tail_);
 }
 
 template< typename T >
@@ -36,16 +36,16 @@ odintsov::Stack< T >& odintsov::Stack< T >::operator=(const Stack< T >& s)
   if (this == &s) {
     return *this;
   }
-  Node< T >* oldTail = tail_;
-  std::tie(tail_, head_) = duplicateNodes(s.tail_);
-  deleteNodes(oldTail);
+  detail::Node< T >* oldTail = tail_;
+  std::tie(tail_, head_) = detail::duplicateNodes(s.tail_);
+  detail::deleteNodes(oldTail);
   return *this;
 }
 
 template< typename T >
 odintsov::Stack< T >& odintsov::Stack< T >::operator=(Stack< T >&& s)
 {
-  deleteNodes(tail_);
+  detail::deleteNodes(tail_);
   head_ = s.head_;
   tail_ = s.tail_;
   s.head_ = nullptr;
@@ -71,17 +71,17 @@ const T& odintsov::Stack< T >::tail() const
 template< typename T >
 void odintsov::Stack< T >::push(const T& data)
 {
-  push(new Node< T >{data, tail_});
+  push(new detail::Node< T >{data, tail_});
 }
 
 template< typename T >
 void odintsov::Stack< T >::push(T&& data)
 {
-  push(new Node< T >{data, tail_});
+  push(new detail::Node< T >{data, tail_});
 }
 
 template< typename T >
-void odintsov::Stack< T >::push(Node< T >* n)
+void odintsov::Stack< T >::push(detail::Node< T >* n)
 {
   if (empty()) {
     head_ = n;
@@ -95,7 +95,7 @@ void odintsov::Stack< T >::pop()
   if (empty()) {
     throw std::runtime_error("Attempt to pop empty stack");
   }
-  Node< T >* oldTail = tail_;
+  detail::Node< T >* oldTail = tail_;
   tail_ = tail_->next;
   if (!tail_) {
     head_ = nullptr;

@@ -1,5 +1,5 @@
 template< typename T >
-void odintsov::deleteNodes(Node< T >* head)
+void detail::deleteNodes(Node< T >* head)
 {
   while (head != nullptr) {
     Node< T >* oldHead = head;
@@ -9,7 +9,7 @@ void odintsov::deleteNodes(Node< T >* head)
 }
 
 template< typename T >
-std::pair< odintsov::Node< T >*, odintsov::Node< T >* > odintsov::duplicateNodes(const Node< T >* head)
+std::pair< detail::Node< T >*, detail::Node< T >* > detail::duplicateNodes(const Node< T >* head)
 {
   Node< T >* const newHead = new Node< T >{head->data, nullptr};
   Node< T >* newTail = newHead;

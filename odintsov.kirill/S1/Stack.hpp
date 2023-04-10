@@ -23,10 +23,10 @@ namespace odintsov {
     bool empty() const;
 
    private:
-    Node< T >* head_;
-    Node< T >* tail_;
+    detail::Node< T >* head_;
+    detail::Node< T >* tail_;
 
-    void push(Node< T >* n);
+    void push(detail::Node< T >* n);
   };
 }
 

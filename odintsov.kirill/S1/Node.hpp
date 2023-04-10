@@ -3,7 +3,7 @@
 
 #include <utility>
 
-namespace odintsov {
+namespace detail {
   template< typename T >
   struct Node {
     T data;
