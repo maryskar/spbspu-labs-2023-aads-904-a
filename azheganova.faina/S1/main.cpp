@@ -80,9 +80,9 @@ int main(int argc, char * argv[])
         long long res = calculatePostfix(postfixform);
         results.push(res);
       }
-      catch (const std::exception& e)
+      catch (const std::exception & e)
       {
-        std::cerr << "Error: " << e.what() << "\n";
+        std::cerr << e.what() << "\n";
         return 2;
       }
     }
