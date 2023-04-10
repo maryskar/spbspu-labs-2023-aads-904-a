@@ -3,7 +3,6 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "MathNode.hpp"
 #include "MathSolver.hpp"
 #include "Stack.hpp"
 #include "StringSplitter.hpp"
@@ -40,8 +39,7 @@ int main(int argc, char* argv[])
       while (!splitter.empty()) {
         std::string nodeStr;
         splitter >> nodeStr;
-        odintsov::MathNode node(nodeStr);
-        addToSolution(node);
+        addToSolution(nodeStr);
       }
       results.push(addToSolution.getResult());
     }

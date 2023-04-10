@@ -1,9 +1,11 @@
 #include "MathSolver.hpp"
 
 #include <functional>
+#include <iostream>
 
-void odintsov::MathSolver::operator()(MathNode& node)
+void odintsov::MathSolver::operator()(const std::string& nodeStr)
 {
+  MathNode node(nodeStr);
   processParen(node);
   processOperand(node);
   processOperator(node);
@@ -29,6 +31,7 @@ long long odintsov::MathSolver::getResult()
       solver.push(result_.head());
     }
     result_.pop();
+    std::cout << result_.empty() << '\n';
   }
   if (solver.empty()) {
     throw std::runtime_error("Empty expression");
@@ -98,4 +101,72 @@ void odintsov::MathSolver::sendOperatorsOver(std::function< bool(const Operator&
     result_.push(oper);
     opers_.pop();
   }
+}
+
+odintsov::MathSolver::MathNode::MathNode(long long operand):
+  tag_(Tag::Operand),
+  data_{.operand = operand}
+{}
+
+odintsov::MathSolver::MathNode::MathNode(const std::string& str):
+  data_{0}
+{
+  try {
+    data_.operand = stoll(str);
+    tag_ = Tag::Operand;
+    return;
+  } catch (const std::invalid_argument& e) {
+  }
+  if (str.size() != 1) {
+    throw std::invalid_argument("Incorrect operator/operand");
+  }
+  char c = str[0];
+  if (c == '(' || c == ')') {
+    data_.paren = c;
+    tag_ = Tag::Paren;
+    return;
+  }
+  new (&data_.oper) Operator(c);
+  tag_ = Tag::Operator;
+}
+
+odintsov::MathSolver::MathNode::~MathNode()
+{
+  if (tag_ == Tag::Operator) {
+    data_.oper.~Operator();
+  }
+}
+
+bool odintsov::MathSolver::MathNode::isDataType(Tag tag) const
+{
+  return tag_ == tag;
+}
+
+long long odintsov::MathSolver::MathNode::getOperand() const
+{
+  if (tag_ != Tag::Operand) {
+    throw std::logic_error("Invalid attempt to interpret node as operand");
+  }
+  return data_.operand;
+}
+
+odintsov::Operator& odintsov::MathSolver::MathNode::getOperator()
+{
+  return const_cast< Operator& >(const_cast< const MathNode* >(this)->getOperator());
+}
+
+const odintsov::Operator& odintsov::MathSolver::MathNode::getOperator() const
+{
+  if (tag_ != Tag::Operator) {
+    throw std::logic_error("Invalid attempt to interpret node as operator");
+  }
+  return data_.oper;
+}
+
+char odintsov::MathSolver::MathNode::getParen() const
+{
+  if (tag_ != Tag::Paren) {
+    throw std::logic_error("Invalid attempt to interpret node as parenthesis");
+  }
+  return data_.paren;
 }
