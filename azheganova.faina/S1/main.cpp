@@ -10,14 +10,11 @@
 
 int main(int argc, char * argv[])
 {
+  std::string string;
+  Stack < long long > results;
   if (argc > 2)
   {
     std::cout << "too much parameters";
-    return 1;
-  }
-  if (argc == 1)
-  {
-    std::cout << "no file name";
     return 1;
   }
   if(argc == 2)
@@ -28,23 +25,21 @@ int main(int argc, char * argv[])
       std::cerr << "error";
       return 1;
     }
-    std::string line;
-    Stack < long long > results;
-    while (std::getline(input, line))
+    while (std::getline(input, string))
     {
       if (!input)
       {
         break;
       }
-      if (line.empty())
+      if (string.empty())
       {
         continue;
       }
-      Queue< std::string > infix = convertToInfix(line);
+      Queue< std::string > infixform = convertToInfix(string);
       try
       {
-        Queue< std::string > postfix = convertFromInfixToPostfix(infix);
-        long long res = calculatePostfix(postfix);
+        Queue< std::string > postfixform = convertFromInfixToPostfix(infixform);
+        long long res = calculatePostfix(postfixform);
         results.push(res);
       }
       catch (const std::exception & e)
@@ -65,4 +60,42 @@ int main(int argc, char * argv[])
     }
     input.close();
   }
+  else
+  {
+    while (std::cin)
+    {
+      std::getline(std::cin, string);
+      if (!std::cin)
+      {
+        break;
+      }
+      if (string.empty())
+      {
+        continue;
+      }
+      Queue< std::string > infixform = convertToInfix(string);
+      try
+      {
+        Queue< std::string > postfixform = convertFromInfixToPostfix(infixform);
+        long long res = calculatePostfix(postfixform);
+        results.push(res);
+      }
+      catch (const std::exception& e)
+      {
+        std::cerr << "Error: " << e.what() << "\n";
+        return 2;
+      }
+    }
+    if (!results.isEmpty())
+    {
+      std::cout << results.drop();
+      results.pop();
+      while (!results.isEmpty())
+      {
+        std::cout << " " << results.drop();
+        results.pop();
+      }
+    }
+  }
+  std::cout << "\n";
 }
