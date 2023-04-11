@@ -11,6 +11,7 @@ namespace kryuchkova
     public:
       Queue();
       Queue(const Queue< T > &queue);
+      //Queue & operator=(const Queue & queue);
       ~Queue();
       void push(T rhs);
       T drop();

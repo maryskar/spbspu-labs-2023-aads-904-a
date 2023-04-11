@@ -11,6 +11,7 @@ namespace kryuchkova
   {
     public:
       Stack();
+      //Stack & operator=(const Stack & stack);
       ~Stack();
       void push(T rhs);
       T drop();

@@ -10,6 +10,7 @@ namespace kryuchkova
   }
   void calc_data_type::GetPriority(const char data)
   {
+    int priority = 0;
     if (!isDigit(data))
     {
       throw std::runtime_error("isn't digit");
@@ -28,10 +29,7 @@ namespace kryuchkova
       {
         priority = 3;
       }
-      else
-      {
-        priority = 0;
-      }
+      //return priority;
     }
   }
 }
