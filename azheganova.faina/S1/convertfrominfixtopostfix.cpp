@@ -53,7 +53,7 @@ Queue< std::string > convertFromInfixToPostfix(Queue< std::string > & queue)
           stack.pop();
         }
         stack.push(element);
-    }
+      }
     }
     else if (element == "(")
     {
@@ -61,24 +61,22 @@ Queue< std::string > convertFromInfixToPostfix(Queue< std::string > & queue)
     }
     else if (element == ")")
     {
-      while (stack.drop() != "(")
+      while ((stack.drop() != "(") && (!stack.isEmpty()))
       {
-        if (stack.isEmpty())
-        {
-          break;
-        }
         postfix.push(stack.drop());
+        stack.pop();
       }
       stack.pop();
     }
     else
     {
-      while (!stack.isEmpty())
-      {
-        postfix.push(stack.drop());
-        stack.pop();
-      }
+      throw std::logic_error("error");
     }
+  }
+  while (!stack.isEmpty())
+  {
+    postfix.push(stack.drop());
+    stack.pop();
   }
   return postfix;
 }
