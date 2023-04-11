@@ -25,7 +25,32 @@ long long calculatePostfix(Queue<std::string> & postfix)
       long long result;
       if (element == "+")
       {
-        result = firstnum + secondnum;
+        if ((firstnum * secondnum >= 0) && (firstnum >= 0))
+        {
+          if (maximum - firstnum >= secondnum)
+          {
+            result = firstnum + secondnum;
+          }
+          else
+          {
+            throw std::overflow_error("overflow");
+          }
+        }
+        if ((firstnum * secondnum >= 0) && (firstnum <= 0))
+        {
+          if (minimum - firstnum <= secondnum)
+          {
+            result = firstnum + secondnum;
+          }
+          else
+          {
+            throw std::overflow_error("overflow");
+          }
+        }
+        else
+        {
+          result = firstnum + secondnum;
+        }
       }
       else if (element == "-")
       {
