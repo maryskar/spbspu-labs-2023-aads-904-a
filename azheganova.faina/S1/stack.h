@@ -13,7 +13,7 @@ public:
   void push(const T & rhs);
   void pop();
   bool isEmpty() const;
-  T & drop();
+  T & drop() const;
 private:
   ListNode< T > * top_;
 };
@@ -26,7 +26,7 @@ Stack< T >::Stack():
 template< typename T >
 Stack< T >::~Stack()
 {
-  while (top_ != nullptr)
+  while (!isEmpty())
   {
     ListNode< T > * tmp = top_->next_;
     delete top_;
@@ -46,7 +46,7 @@ void Stack< T >::pop()
 {
   if (isEmpty())
   {
-    throw;
+    throw std::logic_error("empty stack");
   }
   ListNode< T > * tmp = top_->next_;
   delete top_;
@@ -60,7 +60,7 @@ bool Stack< T >::isEmpty() const
 }
 
 template< typename T >
-T & Stack< T >::drop()
+T & Stack< T >::drop() const
 {
   if(isEmpty())
   {
