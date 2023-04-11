@@ -17,7 +17,7 @@ bool isDigit(const std::string & string)
   return true;
 }
 
-bool isOperator(const std::string & oper)
+bool isOperator(std::string oper)
 {
   return (oper == "+") || (oper == "-") || (oper == "*") || (oper == "/") || (oper == "%");
 }

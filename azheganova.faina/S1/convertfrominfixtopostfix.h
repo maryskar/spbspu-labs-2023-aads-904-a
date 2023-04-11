@@ -4,7 +4,7 @@
 #include "queue.h"
 
 bool isDigit(const std::string & string);
-bool isOperator(const std::string & oper);
+bool isOperator(std::string oper);
 Queue< std::string > convertFromInfixToPostfix(Queue< std::string > & queue);
 
 #endif
