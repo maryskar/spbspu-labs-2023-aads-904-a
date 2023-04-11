@@ -19,16 +19,17 @@ bool isDigit(const std::string & string)
 
 bool isOperator(const std::string & oper)
 {
-  return (oper == "+" || oper == "-" || oper == "*" || oper == "/" || oper == "%");
+  return (oper == "+") || (oper == "-") || (oper == "*") || (oper == "/") || (oper == "%");
 }
 
-Queue< std::string > convertFromInfixToPostfix(Queue< std::string > queue)
+Queue< std::string > convertFromInfixToPostfix(Queue< std::string > & queue)
 {
   Queue< std::string > postfix;
   Stack< std::string > stack;
   while (!queue.isEmpty())
   {
-    std::string element = queue.pop();
+    std::string element = queue.drop();
+    queue.pop();
     if (isDigit(element))
     {
       postfix.push(element);
