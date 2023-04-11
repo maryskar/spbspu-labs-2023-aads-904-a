@@ -63,7 +63,7 @@ T Stack< T >::pop()
 template< typename T >
 bool Stack< T >::isEmpty() const
 {
-  return (top_ == nullptr);
+  return top_;
 }
 
 template< typename T >
