@@ -3,6 +3,20 @@
 #include <iostream>
 #include "stack.h"
 
+
+bool isDigit(const std::string & string)
+{
+  try
+  {
+    std::stoll(string, nullptr, 10);
+  }
+  catch(const std::exception & e)
+  {
+    return false;
+  }
+  return true;
+}
+
 bool isOperator(const std::string & oper)
 {
   return (oper == "+" || oper == "-" || oper == "*" || oper == "/" || oper == "%");
@@ -14,8 +28,8 @@ Queue< std::string > convertFromInfixToPostfix(Queue< std::string > queue)
   Stack< std::string > stack;
   while (!queue.isEmpty())
   {
-    std::string element = queue.drop();
-    if (std::isdigit(element[0]))
+    std::string element = queue.pop();
+    if (isDigit(element))
     {
       postfix.push(element);
     }
