@@ -73,11 +73,13 @@ Queue< std::string > convertFromInfixToPostfix(Queue< std::string > & queue)
     }
     else
     {
-      while (!stack.isEmpty())
-      {
-        postfix.push(stack.pop());
-      }
+      throw std::logic_error("error");
     }
+  }
+  while (!stack.isEmpty())
+  {
+    postfix.push(stack.drop());
+    stack.pop();
   }
   return postfix;
 }
