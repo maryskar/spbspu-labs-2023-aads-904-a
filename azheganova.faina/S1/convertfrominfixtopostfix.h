@@ -3,7 +3,6 @@
 #include <string>
 #include "queue.h"
 
-bool isDigit(const std::string & str);
 bool isOperator(const std::string & oper);
 Queue< std::string > convertFromInfixToPostfix(Queue< std::string > queue);
 
