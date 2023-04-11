@@ -1,6 +1,7 @@
 #ifndef STACK_H
 #define STACK_H
 #include <cstddef>
+#include <stdexcept>
 #include "node.h"
 
 template< typename T >
@@ -12,7 +13,7 @@ public:
   void push(const T & rhs);
   T pop();
   bool isEmpty();
-  T drop();
+  T & drop();
 private:
   ListNode< T > * top_;
   size_t size_;
@@ -66,8 +67,12 @@ bool Stack< T >::isEmpty()
 }
 
 template< typename T >
-T Stack< T >::drop()
+T & Stack< T >::drop()
 {
+  if(isEmpty())
+  {
+    throw std::logic_error("empty stack");
+  }
   return top_->data_;
 }
 

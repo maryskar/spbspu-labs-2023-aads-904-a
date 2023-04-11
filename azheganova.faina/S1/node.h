@@ -5,7 +5,7 @@ template < typename T >
 struct ListNode
 {
   T data_;
-  ListNode< T > *next_;
+  ListNode< T > * next_;
 };
 
 #endif
