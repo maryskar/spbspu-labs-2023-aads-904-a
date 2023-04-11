@@ -23,7 +23,6 @@ namespace odintsov {
     bool empty() const;
 
    private:
-    detail::Node< T >* head_;
     detail::Node< T >* tail_;
 
     void push(detail::Node< T >* n);
