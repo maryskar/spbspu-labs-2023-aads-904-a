@@ -12,7 +12,7 @@ public:
   void push(const T & rhs);
   T pop();
   bool isEmpty();
-  T drop();
+  T & drop();
 private:
   ListNode< T > * top_;
   ListNode< T > * last_;
@@ -87,8 +87,12 @@ bool Queue< T >::isEmpty()
 }
 
 template< typename T >
-T Queue< T >::drop()
+T & Queue< T >::drop()
 {
+  if(isEmpty())
+  {
+    throw std::logic_error("empty stack");
+  }
   return top_->data_;
 }
 

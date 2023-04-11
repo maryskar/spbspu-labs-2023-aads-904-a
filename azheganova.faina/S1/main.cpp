@@ -11,7 +11,7 @@
 int main(int argc, char * argv[])
 {
   std::string string;
-  Stack < long long > results;
+  Stack < long long > result;
   if (argc > 2)
   {
     std::cout << "too much parameters";
@@ -40,7 +40,7 @@ int main(int argc, char * argv[])
       {
         Queue< std::string > postfixform = convertFromInfixToPostfix(infixform);
         long long res = calculatePostfix(postfixform);
-        results.push(res);
+        result.push(res);
       }
       catch (const std::exception & e)
       {
@@ -48,14 +48,14 @@ int main(int argc, char * argv[])
         return 2;
       }
     }
-    if (!results.isEmpty())
+    if (!result.isEmpty())
     {
-      std::cout << results.drop();
-      results.pop();
-      while (!results.isEmpty())
+      std::cout << result.drop();
+      result.pop();
+      while (!result.isEmpty())
       {
-        std::cout << " " << results.drop();
-        results.pop();
+        std::cout << " " << result.drop();
+        result.pop();
       }
     }
     input.close();
@@ -78,7 +78,7 @@ int main(int argc, char * argv[])
       {
         Queue< std::string > postfixform = convertFromInfixToPostfix(infixform);
         long long res = calculatePostfix(postfixform);
-        results.push(res);
+        result.push(res);
       }
       catch (const std::exception & e)
       {
@@ -86,16 +86,17 @@ int main(int argc, char * argv[])
         return 2;
       }
     }
-    if (!results.isEmpty())
+    if (!result.isEmpty())
     {
-      std::cout << results.drop();
-      results.pop();
-      while (!results.isEmpty())
+      std::cout << result.drop();
+      result.pop();
+      while (!result.isEmpty())
       {
-        std::cout << " " << results.drop();
-        results.pop();
+        std::cout << " " << result.drop();
+        result.pop();
       }
     }
   }
   std::cout << "\n";
+  return 0;
 }
