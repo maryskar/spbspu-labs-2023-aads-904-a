@@ -12,7 +12,7 @@ public:
   ~Stack();
   void push(const T & rhs);
   T pop();
-  bool isEmpty();
+  bool isEmpty() const;
   T & drop();
 private:
   ListNode< T > * top_;
@@ -61,9 +61,9 @@ T Stack< T >::pop()
 }
 
 template< typename T >
-bool Stack< T >::isEmpty()
+bool Stack< T >::isEmpty() const
 {
-  return top_;
+  return top_ = nullptr;
 }
 
 template< typename T >
