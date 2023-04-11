@@ -1,5 +1,6 @@
 #ifndef QUEUE_H
 #define QUEUE_H
+#include <stdexcept>
 #include "node.h"
 
 template< typename T >
@@ -91,7 +92,7 @@ T & Queue< T >::drop()
 {
   if(isEmpty())
   {
-    throw std::logic_error("empty stack");
+    throw std::logic_error("empty queue");
   }
   return top_->data_;
 }
