@@ -1,5 +1,7 @@
 #ifndef STACK_H
 #define STACK_H
+#include <cstddef>
+#include <stdexcept>
 #include "list.h"
 template< typename T >
 class Stack
