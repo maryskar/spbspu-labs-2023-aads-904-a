@@ -55,7 +55,7 @@ namespace romanovich
   {
     if (isEmpty())
     {
-      throw;
+      throw std::range_error("Stack is empty.");
     }
     return top_->data_;
   }
@@ -64,7 +64,7 @@ namespace romanovich
   {
     if (isEmpty())
     {
-      throw;
+      throw std::range_error("Stack is empty.");
     }
     details::ListNode< T > *subTop = top_->next_;
     delete top_;

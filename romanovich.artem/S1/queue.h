@@ -70,7 +70,7 @@ namespace romanovich
   {
     if (head_ == nullptr)
     {
-      throw;
+      throw std::range_error("Queue is empty.");
     }
     T el = head_->data_;
     details::ListNode< T > *subHead = head_->next_;

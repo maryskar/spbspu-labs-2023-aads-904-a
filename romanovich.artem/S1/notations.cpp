@@ -209,7 +209,7 @@ void romanovich::calcPostfixExpression(Queue< std::string > postfixQueue, Stack<
       catch (...)
       {
         delete calcStack;
-        throw;
+        throw std::range_error("Error calculating postfix.");
       }
     }
   }
