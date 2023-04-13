@@ -5,9 +5,8 @@
 #include "list.h"
 
 template< typename T>
-List< T > readElements(std::string filename)
+List< T > readElements(std::ifstream file)
 {
-  std:ifstream file(filename);
   std::string line;
   List< T > list = nullptr;
   if (file.is_open())
