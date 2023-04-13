@@ -38,7 +38,8 @@ int main(int argc, char **argv)
     romanovich::Queue< std::string > postfixQueue = romanovich::getPostfixFromInfix(infixNotation);
     try
     {
-      romanovich::calcPostfixExpression(postfixQueue, &answer);
+      romanovich::Stack< std::string > *calcStack = new romanovich::Stack< std::string >;
+      romanovich::calcPostfixExpression(postfixQueue, &answer, calcStack);
     }
     catch (...)
     {
@@ -48,10 +49,12 @@ int main(int argc, char **argv)
   }
   if (!answer.isEmpty())
   {
-    std::cout << answer.pop();
+    std::cout << answer.get();
+    answer.pop();
     while (!answer.isEmpty())
     {
-      std::cout << " " << answer.pop();
+      std::cout << " " << answer.get();
+      answer.pop();
     }
     std::cout << "\n";
   }

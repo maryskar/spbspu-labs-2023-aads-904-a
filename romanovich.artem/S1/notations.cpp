@@ -45,18 +45,19 @@ bool romanovich::stackPopCondition(const std::string &q, const std::string &s)
 {
   try
   {
-    Priority priorQ(q);
-    Priority priorS(s);
+    romanovich::Priority priorQ(q);
+    romanovich::Priority priorS(s);
     return (priorQ >= priorS);
-  } catch (...)
+  }
+  catch (...)
   {
     return false;
   }
 }
-romanovich::Queue< std::string > romanovich::getPostfixFromInfix(Queue< std::string > queue)
+romanovich::Queue< std::string > romanovich::getPostfixFromInfix(romanovich::Queue< std::string > queue)
 {
-  Queue< std::string > postfixQueue;
-  Stack< std::string > *stack = new Stack< std::string >;
+  romanovich::Queue< std::string > postfixQueue;
+  romanovich::Stack< std::string > *stack = new Stack< std::string >;
   while (!queue.isEmpty() or !stack->isEmpty())
   {
     if (!queue.isEmpty())
@@ -68,9 +69,10 @@ romanovich::Queue< std::string > romanovich::getPostfixFromInfix(Queue< std::str
       }
       if (qEl == ")")
       {
-        while (stack->getTop() != "(")
+        while (stack->get() != "(")
         {
-          postfixQueue.push(stack->pop());
+          postfixQueue.push(stack->get());
+          stack->pop();
           if (stack->isEmpty())
           {
             break;
@@ -86,9 +88,10 @@ romanovich::Queue< std::string > romanovich::getPostfixFromInfix(Queue< std::str
       {
         if (!stack->isEmpty())
         {
-          if (stackPopCondition(qEl, stack->getTop()))
+          if (stackPopCondition(qEl, stack->get()))
           {
-            postfixQueue.push(stack->pop());
+            postfixQueue.push(stack->get());
+            stack->pop();
           }
         }
         stack->push(qEl);
@@ -99,7 +102,8 @@ romanovich::Queue< std::string > romanovich::getPostfixFromInfix(Queue< std::str
     {
       while (!stack->isEmpty())
       {
-        postfixQueue.push(stack->pop());
+        postfixQueue.push(stack->get());
+        stack->pop();
       }
     }
   }
@@ -108,7 +112,7 @@ romanovich::Queue< std::string > romanovich::getPostfixFromInfix(Queue< std::str
 }
 romanovich::Queue< std::string > romanovich::splitLine(const std::string &string)
 {
-  Queue< std::string > queue;
+  romanovich::Queue< std::string > queue;
   int intBegin = 0;
   int intEnd = string.find(' ');
   while (intEnd != -1)
@@ -174,11 +178,10 @@ std::string romanovich::doOperation(long long b, long long a, const std::string 
   }
   return std::to_string(a % b);
 }
-void romanovich::calcPostfixExpression(Queue< std::string > postfixQueue, Stack< std::string > *answer)
+void romanovich::calcPostfixExpression(Queue< std::string > postfixQueue, Stack< std::string > *answer, Stack< std::string > *calcStack)
 {
-  Stack< std::string > *calcStack = new Stack< std::string >;
   calcStack->push(postfixQueue.pop());
-  while (calcStack->getSize() >= 1)
+  while (!calcStack->isEmpty())
   {
     std::string el;
     if (!postfixQueue.isEmpty())
@@ -197,9 +200,11 @@ void romanovich::calcPostfixExpression(Queue< std::string > postfixQueue, Stack<
     {
       try
       {
-        long long x = std::stoll(calcStack->pop(), nullptr, 10);
-        long long y = std::stoll(calcStack->pop(), nullptr, 10);
-        calcStack->push(doOperation(x, y, el));
+        long long x = std::stoll(calcStack->get(), nullptr, 10);
+        long long y = std::stoll(calcStack->get(), nullptr, 10);
+        calcStack->pop();
+        calcStack->pop();
+        calcStack->push(romanovich::doOperation(x, y, el));
       }
       catch (...)
       {
@@ -208,6 +213,6 @@ void romanovich::calcPostfixExpression(Queue< std::string > postfixQueue, Stack<
       }
     }
   }
-  answer->push(calcStack->getTop());
+  answer->push(calcStack->get());
   delete calcStack;
 }

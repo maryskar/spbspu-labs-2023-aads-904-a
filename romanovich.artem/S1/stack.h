@@ -12,18 +12,11 @@ namespace romanovich
     Stack();
     ~Stack();
     void push(const T &value);
-    T pop();
+    void pop();
+    T get();
     bool isEmpty() const
     {
       return size_ == 0;
-    }
-    long long getSize() const
-    {
-      return size_;
-    }
-    T getTop() const
-    {
-      return top_->data_;
     }
   private:
     details::ListNode< T > *top_;
@@ -58,18 +51,25 @@ namespace romanovich
     size_++;
   }
   template < typename T >
-  T Stack< T >::pop()
+  T Stack< T >::get()
   {
-    if (top_ == nullptr)
+    if (isEmpty())
     {
       throw;
     }
-    T el = top_->data_;
+    return top_->data_;
+  }
+  template < typename T >
+  void Stack< T >::pop()
+  {
+    if (isEmpty())
+    {
+      throw;
+    }
     details::ListNode< T > *subTop = top_->next_;
     delete top_;
     top_ = subTop;
     size_--;
-    return el;
   }
 }
 #endif

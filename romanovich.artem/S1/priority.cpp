@@ -1,6 +1,6 @@
-#include <cstddef>
-#include <iostream>
 #include "priority.h"
+#include <cstddef>
+#include <stdexcept>
 size_t romanovich::Priority::getPriority(const std::string &op)
 {
   if (op == "+" || op == "-")
