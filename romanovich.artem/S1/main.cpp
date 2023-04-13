@@ -38,8 +38,7 @@ int main(int argc, char **argv)
     romanovich::Queue< std::string > postfixQueue = romanovich::getPostfixFromInfix(infixNotation);
     try
     {
-      romanovich::Stack< std::string > *calcStack = new romanovich::Stack< std::string >;
-      romanovich::calcPostfixExpression(postfixQueue, &answer, calcStack);
+      romanovich::calcPostfixExpression(postfixQueue, &answer);
     }
     catch (...)
     {

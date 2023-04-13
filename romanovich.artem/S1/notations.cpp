@@ -80,7 +80,7 @@ romanovich::Queue< std::string > romanovich::getPostfixFromInfix(romanovich::Que
         }
         stack->pop();
       }
-      try
+      /*try
       {
         std::stoll(qEl, nullptr, 10);
       }
@@ -96,7 +96,23 @@ romanovich::Queue< std::string > romanovich::getPostfixFromInfix(romanovich::Que
         }
         stack->push(qEl);
       }
-      postfixQueue.push(qEl);
+      postfixQueue.push(qEl);*/
+      if (isDigit(qEl))
+      {
+        postfixQueue.push(qEl);
+      }
+      if (isOperator(qEl))
+      {
+        if (!stack->isEmpty())
+        {
+          if (stackPopCondition(qEl, stack->get()))
+          {
+            postfixQueue.push(stack->get());
+            stack->pop();
+          }
+        }
+        stack->push(qEl);
+      }
     }
     else
     {
@@ -178,8 +194,9 @@ std::string romanovich::doOperation(long long b, long long a, const std::string 
   }
   return std::to_string(a % b);
 }
-void romanovich::calcPostfixExpression(Queue< std::string > postfixQueue, Stack< std::string > *answer, Stack< std::string > *calcStack)
+void romanovich::calcPostfixExpression(Queue< std::string > postfixQueue, Stack< std::string > *answer)
 {
+  romanovich::Stack< std::string > *calcStack = new romanovich::Stack< std::string >;
   calcStack->push(postfixQueue.pop());
   while (!calcStack->isEmpty())
   {
@@ -201,8 +218,8 @@ void romanovich::calcPostfixExpression(Queue< std::string > postfixQueue, Stack<
       try
       {
         long long x = std::stoll(calcStack->get(), nullptr, 10);
-        long long y = std::stoll(calcStack->get(), nullptr, 10);
         calcStack->pop();
+        long long y = std::stoll(calcStack->get(), nullptr, 10);
         calcStack->pop();
         calcStack->push(romanovich::doOperation(x, y, el));
       }
