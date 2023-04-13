@@ -26,11 +26,23 @@ long long calculator::substraction(long long a, long long b)
 
 long long calculator::multiplication(long long a, long long b)
 {
+  if ((b > 0 && a > limit_max / b) || (b < 0 && a < limit_min / b))
+  {
+    throw std::overflow_error("Multiplication overflow");
+  }
   return a * b;
 }
 
 long long calculator::division(long long a, long long b)
 {
+  if (b == 0)
+  {
+    throw std::invalid_argument("Division by zero");
+  }
+  if ((b > 0 && a > limit_max / b) || (b < 0 && a < limit_min / b))
+  {
+    throw std::overflow_error("Division overflow!");
+  }
   return a / b;
 }
 
