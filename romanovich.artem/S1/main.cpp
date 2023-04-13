@@ -10,7 +10,7 @@ int main(int argc, char **argv)
     std::cerr << "Not appropriate parameters number.\n";
     return 1;
   }
-  Stack< std::string > stack = Stack< std::string >();
+  Stack< std::string > stack;
   std::fstream fileInput;
   if (argc == 2)
   {
@@ -20,7 +20,7 @@ int main(int argc, char **argv)
       std::cerr << "Error while opening file.\n";
       return 1;
     }
-    if (fileInput.peek() == std::ifstream::traits_type::eof())
+    if (!fileInput.good())
     {
       std::cout << "\n";
       return 0;

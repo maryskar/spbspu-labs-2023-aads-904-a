@@ -2,13 +2,11 @@
 #include "priority.h"
 #include <limits>
 #include <algorithm>
-long long maxLongLong = std::numeric_limits< long long >::max();
-long long minLongLong = std::numeric_limits< long long >::min();
 int sgn(long long n)
 {
   return (n > 0) - (n < 0);
 }
-bool overflowAdd(long long a, long long b)
+bool overflowAdd(long long a, long long b, long long maxLongLong, long long minLongLong)
 {
   if (sgn(a) == sgn(b))
   {
@@ -16,11 +14,11 @@ bool overflowAdd(long long a, long long b)
   }
   return false;
 }
-bool overflowMult(long long a, long long b)
+bool overflowMult(long long a, long long b, long long maxLongLong, long long minLongLong)
 {
   return ((a != 0 && b != 0) && ((a > maxLongLong / b) || (a < minLongLong / b)));
 }
-bool overflowSubt(long long a, long long b)
+bool overflowSubt(long long a, long long b, long long maxLongLong, long long minLongLong)
 {
   return ((b < 0 && a > maxLongLong + b) || (b > 0 && a < minLongLong + b));
 }
@@ -119,9 +117,11 @@ Queue< std::string > splitLine(const std::string &string)
 }
 std::string doOperation(long long b, long long a, const std::string &oper)
 {
+  long long maxLongLong = std::numeric_limits< long long >::max();
+  long long minLongLong = std::numeric_limits< long long >::min();
   if (oper == "+")
   {
-    if (!overflowAdd(a, b))
+    if (!overflowAdd(a, b, maxLongLong, minLongLong))
     {
       return std::to_string(a + b);
     }
@@ -132,7 +132,7 @@ std::string doOperation(long long b, long long a, const std::string &oper)
   }
   if (oper == "-")
   {
-    if (!overflowSubt(a, b))
+    if (!overflowSubt(a, b, maxLongLong, minLongLong))
     {
       return std::to_string(a - b);
     }
@@ -143,7 +143,7 @@ std::string doOperation(long long b, long long a, const std::string &oper)
   }
   if (oper == "*")
   {
-    if (!overflowMult(a, b))
+    if (!overflowMult(a, b, maxLongLong, minLongLong))
     {
       return std::to_string(a * b);
     }
