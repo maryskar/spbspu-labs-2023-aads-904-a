@@ -54,6 +54,21 @@ bool romanovich::stackPopCondition(const std::string &q, const std::string &s)
     return false;
   }
 }
+void operatorWork(const std::string& qEl, romanovich::Stack <std::string> *stack, romanovich::Queue <std::string> postfixQueue)
+{
+  if (romanovich::isOperator(qEl))
+  {
+    if (!stack->isEmpty())
+    {
+      if (romanovich::stackPopCondition(qEl, stack->get()))
+      {
+        postfixQueue.push(stack->get());
+        stack->pop();
+      }
+    }
+    stack->push(qEl);
+  }
+}
 romanovich::Queue< std::string > romanovich::getPostfixFromInfix(romanovich::Queue< std::string > queue)
 {
   Stack< std::string > *stack = new Stack< std::string >;
@@ -80,39 +95,16 @@ romanovich::Queue< std::string > romanovich::getPostfixFromInfix(romanovich::Que
         }
         stack->pop();
       }
-      /*try
+      try
       {
         std::stoll(qEl, nullptr, 10);
       }
       catch (...)
       {
-        if (!stack->isEmpty())
-        {
-          if (stackPopCondition(qEl, stack->get()))
-          {
-            postfixQueue.push(stack->get());
-            stack->pop();
-          }
-        }
-        stack->push(qEl);
+        operatorWork(qEl, stack, postfixQueue);
       }
-      postfixQueue.push(qEl);*/
-      if (isDigit(qEl))
-      {
-        postfixQueue.push(qEl);
-      }
-      if (isOperator(qEl))
-      {
-        if (!stack->isEmpty())
-        {
-          if (stackPopCondition(qEl, stack->get()))
-          {
-            postfixQueue.push(stack->get());
-            stack->pop();
-          }
-        }
-        stack->push(qEl);
-      }
+      postfixQueue.push(qEl);
+      operatorWork(qEl, stack, postfixQueue);
     }
     else
     {
