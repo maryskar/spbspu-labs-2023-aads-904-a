@@ -56,8 +56,8 @@ bool romanovich::stackPopCondition(const std::string &q, const std::string &s)
 }
 romanovich::Queue< std::string > romanovich::getPostfixFromInfix(romanovich::Queue< std::string > queue)
 {
+  Stack< std::string > *stack = new Stack< std::string >;
   romanovich::Queue< std::string > postfixQueue;
-  romanovich::Stack< std::string > *stack = new Stack< std::string >;
   while (!queue.isEmpty() or !stack->isEmpty())
   {
     if (!queue.isEmpty())
