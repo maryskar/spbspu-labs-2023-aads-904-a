@@ -41,12 +41,20 @@ long long calculator::division(long long a, long long b)
   }
   if ((b > 0 && a > limit_max / b) || (b < 0 && a < limit_min / b))
   {
-    throw std::overflow_error("Division overflow!");
+    throw std::overflow_error("Division overflow");
   }
   return a / b;
 }
 
 long long calculator::remainder(long long a, long long b)
 {
+  if (b == 0)
+  {
+    throw std::invalid_argument("Division by zero");
+  }
+  if (a == limit_min && b == -1)
+  {
+    throw std::overflow_error("Modulo overflow");
+  }
   return a % b;
 }
