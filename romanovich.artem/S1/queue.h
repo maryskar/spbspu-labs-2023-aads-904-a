@@ -2,84 +2,82 @@
 #define QUEUE_H
 #include "node.h"
 #include "stack.h"
-template < typename T >
-class Queue
+namespace romanovich
 {
-public:
-  Queue();
-  Queue(const Queue< T >& pQueue);
-  ~Queue();
-  void push(const T &rhs);
-  T pop();
-  bool isEmpty() const
+  template < typename T >
+  class Queue
   {
-    return size_ == 0;
-  }
-private:
-  details::ListNode< T > *head_;
-  details::ListNode< T > *tail_;
-  size_t size_;
-};
-
-template < typename T >
-Queue< T >::Queue():
-  head_(nullptr),
-  tail_(nullptr),
-  size_(0)
-{
-}
-
-template < typename T >
-Queue< T >::Queue(const Queue< T >& pQueue):
-  head_(nullptr),
-  tail_(nullptr),
-  size_(0)
-{
-  details::ListNode< T > *tmp = pQueue.head_;
-  while (tmp != nullptr)
+  public:
+    Queue();
+    Queue(const Queue< T > &pQueue);
+    ~Queue();
+    void push(const T &rhs);
+    T pop();
+    bool isEmpty() const
+    {
+      return size_ == 0;
+    }
+  private:
+    details::ListNode< T > *head_;
+    details::ListNode< T > *tail_;
+    size_t size_;
+  };
+  template < typename T >
+  Queue< T >::Queue():
+    head_(nullptr),
+    tail_(nullptr),
+    size_(0)
   {
-    push(tmp->data_);
-    tmp = tmp->next_;
   }
-}
-
-template < typename T >
-Queue< T >::~Queue()
-{
-  while (!isEmpty())
+  template < typename T >
+  Queue< T >::Queue(const Queue< T > &pQueue):
+    head_(nullptr),
+    tail_(nullptr),
+    size_(0)
   {
-    pop();
+    details::ListNode< T > *tmp = pQueue.head_;
+    while (tmp != nullptr)
+    {
+      push(tmp->data_);
+      tmp = tmp->next_;
+    }
   }
-}
-
-template < typename T >
-void Queue< T >::push(const T &rhs)
-{
-  if (head_ == nullptr)
+  template < typename T >
+  Queue< T >::~Queue()
   {
-    head_ = new details::ListNode< T >{rhs, nullptr};
-    tail_ = head_;
+    while (!isEmpty())
+    {
+      pop();
+    }
   }
-  else
+  template < typename T >
+  void Queue< T >::push(const T &rhs)
   {
-    tail_->next_ = new details::ListNode< T >{rhs, nullptr};
-    tail_ = tail_->next_;
+    if (head_ == nullptr)
+    {
+      head_ = new details::ListNode< T >{rhs, nullptr};
+      tail_ = head_;
+    }
+    else
+    {
+      tail_->next_ = new details::ListNode< T >{rhs, nullptr};
+      tail_ = tail_->next_;
+    }
+    size_++;
   }
-  size_++;
-}
-
-template < typename T >
-T Queue< T >::pop()
-{
-  if (head_ == nullptr)
+  template < typename T >
+  T Queue< T >::pop()
   {
-    throw;
+    if (head_ == nullptr)
+    {
+      throw;
+    }
+    T el = head_->data_;
+    details::ListNode< T > *subHead = head_->next_;
+    delete head_;
+    head_ = subHead;
+    size_--;
+    return el;
   }
-  T el = head_->data_;
-  details::ListNode< T > *subHead = head_->next_;
-  delete head_;
-  head_ = subHead;
-  size_--;
-  return el;
 }
 #endif

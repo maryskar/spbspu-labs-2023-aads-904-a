@@ -10,7 +10,7 @@ int main(int argc, char **argv)
     std::cerr << "Not appropriate parameters number.\n";
     return 1;
   }
-  Stack< std::string > stack;
+  romanovich::Stack< std::string > stack;
   std::fstream fileInput;
   if (argc == 2)
   {
@@ -27,18 +27,18 @@ int main(int argc, char **argv)
     }
   }
   std::istream& in = (argc == 2) ? fileInput : std::cin;
-  Stack< std::string > answer;
+  romanovich::Stack< std::string > answer;
   for (std::string line; std::getline(in, line);)
   {
     if (line.empty())
     {
       continue;
     }
-    Queue< std::string > infixNotation = splitLine(line);
-    Queue< std::string > postfixQueue = getPostfixFromInfix(infixNotation);
+    romanovich::Queue< std::string > infixNotation = romanovich::splitLine(line);
+    romanovich::Queue< std::string > postfixQueue = romanovich::getPostfixFromInfix(infixNotation);
     try
     {
-      calcPostfixExpression(postfixQueue, &answer);
+      romanovich::calcPostfixExpression(postfixQueue, &answer);
     }
     catch (...)
     {

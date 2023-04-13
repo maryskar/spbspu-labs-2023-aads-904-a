@@ -2,31 +2,34 @@
 #include "priority.h"
 #include <limits>
 #include <algorithm>
-int signum(long long n)
+namespace romanovich
 {
-  return (n > 0) - (n < 0);
-}
-bool overflowAdd(long long a, long long b, long long maxLongLong, long long minLongLong)
-{
-  if (signum(a) == signum(b))
+  int signum(long long n)
   {
-    return ((b > 0 && a > maxLongLong - b) || (b < 0 && a < minLongLong - b));
+    return (n > 0) - (n < 0);
   }
-  return false;
+  bool overflowAdd(long long a, long long b, long long maxLongLong, long long minLongLong)
+  {
+    if (signum(a) == signum(b))
+    {
+      return ((b > 0 && a > maxLongLong - b) || (b < 0 && a < minLongLong - b));
+    }
+    return false;
+  }
+  bool overflowMult(long long a, long long b, long long maxLongLong, long long minLongLong)
+  {
+    return ((a != 0 && b != 0) && ((a > maxLongLong / b) || (a < minLongLong / b)));
+  }
+  bool overflowSubt(long long a, long long b, long long maxLongLong, long long minLongLong)
+  {
+    return ((b < 0 && a > maxLongLong + b) || (b > 0 && a < minLongLong + b));
+  }
 }
-bool overflowMult(long long a, long long b, long long maxLongLong, long long minLongLong)
-{
-  return ((a != 0 && b != 0) && ((a > maxLongLong / b) || (a < minLongLong / b)));
-}
-bool overflowSubt(long long a, long long b, long long maxLongLong, long long minLongLong)
-{
-  return ((b < 0 && a > maxLongLong + b) || (b > 0 && a < minLongLong + b));
-}
-bool isOperator(const std::string &c)
+bool romanovich::isOperator(const std::string &c)
 {
   return (c == "+" || c == "-" || c == "*" || c == "/" || c == "%");
 }
-bool isDigit(const std::string &str)
+bool romanovich::isDigit(const std::string &str)
 {
   try
   {
@@ -38,7 +41,7 @@ bool isDigit(const std::string &str)
   }
   return true;
 }
-bool stackPopCondition(const std::string &q, const std::string &s)
+bool romanovich::stackPopCondition(const std::string &q, const std::string &s)
 {
   try
   {
@@ -50,7 +53,7 @@ bool stackPopCondition(const std::string &q, const std::string &s)
     return false;
   }
 }
-Queue< std::string > getPostfixFromInfix(Queue< std::string > queue)
+romanovich::Queue< std::string > romanovich::getPostfixFromInfix(Queue< std::string > queue)
 {
   Queue< std::string > postfixQueue;
   Stack< std::string > *stack = new Stack< std::string >;
@@ -103,7 +106,7 @@ Queue< std::string > getPostfixFromInfix(Queue< std::string > queue)
   delete stack;
   return postfixQueue;
 }
-Queue< std::string > splitLine(const std::string &string)
+romanovich::Queue< std::string > romanovich::splitLine(const std::string &string)
 {
   Queue< std::string > queue;
   int intBegin = 0;
@@ -117,13 +120,13 @@ Queue< std::string > splitLine(const std::string &string)
   queue.push(string.substr(intBegin, intEnd - intBegin));
   return queue;
 }
-std::string doOperation(long long b, long long a, const std::string &oper)
+std::string romanovich::doOperation(long long b, long long a, const std::string &oper)
 {
   long long maxLongLong = std::numeric_limits< long long >::max();
   long long minLongLong = std::numeric_limits< long long >::min();
   if (oper == "+")
   {
-    if (!overflowAdd(a, b, maxLongLong, minLongLong))
+    if (!romanovich::overflowAdd(a, b, maxLongLong, minLongLong))
     {
       return std::to_string(a + b);
     }
@@ -134,7 +137,7 @@ std::string doOperation(long long b, long long a, const std::string &oper)
   }
   if (oper == "-")
   {
-    if (!overflowSubt(a, b, maxLongLong, minLongLong))
+    if (!romanovich::overflowSubt(a, b, maxLongLong, minLongLong))
     {
       return std::to_string(a - b);
     }
@@ -145,7 +148,7 @@ std::string doOperation(long long b, long long a, const std::string &oper)
   }
   if (oper == "*")
   {
-    if (!overflowMult(a, b, maxLongLong, minLongLong))
+    if (!romanovich::overflowMult(a, b, maxLongLong, minLongLong))
     {
       return std::to_string(a * b);
     }
@@ -171,7 +174,7 @@ std::string doOperation(long long b, long long a, const std::string &oper)
   }
   return std::to_string(a % b);
 }
-void calcPostfixExpression(Queue< std::string > postfixQueue, Stack< std::string > *answer)
+void romanovich::calcPostfixExpression(Queue< std::string > postfixQueue, Stack< std::string > *answer)
 {
   Stack< std::string > *calcStack = new Stack< std::string >;
   calcStack->push(postfixQueue.pop());
@@ -186,7 +189,7 @@ void calcPostfixExpression(Queue< std::string > postfixQueue, Stack< std::string
     {
       break;
     }
-    if (isDigit(el))
+    if (romanovich::isDigit(el))
     {
       calcStack->push(el);
     }
