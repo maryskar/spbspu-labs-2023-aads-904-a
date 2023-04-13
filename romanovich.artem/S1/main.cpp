@@ -20,7 +20,7 @@ int main(int argc, char **argv)
       std::cerr << "Error while opening file.\n";
       return 1;
     }
-    if (!fileInput.good())
+    if (fileInput.eof())
     {
       std::cout << "\n";
       return 0;

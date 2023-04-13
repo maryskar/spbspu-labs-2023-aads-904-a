@@ -2,13 +2,13 @@
 #include "priority.h"
 #include <limits>
 #include <algorithm>
-int sgn(long long n)
+int signum(long long n)
 {
   return (n > 0) - (n < 0);
 }
 bool overflowAdd(long long a, long long b, long long maxLongLong, long long minLongLong)
 {
-  if (sgn(a) == sgn(b))
+  if (signum(a) == signum(b))
   {
     return ((b > 0 && a > maxLongLong - b) || (b < 0 && a < minLongLong - b));
   }
@@ -31,7 +31,8 @@ bool isDigit(const std::string &str)
   try
   {
     std::stoll(str, nullptr, 10);
-  } catch (...)
+  }
+  catch (...)
   {
     return false;
   }
@@ -74,11 +75,11 @@ Queue< std::string > getPostfixFromInfix(Queue< std::string > queue)
         }
         stack->pop();
       }
-      if (isDigit(qEl))
+      try
       {
-        postfixQueue.push(qEl);
+        std::stoll(qEl, nullptr, 10);
       }
-      if (isOperator(qEl))
+      catch (...)
       {
         if (!stack->isEmpty())
         {
@@ -89,6 +90,7 @@ Queue< std::string > getPostfixFromInfix(Queue< std::string > queue)
         }
         stack->push(qEl);
       }
+      postfixQueue.push(qEl);
     }
     else
     {
