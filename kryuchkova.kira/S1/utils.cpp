@@ -1,17 +1,12 @@
-#include "calc_data_type.h"
+#include "utils.h"
 #include <stdexcept>
 #include <cctype>
 
 namespace kryuchkova
 {
-  bool calc_data_type::isDigit(const char data)
+  int GetPriority(const char data)
   {
-    return std::isdigit(data);
-  }
-  void calc_data_type::GetPriority(const char data)
-  {
-    int priority = 0;
-    if (!isDigit(data))
+    if (!std::isdigit(data))
     {
       throw std::runtime_error("isn't digit");
     }
@@ -19,17 +14,20 @@ namespace kryuchkova
     {
       if (data == '+' || data == '-')
       {
-        priority = 1;
+        return 1;
       }
       if (data == '/' || data == '*')
       {
-        priority = 2;
+        return 2;
       }
       if (data == '(' || data == ')')
       {
-        priority = 3;
+        return 3;
       }
-      //return priority;
+      else
+      {
+        return 0;
+      }
     }
   }
 }
