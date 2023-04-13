@@ -194,11 +194,10 @@ std::string romanovich::doOperation(long long b, long long a, const std::string 
   }
   return std::to_string(a % b);
 }
-void romanovich::calcPostfixExpression(Queue< std::string > postfixQueue, Stack< std::string > *answer)
+void romanovich::calcPostfixExpression(Queue <std::string> postfixQueue, Stack <std::string> *answer, Stack <std::string> *stack)
 {
-  romanovich::Stack< std::string > *calcStack = new romanovich::Stack< std::string >;
-  calcStack->push(postfixQueue.pop());
-  while (!calcStack->isEmpty())
+  stack->push(postfixQueue.pop());
+  while (!stack->isEmpty())
   {
     std::string el;
     if (!postfixQueue.isEmpty())
@@ -211,25 +210,24 @@ void romanovich::calcPostfixExpression(Queue< std::string > postfixQueue, Stack<
     }
     if (romanovich::isDigit(el))
     {
-      calcStack->push(el);
+      stack->push(el);
     }
     else
     {
       try
       {
-        long long x = std::stoll(calcStack->get(), nullptr, 10);
-        calcStack->pop();
-        long long y = std::stoll(calcStack->get(), nullptr, 10);
-        calcStack->pop();
-        calcStack->push(romanovich::doOperation(x, y, el));
+        long long x = std::stoll(stack->get(), nullptr, 10);
+        stack->pop();
+        long long y = std::stoll(stack->get(), nullptr, 10);
+        stack->pop();
+        stack->push(romanovich::doOperation(x, y, el));
       }
       catch (...)
       {
-        delete calcStack;
+        delete stack;
         throw std::range_error("Error calculating postfix.");
       }
     }
   }
-  answer->push(calcStack->get());
-  delete calcStack;
+  answer->push(stack->get());
 }
