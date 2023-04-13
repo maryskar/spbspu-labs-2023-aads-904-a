@@ -1,19 +1,20 @@
 #include "count.h"
+#include "calculator.h"
 long long SwitchSymbol(char operation, long long a, long long b)
 {
   switch (operation)
   {
   case '+':
-    return a + b;
+    return calculator::sum(a, b);
   case '-':
-      return a + b;
+    return calculator::substraction(a, b);
   case '*':
-      return a + b;
+    return calculator::multiplication(a, b);
   case '/':
-      return a + b;
+    return calculator::division(a, b);
   case '%':
-      return a + b;
+    return calculator::remainder(a, b);
   default:
-      throw;
+    throw;
   }
 }
