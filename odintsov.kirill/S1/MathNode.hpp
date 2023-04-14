@@ -20,7 +20,7 @@ namespace odintsov {
     MathNode(char paren);
     MathNode(const std::string& str);
 
-    bool isDataType(Tag tag) const;
+    Tag getTag() const;
 
     long long getOperand() const;
     odintsov::Operator& getOperator();

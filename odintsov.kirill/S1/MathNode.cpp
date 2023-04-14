@@ -49,14 +49,14 @@ odintsov::MathNode::MathNode(const std::string& str):
   tag_ = Tag::Operator;
 }
 
-bool odintsov::MathNode::isDataType(Tag tag) const
+odintsov::MathNode::Tag odintsov::MathNode::getTag() const
 {
-  return tag_ == tag;
+  return tag_;
 }
 
 long long odintsov::MathNode::getOperand() const
 {
-  if (!isDataType(Tag::Operand)) {
+  if (tag_ != Tag::Operand) {
     throw std::logic_error("Invalid attempt to interpret node as operand");
   }
   return data_.operand;
@@ -69,7 +69,7 @@ odintsov::Operator& odintsov::MathNode::getOperator()
 
 const odintsov::Operator& odintsov::MathNode::getOperator() const
 {
-  if (!isDataType(Tag::Operator)) {
+  if (tag_ != Tag::Operator) {
     throw std::logic_error("Invalid attempt to interpret node as operator");
   }
   return data_.oper;
