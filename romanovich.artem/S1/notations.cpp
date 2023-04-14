@@ -47,7 +47,7 @@ bool romanovich::stackPopCondition(const std::string &q, const std::string &s)
   {
     romanovich::Priority priorQ(q);
     romanovich::Priority priorS(s);
-    return (priorQ >= priorS);
+    return (!(priorQ < priorS));
   }
   catch (...)
   {

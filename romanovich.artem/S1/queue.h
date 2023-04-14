@@ -36,6 +36,9 @@ namespace romanovich
     tail_(nullptr),
     size_(0)
   {
+    if (pQueue.head_ == nullptr || pQueue.tail_ == nullptr) {
+      throw std::logic_error("Queue is empty.");
+    }
     details::ListNode< T > *tmp = pQueue.head_;
     while (tmp != nullptr)
     {
@@ -50,6 +53,7 @@ namespace romanovich
     {
       pop();
     }
+    //details::clear(head_);
   }
   template < typename T >
   void Queue< T >::push(const T &rhs)

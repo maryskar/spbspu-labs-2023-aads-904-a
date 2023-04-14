@@ -9,5 +9,17 @@ namespace details
     T data_;
     ListNode< T > *next_;
   };
+
+  template < typename T >
+  void clear(ListNode< T > *pNode)
+  {
+    while (*pNode)
+    {
+      ListNode< T > *p = pNode;
+      pNode = p->next;
+      delete p;
+    }
+    pNode = nullptr;
+  }
 }
 #endif

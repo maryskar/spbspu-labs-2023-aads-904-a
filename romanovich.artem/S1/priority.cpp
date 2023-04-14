@@ -13,7 +13,7 @@ size_t romanovich::Priority::getPriority(const std::string &op)
   }
   throw std::invalid_argument("Priority parse error");
 }
-bool romanovich::Priority::operator>=(const Priority& rhs) const
+bool romanovich::Priority::operator<(const Priority& rhs) const
 {
-  return priority_ >= rhs.priority_;
+  return priority_ < rhs.priority_;
 }
