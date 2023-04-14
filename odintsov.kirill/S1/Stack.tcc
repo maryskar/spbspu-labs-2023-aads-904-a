@@ -63,6 +63,20 @@ const T& odintsov::Stack< T >::tail() const
 }
 
 template< typename T >
+detail::ConstNodeIter< T > odintsov::Stack< T >::cbegin() const
+{
+  detail::ConstNodeIter< T > iter;
+  iter.nodePtr = tail_;
+  return iter;
+}
+
+template< typename T >
+detail::ConstNodeIter< T > odintsov::Stack< T >::cend() const
+{
+  return detail::ConstNodeIter< T >();
+}
+
+template< typename T >
 void odintsov::Stack< T >::push(const T& data)
 {
   push(new detail::Node< T >{data, tail_});
