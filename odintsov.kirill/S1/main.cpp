@@ -3,9 +3,8 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "MathSolver.hpp"
 #include "Stack.hpp"
-#include "StringSplitter.hpp"
+#include "solveExpression.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -34,14 +33,7 @@ int main(int argc, char* argv[])
       if (exprStr.empty()) {
         continue;
       }
-      odintsov::StringSplitter splitter(exprStr);
-      odintsov::MathSolver addToSolution;
-      while (!splitter.empty()) {
-        std::string nodeStr;
-        splitter >> nodeStr;
-        addToSolution(nodeStr);
-      }
-      results.push(addToSolution.getResult());
+      results.push(odintsov::solveExpression(exprStr));
     }
   } catch (const std::exception& e) {
     std::cerr << e.what() << '\n';
