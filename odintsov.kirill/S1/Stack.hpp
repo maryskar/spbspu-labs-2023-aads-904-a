@@ -15,8 +15,8 @@ namespace odintsov {
     Stack< T >& operator=(const Stack< T >& s);
     Stack< T >& operator=(Stack< T >&& s);
 
-    detail::ConstNodeIter< T > cbegin();
-    detail::ConstNodeIter< T > cend();
+    detail::ConstNodeIter< T > cbegin() const;
+    detail::ConstNodeIter< T > cend() const;
     T& tail();
     const T& tail() const;
     void push(const T& data);
