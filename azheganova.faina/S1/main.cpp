@@ -10,8 +10,6 @@
 
 int main(int argc, char * argv[])
 {
-  std::string string;
-  Stack < long long > result;
   if (argc > 2)
   {
     std::cout << "too much parameters";
@@ -25,6 +23,8 @@ int main(int argc, char * argv[])
       std::cerr << "error";
       return 1;
     }
+    std::string string;
+    Stack < long long > result;
     while (std::getline(input, string))
     {
       if (!input)
@@ -61,6 +61,8 @@ int main(int argc, char * argv[])
   }
   else
   {
+    std::string string;
+    Stack < long long > result;
     while (std::cin)
     {
       std::getline(std::cin, string);

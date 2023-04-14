@@ -22,14 +22,14 @@ long long calculatePostfix(Queue<std::string> & postfix)
       stack.pop();
       long long firstnum = stack.drop();
       stack.pop();
-      long long result;
+      long long calcres;
       if (element == "+")
       {
         if ((firstnum * secondnum >= 0) && (firstnum >= 0))
         {
           if (maximum - firstnum >= secondnum)
           {
-            result = firstnum + secondnum;
+            calcres = firstnum + secondnum;
           }
           else
           {
@@ -40,7 +40,7 @@ long long calculatePostfix(Queue<std::string> & postfix)
         {
           if (minimum - firstnum <= secondnum)
           {
-            result = firstnum + secondnum;
+            calcres = firstnum + secondnum;
           }
           else
           {
@@ -49,12 +49,12 @@ long long calculatePostfix(Queue<std::string> & postfix)
         }
         else
         {
-          result = firstnum + secondnum;
+          calcres = firstnum + secondnum;
         }
       }
       else if (element == "-")
       {
-        result = firstnum - secondnum;
+        calcres = firstnum - secondnum;
       }
       else if (element == "*")
       {
@@ -62,7 +62,7 @@ long long calculatePostfix(Queue<std::string> & postfix)
         {
           if (maximum / firstnum >= secondnum)
           {
-            result = firstnum * secondnum;
+            calcres = firstnum * secondnum;
           }
           else
           {
@@ -73,7 +73,7 @@ long long calculatePostfix(Queue<std::string> & postfix)
         {
           if (minimum / firstnum >= secondnum)
           {
-            result = firstnum * secondnum;
+            calcres = firstnum * secondnum;
           }
           else
           {
@@ -82,7 +82,7 @@ long long calculatePostfix(Queue<std::string> & postfix)
         }
         else
         {
-          result = firstnum * secondnum;
+          calcres = firstnum * secondnum;
         }
       }
       else if (element == "/")
@@ -91,7 +91,7 @@ long long calculatePostfix(Queue<std::string> & postfix)
         {
           throw std::logic_error("division by 0");
         }
-        result = firstnum / secondnum;
+        calcres = firstnum / secondnum;
       }
       else if (element == "%")
       {
@@ -105,7 +105,7 @@ long long calculatePostfix(Queue<std::string> & postfix)
         }
         return firstnum % secondnum;
       }
-      stack.push(result);
+      stack.push(calcres);
     }
   }
   return stack.drop();
