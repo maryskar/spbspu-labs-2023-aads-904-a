@@ -7,7 +7,7 @@ namespace detail {
   template< typename T >
   struct Node {
     T data;
-    Node< T >* next;
+    Node* next;
   };
 
   template< typename T >
