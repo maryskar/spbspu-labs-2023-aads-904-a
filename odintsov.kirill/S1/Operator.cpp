@@ -1,6 +1,5 @@
 #include "Operator.hpp"
 
-#include <cmath>
 #include <limits>
 #include <stdexcept>
 
@@ -53,6 +52,9 @@ long long divide(long long lhs, long long rhs)
 
 long long modulo(long long lhs, long long rhs)
 {
+  if (rhs == 0) {
+    throw std::invalid_argument("Attempt to get remainder of division by 0");
+  }
   long long res = lhs % rhs;
   if (res < 0) {
     res += rhs;
@@ -71,7 +73,7 @@ unsigned short getOperatorPriority(char c)
   return 0;
 }
 
-long long (*getOperatorFunction(char c))(long long, long long)
+odintsov::Operator::funcPtr getOperatorFunction(char c)
 {
   switch (c) {
   case '+':
@@ -102,6 +104,16 @@ long long odintsov::Operator::exec(long long lhs, long long rhs) const
 bool odintsov::Operator::operator<(const Operator& rhs) const
 {
   return priority_ < rhs.priority_;
+}
+
+bool odintsov::Operator::operator>(const Operator& rhs) const
+{
+  return rhs < *this;
+}
+
+bool odintsov::Operator::operator<=(const Operator& rhs) const
+{
+  return !(*this > rhs);
 }
 
 bool odintsov::Operator::operator>=(const Operator& rhs) const

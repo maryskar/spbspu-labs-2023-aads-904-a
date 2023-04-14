@@ -6,11 +6,14 @@ namespace odintsov {
    public:
     Operator(char o);
     bool operator<(const Operator& rhs) const;
+    bool operator>(const Operator& rhs) const;
+    bool operator<=(const Operator& rhs) const;
     bool operator>=(const Operator& rhs) const;
     long long exec(long long lhs, long long rhs) const;
+    typedef long long (*funcPtr)(long long, long long);
 
    private:
-    long long (*exec_)(long long, long long);
+    funcPtr exec_;
     unsigned short priority_;
   };
 }
