@@ -18,8 +18,8 @@ std::pair< detail::Node< T >*, detail::Node< T >* > detail::duplicateNodes(const
   }
   Node< T >* const newHead = new Node< T >{head->data, nullptr};
   Node< T >* newTail = newHead;
+  head = head->next;
   while (head != nullptr) {
-    head = head->next;
     try {
       newTail->next = new Node< T >{head->data, nullptr};
     } catch (...) {
@@ -27,6 +27,7 @@ std::pair< detail::Node< T >*, detail::Node< T >* > detail::duplicateNodes(const
       throw;
     }
     newTail = newTail->next;
+    head = head->next;
   }
   return std::make_pair(newHead, newTail);
 }
