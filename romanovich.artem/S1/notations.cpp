@@ -54,77 +54,58 @@ bool romanovich::stackPopCondition(const std::string &q, const std::string &s)
     return false;
   }
 }
-romanovich::Queue< std::string > romanovich::getPostfixFromInfix(romanovich::Queue< std::string > queue)
+void romanovich::getPostfixFromInfix(romanovich::Queue< std::string > &queue, romanovich::Stack< std::string > &stack,
+                                     romanovich::Queue< std::string > &postfixQueue)
 {
-  Stack< std::string > *stack = new Stack< std::string >;
-  romanovich::Queue< std::string > postfixQueue;
-  while (!queue.isEmpty() or !stack->isEmpty())
+  while (!queue.isEmpty() or !stack.isEmpty())
   {
     if (!queue.isEmpty())
     {
-      std::string qEl = queue.pop();
+      std::string qEl = queue.get();
+      queue.pop();
       if (qEl == "(")
       {
-        stack->push(qEl);
+        stack.push(qEl);
       }
       if (qEl == ")")
       {
-        while (stack->get() != "(")
+        while (stack.get() != "(")
         {
-          postfixQueue.push(stack->get());
-          stack->pop();
-          if (stack->isEmpty())
+          postfixQueue.push(stack.get());
+          stack.pop();
+          if (stack.isEmpty())
           {
             break;
           }
         }
-        stack->pop();
+        stack.pop();
       }
-      /*try
-      {
-        std::stoll(qEl, nullptr, 10);
-      }
-      catch (...)
-      {
-        if (!stack->isEmpty())
-        {
-          if (stackPopCondition(qEl, stack->get()))
-          {
-            postfixQueue.push(stack->get());
-            stack->pop();
-          }
-        }
-        stack->push(qEl);
-      }
-      postfixQueue.push(qEl);*/
       if (isDigit(qEl))
       {
         postfixQueue.push(qEl);
       }
       if (isOperator(qEl))
       {
-        if (!stack->isEmpty())
+        if (!stack.isEmpty())
         {
-          if (stackPopCondition(qEl, stack->get()))
+          if (stackPopCondition(qEl, stack.get()))
           {
-            postfixQueue.push(stack->get());
-            stack->pop();
+            postfixQueue.push(stack.get());
+            stack.pop();
           }
         }
-        stack->push(qEl);
+        stack.push(qEl);
       }
     }
     else
     {
-      while (!stack->isEmpty())
+      while (!stack.isEmpty())
       {
-        postfixQueue.push(stack->get());
-        stack->pop();
+        postfixQueue.push(stack.get());
+        stack.pop();
       }
     }
   }
-  delete stack;
-  return postfixQueue;
 }
 romanovich::Queue< std::string > romanovich::splitLine(const std::string &string)
 {
@@ -194,15 +175,18 @@ std::string romanovich::doOperation(long long b, long long a, const std::string 
   }
   return std::to_string(a % b);
 }
-void romanovich::calcPostfixExpression(Queue <std::string> postfixQueue, Stack <std::string> *answer, Stack <std::string> *stack)
+void romanovich::calcPostfixExpression(Queue< std::string > &postfixQueue, Stack< std::string > &answer,
+                                       Stack< std::string > &stack)
 {
-  stack->push(postfixQueue.pop());
-  while (!stack->isEmpty())
+  stack.push(postfixQueue.get());
+  postfixQueue.pop();
+  while (!stack.isEmpty())
   {
     std::string el;
     if (!postfixQueue.isEmpty())
     {
-      el = postfixQueue.pop();
+      el = postfixQueue.get();
+      postfixQueue.pop();
     }
     else
     {
@@ -210,24 +194,23 @@ void romanovich::calcPostfixExpression(Queue <std::string> postfixQueue, Stack <
     }
     if (romanovich::isDigit(el))
     {
-      stack->push(el);
+      stack.push(el);
     }
     else
     {
       try
       {
-        long long x = std::stoll(stack->get(), nullptr, 10);
-        stack->pop();
-        long long y = std::stoll(stack->get(), nullptr, 10);
-        stack->pop();
-        stack->push(romanovich::doOperation(x, y, el));
+        long long x = std::stoll(stack.get(), nullptr, 10);
+        stack.pop();
+        long long y = std::stoll(stack.get(), nullptr, 10);
+        stack.pop();
+        stack.push(romanovich::doOperation(x, y, el));
       }
       catch (...)
       {
-        delete stack;
         throw std::range_error("Error calculating postfix.");
       }
     }
   }
-  answer->push(stack->get());
+  answer.push(stack.get());
 }

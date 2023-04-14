@@ -26,7 +26,7 @@ int main(int argc, char **argv)
       return 0;
     }
   }
-  std::istream& in = (argc == 2) ? fileInput : std::cin;
+  std::istream &in = (argc == 2) ? fileInput : std::cin;
   romanovich::Stack< std::string > answer;
   for (std::string line; std::getline(in, line);)
   {
@@ -35,12 +35,21 @@ int main(int argc, char **argv)
       continue;
     }
     romanovich::Queue< std::string > infixNotation = romanovich::splitLine(line);
-    romanovich::Queue< std::string > postfixQueue = romanovich::getPostfixFromInfix(infixNotation);
+    romanovich::Queue< std::string > postfixQueue;
+    romanovich::Stack< std::string > stack1;
     try
     {
-      romanovich::Stack< std::string > *calcStack = new romanovich::Stack< std::string >;
-      romanovich::calcPostfixExpression(postfixQueue, &answer, calcStack);
-      delete calcStack;
+      romanovich::getPostfixFromInfix(infixNotation, stack1, postfixQueue);
+    }
+    catch (...)
+    {
+      std::cerr << "Error while calc.\n";
+      return 2;
+    }
+    romanovich::Stack< std::string > calcStack;
+    try
+    {
+      romanovich::calcPostfixExpression(postfixQueue, answer, calcStack);
     }
     catch (...)
     {

@@ -12,7 +12,8 @@ namespace romanovich
     Queue(const Queue< T > &pQueue);
     ~Queue();
     void push(const T &rhs);
-    T pop();
+    void pop();
+    T get();
     bool isEmpty() const
     {
       return size_ == 0;
@@ -66,18 +67,25 @@ namespace romanovich
     size_++;
   }
   template < typename T >
-  T Queue< T >::pop()
+  T Queue< T >::get()
   {
-    if (head_ == nullptr)
+    if (isEmpty())
     {
       throw std::range_error("Queue is empty.");
     }
-    T el = head_->data_;
+    return head_->data_;
+  }
+  template < typename T >
+  void Queue< T >::pop()
+  {
+    if (isEmpty())
+    {
+      throw std::range_error("Queue is empty.");
+    }
     details::ListNode< T > *subHead = head_->next_;
     delete head_;
     head_ = subHead;
     size_--;
-    return el;
   }
 }
 #endif
