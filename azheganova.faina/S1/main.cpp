@@ -10,7 +10,7 @@
 
 int main(int argc, char * argv[])
 {
-  std::string string;
+  std::string string = nullptr;
   Stack < long long > result;
   if (argc > 2)
   {
