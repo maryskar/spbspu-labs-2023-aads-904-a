@@ -1,13 +1,15 @@
 #include "solvePostfix.hpp"
 
+#include "Node.hpp"
 #include "Stack.hpp"
 
 long long odintsov::solvePostfix(const Queue< MathNode >& expr)
 {
-  Queue< MathNode > exprCopy(expr);
+  detail::ConstNodeIter< MathNode > iter = expr.cbegin();
+  detail::ConstNodeIter< MathNode > end = expr.cend();
   Stack< MathNode > solver;
-  while (!exprCopy.empty()) {
-    MathNode node = exprCopy.head();
+  while (iter != end) {
+    const MathNode node = *iter;
     if (node.getTag() == MathNode::Tag::Operator) {
       long long rhs = solver.tail().getOperand();
       solver.pop();
@@ -16,9 +18,9 @@ long long odintsov::solvePostfix(const Queue< MathNode >& expr)
       long long res = node.getOperator().exec(lhs, rhs);
       solver.push(MathNode(res));
     } else {
-      solver.push(exprCopy.head());
+      solver.push(node);
     }
-    exprCopy.pop();
+    iter++;
   }
   if (solver.empty()) {
     throw std::runtime_error("Empty expression");

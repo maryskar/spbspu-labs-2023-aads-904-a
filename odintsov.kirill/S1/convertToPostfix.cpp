@@ -7,7 +7,7 @@
 #include "Stack.hpp"
 
 struct PostfixConverter {
-  void operator()(odintsov::MathNode& node)
+  void operator()(const odintsov::MathNode& node)
   {
     switch (node.getTag()) {
     case odintsov::MathNode::Tag::OpenParen:
@@ -38,7 +38,7 @@ struct PostfixConverter {
   odintsov::Queue< odintsov::MathNode > expr_;
   odintsov::Stack< odintsov::MathNode > opers_;
 
-  void processOpenParen(odintsov::MathNode& paren)
+  void processOpenParen(const odintsov::MathNode& paren)
   {
     opers_.push(paren);
   }
@@ -56,12 +56,12 @@ struct PostfixConverter {
     opers_.pop();
   }
 
-  void processOperand(odintsov::MathNode& operand)
+  void processOperand(const odintsov::MathNode& operand)
   {
     expr_.push(operand);
   }
 
-  void processOperator(odintsov::MathNode& oper)
+  void processOperator(const odintsov::MathNode& oper)
   {
     const odintsov::Operator& operPriority = oper.getOperator();
     sendOperatorsOver([&operPriority](const odintsov::Operator& stackOper) {
@@ -92,11 +92,11 @@ struct PostfixConverter {
 
 odintsov::Queue< odintsov::MathNode > odintsov::convertToPostfix(const Queue< MathNode >& infixQueue)
 {
-  Queue< MathNode > infixCopy(infixQueue);
+  detail::ConstNodeIter< MathNode > iter = infixQueue.cbegin();
+  detail::ConstNodeIter< MathNode > end = infixQueue.cend();
   PostfixConverter addToConversion;
-  while (!infixCopy.empty()) {
-    addToConversion(infixCopy.head());
-    infixCopy.pop();
+  while (iter != end) {
+    addToConversion(*iter++);
   }
   return addToConversion.getQueue();
 }

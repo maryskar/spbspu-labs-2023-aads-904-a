@@ -15,6 +15,8 @@ namespace odintsov {
       CloseParen
     };
 
+    MathNode(const MathNode& n);
+    MathNode(MathNode&& n);
     MathNode(long long operand);
     MathNode(const odintsov::Operator& oper);
     MathNode(char paren);

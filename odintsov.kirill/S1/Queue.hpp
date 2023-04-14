@@ -17,6 +17,8 @@ namespace odintsov {
 
     T& head();
     const T& head() const;
+    detail::ConstNodeIter< T > cbegin() const;
+    detail::ConstNodeIter< T > cend() const;
     void push(const T& data);
     void push(T&& data);
     void pop();

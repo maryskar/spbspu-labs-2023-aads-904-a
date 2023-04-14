@@ -93,6 +93,20 @@ void odintsov::Queue< T >::pop()
 }
 
 template< typename T >
+detail::ConstNodeIter< T > odintsov::Queue< T >::cbegin() const
+{
+  detail::ConstNodeIter< T > iter;
+  iter.nodePtr = head_;
+  return iter;
+}
+
+template< typename T >
+detail::ConstNodeIter< T > odintsov::Queue< T >::cend() const
+{
+  return detail::ConstNodeIter< T >();
+}
+
+template< typename T >
 T& odintsov::Queue< T >::head()
 {
   return const_cast< T& >(const_cast< const Queue< T >* >(this)->head());

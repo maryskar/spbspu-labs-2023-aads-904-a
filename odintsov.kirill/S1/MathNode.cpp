@@ -6,6 +6,29 @@
 
 #include "Operator.hpp"
 
+odintsov::MathNode::MathNode(const MathNode& n):
+  tag_(n.tag_),
+  data_{0}
+{
+  switch (tag_) {
+  case Tag::Operand:
+    data_.operand = n.data_.operand;
+    break;
+  case Tag::Operator:
+    new (&data_.oper) odintsov::Operator(n.data_.oper);
+    break;
+  default:
+    break;
+  }
+}
+
+odintsov::MathNode::MathNode(MathNode&& n):
+  tag_(n.tag_),
+  data_(n.data_)
+{
+  n.data_.operand = 0;
+}
+
 odintsov::MathNode::MathNode(long long operand):
   tag_(Tag::Operand),
   data_{.operand = operand}
