@@ -1,18 +1,11 @@
 #include "calculator.h"
+#include "mathExpression.h"
 #include "stack.h"
 #include "queue.h"
 
 #include <string>
-#include <limits>
 
-constexpr long long longLongMin = std::numeric_limits< long long >::min();
-constexpr long long longLongMax = std::numeric_limits< long long >::max();
-
-size_t definePriority(std::string inp);
-std::string calculate(std::string s2, std::string s1, std::string symbol);
-Queue< std::string > getQueueFromInput(std::string stringInp);
-std::string drop(Queue< std::string >& queue);
-std::string drop(Stack< std::string >& stack);
+Queue< Expression* > getQueueFromInput(std::string stringInp);
 
 long long calculateTheExpression(std::string stringInp)
 {
@@ -69,101 +62,41 @@ long long calculateTheExpression(std::string stringInp)
   return std::stoll(drop(postStack));
 }
 
-size_t definePriority(std::string inp)
+
+
+Queue< Expression* > getQueueFromInput(std::string stringInp)
 {
-  size_t priority = 0;
-  if ((inp == "+") || (inp == "-"))
-  {
-    priority = 1;
-  }
-  else if (inp == "%")
-  {
-    priority = 2;
-  }
-  else if ((inp == "*") || (inp == "/"))
-  {
-    priority = 3;
-  }
-
-  return priority;
-}
-
-std::string calculate(std::string s2, std::string s1, std::string symbol)
-{
-  long long p1 = std::stoll(s1);
-  long long p2 = std::stoll(s2);
-  long long result = 0.0;
-
-  if (symbol == "+")
-  {
-    if (p2 > 0 && p1 > longLongMax - p2)
-    {
-      throw std::overflow_error("overflow_error");
-    }
-    if (p2 < 0 && p1 < longLongMin - p2)
-    {
-      throw std::underflow_error("underflow_error");
-    }
-    result = p2 + p1;
-  }
-  else if (symbol == "-")
-  {
-    if (p1 < 0 && p2 > longLongMax + p1)
-    {
-      throw std::overflow_error("overflow_error");
-    }
-    if (p1 > 0 && p2 < longLongMin + p1)
-    {
-      throw std::underflow_error("underflow_error");
-    }
-    result = p2 - p1;
-  }
-  else if (symbol == "*")
-  {
-    if ((p2 > 0 && p1 > longLongMax / p2) || (p2 < 0 && p1 > longLongMax / p2))
-    {
-      throw std::overflow_error("overflow_error");
-    }
-    if ((p2 < 0 && p1 > longLongMin / p2) || (p2 > 0 && p1 > longLongMax / p2))
-    {
-      throw std::underflow_error("underflow_error");
-    }
-    result = p2 * p1;
-  }
-  else if (symbol == "/")
-  {
-    if (p1 == 0)
-    {
-      throw std::logic_error("div on zero");
-    }
-    result = p2 / p1;
-  }
-  else if (symbol == "%")
-  {
-    if (p1 == 0)
-    {
-      throw std::logic_error("mod on zero");
-    }
-    result = p2 % p1;
-    if (result < 0)
-    {
-      result += p1;
-    }
-  }
-
-  return std::to_string(result);
-}
-
-Queue< std::string > getQueueFromInput(std::string stringInp)
-{
-  Queue< std::string > infQueue;
+  Queue< Expression* > infQueue;
   std::string curr = "";
 
   for (size_t i = 0; stringInp[i] != '\0'; i++)
   {
     if (stringInp[i] == ' ')
     {
-      infQueue.push(curr);
+      if (isBracket(curr[0]))
+      {
+        Expression* br = new Bracket(curr[0]);
+        infQueue.push(br);
+      }
+      else if (isOperator(curr[0]))
+      {
+        Expression* op = new Operator(curr[0]);
+        infQueue.push(op);
+      }
+      else
+      {
+        try
+        {
+          Expression* num = new Number(std::stoll(curr));
+          infQueue.push(num);
+        }
+        catch (const std::exception&)
+        {
+          //delete?
+          throw;
+        }
+      }
+
       curr = "";
     }
     else
@@ -171,23 +104,30 @@ Queue< std::string > getQueueFromInput(std::string stringInp)
       curr = curr + stringInp[i];
     }
   }
-  infQueue.push(curr);
+
+  if (isBracket(curr[0]))
+  {
+    Expression* br = new Bracket(curr[0]);
+    infQueue.push(br);
+  }
+  else if (isOperator(curr[0]))
+  {
+    Expression* op = new Operator(curr[0]);
+    infQueue.push(op);
+  }
+  else
+  {
+    try
+    {
+      Expression* num = new Number(std::stoll(curr));
+      infQueue.push(num);
+    }
+    catch (const std::exception&)
+    {
+      //delete?
+      throw;
+    }
+  }
 
   return infQueue;
-}
-
-std::string drop(Queue< std::string >& queue)
-{
-  std::string currentData = queue.getTopData();
-  queue.popBack();
-
-  return currentData;
-}
-
-std::string drop(Stack< std::string >& stack)
-{
-  std::string currentData = stack.getTopData();
-  stack.popBack();
-
-  return currentData;
 }
