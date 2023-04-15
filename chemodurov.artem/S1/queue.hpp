@@ -2,7 +2,7 @@
 #define QUEUE_HPP
 #include <cstddef>
 #include <stdexcept>
-#include "list.hpp"
+#include <list.hpp>
 
 namespace chemodurov
 {
