@@ -118,7 +118,15 @@ Queue< Expression* > getQueueFromInput(std::string stringInp)
       {
         long long inp = std::stoll(curr);
         Expression* num = new Number(inp);
-        infQueue.push(num);
+        try
+        {
+          infQueue.push(num);
+        }
+        catch (const std::exception&)
+        {
+          delete num;
+          throw;
+        }
       }
 
       curr = "";
@@ -143,7 +151,15 @@ Queue< Expression* > getQueueFromInput(std::string stringInp)
   {
     long long inp = std::stoll(curr);
     Expression* num = new Number(inp);
-    infQueue.push(num);
+    try
+    {
+      infQueue.push(num);
+    }
+    catch (const std::exception&)
+    {
+      delete num;
+      throw;
+    }
   }
 
   return infQueue;
