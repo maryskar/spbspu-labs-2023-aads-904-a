@@ -119,7 +119,6 @@ Queue< Expression* > getQueueFromInput(std::string stringInp)
         long long inp = std::stoll(curr);
         Expression* num = new Number(inp);
         infQueue.push(num);
-        delete num;
       }
 
       curr = "";
@@ -145,7 +144,6 @@ Queue< Expression* > getQueueFromInput(std::string stringInp)
     long long inp = std::stoll(curr);
     Expression* num = new Number(inp);
     infQueue.push(num);
-    delete num;
   }
 
   return infQueue;

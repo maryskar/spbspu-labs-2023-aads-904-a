@@ -8,6 +8,7 @@ public:
   bool isOperator();
   bool isBracket();
 
+  virtual ~Expression() = default;
 private:
   virtual char getCondition() = 0;
 
