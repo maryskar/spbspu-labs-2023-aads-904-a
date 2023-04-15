@@ -14,7 +14,7 @@ namespace kryuchkova
     {
       if (data == '+' || data == '-')
       {
-        return 1;
+        return 3;
       }
       if (data == '/' || data == '*')
       {
@@ -22,11 +22,11 @@ namespace kryuchkova
       }
       if (data == '(' || data == ')')
       {
-        return 3;
+        return 1;
       }
       else
       {
-        return 0;
+        return 4;
       }
     }
   }

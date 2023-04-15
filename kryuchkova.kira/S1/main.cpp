@@ -2,6 +2,7 @@
 #include "stack.h"
 #include "node.h"
 #include "utils.h"
+#include "get_exp.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -26,7 +27,13 @@ int main(int argc, char *argv[])
     {
       std::string str;
       std::getline(file, str);
-      std::cout << str;
+      kryuchkova::Queue < char > inf;
+      kryuchkova::stringToInfix(str, inf);
+      while (!inf.isEmpty())
+      {
+        std::cout << inf.drop();
+      }
+      std::cout << '\n';
     }
   }
 
