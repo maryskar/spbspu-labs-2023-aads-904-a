@@ -3,13 +3,13 @@
 
 #include "queue.h"
 #include "stack.h"
-#include "calc_data_type.h"
+#include "utils.h"
 
 namespace kryuchkova
 {
-  void stringToInfix(std::string & str, Queue < calc_data_type > & inf);
-  void infixToPostfix(Queue < calc_data_type > & inf, Queue < calc_data_type > &post);
-  long long getResult(Queue < calc_data_type > & post);
+  void stringToInfix(std::string & str, Queue < long long > & inf);
+  void infixToPostfix(Queue < long long > & inf, Queue < long long > &post);
+  long long getResult(Queue < long long > & post);
 }
 
 #endif

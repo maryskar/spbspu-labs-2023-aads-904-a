@@ -1,8 +1,11 @@
 #include "queue.h"
 #include "stack.h"
 #include "node.h"
-#include "calc_data_type.h"
+#include "utils.h"
 #include <iostream>
+#include <fstream>
+#include <sstream>
+//#include <io.h>
 
 int main(int argc, char *argv[])
 {
@@ -11,9 +14,20 @@ int main(int argc, char *argv[])
     std::cerr  << "Not correct number of arguments for program\n";
     return 1;
   }
-  if (argc == 1)
+  if (argc == 2)
   {
-    
+    std::ifstream file(argv[1]);
+    if (!file)
+    {
+      std::cout << "Error with opening file";
+      return 1;
+    }
+    while (!file.eof())
+    {
+      std::string str;
+      std::getline(file, str);
+      std::cout << str;
+    }
   }
 
   //int a;

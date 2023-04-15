@@ -5,13 +5,7 @@
 
 namespace kryuchkova
 {
-  void stringToInfix(std::string & str, Queue < calc_data_type > & inf)
-  {
-    for (size_t i = 0; i < str.size(); i++)
-    {
-      
-    }
-  }
-  void infixToPostfix(Queue < calc_data_type > & inf, Queue < calc_data_type > &post);
-  long long getResult(Queue < calc_data_type > & post);
+  void stringToInfix(std::string & str, Queue < long long > & inf);
+  void infixToPostfix(Queue < long long > & inf, Queue < long long > &post);
+  long long getResult(Queue < long long > & post);
 }
