@@ -106,27 +106,16 @@ Queue< Expression* > getQueueFromInput(std::string stringInp)
     {
       if (isBracket(curr[0]))
       {
-        Expression* br = new Bracket(curr[0]);
-        infQueue.push(br);
+        infQueue.push(new Bracket(curr[0]));
       }
       else if (isOperator(curr[0]))
       {
-        Expression* op = new Operator(curr[0]);
-        infQueue.push(op);
+        infQueue.push(new Operator(curr[0]));
       }
       else
       {
         long long inp = std::stoll(curr);
-        Expression* num = new Number(inp);
-        try
-        {
-          infQueue.push(num);
-        }
-        catch (const std::exception&)
-        {
-          delete num;
-          throw;
-        }
+        infQueue.push(new Number(inp));
       }
 
       curr = "";
@@ -139,27 +128,16 @@ Queue< Expression* > getQueueFromInput(std::string stringInp)
 
   if (isBracket(curr[0]))
   {
-    Expression* br = new Bracket(curr[0]);
-    infQueue.push(br);
+    infQueue.push(new Bracket(curr[0]));
   }
   else if (isOperator(curr[0]))
   {
-    Expression* op = new Operator(curr[0]);
-    infQueue.push(op);
+    infQueue.push(new Operator(curr[0]));
   }
   else
   {
     long long inp = std::stoll(curr);
-    Expression* num = new Number(inp);
-    try
-    {
-      infQueue.push(num);
-    }
-    catch (const std::exception&)
-    {
-      delete num;
-      throw;
-    }
+    infQueue.push(new Number(inp));
   }
 
   return infQueue;

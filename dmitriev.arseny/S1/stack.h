@@ -17,7 +17,7 @@ public:
   Stack< T >& operator=(const Stack< T >& otherStack);
   Stack< T >& operator=(Stack< T >&& otherStack);
 
-  void push(const T& rhs);
+  void push(T rhs);
   void popBack();
   T getTopData() const;
 
@@ -108,7 +108,7 @@ inline Stack< T >& Stack< T >::operator=(Stack< T >&& otherStack)
 }
 
 template< typename T >
-void Stack< T >::push(const T& rhs)
+void Stack< T >::push(T rhs)
 {
   List< T >* newTop = new List< T >(rhs, top);
   top = newTop;

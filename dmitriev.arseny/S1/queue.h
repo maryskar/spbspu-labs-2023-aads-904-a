@@ -17,7 +17,7 @@ public:
   Queue< T >& operator=(const Queue< T >& otherQueue);
   Queue< T >& operator=(Queue< T >&& otherQueue) noexcept;
 
-  void push(const T& rhs);
+  void push(T rhs);
   void popBack();
   T getTopData() const;
 
@@ -115,7 +115,7 @@ Queue< T >& Queue< T >::operator=(Queue< T >&& otherQueue) noexcept
 }
 
 template< typename T >
-void Queue< T >::push(const T& rhs)
+void Queue< T >::push(T rhs)
 {
   if (head == nullptr)
   {
