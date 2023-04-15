@@ -1,65 +1,97 @@
 #include "calculator.h"
 #include "mathExpression.h"
+#include "number.h"
+#include "operator.h"
+#include "bracket.h"
 #include "stack.h"
 #include "queue.h"
 
 #include <string>
 
 Queue< Expression* > getQueueFromInput(std::string stringInp);
+void calculate(Stack< Expression* >& postStack);
+bool isOperator(char inp);
+bool isBracket(char inp);
 
 long long calculateTheExpression(std::string stringInp)
 {
-  Queue< std::string > infQueue;
-  Stack< std::string > postStack;
-  Stack< std::string > stack;
+  Queue< Expression* > infQueue;
+  Stack< Expression* > postStack;
+  Stack< Expression* > stack;
 
   infQueue = getQueueFromInput(stringInp);
 
   while (!infQueue.isEmpty())
   {
-    if (infQueue.getTopData() == "(")
+    if (infQueue.getTopData()->isBracket())
     {
-      stack.push(drop(infQueue));
-    }
-    else if (infQueue.getTopData() == ")")
-    {
-      while (!(stack.getTopData() == "("))
+      Bracket* br = dynamic_cast<Bracket*>(infQueue.getTopData());
+      if (br->isOpen())
       {
-        postStack.push(drop(stack));
-        postStack.push(calculate(drop(postStack), drop(postStack), drop(postStack)));
-      }
-      stack.popBack();
-      infQueue.popBack();
-    }
-    else if (definePriority(infQueue.getTopData()) > 0)
-    {
-      if (stack.isEmpty() || (definePriority(infQueue.getTopData()) > definePriority(stack.getTopData())))
-      {
-        stack.push(drop(infQueue));
+        stack.push(infQueue.getTopData());
+        infQueue.popBack();
       }
       else
       {
-        postStack.push(drop(stack));
-        postStack.push(calculate(drop(postStack), drop(postStack), drop(postStack)));
-        stack.push(drop(infQueue));
+        while (!stack.getTopData()->isBracket())
+        {
+          postStack.push(stack.getTopData());
+          stack.popBack();
+
+          calculate(postStack);
+        }
+        stack.popBack();
+        infQueue.popBack();
+      }
+    }
+    else if (infQueue.getTopData()->isOperator())
+    {
+      if (stack.isEmpty() || stack.getTopData()->isBracket())
+      {
+        stack.push(infQueue.getTopData());
+        infQueue.popBack();
+
+        continue;
+      }
+
+      Operator* infOper = dynamic_cast<Operator*>(infQueue.getTopData());
+      Operator* stkOper = dynamic_cast<Operator*>(stack.getTopData());
+
+      if (infOper->getPriority() > stkOper->getPriority())
+      {
+        stack.push(infQueue.getTopData());
+        infQueue.popBack();
+      }
+      else
+      {
+        postStack.push(stack.getTopData());
+        stack.popBack();
+        calculate(postStack);
+        stack.push(infQueue.getTopData());
+        infQueue.popBack();
       }
     }
     else
     {
-      postStack.push(drop(infQueue));
+      postStack.push(infQueue.getTopData());
+      infQueue.popBack();
     }
   }
+
   while (!stack.isEmpty())
   {
-    if ((stack.getTopData() == "(") || (stack.getTopData() == ")"))
+    if (stack.getTopData()->isBracket())
     {
       throw std::logic_error("logic_error");
     }
-    postStack.push(drop(stack));
-    postStack.push(calculate(drop(postStack), drop(postStack), drop(postStack)));
+    postStack.push(stack.getTopData());
+    stack.popBack();
+
+    calculate(postStack);
   }
 
-  return std::stoll(drop(postStack));
+  Number* result = dynamic_cast<Number*>(postStack.getTopData());
+  return result->getNumber();
 }
 
 
@@ -130,4 +162,26 @@ Queue< Expression* > getQueueFromInput(std::string stringInp)
   }
 
   return infQueue;
+}
+
+void calculate(Stack< Expression* >& postStack)
+{
+  Operator* oper = dynamic_cast<Operator*>(postStack.getTopData());
+  postStack.popBack();
+  Number* p1 = dynamic_cast<Number*>(postStack.getTopData());
+  postStack.popBack();
+  Number* p2 = dynamic_cast<Number*>(postStack.getTopData());
+  postStack.popBack();
+
+  postStack.push(new Number(oper->calculate(p1->getNumber(), p2->getNumber())));
+}
+
+bool isOperator(char inp)
+{
+  return (inp == '+') || (inp == '-') || (inp == '*') || (inp == '/') || (inp == '%');
+}
+
+bool isBracket(char inp)
+{
+  return (inp == '(') || (inp == ')');
 }
