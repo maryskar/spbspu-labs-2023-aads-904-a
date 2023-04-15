@@ -15,13 +15,13 @@ public:
   Queue(Queue< T >&& otherQueue) noexcept;
 
   Queue< T >& operator=(const Queue< T >& otherQueue);
-  Queue< T >& operator=(Queue< T >&& otherQueue);
+  Queue< T >& operator=(Queue< T >&& otherQueue) noexcept;
 
-  void push(T rhs);
+  void push(const T& rhs);
   void popBack();
-  T getTopData();
+  T getTopData() const;
 
-  bool isEmpty();
+  bool isEmpty() const;
 
 private:
   List< T >* head;
@@ -41,7 +41,6 @@ template< typename T >
 Queue< T >::~Queue()
 {
   clear(head);
-  tail = nullptr;
 }
 
 template< typename T >
@@ -56,7 +55,15 @@ Queue< T >::Queue(const Queue< T >& otherQueue):
     otherTail = otherTail->otherList;
     while (otherTail != nullptr)
     {
-      tail->otherList = new List< T >(otherTail->data);
+      try
+      {
+        tail->otherList = new List< T >(otherTail->data);
+      }
+      catch (const std::exception&)
+      {
+        clear(head);
+        throw;
+      }
       tail = tail->otherList;
       otherTail = otherTail->otherList;
     }
@@ -91,7 +98,7 @@ Queue< T >& Queue< T >::operator=(const Queue< T >& otherQueue)
 }
 
 template<typename T>
-Queue< T >& Queue< T >::operator=(Queue< T >&& otherQueue)
+Queue< T >& Queue< T >::operator=(Queue< T >&& otherQueue) noexcept
 {
   if (this == &otherQueue)
   {
@@ -108,7 +115,7 @@ Queue< T >& Queue< T >::operator=(Queue< T >&& otherQueue)
 }
 
 template< typename T >
-void Queue< T >::push(T rhs)
+void Queue< T >::push(const T& rhs)
 {
   if (head == nullptr)
   {
@@ -136,7 +143,7 @@ void Queue< T >::popBack()
 }
 
 template< typename T >
-T Queue< T >::getTopData()
+T Queue< T >::getTopData() const
 {
   if (head == nullptr)
   {
@@ -146,7 +153,7 @@ T Queue< T >::getTopData()
 }
 
 template< typename T >
-inline bool Queue< T >::isEmpty()
+inline bool Queue< T >::isEmpty() const
 {
   return head == nullptr;
 }

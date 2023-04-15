@@ -7,11 +7,11 @@ struct List
   T data;
   List< T >* otherList;
 
-  List(T data = T(), List< T >* otherList = nullptr);
+  List(const T& data, List< T >* otherList = nullptr);
 };
 
 template< typename T >
-List< T >::List(T data, List< T >* otherList):
+List< T >::List(const T& data, List< T >* otherList):
   data(data),
   otherList(otherList)
 {

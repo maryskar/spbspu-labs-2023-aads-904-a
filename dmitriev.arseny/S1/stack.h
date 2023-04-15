@@ -17,11 +17,11 @@ public:
   Stack< T >& operator=(const Stack< T >& otherStack);
   Stack< T >& operator=(Stack< T >&& otherStack);
 
-  void push(T rhs);
+  void push(const T& rhs);
   void popBack();
-  T getTopData();
+  T getTopData() const;
 
-  bool isEmpty();
+  bool isEmpty() const;
 
 private:
   List< T >* top;
@@ -56,7 +56,15 @@ Stack< T >::Stack(const Stack< T >& otherStack):
 
     while (otherTop != nullptr)
     {
-      stackTail->otherList = new List< T >(otherTop->data);
+      try
+      {
+        stackTail->otherList = new List< T >(otherTop->data);
+      }
+      catch (const std::exception&)
+      {
+        clear(top);
+        throw;
+      }
       stackTail = stackTail->otherList;
       otherTop = otherTop->otherList;
     }
@@ -100,7 +108,7 @@ inline Stack< T >& Stack< T >::operator=(Stack< T >&& otherStack)
 }
 
 template< typename T >
-void Stack< T >::push(T rhs)
+void Stack< T >::push(const T& rhs)
 {
   List< T >* newTop = new List< T >(rhs, top);
   top = newTop;
@@ -120,7 +128,7 @@ void Stack< T >::popBack()
 }
 
 template< typename T >
-T Stack< T >::getTopData()
+T Stack< T >::getTopData() const
 {
   if (isEmpty())
   {
@@ -130,7 +138,7 @@ T Stack< T >::getTopData()
 }
 
 template< typename T >
-bool Stack< T >::isEmpty()
+bool Stack< T >::isEmpty() const
 {
   return top == nullptr;
 }

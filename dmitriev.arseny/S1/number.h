@@ -6,12 +6,12 @@
 class Number : public Expression
 {
 public:
-	explicit Number(long long number);
-	char getCondition() override;
-	long long getNumber();
+  explicit Number(long long number);
+  char getCondition() override;
+  long long getNumber();
 
 private:
-	long long number;
+  long long number;
 
 };
 

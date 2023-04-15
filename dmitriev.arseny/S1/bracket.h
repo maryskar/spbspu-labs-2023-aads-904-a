@@ -6,13 +6,13 @@
 class Bracket : public Expression
 {
 public:
-	explicit Bracket(char bracket);
-	char getCondition() override;
-	bool isOpen();
-	bool isClose();
+  explicit Bracket(char bracket);
+  char getCondition() override;
+  bool isOpen();
+  bool isClose();
 
 private:
-	char bracket;
+  char bracket;
 };
 
 #endif

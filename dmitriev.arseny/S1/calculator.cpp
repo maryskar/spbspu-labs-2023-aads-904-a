@@ -25,7 +25,7 @@ long long calculateTheExpression(std::string stringInp)
   {
     if (infQueue.getTopData()->isBracket())
     {
-      Bracket* br = dynamic_cast<Bracket*>(infQueue.getTopData());
+      Bracket* br = dynamic_cast< Bracket* >(infQueue.getTopData());
       if (br->isOpen())
       {
         stack.push(infQueue.getTopData());
@@ -54,8 +54,8 @@ long long calculateTheExpression(std::string stringInp)
         continue;
       }
 
-      Operator* infOper = dynamic_cast<Operator*>(infQueue.getTopData());
-      Operator* stkOper = dynamic_cast<Operator*>(stack.getTopData());
+      Operator* infOper = dynamic_cast< Operator* >(infQueue.getTopData());
+      Operator* stkOper = dynamic_cast< Operator* >(stack.getTopData());
 
       if (infOper->getPriority() > stkOper->getPriority())
       {
@@ -90,10 +90,9 @@ long long calculateTheExpression(std::string stringInp)
     calculate(postStack);
   }
 
-  Number* result = dynamic_cast<Number*>(postStack.getTopData());
+  Number* result = dynamic_cast< Number* >(postStack.getTopData());
   return result->getNumber();
 }
-
 
 
 Queue< Expression* > getQueueFromInput(std::string stringInp)
@@ -166,11 +165,11 @@ Queue< Expression* > getQueueFromInput(std::string stringInp)
 
 void calculate(Stack< Expression* >& postStack)
 {
-  Operator* oper = dynamic_cast<Operator*>(postStack.getTopData());
+  Operator* oper = dynamic_cast< Operator* >(postStack.getTopData());
   postStack.popBack();
-  Number* p1 = dynamic_cast<Number*>(postStack.getTopData());
+  Number* p1 = dynamic_cast< Number* >(postStack.getTopData());
   postStack.popBack();
-  Number* p2 = dynamic_cast<Number*>(postStack.getTopData());
+  Number* p2 = dynamic_cast< Number* >(postStack.getTopData());
   postStack.popBack();
 
   postStack.push(new Number(oper->calculate(p1->getNumber(), p2->getNumber())));
