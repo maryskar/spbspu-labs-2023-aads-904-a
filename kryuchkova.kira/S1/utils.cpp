@@ -27,4 +27,36 @@ namespace kryuchkova
       return 4;
     }
   }
+
+  long long calculate(long long a, long long b, char operand)
+  {
+    if (operand == '+')
+    {
+      return a + b;
+    }
+    if (operand == '-')
+    {
+      return a - b;
+    }
+    if (operand == '*')
+    {
+      return a * b;
+    }
+    if (operand == '/')
+    {
+      if (b == 0)
+      {
+        throw std::logic_error("division by zero");
+      }
+      return a / b;
+    }
+    if (operand == '%')
+    {
+      if (b == 0)
+      {
+        throw std::logic_error("division by zero");
+      }
+      return a % b;
+    }
+  }
 }
