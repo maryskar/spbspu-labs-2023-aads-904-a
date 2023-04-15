@@ -6,28 +6,25 @@ namespace kryuchkova
 {
   int GetPriority(const char data)
   {
-    if (!std::isdigit(data))
+    if (data == '+' || data == '-')
     {
-      throw std::runtime_error("isn't digit");
+      return 3;
+    }
+    if (data == '/' || data == '*')
+    {
+      return 2;
+    }
+    if (data == '(' || data == ')')
+    {
+      return 1;
     }
     else
     {
-      if (data == '+' || data == '-')
+      if (!std::isdigit(data))
       {
-        return 3;
+        throw std::runtime_error("isn't digit");
       }
-      if (data == '/' || data == '*')
-      {
-        return 2;
-      }
-      if (data == '(' || data == ')')
-      {
-        return 1;
-      }
-      else
-      {
-        return 4;
-      }
+      return 4;
     }
   }
 }

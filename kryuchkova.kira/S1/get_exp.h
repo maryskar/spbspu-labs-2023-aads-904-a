@@ -8,7 +8,7 @@
 namespace kryuchkova
 {
   void stringToInfix(std::string & str, Queue < char > & inf);
-  void infixToPostfix(Queue < char > & inf, Queue < long long > &post);
+  void infixToPostfix(Queue < char > & inf, Queue < char > &post);
   long long getResult(Queue < long long > & post);
 }
 
