@@ -3,12 +3,16 @@
 #include <iomanip>
 #include <limits>
 
+const long long min = std::numeric_limits< long long >::min();
+const long long max = std::numeric_limits< long long >::max();
+
 long long plus(long long p1, long long p2);
 long long minus(long long p1, long long p2);
 long long multiple(long long p1, long long p2);
 long long division(long long p1, long long p2);
 long long mod(long long p1, long long p2);
 
+char definePriority(char op);
 auto defineOperator(char op)
 {
 	if (op == '+')
@@ -43,6 +47,38 @@ Operator::Operator(char op) :
 	priority(definePriority(op))
 {
 
+}
+
+char Operator::getCondition()
+{
+	return 2;
+}
+char Operator::getPriority() const
+{
+	return priority;
+}
+long long Operator::calculate(const long long& p1, const long long& p2)
+{
+	return mathOperator(p1, p2);
+}
+
+char definePriority(char op)
+{
+	char priority = 0;
+	if ((op == '+') || (op == '-'))
+	{
+		priority = 1;
+	}
+	else if (op == '%')
+	{
+		priority = 2;
+	}
+	else if ((op == '*') || (op == '/'))
+	{
+		priority = 3;
+	}
+
+	return priority;
 }
 
 long long plus(long long p1, long long p2)
