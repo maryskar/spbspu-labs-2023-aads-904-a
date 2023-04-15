@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-//#include <csignal>
 #include "calculator.h"
 #include "stack.h"
 
@@ -26,7 +25,7 @@ void print(std::istream& streamInp, std::ostream& streamOut)
 
   if (!arr.isEmpty())
   {
-    std::cout << arr.getTopData();
+    streamOut << arr.getTopData();
     arr.popBack();
   }
   while (!arr.isEmpty())
@@ -37,17 +36,10 @@ void print(std::istream& streamInp, std::ostream& streamOut)
   streamOut << '\n';
 }
 
-//void signalHandler(int signum)
-//{
-//  signum = 0;
-//  exit(signum);
-//}
-
 int main(int argv, char** argc)
 {
   try
   {
-    //std::signal(SIGINT, signalHandler);
     if (argv == 2)
     {
       std::ifstream file(argc[1]);
