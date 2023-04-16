@@ -37,6 +37,11 @@ namespace tarasenko
    bool operator!=(const this_t&) const;
    bool operator==(const this_t&) const;
 
+   details::NodeOfList< T >* getNode() const
+   {
+     return node;
+   }
+
   private:
    details::NodeOfList< T >* node;
   };
@@ -46,6 +51,7 @@ namespace tarasenko
   {
     assert(node != nullptr);
     node = node->next;
+    return *this;
   }
 
   template< typename T >

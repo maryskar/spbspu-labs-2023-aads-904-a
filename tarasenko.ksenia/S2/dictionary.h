@@ -45,6 +45,16 @@ namespace tarasenko
     }
   };
 
+  template< typename T >
+  struct Compare
+  {
+    bool operator()(const T& right_k, const T& left_k)
+    {
+      return right_k.key < left_k.key;
+    }
+  };
+
+
   template< typename Key, typename Value/*, typename Compare*/ >
   class Dictionary
   {
@@ -66,19 +76,23 @@ namespace tarasenko
   void Dictionary< Key, Value/*, Compare*/ >::push(const Key& k, const Value& v)
   {
     Pair< Key, Value > data(k, v);
-    list.insert(data);
+    auto current = list.begin();
+    while (current != list.end() && (*current) < data) // comparator
+    {
+      ++current;
+    }
+    list.addBefore(current.getNode(), data);
   };
 
   template< typename Key, typename Value/*, typename Compare*/ >
   Value Dictionary< Key, Value/*, Compare*/ >::get(const Key& k)
   {
-    ForwardListIterator< Pair< Key, Value >> null_iter;
-    ForwardListIterator< Pair< Key, Value >> iter = list.begin();
-    while (iter != null_iter && (k != iter->key_))
+    auto iter = list.begin();
+    while (iter != list.end() && (k != iter->key_))
     {
       ++iter;
     }
-    if (iter != null_iter && (k == iter->key_))
+    if (iter != list.end() && (k == iter->key_))
     {
       return iter->value_;
     }
