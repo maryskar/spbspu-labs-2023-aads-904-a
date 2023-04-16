@@ -29,11 +29,12 @@ namespace tarasenko
    this_t& operator++();
    this_t operator++(int);
 
-   T& operator*(); //+ const-версия
-   T* operator->(); //+ const-версия
+   T& operator*();
+   T* operator->();
+   T& operator*() const;
+   T* operator->() const;
 
    bool operator!=(const this_t&) const;
-
    bool operator==(const this_t&) const;
 
   private:
@@ -77,6 +78,20 @@ namespace tarasenko
 
   template< typename T >
   T* ForwardListIterator< T >::operator->()
+  {
+    assert(node != nullptr);
+    return std::addressof(node->data);
+  }
+
+  template< typename T >
+  T& ForwardListIterator< T >::operator*() const
+  {
+    assert(node != nullptr);
+    return node->data;
+  }
+
+  template< typename T >
+  T* ForwardListIterator< T >::operator->() const
   {
     assert(node != nullptr);
     return std::addressof(node->data);
