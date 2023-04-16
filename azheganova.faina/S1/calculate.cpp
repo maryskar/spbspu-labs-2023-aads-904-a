@@ -1,7 +1,6 @@
 #include "calculate.h"
 #include <stdexcept>
 #include <limits>
-#include "checkingfordigit.h"
 
 long long maximum = std::numeric_limits< long long >::max();
 long long minimum = std::numeric_limits< long long >::min();
