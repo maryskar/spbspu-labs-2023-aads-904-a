@@ -27,14 +27,11 @@ int main(int argc, char *argv[])
     {
       std::string str;
       std::getline(file, str);
-      kryuchkova::Queue < char > inf;
-      kryuchkova::Queue < char > post;
+      kryuchkova::Queue < std::string > inf;
+      kryuchkova::Queue < std::string > post;
       kryuchkova::stringToInfix(str, inf);
       kryuchkova::infixToPostfix(inf, post);
-      while (!post.isEmpty())
-      {
-        std::cout << post.drop();
-      }
+      std::cout << kryuchkova::getResult(post);
       std::cout << '\n';
     }
   }

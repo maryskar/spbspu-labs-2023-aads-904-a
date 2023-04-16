@@ -6,21 +6,28 @@
 
 namespace kryuchkova
 {
-  void stringToInfix(std::string & str, Queue < char > & inf)
+  void stringToInfix(std::string & str, Queue < std::string > & inf)
   {
-    size_t string_size = str.size();
-    for (size_t i = 0; i < string_size; i++)
+    int begin = 0;
+    int end = str.find(' ');
+    int count = 0;
+    while (end > -1)
     {
-      inf.push(str[i]);
+      count = end - begin;
+      inf.push(str.substr(begin, count));
+      begin = end + 1;
+      end = str.find(' ', begin);
     }
+    count = end - begin;
+    inf.push(str.substr(begin, count));
   }
 
-  void infixToPostfix(Queue < char > & inf, Queue < char > &post)
+  void infixToPostfix(Queue < std::string > & inf, Queue < std::string > &post)
   {
-    Stack < char > stack_post;
+    Stack < std::string > stack_post;
     while (!inf.isEmpty())
     {
-      char data = inf.drop();
+      std::string data = inf.drop();
       if (GetPriority(data) == 4)
       {
         post.push(data);
@@ -31,14 +38,14 @@ namespace kryuchkova
       }
       else if (GetPriority(data) == 1)
       {
-        if (data == '(')
+        if (data[0] == '(')
         {
           stack_post.push(data);
         }
         else
         {
-          char stack_data = stack_post.drop();
-          while (stack_data != '(')
+          std::string stack_data = stack_post.drop();
+          while (stack_data[0] != '(')
           {
             post.push(stack_data);
             stack_data = stack_post.drop();
@@ -51,5 +58,24 @@ namespace kryuchkova
       post.push(stack_post.drop());
     }
   }
-  long long getResult(Queue < long long > & post);
+
+  long long getResult(Queue < std::string > & post)
+  {
+    Stack < long long > operands;
+    while (!post.isEmpty())
+    {
+      std::string data = post.drop();
+      if (GetPriority(data) == 4)
+      {
+        operands.push(std::stoll(data));
+      }
+      else
+      {
+        long long second = operands.drop();
+        long long first = operands.drop();
+        operands.push(calculate(first, second, data));
+      }
+    }
+    return operands.drop();
+  }
 }

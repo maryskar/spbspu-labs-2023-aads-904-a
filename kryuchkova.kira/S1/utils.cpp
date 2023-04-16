@@ -1,26 +1,27 @@
 #include "utils.h"
 #include <stdexcept>
 #include <cctype>
+#include <string>
 
 namespace kryuchkova
 {
-  int GetPriority(const char data)
+  int GetPriority(std::string data)
   {
-    if (data == '+' || data == '-')
+    if (data[0] == '+' || data[0] == '-')
     {
       return 3;
     }
-    if (data == '/' || data == '*')
+    if (data[0] == '/' || data[0] == '*')
     {
       return 2;
     }
-    if (data == '(' || data == ')')
+    if (data[0] == '(' || data[0] == ')')
     {
       return 1;
     }
     else
     {
-      if (!std::isdigit(data))
+      if (!std::isdigit(data[0]) && data[0] != ' ')
       {
         throw std::runtime_error("isn't digit");
       }
@@ -28,21 +29,21 @@ namespace kryuchkova
     }
   }
 
-  long long calculate(long long a, long long b, char operand)
+  long long calculate(long long a, long long b, std::string operator_)
   {
-    if (operand == '+')
+    if (operator_[0] == '+')
     {
       return a + b;
     }
-    if (operand == '-')
+    else if (operator_[0] == '-')
     {
       return a - b;
     }
-    if (operand == '*')
+    else if (operator_[0] == '*')
     {
       return a * b;
     }
-    if (operand == '/')
+    else if (operator_[0] == '/')
     {
       if (b == 0)
       {
@@ -50,7 +51,7 @@ namespace kryuchkova
       }
       return a / b;
     }
-    if (operand == '%')
+    else if (operator_[0] == '%')
     {
       if (b == 0)
       {
@@ -58,5 +59,6 @@ namespace kryuchkova
       }
       return a % b;
     }
+    return a + b;
   }
 }
