@@ -45,17 +45,7 @@ namespace tarasenko
     }
   };
 
-  template< typename T >
-  struct Compare
-  {
-    bool operator()(const T& right_k, const T& left_k)
-    {
-      return right_k.key < left_k.key;
-    }
-  };
-
-
-  template< typename Key, typename Value/*, typename Compare*/ >
+  template< typename Key, typename Value, typename Compare >
   class Dictionary
   {
   public:
@@ -70,22 +60,23 @@ namespace tarasenko
    void remove(const Key& k);
   private:
    ForwardList< Pair< Key, Value > > list;
+   Compare compare;
   };
 
-  template< typename Key, typename Value/*, typename Compare*/ >
-  void Dictionary< Key, Value/*, Compare*/ >::push(const Key& k, const Value& v)
+  template< typename Key, typename Value, typename Compare >
+  void Dictionary< Key, Value, Compare >::push(const Key& k, const Value& v)
   {
     Pair< Key, Value > data(k, v);
     auto current = list.begin();
-    while (current != list.end() && (*current) < data) // comparator
+    while (current != list.end() && compare(*current, data))
     {
       ++current;
     }
     list.addBefore(current.getNode(), data);
   };
 
-  template< typename Key, typename Value/*, typename Compare*/ >
-  Value Dictionary< Key, Value/*, Compare*/ >::get(const Key& k)
+  template< typename Key, typename Value, typename Compare >
+  Value Dictionary< Key, Value, Compare >::get(const Key& k)
   {
     auto current = list.begin();
     while (current != list.end() && (k != current->key_))
@@ -101,8 +92,8 @@ namespace tarasenko
       throw std::invalid_argument("Key not found");
     }
   };
-  template< typename Key, typename Value/*, typename Compare*/ >
-  void Dictionary< Key, Value/*, Compare*/ >::remove(const Key& k)
+  template< typename Key, typename Value, typename Compare >
+  void Dictionary< Key, Value, Compare >::remove(const Key& k)
   {
     Pair< Key, Value > data(k);
     auto current = list.begin();
