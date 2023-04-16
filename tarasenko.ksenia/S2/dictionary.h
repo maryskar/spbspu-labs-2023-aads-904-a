@@ -73,7 +73,20 @@ namespace tarasenko
   template< typename Key, typename Value/*, typename Compare*/ >
   Value Dictionary< Key, Value/*, Compare*/ >::get(const Key& k)
   {
-
+    ForwardListIterator< Pair< Key, Value >> null_iter;
+    ForwardListIterator< Pair< Key, Value >> iter = list.begin();
+    while (iter != null_iter && (k != iter->key_))
+    {
+      ++iter;
+    }
+    if (iter != null_iter && (k == iter->key_))
+    {
+      return iter->value_;
+    }
+    else
+    {
+      throw std::invalid_argument("Key not found");
+    }
   };
 
 }

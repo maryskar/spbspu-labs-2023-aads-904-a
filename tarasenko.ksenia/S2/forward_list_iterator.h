@@ -18,7 +18,7 @@ namespace tarasenko
    ForwardListIterator() :
      node(nullptr)
    {}
-   ForwardListIterator(ForwardList< T >* list):
+   explicit ForwardListIterator(ForwardList< T >* list):
      node(list->first)
    {}
    ForwardListIterator(const this_t&) = default;
