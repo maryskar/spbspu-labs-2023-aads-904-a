@@ -3,6 +3,6 @@
 #include <string>
 #include "queue.h"
 
-long long calculatePostfix(Queue< std::string > & postfixQueue);
+void calculatePostfix(Queue <std::string> & postfix, Stack <std::string> & answer, Stack <std::string> & stack);
 
 #endif

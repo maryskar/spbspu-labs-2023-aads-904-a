@@ -5,6 +5,6 @@
 
 bool isDigit(const std::string & string);
 bool isOperator(std::string oper);
-Queue< std::string > convertFromInfixToPostfix(Queue< std::string > & queue);
+void convertFromInfixToPostfix(Queue< std::string > & queue, Stack< std::string > & stack, Queue< std::string > & postfix);
 
 #endif

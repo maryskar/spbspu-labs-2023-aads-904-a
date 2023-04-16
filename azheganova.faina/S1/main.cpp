@@ -11,7 +11,7 @@
 int main(int argc, char * argv[])
 {
   std::string string;
-  Stack < long long > result;
+  Stack< std::string > result;
   if (argc > 2)
   {
     std::cout << "too much parameters";
@@ -36,11 +36,21 @@ int main(int argc, char * argv[])
         continue;
       }
       Queue< std::string > infixform = convertToInfix(string);
+      Queue< std::string > postfixform;
+      Stack< std::string > stack1;
       try
       {
-        Queue< std::string > postfixform = convertFromInfixToPostfix(infixform);
-        long long res = calculatePostfix(postfixform);
-        result.push(res);
+        convertFromInfixToPostfix(infixform, stack1, postfixform);
+      }
+      catch (const std::exception & e)
+      {
+        std::cerr << e.what() << "\n";
+        return 2;
+      }
+      Stack< std::string > resstack;
+      try 
+      {
+        calculatePostfix(postfixform, result, resstack);
       }
       catch (const std::exception & e)
       {
@@ -68,16 +78,26 @@ int main(int argc, char * argv[])
       {
         break;
       }
-      if (string.empty())
+            if (string.empty())
       {
         continue;
       }
       Queue< std::string > infixform = convertToInfix(string);
+      Queue< std::string > postfixform;
+      Stack< std::string > stack1;
       try
       {
-        Queue< std::string > postfixform = convertFromInfixToPostfix(infixform);
-        long long res = calculatePostfix(postfixform);
-        result.push(res);
+        convertFromInfixToPostfix(infixform, stack1, postfixform);
+      }
+      catch (const std::exception & e)
+      {
+        std::cerr << e.what() << "\n";
+        return 2;
+      }
+      Stack< std::string > resstack;
+      try 
+      {
+        calculatePostfix(postfixform, result, resstack);
       }
       catch (const std::exception & e)
       {

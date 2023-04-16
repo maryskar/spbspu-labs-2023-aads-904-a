@@ -22,11 +22,9 @@ bool isOperator(std::string oper)
   return (oper == "+") || (oper == "-") || (oper == "*") || (oper == "/") || (oper == "%");
 }
 
-Queue< std::string > convertFromInfixToPostfix(Queue< std::string > & queue)
+void convertFromInfixToPostfix(Queue< std::string > & queue, Stack< std::string > & stack, Queue< std::string > & postfix)
 {
-  Queue< std::string > postfix;
-  Stack< std::string > stack;
-  while (!queue.isEmpty())
+  while (!queue.isEmpty() || !stack.isEmpty())
   {
     std::string element = queue.drop();
     queue.pop();
@@ -78,5 +76,4 @@ Queue< std::string > convertFromInfixToPostfix(Queue< std::string > & queue)
     postfix.push(stack.drop());
     stack.pop();
   }
-  return postfix;
 }

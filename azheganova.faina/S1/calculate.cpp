@@ -3,26 +3,44 @@
 #include <limits>
 #include "stack.h"
 
+bool isDigit(const std::string & string)
+{
+  try
+  {
+    std::stoll(string, nullptr, 10);
+  }
+  catch (...)
+  {
+    return false;
+  }
+  return true;
+}
+
 long long maximum = std::numeric_limits< long long >::max();
 long long minimum = std::numeric_limits< long long >::min();
-long long calculatePostfix(Queue<std::string> & postfix)
+void calculatePostfix(Queue< std::string > & postfix, Stack< std::string > & answer, Stack< std::string > & stack)
 {
-  Stack< long long > stack;
-  while (!postfix.isEmpty())
+  stack.push(postfix.drop());
+  postfix.pop();
+  while (!stack.isEmpty())
   {
-    std::string element = postfix.drop();
-    postfix.pop();
-    if (isdigit(element[0]))
+    std::string element;
+    if (!postfix.isEmpty())
     {
-      stack.push(std::stoll(element));
+      element = postfix.drop();
+      postfix.pop();
+    }
+    if (isDigit(element))
+    {
+      stack.push(element);
     }
     else
     {
-      long long secondnum = stack.drop();
+      long long secondnum = std::stoll(stack.drop(), nullptr, 10);
       stack.pop();
-      long long firstnum = stack.drop();
+      long long firstnum = std::stoll(stack.drop(), nullptr, 10);
       stack.pop();
-      long long calcres;
+      std::string calcres;
       if (element == "+")
       {
         if ((firstnum * secondnum >= 0) && (firstnum >= 0))
@@ -99,14 +117,14 @@ long long calculatePostfix(Queue<std::string> & postfix)
         {
           throw std::logic_error("division by 0");
         }
-        if(firstnum < 0)
+        if (firstnum < 0)
         {
-          return secondnum + firstnum % secondnum;
+          calcres = firstnum % secondnum + secondnum;
         }
-        return firstnum % secondnum;
+        calcres = firstnum % secondnum;
       }
       stack.push(calcres);
     }
   }
-  return stack.drop();
+  answer.push(stack.drop());
 }
