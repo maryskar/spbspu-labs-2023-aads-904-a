@@ -10,12 +10,13 @@ namespace mashkin
   {
   public:
     ForwardList();
+    ForwardList(const ForwardList< T >& rhs);
     Iterator< T > begin() noexcept;
     Iterator< T > end() noexcept;
-    void push();
+    void push_front(const T& value);
     T pop();
 
-    bool isEmpty() const;
+    bool empty() const noexcept;
 
   private:
     nodeList< T >* head;
@@ -24,18 +25,37 @@ namespace mashkin
 }
 
 template< class T >
-mashkin::ForwardList< T >::ForwardList()
+mashkin::ForwardList< T >::ForwardList():
+  head(nullptr),
+  tail(nullptr)
 {
 }
 
 template< class T >
-void mashkin::ForwardList< T >::push()
+mashkin::ForwardList< T >::ForwardList(const ForwardList< T >& rhs):
+  head(rhs.head),
+  tail(rhs.tail)
 {
-
 }
 
 template< class T >
-bool mashkin::ForwardList< T >::isEmpty() const
+void mashkin::ForwardList< T >::push_front(const T& value)
 {
+  if (empty())
+  {
+    head = new nodeList< T >{value, nullptr};
+    tail = head;
+  }
+  else
+  {
+    tail->next = new nodeList< T >{value, nullptr};
+    tail = tail->next;
+  }
+}
+
+template< class T >
+bool mashkin::ForwardList< T >::empty() const noexcept
+{
+  return !head;
 }
 #endif
