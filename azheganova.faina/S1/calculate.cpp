@@ -35,11 +35,15 @@ std::string calculateOperations(long long secondnum, long long firstnum, const s
       return std::to_string(firstnum + secondnum);
     }
   }
-  else if (element == "-")
+  if (element == "-")
   {
+    if ((firstnum > 0) && (minimum + firstnum > secondnum))
+    {
+      throw std::overflow_error("overflow");
+    }
     return std::to_string(firstnum - secondnum);
   }
-  else if (element == "*")
+  if (element == "*")
   {
     if ((firstnum * secondnum < 0) && (firstnum >= 0))
     {
@@ -68,25 +72,13 @@ std::string calculateOperations(long long secondnum, long long firstnum, const s
       return std::to_string(firstnum * secondnum);
     }
   }
-  else if (element == "/")
+  if (element == "/")
   {
     if (secondnum == 0)
     {
       throw std::logic_error("division by 0");
     }
     return std::to_string(firstnum / secondnum);
-  }
-  else if (element == "%")
-  {
-    if (secondnum == 0)
-    {
-      throw std::logic_error("division by 0");
-    }
-    if (firstnum < 0)
-    {
-      return std::to_string(firstnum % secondnum + secondnum);
-    }
-    return std::to_string(firstnum % secondnum);
   }
   if (firstnum < 0)
   {

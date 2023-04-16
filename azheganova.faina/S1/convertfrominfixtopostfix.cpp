@@ -32,7 +32,7 @@ void convertFromInfixToPostfix(Queue< std::string > & queue, Stack< std::string 
       {
         postfix.push(element);
       }
-      else if (isOperator(element))
+      if (isOperator(element))
       {
         if (element == "+" || element == "-")
         {
@@ -43,7 +43,7 @@ void convertFromInfixToPostfix(Queue< std::string > & queue, Stack< std::string 
           }
           stack.push(element);
         }
-        else if (element == "*" || element == "/" || element == "%")
+        if (element == "*" || element == "/" || element == "%")
         {
           while (!stack.isEmpty() && ((stack.drop() == "*" || stack.drop() == "/" || stack.drop() == "%")))
           {
@@ -53,22 +53,22 @@ void convertFromInfixToPostfix(Queue< std::string > & queue, Stack< std::string 
           stack.push(element);
         }
       }
-      else if (element == "(")
+      if (element == "(")
       {
         stack.push(element);
       }
-      else if (element == ")")
+      if (element == ")")
       {
-        while ((stack.drop() != "(") && (!stack.isEmpty()))
+        while (stack.drop() != "(")
         {
           postfix.push(stack.drop());
           stack.pop();
+          if (stack.isEmpty())
+          {
+            break;
+          }
         }
         stack.pop();
-      }
-      else
-      {
-        throw std::logic_error("error");
       }
     }
     else

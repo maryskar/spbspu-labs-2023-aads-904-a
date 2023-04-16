@@ -10,13 +10,13 @@
 
 int main(int argc, char * argv[])
 {
-  std::string string;
-  Stack< std::string > result;
   if (argc > 2)
   {
     std::cout << "too much parameters";
     return 1;
   }
+  std::string string;
+  Stack< std::string > result;
   if(argc == 2)
   {
     std::ifstream input(argv[1]);
@@ -84,10 +84,10 @@ int main(int argc, char * argv[])
       }
       Queue< std::string > infixform = convertToInfix(string);
       Queue< std::string > postfixform;
-      Stack< std::string > stack1;
+      Stack< std::string > stack;
       try
       {
-        convertFromInfixToPostfix(infixform, stack1, postfixform);
+        convertFromInfixToPostfix(infixform, stack, postfixform);
       }
       catch (const std::exception & e)
       {
