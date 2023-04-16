@@ -3,6 +3,7 @@
 #include <memory>
 #include <algorithm>
 #include "node.h"
+#include "forward_list_iterator.h"
 namespace tarasenko
 {
   template< typename T >
@@ -54,6 +55,12 @@ namespace tarasenko
    void clear();
    void copy(const ForwardList< T >& other);
    void move(const ForwardList< T >&& other);
+
+   friend class ForwardListIterator< T >;
+   ForwardListIterator< T > begin()
+   {
+     return ForwardListIterator< T >(this);
+   }
   private:
    details::NodeOfList< T >* first;
   };

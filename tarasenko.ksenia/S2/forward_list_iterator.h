@@ -1,11 +1,14 @@
 #ifndef FORWARD_LIST_ITERATOR_H
 #define FORWARD_LIST_ITERATOR_H
-
-#include "forward_list.h"
 #include <memory>
+#include <cassert>
+#include "forward_list.h"
 
 namespace tarasenko
 {
+  template< typename T >
+  class ForwardList;
+
   template< typename T >
   class ForwardListIterator
   {
@@ -14,6 +17,9 @@ namespace tarasenko
 
    ForwardListIterator() :
      node(nullptr)
+   {}
+   ForwardListIterator(ForwardList< T >* list):
+     node(list->first)
    {}
    ForwardListIterator(const this_t&) = default;
    ~ForwardListIterator() = default;
@@ -31,7 +37,7 @@ namespace tarasenko
    bool operator==(const this_t&) const;
 
   private:
-   ForwardList< T >* node;
+   details::NodeOfList< T >* node;
   };
 
   template< typename T >
