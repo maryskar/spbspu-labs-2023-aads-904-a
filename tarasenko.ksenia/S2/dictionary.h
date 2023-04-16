@@ -4,46 +4,49 @@
 #include "forward_list.h"
 namespace tarasenko
 {
-  template< typename Key, typename Value >
-  struct Pair
+  namespace details
   {
-    Key key_;
-    Value value_;
-
-    Pair()
-    {};
-
-    Pair(const Key& key):
-      key_(key)
-    {};
-
-    Pair(const Key& key, const Value& val):
-      key_(key),
-      value_(val)
-    {};
-
-    Pair(const Pair& p):
-      key_(p.key_),
-      value_(p.value_)
-    {}
-
-    Pair< Key, Value >& operator=(const Pair& p)
+    template< typename Key, typename Value >
+    struct Pair
     {
-      key_ = p.key_;
-      value_ = p.value_;
-      return *this;
-    }
+      Key key_;
+      Value value_;
 
-    bool operator<(const Pair< Key, Value >& p) const
-    {
-      return key_ < p.key_;
-    }
+      Pair()
+      {};
 
-    bool operator==(const Pair< Key, Value >& p) const
-    {
-      return key_ == p.key_;
-    }
-  };
+      Pair(const Key& key):
+        key_(key)
+      {};
+
+      Pair(const Key& key, const Value& val):
+        key_(key),
+        value_(val)
+      {};
+
+      Pair(const Pair& p):
+        key_(p.key_),
+        value_(p.value_)
+      {}
+
+      Pair< Key, Value >& operator=(const Pair& p)
+      {
+        key_ = p.key_;
+        value_ = p.value_;
+        return *this;
+      }
+
+      bool operator<(const Pair< Key, Value >& p) const
+      {
+        return key_ < p.key_;
+      }
+
+      bool operator==(const Pair< Key, Value >& p) const
+      {
+        return key_ == p.key_;
+      }
+    };
+  }
 
   template< typename Key, typename Value, typename Compare >
   class Dictionary
@@ -59,14 +62,14 @@ namespace tarasenko
    Value get(const Key& k);
    void remove(const Key& k);
   private:
-   ForwardList< Pair< Key, Value > > list;
+   ForwardList< details::Pair< Key, Value > > list;
    Compare compare;
   };
 
   template< typename Key, typename Value, typename Compare >
   void Dictionary< Key, Value, Compare >::push(const Key& k, const Value& v)
   {
-    Pair< Key, Value > data(k, v);
+    details::Pair< Key, Value > data(k, v);
     auto current = list.begin();
     while (current != list.end() && compare(*current, data))
     {
@@ -95,7 +98,7 @@ namespace tarasenko
   template< typename Key, typename Value, typename Compare >
   void Dictionary< Key, Value, Compare >::remove(const Key& k)
   {
-    Pair< Key, Value > data(k);
+    details::Pair< Key, Value > data(k);
     auto current = list.begin();
     while (current != list.end())
     {

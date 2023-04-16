@@ -5,7 +5,7 @@ namespace tarasenko
   template< typename Key, typename Value>
   struct Comparator
   {
-    bool operator()(const Pair< Key, Value >& right_k, const Pair< Key, Value >& left_k)
+    bool operator()(const details::Pair< Key, Value >& right_k, const details::Pair< Key, Value >& left_k)
     {
       return right_k.key_ < left_k.key_;
     }
