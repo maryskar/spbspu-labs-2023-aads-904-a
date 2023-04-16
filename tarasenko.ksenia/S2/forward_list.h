@@ -55,13 +55,17 @@ namespace tarasenko
    void clear();
    void copy(const ForwardList< T >& other);
    void move(const ForwardList< T >&& other);
-   void insert(const T& data);
+   void addBefore(details::NodeOfList< T >* given_ptr, const T& data);
    void removeData(const T& data);
 
    friend class ForwardListIterator< T >;
    ForwardListIterator< T > begin()
    {
      return ForwardListIterator< T >(this);
+   }
+   ForwardListIterator< T > end()
+   {
+     return ForwardListIterator< T >();
    }
 
   private:
@@ -97,15 +101,25 @@ namespace tarasenko
   {
     details::popFront(std::addressof(first));
   }
+
   template< typename T >
-  void ForwardList< T >::insert(const T& data)
+  void ForwardList< T >::addBefore(details::NodeOfList< T >* pnode, const T& data)
   {
-    details::NodeOfList< T >** current = &first;
-    while (*current && ((*current)->data) < data) //comparator
+    if (first == pnode)
     {
-      current = &(*current)->next;
+      details::NodeOfList< T >* new_node = new details::NodeOfList< T >(data, nullptr);
+      new_node->next = first;
+      first = new_node;
     }
-    *current = new details::NodeOfList< T >(data, *current);
+    else
+    {
+      details::NodeOfList< T >* prev = first;
+      details::NodeOfList< T >* curr = first;
+      for (curr, prev; curr != pnode; prev = curr, curr = curr->next);
+      details::NodeOfList< T >* new_node = new details::NodeOfList< T >(data, nullptr);
+      new_node->next = prev->next;
+      prev->next = new_node;
+    }
   }
 
   template< typename T >
