@@ -15,7 +15,7 @@ namespace mashkin
     void push(T rhs);
     void pop();
     bool isEmpty() const;
-    T drop();
+    T& drop();
 
   private:
     list_t< T >* top_;
@@ -69,7 +69,7 @@ void mashkin::Stack< T >::pop()
 }
 
 template< typename T >
-T mashkin::Stack< T >::drop()
+T& mashkin::Stack< T >::drop()
 {
    return top_->data;
 }
