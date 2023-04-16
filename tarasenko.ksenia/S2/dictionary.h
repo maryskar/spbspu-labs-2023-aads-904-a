@@ -1,5 +1,6 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
+#include <stdexcept>
 #include "forward_list.h"
 namespace tarasenko
 {
@@ -44,37 +45,37 @@ namespace tarasenko
     }
   };
 
-  template< typename Key, typename Value, typename Compare >
+  template< typename Key, typename Value/*, typename Compare*/ >
   class Dictionary
   {
   public:
-   void push(Key& k, Value& v);
-   Value get(Key& k);
-   Value drop(Key& k); // !!!
-   //...
+   Dictionary()
+   {}
+   ~Dictionary()
+   {
+     list.clear();
+   }
+   void push(const Key& k, const Value& v);
+   Value get(const Key& k);
    //Value find(Key& k);
    //void remove(Key& k);
   private:
    ForwardList< Pair< Key, Value > > list;
   };
 
-  template< typename Key, typename Value, typename Compare >
-  void Dictionary< Key, Value, Compare >::push(Key& k, Value& v)
+  template< typename Key, typename Value/*, typename Compare*/ >
+  void Dictionary< Key, Value/*, Compare*/ >::push(const Key& k, const Value& v)
+  {
+    Pair< Key, Value > data(k, v);
+    list.insert(data);
+  };
+
+  template< typename Key, typename Value/*, typename Compare*/ >
+  Value Dictionary< Key, Value/*, Compare*/ >::get(const Key& k)
   {
 
   };
 
-  template< typename Key, typename Value, typename Compare >
-  Value Dictionary< Key, Value, Compare >::get(Key& k)
-  {
-
-  };
-
-  template< typename Key, typename Value, typename Compare >
-  Value Dictionary< Key, Value, Compare >::drop(Key& k)
-  {
-
-  };
 }
 
 #endif
