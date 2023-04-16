@@ -56,6 +56,7 @@ namespace tarasenko
    void copy(const ForwardList< T >& other);
    void move(const ForwardList< T >&& other);
    void addBefore(details::NodeOfList< T >* given_ptr, const T& data);
+   void removeNode(details::NodeOfList< T >* pnode);
    void removeData(const T& data);
 
    friend class ForwardListIterator< T >;
@@ -107,7 +108,7 @@ namespace tarasenko
   {
     if (first == pnode)
     {
-      details::NodeOfList< T >* new_node = new details::NodeOfList< T >(data, nullptr);
+      auto new_node = new details::NodeOfList< T >(data, nullptr);
       new_node->next = first;
       first = new_node;
     }
@@ -115,26 +116,33 @@ namespace tarasenko
     {
       details::NodeOfList< T >* prev = first;
       details::NodeOfList< T >* curr = first;
-      for (curr, prev; curr != pnode; prev = curr, curr = curr->next);
-      details::NodeOfList< T >* new_node = new details::NodeOfList< T >(data, nullptr);
+      while (curr != pnode)
+      {
+        prev = curr;
+        curr = curr->next;
+      }
+      auto new_node = new details::NodeOfList< T >(data, nullptr);
       new_node->next = prev->next;
       prev->next = new_node;
     }
   }
 
   template< typename T >
-  void ForwardList< T >::removeData(const T& data)
+  void ForwardList< T >::removeNode(details::NodeOfList< T >* pnode)
   {
-    details::NodeOfList< T >** current = &first;
-    while (*current && (*current)->data < data) //comparator
+    if (pnode == first)
     {
-      current = &(*current)->next;
+      details::popFront(std::addressof(first));
     }
-    while (*current && data == (*current)->data)
+    else
     {
-      details::NodeOfList< T >* to_delete = *current;
-      *current = (*current)->next;
-      details::popFront(&to_delete);
+      details::NodeOfList< T >* curr = first;
+      while (curr->next != pnode)
+      {
+        curr = curr->next;
+      }
+      curr->next = pnode->next;
+      details::popFront(std::addressof(pnode));
     }
   }
 
