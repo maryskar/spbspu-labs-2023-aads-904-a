@@ -56,6 +56,7 @@ namespace tarasenko
    void copy(const ForwardList< T >& other);
    void move(const ForwardList< T >&& other);
    void insert(const T& data);
+   void removeData(const T& data);
 
    friend class ForwardListIterator< T >;
    ForwardListIterator< T > begin()
@@ -106,6 +107,23 @@ namespace tarasenko
     }
     *current = new details::NodeOfList< T >(data, *current);
   }
+
+  template< typename T >
+  void ForwardList< T >::removeData(const T& data)
+  {
+    details::NodeOfList< T >** current = &first;
+    while (*current && (*current)->data < data) //comparator
+    {
+      current = &(*current)->next;
+    }
+    while (*current && data == (*current)->data)
+    {
+      details::NodeOfList< T >* to_delete = *current;
+      *current = (*current)->next;
+      details::popFront(&to_delete);
+    }
+  }
+
   template< typename T >
   void ForwardList< T >::clear()
   {

@@ -57,8 +57,7 @@ namespace tarasenko
    }
    void push(const Key& k, const Value& v);
    Value get(const Key& k);
-   //Value find(Key& k);
-   //void remove(Key& k);
+   void remove(const Key& k);
   private:
    ForwardList< Pair< Key, Value > > list;
   };
@@ -88,7 +87,12 @@ namespace tarasenko
       throw std::invalid_argument("Key not found");
     }
   };
-
+  template< typename Key, typename Value/*, typename Compare*/ >
+  void Dictionary< Key, Value/*, Compare*/ >::remove(const Key& k)
+  {
+    Pair< Key, Value > data(k);
+    list.removeData(data);
+  };
 }
 
 #endif
