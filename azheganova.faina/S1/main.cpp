@@ -48,7 +48,7 @@ int main(int argc, char * argv[])
         return 2;
       }
       Stack< std::string > resstack;
-      try 
+      try
       {
         calculatePostfix(postfixform, result, resstack);
       }

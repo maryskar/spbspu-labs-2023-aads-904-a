@@ -17,7 +17,7 @@ void calculatePostfix(Queue< std::string > & postfix, Stack< std::string > & ans
       element = postfix.drop();
       postfix.pop();
     }
-    if (isDigit(element))
+    if (isdigit(element[0]))
     {
       stack.push(element);
     }
