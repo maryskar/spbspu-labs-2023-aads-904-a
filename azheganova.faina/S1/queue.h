@@ -11,7 +11,7 @@ public:
   Queue(const Queue< T > & queue);
   ~Queue();
   void push(const T & rhs);
-  T pop();
+  void pop();
   bool isEmpty();
   T & drop();
 private:
@@ -68,17 +68,15 @@ void Queue< T >::push(const T & rhs)
 }
 
 template < typename T >
-T Queue< T >::pop()
+void Queue< T >::pop()
 {
   if (isEmpty())
   {
     throw;
   }
-  T value = top_->data_;
   ListNode< T > * newhead = top_->next_;
   delete top_;
   top_ = newhead;
-  return value;
 }
 
 template< typename T >

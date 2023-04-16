@@ -1,20 +1,7 @@
 #include "calculate.h"
 #include <stdexcept>
 #include <limits>
-#include "stack.h"
-
-bool isDigit(const std::string & string)
-{
-  try
-  {
-    std::stoll(string, nullptr, 10);
-  }
-  catch (...)
-  {
-    return false;
-  }
-  return true;
-}
+#include "checkingfordigit.h"
 
 long long maximum = std::numeric_limits< long long >::max();
 long long minimum = std::numeric_limits< long long >::min();

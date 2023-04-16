@@ -37,10 +37,10 @@ int main(int argc, char * argv[])
       }
       Queue< std::string > infixform = convertToInfix(string);
       Queue< std::string > postfixform;
-      Stack< std::string > stack1;
+      Stack< std::string > stack;
       try
       {
-        convertFromInfixToPostfix(infixform, stack1, postfixform);
+        convertFromInfixToPostfix(infixform, stack, postfixform);
       }
       catch (const std::exception & e)
       {
@@ -78,7 +78,7 @@ int main(int argc, char * argv[])
       {
         break;
       }
-            if (string.empty())
+        if (string.empty())
       {
         continue;
       }
@@ -95,7 +95,7 @@ int main(int argc, char * argv[])
         return 2;
       }
       Stack< std::string > resstack;
-      try 
+      try
       {
         calculatePostfix(postfixform, result, resstack);
       }
