@@ -87,14 +87,14 @@ namespace tarasenko
   template< typename Key, typename Value/*, typename Compare*/ >
   Value Dictionary< Key, Value/*, Compare*/ >::get(const Key& k)
   {
-    auto iter = list.begin();
-    while (iter != list.end() && (k != iter->key_))
+    auto current = list.begin();
+    while (current != list.end() && (k != current->key_))
     {
-      ++iter;
+      ++current;
     }
-    if (iter != list.end() && (k == iter->key_))
+    if (current != list.end() && (k == current->key_))
     {
-      return iter->value_;
+      return current->value_;
     }
     else
     {
@@ -105,7 +105,18 @@ namespace tarasenko
   void Dictionary< Key, Value/*, Compare*/ >::remove(const Key& k)
   {
     Pair< Key, Value > data(k);
-    list.removeData(data);
+    auto current = list.begin();
+    while (current != list.end())
+    {
+      if (*current == data)
+      {
+        auto to_delete = current;
+        ++current;
+        list.removeNode(to_delete.getNode());
+        continue;
+      }
+      ++current;
+    }
   };
 }
 
