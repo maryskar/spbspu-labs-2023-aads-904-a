@@ -4,6 +4,97 @@
 
 long long maximum = std::numeric_limits< long long >::max();
 long long minimum = std::numeric_limits< long long >::min();
+std::string calculateOperations(long long secondnum, long long firstnum, const std::string & element)
+{
+  if (element == "+")
+  {
+    if ((firstnum * secondnum >= 0) && (firstnum >= 0))
+    {
+      if (maximum - firstnum >= secondnum)
+      {
+        return std::to_string(firstnum + secondnum);
+      }
+      else
+      {
+        throw std::overflow_error("overflow");
+      }
+    }
+    if ((firstnum * secondnum >= 0) && (firstnum <= 0))
+    {
+      if (minimum - firstnum <= secondnum)
+      {
+        return std::to_string(firstnum + secondnum);
+      }
+      else
+      {
+        throw std::overflow_error("overflow");
+      }
+    }
+    else
+    {
+      return std::to_string(firstnum + secondnum);
+    }
+  }
+  else if (element == "-")
+  {
+    return std::to_string(firstnum - secondnum);
+  }
+  else if (element == "*")
+  {
+    if ((firstnum * secondnum < 0) && (firstnum >= 0))
+    {
+      if (maximum / firstnum >= secondnum)
+      {
+        return std::to_string(firstnum * secondnum);
+      }
+      else
+      {
+        throw std::overflow_error("overflow");
+      }
+    }
+    if ((firstnum * secondnum >= 0) && (firstnum <= 0))
+    {
+      if (minimum / firstnum >= secondnum)
+      {
+        return std::to_string(firstnum * secondnum);
+      }
+      else
+      {
+        throw std::overflow_error("overflow");
+      }
+    }
+    else
+    {
+      return std::to_string(firstnum * secondnum);
+    }
+  }
+  else if (element == "/")
+  {
+    if (secondnum == 0)
+    {
+      throw std::logic_error("division by 0");
+    }
+    return std::to_string(firstnum / secondnum);
+  }
+  else if (element == "%")
+  {
+    if (secondnum == 0)
+    {
+      throw std::logic_error("division by 0");
+    }
+    if (firstnum < 0)
+    {
+      return std::to_string(firstnum % secondnum + secondnum);
+    }
+    return std::to_string(firstnum % secondnum);
+  }
+  if (firstnum < 0)
+  {
+    return std::to_string((firstnum % secondnum) + secondnum);
+  }
+  return std::to_string(firstnum % secondnum);
+}
+
 void calculatePostfix(Queue< std::string > & postfix, Stack< std::string > & answer, Stack< std::string > & stack)
 {
   stack.push(postfix.drop());
@@ -16,100 +107,28 @@ void calculatePostfix(Queue< std::string > & postfix, Stack< std::string > & ans
       element = postfix.drop();
       postfix.pop();
     }
+    else
+    {
+      break;
+    }
     if (isdigit(element[0]))
     {
       stack.push(element);
     }
     else
     {
+      try
+      {
       long long secondnum = std::stoll(stack.drop(), nullptr, 10);
       stack.pop();
       long long firstnum = std::stoll(stack.drop(), nullptr, 10);
       stack.pop();
-      std::string calcres;
-      if (element == "+")
-      {
-        if ((firstnum * secondnum >= 0) && (firstnum >= 0))
-        {
-          if (maximum - firstnum >= secondnum)
-          {
-            calcres = firstnum + secondnum;
-          }
-          else
-          {
-            throw std::overflow_error("overflow");
-          }
-        }
-        if ((firstnum * secondnum >= 0) && (firstnum <= 0))
-        {
-          if (minimum - firstnum <= secondnum)
-          {
-            calcres = firstnum + secondnum;
-          }
-          else
-          {
-            throw std::overflow_error("overflow");
-          }
-        }
-        else
-        {
-          calcres = firstnum + secondnum;
-        }
+      stack.push(calculateOperations(secondnum, firstnum, element));
       }
-      else if (element == "-")
+      catch (...)
       {
-        calcres = firstnum - secondnum;
+        throw std::range_error("error");
       }
-      else if (element == "*")
-      {
-        if ((firstnum * secondnum < 0) && (firstnum >= 0))
-        {
-          if (maximum / firstnum >= secondnum)
-          {
-            calcres = firstnum * secondnum;
-          }
-          else
-          {
-            throw std::overflow_error("overflow");
-          }
-        }
-        if ((firstnum * secondnum >= 0) && (firstnum <= 0))
-        {
-          if (minimum / firstnum >= secondnum)
-          {
-            calcres = firstnum * secondnum;
-          }
-          else
-          {
-            throw std::overflow_error("overflow");
-          }
-        }
-        else
-        {
-          calcres = firstnum * secondnum;
-        }
-      }
-      else if (element == "/")
-      {
-        if (secondnum == 0)
-        {
-          throw std::logic_error("division by 0");
-        }
-        calcres = firstnum / secondnum;
-      }
-      else if (element == "%")
-      {
-        if (secondnum == 0)
-        {
-          throw std::logic_error("division by 0");
-        }
-        if (firstnum < 0)
-        {
-          calcres = firstnum % secondnum + secondnum;
-        }
-        calcres = firstnum % secondnum;
-      }
-      stack.push(calcres);
     }
   }
   answer.push(stack.drop());
