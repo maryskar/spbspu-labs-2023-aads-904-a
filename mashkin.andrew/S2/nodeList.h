@@ -3,7 +3,7 @@
 
 
 template< class T >
-class nodeList
+struct nodeList
 {
   T data;
   nodeList< T >* next;
