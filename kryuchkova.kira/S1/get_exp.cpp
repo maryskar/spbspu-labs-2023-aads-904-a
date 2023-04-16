@@ -2,6 +2,7 @@
 #include "queue.h"
 #include "stack.h"
 #include "utils.h"
+#include "check_exp.h"
 #include <string>
 
 namespace kryuchkova
@@ -28,11 +29,11 @@ namespace kryuchkova
     while (!inf.isEmpty())
     {
       std::string data = inf.drop();
-      if (GetPriority(data) == 4)
+      if (GetPriority(data) == 3)
       {
         post.push(data);
       }
-      else if (GetPriority(data) == 3 || GetPriority(data) == 2)
+      else if (GetPriority(data) == 2)
       {
         stack_post.push(data);
       }
@@ -65,7 +66,7 @@ namespace kryuchkova
     while (!post.isEmpty())
     {
       std::string data = post.drop();
-      if (GetPriority(data) == 4)
+      if (GetPriority(data) == 3)
       {
         operands.push(std::stoll(data));
       }

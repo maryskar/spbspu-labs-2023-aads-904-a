@@ -3,10 +3,11 @@
 #include "node.h"
 #include "utils.h"
 #include "get_exp.h"
+#include "check_exp.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
-//#include <io.h>
+
 
 int main(int argc, char *argv[])
 {
@@ -15,45 +16,63 @@ int main(int argc, char *argv[])
     std::cerr  << "Not correct number of arguments for program\n";
     return 1;
   }
+  kryuchkova::Queue < std::string > inf;
+  kryuchkova::Queue < std::string > post;
+  std::string str;
+  long long result = 0;
   if (argc == 2)
   {
     std::ifstream file(argv[1]);
     if (!file)
     {
-      std::cout << "Error with opening file";
+      std::cerr << "Error with opening file";
       return 1;
     }
     while (!file.eof())
     {
-      std::string str;
       std::getline(file, str);
-      kryuchkova::Queue < std::string > inf;
-      kryuchkova::Queue < std::string > post;
-      kryuchkova::stringToInfix(str, inf);
-      kryuchkova::infixToPostfix(inf, post);
-      std::cout << kryuchkova::getResult(post);
-      std::cout << '\n';
+      if (str.empty())
+      {
+        continue;
+      }
+      try
+      {
+        kryuchkova::stringToInfix(str, inf);
+        kryuchkova::infixToPostfix(inf, post);
+        result = kryuchkova::getResult(post);
+      }
+      catch(const std::exception& e)
+      {
+        std::cerr << e.what() << '\n';
+      }
+      std::cout << result << '\n';
     }
   }
-
-  //int a;
-  // kryuchkova::Stack <int> stack;
-  // std::cin >> a;
-  // stack.push(a);
-  // stack.push(a + 1);
-  // int b = stack.drop();
-  // std::cout << b << ' ' << stack.drop() << '\n';
-  // kryuchkova::Queue <kryuchkova::calc_data_type> queue;
-  // kryuchkova::calc_data_type data;
-  // for (int i = 0; i < 5; i++)
-  // {
-  //   std::cin >> data.data;
-  //   queue.push(data);
-  // }
-  // while (!queue.isEmpty())
-  // {
-  //   std::cout << queue.drop() << ' ';
-  // }
-
-  // return 0;
+  else
+  {
+    while (std::cin)
+    {
+      std::getline(std::cin, str);
+      if (!std::cin)
+      {
+        break;
+      }
+      if (str.empty())
+      {
+        continue;
+      }
+      try
+      {
+        kryuchkova::stringToInfix(str, inf);
+        kryuchkova::infixToPostfix(inf, post);
+        result = kryuchkova::getResult(post);
+      }
+      catch(const std::exception& e)
+      {
+        std::cerr << e.what() << '\n';
+      }
+      std::cout << result << '\n';
+    }
+  }
+  return 0;
 }

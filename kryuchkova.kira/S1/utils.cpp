@@ -7,11 +7,7 @@ namespace kryuchkova
 {
   int GetPriority(std::string data)
   {
-    if (data[0] == '+' || data[0] == '-')
-    {
-      return 3;
-    }
-    if (data[0] == '/' || data[0] == '*')
+    if (data[0] == '+' || data[0] == '-' || data[0] == '/' || data[0] == '*')
     {
       return 2;
     }
@@ -25,7 +21,7 @@ namespace kryuchkova
       {
         throw std::runtime_error("isn't digit");
       }
-      return 4;
+      return 3;
     }
   }
 

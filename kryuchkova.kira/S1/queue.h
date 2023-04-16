@@ -40,6 +40,12 @@ namespace kryuchkova
     }
   }
 
+  // template < typename T >
+  // Queue & operator=(const Queue & queue)
+  // {
+
+  // }
+
   template < typename T >
   Queue< T >::~Queue()
   {

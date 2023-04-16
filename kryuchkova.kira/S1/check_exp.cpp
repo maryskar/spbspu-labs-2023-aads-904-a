@@ -1,7 +1,8 @@
+#include "check_exp.h"
 #include <limits>
 #include <stdexcept>
 #include <string>
-#include "queue.h"
+#include "utils.h"
 
 namespace kryuchkova
 {
@@ -17,10 +18,20 @@ namespace kryuchkova
     }
   }
 
-  void incorrectString(Queue < std::string > & inf)
+  void incorrectString(std::string & str)
   {
-    Queue < std::string > queue = inf;
-    
+    size_t size = str.size();
+    for (size_t i; i < size - 1; i++)
+    {
+      if (isdigit(str[i]) && isdigit(str[i + 1]))
+      {
+        throw std::logic_error("Wrong expression (two numbers)");
+      }
+      if (!(isdigit(str[i]) || isdigit(str[i + 1])))
+      {
+        throw std::logic_error("Wrong expression (two signs)");
+      }
+    }
   }
 
 }
