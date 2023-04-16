@@ -32,7 +32,7 @@ void convertFromInfixToPostfix(Queue< std::string > & queue, Stack< std::string 
       {
         postfix.push(element);
       }
-      if (isOperator(element))
+      else if (isOperator(element))
       {
         if (element == "+" || element == "-")
         {
@@ -53,22 +53,22 @@ void convertFromInfixToPostfix(Queue< std::string > & queue, Stack< std::string 
           stack.push(element);
         }
       }
-      if (element == "(")
+      else if (element == "(")
       {
         stack.push(element);
       }
-      if (element == ")")
+      else if (element == ")")
       {
-        while (stack.drop() != "(")
+        while ((stack.drop() != "(") && (!stack.isEmpty()))
         {
           postfix.push(stack.drop());
           stack.pop();
-          if (stack.isEmpty())
-          {
-            break;
-          }
         }
         stack.pop();
+      }
+      else
+      {
+        throw std::logic_error("error");
       }
     }
     else
