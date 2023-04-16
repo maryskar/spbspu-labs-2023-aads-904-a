@@ -35,14 +35,14 @@ namespace tarasenko
   };
 
   template< typename T >
-  ForwardListIterator< T >::this_t& ForwardListIterator< T >::operator++()
+  ForwardListIterator< T >& ForwardListIterator< T >::operator++()
   {
     assert(node != nullptr);
     node = node->next;
   }
 
   template< typename T >
-  ForwardListIterator< T >::this_t ForwardListIterator< T >::operator++(int)
+  ForwardListIterator< T > ForwardListIterator< T >::operator++(int)
   {
     assert(node != nullptr);
     this_t result(*this);
