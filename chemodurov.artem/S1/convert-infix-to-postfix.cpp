@@ -65,7 +65,7 @@ chemodurov::Queue< chemodurov::PostfixExpr > chemodurov::convertInfixToPostfix(Q
       else
       {
         bool prior_diff = isLessPriority(stack.getFromStack().data.operation, next.getOperation());
-        while (!stack.empty() && !stack.getFromStack().isParenthesis && prior_diff)
+        while (!stack.empty() && !stack.getFromStack().isParenthesis && !prior_diff)
         {
           PostfixExpr temp(stack.getFromStack().data.operation);
           post.push(temp);
