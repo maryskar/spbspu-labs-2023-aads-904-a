@@ -13,10 +13,8 @@ namespace dimkashelk
       begin_(nullptr)
     {}
     Stack(const Stack< T > &stack):
-      begin_(nullptr)
-    {
-      copy(stack);
-    }
+      begin_(details::copy(stack.begin_).first)
+    {}
     Stack(Stack< T > &&stack):
       begin_(stack.begin_)
     {

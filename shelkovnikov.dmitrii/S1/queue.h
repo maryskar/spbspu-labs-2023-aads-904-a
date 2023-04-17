@@ -123,12 +123,9 @@ namespace dimkashelk
     }
     void copy(const Queue< T > &queue)
     {
-      details::NodeOneWayList< T > *start = queue.begin_;
-      while (start)
-      {
-        push(start->data);
-        start = start->next;
-      }
+      auto copy_res = details::copy(queue.begin_);
+      begin_ = copy_res.first;
+      end_ = copy_res.second;
     }
   };
 }
