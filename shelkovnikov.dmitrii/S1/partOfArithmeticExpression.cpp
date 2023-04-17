@@ -10,7 +10,7 @@ namespace
   {
     try
     {
-      dimkashelk::Bracket bracket(str[0]);
+      dimkashelk::Parenthesis bracket(str[0]);
       return true;
     }
     catch (...)
@@ -35,7 +35,7 @@ dimkashelk::PartOfArithExpr::element::element(const std::string &str)
   {
     try
     {
-      bracket_ = Bracket(str[0]);
+      bracket_ = Parenthesis(str[0]);
     }
     catch (...)
     {
@@ -89,7 +89,7 @@ char dimkashelk::PartOfArithExpr::getOperator() const
 {
   return element.operator_;
 }
-dimkashelk::Bracket dimkashelk::PartOfArithExpr::getBracket() const
+dimkashelk::Parenthesis dimkashelk::PartOfArithExpr::getBracket() const
 {
   return element.bracket_;
 }

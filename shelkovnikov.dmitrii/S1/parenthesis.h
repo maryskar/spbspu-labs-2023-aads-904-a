@@ -1,11 +1,11 @@
-#ifndef SPBSPU_LABS_2023_AADS_904_A_BRACKET_H
-#define SPBSPU_LABS_2023_AADS_904_A_BRACKET_H
+#ifndef SPBSPU_LABS_2023_AADS_904_A_PARENTHESIS_H
+#define SPBSPU_LABS_2023_AADS_904_A_PARENTHESIS_H
 namespace dimkashelk
 {
-  class Bracket
+  class Parenthesis
   {
   public:
-    explicit Bracket(char c);
+    explicit Parenthesis(char c);
     bool isOpen() const;
     bool isClose() const;
   private:
