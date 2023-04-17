@@ -29,7 +29,8 @@ namespace dimkashelk
       Operator operator_;
       Parenthesis bracket_;
       explicit element(long long o);
-      explicit element(const std::string &str);
+      explicit element(Operator oper);
+      explicit element(Parenthesis parenthesis);
     } element;
   };
   bool isGreaterPriority(const Operator &lhs, const Operator &rhs);

@@ -22,24 +22,12 @@ namespace
 dimkashelk::PartOfArithExpr::element::element(long long o):
   operand_(o)
 {}
-dimkashelk::PartOfArithExpr::element::element(const std::string &str)
-{
-  if (checkDigit(str))
-  {
-    operand_ = std::stoll(str);
-  }
-  else
-  {
-    try
-    {
-      bracket_ = Parenthesis(str[0]);
-    }
-    catch (...)
-    {
-      operator_ = Operator(str[0]);
-    }
-  }
-}
+dimkashelk::PartOfArithExpr::element::element(dimkashelk::Operator oper):
+  operator_(oper)
+{}
+dimkashelk::PartOfArithExpr::element::element(dimkashelk::Parenthesis parenthesis):
+  bracket_(parenthesis)
+{}
 dimkashelk::PartOfArithExpr::PartOfArithExpr(dimkashelk::Parenthesis parenthesis):
   isNumber_(false),
   isParenthesis_(true),
