@@ -20,7 +20,7 @@ namespace dimkashelk
     long long getOperand() const;
   private:
     bool isDigit_;
-    bool isBracket_;
+    bool isParenthesis_;
     union element
     {
       long long operand_;
