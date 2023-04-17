@@ -32,7 +32,7 @@ namespace dimkashelk
         return *this;
       }
       details::freeList< T >(begin_);
-      copy(stack);
+      begin_ = details::copy(stack).first;
       return *this;
     }
     Stack< T > &operator=(Stack< T > &&stack)
@@ -82,18 +82,6 @@ namespace dimkashelk
     }
   private:
     details::NodeOneWayList< T > *begin_;
-    void copy(const Stack< T > &stack)
-    {
-      details::NodeOneWayList< T > *node = stack.begin_;
-      begin_ = new details::NodeOneWayList< T >(node->data);
-      details::NodeOneWayList< T > *start = begin_;
-      while (node->next)
-      {
-        node = node->next;
-        start->next = new details::NodeOneWayList< T >(node->data);
-        start = start->next;
-      }
-    }
   };
 }
 #endif
