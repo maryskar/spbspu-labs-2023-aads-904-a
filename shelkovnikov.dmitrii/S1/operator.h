@@ -7,14 +7,14 @@ namespace dimkashelk
   {
   public:
     explicit Operator(const char str);
-    bool isAdd();
-    bool isSubtraction();
-    bool isMultiplication();
-    bool isDivision();
-    bool isRemainder();
+    bool isAdd() const;
+    bool isSubtraction() const;
+    bool isMultiplication() const;
+    bool isDivision() const;
+    bool isRemainder() const;
   private:
     char operator_;
-    bool isOperator();
+    bool isOperator() const;
   };
 }
 #endif

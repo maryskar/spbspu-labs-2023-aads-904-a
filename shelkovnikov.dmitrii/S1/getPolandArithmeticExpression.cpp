@@ -37,7 +37,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
       else
       {
         dsk::PartOfArithExpr p1 = stack.last();
-        if (p1.isBracket() || p.isBracket() || isGreaterPriority(p1, p))
+        if (p1.isBracket() || p.isBracket() || isGreaterPriority(p1.getOperator(), p.getOperator()))
         {
           stack.pushFront(p);
         }
@@ -45,7 +45,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
         {
           p1 = stack.last();
           stack.popBack();
-          while (!isGreaterPriority(p1, p))
+          while (!isGreaterPriority(p1.getOperator(), p.getOperator()))
           {
             queue.push(p1);
             if (stack.empty())

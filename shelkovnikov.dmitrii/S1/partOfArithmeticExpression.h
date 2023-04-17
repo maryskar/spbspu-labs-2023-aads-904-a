@@ -31,6 +31,6 @@ namespace dimkashelk
       explicit element(const std::string &str);
     } element;
   };
-  bool isGreaterPriority(const PartOfArithExpr &lhs, const PartOfArithExpr &rhs);
+  bool isGreaterPriority(const Operator &lhs, const Operator &rhs);
 }
 #endif

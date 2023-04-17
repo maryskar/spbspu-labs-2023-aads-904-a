@@ -94,15 +94,11 @@ long long dimkashelk::PartOfArithExpr::getOperand() const
 {
   return element.operand_;
 }
-bool dimkashelk::isGreaterPriority(const PartOfArithExpr &lhs, const PartOfArithExpr &rhs)
+bool dimkashelk::isGreaterPriority(const Operator &lhs, const Operator &rhs)
 {
-  if (lhs.isDigit() || rhs.isDigit() || lhs.isBracket() || rhs.isBracket())
+  if (lhs.isAdd() || lhs.isSubtraction())
   {
-    throw std::logic_error("Must be operator, not operand or brackets");
-  }
-  if (lhs.getOperator().isAdd() || lhs.getOperator().isSubtraction())
-  {
-    return rhs.getOperator().isMultiplication() || rhs.getOperator().isDivision() || rhs.getOperator().isRemainder();
+    return rhs.isMultiplication() || rhs.isDivision() || rhs.isRemainder();
   }
   return false;
 }
