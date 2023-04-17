@@ -1,24 +1,4 @@
 #include "partOfArithmeticExpression.h"
-#include <stdexcept>
-namespace
-{
-  bool checkDigit(const std::string &str)
-  {
-    return str.find_first_not_of("0123456789") == std::string::npos;
-  }
-  bool checkBracket(const std::string &str)
-  {
-    try
-    {
-      dimkashelk::Parenthesis bracket(str[0]);
-      return true;
-    }
-    catch (...)
-    {
-      return false;
-    }
-  }
-}
 dimkashelk::PartOfArithExpr::element::element(long long o):
   operand_(o)
 {}

@@ -7,8 +7,25 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getQueueOfArithmeti
   dsk::Queue< dsk::PartOfArithExpr > data;
   while (parser.hasNext())
   {
-    dsk::PartOfArithExpr part(parser());
-    data.push(part);
+    std::string res = parser();
+    try
+    {
+      data.push(dsk::PartOfArithExpr(Parenthesis(res[0])));
+    }
+    catch (...)
+    {}
+    try
+    {
+      data.push(dsk::PartOfArithExpr(Operator(res[0])));
+    }
+    catch (...)
+    {}
+    try
+    {
+      data.push(dsk::PartOfArithExpr(std::stoll(res)));
+    }
+    catch (...)
+    {}
   }
   return data;
 }
