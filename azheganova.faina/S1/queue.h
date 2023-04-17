@@ -10,8 +10,9 @@ namespace azheganova
   {
   public:
     Queue();
-    Queue(const Queue< T > & queue);
     ~Queue();
+    Queue(const Queue< T > & rhs);
+    Queue(const Queue< T > && rhs);
     void push(const T & rhs);
     void pop();
     bool isEmpty();
@@ -29,19 +30,30 @@ namespace azheganova
    size_(0)
   {}
 
-  template < typename T >
-  Queue< T >::Queue(const Queue< T > & queue):
-    top_(nullptr),
-    last_(nullptr),
-    size_(0)
+  template< typename T >
+  Queue< T >::Queue(const Queue< T > & rhs):
+   top_(nullptr),
+   last_(nullptr),
+   size_(0)
   {
-    details::ListNode< T > * tmp = queue.top_;
+    details::ListNode< T > * tmp = rhs.top_;
     while (tmp != nullptr)
     {
       push(tmp->data_);
       tmp = tmp->next_;
     }
   }
+
+  template< typename T >
+  Queue< T >::Queue(const Queue< T > && rhs):
+   top_(rhs.top_),
+   last_(rhs.last_),
+   size_(rhs.size_)
+   {
+     top_ = nullptr;
+     last_ = nullptr;
+     size_ = 0;
+   }
 
   template< typename T >
   Queue< T >::~Queue()
