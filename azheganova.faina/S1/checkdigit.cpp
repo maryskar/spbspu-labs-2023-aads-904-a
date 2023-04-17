@@ -6,7 +6,7 @@ bool isDigit(const std::string & string)
   {
     std::stoll(string, nullptr, 10);
   }
-  catch (...)
+  catch (const std::exception & e)
   {
     return false;
   }
