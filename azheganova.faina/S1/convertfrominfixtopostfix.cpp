@@ -1,7 +1,6 @@
 #include "convertfrominfixtopostfix.h"
 #include <cctype>
 #include <iostream>
-#include "checkdigit.h"
 
 bool isOperator(std::string oper)
 {
@@ -14,7 +13,7 @@ void convertFromInfixToPostfix(Queue< std::string > & queue, Stack< std::string 
   {
     std::string element = queue.drop();
     queue.pop();
-    if (isDigit(element))
+    if (isdigit(element[0]))
     {
       postfix.push(element);
     }
