@@ -1,8 +1,5 @@
 #include "bracket.h"
 #include <stdexcept>
-dimkashelk::Bracket::Bracket():
-  bracket_('a')
-{}
 dimkashelk::Bracket::Bracket(char c):
   bracket_(c)
 {

@@ -5,7 +5,6 @@ namespace dimkashelk
   class Bracket
   {
   public:
-    Bracket();
     Bracket(const Bracket &bracket) = default;
     Bracket(Bracket &&bracket) = default;
     explicit Bracket(char c);
