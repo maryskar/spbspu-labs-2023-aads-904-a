@@ -52,6 +52,7 @@ namespace tarasenko
   class Dictionary
   {
   public:
+   using dict_type = Dictionary< Key, Value, Compare >;
    Dictionary():
      list(),
      compare(Compare{})
@@ -64,7 +65,26 @@ namespace tarasenko
      list(std::move(other.list)),
      compare(other.compare)
    {}
-
+   dict_type& operator==(const dict_type& other)
+   {
+     if (*this == other)
+     {
+       return *this;
+     }
+     list = other.list;
+     compare = other.compare;
+     return *this;
+   }
+   dict_type& operator==(dict_type&& other)
+   {
+     if (*this == other)
+     {
+       return *this;
+     }
+     list = std::move(other.list);
+     compare = other.compare;
+     return *this;
+   }
    ~Dictionary()
    {
      list.clear();
