@@ -1,26 +1,26 @@
 #ifndef POSTFIX_EXPRESSION_HPP
 #define POSTFIX_EXPRESSION_HPP
-#include "operation-and-brace.hpp"
+#include "operation-and-parenthesis.hpp"
 
 namespace chemodurov
 {
-  union OperationOperand
-  {
-    long operand;
-    Operation operation;
-  };
-
   class PostfixExpr
   {
    public:
-    explicit PostfixExpr(Operation op);
+    explicit PostfixExpr(operation_t op);
     explicit PostfixExpr(long operand);
     bool isOperation() const noexcept;
     bool isOperand() const noexcept;
-    Operation getOperation() const;
+    operation_t getOperation() const;
     long getOperand() const;
    private:
-    OperationOperand data_;
+    union OperationOperand
+    {
+      long operand_;
+      operation_t operation_;
+      OperationOperand(long operand): operand_(operand) {};
+      OperationOperand(operation_t operation): operation_(operation) {};
+    } data_;
     bool isOperand_;
   };
 }

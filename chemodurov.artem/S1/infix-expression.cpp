@@ -1,6 +1,6 @@
 #include "infix-expression.hpp"
 #include <stdexcept>
-#include "operation-and-brace.hpp"
+#include "operation-and-parenthesis.hpp"
 
 bool chemodurov::InfixExpr::isOperation() const noexcept
 {
@@ -10,17 +10,17 @@ bool chemodurov::InfixExpr::isOperand() const noexcept
 {
   return isOperand_;
 }
-bool chemodurov::InfixExpr::isBrace() const noexcept
+bool chemodurov::InfixExpr::isParenthesis() const noexcept
 {
   return (!isOperand_ && !isOperation_);
 }
-chemodurov::Operation chemodurov::InfixExpr::getOperation() const
+chemodurov::operation_t chemodurov::InfixExpr::getOperation() const
 {
   if (!isOperation_)
   {
     throw std::logic_error("It's not the operation");
   }
-  return data_.operation;
+  return data_.operation_;
 }
 long chemodurov::InfixExpr::getOperand() const
 {
@@ -28,28 +28,29 @@ long chemodurov::InfixExpr::getOperand() const
   {
     throw std::logic_error("It's not the operand");
   }
-  return data_.operand;
+  return data_.operand_;
 }
-chemodurov::Brace chemodurov::InfixExpr::getBrace() const
+chemodurov::parenthesis_t chemodurov::InfixExpr::getParenthesis() const
 {
   if (isOperand_ || isOperation_)
   {
     throw std::logic_error("It's not the brace");
   }
-  return data_.brace;
+  return data_.parenthesis_;
 }
-chemodurov::InfixExpr::InfixExpr(chemodurov::Operation op):
- data_({op}),
+chemodurov::InfixExpr::InfixExpr(operation_t operation):
+ data_(operation),
  isOperand_(false),
  isOperation_(true)
 {}
 chemodurov::InfixExpr::InfixExpr(long operand):
- data_({operand}),
+ data_(operand),
  isOperand_(true),
  isOperation_(false)
 {}
-chemodurov::InfixExpr::InfixExpr(chemodurov::Brace brace):
- data_({brace}),
+chemodurov::InfixExpr::InfixExpr(parenthesis_t parenthesis):
+ data_(parenthesis),
  isOperand_(false),
  isOperation_(false)
 {}
+
