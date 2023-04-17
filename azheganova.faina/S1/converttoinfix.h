@@ -3,6 +3,6 @@
 #include <string>
 #include "queue.h"
 
-Queue< std::string > convertToInfix(const std::string & string);
+azheganova::Queue< std::string > convertToInfix(const std::string & string);
 
 #endif

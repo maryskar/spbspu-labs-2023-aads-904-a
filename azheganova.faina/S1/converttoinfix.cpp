@@ -1,8 +1,8 @@
 #include "converttoinfix.h"
 
-Queue< std::string > convertToInfix(const std::string & string)
+azheganova::Queue< std::string > convertToInfix(const std::string & string)
 {
-  Queue< std::string > infix;
+  azheganova::Queue< std::string > infix;
   int begin = 0;
   int end = string.find(' ');
   while (end > -1)

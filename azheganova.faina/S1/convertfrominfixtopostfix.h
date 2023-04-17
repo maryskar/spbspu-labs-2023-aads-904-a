@@ -4,6 +4,7 @@
 #include "queue.h"
 #include "stack.h"
 
+using namespace azheganova;
 bool isOperator(std::string oper);
 void convertFromInfixToPostfix(Queue< std::string > & queue, Stack< std::string > & stack, Queue< std::string > & postfix);
 

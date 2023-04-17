@@ -16,7 +16,7 @@ int main(int argc, char * argv[])
     return 1;
   }
   std::string string;
-  Stack< std::string > result;
+  azheganova::Stack< std::string > result;
   if(argc == 2)
   {
     std::ifstream input(argv[1]);
@@ -35,9 +35,9 @@ int main(int argc, char * argv[])
       {
         continue;
       }
-      Queue< std::string > infixform = convertToInfix(string);
-      Queue< std::string > postfixform;
-      Stack< std::string > stack;
+      azheganova::Queue< std::string > infixform = convertToInfix(string);
+      azheganova::Queue< std::string > postfixform;
+      azheganova::Stack< std::string > stack;
       try
       {
         convertFromInfixToPostfix(infixform, stack, postfixform);
@@ -47,7 +47,7 @@ int main(int argc, char * argv[])
         std::cerr << e.what() << "\n";
         return 2;
       }
-      Stack< std::string > resstack;
+      azheganova::Stack< std::string > resstack;
       try
       {
         calculatePostfix(postfixform, result, resstack);
@@ -82,9 +82,9 @@ int main(int argc, char * argv[])
       {
         continue;
       }
-      Queue< std::string > infixform = convertToInfix(string);
-      Queue< std::string > postfixform;
-      Stack< std::string > stack;
+      azheganova::Queue< std::string > infixform = convertToInfix(string);
+      azheganova::Queue< std::string > postfixform;
+      azheganova::Stack< std::string > stack;
       try
       {
         convertFromInfixToPostfix(infixform, stack, postfixform);
@@ -94,7 +94,7 @@ int main(int argc, char * argv[])
         std::cerr << e.what() << "\n";
         return 2;
       }
-      Stack< std::string > resstack;
+      azheganova::Stack< std::string > resstack;
       try
       {
         calculatePostfix(postfixform, result, resstack);
