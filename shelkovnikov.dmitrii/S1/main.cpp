@@ -16,22 +16,22 @@ int main(int argc, char *argv[])
     in.open(argv[1]);
     std::cin.rdbuf(in.rdbuf());
   }
-  std::string element;
+  std::string expression;
   dsk::Stack< dsk::PartOfArithExpr > answer;
   while (std::cin)
   {
-    std::getline(std::cin, element);
+    std::getline(std::cin, expression);
     if (!std::cin)
     {
       break;
     }
-    if (element.find_first_not_of(" \n") == std::string::npos)
+    if (expression.find_first_not_of(" \n") == std::string::npos)
     {
       continue;
     }
     try
     {
-      dsk::Queue< dsk::PartOfArithExpr > data = dsk::getQueueOfArithmeticExpression(element);
+      dsk::Queue< dsk::PartOfArithExpr > data = dsk::getQueueOfArithmeticExpression(expression);
       dsk::Queue< dsk::PartOfArithExpr > polandExpression = dsk::getPolandArithExpr(data);
       answer.pushFront(dsk::PartOfArithExpr(dsk::getResultArithmeticExpression(polandExpression)));
     }
