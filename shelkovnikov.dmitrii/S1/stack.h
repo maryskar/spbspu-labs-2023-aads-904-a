@@ -31,9 +31,14 @@ namespace dimkashelk
       {
         return *this;
       }
-      details::freeList< T >(begin_);
-      begin_ = details::copy(stack).first;
-      return *this;
+      try
+      {
+        details::freeList< T >(begin_);
+        begin_ = details::copy(stack).first;
+        return *this;
+      }
+      catch (...)
+      {}
     }
     Stack< T > &operator=(Stack< T > &&stack)
     {
