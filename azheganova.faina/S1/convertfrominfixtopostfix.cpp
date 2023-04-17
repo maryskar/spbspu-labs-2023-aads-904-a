@@ -14,11 +14,15 @@ void convertFromInfixToPostfix(Queue< std::string > & queue, Stack< std::string 
   {
     std::string element = queue.drop();
     queue.pop();
-    if (element == "(")
+    if (isDigit(element))
+    {
+      postfix.push(element);
+    }
+    else if (element == "(")
     {
       stack.push(element);
     }
-    if (element == ")")
+    else if (element == ")")
     {
       while (stack.drop() != "(")
       {
@@ -31,11 +35,7 @@ void convertFromInfixToPostfix(Queue< std::string > & queue, Stack< std::string 
       }
       stack.pop();
     }
-    if (isDigit(element))
-    {
-      postfix.push(element);
-    }
-    if (element == "+" || element == "-")
+    else if (element == "+" || element == "-")
     {
       while (!stack.isEmpty() && isOperator(stack.drop()))
       {
@@ -44,7 +44,7 @@ void convertFromInfixToPostfix(Queue< std::string > & queue, Stack< std::string 
       }
       stack.push(element);
     }
-    if (element == "*" || element == "/" || element == "%")
+    else if (element == "*" || element == "/" || element == "%")
     {
       while (!stack.isEmpty() && ((stack.drop() == "*" || stack.drop() == "/" || stack.drop() == "%")))
       {
@@ -52,6 +52,10 @@ void convertFromInfixToPostfix(Queue< std::string > & queue, Stack< std::string 
         stack.pop();
       }
       stack.push(element);
+    }
+    else
+    {
+      throw std::logic_error("error");
     }
   }
   while (!stack.isEmpty())
