@@ -96,13 +96,13 @@ long long dimkashelk::getResultArithmeticExpression(dimkashelk::Queue< dimkashel
     else
     {
       dsk::PartOfArithExpr p2 = remains.last();
-      remains.popBack();
+      remains.popFront();
       dsk::PartOfArithExpr p1 = remains.last();
-      remains.popBack();
+      remains.popFront();
       remains.pushFront(dsk::PartOfArithExpr(details::getResult(p1.getOperand(), p2.getOperand(), p.getOperator())));
     }
   }
   auto res = remains.last().getOperand();
-  remains.popBack();
+  remains.popFront();
   return res;
 }

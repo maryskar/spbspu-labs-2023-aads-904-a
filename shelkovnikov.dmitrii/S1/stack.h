@@ -70,7 +70,7 @@ namespace dimkashelk
       }
       return begin_->data;
     }
-    void popBack()
+    void popFront()
     {
       if (empty())
       {

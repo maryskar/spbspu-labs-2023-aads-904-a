@@ -18,7 +18,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
           throw std::logic_error("Check expression");
         }
         dsk::PartOfArithExpr p1 = stack.last();
-        stack.popBack();
+        stack.popFront();
         while (!p1.isBracket())
         {
           queue.push(p1);
@@ -27,7 +27,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
             throw std::logic_error("Check expression");
           }
           p1 = stack.last();
-          stack.popBack();
+          stack.popFront();
         }
       }
       else if (stack.empty())
@@ -44,7 +44,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
         else
         {
           p1 = stack.last();
-          stack.popBack();
+          stack.popFront();
           while (!isGreaterPriority(p1.getOperator(), p.getOperator()))
           {
             queue.push(p1);
@@ -53,7 +53,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
               break;
             }
             p1 = stack.last();
-            stack.popBack();
+            stack.popFront();
           }
           stack.pushFront(p);
         }
@@ -67,7 +67,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
   while (!stack.empty())
   {
     queue.push(stack.last());
-    stack.popBack();
+    stack.popFront();
   }
   return queue;
 }

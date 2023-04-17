@@ -44,12 +44,12 @@ int main(int argc, char *argv[])
   if (!answer.empty())
   {
     std::cout << answer.last().getOperand();
-    answer.popBack();
+    answer.popFront();
   }
   while (!answer.empty())
   {
     std::cout << " " << answer.last().getOperand();
-    answer.popBack();
+    answer.popFront();
   }
   std::cout << "\n";
   return 0;
