@@ -45,7 +45,6 @@ namespace dimkashelk
       catch (...)
       {
         free();
-        throw;
       }
     }
     Queue< T > &operator=(Queue< T > &&queue)
