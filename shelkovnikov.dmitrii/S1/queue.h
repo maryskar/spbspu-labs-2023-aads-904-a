@@ -43,9 +43,7 @@ namespace dimkashelk
         return *this;
       }
       catch (...)
-      {
-        free();
-      }
+      {}
     }
     Queue< T > &operator=(Queue< T > &&queue)
     {
