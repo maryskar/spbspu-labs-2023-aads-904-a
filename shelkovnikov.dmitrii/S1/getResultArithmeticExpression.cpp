@@ -1,6 +1,7 @@
-#include "getResultOfArithmeticExpression.h"
+#include "getResultArithmeticExpression.h"
 #include <limits>
 #include <stdexcept>
+#include "stack.h"
 namespace
 {
   constexpr long long max_long_long = std::numeric_limits< long long >::max();
@@ -33,9 +34,9 @@ namespace
     return isOverMult(first, second) || isUnderMult(first, second);
   }
 }
-long long details::getResult(long long first, long long second, char oper)
+long long dimkashelk::details::getResult(long long first, long long second, dimkashelk::Operator oper)
 {
-  if (oper == '+')
+  if (oper.isAdd())
   {
     if (isOverflowedAdd(first, second))
     {
@@ -43,7 +44,7 @@ long long details::getResult(long long first, long long second, char oper)
     }
     return first + second;
   }
-  if (oper == '-')
+  if (oper.isSubtraction())
   {
     if (isOverflowedAdd(first, second))
     {
@@ -51,7 +52,7 @@ long long details::getResult(long long first, long long second, char oper)
     }
     return first - second;
   }
-  if (oper == '*')
+  if (oper.isMultiplication())
   {
     if (isOverflowedMult(first, second))
     {
@@ -59,7 +60,7 @@ long long details::getResult(long long first, long long second, char oper)
     }
     return first * second;
   }
-  if (oper == '/')
+  if (oper.isDivision())
   {
     if (second == 0)
     {
@@ -67,7 +68,7 @@ long long details::getResult(long long first, long long second, char oper)
     }
     return first / second;
   }
-  if (oper == '%')
+  if (oper.isRemainder())
   {
     if (first > 0)
     {
@@ -79,4 +80,29 @@ long long details::getResult(long long first, long long second, char oper)
     }
   }
   throw std::logic_error("Not supported this operator");
+}
+long long dimkashelk::getResultArithmeticExpression(dimkashelk::Queue< dimkashelk::PartOfArithExpr > &polandExpression)
+{
+  namespace dsk = dimkashelk;
+  dsk::Stack< dsk::PartOfArithExpr > remains;
+  while (!polandExpression.empty())
+  {
+    dsk::PartOfArithExpr p = polandExpression.front();
+    polandExpression.popFront();
+    if (p.isDigit())
+    {
+      remains.pushFront(p);
+    }
+    else
+    {
+      dsk::PartOfArithExpr p2 = remains.last();
+      remains.popFront();
+      dsk::PartOfArithExpr p1 = remains.last();
+      remains.popFront();
+      remains.pushFront(dsk::PartOfArithExpr(details::getResult(p1.getOperand(), p2.getOperand(), p.getOperator())));
+    }
+  }
+  auto res = remains.last().getOperand();
+  remains.popFront();
+  return res;
 }

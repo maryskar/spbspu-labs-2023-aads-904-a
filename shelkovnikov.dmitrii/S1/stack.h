@@ -2,8 +2,7 @@
 #define SPBSPU_LABS_2023_AADS_904_A_STACK_H
 #include <cstddef>
 #include <stdexcept>
-#include "nodeOfDataClass.h"
-#include "freeList.h"
+#include "nodeOneWayList.h"
 namespace dimkashelk
 {
   template < typename T >
@@ -13,16 +12,47 @@ namespace dimkashelk
     Stack():
       begin_(nullptr)
     {}
+    Stack(const Stack< T > &stack):
+      begin_(details::copy(stack.begin_).first)
+    {}
+    Stack(Stack< T > &&stack):
+      begin_(stack.begin_)
+    {
+      stack.begin_ = nullptr;
+    }
     ~Stack()
     {
       details::freeList< T >(begin_);
-      begin_ = nullptr;
     }
-    void push(const T &rhs)
+    Stack< T > &operator=(const Stack< T > &stack)
     {
-      auto *node = new details::NodeOfDataClass< T >(rhs);
-      node->next = begin_;
-      begin_ = node;
+      if (std::addressof(stack) == this)
+      {
+        return *this;
+      }
+      try
+      {
+        details::freeList< T >(begin_);
+        begin_ = details::copy(stack).first;
+        return *this;
+      }
+      catch (...)
+      {}
+    }
+    Stack< T > &operator=(Stack< T > &&stack)
+    {
+      if (std::addressof(stack) == this)
+      {
+        return *this;
+      }
+      details::freeList< T >(begin_);
+      begin_ = stack.begin_;
+      stack.begin_ = nullptr;
+      return *this;
+    }
+    void pushFront(const T &rhs)
+    {
+      begin_ = new details::NodeOneWayList< T >(rhs, begin_);
     }
     T &last()
     {
@@ -32,13 +62,21 @@ namespace dimkashelk
       }
       return begin_->data;
     }
-    void pop_back()
+    const T &last() const
     {
       if (empty())
       {
         throw std::logic_error("Check");
       }
-      details::NodeOfDataClass< T > *node = begin_;
+      return begin_->data;
+    }
+    void popFront()
+    {
+      if (empty())
+      {
+        throw std::logic_error("Check");
+      }
+      details::NodeOneWayList< T > *node = begin_;
       begin_ = begin_->next;
       delete node;
     }
@@ -47,7 +85,7 @@ namespace dimkashelk
       return begin_ == nullptr;
     }
   private:
-    details::NodeOfDataClass< T > *begin_;
+    details::NodeOneWayList< T > *begin_;
   };
 }
 #endif
