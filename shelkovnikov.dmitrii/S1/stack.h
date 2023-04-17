@@ -23,7 +23,6 @@ namespace dimkashelk
     ~Stack()
     {
       details::freeList< T >(begin_);
-      begin_ = nullptr;
     }
     Stack< T > &operator=(const Stack< T > &stack)
     {

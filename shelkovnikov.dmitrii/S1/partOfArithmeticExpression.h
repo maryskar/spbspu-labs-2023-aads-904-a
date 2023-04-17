@@ -2,6 +2,7 @@
 #define SPBSPU_LABS_2023_AADS_904_A_PART_H
 #include <string>
 #include "parenthesis.h"
+#include "operator.h"
 namespace dimkashelk
 {
   class PartOfArithExpr
@@ -15,7 +16,7 @@ namespace dimkashelk
     PartOfArithExpr &operator=(PartOfArithExpr &&part);
     bool isDigit() const;
     bool isBracket() const;
-    char getOperator() const;
+    Operator getOperator() const;
     Parenthesis getBracket() const;
     long long getOperand() const;
   private:
@@ -24,11 +25,11 @@ namespace dimkashelk
     union element
     {
       long long operand_;
-      char operator_;
+      Operator operator_;
       Parenthesis bracket_;
       explicit element(long long o);
-      explicit element(char o);
       explicit element(const std::string &str);
+      ~element() = default;
     } element;
   };
   bool isGreaterPriority(const PartOfArithExpr &lhs, const PartOfArithExpr &rhs);

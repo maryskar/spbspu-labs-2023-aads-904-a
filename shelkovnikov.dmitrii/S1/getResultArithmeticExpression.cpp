@@ -34,9 +34,9 @@ namespace
     return isOverMult(first, second) || isUnderMult(first, second);
   }
 }
-long long dimkashelk::details::getResult(long long first, long long second, char oper)
+long long dimkashelk::details::getResult(long long first, long long second, dimkashelk::Operator oper)
 {
-  if (oper == '+')
+  if (oper.isAdd())
   {
     if (isOverflowedAdd(first, second))
     {
@@ -44,7 +44,7 @@ long long dimkashelk::details::getResult(long long first, long long second, char
     }
     return first + second;
   }
-  if (oper == '-')
+  if (oper.isSubtraction())
   {
     if (isOverflowedAdd(first, second))
     {
@@ -52,7 +52,7 @@ long long dimkashelk::details::getResult(long long first, long long second, char
     }
     return first - second;
   }
-  if (oper == '*')
+  if (oper.isMultiplication())
   {
     if (isOverflowedMult(first, second))
     {
@@ -60,7 +60,7 @@ long long dimkashelk::details::getResult(long long first, long long second, char
     }
     return first * second;
   }
-  if (oper == '/')
+  if (oper.isDivision())
   {
     if (second == 0)
     {
@@ -68,7 +68,7 @@ long long dimkashelk::details::getResult(long long first, long long second, char
     }
     return first / second;
   }
-  if (oper == '%')
+  if (oper.isRemainder())
   {
     if (first > 0)
     {

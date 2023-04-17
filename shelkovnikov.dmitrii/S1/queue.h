@@ -85,7 +85,7 @@ namespace dimkashelk
     }
     const T &front() const
     {
-      if (begin_ == nullptr)
+      if (empty())
       {
         throw std::logic_error("Check");
       }

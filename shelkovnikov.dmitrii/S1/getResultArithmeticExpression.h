@@ -6,7 +6,7 @@ namespace dimkashelk
 {
   namespace details
   {
-    long long getResult(long long first, long long second, char oper);
+    long long getResult(long long first, long long second, dimkashelk::Operator oper);
   }
   long long getResultArithmeticExpression(Queue< PartOfArithExpr > &polandExpression);
 }

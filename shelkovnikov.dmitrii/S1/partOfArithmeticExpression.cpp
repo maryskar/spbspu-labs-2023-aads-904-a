@@ -22,9 +22,6 @@ namespace
 dimkashelk::PartOfArithExpr::element::element(long long o):
   operand_(o)
 {}
-dimkashelk::PartOfArithExpr::element::element(char o):
-  operator_(o)
-{}
 dimkashelk::PartOfArithExpr::element::element(const std::string &str)
 {
   if (checkDigit(str))
@@ -39,7 +36,7 @@ dimkashelk::PartOfArithExpr::element::element(const std::string &str)
     }
     catch (...)
     {
-      operator_ = str[0];
+      operator_ = Operator(str);
     }
   }
 }
@@ -85,7 +82,7 @@ bool dimkashelk::PartOfArithExpr::isBracket() const
 {
   return isParenthesis_;
 }
-char dimkashelk::PartOfArithExpr::getOperator() const
+dimkashelk::Operator dimkashelk::PartOfArithExpr::getOperator() const
 {
   return element.operator_;
 }
@@ -103,9 +100,9 @@ bool dimkashelk::isGreaterPriority(const PartOfArithExpr &lhs, const PartOfArith
   {
     throw std::logic_error("Must be operator, not operand or brackets");
   }
-  if (lhs.getOperator() == '+' || lhs.getOperator() == '-')
+  if (lhs.getOperator().isAdd() || lhs.getOperator().isSubtraction())
   {
-    return rhs.getOperator() == '*' || rhs.getOperator() == '/' || rhs.getOperator() == '%';
+    return rhs.getOperator().isMultiplication() || rhs.getOperator().isDivision() || rhs.getOperator().isRemainder();
   }
   return false;
 }
