@@ -40,10 +40,15 @@ dimkashelk::PartOfArithExpr::element::element(const std::string &str)
     }
   }
 }
-dimkashelk::PartOfArithExpr::PartOfArithExpr(const std::string &str):
-  isNumber_(checkDigit(str)),
-  isParenthesis_(checkBracket(str)),
-  element(str)
+dimkashelk::PartOfArithExpr::PartOfArithExpr(dimkashelk::Parenthesis parenthesis):
+  isNumber_(false),
+  isParenthesis_(true),
+  element(parenthesis)
+{}
+dimkashelk::PartOfArithExpr::PartOfArithExpr(dimkashelk::Operator oper):
+  isNumber_(false),
+  isParenthesis_(false),
+  element(oper)
 {}
 dimkashelk::PartOfArithExpr::PartOfArithExpr(long long number):
   isNumber_(true),

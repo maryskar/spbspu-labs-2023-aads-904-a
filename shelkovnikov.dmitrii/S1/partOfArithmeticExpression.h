@@ -8,7 +8,8 @@ namespace dimkashelk
   class PartOfArithExpr
   {
   public:
-    explicit PartOfArithExpr(const std::string &str);
+    explicit PartOfArithExpr(Parenthesis parenthesis);
+    explicit PartOfArithExpr(Operator oper);
     explicit PartOfArithExpr(long long number);
     PartOfArithExpr(const PartOfArithExpr &part);
     PartOfArithExpr(PartOfArithExpr &&part);
