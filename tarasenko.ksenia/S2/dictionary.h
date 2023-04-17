@@ -52,8 +52,19 @@ namespace tarasenko
   class Dictionary
   {
   public:
-   Dictionary()
+   Dictionary():
+     list(),
+     compare(Compare{})
    {}
+   Dictionary(const Dictionary< Key, Value, Compare >& other):
+     list(other.list),
+     compare(other.compare)
+   {}
+   Dictionary(Dictionary< Key, Value, Compare >&& other):
+     list(std::move(other.list)),
+     compare(other.compare)
+   {}
+
    ~Dictionary()
    {
      list.clear();
