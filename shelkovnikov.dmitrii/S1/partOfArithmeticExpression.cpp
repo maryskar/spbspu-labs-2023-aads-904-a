@@ -44,42 +44,42 @@ dimkashelk::PartOfArithExpr::element::element(const std::string &str)
   }
 }
 dimkashelk::PartOfArithExpr::PartOfArithExpr(const std::string &str):
-  isDigit_(checkDigit(str)),
+  isNumber_(checkDigit(str)),
   isParenthesis_(checkBracket(str)),
   element(str)
 {}
 dimkashelk::PartOfArithExpr::PartOfArithExpr(long long number):
-  isDigit_(true),
+  isNumber_(true),
   isParenthesis_(false),
   element(number)
 {}
 dimkashelk::PartOfArithExpr::PartOfArithExpr(const PartOfArithExpr &part):
-  isDigit_(part.isDigit_),
+  isNumber_(part.isNumber_),
   isParenthesis_(part.isParenthesis_),
   element(part.element)
 {}
 dimkashelk::PartOfArithExpr::PartOfArithExpr(PartOfArithExpr &&part):
-  isDigit_(part.isDigit_),
+  isNumber_(part.isNumber_),
   isParenthesis_(part.isParenthesis_),
   element(part.element)
 {}
 dimkashelk::PartOfArithExpr &dimkashelk::PartOfArithExpr::operator=(const PartOfArithExpr &part)
 {
-  isDigit_ = part.isDigit_;
+  isNumber_ = part.isNumber_;
   isParenthesis_ = part.isParenthesis_;
   element = part.element;
   return *this;
 }
 dimkashelk::PartOfArithExpr &dimkashelk::PartOfArithExpr::operator=(dimkashelk::PartOfArithExpr &&part)
 {
-  isDigit_ = part.isDigit_;
+  isNumber_ = part.isNumber_;
   isParenthesis_ = part.isParenthesis_;
   element = part.element;
   return *this;
 }
 bool dimkashelk::PartOfArithExpr::isDigit() const
 {
-  return isDigit_;
+  return isNumber_;
 }
 bool dimkashelk::PartOfArithExpr::isBracket() const
 {

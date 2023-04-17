@@ -19,7 +19,7 @@ namespace dimkashelk
     Parenthesis getBracket() const;
     long long getOperand() const;
   private:
-    bool isDigit_;
+    bool isNumber_;
     bool isParenthesis_;
     union element
     {
