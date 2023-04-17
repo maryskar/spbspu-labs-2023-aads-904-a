@@ -3,7 +3,7 @@
 #include "read-infix-expr.hpp"
 #include "convert-infix-to-postfix.hpp"
 #include "calc-postfix-expr.hpp"
-#include "print-stack-int.hpp"
+#include "print-stack-long.hpp"
 
 int main(int argc, char ** argv)
 {
@@ -97,7 +97,7 @@ int main(int argc, char ** argv)
   }
   try
   {
-    chemodurov::printStackInt(std::cout, res);
+    chemodurov::printStackLong(std::cout, res);
   }
   catch (const std::invalid_argument & e)
   {

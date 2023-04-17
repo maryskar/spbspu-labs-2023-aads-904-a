@@ -10,43 +10,43 @@ chemodurov::Queue< chemodurov::InfixExpr > chemodurov::readInfixExpr(std::string
   {
     if (line[size2] == '(')
     {
-      InfixExpr temp(BRACE_LEFT);
+      InfixExpr temp(parenthesis_t::LEFT);
       inf.push(temp);
       size2 += 2;
     }
     else if (line[size2] == ')')
     {
-      InfixExpr temp(BRACE_RIGHT);
+      InfixExpr temp(parenthesis_t::RIGHT);
       inf.push(temp);
       size2 += 2;
     }
     else if (line[size2] == '+')
     {
-      InfixExpr temp(OPERATION_PLUS);
+      InfixExpr temp(operation_t::PLUS);
       inf.push(temp);
       size2 += 2;
     }
     else if (line[size2] == '-')
     {
-      InfixExpr temp(OPERATION_MINUS);
+      InfixExpr temp(operation_t::MINUS);
       inf.push(temp);
       size2 += 2;
     }
     else if (line[size2] == '*')
     {
-      InfixExpr temp(OPERATION_MULTIPLICATION);
+      InfixExpr temp(operation_t::MULTIPLICATION);
       inf.push(temp);
       size2 += 2;
     }
     else if (line[size2] == '/')
     {
-      InfixExpr temp(OPERATION_DIVIDE);
+      InfixExpr temp(operation_t::DIVIDE);
       inf.push(temp);
       size2 += 2;
     }
     else if (line[size2] == '%')
     {
-      InfixExpr temp(OPERATION_REMINDER_OF_DIVISION);
+      InfixExpr temp(operation_t::REMINDER_OF_DIVISION);
       inf.push(temp);
       size2 += 2;
     }

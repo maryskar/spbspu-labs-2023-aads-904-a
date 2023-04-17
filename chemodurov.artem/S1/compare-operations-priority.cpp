@@ -1,24 +1,24 @@
 #include "compare-operations-priority.hpp"
 
-int chemodurov::compareOperationsPriority(Operation lhs, Operation rhs)
+bool chemodurov::isLessPriority(chemodurov::operation_t lhs, chemodurov::operation_t rhs)
 {
   int lhs_prior = 0;
   int rhs_prior = 0;
-  if (lhs == OPERATION_MINUS || lhs == OPERATION_PLUS)
+  if (lhs == operation_t::MINUS || lhs == operation_t::PLUS)
   {
     lhs_prior = 0;
   }
-  else if (lhs == OPERATION_DIVIDE || lhs == OPERATION_REMINDER_OF_DIVISION || lhs == OPERATION_MULTIPLICATION)
+  else if (lhs == operation_t::DIVIDE || lhs == operation_t::REMINDER_OF_DIVISION || lhs == operation_t::MULTIPLICATION)
   {
     lhs_prior = 1;
   }
-  if (rhs == OPERATION_MINUS || rhs == OPERATION_PLUS)
+  if (rhs == operation_t::MINUS || rhs == operation_t::PLUS)
   {
     rhs_prior = 0;
   }
-  else if (rhs == OPERATION_DIVIDE || rhs == OPERATION_REMINDER_OF_DIVISION || rhs == OPERATION_MULTIPLICATION)
+  else if (rhs == operation_t::DIVIDE || rhs == operation_t::REMINDER_OF_DIVISION || rhs == operation_t::MULTIPLICATION)
   {
     rhs_prior = 1;
   }
-  return (rhs_prior - lhs_prior);
+  return lhs_prior < rhs_prior;
 }
