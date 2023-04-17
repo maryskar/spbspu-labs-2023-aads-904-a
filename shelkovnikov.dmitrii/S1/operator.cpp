@@ -1,6 +1,6 @@
 #include "operator.h"
 #include <stdexcept>
-dimkashelk::Operator::Operator(const std::string &str):
+dimkashelk::Operator::Operator(const char str):
   operator_(str)
 {
   if (!isOperator())
@@ -8,29 +8,27 @@ dimkashelk::Operator::Operator(const std::string &str):
     throw std::logic_error("It's not a operator");
   }
 }
-dimkashelk::Operator::~Operator()
-{}
 bool dimkashelk::Operator::isAdd()
 {
-  return operator_ == "+";
+  return operator_ == '+';
 }
 bool dimkashelk::Operator::isSubtraction()
 {
-  return operator_ == "-";
+  return operator_ == '-';
 }
 bool dimkashelk::Operator::isMultiplication()
 {
-  return operator_ == "*";
+  return operator_ == '*';
 }
 bool dimkashelk::Operator::isDivision()
 {
-  return operator_ == "/";
+  return operator_ == '/';
 }
 bool dimkashelk::Operator::isRemainder()
 {
-  return operator_ == "%";
+  return operator_ == '%';
 }
 bool dimkashelk::Operator::isOperator()
 {
-  return operator_.find_first_not_of("+-/*%") != std::string::npos;
+  return isAdd() || isSubtraction() || isMultiplication() || isDivision() || isRemainder();
 }

@@ -36,7 +36,7 @@ dimkashelk::PartOfArithExpr::element::element(const std::string &str)
     }
     catch (...)
     {
-      operator_ = Operator(str);
+      operator_ = Operator(str[0]);
     }
   }
 }

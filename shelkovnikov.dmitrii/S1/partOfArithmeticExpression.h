@@ -29,7 +29,6 @@ namespace dimkashelk
       Parenthesis bracket_;
       explicit element(long long o);
       explicit element(const std::string &str);
-      ~element() = default;
     } element;
   };
   bool isGreaterPriority(const PartOfArithExpr &lhs, const PartOfArithExpr &rhs);
