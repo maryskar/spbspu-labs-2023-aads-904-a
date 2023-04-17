@@ -31,16 +31,25 @@ namespace dimkashelk
     template< typename T >
     std::pair< NodeOneWayList< T > *, NodeOneWayList< T > * > copy(NodeOneWayList< T > *start)
     {
-      auto *new_start = new NodeOneWayList< T >(start->data);
-      start = start->next;
-      auto *cur = new_start;
-      while (start)
+      NodeOneWayList< T > *new_start = nullptr;
+      try
       {
-        cur->next = new NodeOneWayList< T >(start->data);
-        cur = cur->next;
+        new_start = new NodeOneWayList< T >(start->data);
         start = start->next;
+        auto *cur = new_start;
+        while (start)
+        {
+          cur->next = new NodeOneWayList< T >(start->data);
+          cur = cur->next;
+          start = start->next;
+        }
+        return {new_start, cur};
       }
-      return {new_start, cur};
+      catch (...)
+      {
+        freeList(new_start);
+        throw;
+      }
     }
   }
 }
