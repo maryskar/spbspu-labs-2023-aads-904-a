@@ -93,12 +93,9 @@ chemodurov::Queue< T >::Queue(const chemodurov::Queue< T > & queue):
 template< typename T >
 void chemodurov::Queue< T >::copyQueue(const Queue< T > & queue)
 {
-  List< T > * temp = queue.head_;
-  while (!queue.empty())
-  {
-    push(temp->data);
-    temp = temp->next;
-  }
+  std::pair< List< T > *, List< T > * > temp = copyList(queue.head_);
+  head_ = temp.first;
+  last_ = temp.second;
 }
 
 template< typename T >
@@ -125,7 +122,7 @@ chemodurov::Queue< T > & chemodurov::Queue< T >::operator=(const chemodurov::Que
   {
     return *this;
   }
-  deleteQueue();
+  List< T > * temp = head_;
   try
   {
     copyQueue(queue);
@@ -133,8 +130,10 @@ chemodurov::Queue< T > & chemodurov::Queue< T >::operator=(const chemodurov::Que
   catch (...)
   {
     deleteQueue();
+    head_ = temp;
     throw;
   }
+  deleteList(temp);
   return *this;
 }
 

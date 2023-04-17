@@ -88,28 +88,7 @@ void chemodurov::Stack< T >::deleteStack() noexcept
 template< typename T >
 void chemodurov::Stack< T >::copyStack(const Stack< T > & stack)
 {
-  if (stack.empty())
-  {
-    head_ = nullptr;
-    return;
-  }
-  List< T > * source = stack.head_;
-  head_ = new List< T >{source->data, nullptr};
-  List< T > * dest = head_;
-  try
-  {
-    while (source->next)
-    {
-      source = source->next;
-      dest->next = new List< T >{source->data, nullptr};
-      dest = dest->next;
-    }
-  }
-  catch (...)
-  {
-    deleteStack();
-    throw;
-  }
+  head_ = copyList(stack.head_).first;
 }
 
 template< typename T >
@@ -133,7 +112,7 @@ chemodurov::Stack< T > & chemodurov::Stack< T >::operator=(const Stack< T > & st
   {
     return *this;
   }
-  deleteStack();
+  List< T > * temp = head_;
   try
   {
     copyStack(stack);
@@ -141,8 +120,10 @@ chemodurov::Stack< T > & chemodurov::Stack< T >::operator=(const Stack< T > & st
   catch (...)
   {
     deleteStack();
+    head_ = temp;
     throw;
   }
+  deleteList(temp);
   return *this;
 }
 
