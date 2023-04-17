@@ -11,24 +11,27 @@ public:
   Queue(const Queue< T > & queue);
   ~Queue();
   void push(const T & rhs);
-  T pop();
+  void pop();
   bool isEmpty();
   T & drop();
 private:
   ListNode< T > * top_;
   ListNode< T > * last_;
+  size_t size_;
 };
 
 template< typename T >
 Queue< T >::Queue():
  top_(nullptr),
- last_(nullptr)
+ last_(nullptr),
+ size_(0)
 {}
 
 template < typename T >
-Queue< T >::Queue(const Queue< T >& queue):
+Queue< T >::Queue(const Queue< T > & queue):
   top_(nullptr),
-  last_(nullptr)
+  last_(nullptr),
+  size_(0)
 {
   ListNode< T > * tmp = queue.top_;
   while (tmp != nullptr)
@@ -47,44 +50,43 @@ Queue< T >::~Queue()
     ListNode< T > * tmp = top_->next_;
     delete top_;
     top_ = tmp;
+    size_--;
   }
 }
 
-template< typename T >
+template < typename T >
 void Queue< T >::push(const T & rhs)
 {
-  if (!last_)
+  if (top_ == nullptr)
   {
-    last_ = new ListNode< T >{rhs, nullptr};
-    top_ = last_;
-    last_->next_ = new ListNode< T >{rhs, nullptr};
-    last_ = last_->next_;
+    top_ = new ListNode< T >{rhs, nullptr};
+    last_ = top_;
   }
   else
   {
     last_->next_ = new ListNode< T >{rhs, nullptr};
     last_ = last_->next_;
   }
+  size_++;
 }
 
 template < typename T >
-T Queue< T >::pop()
+void Queue< T >::pop()
 {
   if (isEmpty())
   {
     throw;
   }
-  T value = top_->data_;
-  ListNode< T > * newhead = top_->next_;
+  ListNode< T > * tmp = top_->next_;
   delete top_;
-  top_ = newhead;
-  return value;
+  top_ = tmp;
+  size_--;
 }
 
 template< typename T >
 bool Queue< T >::isEmpty()
 {
-  return top_ == nullptr;
+  return size_ == 0;
 }
 
 template< typename T >

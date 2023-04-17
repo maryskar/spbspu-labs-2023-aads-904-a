@@ -1,6 +1,7 @@
 #include "calculate.h"
 #include <stdexcept>
 #include <limits>
+#include "checkdigit.h"
 
 long long maximum = std::numeric_limits< long long >::max();
 long long minimum = std::numeric_limits< long long >::min();
@@ -91,19 +92,12 @@ void calculatePostfix(Queue< std::string > & postfix, Stack< std::string > & ans
 {
   stack.push(postfix.drop());
   postfix.pop();
-  while (!stack.isEmpty())
+  while (!postfix.isEmpty())
   {
     std::string element;
-    if (!postfix.isEmpty())
-    {
-      element = postfix.drop();
-      postfix.pop();
-    }
-    else
-    {
-      break;
-    }
-    if (isdigit(element[0]))
+    element = postfix.drop();
+    postfix.pop();
+    if (isDigit(element))
     {
       stack.push(element);
     }

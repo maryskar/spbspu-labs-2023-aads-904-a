@@ -16,11 +16,13 @@ public:
   T & drop() const;
 private:
   ListNode< T > * top_;
+  size_t size_;
 };
 
 template< typename T >
 Stack< T >::Stack():
-  top_(nullptr)
+  top_(nullptr),
+  size_(0)
 {}
 
 template< typename T >
@@ -31,14 +33,23 @@ Stack< T >::~Stack()
     ListNode< T > * tmp = top_->next_;
     delete top_;
     top_ = tmp;
+    size_--;
   }
 }
 
-template< typename T >
+template < typename T >
 void Stack< T >::push(const T & rhs)
 {
-  ListNode< T > * tmp = new ListNode< T >{rhs, top_};
-  top_ = tmp;
+  if (top_ == nullptr)
+  {
+    top_ = new ListNode< T >{rhs, nullptr};
+  }
+  else
+  {
+    ListNode< T > * tmp = new ListNode< T >{rhs, top_};
+    top_ = tmp;
+  }
+  size_++;
 }
 
 template< typename T >
@@ -51,12 +62,13 @@ void Stack< T >::pop()
   ListNode< T > * tmp = top_->next_;
   delete top_;
   top_ = tmp;
+  size_--;
 }
 
 template< typename T >
 bool Stack< T >::isEmpty() const
 {
-  return top_ == nullptr;
+  return size_ == 0;
 }
 
 template< typename T >
@@ -68,6 +80,5 @@ T & Stack< T >::drop() const
   }
   return top_->data_;
 }
-
 
 #endif
