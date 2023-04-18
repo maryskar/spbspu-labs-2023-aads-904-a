@@ -1,5 +1,6 @@
 #include "computestr.h"
 #include <limits>
+#include "operations.h"
 
 Queue< std::string > split(std::string in)
 {

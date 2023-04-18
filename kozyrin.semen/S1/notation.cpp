@@ -1,35 +1,6 @@
 #include "notation.h"
 #include <string>
-
-bool isNumber(std::string& str)
-{
-  for (std::string::iterator i = str.begin(); i < str.end(); ++i) {
-    if (!std::isdigit(*i)) {
-      return false;
-    }
-  }
-  return true;
-}
-
-bool isLowPriority(const std::string& a)
-{
-  return a == "-" || a == "+";
-}
-
-bool isHighPriority(const std::string& a)
-{
-  return a == "*" || a == "/" || a == "%";
-}
-
-bool isLowerPriority(const std::string& a, const std::string& b)
-{
-  return isLowPriority(a) && isHighPriority(b);
-}
-
-bool isOperation(const std::string& chr)
-{
-  return chr == "+" || chr == "-" || chr == "/" || chr == "*" || chr == "%";
-}
+#include "operations.h"
 
 int getPostfix(Queue< std::string >& input, Queue< std::string >& queue)
 {
