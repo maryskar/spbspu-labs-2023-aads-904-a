@@ -14,7 +14,7 @@ int main(int argc, char** argv)
   }
   std::istream& input = argc == 2 ? fin : std::cin;
 
-  Stack< long long > stack = Stack< long long >();
+  Stack< long long > stack;
   std::string str = "";
 
   while (!input.eof()) {

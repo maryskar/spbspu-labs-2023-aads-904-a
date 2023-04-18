@@ -3,7 +3,7 @@
 
 Queue< std::string > split(std::string in)
 {
-  Queue< std::string > res = Queue< std::string >();
+  Queue< std::string > res;
   std::string elem;
   for (std::string::iterator i = in.begin(); i < in.end(); ++i) {
     if (*i == ' ') {
@@ -60,13 +60,13 @@ long long calcBinary(long long a, long long b, char op)
 
 long long computeString(std::string& str)
 {
-  Queue< std::string > queue = Queue< std::string >();
+  Queue< std::string > queue;
 
   Queue< std::string > input = split(str);
   if (getPostfix(input, queue)) {
     return 1;
   }
-  Stack< long long > stack = Stack< long long >();
+  Stack< long long > stack;
 
   while (!queue.isEmpty()) {
     std::string chr = queue.drop();

@@ -33,7 +33,7 @@ bool isOperation(const std::string& chr)
 
 int getPostfix(Queue< std::string >& input, Queue< std::string >& queue)
 {
-  Stack< std::string > stack = Stack< std::string >();
+  Stack< std::string > stack;
   std::string chr = " ";
 
   while (!input.isEmpty()) {
