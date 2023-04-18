@@ -55,7 +55,7 @@ T& Stack< T >::drop()
   }
 
   box_t< T >* top = top_->prev_;
-  T res = top_->value_;
+  T& res = top_->value_;
   top_ = top;
   return res;
 }

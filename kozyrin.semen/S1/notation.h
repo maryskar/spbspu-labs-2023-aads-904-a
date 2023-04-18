@@ -1,7 +1,5 @@
 #ifndef NOTATION_H
 #define NOTATION_H
-#include <iostream>
-#include <fstream>
 #include "queue.h"
 #include "stack.h"
 

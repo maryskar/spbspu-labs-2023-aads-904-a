@@ -73,11 +73,9 @@ T& Queue< T >::drop()
   }
 
   box_t< T >* next = tail_->next_;
-  T res = tail_->value_;
+  T& res = tail_->value_;
   tail_ = next;
-  if (tail_ != nullptr) {
-    tail_->prev_ = nullptr;
-  } else {
+  if (tail_ == nullptr) {
     head_ = nullptr;
   }
   return res;
