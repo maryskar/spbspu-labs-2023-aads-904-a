@@ -72,7 +72,10 @@ long long calcBinary(long long a, long long b, char op)
   if (op == '/') {
     return a / b;
   }
-  return mod(a, b);
+  if (op == '%') {
+    return mod(a, b);
+  }
+  throw std::logic_error("Incorrect operator");
 }
 
 long long computeString(std::string& str)
@@ -87,16 +90,15 @@ long long computeString(std::string& str)
 
   while (!queue.isEmpty()) {
     std::string chr = queue.drop();
-    if (isNumber(chr)) {
-      stack.push(std::stoll(chr));
-    } else if (isOperation(chr)) {
+    if (isOperation(chr)) {
       long long b = stack.drop();
       long long a = stack.drop();
       stack.push(calcBinary(a, b, chr[0]));
     } else {
-      throw std::logic_error("Incorrect expression");
+      stack.push(std::stoll(chr));
     }
   }
+
   long long res = 0;
   if (!stack.isEmpty()) {
     res = stack.drop();

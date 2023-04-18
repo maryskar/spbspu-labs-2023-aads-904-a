@@ -54,22 +54,19 @@ int getPostfix(Queue< std::string >& input, Queue< std::string >& queue)
       if (err) {
         throw std::logic_error("Non-matching brackets");
       }
-    } else if (isNumber(chr)) {
-      queue.push(chr);
-    } else if (!isOperation(chr)) {
-      throw std::logic_error("Incorrect character");
-    } else {
+    } else if (isOperation(chr)){
       while (!stack.isEmpty()) {
         std::string top = stack.drop();
         if (top != "(" && !isLowerPriority(top, chr)) {
           queue.push(top);
-
         } else {
           stack.push(top);
           break;
         }
       }
       stack.push(chr);
+    } else {
+      queue.push(chr);
     }
   }
   while (!stack.isEmpty()) {
