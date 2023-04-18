@@ -9,6 +9,7 @@ class Stack
   public:
     Stack();
     ~Stack();
+    Stack(const Stack< T >&  other);
     void push(const T& value);
     void pop();
     T& get() const;
@@ -65,5 +66,18 @@ Stack< T >::~Stack()
     pop();
   }
 }
+
+template< typename T >
+Stack< T >::Stack(const Stack< T >&  other):
+  value_(nullptr)
+{
+  List< T >* other_value = other.value_;
+  while (other_value != nullptr)
+  {
+    push(other_value->data_);
+    other_value = other_value->next_;
+  }
+}
+
 #endif
 
