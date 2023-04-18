@@ -6,6 +6,8 @@ template< typename T >
 class Stack {
 public:
   Stack();
+  Stack(const Stack<T>& origin);
+  Stack(const Stack<T>&& origin) noexcept;
   ~Stack();
   void push(T rhs);
   T* drop();
@@ -17,6 +19,16 @@ private:
 template< typename T >
 Stack< T >::Stack():
   top_(nullptr)
+{}
+
+template< typename T >
+Stack< T >::Stack(const Stack<T>& origin):
+  top_(origin.top_)
+{}
+
+template< typename T >
+Stack< T >::Stack(const Stack<T>&& origin) noexcept:
+  top_(origin.top_)
 {}
 
 template< typename T >

@@ -13,6 +13,8 @@ template< typename T >
 class Queue {
 public:
   Queue();
+  Queue(const Queue< T >& origin);
+  Queue(const Queue< T >&& origin) noexcept;
   ~Queue();
   void push(T rhs);
   T* drop();
@@ -26,6 +28,18 @@ template< typename T >
 Queue< T >::Queue():
   head_(nullptr),
   tail_(head_)
+{}
+
+template< typename T >
+Queue< T >::Queue(const Queue< T >& origin):
+  head_(origin.head_),
+  tail_(origin.tail_)
+{}
+
+template< typename T >
+Queue< T >::Queue(const Queue< T >&& origin) noexcept:
+  head_(origin.head_),
+  tail_(origin.tail_)
 {}
 
 template< typename T >
