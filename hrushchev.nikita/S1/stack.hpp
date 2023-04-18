@@ -9,7 +9,8 @@ class Stack
   public:
     Stack();
     ~Stack();
-    Stack(const Stack< T >&  other);
+    Stack(const Stack< T >& other);
+    Stack< T >& operator=(const Stack< T >& other);
     void push(const T& value);
     void pop();
     T& get() const;
@@ -68,7 +69,7 @@ Stack< T >::~Stack()
 }
 
 template< typename T >
-Stack< T >::Stack(const Stack< T >&  other):
+Stack< T >::Stack(const Stack< T >& other):
   value_(nullptr)
 {
   List< T >* other_value = other.value_;
@@ -77,6 +78,25 @@ Stack< T >::Stack(const Stack< T >&  other):
     push(other_value->data_);
     other_value = other_value->next_;
   }
+}
+
+template< typename T >
+Stack< T >& Stack< T >::operator=(const Stack< T >& other)
+{
+  if (this != &other)
+  {
+    while (!isEmpty())
+    {
+      pop();
+    }
+  }
+  List< T >* other_value = other.value_;
+  while (other_value != nullptr)
+  {
+    push(other_value->data_);
+    other_value = other_value->next_;
+  }
+  return *this;
 }
 
 #endif
