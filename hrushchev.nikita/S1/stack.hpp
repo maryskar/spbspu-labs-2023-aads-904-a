@@ -11,6 +11,7 @@ class Stack
     ~Stack();
     Stack(const Stack< T >& other);
     Stack< T >& operator=(const Stack< T >& other);
+    Stack(Stack< T >&& other);
     void push(const T& value);
     void pop();
     T& get() const;
@@ -97,6 +98,13 @@ Stack< T >& Stack< T >::operator=(const Stack< T >& other)
     other_value = other_value->next_;
   }
   return *this;
+}
+
+template< typename T >
+Stack< T >::Stack(Stack< T >&& other):
+  value_(other.value_)
+{
+  other.value_ = nullptr;
 }
 
 #endif
