@@ -4,7 +4,7 @@
 
 using namespace bowlstalls;
 
-Queue< std::string > split(std::string in)
+Queue< std::string > split(const std::string& in)
 {
   Queue< std::string > res;
   std::string elem;
@@ -81,7 +81,7 @@ long long calcBinary(long long a, long long b, char op)
   throw std::logic_error("Incorrect operator");
 }
 
-long long computeString(std::string& str)
+long long computeString(const std::string& str)
 {
   Queue< std::string > queue;
   Queue< std::string > input = split(str);

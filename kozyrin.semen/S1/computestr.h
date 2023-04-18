@@ -2,6 +2,6 @@
 #define COMPUTESTR_H
 #include "notation.h"
 
-long long computeString(std::string& str);
+long long computeString(const std::string& str);
 
 #endif

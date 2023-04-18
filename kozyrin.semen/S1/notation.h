@@ -4,7 +4,7 @@
 #include "stack.h"
 
 namespace bowlstalls {
-  void getPostfix(Queue< std::string >& input, Queue< std::string >& queue);
+  void getPostfix(Queue< std::string >& src, Queue< std::string >& dest);
 }
 
 #endif
