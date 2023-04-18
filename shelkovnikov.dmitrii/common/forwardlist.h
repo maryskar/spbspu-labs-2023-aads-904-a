@@ -15,12 +15,14 @@ namespace dimkashelk
   using const_iterator = dimkashelk::ForwardListIteratorConst< T >;
   public:
     ForwardList():
-      begin_(nullptr),
-      end_(nullptr)
+      fakeNode_(new (buffer) details::NodeForwardList< T >()),
+      begin_(fakeNode_),
+      end_(fakeNode_)
     {}
     ForwardList(const ForwardList< T > &forwardList):
-      begin_(nullptr),
-      end_(nullptr)
+      fakeNode_(new (buffer) details::NodeForwardList< T >()),
+      begin_(fakeNode_),
+      end_(fakeNode_)
     {
       copy(forwardList);
     }
@@ -28,8 +30,8 @@ namespace dimkashelk
       begin_(forwardList.begin_),
       end_(forwardList.end_)
     {
-      forwardList.begin_ = nullptr;
-      forwardList.end_ = nullptr;
+      forwardList.begin_ = forwardList.fakeNode_;
+      forwardList.end_ = forwardList.fakeNode_;
     }
     ~ForwardList()
     {
@@ -53,8 +55,8 @@ namespace dimkashelk
       }
       begin_ = forwardList.begin_;
       end_ = forwardList.end_;
-      forwardList.begin_ = nullptr;
-      forwardList.end_ = nullptr;
+      forwardList.begin_ = forwardList.fakeNode_;
+      forwardList.end_ = forwardList.fakeNode_;
       return *this;
     }
     void pushFront(const T &data)
@@ -118,8 +120,8 @@ namespace dimkashelk
         begin_ = begin_->next;
         delete node;
       }
-      begin_ = nullptr;
-      end_ = nullptr;
+      begin_ = fakeNode_;
+      end_ = fakeNode_;
     }
     bool empty()
     {
@@ -131,7 +133,7 @@ namespace dimkashelk
     }
     iterator end()
     {
-      return iterator(nullptr);
+      return iterator(fakeNode_);
     }
     const_iterator cbegin() const
     {
@@ -139,9 +141,11 @@ namespace dimkashelk
     }
     const_iterator cend() const
     {
-      return const_iterator(nullptr);
+      return const_iterator(fakeNode_);
     }
   private:
+    char buffer[sizeof(details::NodeForwardList< T >)];
+    details::NodeForwardList< T > *fakeNode_;
     details::NodeForwardList< T > *begin_;
     details::NodeForwardList< T > *end_;
     void copy(const ForwardList< T > &forwardList)
