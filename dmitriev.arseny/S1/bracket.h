@@ -6,15 +6,15 @@
 class Bracket : public Expression
 {
 public:
-	explicit Bracket(char bracket);
-	Bracket(const Bracket& otherBracket);
-	Bracket(Bracket&& otherBracket);
-	char getCondition() override;
-	bool isOpen();
-	bool isClose();
+  explicit Bracket(char bracket);
+  Bracket(const Bracket& otherBracket);
+  Bracket(Bracket&& otherBracket);
+  char getCondition() override;
+  bool isOpen();
+  bool isClose();
 
 private:
-	char bracket;
+  char bracket;
 };
 
 #endif

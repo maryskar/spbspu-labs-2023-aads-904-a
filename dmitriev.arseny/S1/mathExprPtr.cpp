@@ -29,28 +29,28 @@ Expression* defineMathSymb(std::string inp)
 }
 
 
-ExpressionU::ExpressionU() :
+ExpressionU::ExpressionU():
   eu(nullptr),
   countPtr(new unsigned(0))
 {
 
 }
 
-ExpressionU::ExpressionU(std::string inp) :
+ExpressionU::ExpressionU(std::string inp):
   eu(defineMathSymb(inp)),
   countPtr(new unsigned(1))
 {
 
 }
 
-ExpressionU::ExpressionU(long long inp) :
+ExpressionU::ExpressionU(long long inp):
   eu(new Number(inp)),
   countPtr(new unsigned(1))
 {
 
 }
 
-ExpressionU::ExpressionU(const ExpressionU& otherExprU) :
+ExpressionU::ExpressionU(const ExpressionU& otherExprU):
   eu(otherExprU.eu),
   countPtr(otherExprU.countPtr)
 {
