@@ -3,10 +3,10 @@
 #include <stdexcept>
 
 template< typename T >
-struct qBox {
+struct box_t {
   T value_ = 0;
-  qBox< T >* prev_ = nullptr;
-  qBox< T >* next_ = nullptr;
+  box_t< T >* prev_ = nullptr;
+  box_t< T >* next_ = nullptr;
 };
 
 template< typename T >
@@ -15,11 +15,11 @@ public:
   Queue();
   ~Queue();
   void push(T rhs);
-  T drop();
+  T* drop();
   bool isEmpty();
 private:
-  qBox< T >* head_ = nullptr;
-  qBox< T >* tail_ = nullptr;
+  box_t< T >* head_ = nullptr;
+  box_t< T >* tail_ = nullptr;
 };
 
 template< typename T >
@@ -32,7 +32,7 @@ template< typename T >
 Queue< T >::~Queue()
 {
   while (head_ != nullptr) {
-    qBox< T >* next = head_->prev_;
+    box_t< T >* next = head_->prev_;
     delete head_;
     head_ = next;
   }
@@ -41,7 +41,7 @@ Queue< T >::~Queue()
 template< typename T >
 void Queue< T >::push(const T rhs)
 {
-  qBox< T >* head = new qBox< T >{rhs, head_, nullptr};
+  box_t< T >* head{rhs, head_, nullptr};
   if (head_ == nullptr) {
     head_ = head;
     tail_ = head;
@@ -52,15 +52,14 @@ void Queue< T >::push(const T rhs)
 }
 
 template<typename T >
-T Queue< T >::drop()
+T* Queue< T >::drop()
 {
   if (head_ == nullptr) {
     throw std::length_error("Nothing to drop");
   }
 
-  qBox< T >* next = tail_->next_;
+  box_t< T >* next = tail_->next_;
   T res = tail_->value_;
-  delete tail_;
   tail_ = next;
   if (tail_ != nullptr) {
     tail_->prev_ = nullptr;
