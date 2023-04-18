@@ -112,6 +112,13 @@ namespace dimkashelk
     {
       insertAfter(iterator(it.ptr_), data);
     }
+    iterator eraseAfter(const const_iterator &it)
+    {
+      auto next = it.ptr_->next;
+      it.ptr_->next = next->next;
+      delete next;
+      return iterator(it.ptr_->next);
+    }
     void free()
     {
       while (begin_)
