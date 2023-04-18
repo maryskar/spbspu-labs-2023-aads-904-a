@@ -8,12 +8,12 @@ Queue< std::string > split(std::string in)
 {
   Queue< std::string > res;
   std::string elem;
-  for (std::string::iterator i = in.begin(); i < in.end(); ++i) {
-    if (*i == ' ') {
+  for (size_t i = 0; i < in.length(); ++i) {
+    if (in[i] == ' ') {
       res.push(elem);
       elem = "";
     } else {
-      elem.push_back(*i);
+      elem.push_back(in[i]);
     }
   }
   if (!elem.empty()) {
