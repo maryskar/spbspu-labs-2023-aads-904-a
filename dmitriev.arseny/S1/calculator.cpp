@@ -1,52 +1,51 @@
 #include "calculator.h"
-#include "mathExpression.h"
-#include "number.h"
-#include "operator.h"
-#include "bracket.h"
+#include "mathExprPtr.h"
 #include "stack.h"
 #include "queue.h"
 
 #include <string>
 
-Queue< Expression* > getQueueFromInput(std::string stringInp);
-void calculate(Stack< Expression* >& postStack);
-bool isOperator(char inp);
-bool isBracket(char inp);
+Queue< ExpressionU > getQueueFromInput(std::string stringInp);
 
 long long calculateTheExpression(std::string stringInp)
 {
-  Queue< Expression* > infQueue;
-  Stack< Expression* > postStack;
-  Stack< Expression* > stack;
+  Queue< ExpressionU > infQueue = getQueueFromInput(stringInp);
+  Stack< ExpressionU > postStack;
+  Stack< ExpressionU > stack;
 
-  infQueue = getQueueFromInput(stringInp);
 
   while (!infQueue.isEmpty())
   {
-    if (infQueue.getTopData()->isBracket())
+    if (infQueue.getTopData().isBracket())
     {
-      Bracket* br = dynamic_cast< Bracket* >(infQueue.getTopData());
-      if (br->isOpen())
+      if (infQueue.getTopData().getBracket().isOpen())
       {
         stack.push(infQueue.getTopData());
         infQueue.popBack();
       }
       else
       {
-        while (!stack.getTopData()->isBracket())
+        while (!stack.getTopData().isBracket())
         {
           postStack.push(stack.getTopData());
           stack.popBack();
 
-          calculate(postStack);
+          ExpressionU op = postStack.getTopData();
+          postStack.popBack();
+          ExpressionU n1 = postStack.getTopData();
+          postStack.popBack();
+          ExpressionU n2 = postStack.getTopData();
+          postStack.popBack();
+
+          postStack.push(op.calculate(n1, n2));
         }
         stack.popBack();
         infQueue.popBack();
       }
     }
-    else if (infQueue.getTopData()->isOperator())
+    else if (infQueue.getTopData().isOperator())
     {
-      if (stack.isEmpty() || stack.getTopData()->isBracket())
+      if (stack.isEmpty() || stack.getTopData().isBracket())
       {
         stack.push(infQueue.getTopData());
         infQueue.popBack();
@@ -54,10 +53,8 @@ long long calculateTheExpression(std::string stringInp)
         continue;
       }
 
-      Operator* infOper = dynamic_cast< Operator* >(infQueue.getTopData());
-      Operator* stkOper = dynamic_cast< Operator* >(stack.getTopData());
 
-      if (infOper->getPriority() > stkOper->getPriority())
+      if (infQueue.getTopData().getOperator().getPriority() > stack.getTopData().getOperator().getPriority())
       {
         stack.push(infQueue.getTopData());
         infQueue.popBack();
@@ -66,7 +63,16 @@ long long calculateTheExpression(std::string stringInp)
       {
         postStack.push(stack.getTopData());
         stack.popBack();
-        calculate(postStack);
+
+        ExpressionU op = postStack.getTopData();
+        postStack.popBack();
+        ExpressionU n1 = postStack.getTopData();
+        postStack.popBack();
+        ExpressionU n2 = postStack.getTopData();
+        postStack.popBack();
+
+        postStack.push(op.calculate(n1, n2));
+
         stack.push(infQueue.getTopData());
         infQueue.popBack();
       }
@@ -80,43 +86,38 @@ long long calculateTheExpression(std::string stringInp)
 
   while (!stack.isEmpty())
   {
-    if (stack.getTopData()->isBracket())
+    if (stack.getTopData().isBracket())
     {
       throw std::logic_error("logic_error");
     }
     postStack.push(stack.getTopData());
     stack.popBack();
 
-    calculate(postStack);
+    ExpressionU op = postStack.getTopData();
+    postStack.popBack();
+    ExpressionU n1 = postStack.getTopData();
+    postStack.popBack();
+    ExpressionU n2 = postStack.getTopData();
+    postStack.popBack();
+
+    postStack.push(op.calculate(n1, n2));
   }
 
-  Number* result = dynamic_cast< Number* >(postStack.getTopData());
-  return result->getNumber();
+
+  return postStack.getTopData().getNumber().getLongLong();
 }
 
 
-Queue< Expression* > getQueueFromInput(std::string stringInp)
+Queue< ExpressionU > getQueueFromInput(std::string stringInp)
 {
-  Queue< Expression* > infQueue;
+  Queue< ExpressionU > infQueue;
   std::string curr = "";
 
   for (size_t i = 0; stringInp[i] != '\0'; i++)
   {
     if (stringInp[i] == ' ')
     {
-      if (isBracket(curr[0]))
-      {
-        infQueue.push(new Bracket(curr[0]));
-      }
-      else if (isOperator(curr[0]))
-      {
-        infQueue.push(new Operator(curr[0]));
-      }
-      else
-      {
-        long long inp = std::stoll(curr);
-        infQueue.push(new Number(inp));
-      }
+      infQueue.push(curr);
 
       curr = "";
     }
@@ -125,42 +126,7 @@ Queue< Expression* > getQueueFromInput(std::string stringInp)
       curr = curr + stringInp[i];
     }
   }
-
-  if (isBracket(curr[0]))
-  {
-    infQueue.push(new Bracket(curr[0]));
-  }
-  else if (isOperator(curr[0]))
-  {
-    infQueue.push(new Operator(curr[0]));
-  }
-  else
-  {
-    long long inp = std::stoll(curr);
-    infQueue.push(new Number(inp));
-  }
+  infQueue.push(curr);
 
   return infQueue;
-}
-
-void calculate(Stack< Expression* >& postStack)
-{
-  Operator* oper = dynamic_cast< Operator* >(postStack.getTopData());
-  postStack.popBack();
-  Number* p1 = dynamic_cast< Number* >(postStack.getTopData());
-  postStack.popBack();
-  Number* p2 = dynamic_cast< Number* >(postStack.getTopData());
-  postStack.popBack();
-
-  postStack.push(new Number(oper->calculate(p1->getNumber(), p2->getNumber())));
-}
-
-bool isOperator(char inp)
-{
-  return (inp == '+') || (inp == '-') || (inp == '*') || (inp == '/') || (inp == '%');
-}
-
-bool isBracket(char inp)
-{
-  return (inp == '(') || (inp == ')');
 }
