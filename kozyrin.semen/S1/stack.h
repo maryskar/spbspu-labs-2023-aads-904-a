@@ -16,7 +16,7 @@ private:
 
 template< typename T >
 Stack< T >::Stack():
-top_(nullptr)
+  top_(nullptr)
 {}
 
 template< typename T >
