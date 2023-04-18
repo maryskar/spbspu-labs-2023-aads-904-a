@@ -55,7 +55,7 @@ Queue< T >::~Queue()
 template< typename T >
 void Queue< T >::push(const T rhs)
 {
-  box_t< T >* head{rhs, head_, nullptr};
+  box_t< T >* head = new box_t<T>{rhs, head_, nullptr};
   if (head_ == nullptr) {
     head_ = head;
     tail_ = head;
