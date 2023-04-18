@@ -2,13 +2,13 @@
 #include <string>
 #include "operations.h"
 
-int getPostfix(Queue< std::string >& input, Queue< std::string >& queue)
+void getPostfix(Queue< std::string >& src, Queue< std::string >& dest)
 {
   Stack< std::string > stack;
   std::string chr = " ";
 
-  while (!input.isEmpty()) {
-    chr = input.drop();
+  while (!src.isEmpty()) {
+    chr = src.drop();
 
     if (chr == "(") {
       stack.push(chr);
@@ -20,7 +20,7 @@ int getPostfix(Queue< std::string >& input, Queue< std::string >& queue)
           err = false;
           break;
         }
-        queue.push(top);
+        dest.push(top);
       }
       if (err) {
         throw std::logic_error("Non-matching brackets");
@@ -29,7 +29,7 @@ int getPostfix(Queue< std::string >& input, Queue< std::string >& queue)
       while (!stack.isEmpty()) {
         std::string top = stack.drop();
         if (top != "(" && !isLowerPriority(top, chr)) {
-          queue.push(top);
+          dest.push(top);
         } else {
           stack.push(top);
           break;
@@ -37,11 +37,10 @@ int getPostfix(Queue< std::string >& input, Queue< std::string >& queue)
       }
       stack.push(chr);
     } else {
-      queue.push(chr);
+      dest.push(chr);
     }
   }
   while (!stack.isEmpty()) {
-    queue.push(stack.drop());
+    dest.push(stack.drop());
   }
-  return 0;
 }

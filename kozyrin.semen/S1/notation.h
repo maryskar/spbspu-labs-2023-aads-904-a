@@ -3,6 +3,6 @@
 #include "queue.h"
 #include "stack.h"
 
-int getPostfix(Queue< std::string >& input, Queue< std::string >& queue);
+void getPostfix(Queue< std::string >& input, Queue< std::string >& queue);
 
 #endif

@@ -82,11 +82,8 @@ long long calcBinary(long long a, long long b, char op)
 long long computeString(std::string& str)
 {
   Queue< std::string > queue;
-
   Queue< std::string > input = split(str);
-  if (getPostfix(input, queue)) {
-    return 1;
-  }
+  getPostfix(input, queue);
   Stack< long long > stack;
 
   while (!queue.isEmpty()) {
