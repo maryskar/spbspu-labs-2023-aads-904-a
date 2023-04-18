@@ -10,7 +10,7 @@ public:
   Stack(const Stack<T>&& origin) noexcept;
   ~Stack();
   void push(T rhs);
-  T* drop();
+  T& drop();
   bool isEmpty();
 private:
   box_t< T >* top_;
@@ -48,7 +48,7 @@ void Stack< T >::push(const T rhs)
 }
 
 template< typename T >
-T* Stack< T >::drop()
+T& Stack< T >::drop()
 {
   if (top_ == nullptr) {
     throw std::length_error("Nothing to drop");

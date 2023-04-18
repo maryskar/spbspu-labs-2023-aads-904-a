@@ -17,7 +17,7 @@ public:
   Queue(const Queue< T >&& origin) noexcept;
   ~Queue();
   void push(T rhs);
-  T* drop();
+  T& drop();
   bool isEmpty();
 private:
   box_t< T >* head_ = nullptr;
@@ -66,7 +66,7 @@ void Queue< T >::push(const T rhs)
 }
 
 template<typename T >
-T* Queue< T >::drop()
+T& Queue< T >::drop()
 {
   if (head_ == nullptr) {
     throw std::length_error("Nothing to drop");
