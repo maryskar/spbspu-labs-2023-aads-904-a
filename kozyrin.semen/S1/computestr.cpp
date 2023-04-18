@@ -24,32 +24,49 @@ long long mod(long long a, long long b)
   return (a > 0) == (b > 0) ? a - b * (a / b) : a - b * (a / b - 1);
 }
 
-bool isOverflow(long long a, long long b, char op)
+bool isNeg(long long n) {
+  return n == std::abs(n);
+}
+
+bool addOverflow(long long a, long long b)
 {
-  if (op == '+' && a > 0 && b > 0) {
-    return std::numeric_limits< long long >::max() - a < b;
-  }
-  if (op == '-' && a < 0 && b < 0) {
-    return a - std::numeric_limits< long long >::min() < b;
-  }
-  if (op == '*') {
-    return std::abs(std::numeric_limits< long long >::max()) / a < std::abs(b);
+  if (isNeg(a) == isNeg(b)) {
+    return std::numeric_limits< long long >::max() - std::abs(a) < std::abs(b);
   }
   return false;
 }
 
+bool subOverflow(long long a, long long b)
+{
+  if (isNeg(a) != isNeg(b)) {
+    return std::numeric_limits< long long >::max() - std::abs(a) < std::abs(b);
+  }
+  return false;
+}
+
+bool multOverflow(long long a, long long b)
+{
+  return std::abs(std::numeric_limits< long long >::max() / a) < std::abs(b);
+}
+
 long long calcBinary(long long a, long long b, char op)
 {
-  if (isOverflow(a, b, op)) {
-    throw std::overflow_error("Overflow");
-  }
   if (op == '+') {
+    if (addOverflow(a, b)){
+      throw std::overflow_error("Overflow");
+    }
     return a + b;
   }
   if (op == '-') {
+    if (subOverflow(a, b)){
+      throw std::overflow_error("Overflow");
+    }
     return a - b;
   }
   if (op == '*') {
+    if (multOverflow(a, b)){
+      throw std::overflow_error("Overflow");
+    }
     return a * b;
   }
   if (op == '/') {
