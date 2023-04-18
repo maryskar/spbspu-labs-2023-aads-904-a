@@ -2,6 +2,8 @@
 #include <limits>
 #include "operations.h"
 
+using namespace bowlstalls;
+
 Queue< std::string > split(std::string in)
 {
   Queue< std::string > res;

@@ -3,6 +3,8 @@
 #include "queue.h"
 #include "stack.h"
 
-void getPostfix(Queue< std::string >& input, Queue< std::string >& queue);
+namespace bowlstalls {
+  void getPostfix(Queue< std::string >& input, Queue< std::string >& queue);
+}
 
 #endif

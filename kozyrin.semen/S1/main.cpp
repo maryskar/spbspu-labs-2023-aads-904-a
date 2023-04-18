@@ -4,6 +4,8 @@
 
 int main(int argc, char** argv)
 {
+  using namespace bowlstalls;
+
   std::ifstream fin;
   if (argc == 2) {
     fin.open(argv[1]);

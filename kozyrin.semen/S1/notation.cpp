@@ -2,6 +2,8 @@
 #include <string>
 #include "operations.h"
 
+using namespace bowlstalls;
+
 void getPostfix(Queue< std::string >& src, Queue< std::string >& dest)
 {
   Stack< std::string > stack;
