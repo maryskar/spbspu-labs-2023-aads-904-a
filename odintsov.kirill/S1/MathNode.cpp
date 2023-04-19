@@ -1,5 +1,6 @@
 #include "MathNode.hpp"
 
+#include <cctype>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -48,14 +49,28 @@ odintsov::MathNode::MathNode(char paren):
   }
 }
 
+bool isNumeric(const std::string& str)
+{
+  if (str.empty()) {
+    return false;
+  }
+  std::string::const_iterator c = str.begin();
+  if (*c == '-') {
+    c++;
+  }
+  while (c != str.end() && std::isdigit(*c)) {
+    c++;
+  }
+  return c == str.end();
+}
+
 odintsov::MathNode::MathNode(const std::string& str):
   data_{0}
 {
-  try {
+  if (isNumeric(str)) {
     data_.operand = stoll(str);
     tag_ = Tag::Operand;
     return;
-  } catch (const std::invalid_argument& e) {
   }
   if (str.size() != 1) {
     throw std::invalid_argument("Incorrect operator/operand");
