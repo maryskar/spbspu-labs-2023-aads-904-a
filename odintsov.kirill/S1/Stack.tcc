@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include <tuple>
 
 template< typename T >
 odintsov::Stack< T >::Stack():
