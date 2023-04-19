@@ -3,8 +3,10 @@
 #include <limits>
 #include <stdexcept>
 
-constexpr long long minLL = std::numeric_limits< long long >::min();
-constexpr long long maxLL = std::numeric_limits< long long >::max();
+namespace {
+  constexpr long long minLL = std::numeric_limits< long long >::min();
+  constexpr long long maxLL = std::numeric_limits< long long >::max();
+}
 
 long long add(long long lhs, long long rhs)
 {
