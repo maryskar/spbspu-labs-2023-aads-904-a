@@ -15,6 +15,7 @@ namespace bowlstalls {
     T& drop();
     bool isEmpty();
   private:
+    T value_;
     box_t< T >* head_ = nullptr;
     box_t< T >* tail_ = nullptr;
   };
@@ -68,12 +69,13 @@ namespace bowlstalls {
     }
 
     box_t< T >* next = tail_->next_;
-    T& res = tail_->value_;
+    value_ = tail_->value_;
+    delete tail_;
     tail_ = next;
     if (tail_ == nullptr) {
       head_ = nullptr;
     }
-    return res;
+    return value_;
   }
 
   template< typename T >
