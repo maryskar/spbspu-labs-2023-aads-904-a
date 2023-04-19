@@ -72,7 +72,9 @@ namespace bowlstalls {
     value_ = tail_->value_;
     delete tail_;
     tail_ = next;
-    if (tail_ == nullptr) {
+    if (tail_ != nullptr) {
+      tail_->prev_ = nullptr;
+    } else {
       head_ = nullptr;
     }
     return value_;
