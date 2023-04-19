@@ -7,6 +7,23 @@
 
 #include "Operator.hpp"
 
+namespace {
+  bool isNumeric(const std::string& str)
+  {
+    if (str.empty()) {
+      return false;
+    }
+    std::string::const_iterator c = str.begin();
+    if (*c == '-') {
+      c++;
+    }
+    while (c != str.end() && std::isdigit(*c)) {
+      c++;
+    }
+    return c == str.end();
+  }
+}
+
 odintsov::MathNode::MathNode(const MathNode& n):
   tag_(n.tag_),
   data_{0}
@@ -47,21 +64,6 @@ odintsov::MathNode::MathNode(char paren):
   if (paren != '(' && paren != ')') {
     throw std::invalid_argument("Incorrect parenthesis");
   }
-}
-
-bool isNumeric(const std::string& str)
-{
-  if (str.empty()) {
-    return false;
-  }
-  std::string::const_iterator c = str.begin();
-  if (*c == '-') {
-    c++;
-  }
-  while (c != str.end() && std::isdigit(*c)) {
-    c++;
-  }
-  return c == str.end();
 }
 
 odintsov::MathNode::MathNode(const std::string& str):
