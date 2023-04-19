@@ -75,7 +75,9 @@ unsigned short getOperatorPriority(char c)
   return 0;
 }
 
-odintsov::Operator::funcPtr getOperatorFunction(char c)
+using funcPtr = long long (*)(long long, long long);
+
+funcPtr getOperatorFunction(char c)
 {
   switch (c) {
   case '+':
