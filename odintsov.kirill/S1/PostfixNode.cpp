@@ -17,10 +17,15 @@ namespace {
     if (*c == '-') {
       c++;
     }
-    while (c != str.end() && std::isdigit(*c)) {
-      c++;
+    if (c == str.end()) {
+      return false;
     }
-    return c == str.end();
+    while (c != str.end()) {
+      if (!std::isdigit(*c++)) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 
