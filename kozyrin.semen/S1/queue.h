@@ -1,15 +1,9 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 #include <stdexcept>
+#include "box.h"
 
 namespace bowlstalls {
-  template< typename T >
-  struct box_t {
-    T value_ = 0;
-    box_t< T >* prev_ = nullptr;
-    box_t< T >* next_ = nullptr;
-  };
-
   template< typename T >
   class Queue {
   public:

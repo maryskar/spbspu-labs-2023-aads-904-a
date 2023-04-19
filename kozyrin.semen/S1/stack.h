@@ -1,6 +1,7 @@
 #ifndef STACK_H
 #define STACK_H
 #include <stdexcept>
+#include "box.h"
 
 namespace bowlstalls {
   template< typename T >
