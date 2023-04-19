@@ -1,26 +1,23 @@
-#ifndef MATHNODE_HPP
-#define MATHNODE_HPP
+#ifndef POSTFIXNODE_HPP
+#define POSTFIXNODE_HPP
 
 #include <string>
 
 #include "Operator.hpp"
 
 namespace odintsov {
-  class MathNode {
+  class PostfixNode {
    public:
     enum class Tag {
       Operand,
-      Operator,
-      OpenParen,
-      CloseParen
+      Operator
     };
 
-    MathNode(const MathNode& n);
-    MathNode(MathNode&& n);
-    MathNode(long long operand);
-    MathNode(const odintsov::Operator& oper);
-    MathNode(char paren);
-    MathNode(const std::string& str);
+    PostfixNode(const PostfixNode& n);
+    PostfixNode(PostfixNode&& n);
+    PostfixNode(long long operand);
+    PostfixNode(const odintsov::Operator& oper);
+    PostfixNode(const std::string& str);
 
     Tag getTag() const;
 

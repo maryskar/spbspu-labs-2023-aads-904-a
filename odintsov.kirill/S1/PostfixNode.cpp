@@ -1,4 +1,4 @@
-#include "MathNode.hpp"
+#include "PostfixNode.hpp"
 
 #include <cctype>
 #include <iostream>
@@ -24,7 +24,7 @@ namespace {
   }
 }
 
-odintsov::MathNode::MathNode(const MathNode& n):
+odintsov::PostfixNode::PostfixNode(const PostfixNode& n):
   tag_(n.tag_),
   data_{0}
 {
@@ -40,33 +40,24 @@ odintsov::MathNode::MathNode(const MathNode& n):
   }
 }
 
-odintsov::MathNode::MathNode(MathNode&& n):
+odintsov::PostfixNode::PostfixNode(PostfixNode&& n):
   tag_(n.tag_),
   data_(n.data_)
 {
   n.data_.operand = 0;
 }
 
-odintsov::MathNode::MathNode(long long operand):
+odintsov::PostfixNode::PostfixNode(long long operand):
   tag_(Tag::Operand),
   data_{.operand = operand}
 {}
 
-odintsov::MathNode::MathNode(const odintsov::Operator& oper):
+odintsov::PostfixNode::PostfixNode(const odintsov::Operator& oper):
   tag_(Tag::Operator),
   data_{.oper = oper}
 {}
 
-odintsov::MathNode::MathNode(char paren):
-  tag_(paren == '(' ? Tag::OpenParen : Tag::CloseParen),
-  data_{0}
-{
-  if (paren != '(' && paren != ')') {
-    throw std::invalid_argument("Incorrect parenthesis");
-  }
-}
-
-odintsov::MathNode::MathNode(const std::string& str):
+odintsov::PostfixNode::PostfixNode(const std::string& str):
   data_{0}
 {
   if (isNumeric(str)) {
@@ -77,24 +68,16 @@ odintsov::MathNode::MathNode(const std::string& str):
   if (str.size() != 1) {
     throw std::invalid_argument("Incorrect operator/operand");
   }
-  char c = str[0];
-  if (c == '(') {
-    tag_ = Tag::OpenParen;
-    return;
-  } else if (c == ')') {
-    tag_ = Tag::CloseParen;
-    return;
-  }
-  new (&data_.oper) odintsov::Operator(c);
+  new (&data_.oper) odintsov::Operator(str[0]);
   tag_ = Tag::Operator;
 }
 
-odintsov::MathNode::Tag odintsov::MathNode::getTag() const
+odintsov::PostfixNode::Tag odintsov::PostfixNode::getTag() const
 {
   return tag_;
 }
 
-long long odintsov::MathNode::getOperand() const
+long long odintsov::PostfixNode::getOperand() const
 {
   if (tag_ != Tag::Operand) {
     throw std::logic_error("Invalid attempt to interpret node as operand");
@@ -102,12 +85,12 @@ long long odintsov::MathNode::getOperand() const
   return data_.operand;
 }
 
-odintsov::Operator& odintsov::MathNode::getOperator()
+odintsov::Operator& odintsov::PostfixNode::getOperator()
 {
-  return const_cast< odintsov::Operator& >(const_cast< const odintsov::MathNode* >(this)->getOperator());
+  return const_cast< odintsov::Operator& >(const_cast< const odintsov::PostfixNode* >(this)->getOperator());
 }
 
-const odintsov::Operator& odintsov::MathNode::getOperator() const
+const odintsov::Operator& odintsov::PostfixNode::getOperator() const
 {
   if (tag_ != Tag::Operator) {
     throw std::logic_error("Invalid attempt to interpret node as operator");

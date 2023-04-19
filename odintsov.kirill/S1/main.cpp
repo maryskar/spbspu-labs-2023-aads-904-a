@@ -3,8 +3,8 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "InfixQueue.hpp"
 #include "Stack.hpp"
-#include "solveExpression.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
       if (exprStr.empty()) {
         continue;
       }
-      results.push(odintsov::solveExpression(exprStr));
+      results.push(odintsov::InfixQueue(exprStr).solve());
     }
   } catch (const std::exception& e) {
     std::cerr << e.what() << '\n';
