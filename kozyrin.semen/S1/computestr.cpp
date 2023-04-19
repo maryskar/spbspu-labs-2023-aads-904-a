@@ -1,6 +1,7 @@
 #include "computestr.h"
 #include <limits>
 #include "operations.h"
+#include <iostream>
 
 using namespace bowlstalls;
 
@@ -42,7 +43,7 @@ bool addOverflow(long long a, long long b)
 bool subOverflow(long long a, long long b)
 {
   if (isNeg(a) != isNeg(b)) {
-    return std::numeric_limits< long long >::min() + std::abs(a) < -std::abs(b);
+    return std::numeric_limits< long long >::min() + std::abs(a) > -std::abs(b);
   }
   return false;
 }
