@@ -69,11 +69,7 @@ const T & chemodurov::Queue< T >::getFromQueue() const
 template< typename T >
 T & chemodurov::Queue< T >::getFromQueue()
 {
-  if (!head_)
-  {
-    throw std::logic_error("Empty queue");
-  }
-  return (*head_).data;
+  return const_cast< T & >((static_cast< const Queue< T > & >(*this)).getFromQueue());
 }
 
 template< typename T >
