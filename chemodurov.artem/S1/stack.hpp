@@ -36,7 +36,7 @@ chemodurov::Stack< T >::Stack():
 template< typename T >
 chemodurov::Stack< T >::~Stack()
 {
-  while (head_)
+  while (!empty())
   {
     List< T > * temp = head_->next;
     delete head_;
@@ -60,7 +60,7 @@ T & chemodurov::Stack< T >::getFromStack()
 template< typename T >
 const T & chemodurov::Stack< T >::getFromStack() const
 {
-  if (!head_)
+  if (empty())
   {
     throw std::logic_error("Empty stack");
   }
@@ -70,7 +70,7 @@ const T & chemodurov::Stack< T >::getFromStack() const
 template< typename T >
 void chemodurov::Stack< T >::pop()
 {
-  if (!head_)
+  if (empty())
   {
     throw std::logic_error("Empty stack");
   }
