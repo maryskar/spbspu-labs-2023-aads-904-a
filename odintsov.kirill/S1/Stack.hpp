@@ -1,6 +1,7 @@
 #ifndef STACK_HPP
 #define STACK_HPP
 
+#include <memory>
 #include <stdexcept>
 
 #include "Node.hpp"
@@ -32,7 +33,7 @@ namespace odintsov {
 
     Stack< T >& operator=(const Stack< T >& s)
     {
-      if (this == &s) {
+      if (this == std::addressof(s)) {
         return *this;
       }
       detail::Node< T >* oldTail = tail_;

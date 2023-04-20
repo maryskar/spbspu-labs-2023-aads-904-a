@@ -1,6 +1,7 @@
 #include <exception>
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 
 #include "InfixQueue.hpp"
@@ -8,7 +9,7 @@
 
 int main(int argc, char* argv[])
 {
-  std::istream* in = &std::cin;
+  std::istream* in = std::addressof(std::cin);
   std::ifstream inFile;
   if (argc == 2) {
     inFile.open(argv[1]);
@@ -16,7 +17,7 @@ int main(int argc, char* argv[])
       std::cerr << "Can't open file\n";
       return 1;
     }
-    in = &inFile;
+    in = std::addressof(inFile);
   } else if (argc != 1) {
     std::cerr << "Incorrect amount of arguments\n";
     return 1;

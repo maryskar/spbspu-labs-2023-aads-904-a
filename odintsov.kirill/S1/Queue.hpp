@@ -1,6 +1,7 @@
 #ifndef QUEUE_HPP
 #define QUEUE_HPP
 
+#include <memory>
 #include <stdexcept>
 #include <tuple>
 
@@ -37,7 +38,7 @@ namespace odintsov {
 
     Queue< T >& operator=(const Queue< T >& q)
     {
-      if (this == &q) {
+      if (this == std::addressof(q)) {
         return *this;
       }
       detail::Node< T >* oldHead = head_;

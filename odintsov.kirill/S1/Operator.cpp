@@ -80,15 +80,15 @@ namespace {
   {
     switch (c) {
     case '+':
-      return &add;
+      return add;
     case '-':
-      return &subtract;
+      return subtract;
     case '*':
-      return &multiply;
+      return multiply;
     case '/':
-      return &divide;
+      return divide;
     case '%':
-      return &modulo;
+      return modulo;
     default:
       throw std::invalid_argument("Undefined operator");
     }
