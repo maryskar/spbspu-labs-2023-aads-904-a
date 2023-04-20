@@ -54,11 +54,7 @@ void chemodurov::Stack< T >::push(const T & rhs)
 template< typename T >
 T & chemodurov::Stack< T >::getFromStack()
 {
-  if (!head_)
-  {
-    throw std::logic_error("Empty stack");
-  }
-  return (*head_).data;
+  return const_cast< T & >((static_cast< const Stack< T > & >(*this)).getFromStack());
 }
 
 template< typename T >
