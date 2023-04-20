@@ -25,22 +25,6 @@ struct odintsov::InfixNode::Impl {
     tag(convertTag(pn.getTag()))
   {}
 
-  Impl(const std::string& str):
-    pnPtr(nullptr)
-  {
-    if (str.size() == 1) {
-      if (str[0] == '(') {
-        tag = Tag::OpenParen;
-        return;
-      } else if (str[0] == ')') {
-        tag = Tag::CloseParen;
-        return;
-      }
-    }
-    pnPtr = new PostfixNode(str);
-    tag = convertTag(pnPtr->getTag());
-  }
-
   Impl(long long operand):
     pnPtr(new PostfixNode(operand)),
     tag(Tag::Operand)
@@ -90,10 +74,6 @@ odintsov::InfixNode::InfixNode(InfixNode&& in):
 
 odintsov::InfixNode::InfixNode(const PostfixNode& pn):
   pImpl_(new Impl(pn))
-{}
-
-odintsov::InfixNode::InfixNode(const std::string& str):
-  pImpl_(new Impl(str))
 {}
 
 odintsov::InfixNode::InfixNode(long long operand):

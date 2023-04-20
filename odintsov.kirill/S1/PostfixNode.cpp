@@ -7,28 +7,6 @@
 
 #include "Operator.hpp"
 
-namespace {
-  bool isNumeric(const std::string& str)
-  {
-    if (str.empty()) {
-      return false;
-    }
-    std::string::const_iterator c = str.begin();
-    if (*c == '-') {
-      c++;
-    }
-    if (c == str.end()) {
-      return false;
-    }
-    while (c != str.end()) {
-      if (!std::isdigit(*c++)) {
-        return false;
-      }
-    }
-    return true;
-  }
-}
-
 odintsov::PostfixNode::PostfixNode(const PostfixNode& n):
   tag_(n.tag_),
   data_{0}
@@ -61,21 +39,6 @@ odintsov::PostfixNode::PostfixNode(const odintsov::Operator& oper):
   tag_(Tag::Operator),
   data_{.oper = oper}
 {}
-
-odintsov::PostfixNode::PostfixNode(const std::string& str):
-  data_{0}
-{
-  if (isNumeric(str)) {
-    data_.operand = stoll(str);
-    tag_ = Tag::Operand;
-    return;
-  }
-  if (str.size() != 1) {
-    throw std::invalid_argument("Incorrect operator/operand");
-  }
-  new (&data_.oper) odintsov::Operator(str[0]);
-  tag_ = Tag::Operator;
-}
 
 odintsov::PostfixNode::Tag odintsov::PostfixNode::getTag() const
 {

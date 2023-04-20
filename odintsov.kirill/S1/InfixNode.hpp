@@ -16,7 +16,6 @@ namespace odintsov {
     InfixNode(const InfixNode& in);
     InfixNode(InfixNode&& in);
     explicit InfixNode(const PostfixNode& pn);
-    InfixNode(const std::string& str);
     explicit InfixNode(long long operand);
     explicit InfixNode(const odintsov::Operator& oper);
     explicit InfixNode(char paren);

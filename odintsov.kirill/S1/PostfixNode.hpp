@@ -17,7 +17,6 @@ namespace odintsov {
     PostfixNode(PostfixNode&& n);
     explicit PostfixNode(long long operand);
     explicit PostfixNode(const odintsov::Operator& oper);
-    PostfixNode(const std::string& str);
 
     Tag getTag() const;
 
