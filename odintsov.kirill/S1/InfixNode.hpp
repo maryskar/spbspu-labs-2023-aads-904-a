@@ -22,6 +22,10 @@ namespace odintsov {
     ~InfixNode();
 
     Tag getTag() const;
+    bool isOperand() const;
+    bool isOperator() const;
+    bool isCloseParen() const;
+    bool isOpenParen() const;
 
     long long getOperand() const;
     odintsov::Operator& getOperator();

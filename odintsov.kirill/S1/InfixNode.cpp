@@ -1,9 +1,7 @@
 #include "InfixNode.hpp"
 
 #include <stdexcept>
-#include <string>
 
-#include "InfixQueue.hpp"
 #include "Operator.hpp"
 #include "PostfixNode.hpp"
 
@@ -95,7 +93,7 @@ odintsov::InfixNode::~InfixNode()
 
 long long odintsov::InfixNode::getOperand() const
 {
-  if (pImpl_->pnPtr == nullptr) {
+  if (!isOperand()) {
     throw std::logic_error("Invalid attempt to interpret node as operand");
   }
   return pImpl_->pnPtr->getOperand();
@@ -108,7 +106,7 @@ odintsov::Operator& odintsov::InfixNode::getOperator()
 
 const odintsov::Operator& odintsov::InfixNode::getOperator() const
 {
-  if (pImpl_->pnPtr == nullptr) {
+  if (!isOperator()) {
     throw std::logic_error("Invalid attempt to interpret node as operator");
   }
   return pImpl_->pnPtr->getOperator();
@@ -117,4 +115,24 @@ const odintsov::Operator& odintsov::InfixNode::getOperator() const
 odintsov::InfixNode::Tag odintsov::InfixNode::getTag() const
 {
   return pImpl_->tag;
+}
+
+bool odintsov::InfixNode::isOperator() const
+{
+  return getTag() == Tag::Operator;
+}
+
+bool odintsov::InfixNode::isOperand() const
+{
+  return getTag() == Tag::Operand;
+}
+
+bool odintsov::InfixNode::isOpenParen() const
+{
+  return getTag() == Tag::OpenParen;
+}
+
+bool odintsov::InfixNode::isCloseParen() const
+{
+  return getTag() == Tag::CloseParen;
 }

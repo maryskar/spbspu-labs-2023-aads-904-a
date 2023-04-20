@@ -19,6 +19,8 @@ namespace odintsov {
     explicit PostfixNode(const odintsov::Operator& oper);
 
     Tag getTag() const;
+    bool isOperand() const;
+    bool isOperator() const;
 
     long long getOperand() const;
     odintsov::Operator& getOperator();

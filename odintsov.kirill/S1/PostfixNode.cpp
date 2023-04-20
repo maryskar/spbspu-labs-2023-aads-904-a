@@ -1,9 +1,6 @@
 #include "PostfixNode.hpp"
 
-#include <cctype>
-#include <iostream>
 #include <stdexcept>
-#include <string>
 
 #include "Operator.hpp"
 
@@ -45,9 +42,19 @@ odintsov::PostfixNode::Tag odintsov::PostfixNode::getTag() const
   return tag_;
 }
 
+bool odintsov::PostfixNode::isOperand() const
+{
+  return getTag() == Tag::Operand;
+}
+
+bool odintsov::PostfixNode::isOperator() const
+{
+  return getTag() == Tag::Operator;
+}
+
 long long odintsov::PostfixNode::getOperand() const
 {
-  if (tag_ != Tag::Operand) {
+  if (!isOperand()) {
     throw std::logic_error("Invalid attempt to interpret node as operand");
   }
   return data_.operand;
@@ -60,7 +67,7 @@ odintsov::Operator& odintsov::PostfixNode::getOperator()
 
 const odintsov::Operator& odintsov::PostfixNode::getOperator() const
 {
-  if (tag_ != Tag::Operator) {
+  if (!isOperator()) {
     throw std::logic_error("Invalid attempt to interpret node as operator");
   }
   return data_.oper;
