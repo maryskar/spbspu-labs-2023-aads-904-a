@@ -4,7 +4,7 @@
 namespace odintsov {
   class Operator {
    public:
-    Operator(char o);
+    explicit Operator(char o);
     bool operator<(const Operator& rhs) const;
     bool operator>(const Operator& rhs) const;
     bool operator<=(const Operator& rhs) const;

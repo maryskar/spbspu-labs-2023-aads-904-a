@@ -15,11 +15,11 @@ namespace odintsov {
 
     InfixNode(const InfixNode& in);
     InfixNode(InfixNode&& in);
-    InfixNode(const PostfixNode& pn);
+    explicit InfixNode(const PostfixNode& pn);
     InfixNode(const std::string& str);
-    InfixNode(long long operand);
-    InfixNode(const odintsov::Operator& oper);
-    InfixNode(char paren);
+    explicit InfixNode(long long operand);
+    explicit InfixNode(const odintsov::Operator& oper);
+    explicit InfixNode(char paren);
     ~InfixNode();
 
     Tag getTag() const;
