@@ -18,6 +18,7 @@ namespace chemodurov
     Queue< T > & operator=(Queue< T > &&);
     void push(const T & rhs);
     void pop();
+    T & getFromQueue();
     const T & getFromQueue() const;
     bool empty() const noexcept;
    private:
@@ -57,6 +58,16 @@ void chemodurov::Queue< T >::push(const T & rhs)
 
 template< typename T >
 const T & chemodurov::Queue< T >::getFromQueue() const
+{
+  if (!head_)
+  {
+    throw std::logic_error("Empty queue");
+  }
+  return (*head_).data;
+}
+
+template< typename T >
+T & chemodurov::Queue< T >::getFromQueue()
 {
   if (!head_)
   {
