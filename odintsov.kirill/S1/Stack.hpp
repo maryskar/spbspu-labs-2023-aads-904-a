@@ -1,36 +1,100 @@
 #ifndef STACK_HPP
 #define STACK_HPP
 
+#include <stdexcept>
+
 #include "Node.hpp"
 
 namespace odintsov {
   template< typename T >
   class Stack {
    public:
-    Stack();
-    Stack(const Stack< T >& s);
-    Stack(Stack< T >&& s);
-    ~Stack();
+    Stack():
+      tail_(nullptr)
+    {}
 
-    Stack< T >& operator=(const Stack< T >& s);
-    Stack< T >& operator=(Stack< T >&& s);
+    Stack(const Stack< T >& s):
+      tail_(nullptr)
+    {
+      tail_ = detail::duplicateNodes(s.tail_).first;
+    }
 
-    detail::ConstNodeIter< T > cbegin() const;
-    detail::ConstNodeIter< T > cend() const;
-    T& tail();
-    const T& tail() const;
-    void push(const T& data);
-    void push(T&& data);
-    void pop();
-    bool empty() const;
+    Stack(Stack< T >&& s):
+      tail_(s.tail_)
+    {
+      s.tail_ = nullptr;
+    }
+
+    ~Stack()
+    {
+      detail::deleteNodes(tail_);
+    }
+
+    Stack< T >& operator=(const Stack< T >& s)
+    {
+      if (this == &s) {
+        return *this;
+      }
+      detail::Node< T >* oldTail = tail_;
+      tail_ = detail::duplicateNodes(s.tail_).first;
+      detail::deleteNodes(oldTail);
+      return *this;
+    }
+
+    Stack< T >& operator=(Stack< T >&& s)
+    {
+      detail::deleteNodes(tail_);
+      tail_ = s.tail_;
+      s.tail_ = nullptr;
+      return *this;
+    }
+
+    const T& tail() const
+    {
+      if (empty()) {
+        throw std::runtime_error("Attempt to get tail of empty stack");
+      }
+      return tail_->data;
+    }
+
+    T& tail()
+    {
+      return const_cast< T& >(const_cast< const Stack< T >* >(this)->tail());
+    }
+
+    void push(const T& data)
+    {
+      push(new detail::Node< T >{data, tail_});
+    }
+
+    void push(T&& data)
+    {
+      push(new detail::Node< T >{data, tail_});
+    }
+
+    void pop()
+    {
+      if (empty()) {
+        throw std::runtime_error("Attempt to pop empty stack");
+      }
+      detail::Node< T >* oldTail = tail_;
+      tail_ = tail_->next;
+      delete oldTail;
+    }
+
+    bool empty() const
+    {
+      return !tail_;
+    }
 
    private:
     detail::Node< T >* tail_;
 
-    void push(detail::Node< T >* n);
+    void push(detail::Node< T >* n)
+    {
+      tail_ = n;
+    }
   };
 }
-
-#include "Stack.tcc"
 
 #endif
