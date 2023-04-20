@@ -44,7 +44,7 @@ chemodurov::Queue< T >::~Queue()
 template< typename T >
 void chemodurov::Queue< T >::push(const T & rhs)
 {
-  if (last_)
+  if (!empty())
   {
     last_->next = new List< T >{rhs, nullptr};
     last_ = last_->next;
@@ -59,7 +59,7 @@ void chemodurov::Queue< T >::push(const T & rhs)
 template< typename T >
 const T & chemodurov::Queue< T >::getFromQueue() const
 {
-  if (!head_)
+  if (empty())
   {
     throw std::logic_error("Empty queue");
   }
@@ -75,7 +75,7 @@ T & chemodurov::Queue< T >::getFromQueue()
 template< typename T >
 void chemodurov::Queue< T >::pop()
 {
-  if (!head_)
+  if (empty())
   {
     throw std::logic_error("Empty queue");
   }
