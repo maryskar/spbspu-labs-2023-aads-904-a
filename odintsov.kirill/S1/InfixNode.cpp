@@ -96,7 +96,7 @@ long long odintsov::InfixNode::getOperand() const
   if (!isOperand()) {
     throw std::logic_error("Invalid attempt to interpret node as operand");
   }
-  return pImpl_->pnPtr->getOperand();
+  return pImpl_->pnPtr->unsafeGetOperand();
 }
 
 odintsov::Operator& odintsov::InfixNode::getOperator()
@@ -109,7 +109,7 @@ const odintsov::Operator& odintsov::InfixNode::getOperator() const
   if (!isOperator()) {
     throw std::logic_error("Invalid attempt to interpret node as operator");
   }
-  return pImpl_->pnPtr->getOperator();
+  return pImpl_->pnPtr->unsafeGetOperator();
 }
 
 odintsov::InfixNode::Tag odintsov::InfixNode::getTag() const

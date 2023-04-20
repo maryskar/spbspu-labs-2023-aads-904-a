@@ -4,29 +4,6 @@
 
 #include "Operator.hpp"
 
-odintsov::PostfixNode::PostfixNode(const PostfixNode& n):
-  tag_(n.tag_),
-  data_{0}
-{
-  switch (tag_) {
-  case Tag::Operand:
-    data_.operand = n.data_.operand;
-    break;
-  case Tag::Operator:
-    new (&data_.oper) odintsov::Operator(n.data_.oper);
-    break;
-  default:
-    break;
-  }
-}
-
-odintsov::PostfixNode::PostfixNode(PostfixNode&& n):
-  tag_(n.tag_),
-  data_(n.data_)
-{
-  n.data_.operand = 0;
-}
-
 odintsov::PostfixNode::PostfixNode(long long operand):
   tag_(Tag::Operand),
   data_{.operand = operand}
@@ -57,6 +34,11 @@ long long odintsov::PostfixNode::getOperand() const
   if (!isOperand()) {
     throw std::logic_error("Invalid attempt to interpret node as operand");
   }
+  return unsafeGetOperand();
+}
+
+long long odintsov::PostfixNode::unsafeGetOperand() const
+{
   return data_.operand;
 }
 
@@ -70,5 +52,15 @@ const odintsov::Operator& odintsov::PostfixNode::getOperator() const
   if (!isOperator()) {
     throw std::logic_error("Invalid attempt to interpret node as operator");
   }
+  return unsafeGetOperator();
+}
+
+odintsov::Operator& odintsov::PostfixNode::unsafeGetOperator()
+{
+  return const_cast< odintsov::Operator& >(const_cast< const odintsov::PostfixNode* >(this)->getOperator());
+}
+
+const odintsov::Operator& odintsov::PostfixNode::unsafeGetOperator() const
+{
   return data_.oper;
 }

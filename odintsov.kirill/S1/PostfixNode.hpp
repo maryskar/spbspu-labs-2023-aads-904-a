@@ -1,8 +1,6 @@
 #ifndef POSTFIXNODE_HPP
 #define POSTFIXNODE_HPP
 
-#include <string>
-
 #include "Operator.hpp"
 
 namespace odintsov {
@@ -13,8 +11,8 @@ namespace odintsov {
       Operator
     };
 
-    PostfixNode(const PostfixNode& n);
-    PostfixNode(PostfixNode&& n);
+    PostfixNode(const PostfixNode&) = default;
+    PostfixNode(PostfixNode&&) = default;
     explicit PostfixNode(long long operand);
     explicit PostfixNode(const odintsov::Operator& oper);
 
@@ -23,8 +21,11 @@ namespace odintsov {
     bool isOperator() const;
 
     long long getOperand() const;
+    long long unsafeGetOperand() const;
     odintsov::Operator& getOperator();
     const odintsov::Operator& getOperator() const;
+    odintsov::Operator& unsafeGetOperator();
+    const odintsov::Operator& unsafeGetOperator() const;
 
    private:
     Tag tag_;
