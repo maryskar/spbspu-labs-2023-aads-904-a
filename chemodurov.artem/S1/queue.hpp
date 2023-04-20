@@ -18,7 +18,7 @@ namespace chemodurov
     Queue< T > & operator=(Queue< T > &&);
     void push(const T & rhs);
     void pop();
-    T & getFromQueue() const;
+    const T & getFromQueue() const;
     bool empty() const noexcept;
    private:
     List< T > * head_;
@@ -56,7 +56,7 @@ void chemodurov::Queue< T >::push(const T & rhs)
 }
 
 template< typename T >
-T & chemodurov::Queue< T >::getFromQueue() const
+const T & chemodurov::Queue< T >::getFromQueue() const
 {
   if (!head_)
   {

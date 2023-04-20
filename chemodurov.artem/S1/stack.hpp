@@ -18,7 +18,7 @@ namespace chemodurov
     Stack< T > & operator=(Stack< T > &&);
     void push(const T & rhs);
     void pop();
-    T & getFromStack() const;
+    const T & getFromStack() const;
     bool empty() const noexcept;
    private:
     List< T > * head_;
@@ -51,7 +51,7 @@ void chemodurov::Stack< T >::push(const T & rhs)
 }
 
 template< typename T >
-T & chemodurov::Stack< T >::getFromStack() const
+const T & chemodurov::Stack< T >::getFromStack() const
 {
   if (!head_)
   {
