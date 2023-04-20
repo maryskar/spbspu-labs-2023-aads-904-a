@@ -18,6 +18,7 @@ namespace chemodurov
     Stack< T > & operator=(Stack< T > &&);
     void push(const T & rhs);
     void pop();
+    T & getFromStack();
     const T & getFromStack() const;
     bool empty() const noexcept;
    private:
@@ -48,6 +49,16 @@ void chemodurov::Stack< T >::push(const T & rhs)
 {
   List< T > * temp = new List< T >{rhs, head_};
   head_ = temp;
+}
+
+template< typename T >
+T & chemodurov::Stack< T >::getFromStack()
+{
+  if (!head_)
+  {
+    throw std::logic_error("Empty stack");
+  }
+  return (*head_).data;
 }
 
 template< typename T >
