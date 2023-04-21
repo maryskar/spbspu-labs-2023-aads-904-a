@@ -12,9 +12,9 @@ namespace dimkashelk
     bool isMultiplication() const;
     bool isDivision() const;
     bool isRemainder() const;
+    static bool isOperator(char c);
   private:
     char operator_;
-    bool isOperator() const;
   };
 }
 #endif

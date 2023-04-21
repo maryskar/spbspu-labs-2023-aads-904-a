@@ -3,7 +3,7 @@
 dimkashelk::Operator::Operator(char c):
   operator_(c)
 {
-  if (!isOperator())
+  if (!isOperator(c))
   {
     throw std::logic_error("It's not a operator");
   }
@@ -28,7 +28,8 @@ bool dimkashelk::Operator::isRemainder() const
 {
   return operator_ == '%';
 }
-bool dimkashelk::Operator::isOperator() const
+bool dimkashelk::Operator::isOperator(char c)
 {
-  return isAdd() || isSubtraction() || isMultiplication() || isDivision() || isRemainder();
+  std::string oper = "+-*/%";
+  return oper.find_first_of(c) != std::string::npos;
 }

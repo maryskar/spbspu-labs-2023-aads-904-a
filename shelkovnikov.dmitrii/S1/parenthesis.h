@@ -8,9 +8,9 @@ namespace dimkashelk
     explicit Parenthesis(char c);
     bool isOpen() const;
     bool isClose() const;
+    static bool isParenthesis(char c);
   private:
     char parenthesis_;
-    bool isParenthesis() const;
   };
 }
 #endif
