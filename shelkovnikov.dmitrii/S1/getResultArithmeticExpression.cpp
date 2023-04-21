@@ -34,7 +34,7 @@ namespace
     return isOverMult(first, second) || isUnderMult(first, second);
   }
 }
-long long dimkashelk::details::getResult(long long first, long long second, dimkashelk::Operator oper)
+long long dimkashelk::getResult(long long first, long long second, dimkashelk::Operator oper)
 {
   if (oper.isAdd())
   {
@@ -99,7 +99,7 @@ long long dimkashelk::getResultArithmeticExpression(dimkashelk::Queue< dimkashel
       remains.popFront();
       dsk::PartOfArithExpr p1 = remains.last();
       remains.popFront();
-      remains.pushFront(dsk::PartOfArithExpr(details::getResult(p1.getOperand(), p2.getOperand(), p.getOperator())));
+      remains.pushFront(dsk::PartOfArithExpr(getResult(p1.getOperand(), p2.getOperand(), p.getOperator())));
     }
   }
   auto res = remains.last().getOperand();
