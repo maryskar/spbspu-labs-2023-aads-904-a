@@ -3,7 +3,7 @@
 dimkashelk::Parenthesis::Parenthesis(char c):
   parenthesis_(c)
 {
-  if (!isParenthesis())
+  if (!isParenthesis(c))
   {
     throw std::logic_error("It's not a bracket");
   }
@@ -16,7 +16,7 @@ bool dimkashelk::Parenthesis::isClose() const
 {
   return parenthesis_ == ')';
 }
-bool dimkashelk::Parenthesis::isParenthesis() const
+bool dimkashelk::Parenthesis::isParenthesis(char c)
 {
-  return isClose() || isOpen();
+  return c == '(' || c == ')';
 }
