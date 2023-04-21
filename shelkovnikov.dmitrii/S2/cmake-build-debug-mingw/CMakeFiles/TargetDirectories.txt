@@ -1,0 +1,3 @@
+C:/Users/notebook/Documents/git/spbspu-labs-2023-aads-904-a/shelkovnikov.dmitrii/S2/cmake-build-debug-mingw/CMakeFiles/S2.dir
+C:/Users/notebook/Documents/git/spbspu-labs-2023-aads-904-a/shelkovnikov.dmitrii/S2/cmake-build-debug-mingw/CMakeFiles/edit_cache.dir
+C:/Users/notebook/Documents/git/spbspu-labs-2023-aads-904-a/shelkovnikov.dmitrii/S2/cmake-build-debug-mingw/CMakeFiles/rebuild_cache.dir
