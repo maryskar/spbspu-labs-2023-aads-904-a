@@ -112,7 +112,7 @@ namespace dimkashelk
     {
       insertAfter(iterator(it.ptr_), data);
     }
-    iterator eraseAfter(const const_iterator &it)
+    iterator eraseAfter(const const_iterator it)
     {
       auto next = it.ptr_->next;
       it.ptr_->next = next->next;
