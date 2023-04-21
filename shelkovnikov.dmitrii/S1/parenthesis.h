@@ -15,8 +15,8 @@ namespace dimkashelk
     bool isOpen() const;
     bool isClose() const;
   private:
-    char bracket_;
-    bool isBracket() const;
+    char parenthesis_;
+    bool isParenthesis() const;
   };
 }
 #endif

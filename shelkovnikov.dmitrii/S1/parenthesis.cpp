@@ -1,22 +1,22 @@
 #include "parenthesis.h"
 #include <stdexcept>
 dimkashelk::Parenthesis::Parenthesis(char c):
-  bracket_(c)
+  parenthesis_(c)
 {
-  if (!isBracket())
+  if (!isParenthesis())
   {
     throw std::logic_error("It's not a bracket");
   }
 }
 bool dimkashelk::Parenthesis::isOpen() const
 {
-  return bracket_ == '(';
+  return parenthesis_ == '(';
 }
 bool dimkashelk::Parenthesis::isClose() const
 {
-  return bracket_ == ')';
+  return parenthesis_ == ')';
 }
-bool dimkashelk::Parenthesis::isBracket() const
+bool dimkashelk::Parenthesis::isParenthesis() const
 {
   return isClose() || isOpen();
 }
