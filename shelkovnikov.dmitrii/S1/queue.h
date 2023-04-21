@@ -73,7 +73,7 @@ namespace dimkashelk
     }
     T &front()
     {
-      if (begin_ == nullptr)
+      if (empty())
       {
         throw std::logic_error("Check");
       }
@@ -89,7 +89,7 @@ namespace dimkashelk
     }
     void popFront()
     {
-      if (begin_ == nullptr)
+      if (empty())
       {
         throw std::logic_error("Check");
       }
