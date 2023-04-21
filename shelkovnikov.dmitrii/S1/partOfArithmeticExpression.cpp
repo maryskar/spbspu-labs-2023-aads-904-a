@@ -2,18 +2,18 @@
 dimkashelk::PartOfArithExpr::element::element(long long o):
   operand_(o)
 {}
-dimkashelk::PartOfArithExpr::element::element(dimkashelk::Operator oper):
+dimkashelk::PartOfArithExpr::element::element(Operator oper):
   operator_(oper)
 {}
-dimkashelk::PartOfArithExpr::element::element(dimkashelk::Parenthesis parenthesis):
+dimkashelk::PartOfArithExpr::element::element(Parenthesis parenthesis):
   bracket_(parenthesis)
 {}
-dimkashelk::PartOfArithExpr::PartOfArithExpr(dimkashelk::Parenthesis parenthesis):
+dimkashelk::PartOfArithExpr::PartOfArithExpr(Parenthesis parenthesis):
   isNumber_(false),
   isParenthesis_(true),
   element(parenthesis)
 {}
-dimkashelk::PartOfArithExpr::PartOfArithExpr(dimkashelk::Operator oper):
+dimkashelk::PartOfArithExpr::PartOfArithExpr(Operator oper):
   isNumber_(false),
   isParenthesis_(false),
   element(oper)
@@ -40,7 +40,7 @@ dimkashelk::PartOfArithExpr &dimkashelk::PartOfArithExpr::operator=(const PartOf
   element = part.element;
   return *this;
 }
-dimkashelk::PartOfArithExpr &dimkashelk::PartOfArithExpr::operator=(dimkashelk::PartOfArithExpr &&part)
+dimkashelk::PartOfArithExpr &dimkashelk::PartOfArithExpr::operator=(PartOfArithExpr &&part)
 {
   isNumber_ = part.isNumber_;
   isParenthesis_ = part.isParenthesis_;
