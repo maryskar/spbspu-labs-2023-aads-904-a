@@ -27,7 +27,7 @@ namespace dimkashelk
     {
       long long operand_;
       Operator operator_;
-      Parenthesis bracket_;
+      Parenthesis parenthesis_;
       explicit element(long long o);
       explicit element(Operator oper);
       explicit element(Parenthesis parenthesis);

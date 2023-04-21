@@ -5,7 +5,7 @@ dimkashelk::Parenthesis::Parenthesis(char c):
 {
   if (!isParenthesis(c))
   {
-    throw std::logic_error("It's not a bracket");
+    throw std::logic_error("It's not a parenthesis");
   }
 }
 bool dimkashelk::Parenthesis::isOpen() const
