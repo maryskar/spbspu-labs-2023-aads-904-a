@@ -5,13 +5,7 @@ namespace dimkashelk
   class Parenthesis
   {
   public:
-    Parenthesis() = default;
-    Parenthesis(const Parenthesis &parenthesis) = default;
-    Parenthesis(Parenthesis &&parenthesis) = default;
     explicit Parenthesis(char c);
-    ~Parenthesis() = default;
-    Parenthesis &operator=(const Parenthesis &parenthesis) = default;
-    Parenthesis &operator=(Parenthesis &&parenthesis) = default;
     bool isOpen() const;
     bool isClose() const;
   private:
