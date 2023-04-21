@@ -4,7 +4,6 @@
 #include "partOfArithmeticExpression.h"
 namespace dimkashelk
 {
-  long long getResult(long long first, long long second, dimkashelk::Operator oper);
   long long getResultArithmeticExpression(Queue< PartOfArithExpr > &polandExpression);
 }
 #endif

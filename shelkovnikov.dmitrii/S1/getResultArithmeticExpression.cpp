@@ -4,8 +4,8 @@
 #include "stack.h"
 namespace
 {
-  constexpr long long max_long_long = std::numeric_limits< long long >::max();
-  constexpr long long min_long_long = std::numeric_limits< long long >::min();
+  constexpr long long max_long_long = std::numeric_limits<long long>::max();
+  constexpr long long min_long_long = std::numeric_limits<long long>::min();
   namespace
   {
     bool isOverAdd(long long first, long long second)
@@ -33,53 +33,53 @@ namespace
   {
     return isOverMult(first, second) || isUnderMult(first, second);
   }
-}
-long long dimkashelk::getResult(long long first, long long second, dimkashelk::Operator oper)
-{
-  if (oper.isAdd())
+  long long getResult(long long first, long long second, dimkashelk::Operator oper)
   {
-    if (isOverflowedAdd(first, second))
+    if (oper.isAdd())
     {
-      throw std::logic_error("Overflow");
+      if (isOverflowedAdd(first, second))
+      {
+        throw std::logic_error("Overflow");
+      }
+      return first + second;
     }
-    return first + second;
+    if (oper.isSubtraction())
+    {
+      if (isOverflowedAdd(first, second))
+      {
+        throw std::logic_error("Overflow");
+      }
+      return first - second;
+    }
+    if (oper.isMultiplication())
+    {
+      if (isOverflowedMult(first, second))
+      {
+        throw std::logic_error("Overflow");
+      }
+      return first * second;
+    }
+    if (oper.isDivision())
+    {
+      if (second == 0)
+      {
+        throw std::logic_error("Division by 0");
+      }
+      return first / second;
+    }
+    if (oper.isRemainder())
+    {
+      if (first > 0)
+      {
+        return first % second;
+      }
+      else
+      {
+        return second - (-first) % second;
+      }
+    }
+    throw std::logic_error("Not supported this operator");
   }
-  if (oper.isSubtraction())
-  {
-    if (isOverflowedAdd(first, second))
-    {
-      throw std::logic_error("Overflow");
-    }
-    return first - second;
-  }
-  if (oper.isMultiplication())
-  {
-    if (isOverflowedMult(first, second))
-    {
-      throw std::logic_error("Overflow");
-    }
-    return first * second;
-  }
-  if (oper.isDivision())
-  {
-    if (second == 0)
-    {
-      throw std::logic_error("Division by 0");
-    }
-    return first / second;
-  }
-  if (oper.isRemainder())
-  {
-    if (first > 0)
-    {
-      return first % second;
-    }
-    else
-    {
-      return second - (-first) % second;
-    }
-  }
-  throw std::logic_error("Not supported this operator");
 }
 long long dimkashelk::getResultArithmeticExpression(dimkashelk::Queue< dimkashelk::PartOfArithExpr > &polandExpression)
 {
