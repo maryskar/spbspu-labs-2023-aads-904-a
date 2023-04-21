@@ -4,8 +4,8 @@
 #include "stack.h"
 namespace
 {
-  constexpr long long max_long_long = std::numeric_limits<long long>::max();
-  constexpr long long min_long_long = std::numeric_limits<long long>::min();
+  constexpr long long max_long_long = std::numeric_limits< long long >::max();
+  constexpr long long min_long_long = std::numeric_limits< long long >::min();
   namespace
   {
     bool isOverAdd(long long first, long long second)
@@ -81,7 +81,7 @@ namespace
     throw std::logic_error("Not supported this operator");
   }
 }
-long long dimkashelk::getResultArithmeticExpression(dimkashelk::Queue< dimkashelk::PartOfArithExpr > &polandExpression)
+long long dimkashelk::getResultArithmeticExpression(Queue< PartOfArithExpr > &polandExpression)
 {
   namespace dsk = dimkashelk;
   dsk::Stack< dsk::PartOfArithExpr > remains;
@@ -89,7 +89,7 @@ long long dimkashelk::getResultArithmeticExpression(dimkashelk::Queue< dimkashel
   {
     dsk::PartOfArithExpr p = polandExpression.front();
     polandExpression.popFront();
-    if (p.isDigit())
+    if (p.isNumber())
     {
       remains.pushFront(p);
     }

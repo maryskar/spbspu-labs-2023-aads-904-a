@@ -15,8 +15,8 @@ namespace dimkashelk
     PartOfArithExpr(PartOfArithExpr &&part);
     PartOfArithExpr &operator=(const PartOfArithExpr &part);
     PartOfArithExpr &operator=(PartOfArithExpr &&part);
-    bool isDigit() const;
-    bool isBracket() const;
+    bool isNumber() const;
+    bool isParenthesis() const;
     Operator getOperator() const;
     Parenthesis getParenthesis() const;
     long long getOperand() const;
