@@ -94,7 +94,15 @@ namespace dimkashelk
         throw std::logic_error("Check");
       }
       details::NodeOneWayList< T > *node = begin_;
-      begin_ = begin_->next;
+      if (begin_ == end_)
+      {
+        begin_ = nullptr;
+        end_ = nullptr;
+      }
+      else
+      {
+        begin_ = begin_->next;
+      }
       delete node;
     }
     bool empty() const
