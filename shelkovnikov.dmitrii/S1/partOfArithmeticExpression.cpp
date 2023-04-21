@@ -6,7 +6,7 @@ dimkashelk::PartOfArithExpr::element::element(Operator oper):
   operator_(oper)
 {}
 dimkashelk::PartOfArithExpr::element::element(Parenthesis parenthesis):
-  bracket_(parenthesis)
+  parenthesis_(parenthesis)
 {}
 dimkashelk::PartOfArithExpr::PartOfArithExpr(Parenthesis parenthesis):
   isNumber_(false),
@@ -61,7 +61,7 @@ dimkashelk::Operator dimkashelk::PartOfArithExpr::getOperator() const
 }
 dimkashelk::Parenthesis dimkashelk::PartOfArithExpr::getParenthesis() const
 {
-  return element.bracket_;
+  return element.parenthesis_;
 }
 long long dimkashelk::PartOfArithExpr::getOperand() const
 {
