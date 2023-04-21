@@ -62,9 +62,6 @@ namespace dimkashelk
       if (empty())
       {
         begin_ = node;
-      }
-      else if (!end_)
-      {
         end_ = node;
         begin_->next = end_;
       }
@@ -98,10 +95,6 @@ namespace dimkashelk
       }
       details::NodeOneWayList< T > *node = begin_;
       begin_ = begin_->next;
-      if (begin_ == end_)
-      {
-        end_ = nullptr;
-      }
       delete node;
     }
     bool empty() const
