@@ -30,7 +30,7 @@ namespace dimkashelk
     }
     ~Queue()
     {
-      free();
+      details::freeList< T >(begin_);
     }
     Queue< T > &operator=(const Queue< T > &queue)
     {
@@ -39,7 +39,7 @@ namespace dimkashelk
         return *this;
       }
       auto res_copy = details::copy(queue.begin_);
-      free();
+      details::freeList< T >(begin_);
       begin_ = res_copy.first;
       end_ = res_copy.second;
       return *this;
@@ -50,7 +50,7 @@ namespace dimkashelk
       {
         return *this;
       }
-      free();
+      details::freeList< T >(begin_);
       begin_ = queue.begin_;
       end_ = queue.end_;
       queue.begin_ = nullptr;
@@ -111,12 +111,6 @@ namespace dimkashelk
   private:
     details::NodeOneWayList< T > *begin_;
     details::NodeOneWayList< T > *end_;
-    void free()
-    {
-      details::freeList< T >(begin_);
-      begin_ = nullptr;
-      end_ = nullptr;
-    }
   };
 }
 #endif
