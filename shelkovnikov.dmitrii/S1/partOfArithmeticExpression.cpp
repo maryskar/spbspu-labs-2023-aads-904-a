@@ -47,11 +47,11 @@ dimkashelk::PartOfArithExpr &dimkashelk::PartOfArithExpr::operator=(dimkashelk::
   element = part.element;
   return *this;
 }
-bool dimkashelk::PartOfArithExpr::isDigit() const
+bool dimkashelk::PartOfArithExpr::isNumber() const
 {
   return isNumber_;
 }
-bool dimkashelk::PartOfArithExpr::isBracket() const
+bool dimkashelk::PartOfArithExpr::isParenthesis() const
 {
   return isParenthesis_;
 }

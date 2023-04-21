@@ -1,6 +1,6 @@
 #include "getPolandArithmeticExpression.h"
 #include "stack.h"
-dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(dimkashelk::Queue< dimkashelk::PartOfArithExpr > &data)
+dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(Queue< PartOfArithExpr > &data)
 {
   namespace dsk = dimkashelk;
   dsk::Queue< dsk::PartOfArithExpr > queue;
@@ -9,9 +9,9 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
   {
     dsk::PartOfArithExpr p = data.front();
     data.popFront();
-    if (!p.isDigit())
+    if (!p.isNumber())
     {
-      if (p.isBracket() && p.getParenthesis().isClose())
+      if (p.isParenthesis() && p.getParenthesis().isClose())
       {
         if (stack.empty())
         {
@@ -19,7 +19,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
         }
         dsk::PartOfArithExpr p1 = stack.front();
         stack.popFront();
-        while (!p1.isBracket())
+        while (!p1.isParenthesis())
         {
           queue.push(p1);
           if (stack.empty())
@@ -37,7 +37,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
       else
       {
         dsk::PartOfArithExpr p1 = stack.front();
-        if (p1.isBracket() || p.isBracket() || isGreaterPriority(p1.getOperator(), p.getOperator()))
+        if (p1.isParenthesis() || p.isParenthesis() || isGreaterPriority(p1.getOperator(), p.getOperator()))
         {
           stack.pushFront(p);
         }
