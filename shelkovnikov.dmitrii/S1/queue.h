@@ -17,7 +17,9 @@ namespace dimkashelk
       begin_(nullptr),
       end_(nullptr)
     {
-      copy(queue);
+      auto copy_res = details::copy(queue.begin_);
+      begin_ = copy_res.first;
+      end_ = copy_res.second;
     }
     Queue< T >(Queue< T > &&queue):
       begin_(queue.begin_),
@@ -36,16 +38,11 @@ namespace dimkashelk
       {
         return *this;
       }
-      try
-      {
-        auto res_copy = details::copy(queue.begin_);
-        free();
-        begin_ = res_copy.first;
-        end_ = res_copy.second;
-        return *this;
-      }
-      catch (...)
-      {}
+      auto res_copy = details::copy(queue.begin_);
+      free();
+      begin_ = res_copy.first;
+      end_ = res_copy.second;
+      return *this;
     }
     Queue< T > &operator=(Queue< T > &&queue)
     {
@@ -119,12 +116,6 @@ namespace dimkashelk
       details::freeList< T >(begin_);
       begin_ = nullptr;
       end_ = nullptr;
-    }
-    void copy(const Queue< T > &queue)
-    {
-      auto copy_res = details::copy(queue.begin_);
-      begin_ = copy_res.first;
-      end_ = copy_res.second;
     }
   };
 }
