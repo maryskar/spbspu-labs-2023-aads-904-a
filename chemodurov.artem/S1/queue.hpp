@@ -18,7 +18,8 @@ namespace chemodurov
     Queue< T > & operator=(Queue< T > &&);
     void push(const T & rhs);
     void pop();
-    T & getFromQueue() const;
+    T & getFromQueue();
+    const T & getFromQueue() const;
     bool empty() const noexcept;
    private:
     List< T > * head_;
@@ -43,7 +44,7 @@ chemodurov::Queue< T >::~Queue()
 template< typename T >
 void chemodurov::Queue< T >::push(const T & rhs)
 {
-  if (last_)
+  if (!empty())
   {
     last_->next = new List< T >{rhs, nullptr};
     last_ = last_->next;
@@ -56,9 +57,9 @@ void chemodurov::Queue< T >::push(const T & rhs)
 }
 
 template< typename T >
-T & chemodurov::Queue< T >::getFromQueue() const
+const T & chemodurov::Queue< T >::getFromQueue() const
 {
-  if (!head_)
+  if (empty())
   {
     throw std::logic_error("Empty queue");
   }
@@ -66,9 +67,15 @@ T & chemodurov::Queue< T >::getFromQueue() const
 }
 
 template< typename T >
+T & chemodurov::Queue< T >::getFromQueue()
+{
+  return const_cast< T & >((static_cast< const Queue< T > & >(*this)).getFromQueue());
+}
+
+template< typename T >
 void chemodurov::Queue< T >::pop()
 {
-  if (!head_)
+  if (empty())
   {
     throw std::logic_error("Empty queue");
   }
@@ -93,12 +100,9 @@ chemodurov::Queue< T >::Queue(const chemodurov::Queue< T > & queue):
 template< typename T >
 void chemodurov::Queue< T >::copyQueue(const Queue< T > & queue)
 {
-  List< T > * temp = queue.head_;
-  while (!queue.empty())
-  {
-    push(temp->data);
-    temp = temp->next;
-  }
+  std::pair< List< T > *, List< T > * > temp = copyList(queue.head_);
+  head_ = temp.first;
+  last_ = temp.second;
 }
 
 template< typename T >
@@ -125,7 +129,7 @@ chemodurov::Queue< T > & chemodurov::Queue< T >::operator=(const chemodurov::Que
   {
     return *this;
   }
-  deleteQueue();
+  List< T > * temp = head_;
   try
   {
     copyQueue(queue);
@@ -133,8 +137,10 @@ chemodurov::Queue< T > & chemodurov::Queue< T >::operator=(const chemodurov::Que
   catch (...)
   {
     deleteQueue();
+    head_ = temp;
     throw;
   }
+  deleteList(temp);
   return *this;
 }
 

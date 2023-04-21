@@ -1,10 +1,10 @@
 #ifndef COMPARE_OPERATIONS_PRIORITY_HPP
 #define COMPARE_OPERATIONS_PRIORITY_HPP
-#include "operation-and-brace.hpp"
+#include "operation-and-parenthesis.hpp"
 
 namespace chemodurov
 {
-  int compareOperationsPriority(Operation lhs, Operation rhs);
+  bool isLessPriority(operation_t lhs, operation_t rhs);
 }
 
 #endif

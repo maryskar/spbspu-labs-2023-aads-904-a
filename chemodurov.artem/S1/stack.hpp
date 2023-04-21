@@ -18,7 +18,8 @@ namespace chemodurov
     Stack< T > & operator=(Stack< T > &&);
     void push(const T & rhs);
     void pop();
-    T & getFromStack() const;
+    T & getFromStack();
+    const T & getFromStack() const;
     bool empty() const noexcept;
    private:
     List< T > * head_;
@@ -35,7 +36,7 @@ chemodurov::Stack< T >::Stack():
 template< typename T >
 chemodurov::Stack< T >::~Stack()
 {
-  while (head_)
+  while (!empty())
   {
     List< T > * temp = head_->next;
     delete head_;
@@ -51,9 +52,15 @@ void chemodurov::Stack< T >::push(const T & rhs)
 }
 
 template< typename T >
-T & chemodurov::Stack< T >::getFromStack() const
+T & chemodurov::Stack< T >::getFromStack()
 {
-  if (!head_)
+  return const_cast< T & >((static_cast< const Stack< T > & >(*this)).getFromStack());
+}
+
+template< typename T >
+const T & chemodurov::Stack< T >::getFromStack() const
+{
+  if (empty())
   {
     throw std::logic_error("Empty stack");
   }
@@ -63,7 +70,7 @@ T & chemodurov::Stack< T >::getFromStack() const
 template< typename T >
 void chemodurov::Stack< T >::pop()
 {
-  if (!head_)
+  if (empty())
   {
     throw std::logic_error("Empty stack");
   }
@@ -88,28 +95,7 @@ void chemodurov::Stack< T >::deleteStack() noexcept
 template< typename T >
 void chemodurov::Stack< T >::copyStack(const Stack< T > & stack)
 {
-  if (stack.empty())
-  {
-    head_ = nullptr;
-    return;
-  }
-  List< T > * source = stack.head_;
-  head_ = new List< T >{source->data, nullptr};
-  List< T > * dest = head_;
-  try
-  {
-    while (source->next)
-    {
-      source = source->next;
-      dest->next = new List< T >{source->data, nullptr};
-      dest = dest->next;
-    }
-  }
-  catch (...)
-  {
-    deleteStack();
-    throw;
-  }
+  head_ = copyList(stack.head_).first;
 }
 
 template< typename T >
@@ -133,7 +119,7 @@ chemodurov::Stack< T > & chemodurov::Stack< T >::operator=(const Stack< T > & st
   {
     return *this;
   }
-  deleteStack();
+  List< T > * temp = head_;
   try
   {
     copyStack(stack);
@@ -141,8 +127,10 @@ chemodurov::Stack< T > & chemodurov::Stack< T >::operator=(const Stack< T > & st
   catch (...)
   {
     deleteStack();
+    head_ = temp;
     throw;
   }
+  deleteList(temp);
   return *this;
 }
 

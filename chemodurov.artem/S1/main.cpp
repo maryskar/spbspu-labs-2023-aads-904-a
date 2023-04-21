@@ -3,7 +3,7 @@
 #include "read-infix-expr.hpp"
 #include "convert-infix-to-postfix.hpp"
 #include "calc-postfix-expr.hpp"
-#include "print-stack-int.hpp"
+#include "print-stack-long.hpp"
 
 int main(int argc, char ** argv)
 {
@@ -14,90 +14,50 @@ int main(int argc, char ** argv)
   }
   std::string line;
   chemodurov::Stack< long > res;
-  if (argc == 1)
+  std::ifstream file;
+  if (argc == 2)
   {
-    do
-    {
-      std::getline(std::cin, line);
-      if (!std::cin)
-      {
-        break;
-      }
-      if (line.empty())
-      {
-        continue;
-      }
-      chemodurov::Queue< chemodurov::InfixExpr > inf;
-      try
-      {
-        inf = chemodurov::readInfixExpr(line);
-      }
-      catch (const std::exception & e)
-      {
-        std::cerr << e.what() << "\n";
-        return 1;
-      }
-
-      try
-      {
-        chemodurov::Queue< chemodurov::PostfixExpr > post = chemodurov::convertInfixToPostfix(inf);
-        res.push(chemodurov::calcPostfixExpr(post));
-      }
-      catch (const std::exception & e)
-      {
-        std::cerr << e.what() << "\n";
-        return 1;
-      }
-    }
-    while (std::cin);
+    file.open(argv[1]);
   }
-  else
+  std::istream & in = (argc == 1) ? std::cin : file;
+
+  do
   {
-    std::ifstream input(argv[1]);
-    if (!input.is_open())
+    std::getline(in, line);
+    if (!in)
     {
-      std::cerr << "Error while reading\n";
+      break;
+    }
+    if (line.empty())
+    {
+      continue;
+    }
+    chemodurov::Queue< chemodurov::InfixExpr > inf;
+    try
+    {
+      inf = chemodurov::readInfixExpr(line);
+    }
+    catch (const std::exception & e)
+    {
+      std::cerr << e.what() << "\n";
       return 1;
     }
-
-    do
+    try
     {
-      std::getline(input, line);
-      if (!input)
-      {
-        break;
-      }
-      if (line.empty())
-      {
-        continue;
-      }
-      chemodurov::Queue< chemodurov::InfixExpr > inf;
-      try
-      {
-        inf = chemodurov::readInfixExpr(line);
-      }
-      catch (const std::exception & e)
-      {
-        std::cerr << e.what() << "\n";
-        return 1;
-      }
-
-      try
-      {
-        chemodurov::Queue< chemodurov::PostfixExpr > post = chemodurov::convertInfixToPostfix(inf);
-        res.push(chemodurov::calcPostfixExpr(post));
-      }
-      catch (const std::exception & e)
-      {
-        std::cerr << e.what() << "\n";
-        return 1;
-      }
+      chemodurov::Queue< chemodurov::PostfixExpr > post = chemodurov::convertInfixToPostfix(inf);
+      res.push(chemodurov::calcPostfixExpr(post));
     }
-    while (input);
+    catch (const std::exception & e)
+    {
+      std::cerr << e.what() << "\n";
+      return 1;
+    }
   }
+  while (in);
+
   try
   {
-    chemodurov::printStackInt(std::cout, res);
+    chemodurov::printStackLong(std::cout, res);
   }
   catch (const std::invalid_argument & e)
   {

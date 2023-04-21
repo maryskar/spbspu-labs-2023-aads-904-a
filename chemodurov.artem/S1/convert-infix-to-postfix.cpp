@@ -4,10 +4,20 @@
 
 namespace chemodurov
 {
-  OperationAndBrace makeOperationAndBrace(Operation op)
+  struct OperationAndParenthesis
   {
-    OperationAndBrace temp;
-    temp.isBrace = false;
+    union OperationParenthesis
+    {
+      parenthesis_t parenthesis;
+      operation_t operation;
+    } data;
+    bool isParenthesis;
+  };
+
+  OperationAndParenthesis makeOperationAndParenthesis(operation_t op)
+  {
+    OperationAndParenthesis temp;
+    temp.isParenthesis = false;
     temp.data.operation = op;
     return temp;
   }
@@ -16,7 +26,7 @@ namespace chemodurov
 chemodurov::Queue< chemodurov::PostfixExpr > chemodurov::convertInfixToPostfix(Queue< InfixExpr > & inf)
 {
   Queue< PostfixExpr > post;
-  Stack< OperationAndBrace > stack;
+  Stack< OperationAndParenthesis > stack;
   while (!inf.empty())
   {
     InfixExpr next = inf.getFromQueue();
@@ -25,15 +35,15 @@ chemodurov::Queue< chemodurov::PostfixExpr > chemodurov::convertInfixToPostfix(Q
       PostfixExpr temp(next.getOperand());
       post.push(temp);
     }
-    else if (next.isBrace())
+    else if (next.isParenthesis())
     {
-      if (next.getBrace() == BRACE_LEFT)
+      if (next.getParenthesis() == parenthesis_t::LEFT)
       {
-        stack.push({next.getBrace(), true});
+        stack.push({next.getParenthesis(), true});
       }
-      else if (next.getBrace() == BRACE_RIGHT)
+      else if (next.getParenthesis() == parenthesis_t::RIGHT)
       {
-        while (!stack.empty() && !stack.getFromStack().isBrace)
+        while (!stack.empty() && !stack.getFromStack().isParenthesis)
         {
           PostfixExpr temp(stack.getFromStack().data.operation);
           post.push(temp);
@@ -50,12 +60,12 @@ chemodurov::Queue< chemodurov::PostfixExpr > chemodurov::convertInfixToPostfix(Q
     {
       if (stack.empty())
       {
-        stack.push(makeOperationAndBrace(next.getOperation()));
+        stack.push(makeOperationAndParenthesis(next.getOperation()));
       }
       else
       {
-        int prior_diff = compareOperationsPriority(next.getOperation(), stack.getFromStack().data.operation);
-        while (!stack.empty() && !stack.getFromStack().isBrace && prior_diff >= 0)
+        bool prior_diff = isLessPriority(stack.getFromStack().data.operation, next.getOperation());
+        while (!stack.empty() && !stack.getFromStack().isParenthesis && !prior_diff)
         {
           PostfixExpr temp(stack.getFromStack().data.operation);
           post.push(temp);
@@ -64,20 +74,20 @@ chemodurov::Queue< chemodurov::PostfixExpr > chemodurov::convertInfixToPostfix(Q
           {
             break;
           }
-          prior_diff = compareOperationsPriority(next.getOperation(), stack.getFromStack().data.operation);
+          prior_diff = isLessPriority(stack.getFromStack().data.operation, next.getOperation());
         }
-        stack.push(makeOperationAndBrace(next.getOperation()));
+        stack.push(makeOperationAndParenthesis(next.getOperation()));
       }
     }
     inf.pop();
   }
-  while (!stack.empty() && !stack.getFromStack().isBrace)
+  while (!stack.empty() && !stack.getFromStack().isParenthesis)
   {
     PostfixExpr temp(stack.getFromStack().data.operation);
     post.push(temp);
     stack.pop();
   }
-  if (!stack.empty() && stack.getFromStack().isBrace)
+  if (!stack.empty() && stack.getFromStack().isParenthesis)
   {
     throw std::invalid_argument("Wrong infix expression");
   }
