@@ -32,8 +32,9 @@ namespace dimkashelk
       }
       try
       {
+        auto new_begin = details::copy(stack).first;
         details::freeList< T >(begin_);
-        begin_ = details::copy(stack).first;
+        begin_ = new_begin;
         return *this;
       }
       catch (...)
