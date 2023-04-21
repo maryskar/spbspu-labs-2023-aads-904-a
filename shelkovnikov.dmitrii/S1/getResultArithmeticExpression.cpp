@@ -95,14 +95,14 @@ long long dimkashelk::getResultArithmeticExpression(dimkashelk::Queue< dimkashel
     }
     else
     {
-      dsk::PartOfArithExpr p2 = remains.last();
+      dsk::PartOfArithExpr p2 = remains.front();
       remains.popFront();
-      dsk::PartOfArithExpr p1 = remains.last();
+      dsk::PartOfArithExpr p1 = remains.front();
       remains.popFront();
       remains.pushFront(dsk::PartOfArithExpr(getResult(p1.getOperand(), p2.getOperand(), p.getOperator())));
     }
   }
-  auto res = remains.last().getOperand();
+  auto res = remains.front().getOperand();
   remains.popFront();
   return res;
 }

@@ -11,13 +11,13 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
     data.popFront();
     if (!p.isDigit())
     {
-      if (p.isBracket() && p.getBracket().isClose())
+      if (p.isBracket() && p.getParenthesis().isClose())
       {
         if (stack.empty())
         {
           throw std::logic_error("Check expression");
         }
-        dsk::PartOfArithExpr p1 = stack.last();
+        dsk::PartOfArithExpr p1 = stack.front();
         stack.popFront();
         while (!p1.isBracket())
         {
@@ -26,7 +26,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
           {
             throw std::logic_error("Check expression");
           }
-          p1 = stack.last();
+          p1 = stack.front();
           stack.popFront();
         }
       }
@@ -36,14 +36,14 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
       }
       else
       {
-        dsk::PartOfArithExpr p1 = stack.last();
+        dsk::PartOfArithExpr p1 = stack.front();
         if (p1.isBracket() || p.isBracket() || isGreaterPriority(p1.getOperator(), p.getOperator()))
         {
           stack.pushFront(p);
         }
         else
         {
-          p1 = stack.last();
+          p1 = stack.front();
           stack.popFront();
           while (!isGreaterPriority(p1.getOperator(), p.getOperator()))
           {
@@ -52,7 +52,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
             {
               break;
             }
-            p1 = stack.last();
+            p1 = stack.front();
             stack.popFront();
           }
           stack.pushFront(p);
@@ -66,7 +66,7 @@ dimkashelk::Queue< dimkashelk::PartOfArithExpr > dimkashelk::getPolandArithExpr(
   }
   while (!stack.empty())
   {
-    queue.push(stack.last());
+    queue.push(stack.front());
     stack.popFront();
   }
   return queue;
