@@ -55,7 +55,7 @@ namespace dimkashelk
     {
       begin_ = new details::NodeOneWayList< T >(rhs, begin_);
     }
-    T &last()
+    T &front()
     {
       if (empty())
       {
@@ -63,7 +63,7 @@ namespace dimkashelk
       }
       return begin_->data;
     }
-    const T &last() const
+    const T &front() const
     {
       if (empty())
       {

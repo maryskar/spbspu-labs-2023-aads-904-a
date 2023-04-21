@@ -18,7 +18,7 @@ namespace dimkashelk
     bool isDigit() const;
     bool isBracket() const;
     Operator getOperator() const;
-    Parenthesis getBracket() const;
+    Parenthesis getParenthesis() const;
     long long getOperand() const;
   private:
     bool isNumber_;

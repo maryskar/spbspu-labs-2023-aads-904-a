@@ -59,7 +59,7 @@ dimkashelk::Operator dimkashelk::PartOfArithExpr::getOperator() const
 {
   return element.operator_;
 }
-dimkashelk::Parenthesis dimkashelk::PartOfArithExpr::getBracket() const
+dimkashelk::Parenthesis dimkashelk::PartOfArithExpr::getParenthesis() const
 {
   return element.bracket_;
 }
