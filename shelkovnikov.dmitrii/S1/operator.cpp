@@ -1,7 +1,7 @@
 #include "operator.h"
 #include <stdexcept>
-dimkashelk::Operator::Operator(const char str):
-  operator_(str)
+dimkashelk::Operator::Operator(char c):
+  operator_(c)
 {
   if (!isOperator())
   {

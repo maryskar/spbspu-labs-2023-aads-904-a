@@ -6,7 +6,7 @@ namespace dimkashelk
   class Operator
   {
   public:
-    explicit Operator(const char str);
+    explicit Operator(char c);
     bool isAdd() const;
     bool isSubtraction() const;
     bool isMultiplication() const;
