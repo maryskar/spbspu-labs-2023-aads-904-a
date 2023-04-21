@@ -38,8 +38,10 @@ namespace dimkashelk
       }
       try
       {
+        auto res_copy = details::copy(queue.begin_);
         free();
-        copy(queue);
+        begin_ = res_copy.first;
+        end_ = res_copy.second;
         return *this;
       }
       catch (...)
