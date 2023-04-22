@@ -10,7 +10,10 @@ namespace romanovich
   public:
     Queue();
     Queue(const Queue< T > &pQueue);
+    Queue(Queue< T > &&pQueue) noexcept;
     ~Queue();
+    Queue< T > &operator=(const Queue< T > &pQueue);
+    Queue< T > &operator=(Queue< T > &&pQueue);
     void push(const T &rhs);
     void pop();
     T get() const;
@@ -21,11 +24,26 @@ namespace romanovich
   private:
     details::ListNode< T > *head_;
     details::ListNode< T > *tail_;
-    size_t size_;
+    size_t size_{};
     void deleteQueue();
-    /*void doSwap(Queue< T > &q) noexcept;*/
+    void doSwap(Queue< T > &q) noexcept;
   };
-
+  template < typename T >
+  Queue< T > &Queue< T >::operator=(Queue< T > &&pQueue)
+  {
+    if (this != &pQueue)
+    {
+      deleteQueue();
+      doSwap(pQueue);
+    }
+    return *this;
+  }
+  template < typename T >
+  Queue< T > &Queue< T >::operator=(const Queue< T > &pQueue)
+  {
+    doSwap(pQueue);
+    return *this;
+  }
   template < typename T >
   void Queue< T >::deleteQueue()
   {
@@ -33,7 +51,6 @@ namespace romanovich
     head_ = nullptr;
     tail_ = nullptr;
   }
-
   template < typename T >
   Queue< T >::Queue():
     head_(nullptr),
@@ -62,13 +79,21 @@ namespace romanovich
       tmp = tmp->next_;
     }
   }
-  /*template < typename T >
+  template < typename T >
+  Queue< T >::Queue(Queue< T > &&pQueue) noexcept:
+    head_(pQueue.head_),
+    size_(pQueue.size_)
+  {
+    pQueue.head_ = nullptr;
+    pQueue.last_ = nullptr;
+  }
+  template < typename T >
   void Queue< T >::doSwap(Queue< T > &q) noexcept
   {
     std::swap(head_, q.head_);
     std::swap(tail_, q.tail_);
     std::swap(size_, q.size_);
-  }*/
+  }
   template < typename T >
   Queue< T >::~Queue()
   {
