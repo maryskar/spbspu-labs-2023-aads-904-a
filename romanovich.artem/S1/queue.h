@@ -82,10 +82,12 @@ namespace romanovich
   template < typename T >
   Queue< T >::Queue(Queue< T > &&pQueue) noexcept:
     head_(pQueue.head_),
-    size_(pQueue.size_)
+    size_(pQueue.size_),
+    tail_(pQueue.tail_)
   {
     pQueue.head_ = nullptr;
-    pQueue.last_ = nullptr;
+    pQueue.tail_ = nullptr;
+    pQueue.size_ = 0;
   }
   template < typename T >
   void Queue< T >::doSwap(Queue< T > &q) noexcept
