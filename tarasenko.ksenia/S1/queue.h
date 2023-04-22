@@ -1,6 +1,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 #include <stdexcept>
+#include <utility>
 #include "node.h"
 #include "forward_list.h"
 namespace tarasenko
@@ -9,30 +10,23 @@ namespace tarasenko
   class Queue
   {
   public:
-   Queue()
+   Queue():
+     head()
    {}
-   Queue(const Queue< T >& q)
-   {
-     head.copy(q.head);
-   }
-   Queue(Queue< T >&& q):
+   Queue(const Queue< T >& q):
      head(q.head)
+   {}
+   Queue(Queue< T >&& q):
+     head(std::move(q.head))
    {}
    Queue< T >& operator=(const Queue< T >& q)
    {
-     try
-     {
-       head = q.top;
-     }
-     catch (...)
-     {
-       throw;
-     }
+     head = q.top;
      return *this;
    }
    Queue< T >& operator=(Queue< T >&& q)
    {
-     head.move(q.head);
+     head = std::move(q.head);
      return *this;
    }
    ~Queue()
@@ -45,6 +39,8 @@ namespace tarasenko
    bool isEmpty() const;
   private:
    ForwardList< T > head;
+   void copyQueue(const Queue< T >& other);
+   void deleteQueue();
   };
 
   template< typename T >

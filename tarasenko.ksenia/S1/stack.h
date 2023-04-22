@@ -1,6 +1,7 @@
 #ifndef STACK_H
 #define STACK_H
 #include <stdexcept>
+#include <utility>
 #include "forward_list.h"
 namespace tarasenko
 {
@@ -8,30 +9,23 @@ namespace tarasenko
   class Stack
   {
   public:
-   Stack()
+   Stack():
+     top()
    {}
-   Stack(const Stack< T >& s)
-   {
-     top.copy(s.top);
-   }
-   Stack(Stack< T >&& s):
+   Stack(const Stack< T >& s):
      top(s.top)
+   {}
+   Stack(Stack< T >&& s):
+     top(std::move(s.top))
    {}
    Stack< T >& operator=(const Stack< T >& s)
    {
-     try
-     {
-       top = s.top;
-     }
-     catch (...)
-     {
-       throw;
-     }
+     top = s.top;
      return *this;
    }
    Stack< T >& operator=(Stack< T >&& s)
    {
-     top.move(s.top);
+     top = std::move(s.top);
      return *this;
    }
    ~Stack()

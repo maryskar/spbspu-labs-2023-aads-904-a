@@ -7,7 +7,7 @@ namespace tarasenko
     template< typename T >
     struct NodeOfList
     {
-      NodeOfList(const T& data, NodeOfList< T >* next) :
+      NodeOfList(const T& data, NodeOfList< T >* next):
         data(data),
         next(next)
       {}
