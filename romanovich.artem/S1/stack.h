@@ -21,7 +21,15 @@ namespace romanovich
   private:
     details::ListNode< T > *top_;
     size_t size_;
+    void deleteStack();
   };
+  template < typename T >
+  void Stack< T >::deleteStack()
+  {
+    details::clear(top_);
+    top_ = nullptr;
+    size_ = 0;
+  }
   template < typename T >
   Stack< T >::Stack():
     top_(nullptr),
@@ -31,10 +39,7 @@ namespace romanovich
   template < typename T >
   Stack< T >::~Stack()
   {
-    while (!isEmpty())
-    {
-      pop();
-    }
+    Stack< T >::deleteStack();
   }
   template < typename T >
   void Stack< T >::push(const T &value)
