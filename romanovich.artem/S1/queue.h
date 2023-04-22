@@ -13,7 +13,7 @@ namespace romanovich
     Queue(Queue< T > &&pQueue) noexcept;
     ~Queue();
     Queue< T > &operator=(const Queue< T > &pQueue);
-    Queue< T > &operator=(Queue< T > &&pQueue);
+    Queue< T > &operator=(Queue< T > &&pQueue) noexcept ;
     void push(const T &rhs);
     void pop();
     T get() const;
@@ -29,7 +29,7 @@ namespace romanovich
     void doSwap(Queue< T > &q) noexcept;
   };
   template < typename T >
-  Queue< T > &Queue< T >::operator=(Queue< T > &&pQueue)
+  Queue< T > &Queue< T >::operator=(Queue< T > &&pQueue)noexcept
   {
     if (this != &pQueue)
     {

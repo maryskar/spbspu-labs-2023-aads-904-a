@@ -1,5 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
+#include "operations.h"
+#include "brackets.h"
 #include <stdexcept>
 namespace details
 {
@@ -9,6 +11,7 @@ namespace details
     T data_;
     ListNode< T > *next_;
   };
+
   template < typename T >
   void clear(ListNode< T > *pNode)
   {

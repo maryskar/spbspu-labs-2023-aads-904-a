@@ -3,6 +3,7 @@
 #include "stack.h"
 #include "queue.h"
 #include "notations.h"
+#include "expressionpart.h"
 int main(int argc, char **argv)
 {
   if ((argc != 1) && (argc != 2))
@@ -10,7 +11,7 @@ int main(int argc, char **argv)
     std::cerr << "Not appropriate parameters number.\n";
     return 1;
   }
-  romanovich::Stack< std::string > stack;
+  romanovich::Stack< ExpPart > stack;
   std::fstream fileInput;
   if (argc == 2)
   {
@@ -27,16 +28,16 @@ int main(int argc, char **argv)
     }
   }
   std::istream &in = (argc == 2) ? fileInput : std::cin;
-  romanovich::Stack< std::string > answer;
+  romanovich::Stack< ExpPart > answer;
   for (std::string line; std::getline(in, line);)
   {
     if (line.empty())
     {
       continue;
     }
-    romanovich::Queue< std::string > infixNotation = romanovich::splitLine(line);
-    romanovich::Queue< std::string > postfixQueue;
-    romanovich::Stack< std::string > stack1;
+    romanovich::Queue< ExpPart > infixNotation = romanovich::splitLine(line);
+    romanovich::Queue< ExpPart > postfixQueue;
+    romanovich::Stack< ExpPart > stack1;
     try
     {
       romanovich::getPostfixFromInfix(infixNotation, stack1, postfixQueue);
@@ -46,7 +47,7 @@ int main(int argc, char **argv)
       std::cerr << "Error while calc.\n";
       return 2;
     }
-    romanovich::Stack< std::string > calcStack;
+    romanovich::Stack< ExpPart > calcStack;
     try
     {
       romanovich::calcPostfixExpression(postfixQueue, answer, calcStack);

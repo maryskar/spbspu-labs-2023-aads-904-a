@@ -1,11 +1,12 @@
 #include "notations.h"
 #include "priority.h"
+#include "expressionpart.h"
 #include <limits>
 #include <algorithm>
 constexpr long long maxLongLong = std::numeric_limits< long long >::max();
 constexpr long long minLongLong = std::numeric_limits< long long >::min();
-using str_q = romanovich::Queue< std::string >;
-using str_s = romanovich::Stack< std::string >;
+using exp_q = romanovich::Queue< ExpPart >;
+using exp_s = romanovich::Stack< ExpPart >;
 namespace romanovich
 {
   int signum(long long n)
@@ -29,11 +30,11 @@ namespace romanovich
     return ((b < 0 && a > maxLongLong + b) || (b > 0 && a < minLongLong + b));
   }
 }
-bool romanovich::isOperator(const std::string &c)
+bool romanovich::isOperator(const ExpPart &c)
 {
   return (c == "+" || c == "-" || c == "*" || c == "/" || c == "%");
 }
-bool romanovich::isDigit(const std::string &str)
+bool romanovich::isDigit(const ExpPart &str)
 {
   try
   {
@@ -45,7 +46,7 @@ bool romanovich::isDigit(const std::string &str)
   }
   return true;
 }
-bool romanovich::stackPopCondition(const std::string &q, const std::string &s)
+bool romanovich::stackPopCondition(const ExpPart &q, const ExpPart &s)
 {
   try
   {
@@ -58,13 +59,13 @@ bool romanovich::stackPopCondition(const std::string &q, const std::string &s)
     return false;
   }
 }
-void romanovich::getPostfixFromInfix(str_q &queue, str_s &stack, str_q &postfixQueue)
+void romanovich::getPostfixFromInfix(exp_q &queue, exp_s &stack, exp_q &postfixQueue)
 {
   while (!queue.isEmpty() or !stack.isEmpty())
   {
     if (!queue.isEmpty())
     {
-      std::string qEl = queue.get();
+      ExpPart qEl = queue.get();
       queue.pop();
       if (qEl == "(")
       {
@@ -110,9 +111,9 @@ void romanovich::getPostfixFromInfix(str_q &queue, str_s &stack, str_q &postfixQ
     }
   }
 }
-romanovich::Queue< std::string > romanovich::splitLine(const std::string &string)
+romanovich::Queue< ExpPart > romanovich::splitLine(const std::string &string)
 {
-  romanovich::Queue< std::string > queue;
+  romanovich::Queue< ExpPart > queue;
   int intBegin = 0;
   int intEnd = string.find(' ');
   while (intEnd != -1)
@@ -124,7 +125,7 @@ romanovich::Queue< std::string > romanovich::splitLine(const std::string &string
   queue.push(string.substr(intBegin, intEnd - intBegin));
   return queue;
 }
-long long romanovich::doOperation(long long b, long long a, const std::string &oper)
+ExpPart romanovich::doOperation(long long b, long long a, const ExpPart &oper)
 {
   if (oper == "+")
   {
@@ -176,25 +177,25 @@ long long romanovich::doOperation(long long b, long long a, const std::string &o
   }
   return a % b;
 }
-void romanovich::calcPostfixExpression(str_q &postfixQueue, str_s &answer, str_s &stack)
+void romanovich::calcPostfixExpression(exp_q &postfixQueue, exp_s &answer, exp_s &stack)
 {
   stack.push(postfixQueue.get());
   postfixQueue.pop();
   while (!stack.isEmpty())
   {
-    std::string el;
+    ExpPart expPart;
     if (!postfixQueue.isEmpty())
     {
-      el = postfixQueue.get();
+      expPart = postfixQueue.get();
       postfixQueue.pop();
     }
     else
     {
       break;
     }
-    if (romanovich::isDigit(el))
+    if (romanovich::isDigit(expPart))
     {
-      stack.push(el);
+      stack.push(expPart);
     }
     else
     {
@@ -204,7 +205,7 @@ void romanovich::calcPostfixExpression(str_q &postfixQueue, str_s &answer, str_s
         stack.pop();
         long long y = std::stoll(stack.get(), nullptr, 10);
         stack.pop();
-        stack.push(std::to_string(romanovich::doOperation(x, y, el)));
+        stack.push(romanovich::doOperation(x, y, expPart));
       }
       catch (...)
       {
