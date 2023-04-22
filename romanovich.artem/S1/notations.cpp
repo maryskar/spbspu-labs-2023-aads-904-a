@@ -2,13 +2,15 @@
 #include "priority.h"
 #include <limits>
 #include <algorithm>
+constexpr long long maxLongLong = std::numeric_limits< long long >::max();
+constexpr long long minLongLong = std::numeric_limits< long long >::min();
 namespace romanovich
 {
   int signum(long long n)
   {
     return (n > 0) - (n < 0);
   }
-  bool overflowAdd(long long a, long long b, long long maxLongLong, long long minLongLong)
+  bool overflowAdd(long long a, long long b)
   {
     if (signum(a) == signum(b))
     {
@@ -16,11 +18,11 @@ namespace romanovich
     }
     return false;
   }
-  bool overflowMult(long long a, long long b, long long maxLongLong, long long minLongLong)
+  bool overflowMult(long long a, long long b)
   {
     return ((a != 0 && b != 0) && ((a > maxLongLong / b) || (a < minLongLong / b)));
   }
-  bool overflowSubt(long long a, long long b, long long maxLongLong, long long minLongLong)
+  bool overflowSubt(long long a, long long b)
   {
     return ((b < 0 && a > maxLongLong + b) || (b > 0 && a < minLongLong + b));
   }
@@ -127,7 +129,7 @@ std::string romanovich::doOperation(long long b, long long a, const std::string 
   long long minLongLong = std::numeric_limits< long long >::min();
   if (oper == "+")
   {
-    if (!romanovich::overflowAdd(a, b, maxLongLong, minLongLong))
+    if (!romanovich::overflowAdd(a, b))
     {
       return std::to_string(a + b);
     }
@@ -138,7 +140,7 @@ std::string romanovich::doOperation(long long b, long long a, const std::string 
   }
   if (oper == "-")
   {
-    if (!romanovich::overflowSubt(a, b, maxLongLong, minLongLong))
+    if (!romanovich::overflowSubt(a, b))
     {
       return std::to_string(a - b);
     }
@@ -149,7 +151,7 @@ std::string romanovich::doOperation(long long b, long long a, const std::string 
   }
   if (oper == "*")
   {
-    if (!romanovich::overflowMult(a, b, maxLongLong, minLongLong))
+    if (!romanovich::overflowMult(a, b))
     {
       return std::to_string(a * b);
     }
