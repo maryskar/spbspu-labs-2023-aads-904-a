@@ -22,6 +22,7 @@ namespace romanovich
     details::ListNode< T > *head_;
     details::ListNode< T > *tail_;
     size_t size_;
+    void doSwap(Queue< T > &q) noexcept;
   };
   template < typename T >
   Queue< T >::Queue():
@@ -36,16 +37,15 @@ namespace romanovich
     tail_(nullptr),
     size_(0)
   {
-    if (pQueue.head_ == nullptr || pQueue.tail_ == nullptr)
-    {
-      throw std::logic_error("Queue is empty.");
-    }
-    details::ListNode< T > *tmp = pQueue.head_;
-    while (tmp != nullptr)
-    {
-      push(tmp->data_);
-      tmp = tmp->next_;
-    }
+    Queue tmp(pQueue);
+    doSwap(tmp);
+  }
+  template < typename T >
+  void Queue< T >::doSwap(Queue< T > &q) noexcept
+  {
+    std::swap(head_, q.head_);
+    std::swap(tail_, q.tail_);
+    std::swap(size_, q.size_);
   }
   template < typename T >
   Queue< T >::~Queue()
