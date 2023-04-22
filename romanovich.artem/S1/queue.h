@@ -24,7 +24,7 @@ namespace romanovich
   private:
     details::ListNode< T > *head_;
     details::ListNode< T > *tail_;
-    size_t size_{};
+    size_t size_;
     void deleteQueue();
     void doSwap(Queue< T > &q) noexcept;
   };
@@ -82,8 +82,8 @@ namespace romanovich
   template < typename T >
   Queue< T >::Queue(Queue< T > &&pQueue) noexcept:
     head_(pQueue.head_),
-    size_(pQueue.size_),
-    tail_(pQueue.tail_)
+    tail_(pQueue.tail_),
+    size_(pQueue.size_)
   {
     pQueue.head_ = nullptr;
     pQueue.tail_ = nullptr;
