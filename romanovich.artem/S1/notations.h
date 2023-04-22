@@ -9,6 +9,6 @@ namespace romanovich
   void calcPostfixExpression(Queue <std::string> &postfixQueue, Stack <std::string> &stack, Stack <std::string> &pStack);
   Queue< std::string > splitLine(const std::string &string);
   bool isDigit(const std::string &str);
-  std::string doOperation(long long a, long long b, const std::string &oper);
+  long long doOperation(long long a, long long b, const std::string &oper);
 }
 #endif

@@ -4,6 +4,8 @@
 #include <algorithm>
 constexpr long long maxLongLong = std::numeric_limits< long long >::max();
 constexpr long long minLongLong = std::numeric_limits< long long >::min();
+using str_q = romanovich::Queue< std::string >;
+using str_s = romanovich::Stack< std::string >;
 namespace romanovich
 {
   int signum(long long n)
@@ -56,8 +58,7 @@ bool romanovich::stackPopCondition(const std::string &q, const std::string &s)
     return false;
   }
 }
-void romanovich::getPostfixFromInfix(romanovich::Queue< std::string > &queue, romanovich::Stack< std::string > &stack,
-                                     romanovich::Queue< std::string > &postfixQueue)
+void romanovich::getPostfixFromInfix(str_q &queue, str_s &stack, str_q &postfixQueue)
 {
   while (!queue.isEmpty() or !stack.isEmpty())
   {
@@ -123,15 +124,13 @@ romanovich::Queue< std::string > romanovich::splitLine(const std::string &string
   queue.push(string.substr(intBegin, intEnd - intBegin));
   return queue;
 }
-std::string romanovich::doOperation(long long b, long long a, const std::string &oper)
+long long romanovich::doOperation(long long b, long long a, const std::string &oper)
 {
-  long long maxLongLong = std::numeric_limits< long long >::max();
-  long long minLongLong = std::numeric_limits< long long >::min();
   if (oper == "+")
   {
     if (!romanovich::overflowAdd(a, b))
     {
-      return std::to_string(a + b);
+      return a + b;
     }
     else
     {
@@ -142,7 +141,7 @@ std::string romanovich::doOperation(long long b, long long a, const std::string 
   {
     if (!romanovich::overflowSubt(a, b))
     {
-      return std::to_string(a - b);
+      return a - b;
     }
     else
     {
@@ -153,7 +152,7 @@ std::string romanovich::doOperation(long long b, long long a, const std::string 
   {
     if (!romanovich::overflowMult(a, b))
     {
-      return std::to_string(a * b);
+      return a * b;
     }
     else
     {
@@ -164,7 +163,7 @@ std::string romanovich::doOperation(long long b, long long a, const std::string 
   {
     if (b != 0)
     {
-      return std::to_string(a / b);
+      return a / b;
     }
     else
     {
@@ -173,12 +172,11 @@ std::string romanovich::doOperation(long long b, long long a, const std::string 
   }
   if (a < 0)
   {
-    return std::to_string((a % b) + b);
+    return ((a % b) + b);
   }
-  return std::to_string(a % b);
+  return a % b;
 }
-void romanovich::calcPostfixExpression(Queue< std::string > &postfixQueue, Stack< std::string > &answer,
-                                       Stack< std::string > &stack)
+void romanovich::calcPostfixExpression(str_q &postfixQueue, str_s &answer, str_s &stack)
 {
   stack.push(postfixQueue.get());
   postfixQueue.pop();
@@ -206,7 +204,7 @@ void romanovich::calcPostfixExpression(Queue< std::string > &postfixQueue, Stack
         stack.pop();
         long long y = std::stoll(stack.get(), nullptr, 10);
         stack.pop();
-        stack.push(romanovich::doOperation(x, y, el));
+        stack.push(std::to_string(romanovich::doOperation(x, y, el)));
       }
       catch (...)
       {

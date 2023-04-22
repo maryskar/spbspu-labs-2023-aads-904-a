@@ -13,7 +13,7 @@ namespace romanovich
     ~Stack();
     void push(const T &value);
     void pop();
-    T get();
+    T get() const;
     bool isEmpty() const
     {
       return size_ == 0;
@@ -51,7 +51,7 @@ namespace romanovich
     size_++;
   }
   template < typename T >
-  T Stack< T >::get()
+  T Stack< T >::get() const
   {
     if (isEmpty())
     {
