@@ -10,6 +10,7 @@ namespace romanovich
   public:
     Queue();
     Queue(const Queue< T > &pQueue);
+    Queue(const Queue< T > &&pQueue) noexcept;
     ~Queue();
     void push(const T &rhs);
     void pop();
@@ -25,6 +26,12 @@ namespace romanovich
     void doSwap(Queue< T > &q) noexcept;
   };
   template < typename T >
+  Queue< T >::Queue(const Queue< T > &&pQueue) noexcept:
+    Queue()
+  {
+    doSwap(pQueue);
+  }
+  template < typename T >
   Queue< T >::Queue():
     head_(nullptr),
     tail_(nullptr),
@@ -33,9 +40,7 @@ namespace romanovich
   }
   template < typename T >
   Queue< T >::Queue(const Queue< T > &pQueue):
-    head_(nullptr),
-    tail_(nullptr),
-    size_(0)
+    Queue()
   {
     Queue tmp(pQueue);
     doSwap(tmp);
