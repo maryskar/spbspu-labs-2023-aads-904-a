@@ -9,17 +9,18 @@ namespace chemodurov
   class ForwardIterator
   {
    public:
+    using this_t = ForwardIterator< T >;
     ForwardIterator(): node_(nullptr) {};
     ~ForwardIterator() = default;
-    ForwardIterator< T > & operator=(const ForwardIterator< T > &) = default;
-    ForwardIterator< T > & operator++();
-    ForwardIterator< T > operator++(int);
+    this_t & operator=(const this_t &) = default;
+    this_t & operator++();
+    this_t operator++(int);
     T & operator*();
     const T & operator*() const;
     T * operator->();
     const T * operator->() const;
-    bool operator==(const ForwardIterator< T > &) const;
-    bool operator!=(const ForwardIterator< T > &) const;
+    bool operator==(const this_t &) const;
+    bool operator!=(const this_t &) const;
    private:
     List< T > * node_;
     void assertNotNullptr();
@@ -65,7 +66,7 @@ namespace chemodurov
   template< typename T >
   T & ForwardIterator< T >::operator*()
   {
-    return const_cast< T & >(*(static_cast< const ForwardIterator< T > >(*this)));
+    return const_cast< T & >((static_cast< const ForwardIterator< T > >(*this)).operator*());
   }
 
   template< typename T >
@@ -78,7 +79,7 @@ namespace chemodurov
   template< typename T >
   T * ForwardIterator< T >::operator->()
   {
-    return const_cast< T * >((static_cast< const ForwardIterator< T > >(*this)).node_->data);
+    return const_cast< T * >((static_cast< const ForwardIterator< T > >(*this)).operator->());
   }
 
   template< typename T >
