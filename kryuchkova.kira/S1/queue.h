@@ -11,7 +11,8 @@ namespace kryuchkova
     public:
       Queue();
       Queue(const Queue< T > &queue);
-      //Queue & operator=(const Queue & queue);
+      Queue< T > & operator=(const Queue< T > &);
+      Queue< T > & operator=(Queue< T > &&);
       ~Queue();
       void push(T rhs);
       T drop();
@@ -40,12 +41,6 @@ namespace kryuchkova
     }
   }
 
-  // template < typename T >
-  // Queue & operator=(const Queue & queue)
-  // {
-
-  // }
-
   template < typename T >
   Queue< T >::~Queue()
   {
@@ -53,6 +48,12 @@ namespace kryuchkova
     {
       drop();
     }
+  }
+
+  template < typename T >
+  Queue< T > & Queue< T >::operator=(const Queue< T > & queue)
+  {
+    
   }
 
   template < typename T >

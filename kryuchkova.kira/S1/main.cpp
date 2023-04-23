@@ -1,9 +1,6 @@
 #include "queue.h"
 #include "stack.h"
 #include "node.h"
-#include "utils.h"
-#include "get_exp.h"
-#include "check_exp.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -20,6 +17,7 @@ int main(int argc, char *argv[])
   kryuchkova::Queue < std::string > post;
   std::string str;
   long long result = 0;
+
   if (argc == 2)
   {
     std::ifstream file(argv[1]);
@@ -37,9 +35,7 @@ int main(int argc, char *argv[])
       }
       try
       {
-        kryuchkova::stringToInfix(str, inf);
-        kryuchkova::infixToPostfix(inf, post);
-        result = kryuchkova::getResult(post);
+
       }
       catch(const std::exception& e)
       {
@@ -48,6 +44,7 @@ int main(int argc, char *argv[])
       std::cout << result << '\n';
     }
   }
+
   else
   {
     while (std::cin)
@@ -63,9 +60,7 @@ int main(int argc, char *argv[])
       }
       try
       {
-        kryuchkova::stringToInfix(str, inf);
-        kryuchkova::infixToPostfix(inf, post);
-        result = kryuchkova::getResult(post);
+
       }
       catch(const std::exception& e)
       {
