@@ -75,11 +75,13 @@ namespace chemodurov
    private:
     char buf_[sizeof(detail::List< T >)];
     iterator fake_;
+    iterator last_;
   };
 
   template< typename T >
   ForwardList< T >::ForwardList():
-   fake_(new (buf_) detail::List< T >)
+   fake_(new (buf_) detail::List< T >),
+   last_(nullptr)
   {
     fake_.node_->next = nullptr;
   }
@@ -103,7 +105,7 @@ namespace chemodurov
   }
 
   template< typename T >
-  ForwardList< T >::ForwardList(const ForwardList::this_t & rhs):
+  ForwardList< T >::ForwardList(const this_t & rhs):
    ForwardList()
   {
     if (rhs.empty())
@@ -112,7 +114,21 @@ namespace chemodurov
     }
     std::pair< detail::List< T > *, detail::List< T > * > temp = detail::copyList(rhs.fake_.node_->next);
     fake_.node_->next = temp.first;
-    temp.second->next = fake_;
+    last_ = temp.second;
+    last_.node_->next = fake_;
+  }
+
+  template< typename T >
+  ForwardList< T >::ForwardList(this_t && rhs):
+   buf_(rhs.buf_),
+   fake_(std::addressof(buf_)),
+   last_(rhs.last_)
+  {
+    rhs.fake_.node_->next = nullptr;
+    if (!empty())
+    {
+      last_.node_->next = fake_;
+    }
   }
 
   template< typename T >
