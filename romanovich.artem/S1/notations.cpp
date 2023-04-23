@@ -29,22 +29,49 @@ namespace romanovich
   {
     return ((b < 0 && a > maxLongLong + b) || (b > 0 && a < minLongLong + b));
   }
-}
-bool romanovich::isOperator(const ExpPart &c)
-{
-  return (c == "+" || c == "-" || c == "*" || c == "/" || c == "%");
-}
-bool romanovich::isDigit(const ExpPart &str)
-{
-  try
+  ExpPart createFromString(const std::string &string)
   {
-    std::stoll(str, nullptr, 10);
+    if (string.size() == 1)
+    {
+      if (string[0] == static_cast<char>(brackets_t::right))
+      {
+        return ExpPart(brackets_t::right);
+      }
+      if (string[0] == static_cast<char>(brackets_t::left))
+      {
+        return ExpPart(brackets_t::left);
+      }
+      if (string[0] == static_cast<char>(operations_t::division))
+      {
+        return ExpPart(operations_t::division);
+      }
+      if (string[0] == static_cast<char>(operations_t::multiplication))
+      {
+        return ExpPart(operations_t::multiplication);
+      }
+      if (string[0] == static_cast<char>(operations_t::minus))
+      {
+        return ExpPart(operations_t::minus);
+      }
+      if (string[0] == static_cast<char>(operations_t::plus))
+      {
+        return ExpPart(operations_t::plus);
+      }
+      if (string[0] == static_cast<char>(operations_t::division_remainder))
+      {
+        return ExpPart(operations_t::division_remainder);
+      }
+    }
+    try
+    {
+      long long operand = std::stoll(string, nullptr, 10);
+      return ExpPart(operand);
+    }
+    catch (...)
+    {
+      throw std::invalid_argument("Invalid input");
+    }
   }
-  catch (...)
-  {
-    return false;
-  }
-  return true;
 }
 bool romanovich::stackPopCondition(const ExpPart &q, const ExpPart &s)
 {
@@ -67,28 +94,38 @@ void romanovich::getPostfixFromInfix(exp_q &queue, exp_s &stack, exp_q &postfixQ
     {
       ExpPart qEl = queue.get();
       queue.pop();
-      if (qEl == "(")
+      if (qEl.isBracket())
       {
-        stack.push(qEl);
-      }
-      if (qEl == ")")
-      {
-        while (stack.get() != "(")
+        if (qEl.getBracket() == brackets_t::left)
         {
-          postfixQueue.push(stack.get());
-          stack.pop();
-          if (stack.isEmpty())
-          {
-            break;
-          }
+          stack.push(qEl);
         }
-        stack.pop();
+        if (qEl.getBracket() == brackets_t::right)
+        {
+          while (!stack.get().isBracket())
+          {
+            if (stack.get().isBracket())
+            {
+              if (stack.get().getBracket() == brackets_t::left)
+              {
+                break;
+              }
+            }
+            postfixQueue.push(stack.get());
+            stack.pop();
+            if (stack.isEmpty())
+            {
+              break;
+            }
+          }
+          stack.pop();
+        }
       }
-      if (isDigit(qEl))
+      if (qEl.isOperand())
       {
         postfixQueue.push(qEl);
       }
-      if (isOperator(qEl))
+      if (qEl.isOperation())
       {
         if (!stack.isEmpty())
         {
@@ -118,16 +155,16 @@ romanovich::Queue< ExpPart > romanovich::splitLine(const std::string &string)
   int intEnd = string.find(' ');
   while (intEnd != -1)
   {
-    queue.push(string.substr(intBegin, intEnd - intBegin));
+    queue.push(createFromString(string.substr(intBegin, intEnd - intBegin)));
     intBegin = intEnd + 1;
     intEnd = string.find(' ', intBegin);
   }
-  queue.push(string.substr(intBegin, intEnd - intBegin));
+  queue.push(createFromString(string.substr(intBegin, intEnd - intBegin)));
   return queue;
 }
-ExpPart romanovich::doOperation(long long b, long long a, const ExpPart &oper)
+long long romanovich::doOperation(long long b, long long a, const operations_t &oper)
 {
-  if (oper == "+")
+  if (oper == operations_t::plus)
   {
     if (!romanovich::overflowAdd(a, b))
     {
@@ -138,7 +175,7 @@ ExpPart romanovich::doOperation(long long b, long long a, const ExpPart &oper)
       throw std::overflow_error("");
     }
   }
-  if (oper == "-")
+  if (oper == operations_t::minus)
   {
     if (!romanovich::overflowSubt(a, b))
     {
@@ -149,7 +186,7 @@ ExpPart romanovich::doOperation(long long b, long long a, const ExpPart &oper)
       throw std::overflow_error("");
     }
   }
-  if (oper == "*")
+  if (oper == operations_t::multiplication)
   {
     if (!romanovich::overflowMult(a, b))
     {
@@ -160,7 +197,7 @@ ExpPart romanovich::doOperation(long long b, long long a, const ExpPart &oper)
       throw std::overflow_error("");
     }
   }
-  if (oper == "/")
+  if (oper == operations_t::division)
   {
     if (b != 0)
     {
@@ -183,17 +220,13 @@ void romanovich::calcPostfixExpression(exp_q &postfixQueue, exp_s &answer, exp_s
   postfixQueue.pop();
   while (!stack.isEmpty())
   {
-    ExpPart expPart;
-    if (!postfixQueue.isEmpty())
-    {
-      expPart = postfixQueue.get();
-      postfixQueue.pop();
-    }
-    else
+    if (postfixQueue.isEmpty())
     {
       break;
     }
-    if (romanovich::isDigit(expPart))
+    ExpPart expPart(postfixQueue.get());
+    postfixQueue.pop();
+    if (expPart.isOperand())
     {
       stack.push(expPart);
     }
@@ -201,11 +234,11 @@ void romanovich::calcPostfixExpression(exp_q &postfixQueue, exp_s &answer, exp_s
     {
       try
       {
-        long long x = std::stoll(stack.get(), nullptr, 10);
+        long long x = std::stoll(std::to_string(stack.get().getOperand()), nullptr, 10);
         stack.pop();
-        long long y = std::stoll(stack.get(), nullptr, 10);
+        long long y = std::stoll(std::to_string(stack.get().getOperand()), nullptr, 10);
         stack.pop();
-        stack.push(romanovich::doOperation(x, y, expPart));
+        stack.push(ExpPart(romanovich::doOperation(x, y, expPart.getOperation())));
       }
       catch (...)
       {

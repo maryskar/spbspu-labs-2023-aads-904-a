@@ -60,11 +60,11 @@ int main(int argc, char **argv)
   }
   if (!answer.isEmpty())
   {
-    std::cout << answer.get();
+    std::cout << answer.get().getOperand();
     answer.pop();
     while (!answer.isEmpty())
     {
-      std::cout << " " << answer.get();
+      std::cout << " " << answer.get().getOperand();
       answer.pop();
     }
   }
