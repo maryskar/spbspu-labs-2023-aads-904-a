@@ -56,7 +56,3 @@ brackets_t ExpPart::getBracket() const
   }
   throw;
 }
-bool ExpPart::isLeftBracket() const
-{
-  return content_.bracket_ == brackets_t::left;
-}

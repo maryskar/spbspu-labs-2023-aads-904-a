@@ -11,7 +11,6 @@ public:
   bool isOperand() const;
   bool isOperation() const;
   bool isBracket() const;
-  bool isLeftBracket() const;
   operations_t getOperation() const;
   long long int getOperand() const;
   brackets_t getBracket() const;
@@ -21,15 +20,9 @@ private:
   bool isOperand_;
   union ExpContent
   {
-    explicit ExpContent(brackets_t br): bracket_(br)
-    {
-    };
-    explicit ExpContent(operations_t op): operation_(op)
-    {
-    };
-    explicit ExpContent(long long op): operand_(op)
-    {
-    }
+    explicit ExpContent(brackets_t br): bracket_(br) {};
+    explicit ExpContent(operations_t op): operation_(op) {};
+    explicit ExpContent(long long op): operand_(op) {}
     long long operand_;
     operations_t operation_;
     brackets_t bracket_;
