@@ -1,5 +1,8 @@
 #ifndef CONST_FORWARD_LIST_ITERATOR_H
 #define CONST_FORWARD_LIST_ITERATOR_H
+#include <memory>
+#include <cassert>
+#include <iterator>
 #include "forward_list.h"
 namespace tarasenko
 {
@@ -7,7 +10,7 @@ namespace tarasenko
   class ForwardList;
 
   template< typename T >
-  class ConstForwardListIterator
+  class ConstForwardListIterator: public std::iterator< std::input_iterator_tag, const T >
   {
   public:
    using this_t = ConstForwardListIterator< T >;
