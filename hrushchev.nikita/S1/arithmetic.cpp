@@ -4,8 +4,8 @@
 
 long long sum(long long a, long long b)
 {
-  const long long max = std::numeric_limits< int long long >::max();
-  if(max - a < b)
+  constexpr long long max = std::numeric_limits< int long long >::max();
+  if (max - a < b)
   {
     throw std::overflow_error("Sum overflow");
   }
@@ -14,7 +14,7 @@ long long sum(long long a, long long b)
 
 long long subtract(long long a, long long b)
 {
-  const long long min = std::numeric_limits< long long >::min();
+  constexpr long long min = std::numeric_limits< long long >::min();
   if ((b > 0) && (min + b > a))
   {
     throw std::overflow_error("Subtraction overflow");
@@ -24,21 +24,21 @@ long long subtract(long long a, long long b)
 
 long long multiply(long long a, long long b)
 {
-  const long long max = std::numeric_limits< int long long >::max();
-  const long long min = std::numeric_limits< int long long >::min();
-  if((a > 0) && ((max / a) < b))
+  constexpr long long max = std::numeric_limits< int long long >::max();
+  constexpr long long min = std::numeric_limits< int long long >::min();
+  if ((a > 0) && ((max / a) < b))
   {
     throw std::overflow_error("Multiply overflow");
   }
-  else if((a < 0) && ((max / a) > b))
+  else if ((a < 0) && ((max / a) > b))
   {
     throw std::overflow_error("Multiply overflow");
   }
-  else if((a > 0) && ((min / a) > b))
+  else if ((a > 0) && ((min / a) > b))
   {
     throw std::overflow_error("Multiply overflow");
   }
-  else if((a < 0) && ((min / a) < b))
+  else if ((a < 0) && ((min / a) < b))
   {
     throw std::overflow_error("Multiply overflow");
   }
@@ -47,7 +47,7 @@ long long multiply(long long a, long long b)
 
 long long division(long long a, long long b)
 {
-  if(b == 0)
+  if (b == 0)
   {
     throw std::logic_error("Division by 0");
   }
@@ -56,11 +56,11 @@ long long division(long long a, long long b)
 
 long long remaind(long long a, long long b)
 {
-  if(b == 0)
+  if (b == 0)
   {
     throw std::logic_error("Remaind by 0");
   }
-  if(a < 0)
+  if (a < 0)
   {
     return b + a % b;
   }

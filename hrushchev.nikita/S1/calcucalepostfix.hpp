@@ -6,3 +6,4 @@
 long long calculatePostfix(Queue< std::string >& postfixQueue);
 
 #endif
+

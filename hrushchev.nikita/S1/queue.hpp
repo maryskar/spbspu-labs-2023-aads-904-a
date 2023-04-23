@@ -10,6 +10,7 @@ class Queue
     Queue();
     ~Queue();
     Queue(const Queue< T >& other);
+    Queue< T >& operator=(const Queue< T >& other);
     void push(const T& value);
     void pop();
     const T& get() const;
@@ -88,6 +89,25 @@ Queue< T >::Queue(const Queue< T >& other):
     push(curent->data);
     curent = curent->next;
   }
+}
+
+template< typename T >
+Queue< T >& Queue< T >::operator=(const Queue< T >& other)
+{
+  if (this != &other)
+  {
+    while (!isEmpty())
+    {
+      pop();
+    }
+    List< T >* curent = other.begin_;
+    while (curent != nullptr)
+    {
+      push(curent->data);
+      curent = curent->next;
+    }
+  }
+  return *this;
 }
 
 #endif

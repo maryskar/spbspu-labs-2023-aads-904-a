@@ -4,14 +4,14 @@
 #include "stack.hpp"
 #include "arithmetic.hpp"
 
-long long calculatePostfix(Queue<std::string>& postfixQueue)
+long long calculatePostfix(Queue< std::string >& postfixQueue)
 {
   Stack< long long > stack;
   while (!postfixQueue.isEmpty())
   {
     std::string token = postfixQueue.get();
     postfixQueue.pop();
-    if (isdigit(token[0]))
+    if (std::isdigit(token[0]))
     {
       stack.push(std::stoll(token));
     }

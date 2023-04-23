@@ -97,8 +97,8 @@ Stack< T >& Stack< T >::operator=(const Stack< T >& other)
       push(other_value->data_);
       other_value = other_value->next;
     }
-    return *this;
   }
+  return *this;
 }
 
 template< typename T >
