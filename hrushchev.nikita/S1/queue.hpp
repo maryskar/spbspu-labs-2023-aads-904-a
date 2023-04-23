@@ -9,9 +9,10 @@ class Queue
   public:
     Queue();
     ~Queue();
+    Queue(const Queue< T >& other);
     void push(const T& value);
     void pop();
-    T& get() const;
+    const T& get() const;
     bool isEmpty() const;
   private:
     List< T >* begin_;
@@ -40,19 +41,19 @@ void Queue< T >::push(const T& value)
   }
   else
   {
-    end_->next_ = temp;
+    end_->next = temp;
   }
   end_ = temp;
 }
 
 template< typename T >
-T& Queue< T >::get() const
+const T& Queue< T >::get() const
 {
   if(isEmpty())
   {
     throw std::logic_error("Empty queue");
   }
-  return begin_->data_;
+  return begin_->data;
 }
 
 template< typename T >
@@ -62,7 +63,7 @@ void Queue< T >::pop()
   {
     throw std::logic_error("Empty queue");
   }
-  List< T >* temp = begin_->next_;
+  List< T >* temp = begin_->next;
   delete begin_;
   begin_ = temp;
 }
@@ -73,6 +74,19 @@ Queue< T >::~Queue()
   while(!isEmpty())
   {
     pop();
+  }
+}
+
+template< typename T >
+Queue< T >::Queue(const Queue< T >& other):
+  begin_(nullptr),
+  end_(nullptr)
+{
+  List< T >* curent = other.begin_;
+  while (curent != nullptr)
+  {
+    push(curent->data);
+    curent = curent->next;
   }
 }
 

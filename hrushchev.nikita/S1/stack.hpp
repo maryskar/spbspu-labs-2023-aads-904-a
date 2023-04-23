@@ -15,7 +15,7 @@ class Stack
     Stack< T >& operator=(Stack< T >&& other);
     void push(const T& value);
     void pop();
-    T& get() const;
+    const T& get() const;
     bool isEmpty() const;
   private:
     List< T >* value_;
@@ -40,13 +40,13 @@ void Stack< T >::push(const T& value)
 }
 
 template< typename T >
-T& Stack< T >::get() const
+const T& Stack< T >::get() const
 {
   if(isEmpty())
   {
     throw std::logic_error("Empty stack");
   }
-  return value_->data_;
+  return value_->data;
 }
 
 template< typename T >
@@ -56,7 +56,7 @@ void Stack< T >::pop()
   {
     throw std::logic_error("Empty stack");
   }
-  List< T >* temp = value_->next_;
+  List< T >* temp = value_->next;
   delete value_;
   value_ = temp;
 }
@@ -78,7 +78,7 @@ Stack< T >::Stack(const Stack< T >& other):
   while (other_value != nullptr)
   {
     push(other_value->data_);
-    other_value = other_value->next_;
+    other_value = other_value->next;
   }
 }
 
@@ -95,7 +95,7 @@ Stack< T >& Stack< T >::operator=(const Stack< T >& other)
     while (other_value != nullptr)
     {
       push(other_value->data_);
-      other_value = other_value->next_;
+      other_value = other_value->next;
     }
     return *this;
   }
