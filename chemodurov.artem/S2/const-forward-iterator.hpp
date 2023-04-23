@@ -12,7 +12,7 @@ namespace chemodurov
    public:
     using this_t = ConstForwardIterator< T >;
     ConstForwardIterator(): node_(nullptr) {};
-    explicit ConstForwardIterator(const ForwardIterator< T > & rhs);
+    explicit ConstForwardIterator(ForwardIterator< T > rhs);
     ~ConstForwardIterator() = default;
     this_t & operator=(const this_t & rhs) = default;
     this_t & operator++();
@@ -94,7 +94,7 @@ namespace chemodurov
   }
 
   template< typename T >
-  ConstForwardIterator< T >::ConstForwardIterator(const ForwardIterator< T > & rhs):
+  ConstForwardIterator< T >::ConstForwardIterator(ForwardIterator< T > rhs):
    node_(static_cast< const detail::List< T > * >(rhs.node_))
   {}
 }
