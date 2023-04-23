@@ -30,6 +30,8 @@ namespace kryuchkova
       explicit element(operation_t operation);
       explicit element(parenthesis_t parenthesis);
     } element_;
+    bool isOperand_;
+    bool isParthenesis_;
   };
   bool CpmPriority(const operation_t &lhs, const operation_t &rhs);
 }
