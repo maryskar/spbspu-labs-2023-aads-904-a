@@ -33,7 +33,6 @@ namespace kryuchkova
     bool isOperand_;
     bool isParthenesis_;
   };
-  bool CpmPriority(const operation_t &lhs, const operation_t &rhs);
 }
 
 #endif

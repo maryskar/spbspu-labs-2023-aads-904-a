@@ -28,6 +28,50 @@ namespace kryuchkova
     element_(operand)
   {}
 
-  
+  ExpressionMember::ExpressionMember(const ExpressionMember &data):
+    isOperand_(data.isOperand_),
+    isParthenesis_(data.isParthenesis_),
+    element_(data.element_)
+  {}
+  ExpressionMember::ExpressionMember(ExpressionMember && data):
+    isOperand_(data.isOperand_),
+    isParthenesis_(data.isParthenesis_),
+    element_(data.element_)
+  {}
+  ExpressionMember &ExpressionMember::operator=(const ExpressionMember &data)
+  {
+    isOperand_ = data.isOperand_;
+    isParthenesis_ = data.isParthenesis_;
+    element_ = data.element_;
+    return *this;
+  }
+  ExpressionMember &ExpressionMember::operator=(ExpressionMember &&data)
+  {
+    isOperand_ = data.isOperand_;
+    isParthenesis_ = data.isParthenesis_;
+    element_ = data.element_;
+    return *this;
+  }
+
+  bool ExpressionMember::isOperand() const
+  {
+    return isOperand_;
+  }
+  bool ExpressionMember::isParenthesis() const
+  {
+    return isParthenesis_;
+  }
+  operation_t ExpressionMember::getOperation() const
+  {
+    return element_.operation_;
+  }
+  parenthesis_t ExpressionMember::getParenthesis() const
+  {
+    return element_.parenthesis_;
+  }
+  long long ExpressionMember::getOperand() const
+  {
+    return element_.operand_;
+  }
   
 }
