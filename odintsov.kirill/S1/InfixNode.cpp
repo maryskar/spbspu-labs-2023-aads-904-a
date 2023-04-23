@@ -28,17 +28,18 @@ struct odintsov::InfixNode::Impl {
     tag(Tag::Operand)
   {}
 
-  Impl(const odintsov::Operator& oper):
+  Impl(const Operator& oper):
     pnPtr(new PostfixNode(oper)),
     tag(Tag::Operator)
   {}
 
-  Impl(char paren):
+  Impl(char chr):
     pnPtr(nullptr),
-    tag(paren == '(' ? Tag::OpenParen : Tag::CloseParen)
+    tag(chr == '(' ? Tag::OpenParen : Tag::CloseParen)
   {
-    if (paren != '(' && paren != ')') {
-      throw std::invalid_argument("Incorrect parenthesis");
+    if (chr != '(' && chr != ')') {
+      pnPtr = new PostfixNode(Operator(chr));
+      tag = Tag::Operator;
     }
   }
 
@@ -82,8 +83,8 @@ odintsov::InfixNode::InfixNode(const odintsov::Operator& oper):
   pImpl_(new Impl(oper))
 {}
 
-odintsov::InfixNode::InfixNode(char paren):
-  pImpl_(new Impl(paren))
+odintsov::InfixNode::InfixNode(char chr):
+  pImpl_(new Impl(chr))
 {}
 
 odintsov::InfixNode::~InfixNode()

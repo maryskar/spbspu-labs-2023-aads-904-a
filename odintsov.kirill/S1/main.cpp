@@ -4,8 +4,8 @@
 #include <memory>
 #include <stdexcept>
 
-#include "InfixQueue.hpp"
 #include "Stack.hpp"
+#include "solveInfixExpr.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
       if (exprStr.empty()) {
         continue;
       }
-      results.push(odintsov::InfixQueue(exprStr).solve());
+      results.push(odintsov::solveInfixExpr(exprStr));
     }
   } catch (const std::exception& e) {
     std::cerr << e.what() << '\n';

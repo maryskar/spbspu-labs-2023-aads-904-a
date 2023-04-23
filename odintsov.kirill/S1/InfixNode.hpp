@@ -18,7 +18,7 @@ namespace odintsov {
     explicit InfixNode(const PostfixNode& pn);
     explicit InfixNode(long long operand);
     explicit InfixNode(const odintsov::Operator& oper);
-    explicit InfixNode(char paren);
+    explicit InfixNode(char chr);
     ~InfixNode();
 
     Tag getTag() const;
