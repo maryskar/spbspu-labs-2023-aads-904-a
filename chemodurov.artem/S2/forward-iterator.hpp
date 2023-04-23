@@ -9,9 +9,13 @@ namespace chemodurov
   class ConstForwardIterator;
 
   template< typename T >
+  class ForwardList;
+
+  template< typename T >
   class ForwardIterator
   {
     friend class ConstForwardIterator< T >;
+    friend class ForwardList< T >;
    public:
     using this_t = ForwardIterator< T >;
     ForwardIterator(): node_(nullptr) {};

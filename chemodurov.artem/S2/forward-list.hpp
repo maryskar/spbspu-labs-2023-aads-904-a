@@ -73,8 +73,47 @@ namespace chemodurov
     void remove_if(UnaryPredicate p);
     void reverse() noexcept;
    private:
-    iterator end_;
+    char buf_[sizeof(detail::List< T >)];
+    iterator fake_;
   };
+
+  template< typename T >
+  ForwardList< T >::ForwardList():
+   fake_(new (buf_) detail::List< T >)
+  {
+    fake_.node_->next = nullptr;
+  }
+
+  template< typename T >
+  bool ForwardList< T >::empty() const noexcept
+  {
+    return fake_.node_->next == nullptr;
+  }
+
+  template< typename T >
+  void ForwardList< T >::clear() noexcept
+  {
+    detail::deleteList(fake_.node_->next);
+  }
+
+  template< typename T >
+  ForwardList< T >::~ForwardList()
+  {
+    clear();
+  }
+
+  template< typename T >
+  ForwardList< T >::ForwardList(const ForwardList::this_t & rhs):
+   ForwardList()
+  {
+    if (rhs.empty())
+    {
+      return;
+    }
+    std::pair< detail::List< T > *, detail::List< T > * > temp = detail::copyList(rhs.fake_.node_->next);
+    fake_.node_->next = temp.first;
+    temp.second->next = fake_;
+  }
 
   template< typename T >
   bool operator==(const ForwardList< T > & lhs, const ForwardList< T > & rhs);
