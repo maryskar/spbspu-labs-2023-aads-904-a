@@ -11,6 +11,7 @@ class Queue
     ~Queue();
     Queue(const Queue< T >& other);
     Queue< T >& operator=(const Queue< T >& other);
+    Queue(Queue< T >&& other);
     void push(const T& value);
     void pop();
     const T& get() const;
@@ -108,6 +109,15 @@ Queue< T >& Queue< T >::operator=(const Queue< T >& other)
     }
   }
   return *this;
+}
+
+template < typename T >
+Queue< T >::Queue(Queue< T >&& other):
+  begin_(other.begin_),
+  end_(other.end_)
+{
+  other.begin_ = nullptr;
+  other.end_ = nullptr;
 }
 
 #endif
