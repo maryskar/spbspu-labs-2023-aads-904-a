@@ -12,15 +12,15 @@ namespace chemodurov
     using this_t = ConstForwardIterator< T >;
     ConstForwardIterator(): node_(nullptr) {};
     ~ConstForwardIterator() = default;
-    this_t & operator=(const this_t &) = default;
+    this_t & operator=(const this_t & rhs) = default;
     this_t & operator++();
     this_t operator++(int);
     T & operator*();
     const T & operator*() const;
     T * operator->();
     const T * operator->() const;
-    bool operator==(const this_t &) const;
-    bool operator!=(const this_t &) const;
+    bool operator==(const this_t & rhs) const;
+    bool operator!=(const this_t & rhs) const;
    private:
     const List< T > * node_;
     void assertNotNullptr();
