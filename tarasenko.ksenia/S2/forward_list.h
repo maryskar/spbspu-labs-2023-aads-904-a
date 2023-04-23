@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "node.h"
 #include "forward_list_iterator.h"
+#include "const_forward_list_iterator.h"
 namespace tarasenko
 {
   template< typename T >
@@ -69,6 +70,15 @@ namespace tarasenko
      return ForwardListIterator< T >();
    }
 
+   friend class ConstForwardListIterator< T >;
+   ConstForwardListIterator< T > cbegin()
+   {
+     return ConstForwardListIterator< T >(this);
+   }
+   ConstForwardListIterator< T > cend()
+   {
+     return ConstForwardListIterator< T >();
+   }
   private:
    details::NodeOfList< T >* first;
   };
