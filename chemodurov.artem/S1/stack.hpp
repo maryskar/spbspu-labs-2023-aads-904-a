@@ -22,7 +22,7 @@ namespace chemodurov
     const T & getFromStack() const;
     bool empty() const noexcept;
    private:
-    List< T > * head_;
+    detail::List< T > * head_;
     void copyStack(const Stack< T > &);
     void deleteStack() noexcept;
   };
@@ -38,7 +38,7 @@ chemodurov::Stack< T >::~Stack()
 {
   while (!empty())
   {
-    List< T > * temp = head_->next;
+    detail::List< T > * temp = head_->next;
     delete head_;
     head_ = temp;
   }
@@ -47,7 +47,7 @@ chemodurov::Stack< T >::~Stack()
 template< typename T >
 void chemodurov::Stack< T >::push(const T & rhs)
 {
-  List< T > * temp = new List< T >{rhs, head_};
+  detail::List< T > * temp = new detail::List< T >{rhs, head_};
   head_ = temp;
 }
 
@@ -74,7 +74,7 @@ void chemodurov::Stack< T >::pop()
   {
     throw std::logic_error("Empty stack");
   }
-  List< T > * temp = head_->next;
+  detail::List< T > * temp = head_->next;
   delete head_;
   head_ = temp;
 }
@@ -119,7 +119,7 @@ chemodurov::Stack< T > & chemodurov::Stack< T >::operator=(const Stack< T > & st
   {
     return *this;
   }
-  List< T > * temp = head_;
+  detail::List< T > * temp = head_;
   try
   {
     copyStack(stack);

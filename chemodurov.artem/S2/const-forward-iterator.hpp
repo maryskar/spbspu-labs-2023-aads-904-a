@@ -2,6 +2,7 @@
 #define S2_CONST_FORWARD_ITERATOR_HPP
 #include <cassert>
 #include <list.hpp>
+#include "forward-iterator.hpp"
 
 namespace chemodurov
 {
@@ -11,6 +12,7 @@ namespace chemodurov
    public:
     using this_t = ConstForwardIterator< T >;
     ConstForwardIterator(): node_(nullptr) {};
+    explicit ConstForwardIterator(const ForwardIterator< T > & rhs);
     ~ConstForwardIterator() = default;
     this_t & operator=(const this_t & rhs) = default;
     this_t & operator++();
@@ -22,7 +24,7 @@ namespace chemodurov
     bool operator==(const this_t & rhs) const;
     bool operator!=(const this_t & rhs) const;
    private:
-    const List< T > * node_;
+    const detail::List< T > * node_;
     void assertNotNullptr();
     void assertNotNullptr() const;
   };
@@ -90,6 +92,11 @@ namespace chemodurov
   {
     return !(*this == rhs);
   }
+
+  template< typename T >
+  ConstForwardIterator< T >::ConstForwardIterator(const ForwardIterator< T > & rhs):
+   node_(static_cast< const detail::List< T > * >(rhs.node_))
+  {}
 }
 
 #endif

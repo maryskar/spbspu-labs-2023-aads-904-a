@@ -1,7 +1,7 @@
 #ifndef S2_FORWARD_LIST_HPP
 #define S2_FORWARD_LIST_HPP
 #include <initializer_list>
-#include "forward-iterator.hpp"
+#include <iterator>
 #include "const-forward-iterator.hpp"
 
 namespace chemodurov
@@ -17,13 +17,27 @@ namespace chemodurov
     using const_reference = const value_type &;
     using iterator = ForwardIterator< T >;
     using const_iterator = ConstForwardIterator< T >;
+    using this_t = ForwardList< T >;
     ForwardList();
-    ForwardList(const ForwardList< T > & list);
-    ForwardList(ForwardList< T > && list);
+    ForwardList(const this_t & rhs);
+    ForwardList(this_t && rhs);
     ForwardList(std::initializer_list< T > init);
     ~ForwardList();
-    ForwardList< T > & operator=(const ForwardList< T > & list);
-    ForwardList< T > & operator=(ForwardList< T > && list);
+    this_t & operator=(const this_t & rhs);
+    this_t & operator=(this_t && rhs);
+    bool operator==(const this_t & rhs);
+    bool operator!=(const this_t & rhs);
+    iterator begin() noexcept;
+    const_iterator begin() const noexcept;
+    const_iterator cbegin() const noexcept;
+    iterator end() noexcept;
+    const_iterator end() const noexcept;
+    const_iterator cend() const noexcept;
+    bool empty() const noexcept;
+    size_type max_size() const noexcept;
+   private:
+    iterator begin_;
+    iterator end_;
   };
 }
 

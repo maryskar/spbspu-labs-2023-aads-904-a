@@ -6,8 +6,12 @@
 namespace chemodurov
 {
   template< typename T >
+  class ConstForwardIterator;
+
+  template< typename T >
   class ForwardIterator
   {
+    friend class ConstForwardIterator< T >;
    public:
     using this_t = ForwardIterator< T >;
     ForwardIterator(): node_(nullptr) {};
@@ -22,7 +26,7 @@ namespace chemodurov
     bool operator==(const this_t & rhs) const;
     bool operator!=(const this_t & rhs) const;
    private:
-    List< T > * node_;
+    detail::List< T > * node_;
     void assertNotNullptr();
     void assertNotNullptr() const;
   };
