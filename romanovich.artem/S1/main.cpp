@@ -35,10 +35,6 @@ int main(int argc, char **argv)
     {
       continue;
     }
-    if (line == "^Z")
-    {
-      break;
-    }
     romanovich::Queue< ExpPart > postfixQueue;
     romanovich::Stack< ExpPart > stack1;
     try
