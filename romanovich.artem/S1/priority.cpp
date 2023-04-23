@@ -1,9 +1,8 @@
 #include "priority.h"
 #include <cstddef>
 #include <stdexcept>
-size_t romanovich::Priority::getPriority(const ExpPart &ep)
+size_t romanovich::Priority::getPriority(const operations_t &op)
 {
-  auto op = ep.getOperation();
   if (op == operations_t::plus || op == operations_t::minus)
   {
     return 1;

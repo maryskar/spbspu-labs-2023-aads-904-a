@@ -35,11 +35,15 @@ int main(int argc, char **argv)
     {
       continue;
     }
-    romanovich::Queue< ExpPart > infixNotation = romanovich::splitLine(line);
+    if (line == "^Z")
+    {
+      break;
+    }
     romanovich::Queue< ExpPart > postfixQueue;
     romanovich::Stack< ExpPart > stack1;
     try
     {
+      romanovich::Queue< ExpPart > infixNotation = romanovich::splitLine(line);
       romanovich::getPostfixFromInfix(infixNotation, stack1, postfixQueue);
     }
     catch (...)

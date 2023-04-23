@@ -69,7 +69,7 @@ namespace romanovich
     }
     catch (...)
     {
-      throw std::invalid_argument("Invalid input");
+      throw;
     }
   }
 }
@@ -77,9 +77,13 @@ bool romanovich::stackPopCondition(const ExpPart &q, const ExpPart &s)
 {
   try
   {
-    romanovich::Priority priorQ(q);
-    romanovich::Priority priorS(s);
-    return (!(priorQ < priorS));
+    if (q.isOperation() && s.isOperation())
+    {
+      romanovich::Priority priorQ(q.getOperation());
+      romanovich::Priority priorS(s.getOperation());
+      return (!(priorQ < priorS));
+    }
+    return false;
   }
   catch (...)
   {
