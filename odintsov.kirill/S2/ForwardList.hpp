@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <initializer_list>
+#include <memory>
 
 namespace detail {
   template< typename T >
@@ -13,16 +14,53 @@ namespace detail {
 
   template< typename T >
   struct ForwardIterator {
-    Node< T >* nodePtr;
-    ForwardIterator();
+    ForwardIterator():
+      nodePtr_(nullptr)
+    {}
 
-    ForwardIterator& operator++();
-    ForwardIterator operator++(int);
-    T& operator*();
-    T* operator->();
+    ForwardIterator(Node< T >* ptr):
+      nodePtr_(ptr)
+    {}
 
-    bool operator==(const ForwardIterator& rhs) const;
-    bool operator!=(const ForwardIterator& rhs) const;
+    ForwardIterator& operator++()
+    {
+      if (nodePtr_) {
+        nodePtr_ = nodePtr_->next;
+      }
+      return *this;
+    }
+
+    ForwardIterator operator++(int)
+    {
+      ForwardIterator< T > copy(*this);
+      if (nodePtr_) {
+        nodePtr_ = nodePtr_->next;
+      }
+      return copy;
+    }
+
+    T& operator*()
+    {
+      return nodePtr_->data;
+    }
+
+    T* operator->()
+    {
+      return std::addressof(nodePtr_->data);
+    }
+
+    bool operator==(const ForwardIterator& rhs) const
+    {
+      return nodePtr_ == rhs.nodePtr_;
+    }
+
+    bool operator!=(const ForwardIterator& rhs) const
+    {
+      return nodePtr_ != rhs.nodePtr_;
+    }
+
+   private:
+    Node< T >* nodePtr_;
   };
 }
 
@@ -75,6 +113,9 @@ namespace odintsov {
     template< class UnaryPredicate >
     void removeIf(UnaryPredicate c);
     void reverse();
+
+   private:
+    detail::Node< T >* head_
   };
 }
 
