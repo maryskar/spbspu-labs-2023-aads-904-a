@@ -73,6 +73,22 @@ namespace dimkashelk
     {
       return begin_->data;
     }
+    iterator begin()
+    {
+      return iterator(begin_);
+    }
+    iterator end()
+    {
+      return iterator(fakeNode_);
+    }
+    const_iterator cbegin() const
+    {
+      return const_iterator(begin_);
+    }
+    const_iterator cend() const
+    {
+      return const_iterator(fakeNode_);
+    }
     void pushFront(const T &data)
     {
       auto *node = new details::NodeForwardList< T >(data);
@@ -157,22 +173,6 @@ namespace dimkashelk
     bool empty()
     {
       return begin_ == nullptr;
-    }
-    iterator begin()
-    {
-      return iterator(begin_);
-    }
-    iterator end()
-    {
-      return iterator(fakeNode_);
-    }
-    const_iterator cbegin() const
-    {
-      return const_iterator(begin_);
-    }
-    const_iterator cend() const
-    {
-      return const_iterator(fakeNode_);
     }
   private:
     details::NodeForwardList< T > *fakeNode_;
