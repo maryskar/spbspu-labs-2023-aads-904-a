@@ -137,6 +137,21 @@ namespace dimkashelk
     {
       return insertAfter(pos, T(args...));
     }
+    iterator eraseAfter(const_iterator it)
+    {
+      auto next = it.ptr_->next;
+      it.ptr_->next = next->next;
+      delete next;
+      return iterator(it.ptr_->next);
+    }
+    iterator eraseAfter(const_iterator first, const_iterator second)
+    {
+      while (first != second)
+      {
+        first = eraseAfter(first);
+      }
+      return second;
+    }
     void pushFront(const T &data)
     {
       auto *node = new details::NodeForwardList< T >(data);
@@ -172,21 +187,6 @@ namespace dimkashelk
         node->prev = begin_;
         end_ = node;
       }
-    }
-    iterator eraseAfter(const const_iterator it)
-    {
-      auto next = it.ptr_->next;
-      it.ptr_->next = next->next;
-      delete next;
-      return iterator(it.ptr_->next);
-    }
-    iterator eraseAfter(const const_iterator first, const const_iterator second)
-    {
-      while (first != second)
-      {
-        first = eraseAfter(first);
-      }
-      return second;
     }
   private:
     details::NodeForwardList< T > *fakeNode_;
