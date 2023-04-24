@@ -27,16 +27,6 @@ namespace dimkashelk
       ptr_ = ptr_->next;
       return *this;
     }
-    ForwardListIteratorConst &operator--()
-    {
-      ptr_ = ptr_->prev;
-      return *this;
-    }
-    ForwardListIteratorConst &operator--(int)
-    {
-      ptr_ = ptr_->prev;
-      return *this;
-    }
     const T &operator*() const
     {
       return ptr_->data;
