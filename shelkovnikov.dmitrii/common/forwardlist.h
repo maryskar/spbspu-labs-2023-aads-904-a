@@ -19,13 +19,13 @@ namespace dimkashelk
   public:
     ForwardList():
       fakeNode_((details::NodeForwardList< T >*) ::operator new (sizeof(details::NodeForwardList< T >))),
-      begin_(fakeNode_),
-      end_(fakeNode_)
+      begin_(nullptr),
+      end_(nullptr)
     {}
     ForwardList(const ForwardList< T > &forwardList):
       fakeNode_((details::NodeForwardList< T >*) ::operator new (sizeof(details::NodeForwardList< T >))),
-      begin_(fakeNode_),
-      end_(fakeNode_)
+      begin_(nullptr),
+      end_(nullptr)
     {
       copy(forwardList);
     }
@@ -69,17 +69,25 @@ namespace dimkashelk
     {
       return begin_->data;
     }
-    const_iterator front() const
+    const_reference front() const
     {
       return begin_->data;
     }
-    iterator begin()
+    iterator beforeBegin() const
+    {
+      return iterator(fakeNode_);
+    }
+    iterator begin() const
     {
       return iterator(begin_);
     }
-    iterator end()
+    iterator end() const
     {
       return iterator(fakeNode_);
+    }
+    const_iterator cbeforeBegin() const
+    {
+      return const_iterator(fakeNode_);
     }
     const_iterator cbegin() const
     {
@@ -102,6 +110,7 @@ namespace dimkashelk
       {
         begin_ = node;
       }
+      fakeNode_->next = begin_;
     }
     void pushBack(const T &data)
     {
@@ -115,6 +124,7 @@ namespace dimkashelk
       else if (!begin_)
       {
         begin_ = node;
+        fakeNode_->next = begin_;
       }
       else
       {
@@ -123,7 +133,7 @@ namespace dimkashelk
         end_ = node;
       }
     }
-    iterator insertAfter(const const_iterator &it, const T &data)
+    iterator insertAfter(const_iterator it, const T &data)
     {
       auto *newNode = new details::NodeForwardList< T >(data);
       newNode->next = it.ptr_->next;
@@ -133,7 +143,18 @@ namespace dimkashelk
       }
       it.ptr_->next = newNode;
       newNode->prev = it.ptr_;
-      if (!newNode->next)
+      if (it.ptr_ == fakeNode_)
+      {
+        if (begin_ && !end_)
+        {
+          end_ = begin_;
+        }
+        else
+        {
+          begin_ = newNode;
+        }
+      }
+      else if (!newNode->next)
       {
         end_ = newNode;
       }
