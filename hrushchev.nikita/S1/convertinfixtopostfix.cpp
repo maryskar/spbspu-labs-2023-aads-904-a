@@ -4,9 +4,19 @@
 #include "queue.hpp"
 #include "stack.hpp"
 
+bool isHighPriorOperator(std::string op)
+{
+  return (op == "*") || (op == "/") || (op == "%");
+}
+
+bool isLowPriorOperator(std::string op)
+{
+  return  (op == "+") || (op == "-");
+}
+
 bool isOperator(std::string op)
 {
-  return (op == "+") || (op == "-") || (op == "*") || (op == "/") || (op == "%");
+  return isLowPriorOperator(op) || isHighPriorOperator(op);
 }
 
 Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
@@ -21,7 +31,7 @@ Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
     {
       postfixQueue.push(token);
     }
-    else if (token == "+" || token == "-")
+    else if (isLowPriorOperator(token))
     {
       while (!stack.isEmpty() && isOperator(stack.get()))
       {
@@ -30,9 +40,9 @@ Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
       }
       stack.push(token);
     }
-    else if (token == "*" || token == "/" || token == "%")
+    else if (isHighPriorOperator(token))
     {
-      while (!stack.isEmpty() && ((stack.get() == "*" || stack.get() == "/" || stack.get() == "%")))
+      while (!stack.isEmpty() && (isHighPriorOperator(token)))
       {
         postfixQueue.push(stack.get());
         stack.pop();
