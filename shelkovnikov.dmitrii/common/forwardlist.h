@@ -167,6 +167,11 @@ namespace dimkashelk
       }
       fakeNode_->next = begin_;
     }
+    template< class ... Args >
+    void emplaceFront(Args&&... args)
+    {
+      pushFront(T(args...));
+    }
     void pushBack(const T &data)
     {
       auto *node = new details::NodeForwardList< T >(data);
