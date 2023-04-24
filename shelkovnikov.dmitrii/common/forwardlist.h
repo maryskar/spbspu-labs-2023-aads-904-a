@@ -275,6 +275,40 @@ namespace dimkashelk
       first.ptr_->next = last.ptr_;
       start.ptr_->next = next;
     }
+    void remove(const T &data)
+    {
+      if (size_ == 1 && begin_->data == data)
+      {
+        delete begin_;
+        begin_ = nullptr;
+        fakeNode_->next = nullptr;
+      }
+      else
+      {
+        for (auto i = beforeBegin(); i != end(); i++)
+        {
+          if (i.ptr_ && i.ptr_->next->data == data)
+          {
+            i.ptr_->next = i.ptr_->next->next;
+            delete i.ptr_->next;
+            begin_ = nullptr;
+            fakeNode_->next = nullptr;
+          }
+        }
+        auto i = beforeBegin();
+        while (i != end())
+        {
+          if (i.ptr_ && i.ptr_->next->data == data)
+          {
+            eraseAfter(i);
+          }
+          else
+          {
+            i++;
+          }
+        }
+      }
+    }
   private:
     details::NodeOneWayList< T > *fakeNode_;
     details::NodeOneWayList< T > *begin_;
