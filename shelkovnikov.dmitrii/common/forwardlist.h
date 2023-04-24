@@ -182,7 +182,7 @@ namespace dimkashelk
     }
     void popFront()
     {
-
+      eraseAfter(beforeBegin());
     }
     void pushBack(const T &data)
     {
