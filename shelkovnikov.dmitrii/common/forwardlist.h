@@ -41,6 +41,17 @@ namespace dimkashelk
       forwardList.begin_ = forwardList.fakeNode_;
       forwardList.end_ = forwardList.fakeNode_;
     }
+    ForwardList(std::initializer_list< T > &l):
+      fakeNode_((details::NodeOneWayList< T >*) ::operator new (sizeof(details::NodeOneWayList< T >))),
+      begin_(nullptr),
+      end_(nullptr),
+      size_(0)
+    {
+      for (auto i: l)
+      {
+        pushBack(i);
+      }
+    }
     ~ForwardList()
     {
       clear();
