@@ -132,6 +132,11 @@ namespace dimkashelk
       }
       return iterator(it.ptr_->next);
     }
+    template < typename ... Args >
+    iterator emplaceAfter(const_iterator pos, Args&&... args)
+    {
+      return insertAfter(pos, T(args...));
+    }
     void pushFront(const T &data)
     {
       auto *node = new details::NodeForwardList< T >(data);
@@ -183,22 +188,6 @@ namespace dimkashelk
       }
       return second;
     }
-    template < typename ... Args >
-    iterator emplaceAfter(const_iterator pos, Args&&... args)
-    {
-      return insertAfter(pos, T(args...));
-    }
-    void free()
-    {
-      while (begin_)
-      {
-        details::NodeForwardList< T > *node = begin_;
-        begin_ = begin_->next;
-        delete node;
-      }
-      begin_ = fakeNode_;
-      end_ = fakeNode_;
-    }
   private:
     details::NodeForwardList< T > *fakeNode_;
     details::NodeForwardList< T > *begin_;
@@ -211,6 +200,17 @@ namespace dimkashelk
         pushBack((*iter));
         iter++;
       }
+    }
+    void free()
+    {
+      while (begin_)
+      {
+        details::NodeForwardList< T > *node = begin_;
+        begin_ = begin_->next;
+        delete node;
+      }
+      begin_ = nullptr;
+      end_ = nullptr;
     }
   };
 }
