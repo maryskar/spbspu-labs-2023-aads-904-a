@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "queue.h"
-#include "stack.h"
+#include <queue.h>
+#include <stack.h>
 #include "partOfArithmeticExpression.h"
 #include "getPolandArithmeticExpression.h"
 #include "getQueueOfArithmeticExpression.h"
