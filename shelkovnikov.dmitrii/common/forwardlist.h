@@ -27,15 +27,21 @@ namespace dimkashelk
       copy(forwardList);
     }
     ForwardList(ForwardList< T > &&forwardList):
+      fakeNode_(forwardList.fakeNode_),
       begin_(forwardList.begin_),
       end_(forwardList.end_)
     {
+      forwardList.fakeNode_ = nullptr;
       forwardList.begin_ = forwardList.fakeNode_;
       forwardList.end_ = forwardList.fakeNode_;
     }
     ~ForwardList()
     {
       free();
+      if (fakeNode_)
+      {
+        delete fakeNode_;
+      }
     }
     ForwardList &operator=(const ForwardList< T > &forwardList)
     {
@@ -159,7 +165,6 @@ namespace dimkashelk
       return const_iterator(fakeNode_);
     }
   private:
-    char buffer[sizeof(details::NodeForwardList< T >)];
     details::NodeForwardList< T > *fakeNode_;
     details::NodeForwardList< T > *begin_;
     details::NodeForwardList< T > *end_;
