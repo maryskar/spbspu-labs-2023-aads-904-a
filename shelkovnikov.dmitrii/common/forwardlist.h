@@ -248,10 +248,17 @@ namespace dimkashelk
     }
     void splice_after(const_iterator pos, ForwardList< T > &other)
     {
+      splice_after(pos, other, other.begin());
+    }
+    void splice_after(const_iterator pos, ForwardList< T > &other, const_iterator it)
+    {
       auto next = pos.ptr_->next;
-      pos.ptr_->next = other.begin_;
+      pos.ptr_->next = it.ptr_;
       other.end_->next = next;
-      size_ += other.size_;
+      for (; it != other.end(); it++)
+      {
+        size_++;
+      }
       other.begin_ = nullptr;
       other.end_ = nullptr;
     }
