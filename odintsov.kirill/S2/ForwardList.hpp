@@ -122,9 +122,18 @@ namespace odintsov {
     Iter eraseAfter(ConstIter pos);
     template< class... Args >
     T& emplaceFront(Args&&... args);
-    void push(const T& val);
-    void push(T&& val);
-    void pop();
+
+    void pushFront(const T& val)
+    {
+      pushFront(new detail::Node< T >{val, nullptr});
+    }
+
+    void pushFront(T&& val)
+    {
+      pushFront(new detail::Node< T >{val, nullptr});
+    }
+
+    void popFront();
 
     void merge(ForwardList& fl);
     void merge(ForwardList&& fl);
@@ -136,7 +145,13 @@ namespace odintsov {
     void reverse();
 
    private:
-    detail::Node< T > head_;
+    void pushFront(detail::Node< T >* n)
+    {
+      n->next = head_;
+      head_ = n;
+    };
+
+    detail::Node< T >* head_;
   };
 }
 
