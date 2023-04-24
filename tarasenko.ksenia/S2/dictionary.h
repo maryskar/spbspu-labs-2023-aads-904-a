@@ -64,7 +64,7 @@ namespace tarasenko
      return output;
    }
    void push(const Key& k, const Value& v);
-   Value get(const Key& k);
+   Value get(const Key& k) const;
    void remove(const Key& k);
   private:
    ForwardList< std::pair< Key, Value > > list;
@@ -84,14 +84,14 @@ namespace tarasenko
   };
 
   template< typename Key, typename Value, typename Compare >
-  Value Dictionary< Key, Value, Compare >::get(const Key& k)
+  Value Dictionary< Key, Value, Compare >::get(const Key& k) const
   {
-    auto current = list.begin();
-    while (current != list.end() && (k != current->first))
+    auto current = list.cbegin();
+    while (current != list.cend() && (k != current->first))
     {
       ++current;
     }
-    if (current != list.end() && (k == current->first))
+    if (current != list.cend() && (k == current->first))
     {
       return current->second;
     }
