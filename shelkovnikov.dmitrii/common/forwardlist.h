@@ -131,6 +131,11 @@ namespace dimkashelk
       }
       return second;
     }
+    template < typename ... Args >
+    iterator emplaceAfter(const_iterator pos, Args&&... args)
+    {
+      return insertAfter(pos, T(args...));
+    }
     void free()
     {
       while (begin_)
