@@ -97,6 +97,10 @@ namespace dimkashelk
     {
       return const_iterator(fakeNode_);
     }
+    bool empty()
+    {
+      return begin_ == nullptr;
+    }
     void pushFront(const T &data)
     {
       auto *node = new details::NodeForwardList< T >(data);
@@ -190,10 +194,6 @@ namespace dimkashelk
       }
       begin_ = fakeNode_;
       end_ = fakeNode_;
-    }
-    bool empty()
-    {
-      return begin_ == nullptr;
     }
   private:
     details::NodeForwardList< T > *fakeNode_;
