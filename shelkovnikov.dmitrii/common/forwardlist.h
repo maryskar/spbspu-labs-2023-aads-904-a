@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <cassert>
 #include <iterator>
+#include <cstdarg>
 #include "forwardlistiterator.h"
 #include "forwardlistiteratorconst.h"
 #include "nodeforwardlist.h"
@@ -99,7 +100,7 @@ namespace dimkashelk
         end_ = node;
       }
     }
-    void insertAfter(const iterator &it, const T &data)
+    iterator insertAfter(const const_iterator &it, const T &data)
     {
       auto *newNode = new details::NodeForwardList< T >(data);
       newNode->next = it.ptr_->next;
@@ -113,10 +114,7 @@ namespace dimkashelk
       {
         end_ = newNode;
       }
-    }
-    void insertAfter(const const_iterator &it, const T &data)
-    {
-      insertAfter(iterator(it.ptr_), data);
+      return iterator(it.ptr_->next);
     }
     iterator eraseAfter(const const_iterator it)
     {
