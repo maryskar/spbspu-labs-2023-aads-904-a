@@ -15,7 +15,7 @@ class Queue
     Queue< T >& operator=(Queue < T >&& other);
     void push(const T& value);
     void pop();
-    const T& get() const;
+    T get() const;
     bool isEmpty() const;
   private:
     List< T >* begin_;
@@ -50,7 +50,7 @@ void Queue< T >::push(const T& value)
 }
 
 template< typename T >
-const T& Queue< T >::get() const
+T Queue< T >::get() const
 {
   if(isEmpty())
   {

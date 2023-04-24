@@ -15,7 +15,7 @@ class Stack
     Stack< T >& operator=(Stack< T >&& other);
     void push(const T& value);
     void pop();
-    const T& get() const;
+    T get() const;
     bool isEmpty() const;
   private:
     List< T >* value_;
@@ -40,7 +40,7 @@ void Stack< T >::push(const T& value)
 }
 
 template< typename T >
-const T& Stack< T >::get() const
+T Stack< T >::get() const
 {
   if(isEmpty())
   {
