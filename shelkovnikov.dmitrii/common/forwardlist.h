@@ -14,6 +14,8 @@ namespace dimkashelk
   {
   using iterator = dimkashelk::ForwardListIterator< T >;
   using const_iterator = dimkashelk::ForwardListIteratorConst< T >;
+  using reference = T&;
+  using const_reference = const T&;
   public:
     ForwardList():
       fakeNode_((details::NodeForwardList< T >*) ::operator new (sizeof(details::NodeForwardList< T >))),
@@ -62,6 +64,10 @@ namespace dimkashelk
       forwardList.begin_ = forwardList.fakeNode_;
       forwardList.end_ = forwardList.fakeNode_;
       return *this;
+    }
+    reference front()
+    {
+      return begin_->data;
     }
     void pushFront(const T &data)
     {
