@@ -69,6 +69,10 @@ namespace dimkashelk
     {
       return begin_->data;
     }
+    const_iterator front() const
+    {
+      return begin_->data;
+    }
     void pushFront(const T &data)
     {
       auto *node = new details::NodeForwardList< T >(data);
