@@ -10,7 +10,7 @@ namespace dimkashelk
   template< typename T >
   class ForwardListIteratorConst;
   template< typename T >
-  class ForwardListIterator: public std::iterator< std::input_iterator_tag, T >
+  class ForwardListIterator: public std::iterator< std::forward_iterator_tag, T >
   {
   friend class ForwardList< T >;
   friend class ForwardListIteratorConst< T >;
