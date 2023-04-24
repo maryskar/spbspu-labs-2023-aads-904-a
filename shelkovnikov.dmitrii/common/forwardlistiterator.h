@@ -2,14 +2,18 @@
 #define SPBSPU_LABS_2023_AADS_904_A_FORWARDLISTITERATOR_H
 #include <iterator>
 #include "nodeforwardlist.h"
+#include "forwardlistiteratorconst.h"
 namespace dimkashelk
 {
   template< typename T >
   class ForwardList;
   template< typename T >
+  class ForwardListIteratorConst;
+  template< typename T >
   class ForwardListIterator: public std::iterator< std::input_iterator_tag, T >
   {
   friend class ForwardList< T >;
+  friend class ForwardListIteratorConst< T >;
   public:
     ForwardListIterator &operator++()
     {
