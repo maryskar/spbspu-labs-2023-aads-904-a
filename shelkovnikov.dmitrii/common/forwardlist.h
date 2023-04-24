@@ -224,6 +224,21 @@ namespace dimkashelk
         }
       }
     }
+    void resize(size_t count, const T &data)
+    {
+      if (count < size)
+      {
+        auto b = std::next(begin(), count);
+        eraseAfter(b, end());
+      }
+      else if (count > size)
+      {
+        for (; size < count; size++)
+        {
+          pushBack(data);
+        }
+      }
+    }
   private:
     details::NodeOneWayList< T > *fakeNode_;
     details::NodeOneWayList< T > *begin_;
