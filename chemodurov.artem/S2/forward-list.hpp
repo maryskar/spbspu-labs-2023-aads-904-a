@@ -272,6 +272,46 @@ namespace chemodurov
   {
     return insert_after(pos, init.begin(), init.end());
   }
+
+  template< typename T >
+  template< typename... Args >
+  typename ForwardList< T >::iterator ForwardList< T >::emplace_after(const_iterator pos, Args && ... args)
+  {
+    pos.node_->next = new detail::List< T >{T(args...), pos.node_->next};
+    return ++pos;
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::erase_after(const_iterator pos)
+  {
+    detail::List< T > * temp = pos.node_->next->next;
+    delete pos.node_->next;
+    pos.node_->next = temp;
+    return iterator(temp);
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::erase_after(const_iterator first, const_iterator last)
+  {
+    while (first != last)
+    {
+      erase_after(first);
+    }
+    return last;
+  }
+
+  template< typename T >
+  void ForwardList< T >::push_front(const_reference value)
+  {
+    insert_after(cbefore_begin(), value);
+  }
+
+  template< typename T >
+  void ForwardList< T >::push_front(T && value)
+  {
+    insert_after(cbefore_begin(), std::move(value));
+  }
+
   template< typename T >
   bool operator==(const ForwardList< T > & lhs, const ForwardList< T > & rhs)
   {
