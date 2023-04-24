@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <initializer_list>
 #include <memory>
+#include <stdexcept>
 
 namespace detail {
   template< typename T >
@@ -81,8 +82,28 @@ namespace odintsov {
     ForwardList& operator=(ForwardList&& rhs);
     ForwardList& operator=(std::initializer_list< T > rhs);
 
-    T& front();
-    const T& front() const;
+    T& front()
+    {
+      return const_cast< T& >(const_cast< const ForwardList* >(this)->front());
+    }
+
+    const T& front() const
+    {
+      if (!head_) {
+        throw std::logic_error("Attempt to call front() on empty ForwardList");
+      }
+      return unsafeFront();
+    }
+
+    T& unsafeFront()
+    {
+      return head_->data;
+    }
+
+    const T& unsafeFront() const
+    {
+      return head_->data;
+    }
 
     Iter beforeBegin();
     ConstIter cbeforeBegin() const;
@@ -115,7 +136,7 @@ namespace odintsov {
     void reverse();
 
    private:
-    detail::Node< T >* head_
+    detail::Node< T > head_;
   };
 }
 
