@@ -141,6 +141,10 @@ namespace dimkashelk
     {
       auto next = it.ptr_->next;
       it.ptr_->next = next->next;
+      if (it.ptr_ == fakeNode_)
+      {
+        begin_ = it.ptr_->next;
+      }
       delete next;
       return iterator(it.ptr_->next);
     }
@@ -171,6 +175,10 @@ namespace dimkashelk
     void emplaceFront(Args&&... args)
     {
       pushFront(T(args...));
+    }
+    void popFront()
+    {
+
     }
     void pushBack(const T &data)
     {
