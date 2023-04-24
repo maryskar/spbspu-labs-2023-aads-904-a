@@ -211,6 +211,26 @@ namespace dimkashelk
       fakeNode_->next = begin_;
       size_++;
     }
+    void pushBack(const T &data)
+    {
+      auto *node = new details::NodeOneWayList< T >(data);
+      if (!begin_)
+      {
+        begin_ = node;
+        fakeNode_->next = begin_;
+      }
+      else if (!end_)
+      {
+        end_ = node;
+        begin_->next = end_;
+      }
+      else
+      {
+        end_->next = node;
+        end_ = end_->next;
+      }
+      size_++;
+    }
     template< class ... Args >
     void emplaceFront(Args&&... args)
     {
@@ -257,11 +277,11 @@ namespace dimkashelk
       std::swap(forwardList.end_, end_);
       std::swap(forwardList.size_, size_);
     }
-    void splice_after(const_iterator pos, ForwardList< T > &other)
+    void spliceAfter(const_iterator pos, ForwardList< T > &other)
     {
-      splice_after(pos, other, other.beforeBegin());
+      spliceAfter(pos, other, other.beforeBegin());
     }
-    void splice_after(const_iterator pos, ForwardList< T > &other, const_iterator it)
+    void spliceAfter(const_iterator pos, ForwardList< T > &other, const_iterator it)
     {
       auto next = pos.ptr_->next;
       pos.ptr_->next = it.ptr_->next;
@@ -273,7 +293,7 @@ namespace dimkashelk
       other.begin_ = nullptr;
       other.end_ = nullptr;
     }
-    void splice_after(const_iterator pos, ForwardList< T > &other, const_iterator first, const_iterator last)
+    void spliceAfter(const_iterator pos, ForwardList< T > &other, const_iterator first, const_iterator last)
     {
       auto next = pos.ptr_->next;
       pos.ptr_->next = first.ptr_->next;
@@ -291,7 +311,7 @@ namespace dimkashelk
       remove(data, beforeBegin());
     }
     template< class Predicate >
-    void remove_if(Predicate p)
+    void removeIf(Predicate p)
     {
       auto prev = beforeBegin();
       auto start = begin();
@@ -323,26 +343,6 @@ namespace dimkashelk
         iter++;
       }
       size_ = forwardList.size_;
-    }
-    void pushBack(const T &data)
-    {
-      auto *node = new details::NodeOneWayList< T >(data);
-      if (!begin_)
-      {
-        begin_ = node;
-        fakeNode_->next = begin_;
-      }
-      else if (!end_)
-      {
-        end_ = node;
-        begin_->next = end_;
-      }
-      else
-      {
-        end_->next = node;
-        end_ = end_->next;
-      }
-      size_++;
     }
     void remove(const T &data, const_iterator it)
     {
