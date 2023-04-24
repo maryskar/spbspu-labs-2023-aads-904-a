@@ -248,12 +248,12 @@ namespace dimkashelk
     }
     void splice_after(const_iterator pos, ForwardList< T > &other)
     {
-      splice_after(pos, other, other.begin());
+      splice_after(pos, other, other.beforeBegin());
     }
     void splice_after(const_iterator pos, ForwardList< T > &other, const_iterator it)
     {
       auto next = pos.ptr_->next;
-      pos.ptr_->next = it.ptr_;
+      pos.ptr_->next = it.ptr_->next;
       other.end_->next = next;
       for (; it != other.end(); it++)
       {
@@ -261,6 +261,19 @@ namespace dimkashelk
       }
       other.begin_ = nullptr;
       other.end_ = nullptr;
+    }
+    void splice_after(const_iterator pos, ForwardList< T > &other, const_iterator first, const_iterator last)
+    {
+      auto next = pos.ptr_->next;
+      pos.ptr_->next = first.ptr_->next;
+      auto start = first;
+      while (first != last)
+      {
+        start = first;
+        first++;
+      }
+      first.ptr_->next = last.ptr_;
+      start.ptr_->next = next;
     }
   private:
     details::NodeOneWayList< T > *fakeNode_;
