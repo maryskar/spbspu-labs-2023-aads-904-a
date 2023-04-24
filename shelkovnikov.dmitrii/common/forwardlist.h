@@ -216,6 +216,13 @@ namespace dimkashelk
         auto b = std::next(begin(), count);
         eraseAfter(b, end());
       }
+      else if (count > size)
+      {
+        for (; size < count; size++)
+        {
+          pushBack(T());
+        }
+      }
     }
   private:
     details::NodeOneWayList< T > *fakeNode_;
@@ -231,6 +238,26 @@ namespace dimkashelk
         iter++;
       }
       size = forwardList.size;
+    }
+    void pushBack(const T &data)
+    {
+      auto *node = new details::NodeOneWayList< T >(data);
+      if (!begin_)
+      {
+        begin_ = node;
+        fakeNode_->next = begin_;
+      }
+      else if (!end_)
+      {
+        end_ = node;
+        begin_->next = end_;
+      }
+      else
+      {
+        end_->next = node;
+        end_ = end_->next;
+      }
+      size++;
     }
   };
 }
