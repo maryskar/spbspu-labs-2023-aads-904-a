@@ -277,36 +277,20 @@ namespace dimkashelk
     }
     void remove(const T &data)
     {
-      if (size_ == 1 && begin_->data == data)
+      remove(data, beforeBegin());
+    }
+    template< class Predicate >
+    void remove_if(Predicate p)
+    {
+      auto prev = beforeBegin();
+      auto start = begin();
+      for (; start != end(); start++)
       {
-        delete begin_;
-        begin_ = nullptr;
-        fakeNode_->next = nullptr;
-      }
-      else
-      {
-        for (auto i = beforeBegin(); i != end(); i++)
+        if (p(start.ptr_->data))
         {
-          if (i.ptr_ && i.ptr_->next->data == data)
-          {
-            i.ptr_->next = i.ptr_->next->next;
-            delete i.ptr_->next;
-            begin_ = nullptr;
-            fakeNode_->next = nullptr;
-          }
+          remove(start.ptr_->data, prev);
         }
-        auto i = beforeBegin();
-        while (i != end())
-        {
-          if (i.ptr_ && i.ptr_->next->data == data)
-          {
-            eraseAfter(i);
-          }
-          else
-          {
-            i++;
-          }
-        }
+        prev = start;
       }
     }
   private:
@@ -343,6 +327,21 @@ namespace dimkashelk
         end_ = end_->next;
       }
       size_++;
+    }
+    void remove(const T &data, const_iterator it)
+    {
+      auto i = it;
+      while (i != end())
+      {
+        if (i.ptr_ && i.ptr_->next->data == data)
+        {
+          eraseAfter(i);
+        }
+        else
+        {
+          i++;
+        }
+      }
     }
   };
 }
