@@ -239,6 +239,13 @@ namespace dimkashelk
         }
       }
     }
+    void swap(ForwardList< T > &forwardList)
+    {
+      std::swap(forwardList.fakeNode_, fakeNode_);
+      std::swap(forwardList.begin_, begin_);
+      std::swap(forwardList.end_, end_);
+      std::swap(forwardList.size, size);
+    }
   private:
     details::NodeOneWayList< T > *fakeNode_;
     details::NodeOneWayList< T > *begin_;
