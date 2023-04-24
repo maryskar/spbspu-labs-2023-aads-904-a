@@ -88,7 +88,7 @@ namespace dimkashelk
     }
     iterator end() const
     {
-      return iterator(fakeNode_);
+      return iterator(nullptr);
     }
     const_iterator cbeforeBegin() const
     {
@@ -100,7 +100,7 @@ namespace dimkashelk
     }
     const_iterator cend() const
     {
-      return const_iterator(fakeNode_);
+      return const_iterator(nullptr);
     }
     bool empty()
     {
@@ -158,6 +158,7 @@ namespace dimkashelk
         begin_ = it.ptr_->next;
       }
       delete next;
+      size--;
       return iterator(it.ptr_->next);
     }
     iterator eraseAfter(const_iterator first, const_iterator second)
@@ -166,7 +167,7 @@ namespace dimkashelk
       {
         first = eraseAfter(first);
       }
-      return second;
+      return iterator(second.ptr_);
     }
     void pushFront(const T &data)
     {
@@ -174,6 +175,10 @@ namespace dimkashelk
       if (begin_)
       {
         node->next = begin_;
+        if (!end_)
+        {
+          end_ = begin_;
+        }
         begin_ = node;
       }
       else
@@ -181,6 +186,7 @@ namespace dimkashelk
         begin_ = node;
       }
       fakeNode_->next = begin_;
+      size++;
     }
     template< class ... Args >
     void emplaceFront(Args&&... args)
@@ -193,25 +199,10 @@ namespace dimkashelk
     }
     void resize(size_t count)
     {
-      //if 
-    }
-    void pushBack(const T &data)
-    {
-      auto *node = new details::NodeOneWayList< T >(data);
-      if (end_)
+      if (count < size)
       {
-        end_->next = node;
-        end_ = node;
-      }
-      else if (!begin_)
-      {
-        begin_ = node;
-        fakeNode_->next = begin_;
-      }
-      else
-      {
-        begin_->next = node;
-        end_ = node;
+        auto b = std::next(begin(), count);
+        eraseAfter(b, end());
       }
     }
   private:
