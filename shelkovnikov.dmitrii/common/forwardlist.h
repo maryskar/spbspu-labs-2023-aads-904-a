@@ -20,19 +20,22 @@ namespace dimkashelk
     ForwardList():
       fakeNode_((details::NodeForwardList< T >*) ::operator new (sizeof(details::NodeForwardList< T >))),
       begin_(nullptr),
-      end_(nullptr)
+      end_(nullptr),
+      size(0)
     {}
     ForwardList(const ForwardList< T > &forwardList):
       fakeNode_((details::NodeForwardList< T >*) ::operator new (sizeof(details::NodeForwardList< T >))),
       begin_(nullptr),
-      end_(nullptr)
+      end_(nullptr),
+      size(0)
     {
       copy(forwardList);
     }
     ForwardList(ForwardList< T > &&forwardList):
       fakeNode_(forwardList.fakeNode_),
       begin_(forwardList.begin_),
-      end_(forwardList.end_)
+      end_(forwardList.end_),
+      size(forwardList.size)
     {
       forwardList.fakeNode_ = nullptr;
       forwardList.begin_ = forwardList.fakeNode_;
@@ -40,7 +43,7 @@ namespace dimkashelk
     }
     ~ForwardList()
     {
-      free();
+      clear();
       delete fakeNode_;
     }
     ForwardList &operator=(const ForwardList< T > &forwardList)
@@ -49,7 +52,7 @@ namespace dimkashelk
       {
         return *this;
       }
-      free();
+      clear();
       copy(forwardList);
       return *this;
     }
@@ -59,8 +62,10 @@ namespace dimkashelk
       {
         return *this;
       }
+      clear();
       begin_ = forwardList.begin_;
       end_ = forwardList.end_;
+      size = forwardList.size;
       forwardList.begin_ = forwardList.fakeNode_;
       forwardList.end_ = forwardList.fakeNode_;
       return *this;
@@ -103,7 +108,15 @@ namespace dimkashelk
     }
     void clear() noexcept
     {
-      free();
+      while (begin_)
+      {
+        details::NodeForwardList< T > *node = begin_;
+        begin_ = begin_->next;
+        delete node;
+      }
+      begin_ = nullptr;
+      end_ = nullptr;
+      size = 0;
     }
     iterator insertAfter(const_iterator it, const T &data)
     {
@@ -184,6 +197,10 @@ namespace dimkashelk
     {
       eraseAfter(beforeBegin());
     }
+    void resize(size_t count)
+    {
+      //if 
+    }
     void pushBack(const T &data)
     {
       auto *node = new details::NodeForwardList< T >(data);
@@ -209,6 +226,7 @@ namespace dimkashelk
     details::NodeForwardList< T > *fakeNode_;
     details::NodeForwardList< T > *begin_;
     details::NodeForwardList< T > *end_;
+    size_t size;
     void copy(const ForwardList< T > &forwardList)
     {
       auto iter = forwardList.cbegin();
@@ -217,17 +235,7 @@ namespace dimkashelk
         pushBack((*iter));
         iter++;
       }
-    }
-    void free()
-    {
-      while (begin_)
-      {
-        details::NodeForwardList< T > *node = begin_;
-        begin_ = begin_->next;
-        delete node;
-      }
-      begin_ = nullptr;
-      end_ = nullptr;
+      size = forwardList.size;
     }
   };
 }
