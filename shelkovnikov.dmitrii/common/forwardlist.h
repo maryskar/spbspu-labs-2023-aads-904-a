@@ -39,10 +39,7 @@ namespace dimkashelk
     ~ForwardList()
     {
       free();
-      if (fakeNode_)
-      {
-        delete fakeNode_;
-      }
+      delete fakeNode_;
     }
     ForwardList &operator=(const ForwardList< T > &forwardList)
     {
