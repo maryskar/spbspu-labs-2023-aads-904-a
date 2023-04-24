@@ -246,6 +246,15 @@ namespace dimkashelk
       std::swap(forwardList.end_, end_);
       std::swap(forwardList.size_, size_);
     }
+    void splice_after(const_iterator pos, ForwardList< T > &other)
+    {
+      auto next = pos.ptr_->next;
+      pos.ptr_->next = other.begin_;
+      other.end_->next = next;
+      size_ += other.size_;
+      other.begin_ = nullptr;
+      other.end_ = nullptr;
+    }
   private:
     details::NodeOneWayList< T > *fakeNode_;
     details::NodeOneWayList< T > *begin_;
