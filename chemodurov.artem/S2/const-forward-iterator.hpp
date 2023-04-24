@@ -2,13 +2,19 @@
 #define S2_CONST_FORWARD_ITERATOR_HPP
 #include <cassert>
 #include <list.hpp>
-#include "forward-iterator.hpp"
 
 namespace chemodurov
 {
   template< typename T >
+  class ForwardList;
+
+  template< typename T >
+  class ForwardIterator;
+
+  template< typename T >
   class ConstForwardIterator
   {
+    friend class ForwardList< T >;
    public:
     using this_t = ConstForwardIterator< T >;
     ConstForwardIterator(): node_(nullptr) {};

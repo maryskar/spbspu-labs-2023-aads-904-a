@@ -201,7 +201,7 @@ namespace chemodurov
   }
 
   template< typename T >
-  ForwardList< T > & ForwardList< T >::operator=(const ForwardList::this_t & rhs)
+  ForwardList< T > & ForwardList< T >::operator=(const this_t & rhs)
   {
     if (*this == rhs)
     {
@@ -214,7 +214,7 @@ namespace chemodurov
   }
 
   template< typename T >
-  ForwardList< T > & ForwardList< T >::operator=(ForwardList::this_t && rhs)
+  ForwardList< T > & ForwardList< T >::operator=(this_t && rhs)
   {
     if (*this == rhs)
     {
@@ -230,6 +230,47 @@ namespace chemodurov
       last_.node_->next = fake_;
     }
     return *this;
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, const_reference value)
+  {
+    pos.node_->next = new detail::List< T >{value, pos.node_->next};
+    return ++pos;
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::insert_after(ForwardList::const_iterator pos, T && value)
+  {
+    pos.node_->next = new detail::List< T >{std::move(value), pos.node_->next};
+    return ++pos;
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, size_type count, const_reference value)
+  {
+    for (size_type i = 0; i < count; ++i)
+    {
+      pos = insert_after(pos, value);
+    }
+    return pos;
+  }
+
+  template< typename T >
+  template< typename InputIt >
+  typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, InputIt first, InputIt last)
+  {
+    for (first; first != last_; ++first)
+    {
+      pos = insert_after(pos, *first);
+    }
+    return pos;
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, std::initializer_list< T > init)
+  {
+    return insert_after(pos, init.begin(), init.end());
   }
   template< typename T >
   bool operator==(const ForwardList< T > & lhs, const ForwardList< T > & rhs)
