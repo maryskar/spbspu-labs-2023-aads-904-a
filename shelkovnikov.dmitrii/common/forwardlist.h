@@ -15,12 +15,12 @@ namespace dimkashelk
   using const_iterator = dimkashelk::ForwardListIteratorConst< T >;
   public:
     ForwardList():
-      fakeNode_(new (buffer) details::NodeForwardList< T >()),
+      fakeNode_((details::NodeForwardList< T >*) ::operator new (sizeof(details::NodeForwardList< T >))),
       begin_(fakeNode_),
       end_(fakeNode_)
     {}
     ForwardList(const ForwardList< T > &forwardList):
-      fakeNode_(new (buffer) details::NodeForwardList< T >()),
+      fakeNode_((details::NodeForwardList< T >*) ::operator new (sizeof(details::NodeForwardList< T >))),
       begin_(fakeNode_),
       end_(fakeNode_)
     {
