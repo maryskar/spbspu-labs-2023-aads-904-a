@@ -25,6 +25,7 @@ namespace chemodurov
     bool operator!=(const this_t & rhs) const;
    private:
     const detail::List< T > * node_;
+    explicit ConstForwardIterator(const detail::List< T > * list): node_(list) {};
     void assertNotNullptr();
     void assertNotNullptr() const;
   };

@@ -22,6 +22,8 @@ namespace chemodurov
     ForwardList(const this_t & rhs);
     ForwardList(this_t && rhs);
     ForwardList(std::initializer_list< T > init);
+    template< typename InputIt >
+    ForwardList(InputIt first, InputIt last);
     ~ForwardList();
     this_t & operator=(const this_t & rhs);
     this_t & operator=(this_t && rhs);
@@ -131,6 +133,73 @@ namespace chemodurov
     }
   }
 
+  template< typename T >
+  ForwardList< T >::ForwardList(std::initializer_list< T > init)//.......
+  {
+  }
+
+  template< typename T >
+  template< typename InputIt >
+  ForwardList< T >::ForwardList(InputIt first, InputIt last):
+   ForwardList()
+  {
+    fake_.node_->next = first;
+    //
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::before_begin() noexcept
+  {
+    return fake_;
+  }
+
+  template< typename T >
+  typename ForwardList< T >::const_iterator ForwardList< T >::before_begin() const noexcept
+  {
+    return cbefore_begin();
+  }
+
+  template< typename T >
+  typename ForwardList< T >::const_iterator ForwardList< T >::cbefore_begin() const noexcept
+  {
+    return const_iterator(fake_);
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::begin() noexcept
+  {
+    return iterator(fake_.node_->next);
+  }
+
+  template< typename T >
+  typename ForwardList< T >::const_iterator ForwardList< T >::begin() const noexcept
+  {
+    return cbegin();
+  }
+
+  template< typename T >
+  typename ForwardList< T >::const_iterator ForwardList< T >::cbegin() const noexcept
+  {
+    return const_iterator(fake_.node_->next);
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::end() noexcept
+  {
+    return fake_;
+  }
+
+  template< typename T >
+  typename ForwardList< T >::const_iterator ForwardList< T >::end() const noexcept
+  {
+    return cend();
+  }
+
+  template< typename T >
+  typename ForwardList< T >::const_iterator ForwardList< T >::cend() const noexcept
+  {
+    return const_iterator(fake_);
+  }
   template< typename T >
   bool operator==(const ForwardList< T > & lhs, const ForwardList< T > & rhs);
 
