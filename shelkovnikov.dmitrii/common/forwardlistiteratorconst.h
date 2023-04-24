@@ -1,7 +1,7 @@
 #ifndef SPBSPU_LABS_2023_AADS_904_A_FORWARDLISTITERATORCONST_H
 #define SPBSPU_LABS_2023_AADS_904_A_FORWARDLISTITERATORCONST_H
 #include <iterator>
-#include "nodeforwardlist.h"
+#include "nodeOneWayList.h"
 namespace dimkashelk
 {
   template< typename T >
@@ -44,8 +44,8 @@ namespace dimkashelk
       return ptr_ != other.ptr_;
     }
   private:
-    details::NodeForwardList< T > *ptr_;
-    explicit ForwardListIteratorConst(details::NodeForwardList< T > *ptr):
+    details::NodeOneWayList< T > *ptr_;
+    explicit ForwardListIteratorConst(details::NodeOneWayList< T > *ptr):
       ptr_(ptr)
     {}
   };

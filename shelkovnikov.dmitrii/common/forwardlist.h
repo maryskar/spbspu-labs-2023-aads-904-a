@@ -6,7 +6,7 @@
 #include <cstdarg>
 #include "forwardlistiterator.h"
 #include "forwardlistiteratorconst.h"
-#include "nodeforwardlist.h"
+#include "nodeOneWayList.h"
 namespace dimkashelk
 {
   template< typename T >
@@ -18,13 +18,13 @@ namespace dimkashelk
   using const_reference = const T&;
   public:
     ForwardList():
-      fakeNode_((details::NodeForwardList< T >*) ::operator new (sizeof(details::NodeForwardList< T >))),
+      fakeNode_((details::NodeOneWayList< T >*) ::operator new (sizeof(details::NodeOneWayList< T >))),
       begin_(nullptr),
       end_(nullptr),
       size(0)
     {}
     ForwardList(const ForwardList< T > &forwardList):
-      fakeNode_((details::NodeForwardList< T >*) ::operator new (sizeof(details::NodeForwardList< T >))),
+      fakeNode_((details::NodeOneWayList< T >*) ::operator new (sizeof(details::NodeOneWayList< T >))),
       begin_(nullptr),
       end_(nullptr),
       size(0)
@@ -110,7 +110,7 @@ namespace dimkashelk
     {
       while (begin_)
       {
-        details::NodeForwardList< T > *node = begin_;
+        details::NodeOneWayList< T > *node = begin_;
         begin_ = begin_->next;
         delete node;
       }
@@ -120,14 +120,9 @@ namespace dimkashelk
     }
     iterator insertAfter(const_iterator it, const T &data)
     {
-      auto *newNode = new details::NodeForwardList< T >(data);
+      auto *newNode = new details::NodeOneWayList< T >(data);
       newNode->next = it.ptr_->next;
-      if (newNode->next)
-      {
-        newNode->next->prev = newNode;
-      }
       it.ptr_->next = newNode;
-      newNode->prev = it.ptr_;
       if (it.ptr_ == fakeNode_)
       {
         if (begin_ && !end_)
@@ -175,11 +170,10 @@ namespace dimkashelk
     }
     void pushFront(const T &data)
     {
-      auto *node = new details::NodeForwardList< T >(data);
+      auto *node = new details::NodeOneWayList< T >(data);
       if (begin_)
       {
         node->next = begin_;
-        begin_->prev = node;
         begin_ = node;
       }
       else
@@ -203,10 +197,9 @@ namespace dimkashelk
     }
     void pushBack(const T &data)
     {
-      auto *node = new details::NodeForwardList< T >(data);
+      auto *node = new details::NodeOneWayList< T >(data);
       if (end_)
       {
-        node->prev = end_;
         end_->next = node;
         end_ = node;
       }
@@ -218,14 +211,13 @@ namespace dimkashelk
       else
       {
         begin_->next = node;
-        node->prev = begin_;
         end_ = node;
       }
     }
   private:
-    details::NodeForwardList< T > *fakeNode_;
-    details::NodeForwardList< T > *begin_;
-    details::NodeForwardList< T > *end_;
+    details::NodeOneWayList< T > *fakeNode_;
+    details::NodeOneWayList< T > *begin_;
+    details::NodeOneWayList< T > *end_;
     size_t size;
     void copy(const ForwardList< T > &forwardList)
     {
