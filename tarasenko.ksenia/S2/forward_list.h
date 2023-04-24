@@ -56,7 +56,7 @@ namespace tarasenko
    void clear();
    void copy(const ForwardList< T >& other);
    void move(const ForwardList< T >&& other);
-   void addBefore(details::NodeOfList< T >* given_ptr, const T& data);
+   void addBefore(details::NodeOfList< T >* pnode, const T& data);
    void removeNode(details::NodeOfList< T >* pnode);
    void removeData(const T& data);
 
@@ -71,11 +71,11 @@ namespace tarasenko
    }
 
    friend class ConstForwardListIterator< T >;
-   ConstForwardListIterator< T > cbegin()
+   ConstForwardListIterator< T > cbegin() const
    {
      return ConstForwardListIterator< T >(this);
    }
-   ConstForwardListIterator< T > cend()
+   ConstForwardListIterator< T > cend() const
    {
      return ConstForwardListIterator< T >();
    }

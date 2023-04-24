@@ -21,7 +21,7 @@ namespace tarasenko
      list(std::move(other.list)),
      compare(other.compare)
    {}
-   dict_type& operator==(const dict_type& other)
+   dict_type& operator=(const dict_type& other)
    {
      if (*this == other)
      {
@@ -31,7 +31,7 @@ namespace tarasenko
      compare = other.compare;
      return *this;
    }
-   dict_type& operator==(dict_type&& other)
+   dict_type& operator=(dict_type&& other)
    {
      if (*this == other)
      {
@@ -44,6 +44,24 @@ namespace tarasenko
    ~Dictionary()
    {
      list.clear();
+   }
+   friend bool operator<(const dict_type& dict1, const dict_type& dict2)
+   {
+     auto iter = dict1.list.cbegin();
+     auto other_iter = dict2.list.cbegin();
+     return iter->first < other_iter->first;
+   }
+   friend std::ostream& operator<<(std::ostream& output, const dict_type& dict)
+   {
+     auto iter = dict.list.cbegin();
+     output << iter->first << " " << iter->second;
+     ++iter;
+     while (iter != dict.list.cend())
+     {
+       output << " " << iter->first << " " << iter->second;
+       ++iter;
+     }
+     return output;
    }
    void push(const Key& k, const Value& v);
    Value get(const Key& k);
