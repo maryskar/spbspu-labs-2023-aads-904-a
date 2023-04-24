@@ -21,13 +21,13 @@ namespace dimkashelk
       fakeNode_((details::NodeOneWayList< T >*) ::operator new (sizeof(details::NodeOneWayList< T >))),
       begin_(nullptr),
       end_(nullptr),
-      size(0)
+      size_(0)
     {}
     ForwardList(const ForwardList< T > &forwardList):
       fakeNode_((details::NodeOneWayList< T >*) ::operator new (sizeof(details::NodeOneWayList< T >))),
       begin_(nullptr),
       end_(nullptr),
-      size(0)
+      size_(0)
     {
       copy(forwardList);
     }
@@ -35,7 +35,7 @@ namespace dimkashelk
       fakeNode_(forwardList.fakeNode_),
       begin_(forwardList.begin_),
       end_(forwardList.end_),
-      size(forwardList.size)
+      size_(forwardList.size_)
     {
       forwardList.fakeNode_ = nullptr;
       forwardList.begin_ = forwardList.fakeNode_;
@@ -65,7 +65,7 @@ namespace dimkashelk
       clear();
       begin_ = forwardList.begin_;
       end_ = forwardList.end_;
-      size = forwardList.size;
+      size_ = forwardList.size_;
       forwardList.begin_ = forwardList.fakeNode_;
       forwardList.end_ = forwardList.fakeNode_;
       return *this;
@@ -116,7 +116,7 @@ namespace dimkashelk
       }
       begin_ = nullptr;
       end_ = nullptr;
-      size = 0;
+      size_ = 0;
     }
     iterator insertAfter(const_iterator it, const T &data)
     {
@@ -160,12 +160,12 @@ namespace dimkashelk
       {
         delete next;
       }
-      size--;
-      if (size == 1)
+      size_--;
+      if (size_ == 1)
       {
         end_ = nullptr;
       }
-      else if (size == 0)
+      else if (size_ == 0)
       {
         begin_ = nullptr;
         fakeNode_->next = nullptr;
@@ -198,7 +198,7 @@ namespace dimkashelk
         begin_ = node;
       }
       fakeNode_->next = begin_;
-      size++;
+      size_++;
     }
     template< class ... Args >
     void emplaceFront(Args&&... args)
@@ -211,14 +211,14 @@ namespace dimkashelk
     }
     void resize(size_t count)
     {
-      if (count < size)
+      if (count < size_)
       {
         auto b = std::next(begin(), count);
         eraseAfter(b, end());
       }
-      else if (count > size)
+      else if (count > size_)
       {
-        for (; size < count; size++)
+        for (; size_ < count; size_++)
         {
           pushBack(T());
         }
@@ -226,14 +226,14 @@ namespace dimkashelk
     }
     void resize(size_t count, const T &data)
     {
-      if (count < size)
+      if (count < size_)
       {
         auto b = std::next(begin(), count);
         eraseAfter(b, end());
       }
-      else if (count > size)
+      else if (count > size_)
       {
-        for (; size < count; size++)
+        for (; size_ < count; size_++)
         {
           pushBack(data);
         }
@@ -244,13 +244,13 @@ namespace dimkashelk
       std::swap(forwardList.fakeNode_, fakeNode_);
       std::swap(forwardList.begin_, begin_);
       std::swap(forwardList.end_, end_);
-      std::swap(forwardList.size, size);
+      std::swap(forwardList.size_, size_);
     }
   private:
     details::NodeOneWayList< T > *fakeNode_;
     details::NodeOneWayList< T > *begin_;
     details::NodeOneWayList< T > *end_;
-    size_t size;
+    size_t size_;
     void copy(const ForwardList< T > &forwardList)
     {
       auto iter = forwardList.cbegin();
@@ -259,7 +259,7 @@ namespace dimkashelk
         pushBack((*iter));
         iter++;
       }
-      size = forwardList.size;
+      size_ = forwardList.size_;
     }
     void pushBack(const T &data)
     {
@@ -279,7 +279,7 @@ namespace dimkashelk
         end_->next = node;
         end_ = end_->next;
       }
-      size++;
+      size_++;
     }
   };
 }
