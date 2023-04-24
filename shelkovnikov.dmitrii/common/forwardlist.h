@@ -148,24 +148,36 @@ namespace dimkashelk
     iterator eraseAfter(const_iterator it)
     {
       auto next = it.ptr_->next;
-      it.ptr_->next = next->next;
+      if (next)
+      {
+        it.ptr_->next = next->next;
+      }
       if (it.ptr_ == fakeNode_)
       {
-        if (it.ptr_->next == end_)
-        {
-          end_ = nullptr;
-        }
         begin_ = it.ptr_->next;
       }
-      delete next;
+      if (next)
+      {
+        delete next;
+      }
       size--;
+      if (size == 1)
+      {
+        end_ = nullptr;
+      }
+      else if (size == 0)
+      {
+        begin_ = nullptr;
+        fakeNode_->next = nullptr;
+      }
       return iterator(it.ptr_->next);
     }
     iterator eraseAfter(const_iterator first, const_iterator second)
     {
+      auto start = first;
       while (first != second)
       {
-        first = eraseAfter(first);
+        first = eraseAfter(start);
       }
       return iterator(second.ptr_);
     }
