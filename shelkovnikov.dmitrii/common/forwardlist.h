@@ -293,6 +293,11 @@ namespace dimkashelk
         prev = start;
       }
     }
+    void reverse()
+    {
+      reverse(begin_);
+      std::swap(begin_, end_);
+    }
   private:
     details::NodeOneWayList< T > *fakeNode_;
     details::NodeOneWayList< T > *begin_;
@@ -342,6 +347,16 @@ namespace dimkashelk
           i++;
         }
       }
+    }
+    void reverse(details::NodeOneWayList< T > *node)
+    {
+      if (node->next == nullptr)
+      {
+        return;
+      }
+      reverse(node->next);
+      node->next->next = node;
+      node->next = nullptr;
     }
   };
 }
