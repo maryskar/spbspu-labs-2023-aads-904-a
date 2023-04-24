@@ -19,6 +19,8 @@ bool isOperator(std::string op)
   return isLowPriorOperator(op) || isHighPriorOperator(op);
 }
 
+
+
 Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
 {
   Queue< std::string > postfixQueue;
@@ -42,7 +44,7 @@ Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
     }
     else if (isHighPriorOperator(token))
     {
-      while (!stack.isEmpty() && (isHighPriorOperator(token)))
+      while (!stack.isEmpty() && isHighPriorOperator(stack.get()))
       {
         postfixQueue.push(stack.get());
         stack.pop();
