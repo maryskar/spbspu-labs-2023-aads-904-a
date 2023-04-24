@@ -143,6 +143,10 @@ namespace dimkashelk
       it.ptr_->next = next->next;
       if (it.ptr_ == fakeNode_)
       {
+        if (it.ptr_->next == end_)
+        {
+          end_ = nullptr;
+        }
         begin_ = it.ptr_->next;
       }
       delete next;
