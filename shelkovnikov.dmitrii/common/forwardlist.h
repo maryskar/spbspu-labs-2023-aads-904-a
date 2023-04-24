@@ -105,6 +105,33 @@ namespace dimkashelk
     {
       free();
     }
+    iterator insertAfter(const_iterator it, const T &data)
+    {
+      auto *newNode = new details::NodeForwardList< T >(data);
+      newNode->next = it.ptr_->next;
+      if (newNode->next)
+      {
+        newNode->next->prev = newNode;
+      }
+      it.ptr_->next = newNode;
+      newNode->prev = it.ptr_;
+      if (it.ptr_ == fakeNode_)
+      {
+        if (begin_ && !end_)
+        {
+          end_ = begin_;
+        }
+        else
+        {
+          begin_ = newNode;
+        }
+      }
+      else if (!newNode->next)
+      {
+        end_ = newNode;
+      }
+      return iterator(it.ptr_->next);
+    }
     void pushFront(const T &data)
     {
       auto *node = new details::NodeForwardList< T >(data);
@@ -140,33 +167,6 @@ namespace dimkashelk
         node->prev = begin_;
         end_ = node;
       }
-    }
-    iterator insertAfter(const_iterator it, const T &data)
-    {
-      auto *newNode = new details::NodeForwardList< T >(data);
-      newNode->next = it.ptr_->next;
-      if (newNode->next)
-      {
-        newNode->next->prev = newNode;
-      }
-      it.ptr_->next = newNode;
-      newNode->prev = it.ptr_;
-      if (it.ptr_ == fakeNode_)
-      {
-        if (begin_ && !end_)
-        {
-          end_ = begin_;
-        }
-        else
-        {
-          begin_ = newNode;
-        }
-      }
-      else if (!newNode->next)
-      {
-        end_ = newNode;
-      }
-      return iterator(it.ptr_->next);
     }
     iterator eraseAfter(const const_iterator it)
     {
