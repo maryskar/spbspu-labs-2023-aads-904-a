@@ -37,7 +37,6 @@ namespace chemodurov
     const_iterator end() const noexcept;
     const_iterator cend() const noexcept;
     bool empty() const noexcept;
-    size_type max_size() const noexcept;
     void clear() noexcept;
     iterator insert_after(const_iterator pos, const_reference value);
     iterator insert_after(const_iterator pos, T && value);
@@ -126,7 +125,7 @@ namespace chemodurov
    fake_(std::addressof(buf_)),
    last_(rhs.last_)
   {
-    rhs.fake_.node_->next = nullptr;
+    *(rhs.begin()) = nullptr;
     if (!empty())
     {
       last_.node_->next = fake_;
@@ -200,11 +199,65 @@ namespace chemodurov
   {
     return const_iterator(fake_);
   }
-  template< typename T >
-  bool operator==(const ForwardList< T > & lhs, const ForwardList< T > & rhs);
 
   template< typename T >
-  bool operator!=(const ForwardList< T > & lhs, const ForwardList< T > & rhs);
+  ForwardList< T > & ForwardList< T >::operator=(const ForwardList::this_t & rhs)
+  {
+    if (*this == rhs)
+    {
+      return *this;
+    }
+    this_t temp(rhs);
+    clear();
+    *this = std::move(temp);
+    return *this;
+  }
+
+  template< typename T >
+  ForwardList< T > & ForwardList< T >::operator=(ForwardList::this_t && rhs)
+  {
+    if (*this == rhs)
+    {
+      return *this;
+    }
+    clear();
+    buf_ = rhs.buf_;
+    fake_ = std::addressof(buf_);
+    last_ = rhs.last_;
+    *(rhs.begin()) = nullptr;
+    if (!empty())
+    {
+      last_.node_->next = fake_;
+    }
+    return *this;
+  }
+  template< typename T >
+  bool operator==(const ForwardList< T > & lhs, const ForwardList< T > & rhs)
+  {
+    if (lhs.empty() && rhs.empty())
+    {
+      return true;
+    }
+    using cit_t = typename ForwardList< T >::const_iterator;
+    cit_t l_it = lhs.cbegin();
+    cit_t r_it = rhs.cbegin();
+    const cit_t l_end = lhs.cend();
+    const cit_t r_end = rhs.cend();
+    for (; l_it != l_end && r_it != r_end; ++l_it, ++r_it)
+    {
+      if (*l_it != *r_it)
+      {
+        return false;
+      }
+    }
+    return l_it == l_end && r_it == r_end;
+  }
+
+  template< typename T >
+  bool operator!=(const ForwardList< T > & lhs, const ForwardList< T > & rhs)
+  {
+    return !(lhs == rhs);
+  }
 }
 
 #endif
