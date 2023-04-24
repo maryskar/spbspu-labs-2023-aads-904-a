@@ -18,13 +18,13 @@ namespace dimkashelk
   using const_reference = const T&;
   public:
     ForwardList():
-      fakeNode_((details::NodeOneWayList< T >*) ::operator new (sizeof(details::NodeOneWayList< T >))),
+      fakeNode_(static_cast< details::NodeOneWayList< T >* >(::operator new (sizeof(details::NodeOneWayList< T >)))),
       begin_(nullptr),
       end_(nullptr),
       size_(0)
     {}
     ForwardList(const ForwardList< T > &forwardList):
-      fakeNode_((details::NodeOneWayList< T >*) ::operator new (sizeof(details::NodeOneWayList< T >))),
+      fakeNode_(static_cast< details::NodeOneWayList< T >* >(::operator new (sizeof(details::NodeOneWayList< T >)))),
       begin_(nullptr),
       end_(nullptr),
       size_(0)
@@ -42,7 +42,7 @@ namespace dimkashelk
       forwardList.end_ = forwardList.fakeNode_;
     }
     ForwardList(std::initializer_list< T > &l):
-      fakeNode_((details::NodeOneWayList< T >*) ::operator new (sizeof(details::NodeOneWayList< T >))),
+      fakeNode_(static_cast< details::NodeOneWayList< T >* >(::operator new (sizeof(details::NodeOneWayList< T >)))),
       begin_(nullptr),
       end_(nullptr),
       size_(0)
