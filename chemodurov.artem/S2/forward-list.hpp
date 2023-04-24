@@ -3,7 +3,7 @@
 #include <initializer_list>
 #include <iterator>
 #include "const-forward-iterator.hpp"
-
+#include "forward-iterator.hpp"
 namespace chemodurov
 {
   template< typename T >
@@ -310,6 +310,31 @@ namespace chemodurov
   void ForwardList< T >::push_front(T && value)
   {
     insert_after(cbefore_begin(), std::move(value));
+  }
+
+  template< typename T >
+  template< typename... Args >
+  void ForwardList< T >::emplace_front(Args && ... args)
+  {
+    emplace_after(cbefore_begin(), std::move(args...));
+  }
+
+  template< typename T >
+  void ForwardList< T >::pop_front() noexcept
+  {
+    detail::List< T > * temp = cbegin().node_->next;
+    delete begin().node_;
+    fake_.node_->next = temp;
+  }
+
+  template< typename T >
+  void ForwardList< T >::safe_pop_front()
+  {
+    if (empty())
+    {
+      throw std::invalid_argument("Empty forward list");
+    }
+    pop_front();
   }
 
   template< typename T >
