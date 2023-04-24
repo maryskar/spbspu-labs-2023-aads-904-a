@@ -82,21 +82,24 @@ namespace chemodurov
   template< typename T >
   ForwardList< T >::ForwardList():
    fake_(new (buf_) detail::List< T >),
-   last_(nullptr)
+   last_(fake_)
   {
-    fake_.node_->next = nullptr;
+    fake_.node_->next = fake_;
   }
 
   template< typename T >
   bool ForwardList< T >::empty() const noexcept
   {
-    return fake_.node_->next == nullptr;
+    return fake_.node_->next == fake_;
   }
 
   template< typename T >
   void ForwardList< T >::clear() noexcept
   {
-    detail::deleteList(fake_.node_->next);
+    if (!empty())
+    {
+      detail::deleteList(fake_.node_->next);
+    }
   }
 
   template< typename T >
@@ -125,7 +128,7 @@ namespace chemodurov
    fake_(std::addressof(buf_)),
    last_(rhs.last_)
   {
-    *(rhs.begin()) = nullptr;
+    *(rhs.begin()) = rhs.fake_;
     if (!empty())
     {
       last_.node_->next = fake_;
@@ -133,17 +136,20 @@ namespace chemodurov
   }
 
   template< typename T >
-  ForwardList< T >::ForwardList(std::initializer_list< T > init)//.......
-  {
-  }
+  ForwardList< T >::ForwardList(std::initializer_list< T > init):
+   ForwardList(init.begin(), init.end())
+  {}
 
   template< typename T >
   template< typename InputIt >
   ForwardList< T >::ForwardList(InputIt first, InputIt last):
    ForwardList()
   {
-    fake_.node_->next = first;
-    //
+    iterator it = before_begin();
+    while (first != last)
+    {
+      it = insert_after(it, *(first++));
+    }
   }
 
   template< typename T >
@@ -224,7 +230,7 @@ namespace chemodurov
     buf_ = rhs.buf_;
     fake_ = std::addressof(buf_);
     last_ = rhs.last_;
-    *(rhs.begin()) = nullptr;
+    *(rhs.begin()) = rhs.fake_;
     if (!empty())
     {
       last_.node_->next = fake_;
