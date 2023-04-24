@@ -133,7 +133,20 @@ namespace odintsov {
       pushFront(new detail::Node< T >{val, nullptr});
     }
 
-    void popFront();
+    void popFront()
+    {
+      if (!head_) {
+        throw std::logic_error("Attempt to pop empty ForwardList");
+      }
+      unsafePopFront();
+    }
+
+    void unsafePopFront()
+    {
+      detail::Node< T >* next = head_->next;
+      delete head_;
+      head_ = next;
+    }
 
     void merge(ForwardList& fl);
     void merge(ForwardList&& fl);
@@ -145,13 +158,13 @@ namespace odintsov {
     void reverse();
 
    private:
+    detail::Node< T >* head_;
+
     void pushFront(detail::Node< T >* n)
     {
       n->next = head_;
       head_ = n;
     };
-
-    detail::Node< T >* head_;
   };
 }
 
