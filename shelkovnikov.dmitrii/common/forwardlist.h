@@ -101,6 +101,10 @@ namespace dimkashelk
     {
       return begin_ == nullptr;
     }
+    void clear() noexcept
+    {
+      free();
+    }
     void pushFront(const T &data)
     {
       auto *node = new details::NodeForwardList< T >(data);
