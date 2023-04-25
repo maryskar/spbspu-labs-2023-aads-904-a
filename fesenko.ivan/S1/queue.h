@@ -1,5 +1,6 @@
 #ifndef QUEUE_H
 #define QUEUE_H
+#include <stdexcept>
 #include "list.h"
 namespace fesenko
 {
@@ -47,5 +48,14 @@ void fesenko::Queue< T >::push(const T rhs)
     tail_->next = new List< T >{rhs, nullptr};
     tail_->tail_->next;
   }
+}
+
+template< typename T >
+T &fesenko::Queue< T >::getOutOfQueue()
+{
+  if (isEmpty()) {
+    throw std::out_of_range("Queue is empty");
+  }
+  return *head_.data;
 }
 #endif
