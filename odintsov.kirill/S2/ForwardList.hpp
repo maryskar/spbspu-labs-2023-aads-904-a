@@ -118,7 +118,7 @@ namespace odintsov {
     Iter insertAfter(ConstIter pos, const T& val)
     {
       if (pos == cend()) {
-        throw std::logic_error("Attempt to insert after nullptr in ForwardList");
+        throw std::range_error("Attempt to insert after element outside ForwardList");
       }
       return unsafeInsertAfter(pos, val);
     }
@@ -131,7 +131,7 @@ namespace odintsov {
     Iter insertAfter(ConstIter pos, T&& val)
     {
       if (pos == cend()) {
-        throw std::logic_error("Attempt to insert after nullptr in ForwardList");
+        throw std::range_error("Attempt to insert after element outside ForwardList");
       }
       return unsafeInsertAfter(pos, val);
     }
@@ -142,7 +142,44 @@ namespace odintsov {
     }
     template< class... Args >
     Iter emplaceAfter(ConstIter pos, Args&&... args);
-    Iter eraseAfter(ConstIter pos);
+
+    Iter eraseAfter(ConstIter pos)
+    {
+      if (pos == cend()) {
+        throw std::range_error("Attempt to erase after element outside ForwardList");
+      }
+      return unsafeEraseAfter(pos);
+    }
+
+    Iter unsafeEraseAfter(ConstIter pos)
+    {
+      detail::Node< T >* nextNode = pos.nodePtr->next;
+      pos.nodePtr->next = nextNode->next;
+      delete nextNode;
+      return Iter(pos.nodePtr->next);
+    }
+
+    Iter eraseAfter(ConstIter first, ConstIter last)
+    {
+      ConstIter end = cend();
+      if (first == end) {
+        throw std::range_error("Attempt to erase after element outside ForwardList");
+      }
+      for (ConstIter next = std::next(first); next != last; ++next) {
+        if (next == end) {
+          throw std::invalid_argument("ForwardList erase range failed, iterator to last elem incorrect");
+        }
+      }
+      return unsafeEraseAfter(first, last);
+    }
+
+    Iter unsafeEraseAfter(ConstIter first, ConstIter last)
+    {
+      ConstIter end = cend();
+      for (ConstIter next = std::next(first); next != last && next != end; next = std::next(first)) {
+        eraseAfter(first);
+      }
+    }
     template< class... Args >
     T& emplaceFront(Args&&... args);
 
