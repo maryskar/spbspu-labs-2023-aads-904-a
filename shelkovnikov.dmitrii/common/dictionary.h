@@ -44,14 +44,19 @@ namespace dimkashelk
     }
     void push(const Key &k, const Value &value)
     {
-      auto comp = [&](const auto &item)
+      auto it = list_.begin();
+      auto prev = list_.beforeBegin();
+      for (; it != list_.end(); it++)
       {
-        return compare_(item.first, k) || item.first == k;
-      };
-      auto it = std::find_if(list_.begin(), list_.end(), comp);
+        if (compare_((*it).first, k))
+        {
+          break;
+        }
+        prev = it;
+      }
       if (it == list_.end())
       {
-        list_.pushBack(std::pair< Key, Value >(k, value));
+        list_.insertAfter(prev, std::pair< Key, Value >(k, value));
       }
       else if ((*it).first == k)
       {
@@ -63,7 +68,6 @@ namespace dimkashelk
       }
       else
       {
-        it--;
         list_.insertAfter(it, std::pair< Key, Value >(k, value));
       }
     }
