@@ -80,6 +80,7 @@ namespace dimkashelk
       }
       clear();
       begin_ = forwardList.begin_;
+      fakeNode_->next = begin_;
       end_ = forwardList.end_;
       size_ = forwardList.size_;
       forwardList.begin_ = forwardList.fakeNode_;
