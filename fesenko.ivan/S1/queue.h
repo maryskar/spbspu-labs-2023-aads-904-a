@@ -36,4 +36,16 @@ fesenko::Queue< T >::~Queue()
   head_ = nullptr;
   tail_ = nullptr;
 }
+
+template< typename T >
+void fesenko::Queue< T >::push(const T rhs)
+{
+  if (isEmpty()) {
+    tail_ = new List< T >{rhs, nullptr};
+    head_ = tail_;
+  } else {
+    tail_->next = new List< T >{rhs, nullptr};
+    tail_->tail_->next;
+  }
+}
 #endif
