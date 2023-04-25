@@ -1,5 +1,6 @@
 #ifndef STACK_H
 #define STACK_H
+#include <stdexcept>
 #include "list.h"
 namespace fesenko
 {
@@ -49,7 +50,7 @@ T &fesenko::Stack< T >::getOutOfStack()
   return *head_.data;
 }
 
-template< typenamt T >
+template< typename T >
 void fesenko::Stack< T >::pop()
 {
   if (isEmpty()) {
