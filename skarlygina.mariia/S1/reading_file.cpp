@@ -8,7 +8,7 @@ template<typename T>
 Queue< T > readElements(std::ifstream& file)
 {
   std::string line;
-  Stack< T > stack;
+  Queue< T > queue;
   if (file.is_open())
   {
     while (getline(file, line))
@@ -18,13 +18,13 @@ Queue< T > readElements(std::ifstream& file)
       while ((pos = line.find(" ")) != std::string::npos)
       {
         token = line.substr(0, pos);
-        stack.push(T(token));
+        queue.push(T(token));
         line.erase(0, pos + 1);
       }
       // add last element
-      stack.push(T(line));
+      queue.push(T(line));
     }
     file.close();
   }
-  return stack;
+  return queue;
 }
