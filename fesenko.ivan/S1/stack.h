@@ -45,7 +45,7 @@ template< typename T >
 T &fesenko::Stack< T >::getOutOfStack()
 {
   if (isEmpty()) {
-    throw std::out_of_range("List is empty");
+    throw std::out_of_range("Stack is empty");
   }
   return *head_.data;
 }
@@ -54,7 +54,7 @@ template< typename T >
 void fesenko::Stack< T >::pop()
 {
   if (isEmpty()) {
-    throw std::out_of_range("List is empty");
+    throw std::out_of_range("Stack is empty");
   }
   List< T > *temp = head_->next;
   delete head_;
