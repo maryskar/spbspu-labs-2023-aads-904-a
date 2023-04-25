@@ -5,6 +5,7 @@
 #include <initializer_list>
 #include <memory>
 #include <stdexcept>
+#include <utility>
 
 namespace detail {
   template< typename T >
@@ -117,9 +118,7 @@ namespace odintsov {
 
     Iter insertAfter(ConstIter pos, const T& val)
     {
-      if (pos == cend()) {
-        throw std::range_error("Attempt to insert after element outside ForwardList");
-      }
+      assertIterInside(pos);
       return unsafeInsertAfter(pos, val);
     }
 
@@ -130,9 +129,7 @@ namespace odintsov {
 
     Iter insertAfter(ConstIter pos, T&& val)
     {
-      if (pos == cend()) {
-        throw std::range_error("Attempt to insert after element outside ForwardList");
-      }
+      assertIterInside(pos);
       return unsafeInsertAfter(pos, val);
     }
 
@@ -140,14 +137,23 @@ namespace odintsov {
     {
       return unsafeInsertAfter(pos, new detail::Node< T >{val, nullptr});
     }
+
     template< class... Args >
-    Iter emplaceAfter(ConstIter pos, Args&&... args);
+    Iter emplaceAfter(ConstIter pos, Args&&... args)
+    {
+      assertIterInside(pos);
+      unsafeInsertAfter(pos, new detail::Node< T >{T(std::forward< Args >(args)...), nullptr});
+    }
+
+    template< class... Args >
+    Iter unsafeEmplaceAfter(ConstIter pos, Args&&... args)
+    {
+      unsafeInsertAfter(pos, new detail::Node< T >{T(std::forward< Args >(args)...), nullptr});
+    }
 
     Iter eraseAfter(ConstIter pos)
     {
-      if (pos == cend()) {
-        throw std::range_error("Attempt to erase after element outside ForwardList");
-      }
+      assertIterInside(pos);
       return unsafeEraseAfter(pos);
     }
 
@@ -161,10 +167,8 @@ namespace odintsov {
 
     Iter eraseAfter(ConstIter first, ConstIter last)
     {
-      ConstIter end = cend();
-      if (first == end) {
-        throw std::range_error("Attempt to erase after element outside ForwardList");
-      }
+      assertIterInside(first);
+      const ConstIter end = cend();
       for (ConstIter next = std::next(first); next != last; ++next) {
         if (next == end) {
           throw std::invalid_argument("ForwardList erase range failed, iterator to last elem incorrect");
@@ -175,13 +179,17 @@ namespace odintsov {
 
     Iter unsafeEraseAfter(ConstIter first, ConstIter last)
     {
-      ConstIter end = cend();
+      const ConstIter end = cend();
       for (ConstIter next = std::next(first); next != last && next != end; next = std::next(first)) {
         eraseAfter(first);
       }
     }
+
     template< class... Args >
-    T& emplaceFront(Args&&... args);
+    T& emplaceFront(Args&&... args)
+    {
+      pushFront(new detail::Node< T >{T(std::forward< Args >(args)...), nullptr});
+    }
 
     void pushFront(const T& val)
     {
@@ -219,6 +227,13 @@ namespace odintsov {
 
    private:
     detail::Node< T >* head_;
+
+    void assertIterInside(ConstIter it)
+    {
+      if (it == cend()) {
+        throw std::range_error("Invalid attempt to use iterator outside ForwardList");
+      }
+    }
 
     Iter unsafeInsertAfter(ConstIter pos, detail::Node< T >* n)
     {
