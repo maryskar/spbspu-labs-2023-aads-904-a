@@ -309,6 +309,21 @@ namespace dimkashelk
       reverse(begin_);
       std::swap(begin_, end_);
     }
+    friend bool operator==(const ForwardList< T > &lhr, const ForwardList< T > &rhs)
+    {
+      auto lhr_begin = lhr.begin();
+      auto rhs_begin = rhs.begin();
+      while (lhr_begin != lhr.end() && rhs_begin != rhs.end())
+      {
+        if (*lhr_begin != *rhs_begin)
+        {
+          return false;
+        }
+        lhr_begin++;
+        rhs_begin++;
+      }
+      return lhr_begin == lhr.end() && rhs_begin == rhs.end();
+    }
   private:
     details::NodeOneWayList< T > *fakeNode_;
     details::NodeOneWayList< T > *begin_;
