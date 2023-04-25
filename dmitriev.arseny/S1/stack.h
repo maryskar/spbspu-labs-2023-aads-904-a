@@ -31,9 +31,7 @@ private:
 template< typename T >
 Stack< T >::Stack():
   top(nullptr)
-{
-
-}
+{}
 
 template< typename T >
 Stack< T >::~Stack()

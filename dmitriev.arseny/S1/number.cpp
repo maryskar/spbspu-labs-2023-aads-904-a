@@ -2,21 +2,15 @@
 
 #include <iomanip>
 
-Number::Number(long long number) :
+Number::Number(long long number):
   number(number)
-{
-
-}
-Number::Number(const Number& otherNumber) :
+{}
+Number::Number(const Number& otherNumber):
   number(otherNumber.number)
-{
-
-}
+{}
 Number::Number(Number&& otherNumber) noexcept:
   number(otherNumber.number)
-{
-
-}
+{}
 char Number::getCondition()
 {
   return 1;

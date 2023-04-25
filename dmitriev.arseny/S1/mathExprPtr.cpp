@@ -4,17 +4,13 @@ bool isOperator(char inp);
 bool isParenthesis(char inp);
 Expression* defineMathSymb(std::string inp);
 
-MathExprPtr::MathExprPtr() :
+MathExprPtr::MathExprPtr():
   adress(nullptr)
-{
+{}
 
-}
-
-MathExprPtr::MathExprPtr(std::string inp) :
+MathExprPtr::MathExprPtr(std::string inp):
   adress(defineMathSymb(inp))
-{
-
-}
+{}
 
 MathExprPtr::MathExprPtr(MathExprPtr&& otherMathExprPtr) noexcept://?
   adress(otherMathExprPtr.adress)

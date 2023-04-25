@@ -2,7 +2,7 @@
 
 #include <iomanip>
 
-Parenthesis::Parenthesis(char parenthesis) : //explict
+Parenthesis::Parenthesis(char parenthesis): //explict
   parenthesis(parenthesis)
 {
   if (!isOpen() && !isClose())
@@ -10,7 +10,7 @@ Parenthesis::Parenthesis(char parenthesis) : //explict
     throw std::logic_error("this is not end or begining");
   }
 }
-Parenthesis::Parenthesis(const Parenthesis& otherParenthesis) :
+Parenthesis::Parenthesis(const Parenthesis& otherParenthesis):
   parenthesis(otherParenthesis.parenthesis)
 {
 

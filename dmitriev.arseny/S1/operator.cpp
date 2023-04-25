@@ -42,26 +42,20 @@ auto defineOperator(char op)
 }
 
 
-Operator::Operator(char op) :
+Operator::Operator(char op):
   mathOperator(defineOperator(op)),
   priority(definePriority(op))
-{
+{}
 
-}
-
-Operator::Operator(const Operator& otherOperator) :
+Operator::Operator(const Operator& otherOperator):
   mathOperator(otherOperator.mathOperator),
   priority(otherOperator.priority)
-{
-
-}
+{}
 
 Operator::Operator(Operator&& otherOperator) noexcept:
   mathOperator(otherOperator.mathOperator),
   priority(otherOperator.priority)
-{
-
-}
+{}
 
 char Operator::getCondition()
 {

@@ -13,11 +13,9 @@ struct List< MathExprPtr >
   List(MathExprPtr& data, List< MathExprPtr >* otherList = nullptr);
 };
 
-List< MathExprPtr >::List(MathExprPtr& data, List< MathExprPtr >* otherList) :
+List< MathExprPtr >::List(MathExprPtr& data, List< MathExprPtr >* otherList):
   data(std::move(data)),
   otherList(otherList)
-{
-
-}
+{}
 
 #endif

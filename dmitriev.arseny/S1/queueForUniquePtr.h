@@ -30,19 +30,17 @@ private:
 
 };
 
-Queue< MathExprPtr >::Queue() :
+Queue< MathExprPtr >::Queue():
   head(nullptr),
   tail(nullptr)
-{
-
-}
+{}
 
 Queue< MathExprPtr >::~Queue()
 {
   clear(head);
 }
 
-Queue< MathExprPtr >::Queue(const Queue< MathExprPtr >& otherQueue) :
+Queue< MathExprPtr >::Queue(const Queue< MathExprPtr >& otherQueue):
   head(nullptr),
   tail(nullptr)
 {

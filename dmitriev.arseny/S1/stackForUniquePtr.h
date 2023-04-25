@@ -30,18 +30,16 @@ private:
 
 };
 
-Stack< MathExprPtr >::Stack() :
+Stack< MathExprPtr >::Stack():
   top(nullptr)
-{
-
-}
+{}
 
 Stack< MathExprPtr >::~Stack()
 {
   clear(top);
 }
 
-Stack< MathExprPtr >::Stack(const Stack< MathExprPtr >& otherStack) :
+Stack< MathExprPtr >::Stack(const Stack< MathExprPtr >& otherStack):
   top(nullptr)
 {
   if (otherStack.top != nullptr)

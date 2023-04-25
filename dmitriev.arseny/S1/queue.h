@@ -30,12 +30,10 @@ private:
 };
 
 template< typename T >
-Queue< T >::Queue() :
+Queue< T >::Queue():
   head(nullptr),
   tail(nullptr)
-{
-
-}
+{}
 
 template< typename T >
 Queue< T >::~Queue()
@@ -44,7 +42,7 @@ Queue< T >::~Queue()
 }
 
 template< typename T >
-Queue< T >::Queue(const Queue< T >& otherQueue) :
+Queue< T >::Queue(const Queue< T >& otherQueue):
   head(nullptr),
   tail(nullptr)
 {
