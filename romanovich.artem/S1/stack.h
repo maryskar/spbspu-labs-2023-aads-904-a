@@ -10,7 +10,11 @@ namespace romanovich
   {
   public:
     Stack();
+    Stack(const Stack< T > &stack);
+    Stack(Stack< T > &&stack) noexcept;
     ~Stack();
+    Stack< T > &operator=(const Stack< T > &stack);
+    Stack< T > &operator=(Stack< T > &&stack) noexcept;
     void push(const T &value);
     void pop();
     T get() const;
@@ -22,7 +26,58 @@ namespace romanovich
     details::ListNode< T > *top_;
     size_t size_;
     void deleteStack();
+    void swapStack(Stack< T > &stack) noexcept;
   };
+  template < typename T >
+  void Stack< T >::swapStack(Stack< T > &stack) noexcept
+  {
+    std::swap(top_, stack.head_);
+    std::swap(size_, stack.size_);
+  }
+  template < typename T >
+  Stack< T > &Stack< T >::operator=(Stack< T > &&stack) noexcept
+  {
+    if (this != &stack)
+    {
+      deleteStack();
+      doSwap(stack);
+    }
+    return *this;
+  }
+  template < typename T >
+  Stack< T > &Stack< T >::operator=(const Stack< T > &stack)
+  {
+    doSwap(stack);
+    return *this;
+  }
+  template < typename T >
+  Stack< T >::Stack(Stack< T > &&stack) noexcept:
+    top_(stack.top_),
+    size_(stack.size_)
+  {
+    stack.top_ = nullptr;
+    stack.size_ = 0;
+  }
+  template < typename T >
+  Stack< T >::Stack(const Stack< T > &stack):
+    top_(nullptr),
+    size_(0)
+  {
+    details::ListNode< T > *tmp = stack.top_;
+    while (tmp != nullptr)
+    {
+      try
+      {
+        push(tmp->data_);
+      }
+      catch (...)
+      {
+        Stack< T >::deleteStack();
+        throw;
+      }
+      tmp = tmp->next_;
+    }
+  }
   template < typename T >
   void Stack< T >::deleteStack()
   {

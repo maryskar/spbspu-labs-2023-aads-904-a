@@ -9,11 +9,11 @@ namespace romanovich
   {
   public:
     Queue();
-    Queue(const Queue< T > &pQueue);
-    Queue(Queue< T > &&pQueue) noexcept;
+    Queue(const Queue< T > &queue);
+    Queue(Queue< T > &&queue) noexcept;
     ~Queue();
-    Queue< T > &operator=(const Queue< T > &pQueue);
-    Queue< T > &operator=(Queue< T > &&pQueue) noexcept ;
+    Queue< T > &operator=(const Queue< T > &queue);
+    Queue< T > &operator=(Queue< T > &&queue) noexcept;
     void push(const T &rhs);
     void pop();
     T get() const;
@@ -26,22 +26,22 @@ namespace romanovich
     details::ListNode< T > *tail_;
     size_t size_;
     void deleteQueue();
-    void doSwap(Queue< T > &q) noexcept;
+    void swapQueue(Queue< T > &queue) noexcept;
   };
   template < typename T >
-  Queue< T > &Queue< T >::operator=(Queue< T > &&pQueue)noexcept
+  Queue< T > &Queue< T >::operator=(Queue< T > &&queue) noexcept
   {
-    if (this != &pQueue)
+    if (this != &queue)
     {
       deleteQueue();
-      doSwap(pQueue);
+      swapQueue(queue);
     }
     return *this;
   }
   template < typename T >
-  Queue< T > &Queue< T >::operator=(const Queue< T > &pQueue)
+  Queue< T > &Queue< T >::operator=(const Queue< T > &queue)
   {
-    doSwap(pQueue);
+    swapQueue(queue);
     return *this;
   }
   template < typename T >
@@ -59,12 +59,12 @@ namespace romanovich
   {
   }
   template < typename T >
-  Queue< T >::Queue(const Queue< T > &pQueue):
+  Queue< T >::Queue(const Queue< T > &queue):
     head_(nullptr),
     tail_(nullptr),
     size_(0)
   {
-    details::ListNode< T > *tmp = pQueue.head_;
+    details::ListNode< T > *tmp = queue.head_;
     while (tmp != nullptr)
     {
       try
@@ -80,21 +80,21 @@ namespace romanovich
     }
   }
   template < typename T >
-  Queue< T >::Queue(Queue< T > &&pQueue) noexcept:
-    head_(pQueue.head_),
-    tail_(pQueue.tail_),
-    size_(pQueue.size_)
+  Queue< T >::Queue(Queue< T > &&queue) noexcept:
+    head_(queue.head_),
+    tail_(queue.tail_),
+    size_(queue.size_)
   {
-    pQueue.head_ = nullptr;
-    pQueue.tail_ = nullptr;
-    pQueue.size_ = 0;
+    queue.head_ = nullptr;
+    queue.tail_ = nullptr;
+    queue.size_ = 0;
   }
   template < typename T >
-  void Queue< T >::doSwap(Queue< T > &q) noexcept
+  void Queue< T >::swapQueue(Queue< T > &queue) noexcept
   {
-    std::swap(head_, q.head_);
-    std::swap(tail_, q.tail_);
-    std::swap(size_, q.size_);
+    std::swap(head_, queue.head_);
+    std::swap(tail_, queue.tail_);
+    std::swap(size_, queue.size_);
   }
   template < typename T >
   Queue< T >::~Queue()

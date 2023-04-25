@@ -11,7 +11,6 @@ namespace details
     T data_;
     ListNode< T > *next_;
   };
-
   template < typename T >
   void clear(ListNode< T > *pNode)
   {
