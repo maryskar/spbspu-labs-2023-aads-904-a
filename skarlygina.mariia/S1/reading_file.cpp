@@ -2,29 +2,29 @@
 #include <stdexcept>
 #include <iostream>
 #include <string>
-#include "list.h"
+#include "queue.h"
 
-template< typename T>
-List< T > readElements(std::ifstream file)
+template<typename T>
+Queue< T > readElements(std::ifstream& file)
 {
   std::string line;
-  List< T > list = nullptr;
+  Stack< T > stack;
   if (file.is_open())
   {
     while (getline(file, line))
     {
       size_t pos = 0;
       std::string token;
-      while ((pos = line.find(" ") != std::string::npos))
+      while ((pos = line.find(" ")) != std::string::npos)
       {
         token = line.substr(0, pos);
-        list->data = token;
+        stack.push(T(token));
         line.erase(0, pos + 1);
       }
-      //adding the last elem later
+      // add last element
+      stack.push(T(line));
     }
     file.close();
   }
-  //change list into stack or queue
-  return list;
+  return stack;
 }
