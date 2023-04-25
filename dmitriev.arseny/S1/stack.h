@@ -12,10 +12,10 @@ public:
   ~Stack();
 
   Stack(const Stack< T >& otherStack);
-  Stack(Stack< T >&& otherStack);
+  Stack(Stack< T >&& otherStack) noexcept;
 
   Stack< T >& operator=(const Stack< T >& otherStack);
-  Stack< T >& operator=(Stack< T >&& otherStack);
+  Stack< T >& operator=(Stack< T >&& otherStack) noexcept;
 
   void push(const T& rhs);
   void popBack();
@@ -29,7 +29,7 @@ private:
 };
 
 template< typename T >
-Stack< T >::Stack() :
+Stack< T >::Stack():
   top(nullptr)
 {
 
@@ -42,7 +42,7 @@ Stack< T >::~Stack()
 }
 
 template< typename T >
-Stack< T >::Stack(const Stack< T >& otherStack) :
+Stack< T >::Stack(const Stack< T >& otherStack):
   top(nullptr)
 {
   if (otherStack.top != nullptr)
@@ -72,7 +72,7 @@ Stack< T >::Stack(const Stack< T >& otherStack) :
 }
 
 template< typename T >
-Stack< T >::Stack(Stack< T >&& otherStack) :
+Stack< T >::Stack(Stack< T >&& otherStack) noexcept :
   top(otherStack.top)
 {
   otherStack.top = nullptr;
@@ -94,7 +94,7 @@ Stack< T >& Stack< T >::operator=(const Stack& otherStack)
 }
 
 template< typename T >
-inline Stack< T >& Stack< T >::operator=(Stack< T >&& otherStack)
+inline Stack< T >& Stack< T >::operator=(Stack< T >&& otherStack) noexcept
 {
   if (this == &otherStack)
   {

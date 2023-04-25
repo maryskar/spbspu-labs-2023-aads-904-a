@@ -1,4 +1,5 @@
 #include "number.h"
+
 #include <iomanip>
 
 Number::Number(long long number) :

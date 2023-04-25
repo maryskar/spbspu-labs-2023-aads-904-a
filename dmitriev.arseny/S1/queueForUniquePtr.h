@@ -1,5 +1,5 @@
-#ifndef LISTFORUNIQUEPTR_H
-#define LISTFORUNIQUEPTR_H
+#ifndef QUEUEFORUNIQUEPTR_H
+#define QUEUEFORUNIQUEPTR_H
 
 #include "queue.h"
 #include "listForUniquePtr.h"

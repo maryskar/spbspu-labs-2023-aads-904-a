@@ -1,5 +1,5 @@
-#ifndef STACKFU_H
-#define STACKFU_H
+#ifndef STACKFORUNIQUEPTR_H
+#define STACKFORUNIQUEPTR_H
 
 #include "stack.h"
 #include "listForUniquePtr.h"
