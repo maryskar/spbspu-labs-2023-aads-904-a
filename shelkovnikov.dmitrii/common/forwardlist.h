@@ -154,7 +154,7 @@ namespace dimkashelk
     template < typename ... Args >
     iterator emplaceAfter(const_iterator pos, Args&&... args)
     {
-      return insertAfter(pos, T(args...));
+      return insertAfter(pos, std::forward< T >(T(args...)));
     }
     iterator eraseAfter(const_iterator it)
     {
@@ -214,7 +214,7 @@ namespace dimkashelk
     template< class ... Args >
     void emplaceFront(Args&&... args)
     {
-      pushFront(T(args...));
+      pushFront(std::forward< T >(T(args...)));
     }
     void popFront()
     {
