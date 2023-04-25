@@ -137,4 +137,3 @@ bool Stack< MathExprPtr >::isEmpty() const
 
 
 #endif // !STACKFU_H
-
