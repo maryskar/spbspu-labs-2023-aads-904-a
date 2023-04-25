@@ -6,12 +6,12 @@ class Expression
 public:
   bool isNumber();
   bool isOperator();
-  bool isBracket();
+  bool isParenthesis();
 
   virtual long long getNumber() = 0;
   virtual long long getOper(long long, long long) = 0;
-  virtual bool isOpenBracket() = 0;
-  virtual bool isCloseBracket() = 0;
+  virtual bool isOpenParenthesis() = 0;
+  virtual bool isCloseParenthesis() = 0;
   virtual char getPriority() = 0;
 
   virtual ~Expression() = default;

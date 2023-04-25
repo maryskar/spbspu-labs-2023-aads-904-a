@@ -1,28 +1,28 @@
-#ifndef BRACKET_H
-#define BRACKET_H
+#ifndef PARENTHESIS_H
+#define PARENTHESIS_H
 
 #include "mathExpression.h"
 
-class Bracket : public Expression
+class Parenthesis : public Expression
 {
 public:
-  Bracket() = default;
-  explicit Bracket(char bracket);
-  Bracket(const Bracket& otherBracket);
-  Bracket(Bracket&& otherBracket);
+  Parenthesis() = default;
+  explicit Parenthesis(char parenthesis);
+  Parenthesis(const Parenthesis& otherParenthesis);
+  Parenthesis(Parenthesis&& otherParenthesis);
 
   char getCondition() override;
   long long getNumber() override;
   long long getOper(long long, long long) override;
-  bool isOpenBracket() override;
-  bool isCloseBracket() override;
+  bool isOpenParenthesis() override;
+  bool isCloseParenthesis() override;
   char getPriority() override;
 
   bool isOpen();
   bool isClose();
 
 private:
-  char bracket;
+  char parenthesis;
 };
 
 #endif

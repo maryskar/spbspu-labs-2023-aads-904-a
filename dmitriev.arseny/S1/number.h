@@ -13,8 +13,8 @@ public:
   char getCondition() override;
   long long getNumber() override;
   long long getOper(long long, long long) override;
-  bool isOpenBracket() override;
-  bool isCloseBracket() override;
+  bool isOpenParenthesis() override;
+  bool isCloseParenthesis() override;
   char getPriority() override;
 
 private:

@@ -10,7 +10,7 @@ bool Expression::isOperator()
   return getCondition() == 2;
 }
 
-bool Expression::isBracket()
+bool Expression::isParenthesis()
 {
   return getCondition() == 3;
 }

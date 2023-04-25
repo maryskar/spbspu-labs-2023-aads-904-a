@@ -75,11 +75,11 @@ long long Operator::getOper(long long p1, long long p2)
 {
   return mathOperator(p1, p2);
 }
-bool Operator::isOpenBracket()
+bool Operator::isOpenParenthesis()
 {
   throw std::logic_error("logic_error");
 }
-bool Operator::isCloseBracket()
+bool Operator::isCloseParenthesis()
 {
   throw std::logic_error("logic_error");
 }

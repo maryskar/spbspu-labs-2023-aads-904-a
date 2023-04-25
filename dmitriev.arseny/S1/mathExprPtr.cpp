@@ -1,7 +1,7 @@
 #include "mathExprPtr.h"
 
 bool isOperator(char inp);
-bool isBracket(char inp);
+bool isParenthesis(char inp);
 Expression* defineMathSymb(std::string inp);
 
 MathExprPtr::MathExprPtr() :
@@ -34,9 +34,9 @@ MathExprPtr::~MathExprPtr()
 
 Expression* defineMathSymb(std::string inp)
 {
-  if (isBracket(inp[0]))
+  if (isParenthesis(inp[0]))
   {
-    return new Bracket(inp[0]);
+    return new Parenthesis(inp[0]);
   }
   else if (isOperator(inp[0]))
   {
@@ -48,7 +48,7 @@ Expression* defineMathSymb(std::string inp)
   }
 }
 
-bool isBracket(char inp)
+bool isParenthesis(char inp)
 {
   return (inp == '(') || (inp == ')');
 }

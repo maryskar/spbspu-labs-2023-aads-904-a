@@ -30,12 +30,12 @@ long long Number::getOper(long long, long long)
   throw std::logic_error("logic_error");
 }
 
-bool Number::isOpenBracket()
+bool Number::isOpenParenthesis()
 {
   throw std::logic_error("logic_error");
 }
 
-bool Number::isCloseBracket()
+bool Number::isCloseParenthesis()
 {
   throw std::logic_error("logic_error");
 }

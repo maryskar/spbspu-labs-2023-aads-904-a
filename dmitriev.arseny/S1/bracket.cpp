@@ -2,57 +2,57 @@
 
 #include <iomanip>
 
-Bracket::Bracket(char bracket) : //explict
-  bracket(bracket)
+Parenthesis::Parenthesis(char parenthesis) : //explict
+  parenthesis(parenthesis)
 {
   if (!isOpen() && !isClose())
   {
     throw std::logic_error("this is not end or begining");
   }
 }
-Bracket::Bracket(const Bracket& otherBracket) :
-  bracket(otherBracket.bracket)
+Parenthesis::Parenthesis(const Parenthesis& otherParenthesis) :
+  parenthesis(otherParenthesis.parenthesis)
 {
 
 }
-Bracket::Bracket(Bracket&& otherBracket) :
-  bracket(otherBracket.bracket)
+Parenthesis::Parenthesis(Parenthesis&& otherParenthesis) :
+  parenthesis(otherParenthesis.parenthesis)
 {
 
 }
-char Bracket::getCondition()
+char Parenthesis::getCondition()
 {
   return 3;
 }
-long long Bracket::getNumber()
+long long Parenthesis::getNumber()
 {
   throw std::logic_error("logic_error");
 }
-long long Bracket::getOper(long long, long long)
+long long Parenthesis::getOper(long long, long long)
 {
   throw std::logic_error("logic_error");
 }
 
-bool Bracket::isOpenBracket()
+bool Parenthesis::isOpenParenthesis()
 {
   return isOpen();
 }
 
-bool Bracket::isCloseBracket()
+bool Parenthesis::isCloseParenthesis()
 {
   return isClose();
 }
 
-char Bracket::getPriority()
+char Parenthesis::getPriority()
 {
   throw std::logic_error("logic_error");
 }
 
-bool Bracket::isOpen()
+bool Parenthesis::isOpen()
 {
-  return bracket == '(';
+  return parenthesis == '(';
 }
-bool Bracket::isClose()
+bool Parenthesis::isClose()
 {
-  return bracket == ')';
+  return parenthesis == ')';
 }

@@ -19,9 +19,9 @@ long long calculateTheExpression(std::string stringInp)
     MathExprPtr infVal = infQueue.getTopData();
     Expression* infQAdrs = infVal.getRawPointer();
 
-    if (infQAdrs->isBracket())
+    if (infQAdrs->isParenthesis())
     {
-      if (infQAdrs->isOpenBracket())
+      if (infQAdrs->isOpenParenthesis())
       {
         stack.push(infVal);
       }
@@ -31,7 +31,7 @@ long long calculateTheExpression(std::string stringInp)
         {
           MathExprPtr stackVal = stack.getTopData();
           Expression* stAdrs = stackVal.getRawPointer();
-          if (stAdrs->isBracket())
+          if (stAdrs->isParenthesis())
           {
             stack.popBack();
             break;
@@ -50,7 +50,7 @@ long long calculateTheExpression(std::string stringInp)
       MathExprPtr stackVal = stack.getTopData();
       Expression* stAdrs = stackVal.getRawPointer();
 
-      if (stAdrs->isBracket())
+      if (stAdrs->isParenthesis())
       {
         stack.popBack();
         stack.push(stackVal);
@@ -82,7 +82,7 @@ long long calculateTheExpression(std::string stringInp)
     MathExprPtr stackVal = stack.getTopData();
     Expression* stAdrs = stackVal.getRawPointer();
 
-    if (stAdrs->isBracket())
+    if (stAdrs->isParenthesis())
     {
       throw std::logic_error("logic_error");
     }
