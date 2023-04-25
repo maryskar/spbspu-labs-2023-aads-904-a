@@ -63,10 +63,9 @@ namespace romanovich
     top_(nullptr),
     size_(0)
   {
-    if (queue.head_ == nullptr)
+    if (queue.top_ == nullptr)
     {
-      head_ = nullptr;
-      tail_ = nullptr;
+      top_ = nullptr;
       size_ = 0;
     }
     else
