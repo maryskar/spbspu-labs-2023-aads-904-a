@@ -17,7 +17,7 @@ public:
   Stack< T >& operator=(const Stack< T >& otherStack);
   Stack< T >& operator=(Stack< T >&& otherStack);
 
-  void push(T rhs);
+  void push(const T& rhs);
   void popBack();
   T getTopData() const;
 
@@ -29,7 +29,7 @@ private:
 };
 
 template< typename T >
-Stack< T >::Stack():
+Stack< T >::Stack() :
   top(nullptr)
 {
 
@@ -42,7 +42,7 @@ Stack< T >::~Stack()
 }
 
 template< typename T >
-Stack< T >::Stack(const Stack< T >& otherStack):
+Stack< T >::Stack(const Stack< T >& otherStack) :
   top(nullptr)
 {
   if (otherStack.top != nullptr)
@@ -72,7 +72,7 @@ Stack< T >::Stack(const Stack< T >& otherStack):
 }
 
 template< typename T >
-Stack< T >::Stack(Stack< T >&& otherStack):
+Stack< T >::Stack(Stack< T >&& otherStack) :
   top(otherStack.top)
 {
   otherStack.top = nullptr;
@@ -108,7 +108,7 @@ inline Stack< T >& Stack< T >::operator=(Stack< T >&& otherStack)
 }
 
 template< typename T >
-void Stack< T >::push(T rhs)
+void Stack< T >::push(const T& rhs)
 {
   List< T >* newTop = new List< T >(rhs, top);
   top = newTop;
