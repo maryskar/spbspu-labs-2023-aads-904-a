@@ -83,8 +83,8 @@ namespace dimkashelk
       fakeNode_->next = begin_;
       end_ = forwardList.end_;
       size_ = forwardList.size_;
-      forwardList.begin_ = forwardList.fakeNode_;
-      forwardList.end_ = forwardList.fakeNode_;
+      forwardList.begin_ = nullptr;
+      forwardList.end_ = nullptr;
       return *this;
     }
     reference front()
