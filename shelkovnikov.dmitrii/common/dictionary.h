@@ -11,6 +11,9 @@ namespace dimkashelk
   {
   public:
     using dict_type = Dictionary< Key, Value, Compare >;
+    using value_type = std::pair< Key, Value >;
+    using iterator_t = dimkashelk::ForwardListIterator< value_type >;
+    using const_iterator_t = dimkashelk::ForwardListIteratorConst< value_type >;
     Dictionary():
       list_(),
       compare_(Compare{})
@@ -56,7 +59,7 @@ namespace dimkashelk
       }
       if (it == list_.end())
       {
-        list_.insertAfter(prev, std::pair< Key, Value >(k, value));
+        list_.insertAfter(prev, value_type(k, value));
       }
       else if ((*it).first == k)
       {
@@ -64,11 +67,11 @@ namespace dimkashelk
       }
       else if (it == list_.begin())
       {
-        list_.pushFront(std::pair< Key, Value >(k, value));
+        list_.pushFront(value_type(k, value));
       }
       else
       {
-        list_.insertAfter(prev, std::pair< Key, Value >(k, value));
+        list_.insertAfter(prev, value_type(k, value));
       }
     }
     Value &get(const Key &k)
@@ -180,7 +183,7 @@ namespace dimkashelk
       return new_dict;
     }
   private:
-    ForwardList< std::pair< Key, Value > > list_;
+    ForwardList< value_type > list_;
     Compare compare_;
   };
 }
