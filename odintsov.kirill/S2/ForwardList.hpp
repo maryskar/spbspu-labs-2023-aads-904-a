@@ -5,13 +5,12 @@
 #include <initializer_list>
 #include <memory>
 #include <stdexcept>
-#include <utility>
 
 namespace detail {
   template< typename T >
   struct Node {
-    T val;
     Node* next;
+    T val;
   };
 
   template< typename T >
@@ -105,12 +104,35 @@ namespace odintsov {
       return head_->data;
     }
 
-    Iter beforeBegin();
-    ConstIter cbeforeBegin() const;
-    Iter begin();
-    ConstIter cbegin() const;
-    Iter end();
-    ConstIter cend() const;
+    Iter beforeBegin()
+    {
+      return Iter(reinterpret_cast< detail::Node< T >* >(std::addressof(head_)));
+    }
+
+    ConstIter cbeforeBegin() const
+    {
+      return ConstIter(reinterpret_cast< detail::Node< const T >* >(std::addressof(head_)));
+    }
+
+    Iter begin()
+    {
+      return Iter(head_);
+    }
+
+    ConstIter cbegin() const
+    {
+      return ConstIter(head_);
+    }
+
+    Iter end()
+    {
+      return Iter();
+    }
+
+    ConstIter cend() const
+    {
+      return ConstIter();
+    }
 
     bool empty() const
     {
