@@ -69,4 +69,10 @@ void fesenko::Queue< T >::pop()
   delete head_;
   head_ = temp;
 }
+
+template<  typename T >
+bool fesenko::Queue()::isEmpty()
+{
+  return head_ == nullptr;
+}
 #endif
