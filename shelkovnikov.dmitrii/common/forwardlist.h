@@ -324,6 +324,10 @@ namespace dimkashelk
       }
       return lhr_begin == lhr.end() && rhs_begin == rhs.end();
     }
+    friend bool operator!=(const ForwardList< T > &lhr, const ForwardList< T > &rhs)
+    {
+      return !(lhr == rhs);
+    }
   private:
     details::NodeOneWayList< T > *fakeNode_;
     details::NodeOneWayList< T > *begin_;
