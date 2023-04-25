@@ -70,6 +70,8 @@ namespace odintsov {
    public:
     using Iter = detail::ForwardIterator< T >;
     using ConstIter = detail::ForwardIterator< const T >;
+    using Node = detail::Node< T >;
+    using ConstNode = detail::Node< const T >;
 
     ForwardList():
       head_(nullptr)
@@ -151,12 +153,12 @@ namespace odintsov {
 
     Iter beforeBegin()
     {
-      return Iter(reinterpret_cast< detail::Node< T >* >(std::addressof(head_)));
+      return Iter(reinterpret_cast< Node* >(std::addressof(head_)));
     }
 
     ConstIter cbeforeBegin() const
     {
-      return ConstIter(reinterpret_cast< detail::Node< const T >* >(std::addressof(head_)));
+      return ConstIter(reinterpret_cast< ConstNode* >(std::addressof(head_)));
     }
 
     Iter begin()
@@ -199,7 +201,7 @@ namespace odintsov {
 
     Iter unsafeInsertAfter(ConstIter pos, const T& val)
     {
-      return unsafeInsertAfter(pos, new detail::Node< T >{nullptr, val});
+      return unsafeInsertAfter(pos, new Node{nullptr, val});
     }
 
     Iter insertAfter(ConstIter pos, T&& val)
@@ -210,7 +212,7 @@ namespace odintsov {
 
     Iter unsafeInsertAfter(ConstIter pos, T&& val)
     {
-      return unsafeInsertAfter(pos, new detail::Node< T >{nullptr, val});
+      return unsafeInsertAfter(pos, new Node{nullptr, val});
     }
 
     template< class InputIter >
@@ -246,13 +248,13 @@ namespace odintsov {
     Iter emplaceAfter(ConstIter pos, Args&&... args)
     {
       assertIterInside(pos);
-      unsafeInsertAfter(pos, new detail::Node< T >{nullptr, T(std::forward< Args >(args)...)});
+      unsafeInsertAfter(pos, new Node{nullptr, T(std::forward< Args >(args)...)});
     }
 
     template< class... Args >
     Iter unsafeEmplaceAfter(ConstIter pos, Args&&... args)
     {
-      unsafeInsertAfter(pos, new detail::Node< T >{nullptr, T(std::forward< Args >(args)...)});
+      unsafeInsertAfter(pos, new Node{nullptr, T(std::forward< Args >(args)...)});
     }
 
     Iter eraseAfter(ConstIter pos)
@@ -263,7 +265,7 @@ namespace odintsov {
 
     Iter unsafeEraseAfter(ConstIter pos)
     {
-      detail::Node< T >* nextNode = pos.nodePtr->next;
+      Node* nextNode = pos.nodePtr->next;
       pos.nodePtr->next = nextNode->next;
       delete nextNode;
       return Iter(pos.nodePtr->next);
@@ -292,17 +294,17 @@ namespace odintsov {
     template< class... Args >
     T& emplaceFront(Args&&... args)
     {
-      pushFront(new detail::Node< T >{nullptr, T(std::forward< Args >(args)...)});
+      pushFront(new Node{nullptr, T(std::forward< Args >(args)...)});
     }
 
     void pushFront(const T& val)
     {
-      pushFront(new detail::Node< T >{nullptr, val});
+      pushFront(new Node{nullptr, val});
     }
 
     void pushFront(T&& val)
     {
-      pushFront(new detail::Node< T >{nullptr, val});
+      pushFront(new Node{nullptr, val});
     }
 
     void popFront()
@@ -315,7 +317,7 @@ namespace odintsov {
 
     void unsafePopFront()
     {
-      detail::Node< T >* next = head_->next;
+      Node* next = head_->next;
       delete head_;
       head_ = next;
     }
@@ -335,7 +337,7 @@ namespace odintsov {
     void reverse();
 
    private:
-    detail::Node< T >* head_;
+    Node* head_;
 
     void assertIterInside(ConstIter it)
     {
@@ -344,15 +346,15 @@ namespace odintsov {
       }
     }
 
-    Iter unsafeInsertAfter(ConstIter pos, detail::Node< T >* n)
+    Iter unsafeInsertAfter(ConstIter pos, Node* n)
     {
-      detail::Node< T >* prevNode = pos.nodePtr;
+      Node* prevNode = pos.nodePtr;
       n->next = prevNode->next;
       prevNode->next = n->next;
       return Iter(n);
     }
 
-    void pushFront(detail::Node< T >* n)
+    void pushFront(Node* n)
     {
       n->next = head_;
       head_ = n;
