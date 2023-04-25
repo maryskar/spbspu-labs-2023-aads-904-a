@@ -15,18 +15,20 @@ namespace detail {
 
   template< typename T >
   struct ForwardIterator {
+    Node< T >* nodePtr;
+
     ForwardIterator():
-      nodePtr_(nullptr)
+      nodePtr(nullptr)
     {}
 
     ForwardIterator(Node< T >* ptr):
-      nodePtr_(ptr)
+      nodePtr(ptr)
     {}
 
     ForwardIterator& operator++()
     {
-      if (nodePtr_) {
-        nodePtr_ = nodePtr_->next;
+      if (nodePtr) {
+        nodePtr = nodePtr->next;
       }
       return *this;
     }
@@ -34,34 +36,31 @@ namespace detail {
     ForwardIterator operator++(int)
     {
       ForwardIterator< T > copy(*this);
-      if (nodePtr_) {
-        nodePtr_ = nodePtr_->next;
+      if (nodePtr) {
+        nodePtr = nodePtr->next;
       }
       return copy;
     }
 
     T& operator*()
     {
-      return nodePtr_->data;
+      return nodePtr->data;
     }
 
     T* operator->()
     {
-      return std::addressof(nodePtr_->data);
+      return std::addressof(nodePtr->data);
     }
 
     bool operator==(const ForwardIterator& rhs) const
     {
-      return nodePtr_ == rhs.nodePtr_;
+      return nodePtr == rhs.nodePtr;
     }
 
     bool operator!=(const ForwardIterator& rhs) const
     {
-      return nodePtr_ != rhs.nodePtr_;
+      return nodePtr != rhs.nodePtr;
     }
-
-   private:
-    Node< T >* nodePtr_;
   };
 }
 
@@ -115,8 +114,32 @@ namespace odintsov {
     bool empty() const;
 
     void clear();
-    Iter insertAfter(ConstIter pos, const T& val);
-    Iter insertAfter(ConstIter pos, T&& val);
+
+    Iter insertAfter(ConstIter pos, const T& val)
+    {
+      if (pos == cend()) {
+        throw std::logic_error("Attempt to insert after nullptr in ForwardList");
+      }
+      return unsafeInsertAfter(pos, val);
+    }
+
+    Iter unsafeInsertAfter(ConstIter pos, const T& val)
+    {
+      return unsafeInsertAfter(pos, new detail::Node< T >{val, nullptr});
+    }
+
+    Iter insertAfter(ConstIter pos, T&& val)
+    {
+      if (pos == cend()) {
+        throw std::logic_error("Attempt to insert after nullptr in ForwardList");
+      }
+      return unsafeInsertAfter(pos, val);
+    }
+
+    Iter unsafeInsertAfter(ConstIter pos, T&& val)
+    {
+      return unsafeInsertAfter(pos, new detail::Node< T >{val, nullptr});
+    }
     template< class... Args >
     Iter emplaceAfter(ConstIter pos, Args&&... args);
     Iter eraseAfter(ConstIter pos);
@@ -159,6 +182,14 @@ namespace odintsov {
 
    private:
     detail::Node< T >* head_;
+
+    Iter unsafeInsertAfter(ConstIter pos, detail::Node< T >* n)
+    {
+      detail::Node< T >* prevNode = pos.nodePtr;
+      n->next = prevNode->next;
+      prevNode->next = n->next;
+      return Iter(n);
+    }
 
     void pushFront(detail::Node< T >* n)
     {
