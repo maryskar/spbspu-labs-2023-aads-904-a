@@ -68,7 +68,7 @@ namespace dimkashelk
       }
       else
       {
-        list_.insertAfter(it, std::pair< Key, Value >(k, value));
+        list_.insertAfter(prev, std::pair< Key, Value >(k, value));
       }
     }
     Value &get(const Key &k)
