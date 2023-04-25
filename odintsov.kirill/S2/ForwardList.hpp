@@ -89,7 +89,7 @@ namespace odintsov {
 
     const T& front() const
     {
-      if (!head_) {
+      if (empty()) {
         throw std::logic_error("Attempt to call front() on empty ForwardList");
       }
       return unsafeFront();
@@ -112,7 +112,10 @@ namespace odintsov {
     Iter end();
     ConstIter cend() const;
 
-    bool empty() const;
+    bool empty() const
+    {
+      return !head_;
+    }
 
     void clear();
 
