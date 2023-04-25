@@ -6,23 +6,23 @@
 class Bracket : public Expression
 {
 public:
-	Bracket() = default;
-	explicit Bracket(char bracket);
-	Bracket(const Bracket& otherBracket);
-	Bracket(Bracket&& otherBracket);
+  Bracket() = default;
+  explicit Bracket(char bracket);
+  Bracket(const Bracket& otherBracket);
+  Bracket(Bracket&& otherBracket);
 
-	char getCondition() override;
-	long long getNumber() override;
-	long long getOper(long long, long long) override;
-	bool isOpenBracket() override;
-	bool isCloseBracket() override;
-	char getPriority() override;
+  char getCondition() override;
+  long long getNumber() override;
+  long long getOper(long long, long long) override;
+  bool isOpenBracket() override;
+  bool isCloseBracket() override;
+  char getPriority() override;
 
-	bool isOpen();
-	bool isClose();
+  bool isOpen();
+  bool isClose();
 
 private:
-	char bracket;
+  char bracket;
 };
 
 #endif
