@@ -166,7 +166,9 @@ namespace odintsov {
 
     void clear()
     {
-      unsafeEraseAfter(cbeforeBegin(), cend());
+      while (!empty()) {
+        popFront();
+      }
     }
 
     Iter insertAfter(ConstIter pos, const T& val)
