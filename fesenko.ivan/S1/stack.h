@@ -47,4 +47,15 @@ T &fesenko::stack< T >::getOutOfStack()
   }
   return *head_.data;
 }
+
+template< typenamt T >
+void fesenko::stack< T >::pop()
+{
+  if (head_ == nullptr) {
+    throw std::out_of_range("List is empty");
+  }
+  List< T > *temp = head_->next;
+  delete head_;
+  head_ = temp;
+}
 #endif
