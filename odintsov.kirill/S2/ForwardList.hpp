@@ -98,9 +98,33 @@ namespace odintsov {
       clear();
     }
 
-    ForwardList& operator=(const ForwardList& rhs);
-    ForwardList& operator=(ForwardList&& rhs);
-    ForwardList& operator=(std::initializer_list< T > rhs);
+    ForwardList& operator=(const ForwardList& rhs)
+    {
+      if (this == std::addressof(rhs)) {
+        return *this;
+      }
+      Iter last = unsafeInsertAfter(cbeforeBegin(), rhs.cbegin(), rhs.cend());
+      unsafeEraseAfter(last, cend());
+      return *this;
+    }
+
+    ForwardList& operator=(ForwardList&& rhs)
+    {
+      if (this == std::addressof(rhs)) {
+        return *this;
+      }
+      clear();
+      head_ = rhs.head_;
+      rhs.head_ = nullptr;
+      return *this;
+    }
+
+    ForwardList& operator=(std::initializer_list< T > rhs)
+    {
+      Iter last = unsafeInsertAfter(cbeforeBegin(), rhs);
+      unsafeEraseAfter(last, cend());
+      return *this;
+    }
 
     T& front()
     {
