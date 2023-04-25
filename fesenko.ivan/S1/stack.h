@@ -32,10 +32,19 @@ fesenko::Stack< T >::~Stack()
   }
 }
 
-template < typename T >
+template< typename T >
 void fesenko::stack< T >::push(const T &rhs)
 {
   List< T > *temp = new List< T >{rhs, head_};
   head_ = temp;
+}
+
+template< typename T >
+T &fesenko::stack< T >::getOutOfStack()
+{
+  if (head_ == nullptr) {
+    throw std::out_of_range("List is empty");
+  }
+  return *head_.data;
 }
 #endif
