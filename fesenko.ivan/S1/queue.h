@@ -58,4 +58,15 @@ T &fesenko::Queue< T >::getOutOfQueue()
   }
   return *head_.data;
 }
+
+template< typename T >
+void fesenko::Queue< T >::pop()
+{
+  if (isEmpty()) {
+    throw std::out_of_range("Queue is empty");
+  }
+  List< T > *temp = head_->next;
+  delete head_;
+  head_ = temp;
+}
 #endif
