@@ -191,6 +191,35 @@ namespace odintsov {
       return unsafeInsertAfter(pos, new detail::Node< T >{nullptr, val});
     }
 
+    template< class InputIter >
+    Iter insertAfter(ConstIter pos, InputIter first, InputIter last)
+    {
+      assertIterInside(pos);
+      return unsafeInsertAfter(pos, first, last);
+    }
+
+    template< class InputIter >
+    Iter unsafeInsertAfter(ConstIter pos, InputIter first, InputIter last)
+    {
+      Iter lastInserted(pos.nodePtr);
+      while (first != last) {
+        lastInserted = unsafeInsertAfter(lastInserted, *first);
+        ++first;
+      }
+      return lastInserted;
+    }
+
+    Iter insertAfter(ConstIter pos, std::initializer_list< T > il)
+    {
+      assertIterInside(pos);
+      return unsafeInsertAfter(pos, il);
+    }
+
+    Iter unsafeInsertAfter(ConstIter pos, std::initializer_list< T > il)
+    {
+      return unsafeInsertAfter(pos, il.begin(), il.end());
+    }
+
     template< class... Args >
     Iter emplaceAfter(ConstIter pos, Args&&... args)
     {
