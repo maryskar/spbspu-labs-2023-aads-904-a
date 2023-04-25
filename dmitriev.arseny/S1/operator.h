@@ -6,16 +6,19 @@
 class Operator : public Expression
 {
 public:
-  explicit Operator(char op);
-  Operator(const Operator& otherOperator);
-  Operator(Operator&& otherOperator);
-  char getCondition() override;
-  char getPriority() const;
-  long long calculate(const long long& p1, const long long& p2);
+	explicit Operator(char op);
+	Operator(const Operator& otherOperator);
+	Operator(Operator&& otherOperator);
+	char getCondition() override;
+	long long getNumber() override;
+	long long getOper(long long, long long) override;
+	bool isOpenBracket() override;
+	bool isCloseBracket() override;
+	char getPriority() override;
 
 private:
-  long long (*mathOperator)(long long, long long);
-  char priority;
+	long long (*mathOperator)(long long, long long);
+	char priority;
 
 };
 
