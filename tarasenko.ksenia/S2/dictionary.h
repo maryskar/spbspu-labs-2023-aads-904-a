@@ -23,20 +23,12 @@ namespace tarasenko
    {}
    dict_type& operator=(const dict_type& other)
    {
-     if (*this == other)
-     {
-       return *this;
-     }
      list = other.list;
      compare = other.compare;
      return *this;
    }
    dict_type& operator=(dict_type&& other)
    {
-     if (*this == other)
-     {
-       return *this;
-     }
      list = std::move(other.list);
      compare = other.compare;
      return *this;
@@ -53,6 +45,10 @@ namespace tarasenko
    }
    friend std::ostream& operator<<(std::ostream& output, const dict_type& dict)
    {
+     if (dict.isEmpty())
+     {
+       return output << "<EMPTY>";
+     }
      auto iter = dict.list.cbegin();
      output << iter->first << " " << iter->second;
      ++iter;
@@ -66,6 +62,7 @@ namespace tarasenko
    void push(const Key& k, const Value& v);
    Value get(const Key& k) const;
    void remove(const Key& k);
+   bool isEmpty() const;
   private:
    ForwardList< std::pair< Key, Value > > list;
    Compare compare;
@@ -86,19 +83,19 @@ namespace tarasenko
   template< typename Key, typename Value, typename Compare >
   Value Dictionary< Key, Value, Compare >::get(const Key& k) const
   {
-    auto current = list.cbegin();
-    while (current != list.cend() && (k != current->first))
+    if (!isEmpty())
     {
-      ++current;
+      auto current = list.cbegin();
+      while (current != list.cend() && (k != current->first))
+      {
+        ++current;
+      }
+      if (current != list.cend() && (k == current->first))
+      {
+        return current->second;
+      }
     }
-    if (current != list.cend() && (k == current->first))
-    {
-      return current->second;
-    }
-    else
-    {
-      throw std::invalid_argument("Key not found");
-    }
+    throw std::invalid_argument("Key not found");
   };
   template< typename Key, typename Value, typename Compare >
   void Dictionary< Key, Value, Compare >::remove(const Key& k)
@@ -117,6 +114,11 @@ namespace tarasenko
       ++current;
     }
   };
+  template< typename Key, typename Value, typename Compare >
+  bool Dictionary< Key, Value, Compare >::isEmpty() const
+  {
+    return list.isEmpty();
+  }
 }
 
 #endif

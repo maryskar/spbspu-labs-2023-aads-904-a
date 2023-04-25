@@ -7,15 +7,20 @@ namespace tarasenko
   template< typename Key, typename Value, typename Compare >
   std::ostream& print(std::ostream& output, const tarasenko::Dictionary< Key, Value, Compare >& dict, const Key& name_of_dict)
   {
+    Value given_dict;
     try
     {
-      Value result = dict.get(name_of_dict);
+      given_dict = dict.get(name_of_dict);
     }
     catch (const std::invalid_argument& e)
     {
       return output << e.what();
     }
-    return output << name_of_dict << " " << dict.get(name_of_dict);
+    if (given_dict.isEmpty())
+    {
+      return output << "<EMPTY>";
+    }
+    return output << name_of_dict << " " << given_dict;
   }
 }
 #endif
