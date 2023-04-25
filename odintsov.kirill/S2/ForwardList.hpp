@@ -78,12 +78,7 @@ namespace odintsov {
     ForwardList(const ForwardList& fl):
       head_(nullptr)
     {
-      ConstIter last = cbeforeBegin();
-      const ConstIter flEnd = fl.cend();
-      for (ConstIter cur = fl.cbegin(); cur != flEnd; ++cur) {
-        unsafeInsertAfter(last, *cur);
-        ++last;
-      }
+      unsafeInsertAfter(cbeforeBegin(), fl.cbegin(), fl.cend());
     }
 
     ForwardList(ForwardList&& fl):
@@ -95,9 +90,7 @@ namespace odintsov {
     ForwardList(std::initializer_list< T > il):
       head_(nullptr)
     {
-      for (auto iter = il.rbegin(); iter < il.rend(); ++iter) {
-        pushFront(*iter);
-      }
+      unsafeInsertAfter(cbeforeBegin(), il);
     }
 
     ~ForwardList();
