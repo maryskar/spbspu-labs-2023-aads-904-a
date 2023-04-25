@@ -45,6 +45,10 @@ namespace dimkashelk
       list_ = std::move(other.list_);
       return *this;
     }
+    iterator_t begin()
+    {
+      return list_.begin();
+    }
     void push(const Key &k, const Value &value)
     {
       auto it = list_.begin();
