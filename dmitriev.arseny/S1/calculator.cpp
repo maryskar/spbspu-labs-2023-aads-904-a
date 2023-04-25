@@ -1,123 +1,110 @@
 #include "calculator.h"
 #include "mathExprPtr.h"
-#include "stack.h"
-#include "queue.h"
+#include "queueForUniquePtr.h"
+#include "stackForUniquePtr.h"
 
 #include <string>
 
-Queue< ExpressionU > getQueueFromInput(std::string stringInp);
+Queue< MathExprPtr > getQueueFromInput(std::string stringInp);
+void calculate(Stack< long long >& postStack, Expression* oper);
 
 long long calculateTheExpression(std::string stringInp)
 {
-  Queue< ExpressionU > infQueue = getQueueFromInput(stringInp);
-  Stack< ExpressionU > postStack;
-  Stack< ExpressionU > stack;
+  Stack< MathExprPtr > stack;
+  Queue< MathExprPtr > infQueue = getQueueFromInput(stringInp);
+  Stack< long long > postStack;
 
-
-  while (!infQueue.isEmpty())
+  for (; !infQueue.isEmpty(); infQueue.popBack())
   {
-    if (infQueue.getTopData().isBracket())
+    MathExprPtr infVal = infQueue.getTopData();
+    Expression* infQAdrs = infVal.getRawPointer();
+
+    if (infQAdrs->isBracket())
     {
-      if (infQueue.getTopData().getBracket().isOpen())
+      if (infQAdrs->isOpenBracket())
       {
-        stack.push(infQueue.getTopData());
-        infQueue.popBack();
+        stack.push(infVal);
       }
       else
       {
-        while (!stack.getTopData().isBracket())
+        for (; !stack.isEmpty(); stack.popBack())
         {
-          postStack.push(stack.getTopData());
-          stack.popBack();
-
-          ExpressionU op = postStack.getTopData();
-          postStack.popBack();
-          ExpressionU n1 = postStack.getTopData();
-          postStack.popBack();
-          ExpressionU n2 = postStack.getTopData();
-          postStack.popBack();
-
-          postStack.push(op.calculate(n1, n2));
+          MathExprPtr stackVal = stack.getTopData();
+          Expression* stAdrs = stackVal.getRawPointer();
+          if (stAdrs->isBracket())
+          {
+            stack.popBack();
+            break;
+          }
+          calculate(postStack, stAdrs);
         }
-        stack.popBack();
-        infQueue.popBack();
       }
     }
-    else if (infQueue.getTopData().isOperator())
+    else if (infQAdrs->isOperator())
     {
-      if (stack.isEmpty() || stack.getTopData().isBracket())
+      if (stack.isEmpty())
       {
-        stack.push(infQueue.getTopData());
-        infQueue.popBack();
-
+        stack.push(infVal);
         continue;
       }
+      MathExprPtr stackVal = stack.getTopData();
+      Expression* stAdrs = stackVal.getRawPointer();
 
-
-      if (infQueue.getTopData().getOperator().getPriority() > stack.getTopData().getOperator().getPriority())
+      if (stAdrs->isBracket())
       {
-        stack.push(infQueue.getTopData());
-        infQueue.popBack();
+        stack.popBack();
+        stack.push(stackVal);
+        stack.push(infVal);
+        continue;
+      }
+      if (infQAdrs->getPriority() > stAdrs->getPriority())
+      {
+        stack.popBack();
+        stack.push(stackVal);
+        stack.push(infVal);
       }
       else
       {
-        postStack.push(stack.getTopData());
+        calculate(postStack, stAdrs);
         stack.popBack();
 
-        ExpressionU op = postStack.getTopData();
-        postStack.popBack();
-        ExpressionU n1 = postStack.getTopData();
-        postStack.popBack();
-        ExpressionU n2 = postStack.getTopData();
-        postStack.popBack();
-
-        postStack.push(op.calculate(n1, n2));
-
-        stack.push(infQueue.getTopData());
-        infQueue.popBack();
+        stack.push(infVal);
       }
     }
     else
     {
-      postStack.push(infQueue.getTopData());
-      infQueue.popBack();
+      postStack.push(infQAdrs->getNumber());
     }
   }
 
-  while (!stack.isEmpty())
+  for (; !stack.isEmpty(); stack.popBack())
   {
-    if (stack.getTopData().isBracket())
+    MathExprPtr stackVal = stack.getTopData();
+    Expression* stAdrs = stackVal.getRawPointer();
+
+    if (stAdrs->isBracket())
     {
       throw std::logic_error("logic_error");
     }
-    postStack.push(stack.getTopData());
-    stack.popBack();
 
-    ExpressionU op = postStack.getTopData();
-    postStack.popBack();
-    ExpressionU n1 = postStack.getTopData();
-    postStack.popBack();
-    ExpressionU n2 = postStack.getTopData();
-    postStack.popBack();
-
-    postStack.push(op.calculate(n1, n2));
+    calculate(postStack, stAdrs);
   }
 
-
-  return postStack.getTopData().getNumber().getLongLong();
+  return postStack.getTopData();
 }
 
 
-Queue< ExpressionU > getQueueFromInput(std::string stringInp)
+Queue< MathExprPtr > getQueueFromInput(std::string stringInp)
 {
-  Queue< ExpressionU > infQueue;
+  Queue< MathExprPtr > infQueue;
   std::string curr = "";
 
   for (size_t i = 0; stringInp[i] != '\0'; i++)
   {
     if (stringInp[i] == ' ')
     {
-      infQueue.push(curr);
+      MathExprPtr val(curr);
+      infQueue.push(val);
 
       curr = "";
     }
@@ -126,7 +113,18 @@ Queue< ExpressionU > getQueueFromInput(std::string stringInp)
       curr = curr + stringInp[i];
     }
   }
-  infQueue.push(curr);
+  MathExprPtr val(curr);
+  infQueue.push(val);
 
   return infQueue;
+}
+
+void calculate(Stack< long long >& postStack, Expression* oper)
+{
+  long long n1 = postStack.getTopData();
+  postStack.popBack();
+  long long n2 = postStack.getTopData();
+  postStack.popBack();
+
+  postStack.push(oper->getOper(n1, n2));
 }
