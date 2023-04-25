@@ -4,7 +4,7 @@
 #include "mathExpression.h"
 #include "number.h"
 #include "operator.h"
-#include "bracket.h"
+#include "parenthesis.h"
 
 #include <string>
 
