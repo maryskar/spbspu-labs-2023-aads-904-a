@@ -8,29 +8,18 @@
 
 #include <string>
 
-class ExpressionU
+class MathExprPtr
 {
 public:
-  ExpressionU();
-  ExpressionU(std::string inp);
-  ExpressionU(long long inp);
-  ExpressionU(const ExpressionU& otherExprU);
-  ExpressionU(ExpressionU&& otherExprU) noexcept;
-  ~ExpressionU();
-
-  bool isNumber();
-  bool isOperator();
-  bool isBracket();
-
-  Number getNumber();
-  Operator getOperator();
-  Bracket getBracket();
-
-  ExpressionU calculate(ExpressionU e1, ExpressionU e2);
+  MathExprPtr();
+  MathExprPtr(std::string inp);//explict
+  MathExprPtr(const MathExprPtr& otherMathExprPtr) = delete;
+  MathExprPtr(MathExprPtr&& otherMathExprPtr) noexcept;
+  Expression* getRawPointer() const;
+  ~MathExprPtr();
 
 private:
-  Expression* eu;
-  unsigned* countPtr;
+  Expression* adress;
 
 };
 

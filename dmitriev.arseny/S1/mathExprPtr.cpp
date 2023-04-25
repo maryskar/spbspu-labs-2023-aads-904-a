@@ -1,13 +1,35 @@
 #include "mathExprPtr.h"
 
-bool isOperator(char inp)
+bool isOperator(char inp);
+bool isBracket(char inp);
+Expression* defineMathSymb(std::string inp);
+
+MathExprPtr::MathExprPtr() :
+  adress(nullptr)
 {
-  return (inp == '+') || (inp == '-') || (inp == '*') || (inp == '/') || (inp == '%');
+
 }
 
-bool isBracket(char inp)
+MathExprPtr::MathExprPtr(std::string inp) :
+  adress(defineMathSymb(inp))
 {
-  return (inp == '(') || (inp == ')');
+
+}
+
+MathExprPtr::MathExprPtr(MathExprPtr&& otherMathExprPtr) noexcept ://?
+  adress(otherMathExprPtr.adress)
+{
+  otherMathExprPtr.adress = nullptr;
+}
+
+Expression* MathExprPtr::getRawPointer() const
+{
+  return adress;
+}
+
+MathExprPtr::~MathExprPtr()
+{
+  delete adress;
 }
 
 Expression* defineMathSymb(std::string inp)
@@ -22,87 +44,16 @@ Expression* defineMathSymb(std::string inp)
   }
   else
   {
-    long long i = std::stoll(inp);
-
-    return new Number(i);
+    return new Number(std::stoll(inp));
   }
 }
 
-
-ExpressionU::ExpressionU():
-  eu(nullptr),
-  countPtr(new unsigned(0))
+bool isBracket(char inp)
 {
-
+  return (inp == '(') || (inp == ')');
 }
 
-ExpressionU::ExpressionU(std::string inp):
-  eu(defineMathSymb(inp)),
-  countPtr(new unsigned(1))
+bool isOperator(char inp)
 {
-
-}
-
-ExpressionU::ExpressionU(long long inp):
-  eu(new Number(inp)),
-  countPtr(new unsigned(1))
-{
-
-}
-
-ExpressionU::ExpressionU(const ExpressionU& otherExprU):
-  eu(otherExprU.eu),
-  countPtr(otherExprU.countPtr)
-{
-  (*countPtr)++;
-}
-
-ExpressionU::ExpressionU(ExpressionU&& otherExprU) noexcept :
-  eu(otherExprU.eu),
-  countPtr(otherExprU.countPtr)
-{
-  otherExprU.eu = nullptr;
-  otherExprU.countPtr = nullptr;
-}
-
-ExpressionU::~ExpressionU()
-{
-  if (countPtr && --(*countPtr) == 0)
-  {
-    delete eu;
-    delete countPtr;
-  }
-}
-
-bool ExpressionU::isNumber()
-{
-  return eu->isNumber();
-}
-
-bool ExpressionU::isOperator()
-{
-  return eu->isOperator();
-}
-
-bool ExpressionU::isBracket()
-{
-  return eu->isBracket();
-}
-
-Number ExpressionU::getNumber()
-{
-  return *(dynamic_cast<Number*>(eu));
-}
-Operator ExpressionU::getOperator()
-{
-  return *(dynamic_cast<Operator*>(eu));
-}
-Bracket ExpressionU::getBracket()
-{
-  return *(dynamic_cast<Bracket*>(eu));
-}
-
-ExpressionU ExpressionU::calculate(ExpressionU e1, ExpressionU e2)//полное говно
-{
-  return ExpressionU(getOperator().calculate(e1.getNumber().getLongLong(), e2.getNumber().getLongLong()));
+  return (inp == '+') || (inp == '-') || (inp == '*') || (inp == '/') || (inp == '%');
 }
