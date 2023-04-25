@@ -31,4 +31,11 @@ fesenko::Stack< T >::~Stack()
     head_ = temp;
   }
 }
+
+template < typename T >
+void fesenko::stack< T >::push(const T &rhs)
+{
+  List< T > *temp = new List< T >{rhs, head_};
+  head_ = temp;
+}
 #endif
