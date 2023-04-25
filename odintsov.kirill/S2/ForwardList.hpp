@@ -334,7 +334,17 @@ namespace odintsov {
     void remove(const T& val);
     template< class UnaryPredicate >
     void removeIf(UnaryPredicate c);
-    void reverse();
+
+    void reverse()
+    {
+      ConstNode* lastPtr = nullptr;
+      const ConstIter end = cend();
+      for (ConstIter node = cbegin(); node != end; ++node) {
+        node.nodePtr->next = lastPtr;
+        lastPtr = node.nodePtr;
+      }
+      head_ = lastPtr;
+    }
 
    private:
     Node* head_;
