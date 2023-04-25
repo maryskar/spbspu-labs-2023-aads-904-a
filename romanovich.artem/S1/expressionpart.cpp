@@ -1,21 +1,21 @@
 #include "expressionpart.h"
-ExpPart::ExpPart(brackets_t br):
+ExpPart::ExpPart(parenthesis_t pr):
   isOperation_(false),
-  isBracket_(true),
+  isParenthesis_(true),
   isOperand_(false),
-  content_{br}
+  content_{pr}
 {
 }
 ExpPart::ExpPart(operations_t op):
   isOperation_(true),
-  isBracket_(false),
+  isParenthesis_(false),
   isOperand_(false),
   content_{op}
 {
 }
 ExpPart::ExpPart(long long op):
   isOperation_(false),
-  isBracket_(false),
+  isParenthesis_(false),
   isOperand_(true),
   content_{op}
 {
@@ -24,9 +24,9 @@ bool ExpPart::isOperation() const
 {
   return isOperation_;
 }
-bool ExpPart::isBracket() const
+bool ExpPart::isParenthesis() const
 {
-  return isBracket_;
+  return isParenthesis_;
 }
 bool ExpPart::isOperand() const
 {
@@ -48,11 +48,11 @@ long long ExpPart::getOperand() const
   }
   throw;
 }
-brackets_t ExpPart::getBracket() const
+parenthesis_t ExpPart::getParenthesis() const
 {
-  if (isBracket_)
+  if (isParenthesis_)
   {
-    return content_.bracket_;
+    return content_.parenthesis_;
   }
   throw;
 }

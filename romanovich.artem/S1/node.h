@@ -1,7 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 #include "operations.h"
-#include "brackets.h"
+#include "parenthesis.h"
 #include <stdexcept>
 namespace details
 {

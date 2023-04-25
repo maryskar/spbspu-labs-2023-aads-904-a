@@ -33,13 +33,13 @@ namespace romanovich
   {
     if (string.size() == 1)
     {
-      if (string[0] == static_cast<char>(brackets_t::right))
+      if (string[0] == static_cast<char>(parenthesis_t::right))
       {
-        return ExpPart(brackets_t::right);
+        return ExpPart(parenthesis_t::right);
       }
-      if (string[0] == static_cast<char>(brackets_t::left))
+      if (string[0] == static_cast<char>(parenthesis_t::left))
       {
-        return ExpPart(brackets_t::left);
+        return ExpPart(parenthesis_t::left);
       }
       if (string[0] == static_cast<char>(operations_t::division))
       {
@@ -98,19 +98,19 @@ void romanovich::getPostfixFromInfix(exp_q &queue, exp_s &stack, exp_q &postfixQ
     {
       ExpPart qEl = queue.get();
       queue.pop();
-      if (qEl.isBracket())
+      if (qEl.isParenthesis())
       {
-        if (qEl.getBracket() == brackets_t::left)
+        if (qEl.getParenthesis() == parenthesis_t::left)
         {
           stack.push(qEl);
         }
-        if (qEl.getBracket() == brackets_t::right)
+        if (qEl.getParenthesis() == parenthesis_t::right)
         {
-          while (!stack.get().isBracket())
+          while (!stack.get().isParenthesis())
           {
-            if (stack.get().isBracket())
+            if (stack.get().isParenthesis())
             {
-              if (stack.get().getBracket() == brackets_t::left)
+              if (stack.get().getParenthesis() == parenthesis_t::left)
               {
                 break;
               }
