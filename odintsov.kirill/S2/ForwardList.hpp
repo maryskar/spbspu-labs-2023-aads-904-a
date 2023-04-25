@@ -93,7 +93,10 @@ namespace odintsov {
       unsafeInsertAfter(cbeforeBegin(), il);
     }
 
-    ~ForwardList();
+    ~ForwardList()
+    {
+      clear();
+    }
 
     ForwardList& operator=(const ForwardList& rhs);
     ForwardList& operator=(ForwardList&& rhs);
