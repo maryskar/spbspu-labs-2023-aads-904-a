@@ -139,7 +139,10 @@ namespace odintsov {
       return !head_;
     }
 
-    void clear();
+    void clear()
+    {
+      unsafeEraseAfter(cbeforeBegin(), cend());
+    }
 
     Iter insertAfter(ConstIter pos, const T& val)
     {
