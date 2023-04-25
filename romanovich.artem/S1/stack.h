@@ -63,7 +63,7 @@ namespace romanovich
     top_(nullptr),
     size_(0)
   {
-    if (queue.top_ == nullptr)
+    if (stack.top_ == nullptr)
     {
       top_ = nullptr;
       size_ = 0;
