@@ -2,7 +2,7 @@
 
 #include <iomanip>
 
-Parenthesis::Parenthesis(char parenthesis): //explict
+Parenthesis::Parenthesis(char parenthesis):
   parenthesis(parenthesis)
 {
   if (!isOpen() && !isClose())

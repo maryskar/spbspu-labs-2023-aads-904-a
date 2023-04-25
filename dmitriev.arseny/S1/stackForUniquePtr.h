@@ -19,7 +19,7 @@ public:
   Stack< MathExprPtr >& operator=(const Stack< MathExprPtr >& otherStack);
   Stack< MathExprPtr >& operator=(Stack< MathExprPtr >&& otherStack) noexcept;
 
-  void push(MathExprPtr& rhs);//name
+  void push(MathExprPtr& inp);
   void popBack();
   MathExprPtr getTopData() const;
 
@@ -134,4 +134,4 @@ bool Stack< MathExprPtr >::isEmpty() const
 }
 
 
-#endif // !STACKFU_H
+#endif

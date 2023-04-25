@@ -17,7 +17,7 @@ public:
   Stack< T >& operator=(const Stack< T >& otherStack);
   Stack< T >& operator=(Stack< T >&& otherStack) noexcept;
 
-  void push(const T& rhs);
+  void push(const T& inp);
   void popBack();
   T getTopData() const;
 

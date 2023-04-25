@@ -12,7 +12,7 @@ class MathExprPtr
 {
 public:
   MathExprPtr();
-  MathExprPtr(std::string inp);//explict
+  MathExprPtr(std::string inp);
   MathExprPtr(const MathExprPtr& otherMathExprPtr) = delete;
   MathExprPtr(MathExprPtr&& otherMathExprPtr) noexcept;
   Expression* getRawPointer() const;

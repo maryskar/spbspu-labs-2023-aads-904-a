@@ -12,7 +12,7 @@ MathExprPtr::MathExprPtr(std::string inp):
   adress(defineMathSymb(inp))
 {}
 
-MathExprPtr::MathExprPtr(MathExprPtr&& otherMathExprPtr) noexcept://?
+MathExprPtr::MathExprPtr(MathExprPtr&& otherMathExprPtr) noexcept:
   adress(otherMathExprPtr.adress)
 {
   otherMathExprPtr.adress = nullptr;

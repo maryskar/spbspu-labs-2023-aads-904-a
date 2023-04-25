@@ -18,7 +18,7 @@ public:
   Queue< MathExprPtr >& operator=(const Queue< MathExprPtr >& otherQueue);
   Queue< MathExprPtr >& operator=(Queue< MathExprPtr >&& otherQueue) noexcept;
 
-  void push(MathExprPtr& rhs);
+  void push(MathExprPtr& inp);
   void popBack();
   MathExprPtr getTopData() const;
 

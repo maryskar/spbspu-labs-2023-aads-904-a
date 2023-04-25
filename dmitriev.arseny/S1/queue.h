@@ -17,7 +17,7 @@ public:
   Queue< T >& operator=(const Queue< T >& otherQueue);
   Queue< T >& operator=(Queue< T >&& otherQueue) noexcept;
 
-  void push(const T& rhs);
+  void push(const T& inp);
   void popBack();
   T getTopData() const;
 
