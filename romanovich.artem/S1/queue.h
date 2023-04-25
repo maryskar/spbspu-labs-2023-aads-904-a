@@ -12,7 +12,7 @@ namespace romanovich
     Queue(const Queue< T > &queue);
     Queue(Queue< T > &&queue) noexcept;
     ~Queue();
-    Queue< T > &operator=(const Queue< T > &queue);
+    Queue< T > &operator=(Queue< T > &queue);
     Queue< T > &operator=(Queue< T > &&queue) noexcept;
     void push(const T &rhs);
     void pop();
@@ -39,7 +39,7 @@ namespace romanovich
     return *this;
   }
   template < typename T >
-  Queue< T > &Queue< T >::operator=(const Queue< T > &queue)
+  Queue< T > &Queue< T >::operator=(Queue< T > &queue)
   {
     swapQueue(queue);
     return *this;
@@ -64,19 +64,28 @@ namespace romanovich
     tail_(nullptr),
     size_(0)
   {
-    details::ListNode< T > *tmp = queue.head_;
-    while (tmp != nullptr)
+    if (queue.head_ == nullptr)
     {
-      try
+      head_ = nullptr;
+      tail_ = nullptr;
+      size_ = 0;
+    }
+    else
+    {
+      details::ListNode < T > *tmp = queue.head_;
+      while (tmp != nullptr)
       {
-        push(tmp->data_);
+        try
+        {
+          push(tmp->data_);
+        }
+        catch (...)
+        {
+          Queue < T > ::deleteQueue();
+          throw;
+        }
+        tmp = tmp->next_;
       }
-      catch (...)
-      {
-        Queue< T >::deleteQueue();
-        throw;
-      }
-      tmp = tmp->next_;
     }
   }
   template < typename T >

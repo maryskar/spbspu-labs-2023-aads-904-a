@@ -13,7 +13,7 @@ namespace romanovich
     Stack(const Stack< T > &stack);
     Stack(Stack< T > &&stack) noexcept;
     ~Stack();
-    Stack< T > &operator=(const Stack< T > &stack);
+    Stack< T > &operator=(Stack< T > &stack);
     Stack< T > &operator=(Stack< T > &&stack) noexcept;
     void push(const T &value);
     void pop();
@@ -45,7 +45,7 @@ namespace romanovich
     return *this;
   }
   template < typename T >
-  Stack< T > &Stack< T >::operator=(const Stack< T > &stack)
+  Stack< T > &Stack< T >::operator=(Stack< T > &stack)
   {
     doSwap(stack);
     return *this;
@@ -63,19 +63,28 @@ namespace romanovich
     top_(nullptr),
     size_(0)
   {
-    details::ListNode< T > *tmp = stack.top_;
-    while (tmp != nullptr)
+    if (queue.head_ == nullptr)
     {
-      try
+      head_ = nullptr;
+      tail_ = nullptr;
+      size_ = 0;
+    }
+    else
+    {
+      details::ListNode < T > *tmp = stack.top_;
+      while (tmp != nullptr)
       {
-        push(tmp->data_);
+        try
+        {
+          push(tmp->data_);
+        }
+        catch (...)
+        {
+          Stack < T > ::deleteStack();
+          throw;
+        }
+        tmp = tmp->next_;
       }
-      catch (...)
-      {
-        Stack< T >::deleteStack();
-        throw;
-      }
-      tmp = tmp->next_;
     }
   }
   template < typename T >
