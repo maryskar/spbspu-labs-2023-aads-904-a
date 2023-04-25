@@ -12,6 +12,7 @@ namespace fesenko
     void push(const T &rhs);
     T &getOutOfStack();
     void pop();
+    bool isEmpty();
    private:
     List< T > *head_;
   };
@@ -33,29 +34,35 @@ fesenko::Stack< T >::~Stack()
 }
 
 template< typename T >
-void fesenko::stack< T >::push(const T &rhs)
+void fesenko::Stack< T >::push(const T &rhs)
 {
   List< T > *temp = new List< T >{rhs, head_};
   head_ = temp;
 }
 
 template< typename T >
-T &fesenko::stack< T >::getOutOfStack()
+T &fesenko::Stack< T >::getOutOfStack()
 {
-  if (head_ == nullptr) {
+  if (isEmpty()) {
     throw std::out_of_range("List is empty");
   }
   return *head_.data;
 }
 
 template< typenamt T >
-void fesenko::stack< T >::pop()
+void fesenko::Stack< T >::pop()
 {
-  if (head_ == nullptr) {
+  if (isEmpty()) {
     throw std::out_of_range("List is empty");
   }
   List< T > *temp = head_->next;
   delete head_;
   head_ = temp;
+}
+
+template < typename T >
+bool fesenko::Stack< T >::isEmpty()
+{
+  return head_ == nullptr;
 }
 #endif
