@@ -57,6 +57,10 @@ namespace dimkashelk
     {
       return list_.end();
     }
+    const_iterator_t cend() const
+    {
+      return list_.cend();
+    }
     void push(const Key &k, const Value &value)
     {
       auto it = list_.begin();
