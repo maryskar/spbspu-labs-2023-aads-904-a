@@ -12,7 +12,7 @@ Number::Number(const Number& otherNumber) :
 {
 
 }
-Number::Number(Number&& otherNumber) :
+Number::Number(Number&& otherNumber) noexcept:
   number(otherNumber.number)
 {
 

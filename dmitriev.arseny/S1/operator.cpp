@@ -56,7 +56,7 @@ Operator::Operator(const Operator& otherOperator) :
 
 }
 
-Operator::Operator(Operator&& otherOperator) :
+Operator::Operator(Operator&& otherOperator) noexcept:
   mathOperator(otherOperator.mathOperator),
   priority(otherOperator.priority)
 {

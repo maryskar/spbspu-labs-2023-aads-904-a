@@ -8,7 +8,8 @@ class Operator : public Expression
 public:
   explicit Operator(char op);
   Operator(const Operator& otherOperator);
-  Operator(Operator&& otherOperator);
+  Operator(Operator&& otherOperator) noexcept;
+
   char getCondition() override;
   long long getNumber() override;
   long long getOper(long long, long long) override;

@@ -8,7 +8,7 @@ class Number : public Expression
 public:
   explicit Number(long long number);
   Number(const Number& otherNumber);
-  Number(Number&& otherNumber);
+  Number(Number&& otherNumber) noexcept;
 
   char getCondition() override;
   long long getNumber() override;

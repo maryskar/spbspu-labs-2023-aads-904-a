@@ -71,7 +71,7 @@ Queue< T >::Queue(const Queue< T >& otherQueue) :
 }
 
 template< typename T >
-Queue< T >::Queue(Queue< T >&& otherQueue) noexcept :
+Queue< T >::Queue(Queue< T >&& otherQueue) noexcept:
   head(otherQueue.head),
   tail(otherQueue.tail)
 {

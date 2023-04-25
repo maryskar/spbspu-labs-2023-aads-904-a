@@ -68,7 +68,7 @@ Queue< MathExprPtr >::Queue(const Queue< MathExprPtr >& otherQueue) :
   }
 }
 
-Queue< MathExprPtr >::Queue(Queue< MathExprPtr >&& otherQueue) noexcept :
+Queue< MathExprPtr >::Queue(Queue< MathExprPtr >&& otherQueue) noexcept:
   head(otherQueue.head),
   tail(otherQueue.tail)
 {

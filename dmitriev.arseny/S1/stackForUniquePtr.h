@@ -70,7 +70,7 @@ Stack< MathExprPtr >::Stack(const Stack< MathExprPtr >& otherStack) :
   }
 }
 
-Stack< MathExprPtr >::Stack(Stack< MathExprPtr >&& otherStack) noexcept :
+Stack< MathExprPtr >::Stack(Stack< MathExprPtr >&& otherStack) noexcept:
   top(otherStack.top)
 {
   otherStack.top = nullptr;

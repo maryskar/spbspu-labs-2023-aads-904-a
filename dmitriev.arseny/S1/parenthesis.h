@@ -6,10 +6,9 @@
 class Parenthesis : public Expression
 {
 public:
-  Parenthesis() = default;
   explicit Parenthesis(char parenthesis);
   Parenthesis(const Parenthesis& otherParenthesis);
-  Parenthesis(Parenthesis&& otherParenthesis);
+  Parenthesis(Parenthesis&& otherParenthesis) noexcept;
 
   char getCondition() override;
   long long getNumber() override;
@@ -23,6 +22,7 @@ public:
 
 private:
   char parenthesis;
+
 };
 
 #endif

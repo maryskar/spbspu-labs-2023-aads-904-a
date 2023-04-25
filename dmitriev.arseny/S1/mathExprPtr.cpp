@@ -16,7 +16,7 @@ MathExprPtr::MathExprPtr(std::string inp) :
 
 }
 
-MathExprPtr::MathExprPtr(MathExprPtr&& otherMathExprPtr) noexcept ://?
+MathExprPtr::MathExprPtr(MathExprPtr&& otherMathExprPtr) noexcept://?
   adress(otherMathExprPtr.adress)
 {
   otherMathExprPtr.adress = nullptr;

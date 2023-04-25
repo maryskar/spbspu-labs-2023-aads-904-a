@@ -15,7 +15,7 @@ Parenthesis::Parenthesis(const Parenthesis& otherParenthesis) :
 {
 
 }
-Parenthesis::Parenthesis(Parenthesis&& otherParenthesis) :
+Parenthesis::Parenthesis(Parenthesis&& otherParenthesis) noexcept:
   parenthesis(otherParenthesis.parenthesis)
 {
 

@@ -72,7 +72,7 @@ Stack< T >::Stack(const Stack< T >& otherStack):
 }
 
 template< typename T >
-Stack< T >::Stack(Stack< T >&& otherStack) noexcept :
+Stack< T >::Stack(Stack< T >&& otherStack) noexcept:
   top(otherStack.top)
 {
   otherStack.top = nullptr;
