@@ -368,6 +368,26 @@ namespace dimkashelk
       node->next->next = node;
       node->next = nullptr;
     }
+    void pushBack(const T &data)
+    {
+      auto *node = new details::NodeOneWayList< T >(data);
+      if (!begin_)
+      {
+        begin_ = node;
+        fakeNode_->next = begin_;
+      }
+      else if (!end_)
+      {
+        end_ = node;
+        begin_->next = end_;
+      }
+      else
+      {
+        end_->next = node;
+        end_ = end_->next;
+      }
+      size_++;
+    }
   };
 }
 #endif
