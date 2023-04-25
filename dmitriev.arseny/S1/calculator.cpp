@@ -14,10 +14,12 @@ long long calculateTheExpression(std::string stringInp)
   Queue< MathExprPtr > infQueue = getQueueFromInput(stringInp);
   Stack< long long > postStack;
 
-  for (; !infQueue.isEmpty(); infQueue.popBack())
+  while(!infQueue.isEmpty())
   {
     MathExprPtr infVal = infQueue.getTopData();
     Expression* infQAdrs = infVal.getRawPointer();
+
+    infQueue.popBack();
 
     if (infQAdrs->isParenthesis())
     {
@@ -27,7 +29,7 @@ long long calculateTheExpression(std::string stringInp)
       }
       else
       {
-        for (; !stack.isEmpty(); stack.popBack())
+        while(!stack.isEmpty())
         {
           MathExprPtr stackVal = stack.getTopData();
           Expression* stAdrs = stackVal.getRawPointer();
@@ -37,6 +39,8 @@ long long calculateTheExpression(std::string stringInp)
             break;
           }
           calculate(postStack, stAdrs);
+
+          stack.popBack();
         }
       }
     }
@@ -77,7 +81,7 @@ long long calculateTheExpression(std::string stringInp)
     }
   }
 
-  for (; !stack.isEmpty(); stack.popBack())
+  while (!stack.isEmpty())
   {
     MathExprPtr stackVal = stack.getTopData();
     Expression* stAdrs = stackVal.getRawPointer();
@@ -88,11 +92,11 @@ long long calculateTheExpression(std::string stringInp)
     }
 
     calculate(postStack, stAdrs);
+    stack.popBack();
   }
 
   return postStack.getTopData();
 }
-
 
 Queue< MathExprPtr > getQueueFromInput(std::string stringInp)
 {
