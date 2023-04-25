@@ -49,7 +49,11 @@ namespace dimkashelk
     {
       return list_.begin();
     }
-    const_iterator_t end()
+    const_iterator_t cbegin() const
+    {
+      return list_.cbegin();
+    }
+    iterator_t end()
     {
       return list_.end();
     }
