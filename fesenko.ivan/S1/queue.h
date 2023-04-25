@@ -71,7 +71,7 @@ void fesenko::Queue< T >::pop()
 }
 
 template<  typename T >
-bool fesenko::Queue()::isEmpty()
+bool fesenko::Queue< T >::isEmpty()
 {
   return head_ == nullptr;
 }
