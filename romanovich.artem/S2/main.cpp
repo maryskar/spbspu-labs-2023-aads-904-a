@@ -9,12 +9,12 @@ int main(int argc, char **argv)
   }
   std::string dict = argv[1];
   std::cout << dict << "\n";
-  Dictionary < int, std::string, bool > dictionary;
+  Dictionary < int, std::string, bool > dictionary();
   for (size_t i = 2; i < argc; i += 2)
   {
     int key = std::stoi(argv[i]);
     std::string value = argv[i + 1];
     std::cout << key << " " << value << "\n";
-    dictionary.push(key, value);
+    dictionary().push(key, value);
   }
 }
