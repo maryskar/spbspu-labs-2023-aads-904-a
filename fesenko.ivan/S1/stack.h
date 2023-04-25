@@ -61,7 +61,7 @@ void fesenko::Stack< T >::pop()
   head_ = temp;
 }
 
-template < typename T >
+template< typename T >
 bool fesenko::Stack< T >::isEmpty()
 {
   return head_ == nullptr;

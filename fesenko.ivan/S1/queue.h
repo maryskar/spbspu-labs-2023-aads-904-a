@@ -3,7 +3,7 @@
 #include "list.h"
 namespace fesenko
 {
-  template < typename T >
+  template< typename T >
   class Queue
   {
    public:
@@ -18,4 +18,10 @@ namespace fesenko
     List< T > *tail_;
   };
 }
+
+template< typename T >
+fesenko::Queue< T >::Queue():
+  head_(nullptr),
+  tail_(nullptr)
+{}
 #endif
