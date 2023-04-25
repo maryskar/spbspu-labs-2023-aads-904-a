@@ -296,6 +296,11 @@ namespace odintsov {
       head_ = next;
     }
 
+    void swap(ForwardList& fl)
+    {
+      std::swap(head_, fl.head_);
+    }
+
     void merge(ForwardList& fl);
     void merge(ForwardList&& fl);
     void spliceAfter(ConstIter pos, ForwardList& fl);
