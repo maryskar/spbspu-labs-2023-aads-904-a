@@ -1,10 +1,16 @@
 #ifndef STACK_H
 #define STACK_H
+#include "list.h"
 template< typename T >
 class Stack
 {
  public:
-  void push(T &rhs);
-  T &drop();
+  Stack();
+  ~Stack();
+  void push(const T &rhs);
+  T &getOutOfStack();
+  void pop();
+ private:
+  List< T > *head_;
 };
 #endif
