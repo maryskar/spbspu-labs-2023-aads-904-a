@@ -1,16 +1,34 @@
 #ifndef STACK_H
 #define STACK_H
 #include "list.h"
-template< typename T >
-class Stack
+namespace fesenko
 {
- public:
-  Stack();
-  ~Stack();
-  void push(const T &rhs);
-  T &getOutOfStack();
-  void pop();
- private:
-  List< T > *head_;
-};
+  template< typename T >
+  class Stack
+  {
+   public:
+    Stack();
+    ~Stack();
+    void push(const T &rhs);
+    T &getOutOfStack();
+    void pop();
+   private:
+    List< T > *head_;
+  };
+}
+
+template< typename T >
+fesenko::Stack< T >::Stack():
+  head_(nullptr)
+{}
+
+template< typename T >
+fesenko::Stack< T >::~Stack()
+{
+  while (head_) {
+    List< T > *temp = head_->next;
+    delete head_;
+    head_ = temp;
+  }
+}
 #endif
