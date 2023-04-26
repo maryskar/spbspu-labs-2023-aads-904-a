@@ -75,7 +75,14 @@ namespace dimkashelk
       }
       if (it == list_.end())
       {
-        list_.insertAfter(prev, value_type(k, value));
+        if (prev != list_.beforeBegin() && (*prev).first == k)
+        {
+          (*prev).second = value;
+        }
+        else
+        {
+          list_.insertAfter(prev, value_type(k, value));
+        }
       }
       else if ((*it).first == k)
       {
