@@ -47,6 +47,17 @@ namespace dimkashelk
       }
       throw std::out_of_range("Out of range");
     }
+    const Value &at(const Key &k) const
+    {
+      for (auto i: *this)
+      {
+        if (i.first == k)
+        {
+          return i.second;
+        }
+      }
+      throw std::out_of_range("Out of range");
+    }
     dict_type &operator=(dict_type &&other)
     {
       if (this == std::addressof(other))
