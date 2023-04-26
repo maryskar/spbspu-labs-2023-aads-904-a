@@ -335,14 +335,23 @@ namespace odintsov {
     void remove(const T& val)
     {
       const ConstIter end = cend();
-      for (ConstIter iter = cbeforeBegin(); std::next(iter) != end; ++iter) {
-        if (*std::next(iter) == val) {
+      for (ConstIter iter = cbeforeBegin(); iter.nodePtr.next != nullptr; ++iter) {
+        if (iter->next->val == val) {
           eraseAfter(iter);
         }
       }
     }
+
     template< class UnaryPredicate >
-    void removeIf(UnaryPredicate c);
+    void removeIf(UnaryPredicate check)
+    {
+      const ConstIter end = cend();
+      for (ConstIter iter = cbeforeBegin(); iter.nodePtr.next != nullptr; ++iter) {
+        if (check(iter->next->val)) {
+          eraseAfter(iter);
+        }
+      }
+    }
 
     void reverse()
     {
