@@ -249,7 +249,7 @@ namespace dimkashelk
       auto iter_second_end = second.list_.cend();
       while (iter_first != iter_first_end && iter_second != iter_second_end)
       {
-        while (iter_second != iter_second_end && Compare{}((*iter_first).first, (*iter_second).first))
+        while (iter_second != iter_second_end && Compare{}((*iter_second).first, (*iter_first).first))
         {
           iter_second++;
         }
@@ -338,7 +338,7 @@ namespace dimkashelk
       auto prev = list_.beforeBegin();
       for (; it != list_.end(); it++)
       {
-        if (compare_((*it).first, value.first))
+        if (compare_(value.first, (*it).first))
         {
           break;
         }

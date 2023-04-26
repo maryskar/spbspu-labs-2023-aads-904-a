@@ -142,14 +142,11 @@ namespace dimkashelk
       it.ptr_->next = newNode;
       if (it.ptr_ == fakeNode_)
       {
-        if (begin_ && !end_)
+        if (!end_)
         {
           end_ = begin_;
         }
-        else
-        {
-          begin_ = newNode;
-        }
+        begin_ = newNode;
       }
       else if (!newNode->next)
       {
