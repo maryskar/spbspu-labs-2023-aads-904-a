@@ -131,7 +131,10 @@ namespace dimkashelk
     {
       list_.eraseAfter(pos);
     }
-    //iterator_t eraseAfter(const_iterator_t first, const_iterator_t second);
+    iterator_t eraseAfter(const_iterator_t first, const_iterator_t second)
+    {
+      list_.eraseAfter(first, second);
+    }
     //iterator_t erase(const Key &k);
     void swap(Dictionary< Key, Value, Compare > &other)
     {
