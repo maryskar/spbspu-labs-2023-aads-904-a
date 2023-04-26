@@ -88,6 +88,13 @@ namespace dimkashelk
     }
     //template < class... Args >
     //iterator_t emplace_hint(const_iterator_t hint, Args&&... args );
+    //iterator_t erase(const_iterator_t pos);
+    //iterator_t erase(const_iterator_t first, const_iterator_t second);
+    //iterator_t erase(const Key &k);
+    void swap(Dictionary< Key, Value, Compare > &other)
+    {
+      list_.swap(other.list_);
+    }
     Value &get(const Key &k)
     {
       auto comp = [&](const auto &item)
