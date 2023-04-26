@@ -12,14 +12,41 @@ namespace details
     ListNode< T > *next_;
   };
   template < typename T >
-  void clear(ListNode< T > *pNode)
+  void clear(ListNode< T > *node)
   {
-    while (pNode)
+    while (node)
     {
-      ListNode< T > *nextNode = pNode->next_;
-      delete pNode;
-      pNode = nextNode;
+      ListNode< T > *nextNode = node->next_;
+      delete node;
+      node = nextNode;
     }
+  }
+  template < typename T >
+  std::tuple < ListNode< T > *, ListNode< T > * > *copy(const ListNode< T > *listNode)
+  {
+    if (listNode == nullptr)
+    {
+      return {nullptr, nullptr};
+    }
+    ListNode< T > *node = listNode;
+    ListNode< T > *begin = new ListNode< T >{node->data, nullptr};
+    ListNode< T > *end = nullptr;
+    try
+    {
+      while (node != nullptr)
+      {
+        node = node->data;
+        begin->next_ = new details::ListNode< T >{node->data, nullptr};
+        end = begin;
+        begin = begin->next_;
+      }
+    }
+    catch (...)
+    {
+      clear(begin);
+      throw;
+    }
+    return {begin, end};
   }
 }
 #endif

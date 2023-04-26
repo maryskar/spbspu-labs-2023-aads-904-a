@@ -59,9 +59,7 @@ namespace romanovich
     stack.size_ = 0;
   }
   template < typename T >
-  Stack< T >::Stack(const Stack< T > &stack):
-    top_(nullptr),
-    size_(0)
+  Stack< T >::Stack(const Stack< T > &stack)
   {
     if (stack.top_ == nullptr)
     {
@@ -70,20 +68,9 @@ namespace romanovich
     }
     else
     {
-      details::ListNode < T > *tmp = stack.top_;
-      while (tmp != nullptr)
-      {
-        try
-        {
-          push(tmp->data_);
-        }
-        catch (...)
-        {
-          Stack < T > ::deleteStack();
-          throw;
-        }
-        tmp = tmp->next_;
-      }
+      using list_node_tuple = std::tuple < details::ListNode< T > *, details::ListNode< T > * >;
+      list_node_tuple *newStack = details::copy(stack.top_);
+      top_ = std::get<0>(newStack);
     }
   }
   template < typename T >

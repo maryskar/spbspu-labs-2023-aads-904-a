@@ -59,10 +59,7 @@ namespace romanovich
   {
   }
   template < typename T >
-  Queue< T >::Queue(const Queue< T > &queue):
-    head_(nullptr),
-    tail_(nullptr),
-    size_(0)
+  Queue< T >::Queue(const Queue< T > &queue)
   {
     if (queue.head_ == nullptr)
     {
@@ -72,20 +69,10 @@ namespace romanovich
     }
     else
     {
-      details::ListNode < T > *tmp = queue.head_;
-      while (tmp != nullptr)
-      {
-        try
-        {
-          push(tmp->data_);
-        }
-        catch (...)
-        {
-          Queue < T > ::deleteQueue();
-          throw;
-        }
-        tmp = tmp->next_;
-      }
+      using list_node_tuple = std::tuple < details::ListNode< T > *, details::ListNode< T > * >;
+      list_node_tuple *newQueue = details::copy(queue.head_);
+      head_ = std::get<0>(newQueue);
+      tail_ = std::get<1>(newQueue);
     }
   }
   template < typename T >
