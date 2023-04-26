@@ -49,14 +49,7 @@ namespace dimkashelk
     }
     const Value &at(const Key &k) const
     {
-      for (auto i = begin(); i != end(); i++)
-      {
-        if ((*i).first == k)
-        {
-          return (*i).second;
-        }
-      }
-      throw std::out_of_range("Out of range");
+      return at(k);
     }
     Value &operator[](Key &&key)
     {
