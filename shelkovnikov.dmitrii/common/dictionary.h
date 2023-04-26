@@ -36,6 +36,17 @@ namespace dimkashelk
       list_ = other.list_;
       return *this;
     }
+    Value &at(const Key &k)
+    {
+      for (auto i: *this)
+      {
+        if (i.first == k)
+        {
+          return i.second;
+        }
+      }
+      throw std::out_of_range("Out of range");
+    }
     dict_type &operator=(dict_type &&other)
     {
       if (this == std::addressof(other))
@@ -161,19 +172,6 @@ namespace dimkashelk
     const_iterator_t upper_bound(const K &x) const
     {
       return upper_bound(x);
-    }
-    Value &get(const Key &k)
-    {
-      auto comp = [&](const auto &item)
-      {
-        return item.first == k;
-      };
-      auto it = std::find_if(list_.begin(), list_.end(), comp);
-      if (it != list_.end())
-      {
-        return (*it).second;
-      }
-      throw std::runtime_error("Nothing to return");
     }
     friend std::ostream &operator<<(std::ostream &out, dict_type &dict)
     {
