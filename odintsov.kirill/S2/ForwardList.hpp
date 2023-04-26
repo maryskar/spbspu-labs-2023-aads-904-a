@@ -331,7 +331,16 @@ namespace odintsov {
     void merge(ForwardList&& fl);
     void spliceAfter(ConstIter pos, ForwardList& fl);
     void spliceAfter(ConstIter pos, ForwardList&& fl);
-    void remove(const T& val);
+
+    void remove(const T& val)
+    {
+      const ConstIter end = cend();
+      for (ConstIter iter = cbeforeBegin(); std::next(iter) != end; ++iter) {
+        if (*std::next(iter) == val) {
+          eraseAfter(iter);
+        }
+      }
+    }
     template< class UnaryPredicate >
     void removeIf(UnaryPredicate c);
 
@@ -339,9 +348,9 @@ namespace odintsov {
     {
       ConstNode* lastPtr = nullptr;
       const ConstIter end = cend();
-      for (ConstIter node = cbegin(); node != end; ++node) {
-        node.nodePtr->next = lastPtr;
-        lastPtr = node.nodePtr;
+      for (ConstIter iter = cbegin(); iter != end; ++iter) {
+        iter.nodePtr->next = lastPtr;
+        lastPtr = iter.nodePtr;
       }
       head_ = lastPtr;
     }
