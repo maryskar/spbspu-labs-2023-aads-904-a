@@ -395,5 +395,10 @@ namespace dimkashelk
       size_++;
     }
   };
+  template< class T >
+  void swap(dimkashelk::ForwardList< T > &lhs, dimkashelk::ForwardList< T > &rhs)
+  {
+    lhs.swap(rhs);
+  }
 }
 #endif
