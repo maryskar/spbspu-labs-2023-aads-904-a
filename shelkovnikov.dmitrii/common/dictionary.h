@@ -137,6 +137,16 @@ namespace dimkashelk
     {
       return lower_bound(x);
     }
+    template< class K >
+    iterator_t upper_bound(const K &x)
+    {
+      auto res = lower_bound(x);
+      if ((*res).first == x)
+      {
+        res++;
+      }
+      return res;
+    }
     Value &get(const Key &k)
     {
       auto comp = [&](const auto &item)
