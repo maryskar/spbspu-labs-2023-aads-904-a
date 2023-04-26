@@ -213,7 +213,7 @@ namespace dimkashelk
       {
         if (prev != list_.beforeBegin() && (*prev).first == value.first)
         {
-          (*prev).second = value;
+          (*prev).second = value.second;
         }
         else
         {
@@ -222,7 +222,7 @@ namespace dimkashelk
       }
       else if ((*prev).first == value.first)
       {
-        (*prev).second = value;
+        (*prev).second = value.second;
       }
       else if (it == list_.begin())
       {
