@@ -335,9 +335,11 @@ namespace odintsov {
     void remove(const T& val)
     {
       const ConstIter end = cend();
-      for (ConstIter iter = cbeforeBegin(); iter.nodePtr.next != nullptr; ++iter) {
-        if (iter->next->val == val) {
+      for (ConstIter iter = cbeforeBegin(); iter.nodePtr->next != nullptr;) {
+        if (iter.nodePtr->next->val == val) {
           eraseAfter(iter);
+        } else {
+          ++iter;
         }
       }
     }
@@ -346,9 +348,11 @@ namespace odintsov {
     void removeIf(UnaryPredicate check)
     {
       const ConstIter end = cend();
-      for (ConstIter iter = cbeforeBegin(); iter.nodePtr.next != nullptr; ++iter) {
-        if (check(iter->next->val)) {
+      for (ConstIter iter = cbeforeBegin(); iter.nodePtr->next != nullptr;) {
+        if (check(iter.nodePtr->next->val)) {
           eraseAfter(iter);
+        } else {
+          ++iter;
         }
       }
     }
