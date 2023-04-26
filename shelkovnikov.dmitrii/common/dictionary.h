@@ -124,6 +124,11 @@ namespace dimkashelk
       return {lower_bound(x), upper_bound(x)};
     }
     template< class K >
+    std::pair< const_iterator_t, const_iterator_t > equal_range(const K& x) const
+    {
+      return {lower_bound(x), upper_bound(x)};
+    }
+    template< class K >
     iterator_t lower_bound(const K &x)
     {
       auto prev = begin();
