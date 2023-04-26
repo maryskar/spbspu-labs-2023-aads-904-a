@@ -57,12 +57,6 @@ namespace chemodurov
     void resize(size_type count);
     void resize(size_type count, const_reference value);
     void swap(this_t & other);
-    void merge(this_t & other);
-    void merge (this_t && other);
-    template< typename Comp >
-    void merge(this_t & other, Comp comp);
-    template< typename Comp >
-    void merge(this_t && other, Comp comp);
     void splice_after(const_iterator pos, this_t & other);
     void splice_after(const_iterator pos, this_t && other);
     void splice_after(const_iterator pos, this_t & other, const_iterator it);
@@ -373,6 +367,48 @@ namespace chemodurov
   {
     resize(count, T{});
   }
+
+  template< typename T >
+  void ForwardList< T >::swap(this_t & other)
+  {
+    std::swap(fake_, other.fake_);
+    std::swap(last_, other.last_);
+  }
+
+  template< typename T >
+  void ForwardList< T >::splice_after(const_iterator pos, this_t & other)
+  {
+    splice_after(pos, other, other.before_begin());
+  }
+
+  template< typename T >
+  void ForwardList< T >::splice_after(const_iterator pos, this_t && other)
+  {
+    splice_after(pos, other);
+  }
+
+  template< typename T >
+  void ForwardList< T >::splice_after(const_iterator pos, this_t & other, const_iterator it)
+  {
+    const_iterator posplus1 = pos;
+    ++posplus1;
+    if (pos == it && posplus1 == it)
+    {
+      return;
+    }
+    detail::List< T > * temp = pos.node_->next;
+    pos.node_->next = it.node_->next;
+    other.last_.node_->next = temp;
+    it.node_->next = other.fake_;
+    other.last_ = it;
+  }
+
+  template< typename T >
+  void ForwardList< T >::splice_after(const_iterator pos, this_t && other, const_iterator it)
+  {
+    splice_after(pos, other, it);
+  }
+
   template< typename T >
   bool operator==(const ForwardList< T > & lhs, const ForwardList< T > & rhs)
   {
