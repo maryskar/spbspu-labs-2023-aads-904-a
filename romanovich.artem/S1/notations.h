@@ -1,6 +1,7 @@
 #ifndef NOTATIONS_H
 #define NOTATIONS_H
 #include "queue.h"
+#include "stack.h"
 #include "expressionpart.h"
 namespace romanovich
 {

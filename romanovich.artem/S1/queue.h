@@ -1,7 +1,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H
+#include <tuple>
 #include "node.h"
-#include "stack.h"
 namespace romanovich
 {
   template < typename T >
