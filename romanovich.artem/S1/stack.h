@@ -13,7 +13,7 @@ namespace romanovich
     Stack(const Stack< T > &stack);
     Stack(Stack< T > &&stack) noexcept;
     ~Stack();
-    Stack< T > &operator=(Stack< T > &stack);
+    Stack< T > &operator=(Stack< T > stack);
     Stack< T > &operator=(Stack< T > &&stack) noexcept;
     void push(const T &value);
     void pop();
@@ -45,7 +45,7 @@ namespace romanovich
     return *this;
   }
   template < typename T >
-  Stack< T > &Stack< T >::operator=(Stack< T > &stack)
+  Stack< T > &Stack< T >::operator=(Stack< T > stack)
   {
     doSwap(stack);
     return *this;
