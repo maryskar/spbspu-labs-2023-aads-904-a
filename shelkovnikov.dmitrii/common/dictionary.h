@@ -108,6 +108,18 @@ namespace dimkashelk
       }
       return count;
     }
+    template< class K >
+    iterator_t find(const K &x)
+    {
+      for (auto i = begin(); i != end(); i++)
+      {
+        if ((*i).first == x)
+        {
+          return i;
+        }
+      }
+      return end();
+    }
     Value &get(const Key &k)
     {
       auto comp = [&](const auto &item)
