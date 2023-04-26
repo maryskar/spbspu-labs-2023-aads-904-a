@@ -61,6 +61,10 @@ namespace dimkashelk
     {
       return list_.cend();
     }
+    bool empty() const noexcept
+    {
+      return list_.empty();
+    }
     void push(const Key &k, const Value &value)
     {
       auto it = list_.begin();

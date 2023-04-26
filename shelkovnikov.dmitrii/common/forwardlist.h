@@ -119,7 +119,7 @@ namespace dimkashelk
     {
       return const_iterator(nullptr);
     }
-    bool empty()
+    bool empty() const noexcept
     {
       return begin_ == nullptr;
     }
