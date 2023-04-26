@@ -96,10 +96,9 @@ namespace chemodurov
   template< typename T >
   void ForwardList< T >::clear() noexcept
   {
-    if (!empty())
-    {
-      detail::deleteList(fake_.node_->next);
-    }
+    last_.node_->next = nullptr;
+    detail::deleteList(fake_.node_->next);
+    fake_.node_->next = fake_;
   }
 
   template< typename T >
@@ -343,6 +342,37 @@ namespace chemodurov
     pop_front();
   }
 
+  template< typename T >
+  void ForwardList< T >::resize(size_type count, const_reference value)
+  {
+    iterator it = begin();
+    iterator end = end();
+    size_type size = 0;
+    while (size < count && it != end)
+    {
+      ++size;
+      ++it;
+    }
+    if (size == count && it == end)
+    {
+      return;
+    }
+    else if (size == count && it != end)
+    {
+      last_.node_->next = nullptr;
+      detail::deleteList(it.node_);
+    }
+    else
+    {
+      last_ = insert_after(last_, count - size, value);
+    }
+  }
+
+  template< typename T >
+  void ForwardList< T >::resize(size_type count)
+  {
+    resize(count, T{});
+  }
   template< typename T >
   bool operator==(const ForwardList< T > & lhs, const ForwardList< T > & rhs)
   {
