@@ -123,6 +123,7 @@ namespace odintsov {
 
     ForwardList& operator=(std::initializer_list< T > rhs)
     {
+      clear();
       Iter last = unsafeInsertAfter(cbeforeBegin(), rhs);
       unsafeEraseAfter(last, cend());
       return *this;
