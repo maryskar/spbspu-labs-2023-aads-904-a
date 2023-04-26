@@ -266,6 +266,19 @@ namespace dimkashelk
       }
       return new_dict;
     }
+    friend bool operator==(const dict_type &first, const dict_type &second)
+    {
+      auto first_it = first.cbegin();
+      auto second_it = second.cbegin();
+      for (; first_it != first.cend() && second_it != second.cend(); first_it++, second_it++)
+      {
+        if ((*first_it) != (*second_it))
+        {
+          return false;
+        }
+      }
+      return true;
+    }
   private:
     ForwardList< value_type > list_;
     Compare compare_;
