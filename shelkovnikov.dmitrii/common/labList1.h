@@ -73,7 +73,7 @@ namespace dimkashelk
             out << dataset_name << " " << d << "\n";
           }
         }
-        catch (const std::runtime_error &e)
+        catch (...)
         {
           out << "<INVALID COMMAND>\n";
         }
