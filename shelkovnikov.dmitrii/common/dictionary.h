@@ -36,6 +36,15 @@ namespace dimkashelk
       list_ = other.list_;
       return *this;
     }
+    dict_type &operator=(dict_type &&other)
+    {
+      if (this == std::addressof(other))
+      {
+        return *this;
+      }
+      list_ = std::move(other.list_);
+      return *this;
+    }
     Value &at(const Key &k)
     {
       for (auto i = begin(); i != end(); i++)
@@ -69,15 +78,6 @@ namespace dimkashelk
       value_type value_to_insert = {key, Value()};
       auto res = list_.insertAfter(prev, value_to_insert);
       return (*res).second;
-    }
-    dict_type &operator=(dict_type &&other)
-    {
-      if (this == std::addressof(other))
-      {
-        return *this;
-      }
-      list_ = std::move(other.list_);
-      return *this;
     }
     iterator_t begin()
     {
