@@ -84,9 +84,9 @@ namespace dimkashelk
           list_.insertAfter(prev, value_type(k, value));
         }
       }
-      else if ((*it).first == k)
+      else if ((*prev).first == k)
       {
-        (*it).second = value;
+        (*prev).second = value;
       }
       else if (it == list_.begin())
       {
