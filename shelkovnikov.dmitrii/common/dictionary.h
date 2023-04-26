@@ -132,6 +132,11 @@ namespace dimkashelk
       }
       return end();
     }
+    template< class K >
+    const_iterator_t lower_bound(const K &x) const
+    {
+      return lower_bound(x);
+    }
     Value &get(const Key &k)
     {
       auto comp = [&](const auto &item)
