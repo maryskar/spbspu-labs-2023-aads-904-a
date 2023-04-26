@@ -309,5 +309,10 @@ namespace dimkashelk
       return iterator_t(prev);
     }
   };
+  template< class Key, class T, class Compare >
+  void swap(dimkashelk::Dictionary< Key, T, Compare > &lhs, dimkashelk::Dictionary< Key, T, Compare > &rhs )
+  {
+    lhs.swap(rhs);
+  }
 }
 #endif
