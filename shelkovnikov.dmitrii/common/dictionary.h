@@ -129,13 +129,25 @@ namespace dimkashelk
     }
     iterator_t eraseAfter(const_iterator_t pos)
     {
-      list_.eraseAfter(pos);
+      return list_.eraseAfter(pos);
     }
     iterator_t eraseAfter(const_iterator_t first, const_iterator_t second)
     {
-      list_.eraseAfter(first, second);
+      return list_.eraseAfter(first, second);
     }
-    //iterator_t erase(const Key &k);
+    size_t erase(const Key &k)
+    {
+      auto prev = list_.beforeBegin();
+      for (auto cur = begin(); cur != end(); prev = cur, cur++)
+      {
+        if ((*cur).first == k)
+        {
+          list_.eraseAfter(prev);
+          return 1;
+        }
+      }
+      return 0;
+    }
     void swap(Dictionary< Key, Value, Compare > &other)
     {
       list_.swap(other.list_);
