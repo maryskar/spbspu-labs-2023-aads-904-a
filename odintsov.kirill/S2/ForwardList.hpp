@@ -6,6 +6,7 @@
 #include <memory>
 #include <new>
 #include <stdexcept>
+#include <type_traits>
 
 namespace detail {
   template< typename T >
@@ -81,7 +82,7 @@ namespace odintsov {
     ForwardList(const ForwardList& fl):
       head_(nullptr)
     {
-      unsafeInsertAfter(cbeforeBegin(), fl.cbegin(), fl.cend());
+      unsafeSpliceAfter(cbeforeBegin(), fl.cbegin(), fl.cend());
     }
 
     ForwardList(ForwardList&& fl):
@@ -345,12 +346,7 @@ namespace odintsov {
       if (this == std::addressof(fl)) {
         return;
       }
-      ConstIter iter = cbeforeBegin();
-      while (iter.nodePtr->next != nullptr) {
-        ++iter;
-      }
-      iter.nodePtr->next = fl.head_;
-      fl.head_ = nullptr;
+      unsafeSpliceAfter(cbeforeBegin(), fl);
     }
 
     void merge(ForwardList&& fl)
@@ -358,16 +354,48 @@ namespace odintsov {
       if (this == std::addressof(fl)) {
         return;
       }
-      ConstIter iter = cbeforeBegin();
-      while (iter.nodePtr->next != nullptr) {
-        ++iter;
-      }
-      iter.nodePtr->next = fl.head_;
-      fl.head_ = nullptr;
+      unsafeSpliceAfter(cbeforeBegin(), fl);
     }
 
-    void spliceAfter(ConstIter pos, ForwardList& fl);
-    void spliceAfter(ConstIter pos, ForwardList&& fl);
+    void spliceAfter(ConstIter pos, ForwardList& fl)
+    {
+      assertIterInside(pos);
+      if (this == std::addressof(fl)) {
+        return;
+      }
+      unsafeSpliceAfter(pos, fl);
+    }
+
+    void unsafeSpliceAfter(ConstIter pos, ForwardList& fl)
+    {
+      Node* next = pos.nodePtr->next;
+      pos.nodePtr->next = fl.head_;
+      while (pos.nodePtr->next != nullptr) {
+        ++pos;
+      }
+      pos.nodePtr->next = next;
+      fl = nullptr;
+    }
+
+    void spliceAfter(ConstIter pos, ForwardList&& fl)
+    {
+      assertIterInside(pos);
+      if (this == std::addressof(fl)) {
+        return;
+      }
+      unsafeSpliceAfter(pos, fl);
+    }
+
+    void unsafeSpliceAfter(ConstIter pos, ForwardList&& fl)
+    {
+      Node* next = pos.nodePtr->next;
+      pos.nodePtr->next = fl.head_;
+      while (pos.nodePtr->next != nullptr) {
+        ++pos;
+      }
+      pos.nodePtr->next = next;
+      fl = nullptr;
+    }
 
     void remove(const T& val)
     {
@@ -429,6 +457,27 @@ namespace odintsov {
       head_ = n;
     };
   };
+
+  template< typename T >
+  bool operator==(const ForwardList< T >& lhs, const ForwardList< T >& rhs)
+  {
+    typename ForwardList< T >::ConstIter lend = lhs.cend();
+    typename ForwardList< T >::ConstIter rend = rhs.cend();
+    typename ForwardList< T >::ConstIter liter = lhs.cbegin();
+    typename ForwardList< T >::ConstIter riter = rhs.cbegin();
+    for (; liter != lend && riter != rend; ++liter, ++riter) {
+      if (!(*liter == *riter)) {
+        return false;
+      }
+    }
+    return liter == lend && riter == rend;
+  }
+
+  template< typename T >
+  bool operator!=(const ForwardList< T >& lhs, const ForwardList< T >& rhs)
+  {
+    return !(lhs == rhs);
+  }
 }
 
 #endif
