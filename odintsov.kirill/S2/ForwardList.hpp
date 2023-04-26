@@ -340,8 +340,32 @@ namespace odintsov {
       std::swap(head_, fl.head_);
     }
 
-    void merge(ForwardList& fl);
-    void merge(ForwardList&& fl);
+    void merge(ForwardList& fl)
+    {
+      if (this == std::addressof(fl)) {
+        return;
+      }
+      ConstIter iter = cbeforeBegin();
+      while (iter.nodePtr->next != nullptr) {
+        ++iter;
+      }
+      iter.nodePtr->next = fl.head_;
+      fl.head_ = nullptr;
+    }
+
+    void merge(ForwardList&& fl)
+    {
+      if (this == std::addressof(fl)) {
+        return;
+      }
+      ConstIter iter = cbeforeBegin();
+      while (iter.nodePtr->next != nullptr) {
+        ++iter;
+      }
+      iter.nodePtr->next = fl.head_;
+      fl.head_ = nullptr;
+    }
+
     void spliceAfter(ConstIter pos, ForwardList& fl);
     void spliceAfter(ConstIter pos, ForwardList&& fl);
 
