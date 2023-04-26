@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <initializer_list>
 #include <memory>
+#include <new>
 #include <stdexcept>
 
 namespace detail {
@@ -105,8 +106,14 @@ namespace odintsov {
       if (this == std::addressof(rhs)) {
         return *this;
       }
-      Iter last = unsafeInsertAfter(cbeforeBegin(), rhs.cbegin(), rhs.cend());
-      unsafeEraseAfter(last, cend());
+      ConstIter initBegin = cbegin();
+      try {
+        Iter last = unsafeInsertAfter(cbeforeBegin(), rhs.cbegin(), rhs.cend());
+        unsafeEraseAfter(last, cend());
+      } catch (const std::bad_alloc&) {
+        unsafeEraseAfter(cbeforeBegin(), initBegin);
+        throw;
+      }
       return *this;
     }
 
@@ -124,8 +131,14 @@ namespace odintsov {
     ForwardList& operator=(std::initializer_list< T > rhs)
     {
       clear();
-      Iter last = unsafeInsertAfter(cbeforeBegin(), rhs);
-      unsafeEraseAfter(last, cend());
+      ConstIter initBegin = cbegin();
+      try {
+        Iter last = unsafeInsertAfter(cbeforeBegin(), rhs);
+        unsafeEraseAfter(last, cend());
+      } catch (const std::bad_alloc&) {
+        unsafeEraseAfter(cbeforeBegin(), initBegin);
+        throw;
+      }
       return *this;
     }
 
