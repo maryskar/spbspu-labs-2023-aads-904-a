@@ -86,10 +86,8 @@ namespace dimkashelk
         return {begin(), false};
       }
     }
-    //template < class... Args >
-    //iterator_t emplace_hint(const_iterator_t hint, Args&&... args );
-    //iterator_t erase(const_iterator_t pos);
-    //iterator_t erase(const_iterator_t first, const_iterator_t second);
+    //iterator_t eraseAfter(const_iterator_t pos);
+    //iterator_t eraseAfter(const_iterator_t first, const_iterator_t second);
     //iterator_t erase(const Key &k);
     void swap(Dictionary< Key, Value, Compare > &other)
     {
@@ -114,6 +112,20 @@ namespace dimkashelk
       for (auto i = begin(); i != end(); i++)
       {
         if ((*i).first == x)
+        {
+          return i;
+        }
+      }
+      return end();
+    }
+    template< class K >
+    iterator_t lower_bound(const K &x)
+    {
+      auto prev = begin();
+      auto cur = begin();
+      for (auto i = begin(); i != end(); i++)
+      {
+        if ((*i).first >= x)
         {
           return i;
         }
