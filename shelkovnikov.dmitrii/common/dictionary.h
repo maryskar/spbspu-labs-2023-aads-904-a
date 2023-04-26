@@ -279,6 +279,10 @@ namespace dimkashelk
       }
       return true;
     }
+    friend bool operator!=(const dict_type &first, const dict_type &second)
+    {
+      return !(first == second);
+    }
   private:
     ForwardList< value_type > list_;
     Compare compare_;
