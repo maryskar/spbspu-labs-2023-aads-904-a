@@ -147,6 +147,11 @@ namespace dimkashelk
       }
       return res;
     }
+    template < class K >
+    const_iterator_t upper_bound(const K &x) const
+    {
+      return upper_bound(x);
+    }
     Value &get(const Key &k)
     {
       auto comp = [&](const auto &item)
