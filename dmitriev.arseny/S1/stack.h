@@ -17,9 +17,11 @@ public:
   Stack< T >& operator=(const Stack< T >& otherStack);
   Stack< T >& operator=(Stack< T >&& otherStack) noexcept;
 
-  void push(const T& inp);
+  void push(const T& data);
+  void push(T&& data);
+
   void popBack();
-  T getTopData() const;
+  T& getTopData() const;
 
   bool isEmpty() const;
 
@@ -106,9 +108,16 @@ inline Stack< T >& Stack< T >::operator=(Stack< T >&& otherStack) noexcept
 }
 
 template< typename T >
-void Stack< T >::push(const T& rhs)
+void Stack<T>::push(const T& data)
 {
-  List< T >* newTop = new List< T >(rhs, top);
+  List< T >* newTop = new List< T >{ data, top };
+  top = newTop;
+}
+
+template< typename T >
+inline void Stack<T>::push(T&& data)
+{
+  List< T >* newTop = new List< T >{ std::move(data), top };
   top = newTop;
 }
 
@@ -126,7 +135,7 @@ void Stack< T >::popBack()
 }
 
 template< typename T >
-T Stack< T >::getTopData() const
+T& Stack< T >::getTopData() const
 {
   if (isEmpty())
   {

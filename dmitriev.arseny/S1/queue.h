@@ -18,8 +18,10 @@ public:
   Queue< T >& operator=(Queue< T >&& otherQueue) noexcept;
 
   void push(const T& inp);
+  void push(T&& inp);
+
   void popBack();
-  T getTopData() const;
+  T& getTopData() const;
 
   bool isEmpty() const;
 
@@ -128,6 +130,21 @@ void Queue< T >::push(const T& rhs)
 }
 
 template< typename T >
+void Queue<T>::push(T&& inp)
+{
+  if (head == nullptr)
+  {
+    head = new List< T >{ std::move(inp), nullptr };
+    tail = head;
+  }
+  else
+  {
+    tail->otherList = new List< T >{ std::move(inp), nullptr };
+    tail = tail->otherList;
+  }
+}
+
+template< typename T >
 void Queue< T >::popBack()
 {
   if (head == nullptr)
@@ -141,7 +158,7 @@ void Queue< T >::popBack()
 }
 
 template< typename T >
-T Queue< T >::getTopData() const
+T& Queue< T >::getTopData() const
 {
   if (head == nullptr)
   {
