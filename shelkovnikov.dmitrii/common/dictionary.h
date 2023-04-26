@@ -65,6 +65,10 @@ namespace dimkashelk
     {
       return list_.empty();
     }
+    size_t size() const noexcept
+    {
+      return list_.size_;
+    }
     void push(const Key &k, const Value &value)
     {
       auto it = list_.begin();
