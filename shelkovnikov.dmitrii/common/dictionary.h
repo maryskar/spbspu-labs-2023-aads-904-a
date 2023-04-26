@@ -58,6 +58,25 @@ namespace dimkashelk
       }
       throw std::out_of_range("Out of range");
     }
+    Value &operator[](Key &&key)
+    {
+      auto prev = list_.beforeBegin();
+      auto cur = begin();
+      for (; cur != end(); prev = cur, cur++)
+      {
+        if ((*cur).first == key)
+        {
+          return (*cur).second;
+        }
+        if (compare_((*cur).first, key))
+        {
+          break;
+        }
+      }
+      value_type value_to_insert = {key, Value()};
+      auto res = list_.insertAfter(prev, value_to_insert);
+      return (*res).second;
+    }
     dict_type &operator=(dict_type &&other)
     {
       if (this == std::addressof(other))
