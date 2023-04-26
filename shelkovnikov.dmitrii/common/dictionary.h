@@ -73,7 +73,7 @@ namespace dimkashelk
     {
       list_.clear();
     }
-    template< class... Args >
+    template< class ... Args >
     std::pair< iterator_t, bool > emplace(Args&&... args)
     {
       try
@@ -86,6 +86,8 @@ namespace dimkashelk
         return {begin(), false};
       }
     }
+    //template < class... Args >
+    //iterator_t emplace_hint(const_iterator_t hint, Args&&... args );
     Value &get(const Key &k)
     {
       auto comp = [&](const auto &item)
@@ -98,10 +100,6 @@ namespace dimkashelk
         return (*it).second;
       }
       throw std::runtime_error("Nothing to return");
-    }
-    bool empty()
-    {
-      return list_.empty();
     }
     friend std::ostream &operator<<(std::ostream &out, dict_type &dict)
     {
