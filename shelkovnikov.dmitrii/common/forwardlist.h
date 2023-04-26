@@ -155,6 +155,7 @@ namespace dimkashelk
       {
         end_ = newNode;
       }
+      size_++;
       return iterator(it.ptr_->next);
     }
     template < typename ... Args >
@@ -185,6 +186,7 @@ namespace dimkashelk
       else if (size_ == 0)
       {
         begin_ = nullptr;
+        end_ = nullptr;
         fakeNode_->next = nullptr;
       }
       return iterator(it.ptr_->next);
@@ -347,7 +349,6 @@ namespace dimkashelk
         pushBack((*iter));
         iter++;
       }
-      size_ = forwardList.size_;
     }
     void remove(const T &data, const_iterator it)
     {

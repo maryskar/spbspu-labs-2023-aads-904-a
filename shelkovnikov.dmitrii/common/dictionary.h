@@ -38,22 +38,22 @@ namespace dimkashelk
     }
     Value &at(const Key &k)
     {
-      for (auto i: *this)
+      for (auto i = begin(); i != end(); i++)
       {
-        if (i.first == k)
+        if ((*i).first == k)
         {
-          return i.second;
+          return (*i).second;
         }
       }
       throw std::out_of_range("Out of range");
     }
     const Value &at(const Key &k) const
     {
-      for (auto i: *this)
+      for (auto i = begin(); i != end(); i++)
       {
-        if (i.first == k)
+        if ((*i).first == k)
         {
-          return i.second;
+          return (*i).second;
         }
       }
       throw std::out_of_range("Out of range");
@@ -332,7 +332,7 @@ namespace dimkashelk
   private:
     ForwardList< value_type > list_;
     Compare compare_;
-    iterator_t push(value_type value)
+    iterator_t push(const value_type &value)
     {
       auto it = list_.begin();
       auto prev = list_.beforeBegin();
@@ -344,30 +344,13 @@ namespace dimkashelk
         }
         prev = it;
       }
-      if (it == list_.end())
-      {
-        if (prev != list_.beforeBegin() && (*prev).first == value.first)
-        {
-          (*prev).second = value.second;
-        }
-        else
-        {
-          list_.insertAfter(prev, value_type(value.first, value.second));
-        }
-      }
-      else if ((*prev).first == value.first)
+      if (prev != list_.beforeBegin() && (*prev).first == value.first)
       {
         (*prev).second = value.second;
       }
-      else if (it == list_.begin())
-      {
-        list_.pushFront(value_type(value.first, value.second));
-        return begin();
-      }
       else
       {
-        list_.insertAfter(prev, value_type(value.first, value.second));
-        return iterator_t(it);
+        list_.insertAfter(prev, value);
       }
       return iterator_t(prev);
     }

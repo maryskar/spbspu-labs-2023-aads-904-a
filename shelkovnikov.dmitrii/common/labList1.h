@@ -63,7 +63,7 @@ namespace dimkashelk
         }
         try
         {
-          dict_type d = dict.get(dataset_name);
+          dict_type d = dict.at(dataset_name);
           if (d.empty())
           {
             out << "<EMPTY>\n";
@@ -91,8 +91,8 @@ namespace dimkashelk
         }
         try
         {
-          dict_type data_1 = dict.get(dataset_1);
-          dict_type data_2 = dict.get(dataset_2);
+          dict_type data_1 = dict.at(dataset_1);
+          dict_type data_2 = dict.at(dataset_2);
           dict_type new_dict;
           if (command == "complement")
           {
