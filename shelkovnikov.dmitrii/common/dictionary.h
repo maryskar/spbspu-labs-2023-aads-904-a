@@ -143,13 +143,13 @@ namespace dimkashelk
         {
           Key key = (*iter_first).first;
           Value value = (*iter_first).second;
-          new_dict.push(key, value);
+          new_dict.push(value_type(key, value));
         }
         iter_first++;
       }
       while (iter_first != iter_first_end)
       {
-        new_dict.push((*iter_first).first, (*iter_first).second);
+        new_dict.push(*iter_first);
         iter_first++;
       }
       return new_dict;
@@ -166,7 +166,7 @@ namespace dimkashelk
         auto res = std::find_if(first.list_.cbegin(), first.list_.cend(), comp);
         if (res != second.list_.cend())
         {
-          result.push((*res).first, (*res).second);
+          result.push(*res);
         }
       }
       return result;
@@ -180,7 +180,7 @@ namespace dimkashelk
       {
         Key key = (*iter_second).first;
         Value value = (*iter_second).second;
-        new_dict.push(key, value);
+        new_dict.push(value_type(key, value));
         iter_second++;
       }
       auto iter_first = first.list_.cbegin();
@@ -189,7 +189,7 @@ namespace dimkashelk
       {
         Key key = (*iter_first).first;
         Value value = (*iter_first).second;
-        new_dict.push(key, value);
+        new_dict.push(value_type(key, value));
         iter_first++;
       }
       return new_dict;

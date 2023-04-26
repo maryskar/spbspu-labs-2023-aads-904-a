@@ -8,7 +8,9 @@ namespace dimkashelk
   void labList1(std::istream &in, std::ostream &out, int argc, char *argv[])
   {
     using dict_type = dimkashelk::Dictionary< int, std::string, std::greater< > >;
+    using dict_value_type = std::pair< int, std::string >;
     using container_type = dimkashelk::Dictionary< std::string, dict_type, std::greater< > >;
+    using container_value_type = std::pair< std::string, dict_type >;
     namespace dsk = dimkashelk;
     if (argc != 2)
     {
@@ -38,10 +40,10 @@ namespace dimkashelk
         {
           break;
         }
-        data.push(key, value);
+        data.emplace(dict_value_type(key, value));
       }
       file_in.clear();
-      dict.push(dict_name, data);
+      dict.emplace(container_value_type(dict_name, data));
     }
     while (in)
     {
@@ -104,7 +106,7 @@ namespace dimkashelk
           {
             new_dict = data_1 | data_2;
           }
-          dict.push(new_dataset_name, new_dict);
+          dict.emplace(new_dataset_name, new_dict);
         }
         catch (const std::runtime_error &e)
         {
