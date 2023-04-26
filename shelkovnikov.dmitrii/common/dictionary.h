@@ -95,6 +95,19 @@ namespace dimkashelk
     {
       list_.swap(other.list_);
     }
+    template< class K >
+    size_t count(const K &x) const
+    {
+      size_t count = 0;
+      for (auto i: *this)
+      {
+        if (i.first == x)
+        {
+          count++;
+        }
+      }
+      return count;
+    }
     Value &get(const Key &k)
     {
       auto comp = [&](const auto &item)
