@@ -73,40 +73,17 @@ namespace dimkashelk
     {
       list_.clear();
     }
-    void push(const Key &k, const Value &value)
+    template< class... Args >
+    std::pair< iterator_t, bool > emplace(Args&&... args)
     {
-      auto it = list_.begin();
-      auto prev = list_.beforeBegin();
-      for (; it != list_.end(); it++)
+      try
       {
-        if (compare_((*it).first, k))
-        {
-          break;
-        }
-        prev = it;
+        auto iter = push(std::forward< value_type >(value_type(args...)));
+        return {iter, true};
       }
-      if (it == list_.end())
+      catch (...)
       {
-        if (prev != list_.beforeBegin() && (*prev).first == k)
-        {
-          (*prev).second = value;
-        }
-        else
-        {
-          list_.insertAfter(prev, value_type(k, value));
-        }
-      }
-      else if ((*prev).first == k)
-      {
-        (*prev).second = value;
-      }
-      else if (it == list_.begin())
-      {
-        list_.pushFront(value_type(k, value));
-      }
-      else
-      {
-        list_.insertAfter(prev, value_type(k, value));
+        return {begin(), false};
       }
     }
     Value &get(const Key &k)
@@ -220,6 +197,45 @@ namespace dimkashelk
   private:
     ForwardList< value_type > list_;
     Compare compare_;
+    iterator_t push(const Key &k, const Value &value)
+    {
+      auto it = list_.begin();
+      auto prev = list_.beforeBegin();
+      for (; it != list_.end(); it++)
+      {
+        if (compare_((*it).first, k))
+        {
+          break;
+        }
+        prev = it;
+      }
+      if (it == list_.end())
+      {
+        if (prev != list_.beforeBegin() && (*prev).first == k)
+        {
+          (*prev).second = value;
+        }
+        else
+        {
+          list_.insertAfter(prev, value_type(k, value));
+        }
+      }
+      else if ((*prev).first == k)
+      {
+        (*prev).second = value;
+      }
+      else if (it == list_.begin())
+      {
+        list_.pushFront(value_type(k, value));
+        return begin();
+      }
+      else
+      {
+        list_.insertAfter(prev, value_type(k, value));
+        return iterator_t(it);
+      }
+      return iterator_t(prev);
+    }
   };
 }
 #endif
