@@ -19,14 +19,20 @@ namespace tarasenko
    Queue(Queue< T >&& q):
      head(std::move(q.head))
    {}
-   Queue< T >& operator=(const Queue< T >& q)
+   Queue< T >& operator=(const Queue< T >& other)
    {
-     head = q.top;
+     if (*this != other)
+     {
+       head = other.top;
+     }
      return *this;
    }
-   Queue< T >& operator=(Queue< T >&& q)
+   Queue< T >& operator=(Queue< T >&& other)
    {
-     head = std::move(q.head);
+     if (*this != other)
+     {
+       head = std::move(other.head);
+     }
      return *this;
    }
    ~Queue()
@@ -39,8 +45,6 @@ namespace tarasenko
    bool isEmpty() const;
   private:
    ForwardList< T > head;
-   void copyQueue(const Queue< T >& other);
-   void deleteQueue();
   };
 
   template< typename T >

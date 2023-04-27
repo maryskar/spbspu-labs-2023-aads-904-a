@@ -18,14 +18,20 @@ namespace tarasenko
    Stack(Stack< T >&& s):
      top(std::move(s.top))
    {}
-   Stack< T >& operator=(const Stack< T >& s)
+   Stack< T >& operator=(const Stack< T >& other)
    {
-     top = s.top;
+     if (*this != other)
+     {
+       top = other.top;
+     }
      return *this;
    }
-   Stack< T >& operator=(Stack< T >&& s)
+   Stack< T >& operator=(Stack< T >&& other)
    {
-     top = std::move(s.top);
+     if (*this != other)
+     {
+       top = std::move(other.top);
+     }
      return *this;
    }
    ~Stack()
