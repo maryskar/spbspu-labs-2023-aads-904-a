@@ -21,12 +21,13 @@ namespace dimkashelk
       next();
       return *this;
     }
-    TwoThreeTreeIterator &operator++(int)
+    TwoThreeTreeIterator operator++(int)
     {
+      TwoThreeTreeIterator< Key, Value, Compare > result(*this);
       next();
-      return *this;
+      return result;
     }
-    const Key &operator*() const
+    Key &operator*()
     {
       return key;
     }
