@@ -22,9 +22,9 @@ namespace dimkashelk
       ptr_ = ptr_->next;
       return *this;
     }
-    ForwardListIteratorConst &operator++(int)
+    ForwardListIteratorConst operator++(int)
     {
-      ForwardListIterator< T > result(*this);
+      ForwardListIteratorConst< T > result(*this);
       (*this)++;
       return result;
     }
