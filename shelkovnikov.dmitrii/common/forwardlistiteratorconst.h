@@ -24,8 +24,9 @@ namespace dimkashelk
     }
     ForwardListIteratorConst &operator++(int)
     {
-      ptr_ = ptr_->next;
-      return *this;
+      ForwardListIterator< T > result(*this);
+      (*this)++;
+      return result;
     }
     const T &operator*() const
     {

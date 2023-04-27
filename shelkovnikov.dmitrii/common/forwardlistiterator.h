@@ -20,10 +20,11 @@ namespace dimkashelk
       ptr_ = ptr_->next;
       return *this;
     }
-    ForwardListIterator &operator++(int)
+    ForwardListIterator operator++(int)
     {
-      ptr_ = ptr_->next;
-      return *this;
+      ForwardListIterator< T > result(*this);
+      (*this)++;
+      return result;
     }
     T &operator*() const
     {
