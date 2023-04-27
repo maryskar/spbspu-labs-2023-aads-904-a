@@ -25,7 +25,7 @@ namespace dimkashelk
     ForwardListIteratorConst operator++(int)
     {
       ForwardListIteratorConst< T > result(*this);
-      (*this)++;
+      ++(*this);
       return result;
     }
     const T &operator*() const
