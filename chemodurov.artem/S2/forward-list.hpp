@@ -2,8 +2,10 @@
 #define S2_FORWARD_LIST_HPP
 #include <initializer_list>
 #include <iterator>
+#include <functional>
 #include "const-forward-iterator.hpp"
 #include "forward-iterator.hpp"
+
 namespace chemodurov
 {
   template< typename T >
@@ -70,6 +72,7 @@ namespace chemodurov
    private:
     iterator fake_;
     iterator last_;
+    void copy(const ForwardList< T > & other);
   };
 
   template< typename T >
@@ -415,6 +418,30 @@ namespace chemodurov
     splice_after(pos, other, first, last);
   }
 
+  template< typename T >
+  void ForwardList< T >::remove(const_reference value)
+  {
+    remove_if(std::bind(std::equal< T >(), std::placeholders::_1, value));
+  }
+
+  template< typename T >
+  template< typename UnaryPredicate >
+  void ForwardList< T >::remove_if(UnaryPredicate p)
+  {
+    iterator end = end();
+    iterator it = begin();
+    if (p(it.node_->data))
+    {
+      erase_after(before_begin());
+    }
+    for (; it != end; ++it)
+    {
+      if (p(it.node_->next->data))
+      {
+        erase_after(it);
+      }
+    }
+  }
   template< typename T >
   bool operator==(const ForwardList< T > & lhs, const ForwardList< T > & rhs)
   {
