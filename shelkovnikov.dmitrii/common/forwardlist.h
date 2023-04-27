@@ -335,12 +335,10 @@ namespace dimkashelk
     size_t size_;
     void copy(const ForwardList< T > &forwardList)
     {
-      auto iter = forwardList.cbegin();
-      while (iter != forwardList.cend())
-      {
-        pushBack((*iter));
-        iter++;
-      }
+      auto res = dimkashelk::details::copy(forwardList.begin_);
+      begin_ = res.first;
+      end_ = res.second;
+      fakeNode_->next = begin_;
     }
     void remove(const T &data, const_iterator it)
     {
