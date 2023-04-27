@@ -12,7 +12,6 @@ namespace dimkashelk
     bool hasNext() const;
   private:
     std::string data_;
-    size_t i_;
   };
 }
 #endif

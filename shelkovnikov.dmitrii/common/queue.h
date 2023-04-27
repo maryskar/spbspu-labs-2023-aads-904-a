@@ -2,8 +2,7 @@
 #define SPBSPU_LABS_2023_AADS_904_A_QUEUE_H
 #include <cstddef>
 #include <stdexcept>
-#include "nodeOfDataClass.h"
-#include "freeList.h"
+#include "nodeOneWayList.h"
 namespace dimkashelk
 {
   template < typename T >
@@ -18,12 +17,9 @@ namespace dimkashelk
       begin_(nullptr),
       end_(nullptr)
     {
-      details::NodeOfDataClass< T > *start = queue.begin_;
-      while (start)
-      {
-        push(start->data);
-        start = start->next;
-      }
+      auto copy_res = details::copy(queue.begin_);
+      begin_ = copy_res.first;
+      end_ = copy_res.second;
     }
     Queue< T >(Queue< T > &&queue):
       begin_(queue.begin_),
@@ -34,17 +30,18 @@ namespace dimkashelk
     }
     ~Queue()
     {
-      free();
+      details::freeList< T >(begin_);
     }
     Queue< T > &operator=(const Queue< T > &queue)
     {
-      free();
-      details::NodeOfDataClass< T > *start = queue.begin_;
-      while (start)
+      if (std::addressof(queue) == this)
       {
-        push(start->data);
-        start = start->next;
+        return *this;
       }
+      auto res_copy = details::copy(queue.begin_);
+      details::freeList< T >(begin_);
+      begin_ = res_copy.first;
+      end_ = res_copy.second;
       return *this;
     }
     Queue< T > &operator=(Queue< T > &&queue)
@@ -53,7 +50,7 @@ namespace dimkashelk
       {
         return *this;
       }
-      free();
+      details::freeList< T >(begin_);
       begin_ = queue.begin_;
       end_ = queue.end_;
       queue.begin_ = nullptr;
@@ -61,13 +58,10 @@ namespace dimkashelk
     }
     void push(const T &rhs)
     {
-      auto *node = new details::NodeOfDataClass< T >(rhs);
+      auto *node = new details::NodeOneWayList< T >(rhs);
       if (empty())
       {
         begin_ = node;
-      }
-      else if (!end_)
-      {
         end_ = node;
         begin_->next = end_;
       }
@@ -79,23 +73,35 @@ namespace dimkashelk
     }
     T &front()
     {
-      if (begin_ == nullptr)
+      if (empty())
       {
         throw std::logic_error("Check");
       }
       return begin_->data;
     }
-    void pop_front()
+    const T &front() const
     {
-      if (begin_ == nullptr)
+      if (empty())
       {
         throw std::logic_error("Check");
       }
-      details::NodeOfDataClass< T > *node = begin_;
-      begin_ = begin_->next;
+      return begin_->data;
+    }
+    void popFront()
+    {
+      if (empty())
+      {
+        throw std::logic_error("Check");
+      }
+      details::NodeOneWayList< T > *node = begin_;
       if (begin_ == end_)
       {
+        begin_ = nullptr;
         end_ = nullptr;
+      }
+      else
+      {
+        begin_ = begin_->next;
       }
       delete node;
     }
@@ -104,14 +110,8 @@ namespace dimkashelk
       return begin_ == nullptr;
     }
   private:
-    details::NodeOfDataClass< T > *begin_;
-    details::NodeOfDataClass< T > *end_;
-    void free()
-    {
-      details::freeList< T >(begin_);
-      begin_ = nullptr;
-      end_ = nullptr;
-    }
+    details::NodeOneWayList< T > *begin_;
+    details::NodeOneWayList< T > *end_;
   };
 }
 #endif

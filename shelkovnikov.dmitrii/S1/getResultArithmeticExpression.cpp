@@ -1,6 +1,7 @@
-#include "getResultOfArithmeticExpression.h"
+#include "getResultArithmeticExpression.h"
 #include <limits>
 #include <stdexcept>
+#include <stack.h>
 namespace
 {
   constexpr long long max_long_long = std::numeric_limits< long long >::max();
@@ -32,51 +33,76 @@ namespace
   {
     return isOverMult(first, second) || isUnderMult(first, second);
   }
+  long long getResult(long long first, long long second, dimkashelk::Operator oper)
+  {
+    if (oper.isAdd())
+    {
+      if (isOverflowedAdd(first, second))
+      {
+        throw std::logic_error("Overflow");
+      }
+      return first + second;
+    }
+    if (oper.isSubtraction())
+    {
+      if (isOverflowedAdd(first, second))
+      {
+        throw std::logic_error("Overflow");
+      }
+      return first - second;
+    }
+    if (oper.isMultiplication())
+    {
+      if (isOverflowedMult(first, second))
+      {
+        throw std::logic_error("Overflow");
+      }
+      return first * second;
+    }
+    if (oper.isDivision())
+    {
+      if (second == 0)
+      {
+        throw std::logic_error("Division by 0");
+      }
+      return first / second;
+    }
+    if (oper.isRemainder())
+    {
+      if (first > 0)
+      {
+        return first % second;
+      }
+      else
+      {
+        return second - (-first) % second;
+      }
+    }
+    throw std::logic_error("Not supported this operator");
+  }
 }
-long long details::getResult(long long first, long long second, char oper)
+long long dimkashelk::getResultArithmeticExpression(Queue< PartOfArithExpr > &polandExpression)
 {
-  if (oper == '+')
+  namespace dsk = dimkashelk;
+  dsk::Stack< dsk::PartOfArithExpr > remains;
+  while (!polandExpression.empty())
   {
-    if (isOverflowedAdd(first, second))
+    dsk::PartOfArithExpr p = polandExpression.front();
+    polandExpression.popFront();
+    if (p.isNumber())
     {
-      throw std::logic_error("Overflow");
-    }
-    return first + second;
-  }
-  if (oper == '-')
-  {
-    if (isOverflowedAdd(first, second))
-    {
-      throw std::logic_error("Overflow");
-    }
-    return first - second;
-  }
-  if (oper == '*')
-  {
-    if (isOverflowedMult(first, second))
-    {
-      throw std::logic_error("Overflow");
-    }
-    return first * second;
-  }
-  if (oper == '/')
-  {
-    if (second == 0)
-    {
-      throw std::logic_error("Division by 0");
-    }
-    return first / second;
-  }
-  if (oper == '%')
-  {
-    if (first > 0)
-    {
-      return first % second;
+      remains.pushFront(p);
     }
     else
     {
-      return second - (-first) % second;
+      dsk::PartOfArithExpr p2 = remains.front();
+      remains.popFront();
+      dsk::PartOfArithExpr p1 = remains.front();
+      remains.popFront();
+      remains.pushFront(dsk::PartOfArithExpr(getResult(p1.getOperand(), p2.getOperand(), p.getOperator())));
     }
   }
-  throw std::logic_error("Not supported this operator");
+  auto res = remains.front().getOperand();
+  remains.popFront();
+  return res;
 }

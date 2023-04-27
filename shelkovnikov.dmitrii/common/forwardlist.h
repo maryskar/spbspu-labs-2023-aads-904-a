@@ -3,202 +3,393 @@
 #include <cstddef>
 #include <cassert>
 #include <iterator>
-namespace details
-{
-  template< typename T >
-  struct Node
-  {
-    T data;
-    Node *next;
-    Node *prev;
-    explicit Node(const T &data):
-      data(data),
-      next(nullptr),
-      prev(nullptr)
-    {}
-  };
-}
+#include <cstdarg>
+#include "forwardlistiterator.h"
+#include "forwardlistiteratorconst.h"
+#include "nodeOneWayList.h"
 namespace dimkashelk
 {
-  template < typename T >
+  template< typename T >
   class ForwardList
   {
+  using iterator = dimkashelk::ForwardListIterator< T >;
+  using const_iterator = dimkashelk::ForwardListIteratorConst< T >;
+  using reference = T&;
+  using const_reference = const T&;
   public:
-    class Iterator
-    {
-    friend class ForwardList< T >;
-    public:
-      typedef ptrdiff_t difference_type;
-      typedef T value_type;
-      typedef T* pointer;
-      typedef T& reference;
-      typedef std::input_iterator_tag iterator_category;
-      explicit Iterator(details::Node< T > *ptr):
-        ptr_(ptr)
-      {}
-      Iterator &operator++()
-      {
-        ptr_ = ptr_->next;
-        return *this;
-      }
-      Iterator &operator++(int)
-      {
-        ptr_ = ptr_->next;
-        return *this;
-      }
-      Iterator &operator--()
-      {
-        ptr_ = ptr_->prev;
-        return *this;
-      }
-      Iterator &operator--(int)
-      {
-        ptr_ = ptr_->prev;
-        return *this;
-      }
-      T &operator*() const
-      {
-        return ptr_->data;
-      }
-      bool operator==(const Iterator &other) const
-      {
-        return ptr_ == other.ptr_;
-      }
-      bool operator!=(const Iterator &other) const
-      {
-        return ptr_ != other.ptr_;
-      }
-    private:
-      details::Node< T > *ptr_;
-    };
     ForwardList():
+      fakeNode_(static_cast< details::NodeOneWayList< T >* >(::operator new (sizeof(details::NodeOneWayList< T >)))),
       begin_(nullptr),
-      end_(nullptr)
-    {}
-    ForwardList(const ForwardList< T > &forwardList):
-      begin_(nullptr),
-      end_(nullptr)
+      end_(nullptr),
+      size_(0)
     {
-      auto iter = forwardList.begin();
-      while (iter != forwardList.end())
-      {
-        pushBack((*iter));
-        iter++;
-      }
+      fakeNode_->next = nullptr;
+    }
+    ForwardList(const ForwardList< T > &forwardList):
+      fakeNode_(static_cast< details::NodeOneWayList< T >* >(::operator new (sizeof(details::NodeOneWayList< T >)))),
+      begin_(nullptr),
+      end_(nullptr),
+      size_(0)
+    {
+      fakeNode_->next = nullptr;
+      copy(forwardList);
     }
     ForwardList(ForwardList< T > &&forwardList):
+      fakeNode_(forwardList.fakeNode_),
       begin_(forwardList.begin_),
-      end_(forwardList.end_)
+      end_(forwardList.end_),
+      size_(forwardList.size_)
     {
-      forwardList.begin_ = nullptr;
-      forwardList.end_ = nullptr;
+      fakeNode_->next = nullptr;
+      forwardList.fakeNode_ = nullptr;
+      forwardList.begin_ = forwardList.fakeNode_;
+      forwardList.end_ = forwardList.fakeNode_;
+    }
+    ForwardList(std::initializer_list< T > &l):
+      fakeNode_(static_cast< details::NodeOneWayList< T >* >(::operator new (sizeof(details::NodeOneWayList< T >)))),
+      begin_(nullptr),
+      end_(nullptr),
+      size_(0)
+    {
+      fakeNode_->next = nullptr;
+      for (auto i: l)
+      {
+        pushBack(i);
+      }
     }
     ~ForwardList()
     {
-      free();
+      clear();
+      ::operator delete(fakeNode_);
     }
-    void pushFront(const T &data)
+    ForwardList &operator=(const ForwardList< T > &forwardList)
     {
-      auto *node = new details::Node< T >(data);
-      if (begin_)
+      if (std::addressof(forwardList) == this)
       {
-        node->next = begin_;
-        begin_->prev = node;
-        begin_ = node;
+        return *this;
       }
-      else
-      {
-        begin_ = node;
-      }
+      clear();
+      copy(forwardList);
+      return *this;
     }
-    void pushBack(const T &data)
+    ForwardList &operator=(ForwardList< T > &&forwardList)
     {
-      auto *node = new details::Node< T >(data);
-      if (end_)
+      if (std::addressof(forwardList) == this)
       {
-        node->prev = end_;
-        end_->next = node;
-        end_ = node;
+        return *this;
       }
-      else if (!begin_)
-      {
-        begin_ = node;
-      }
-      else
-      {
-        begin_->next = node;
-        node->prev = begin_;
-        end_ = node;
-      }
+      clear();
+      begin_ = forwardList.begin_;
+      fakeNode_->next = begin_;
+      end_ = forwardList.end_;
+      size_ = forwardList.size_;
+      forwardList.begin_ = nullptr;
+      forwardList.end_ = nullptr;
+      return *this;
     }
-    void insertAfter(const Iterator& it, const T& data)
+    reference front()
     {
-      auto *newNode = new details::Node< T >(data);
-      newNode->next = it.ptr_->next;
-      if (newNode->next)
-      {
-        newNode->next->prev = newNode;
-      }
-      it.ptr_->next = newNode;
-      newNode->prev = it.ptr_;
-      if (!newNode->next)
-      {
-        end_ = newNode;
-      }
+      return begin_->data;
     }
-    void free()
+    const_reference front() const
     {
-      while (begin_)
-      {
-        details::Node< T > *node = begin_;
-        begin_ = begin_->next;
-        delete node;
-      }
-      end_ = nullptr;
+      return begin_->data;
     }
-    bool empty()
+    iterator beforeBegin() const
+    {
+      return iterator(fakeNode_);
+    }
+    iterator begin() const
+    {
+      return iterator(begin_);
+    }
+    iterator end() const
+    {
+      return iterator(nullptr);
+    }
+    const_iterator cbeforeBegin() const
+    {
+      return const_iterator(fakeNode_);
+    }
+    const_iterator cbegin() const
+    {
+      return const_iterator(begin_);
+    }
+    const_iterator cend() const
+    {
+      return const_iterator(nullptr);
+    }
+    bool empty() const noexcept
     {
       return begin_ == nullptr;
     }
-    Iterator begin() const
+    void clear() noexcept
     {
-      return Iterator(begin_);
+      dimkashelk::details::freeList(begin_);
+      begin_ = nullptr;
+      end_ = nullptr;
+      size_ = 0;
     }
-    Iterator end() const
+    iterator insertAfter(const_iterator it, const T &data)
     {
-      return Iterator(nullptr);
-    }
-    friend bool operator>(const ForwardList< T > &first, const ForwardList< T > &second)
-    {
-      auto first_start = first.begin();
-      auto second_start = second.begin();
-      auto first_end = first.end();
-      auto second_end = second.end();
-      while (first_start != first_end && second_start != second_end)
+      auto *newNode = new details::NodeOneWayList< T >(data);
+      newNode->next = it.ptr_->next;
+      it.ptr_->next = newNode;
+      if (it.ptr_ == fakeNode_)
       {
-        if (*first_start != *second_start)
+        if (!end_)
         {
-          return *first_start > *second_start;
+          end_ = begin_;
         }
-        ++first_start;
-        ++second_start;
+        begin_ = newNode;
       }
-      if (first_start == first_end && second_start != second_end)
+      else if (!newNode->next)
       {
-        return true;
+        end_ = newNode;
       }
-      else if (first_start != first_end && second_start == second_end)
+      size_++;
+      return iterator(it.ptr_->next);
+    }
+    template < typename ... Args >
+    iterator emplaceAfter(const_iterator pos, Args&&... args)
+    {
+      return insertAfter(pos, std::forward< T >(T(args...)));
+    }
+    iterator eraseAfter(const_iterator it)
+    {
+      auto next = it.ptr_->next;
+      if (next)
       {
-        return false;
+        it.ptr_->next = next->next;
+      }
+      if (it.ptr_ == fakeNode_)
+      {
+        begin_ = it.ptr_->next;
+      }
+      if (next)
+      {
+        delete next;
+      }
+      size_--;
+      if (size_ == 1)
+      {
+        end_ = nullptr;
+      }
+      else if (size_ == 0)
+      {
+        begin_ = nullptr;
+        end_ = nullptr;
+        fakeNode_->next = nullptr;
+      }
+      return iterator(it.ptr_->next);
+    }
+    iterator eraseAfter(const_iterator first, const_iterator second)
+    {
+      auto start = first;
+      while (first != second)
+      {
+        first = eraseAfter(start);
+      }
+      return iterator(second.ptr_);
+    }
+    void pushFront(const T &data)
+    {
+      auto *node = new details::NodeOneWayList< T >(data);
+      if (begin_)
+      {
+        node->next = begin_;
+        if (!end_)
+        {
+          end_ = begin_;
+        }
+        begin_ = node;
       }
       else
       {
-        return false;
+        begin_ = node;
+      }
+      fakeNode_->next = begin_;
+      size_++;
+    }
+    template< class ... Args >
+    void emplaceFront(Args&&... args)
+    {
+      pushFront(std::forward< T >(T(args...)));
+    }
+    void popFront()
+    {
+      eraseAfter(beforeBegin());
+    }
+    void resize(size_t count)
+    {
+      if (count < size_)
+      {
+        auto b = std::next(begin(), count);
+        eraseAfter(b, end());
+      }
+      else if (count > size_)
+      {
+        for (; size_ < count; size_++)
+        {
+          pushBack(T());
+        }
       }
     }
+    void resize(size_t count, const T &data)
+    {
+      if (count < size_)
+      {
+        auto b = std::next(begin(), count);
+        eraseAfter(b, end());
+      }
+      else if (count > size_)
+      {
+        for (; size_ < count; size_++)
+        {
+          pushBack(data);
+        }
+      }
+    }
+    void swap(ForwardList< T > &forwardList)
+    {
+      std::swap(forwardList.fakeNode_, fakeNode_);
+      std::swap(forwardList.begin_, begin_);
+      std::swap(forwardList.end_, end_);
+      std::swap(forwardList.size_, size_);
+    }
+    void spliceAfter(const_iterator pos, ForwardList< T > &other)
+    {
+      spliceAfter(pos, other, other.beforeBegin());
+    }
+    void spliceAfter(const_iterator pos, ForwardList< T > &other, const_iterator it)
+    {
+      auto next = pos.ptr_->next;
+      pos.ptr_->next = it.ptr_->next;
+      other.end_->next = next;
+      for (; it != other.end(); it++)
+      {
+        size_++;
+      }
+      other.begin_ = nullptr;
+      other.end_ = nullptr;
+    }
+    void spliceAfter(const_iterator pos, ForwardList< T > &other, const_iterator first, const_iterator last)
+    {
+      auto next = pos.ptr_->next;
+      pos.ptr_->next = first.ptr_->next;
+      auto start = first;
+      while (first != last)
+      {
+        start = first;
+        first++;
+      }
+      first.ptr_->next = last.ptr_;
+      start.ptr_->next = next;
+    }
+    void remove(const T &data)
+    {
+      remove(data, beforeBegin());
+    }
+    template< class Predicate >
+    void removeIf(Predicate p)
+    {
+      auto prev = beforeBegin();
+      auto start = begin();
+      for (; start != end(); start++)
+      {
+        if (p(start.ptr_->data))
+        {
+          remove(start.ptr_->data, prev);
+        }
+        prev = start;
+      }
+    }
+    void reverse()
+    {
+      reverse(begin_);
+      std::swap(begin_, end_);
+    }
+    friend bool operator==(const ForwardList< T > &lhr, const ForwardList< T > &rhs)
+    {
+      auto lhr_begin = lhr.begin();
+      auto rhs_begin = rhs.begin();
+      while (lhr_begin != lhr.end() && rhs_begin != rhs.end())
+      {
+        if (*lhr_begin != *rhs_begin)
+        {
+          return false;
+        }
+        lhr_begin++;
+        rhs_begin++;
+      }
+      return lhr_begin == lhr.end() && rhs_begin == rhs.end();
+    }
+    friend bool operator!=(const ForwardList< T > &lhr, const ForwardList< T > &rhs)
+    {
+      return !(lhr == rhs);
+    }
   private:
-    details::Node< T > *begin_;
-    details::Node< T > *end_;
+    details::NodeOneWayList< T > *fakeNode_;
+    details::NodeOneWayList< T > *begin_;
+    details::NodeOneWayList< T > *end_;
+    size_t size_;
+    void copy(const ForwardList< T > &forwardList)
+    {
+      auto res = dimkashelk::details::copy(forwardList.begin_);
+      begin_ = res.first;
+      end_ = res.second;
+      fakeNode_->next = begin_;
+    }
+    void remove(const T &data, const_iterator it)
+    {
+      auto i = it;
+      while (i != end())
+      {
+        if (i.ptr_ && i.ptr_->next->data == data)
+        {
+          eraseAfter(i);
+        }
+        else
+        {
+          i++;
+        }
+      }
+    }
+    void reverse(details::NodeOneWayList< T > *node)
+    {
+      if (node->next == nullptr)
+      {
+        return;
+      }
+      reverse(node->next);
+      node->next->next = node;
+      node->next = nullptr;
+    }
+    void pushBack(const T &data)
+    {
+      auto *node = new details::NodeOneWayList< T >(data);
+      if (!begin_)
+      {
+        begin_ = node;
+        fakeNode_->next = begin_;
+      }
+      else if (!end_)
+      {
+        end_ = node;
+        begin_->next = end_;
+      }
+      else
+      {
+        end_->next = node;
+        end_ = end_->next;
+      }
+      size_++;
+    }
   };
+  template< class T >
+  void swap(dimkashelk::ForwardList< T > &lhs, dimkashelk::ForwardList< T > &rhs)
+  {
+    lhs.swap(rhs);
+  }
 }
 #endif

@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "queue.h"
-#include "stack.h"
+#include <queue.h>
+#include <stack.h>
 #include "partOfArithmeticExpression.h"
 #include "getPolandArithmeticExpression.h"
 #include "getQueueOfArithmeticExpression.h"
@@ -16,24 +16,24 @@ int main(int argc, char *argv[])
     in.open(argv[1]);
     std::cin.rdbuf(in.rdbuf());
   }
-  std::string element;
-  dsk::Stack< dsk::PartOfArithmeticExpression > answer;
+  std::string expression;
+  dsk::Stack< dsk::PartOfArithExpr > answer;
   while (std::cin)
   {
-    std::getline(std::cin, element);
+    std::getline(std::cin, expression);
     if (!std::cin)
     {
       break;
     }
-    if (element.find_first_not_of(" \n") == std::string::npos)
+    if (expression.find_first_not_of(" \n") == std::string::npos)
     {
       continue;
     }
     try
     {
-      dsk::Queue< dsk::PartOfArithmeticExpression > data = dsk::getQueueOfArithmeticExpression(element);
-      dsk::Queue< dsk::PartOfArithmeticExpression > polandExpression = dsk::getPolandArithmeticExpression(data);
-      answer.push(dsk::PartOfArithmeticExpression(dsk::getResultArithmeticExpression(polandExpression)));
+      dsk::Queue< dsk::PartOfArithExpr > data = dsk::getQueueOfArithmeticExpression(expression);
+      dsk::Queue< dsk::PartOfArithExpr > polandExpression = dsk::getPolandArithExpr(data);
+      answer.pushFront(dsk::PartOfArithExpr(dsk::getResultArithmeticExpression(polandExpression)));
     }
     catch (const std::logic_error &e)
     {
@@ -43,13 +43,13 @@ int main(int argc, char *argv[])
   }
   if (!answer.empty())
   {
-    std::cout << answer.last().element.operand_;
-    answer.pop_back();
+    std::cout << answer.front().getOperand();
+    answer.popFront();
   }
   while (!answer.empty())
   {
-    std::cout << " " << answer.last().element.operand_;
-    answer.pop_back();
+    std::cout << " " << answer.front().getOperand();
+    answer.popFront();
   }
   std::cout << "\n";
   return 0;

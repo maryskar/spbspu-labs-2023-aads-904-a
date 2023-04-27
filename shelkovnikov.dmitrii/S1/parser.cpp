@@ -1,8 +1,7 @@
 #include "parser.h"
 #include <stdexcept>
 dimkashelk::Parser::Parser(std::string str):
-  data_(std::move(str)),
-  i_(0)
+  data_(std::move(str))
 {
   size_t firstNotSpace = data_.find_first_not_of(" \n");
   if (firstNotSpace == std::string::npos)

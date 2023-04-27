@@ -1,31 +1,38 @@
 #ifndef SPBSPU_LABS_2023_AADS_904_A_PART_H
 #define SPBSPU_LABS_2023_AADS_904_A_PART_H
 #include <string>
+#include "parenthesis.h"
+#include "operator.h"
 namespace dimkashelk
 {
-  struct PartOfArithmeticExpression
+  class PartOfArithExpr
   {
-    bool isDigit;
-    bool isBracket;
+  public:
+    explicit PartOfArithExpr(Parenthesis parenthesis);
+    explicit PartOfArithExpr(Operator oper);
+    explicit PartOfArithExpr(long long number);
+    PartOfArithExpr(const PartOfArithExpr &part);
+    PartOfArithExpr(PartOfArithExpr &&part);
+    PartOfArithExpr &operator=(const PartOfArithExpr &part);
+    PartOfArithExpr &operator=(PartOfArithExpr &&part);
+    bool isNumber() const;
+    bool isParenthesis() const;
+    Operator getOperator() const;
+    Parenthesis getParenthesis() const;
+    long long getOperand() const;
+  private:
+    bool isNumber_;
+    bool isParenthesis_;
     union element
     {
       long long operand_;
-      char operator_;
-      char bracket_;
-      explicit element(long long o):
-        operand_(o)
-      {}
-      explicit element(char o):
-        operator_(o)
-      {}
-      explicit element(const std::string &str);
+      Operator operator_;
+      Parenthesis parenthesis_;
+      explicit element(long long o);
+      explicit element(Operator oper);
+      explicit element(Parenthesis parenthesis);
     } element;
-    explicit PartOfArithmeticExpression(const std::string &str);
-    explicit PartOfArithmeticExpression(long long number);
-    PartOfArithmeticExpression(const PartOfArithmeticExpression &part);
-    PartOfArithmeticExpression(PartOfArithmeticExpression &&part);
-    PartOfArithmeticExpression &operator=(const PartOfArithmeticExpression &part);
   };
-  bool isGreaterPriority(const PartOfArithmeticExpression &lhs, const PartOfArithmeticExpression &rhs);
+  bool isGreaterPriority(const Operator &lhs, const Operator &rhs);
 }
 #endif
