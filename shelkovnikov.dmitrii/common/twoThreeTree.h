@@ -22,19 +22,19 @@ namespace dimkashelk
       node_type *fourth;
       node_type *parent;
       NodeOfTwoThreeTree():
-        key(::operator new[](sizeof(Key) * 3)),
-        value(::operator new[](sizeof(Value) * 3)),
+        key(static_cast< Key* >(::operator new[](sizeof(Key) * 3))),
+        value(static_cast< Value* >(::operator new[](sizeof(Value) * 3))),
         size(0),
         first(nullptr),
         second(nullptr),
         third(nullptr),
         fourth(nullptr),
         parent(nullptr),
-        compare_(Compare{})
+        compare_(Compare())
       {}
       NodeOfTwoThreeTree(const Key &k, const Value &v):
-        key(::operator new[](sizeof(Key) * 3)),
-        value(::operator new[](sizeof(Value) * 3)),
+        key(static_cast< Key* >(::operator new[](sizeof(Key) * 3))),
+        value(static_cast< Value* >(::operator new[](sizeof(Value) * 3))),
         size(1),
         first(nullptr),
         second(nullptr),
@@ -47,15 +47,15 @@ namespace dimkashelk
         value[0] = value;
       }
       NodeOfTwoThreeTree(const Key &k, const Value &v, node_type *fi, node_type *s, node_type *t, node_type *fo, node_type *p):
-        key(::operator new[](sizeof(Key) * 3)),
-        value(::operator new[](sizeof(Value) * 3)),
+        key(static_cast< Key* >(::operator new[](sizeof(Key) * 3))),
+        value(static_cast< Value* >(::operator new[](sizeof(Value) * 3))),
         size(1),
         first(fi),
         second(s),
         third(t),
         fourth(fo),
         parent(p),
-        compare_(Compare{})
+        compare_(Compare())
       {
         key[0] = key;
         value[0] = value;
