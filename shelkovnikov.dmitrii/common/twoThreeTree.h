@@ -1,5 +1,5 @@
-#ifndef COMMON_BINARYSEARCHTREE_H
-#define COMMON_BINARYSEARCHTREE_H
+#ifndef SPBSPU_LABS_2023_AADS_904_A_BINARYSEARCHTREE_H
+#define SPBSPU_LABS_2023_AADS_904_A_BINARYSEARCHTREE_H
 #include <cstddef>
 #include <algorithm>
 #include <iterator>
