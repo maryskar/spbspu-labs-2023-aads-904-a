@@ -72,7 +72,6 @@ namespace chemodurov
    private:
     iterator fake_;
     iterator last_;
-    void copy(const ForwardList< T > & other);
   };
 
   template< typename T >
@@ -106,17 +105,8 @@ namespace chemodurov
 
   template< typename T >
   ForwardList< T >::ForwardList(const this_t & rhs):
-   ForwardList()
-  {
-    if (rhs.empty())
-    {
-      return;
-    }
-    std::pair< detail::List< T > *, detail::List< T > * > temp = detail::copyList(rhs.fake_.node_->next);
-    fake_.node_->next = temp.first;
-    last_ = temp.second;
-    last_.node_->next = fake_.node_;
-  }
+   ForwardList(rhs.begin(), rhs.end())
+  {}
 
   template< typename T >
   ForwardList< T >::ForwardList(this_t && rhs):
@@ -209,7 +199,7 @@ namespace chemodurov
     }
     this_t temp(rhs);
     clear();
-    *this = std::move(temp);
+    swap(temp);
     return *this;
   }
 
@@ -221,7 +211,7 @@ namespace chemodurov
       return *this;
     }
     clear();
-    swap(*this, rhs);
+    swap(rhs);
     return *this;
   }
 
@@ -442,6 +432,23 @@ namespace chemodurov
       }
     }
   }
+
+  template< typename T >
+  void ForwardList< T >::reverse() noexcept
+  {
+    iterator beg = begin();
+    iterator reversed = beg;
+    iterator end = end();
+    for (iterator i = beg, j = ++(begin()); j != end; i = j, ++j)
+    {
+      i.node_->next = reversed.node_;
+      reversed = i;
+    }
+    last_.node_->next = reversed.node_;
+    fake_.node_->next = last_.node_;
+    last_ = beg;
+  }
+
   template< typename T >
   bool operator==(const ForwardList< T > & lhs, const ForwardList< T > & rhs)
   {
