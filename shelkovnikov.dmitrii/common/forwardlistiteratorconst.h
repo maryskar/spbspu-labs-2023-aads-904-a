@@ -42,7 +42,7 @@ namespace dimkashelk
     }
     bool operator!=(const ForwardListIteratorConst &other) const
     {
-      return ptr_ != other.ptr_;
+      return !(ptr_ == other.ptr_);
     }
   private:
     details::NodeOneWayList< T > *ptr_;
