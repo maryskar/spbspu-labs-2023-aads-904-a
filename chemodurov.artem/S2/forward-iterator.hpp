@@ -53,7 +53,7 @@ namespace chemodurov
   {
     assertNotNullptr();
     node_ = node_->next;
-    return node_;
+    return ForwardIterator< T >(node_);
   }
 
   template< typename T >
