@@ -125,12 +125,7 @@ namespace dimkashelk
     }
     void clear() noexcept
     {
-      while (begin_)
-      {
-        details::NodeOneWayList< T > *node = begin_;
-        begin_ = begin_->next;
-        delete node;
-      }
+      dimkashelk::details::freeList(begin_);
       begin_ = nullptr;
       end_ = nullptr;
       size_ = 0;
