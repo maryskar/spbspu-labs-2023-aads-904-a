@@ -8,5 +8,6 @@ namespace calculator
   long long multiplication(long long a, long long b);
   long long division(long long a, long long b);
   long long remainder(long long a, long long b);
+  bool isOperation(std::string op);
 }
 #endif

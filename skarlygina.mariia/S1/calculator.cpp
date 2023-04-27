@@ -58,3 +58,8 @@ long long calculator::remainder(long long a, long long b)
   }
   return a % b;
 }
+
+bool calculator::isOperation(std::string op)
+{
+  return (op == "+") || (op == "-") || (op == "*") || (op == "/") || (op == "%");
+}
