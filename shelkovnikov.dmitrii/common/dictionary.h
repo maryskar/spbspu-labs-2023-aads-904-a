@@ -16,7 +16,7 @@ namespace dimkashelk
     using const_iterator_t = dimkashelk::ForwardListIteratorConst< value_type >;
     Dictionary():
       list_(),
-      compare_(Compare{})
+      compare_(Compare())
     {}
     Dictionary(const dict_type &dict):
       list_(dict.list_),
@@ -28,7 +28,7 @@ namespace dimkashelk
     {}
     Dictionary(std::initializer_list< value_type > init):
       list_(init),
-      compare_(Compare{})
+      compare_(Compare())
     {}
     ~Dictionary() = default;
     dict_type &operator=(const dict_type &other)
