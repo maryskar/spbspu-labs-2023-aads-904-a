@@ -56,7 +56,7 @@ namespace chemodurov
     void safe_pop_front();
     void resize(size_type count);
     void resize(size_type count, const_reference value);
-    void swap(this_t & other);
+    void swap(this_t & other) noexcept;
     void splice_after(const_iterator pos, this_t & other);
     void splice_after(const_iterator pos, this_t && other);
     void splice_after(const_iterator pos, this_t & other, const_iterator it);
@@ -68,23 +68,22 @@ namespace chemodurov
     void remove_if(UnaryPredicate p);
     void reverse() noexcept;
    private:
-    char buf_[sizeof(detail::List< T >)];
     iterator fake_;
     iterator last_;
   };
 
   template< typename T >
   ForwardList< T >::ForwardList():
-   fake_(new (buf_) detail::List< T >),
+   fake_(static_cast< detail::List< T > * >(::operator new (sizeof(detail::List< T >)))),
    last_(fake_)
   {
-    fake_.node_->next = fake_;
+    fake_.node_->next = fake_.node_;
   }
 
   template< typename T >
   bool ForwardList< T >::empty() const noexcept
   {
-    return fake_.node_->next == fake_;
+    return fake_.node_->next == fake_.node_;
   }
 
   template< typename T >
@@ -92,13 +91,14 @@ namespace chemodurov
   {
     last_.node_->next = nullptr;
     detail::deleteList(fake_.node_->next);
-    fake_.node_->next = fake_;
+    fake_.node_->next = fake_.node_;
   }
 
   template< typename T >
   ForwardList< T >::~ForwardList()
   {
     clear();
+    ::operator delete(fake_.node_);
   }
 
   template< typename T >
@@ -112,20 +112,18 @@ namespace chemodurov
     std::pair< detail::List< T > *, detail::List< T > * > temp = detail::copyList(rhs.fake_.node_->next);
     fake_.node_->next = temp.first;
     last_ = temp.second;
-    last_.node_->next = fake_;
+    last_.node_->next = fake_.node_;
   }
 
   template< typename T >
   ForwardList< T >::ForwardList(this_t && rhs):
-   buf_(rhs.buf_),
-   fake_(std::addressof(buf_)),
-   last_(rhs.last_)
+   ForwardList()
   {
-    *(rhs.begin()) = rhs.fake_;
-    if (!empty())
-    {
-      last_.node_->next = fake_;
-    }
+    fake_.node_->next = rhs.fake_.node_->next;
+    last_ = rhs.last_;
+    rhs.fake_.node_->next = rhs.fake_.node_;
+    rhs.last_ = rhs.fake_;
+    last_.node_->next = fake_.node_;
   }
 
   template< typename T >
@@ -220,14 +218,7 @@ namespace chemodurov
       return *this;
     }
     clear();
-    buf_ = rhs.buf_;
-    fake_ = std::addressof(buf_);
-    last_ = rhs.last_;
-    *(rhs.begin()) = rhs.fake_;
-    if (!empty())
-    {
-      last_.node_->next = fake_;
-    }
+    swap(*this, rhs);
     return *this;
   }
 
@@ -239,7 +230,7 @@ namespace chemodurov
   }
 
   template< typename T >
-  typename ForwardList< T >::iterator ForwardList< T >::insert_after(ForwardList::const_iterator pos, T && value)
+  typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, T && value)
   {
     pos.node_->next = new detail::List< T >{std::move(value), pos.node_->next};
     return ++pos;
@@ -259,7 +250,7 @@ namespace chemodurov
   template< typename InputIt >
   typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, InputIt first, InputIt last)
   {
-    for (first; first != last_; ++first)
+    for (first; first != last; ++first)
     {
       pos = insert_after(pos, *first);
     }
@@ -321,9 +312,7 @@ namespace chemodurov
   template< typename T >
   void ForwardList< T >::pop_front() noexcept
   {
-    detail::List< T > * temp = cbegin().node_->next;
-    delete begin().node_;
-    fake_.node_->next = temp;
+    erase_after(cbefore_begin());
   }
 
   template< typename T >
@@ -369,7 +358,7 @@ namespace chemodurov
   }
 
   template< typename T >
-  void ForwardList< T >::swap(this_t & other)
+  void ForwardList< T >::swap(this_t & other) noexcept
   {
     std::swap(fake_, other.fake_);
     std::swap(last_, other.last_);
@@ -390,16 +379,16 @@ namespace chemodurov
   template< typename T >
   void ForwardList< T >::splice_after(const_iterator pos, this_t & other, const_iterator it)
   {
-    const_iterator posplus1 = pos;
-    ++posplus1;
-    if (pos == it && posplus1 == it)
+    const_iterator moved_pos = pos;
+    ++moved_pos;
+    if (pos == it && moved_pos == it)
     {
       return;
     }
     detail::List< T > * temp = pos.node_->next;
     pos.node_->next = it.node_->next;
     other.last_.node_->next = temp;
-    it.node_->next = other.fake_;
+    it.node_->next = other.fake_.node_;
     other.last_ = it;
   }
 
@@ -407,6 +396,23 @@ namespace chemodurov
   void ForwardList< T >::splice_after(const_iterator pos, this_t && other, const_iterator it)
   {
     splice_after(pos, other, it);
+  }
+
+  template< typename T >
+  void ForwardList< T >::splice_after(const_iterator pos, this_t & other, const_iterator first, const_iterator last)
+  {
+    detail::List< T > * temp = pos.node_->next;
+    iterator moved_first = first;
+    ++moved_first;
+    iterator it = insert_after(pos, moved_first, last);
+    it.node_->next = temp;
+    first.node_->next = last.node_;
+  }
+
+  template< typename T >
+  void ForwardList< T >::splice_after(const_iterator pos, this_t && other, const_iterator first, const_iterator last)
+  {
+    splice_after(pos, other, first, last);
   }
 
   template< typename T >
