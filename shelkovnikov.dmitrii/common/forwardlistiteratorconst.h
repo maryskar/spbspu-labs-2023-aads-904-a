@@ -32,9 +32,9 @@ namespace dimkashelk
     {
       return ptr_->data;
     }
-    const T &operator->() const
+    const T *operator->() const
     {
-      return ptr_->data;
+      return std::addressof(ptr_->data);
     }
     bool operator==(const ForwardListIteratorConst &other) const
     {

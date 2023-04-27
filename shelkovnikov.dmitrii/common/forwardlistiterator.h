@@ -26,13 +26,13 @@ namespace dimkashelk
       (*this)++;
       return result;
     }
-    T &operator*() const
+    T &operator*()
     {
       return ptr_->data;
     }
-    T &operator->() const
+    T *operator->()
     {
-      return ptr_->data;
+      return std::addressof(ptr_->data);
     }
     bool operator==(const ForwardListIterator &other) const
     {
