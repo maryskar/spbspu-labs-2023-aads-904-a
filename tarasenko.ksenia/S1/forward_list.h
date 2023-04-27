@@ -1,7 +1,6 @@
 #ifndef FORWARD_LIST_H
 #define FORWARD_LIST_H
 #include <memory>
-#include <algorithm>
 #include "node.h"
 namespace tarasenko
 {
