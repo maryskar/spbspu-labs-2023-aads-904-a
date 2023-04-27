@@ -15,7 +15,6 @@ namespace dimkashelk
     using value_type = std::pair< Key, Value >;
     using pointer = std::pair< Key, Value >*;
     using reference = std::pair< Key, Value >&;
-    Value value;
     TwoThreeTreeIterator &operator++()
     {
       next();
@@ -29,7 +28,11 @@ namespace dimkashelk
     }
     reference operator*()
     {
-      return key;
+      return value;
+    }
+    pointer operator->()
+    {
+      return std::addressof(value);
     }
     bool operator==(const TwoThreeTreeIterator &other) const
     {
@@ -41,12 +44,11 @@ namespace dimkashelk
     }
   private:
     using node_type = details::NodeOfTwoThreeTree< Key, Value, Compare >;
-    Key key;
+    value_type value;
     node_type *node_;
     node_type *prev_;
     explicit TwoThreeTreeIterator(node_type *node):
-      value((node == nullptr)? Value(): node->value[0]),
-      key((node == nullptr)? Key(): node->key[0]),
+      value{(node == nullptr)? Key(): node->key[0], (node == nullptr)? Value(): node->value[0]},
       node_(node),
       prev_(nullptr)
     {};
@@ -75,7 +77,7 @@ namespace dimkashelk
         }
         else
         {
-          if (key == node_->key[1])
+          if (value.first == node_->key[1])
           {
             prev_ = goUp(node_);
             node_ = prev_->parent;
@@ -136,8 +138,8 @@ namespace dimkashelk
     }
     void set(unsigned ind)
     {
-      key = node_->key[ind];
-      value = node_->value[ind];
+      value.first = node_->key[ind];
+      value.second = node_->value[ind];
     }
   };
 }
