@@ -40,7 +40,7 @@ namespace dimkashelk
     }
     bool operator!=(const TwoThreeTreeIterator &other) const
     {
-      return node_ != other.node_;
+      return !(node_ == other.node_);
     }
   private:
     using node_type = details::NodeOfTwoThreeTree< Key, Value, Compare >;
