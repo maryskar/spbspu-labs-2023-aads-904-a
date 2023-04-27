@@ -12,9 +12,9 @@ namespace dimkashelk
   public:
     using iterator_category = std::forward_iterator_tag;
     using difference_type = std::ptrdiff_t;
-    using value_type = Key;
-    using pointer = Key*;
-    using reference = Key&;
+    using value_type = std::pair< Key, Value >;
+    using pointer = std::pair< Key, Value >*;
+    using reference = std::pair< Key, Value >&;
     Value value;
     TwoThreeTreeIterator &operator++()
     {
@@ -27,7 +27,7 @@ namespace dimkashelk
       next();
       return result;
     }
-    Key &operator*()
+    reference operator*()
     {
       return key;
     }
