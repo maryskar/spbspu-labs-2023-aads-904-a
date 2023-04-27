@@ -438,8 +438,8 @@ namespace chemodurov
   {
     iterator beg = begin();
     iterator reversed = beg;
-    iterator end = end();
-    for (iterator i = beg, j = ++(begin()); j != end; i = j, ++j)
+    iterator end_ = end();
+    for (iterator i = beg, j = ++(begin()); j != end_; i = j, ++j)
     {
       i.node_->next = reversed.node_;
       reversed = i;
