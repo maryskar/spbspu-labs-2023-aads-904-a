@@ -21,7 +21,6 @@ Queue< T > readElements(std::ifstream& file)
         queue.push(T(token));
         line.erase(0, pos + 1);
       }
-      // add last element
       queue.push(T(line));
     }
     file.close();

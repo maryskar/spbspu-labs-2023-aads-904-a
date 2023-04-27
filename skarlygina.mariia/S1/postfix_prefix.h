@@ -4,7 +4,7 @@
 #include "stack.h"
 namespace operation
 {
-  long long postfix();
-  long long prefix();
+  Queue< std::string > makePostfix(Queue< std::string >& infixQueue);
+  Queue< std::string > makePrefix(Queue< std::string >& infixQueue);
 }
 #endif
