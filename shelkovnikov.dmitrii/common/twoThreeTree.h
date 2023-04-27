@@ -10,8 +10,8 @@ namespace details
   {
   public:
     using node_type = NodeOfTwoThreeTree< Key, Value, Compare >;
-    Key key[3];
-    Value value[3];
+    Key *key;
+    Value *value;
     unsigned size;
     node_type *first;
     node_type *second;
@@ -19,8 +19,8 @@ namespace details
     node_type *fourth;
     node_type *parent;
     NodeOfTwoThreeTree():
-      key{Key(), Key(), Key()},
-      value{Value(), Value(), Value()},
+      key(::operator new[](sizeof(Key) * 3)),
+      value(::operator new[](sizeof(Value) * 3)),
       size(0),
       first(nullptr),
       second(nullptr),
@@ -30,8 +30,8 @@ namespace details
       compare_(Compare{})
     {}
     NodeOfTwoThreeTree(const Key &k, const Value &v):
-      key{k, Key(), Key()},
-      value{v, Value(), Value()},
+      key(::operator new[](sizeof(Key) * 3)),
+      value(::operator new[](sizeof(Value) * 3)),
       size(1),
       first(nullptr),
       second(nullptr),
@@ -39,10 +39,13 @@ namespace details
       fourth(nullptr),
       parent(nullptr),
       compare_(Compare())
-    {}
+    {
+      key[0] = key;
+      value[0] = value;
+    }
     NodeOfTwoThreeTree(const Key &k, const Value &v, node_type *fi, node_type *s, node_type *t, node_type *fo, node_type *p):
-      key{k, Key(), Key()},
-      value{v, Value(), Value()},
+      key(::operator new[](sizeof(Key) * 3)),
+      value(::operator new[](sizeof(Value) * 3)),
       size(1),
       first(fi),
       second(s),
@@ -50,7 +53,15 @@ namespace details
       fourth(fo),
       parent(p),
       compare_(Compare{})
-    {}
+    {
+      key[0] = key;
+      value[0] = value;
+    }
+    ~NodeOfTwoThreeTree()
+    {
+      ::operator delete[](key);
+      ::operator delete[](value);
+    }
     bool isList() const
     {
       return (first == nullptr) && (second == nullptr) && (third == nullptr);
