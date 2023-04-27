@@ -26,6 +26,10 @@ namespace dimkashelk
       list_(std::move(dict.list_)),
       compare_(dict.compare_)
     {}
+    Dictionary(std::initializer_list< value_type > init):
+      list_(init),
+      compare_(Compare{})
+    {}
     ~Dictionary() = default;
     dict_type &operator=(const dict_type &other)
     {
