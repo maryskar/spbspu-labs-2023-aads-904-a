@@ -7,7 +7,7 @@
 Queue< std::string > convertStringToInfix(std::string str)
 {
   Queue< std::string > infix_queue;
-  std::stringstream string_stream(str);
+  std::stringstream string_stream(str); 
   std::string token;
   while (string_stream >> token)
   {
