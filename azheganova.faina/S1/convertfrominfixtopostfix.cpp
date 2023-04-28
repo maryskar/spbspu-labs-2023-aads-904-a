@@ -33,18 +33,9 @@ void convertFromInfixToPostfix(q_n & queue, s_n & stack, q_n & postfix)
       }
       stack.pop();
     }
-    else if (element == "+" || element == "-")
+    else if (isOperator(element))
     {
-      while (!stack.isEmpty() && isOperator(stack.drop()))
-      {
-        postfix.push(stack.drop());
-        stack.pop();
-      }
-      stack.push(element);
-    }
-    else if (element == "*" || element == "/" || element == "%")
-    {
-      while (!stack.isEmpty() && ((stack.drop() == "*" || stack.drop() == "/" || stack.drop() == "%")))
+      while (!stack.isEmpty() && ((stack.drop() == "*") || (stack.drop() == "/") || (stack.drop() == "%")))
       {
         postfix.push(stack.drop());
         stack.pop();
