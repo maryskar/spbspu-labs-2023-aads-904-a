@@ -20,13 +20,11 @@ namespace azheganova
     T & drop() const;
   private:
     details::ListNode< T > * top_;
-    size_t size_;
   };
 
   template< typename T >
   Stack< T >::Stack():
-    top_(nullptr),
-    size_(0)
+    top_(nullptr)
   {}
 
   template< typename T >
@@ -63,16 +61,8 @@ namespace azheganova
   template < typename T >
   void Stack< T >::push(const T & rhs)
   {
-    if (top_ == nullptr)
-    {
-      top_ = new details::ListNode< T >{rhs, nullptr};
-    }
-    else
-    {
-      details::ListNode< T > * tmp = new details::ListNode< T >{rhs, top_};
-      top_ = tmp;
-    }
-    size_++;
+    details::ListNode< T > * tmp = new details::ListNode< T >{rhs, top_};
+    top_ = tmp;
   }
 
   template< typename T >
@@ -85,13 +75,12 @@ namespace azheganova
     details::ListNode< T > * tmp = top_->next_;
     delete top_;
     top_ = tmp;
-    size_--;
   }
 
   template< typename T >
   bool Stack< T >::isEmpty() const
   {
-    return size_ == 0;
+    return top_ == nullptr;
   }
 
   template< typename T >
