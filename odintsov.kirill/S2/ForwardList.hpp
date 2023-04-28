@@ -338,12 +338,6 @@ namespace odintsov {
     Iter eraseAfter(ConstIter first, ConstIter last)
     {
       assertIterInside(first);
-      const ConstIter end = cend();
-      for (ConstIter next = std::next(first); next != last; ++next) {
-        if (next == end) {
-          throw std::invalid_argument("ForwardList erase range failed, iterator to last elem incorrect");
-        }
-      }
       return unsafeEraseAfter(first, last);
     }
 
