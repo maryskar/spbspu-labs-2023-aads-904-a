@@ -18,7 +18,6 @@ long long hr::sum(long long a, long long b)
 
 long long hr::subtract(long long a, long long b)
 {
-  
   if ((b > 0) && (min + b > a))
   {
     throw std::overflow_error("Subtraction overflow");
