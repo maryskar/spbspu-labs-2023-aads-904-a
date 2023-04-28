@@ -11,6 +11,8 @@
 
 int main(int argc, char* argv[])
 {
+  namespace hr = hrushchev;
+
   if (argc > 2)
   {
     std::cerr << "Error arg\n";
@@ -26,11 +28,11 @@ int main(int argc, char* argv[])
       std::cerr << "Unable to open file: " << argv[1] << "\n";
       return 1;
     }
-  }  
+  }
   std::istream& input = (argc == 2) ? file_input : std::cin;
 
   std::string line;
-  Stack < long long > results;
+  hr::Stack < long long > results;
   while (std::getline(input, line))
   {
     if (!input)
@@ -41,11 +43,11 @@ int main(int argc, char* argv[])
     {
       continue;
     }
-    Queue< std::string > infix = convertStringToInfix(line);
+    hr::Queue< std::string > infix = hr::convertStringToInfix(line);
     try
     {
-      Queue< std::string > postfix = convertInfixToPostfix(infix);
-      long long result = calculatePostfix(postfix);
+      hr::Queue< std::string > postfix = hr::convertInfixToPostfix(infix);
+      long long result = hr::calculatePostfix(postfix);
       results.push(result);
     }
     catch (const std::exception& e)

@@ -4,6 +4,8 @@
 #include "queue.hpp"
 #include "stack.hpp"
 
+namespace hr = hrushchev;
+
 bool isHighPriorOperator(std::string op)
 {
   return (op == "*") || (op == "/") || (op == "%");
@@ -19,12 +21,10 @@ bool isOperator(std::string op)
   return isLowPriorOperator(op) || isHighPriorOperator(op);
 }
 
-
-
-Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
+hr::Queue< std::string > hr::convertInfixToPostfix(hr::Queue< std::string >& infixQueue)
 {
-  Queue< std::string > postfixQueue;
-  Stack< std::string > stack;
+  hr::Queue< std::string > postfixQueue;
+  hr::Stack< std::string > stack;
   while (!infixQueue.isEmpty())
   {
     std::string token = infixQueue.get();

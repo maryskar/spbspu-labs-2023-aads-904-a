@@ -4,9 +4,11 @@
 #include "stack.hpp"
 #include "arithmetic.hpp"
 
-long long calculatePostfix(Queue< std::string >& postfixQueue)
+namespace hr = hrushchev;
+
+long long hr::calculatePostfix(hr::Queue< std::string >& postfixQueue)
 {
-  Stack< long long > stack;
+  hr::Stack< long long > stack;
   while (!postfixQueue.isEmpty())
   {
     std::string token = postfixQueue.get();
@@ -24,23 +26,23 @@ long long calculatePostfix(Queue< std::string >& postfixQueue)
       long long result;
       if (token == "+")
       {
-        result = sum(operand1, operand2);
+        result = hr::sum(operand1, operand2);
       }
       else if (token == "-")
       {
-        result = subtract(operand1, operand2);
+        result = hr::subtract(operand1, operand2);
       }
       else if (token == "*")
       {
-        result = multiply(operand1, operand2);
+        result = hr::multiply(operand1, operand2);
       }
       else if (token == "/")
       {
-        result = division(operand1, operand2);
+        result = hr::division(operand1, operand2);
       }
       else if (token == "%")
       {
-        result = remaind(operand1, operand2);
+        result = hr::remaind(operand1, operand2);
       }
       stack.push(result);
     }

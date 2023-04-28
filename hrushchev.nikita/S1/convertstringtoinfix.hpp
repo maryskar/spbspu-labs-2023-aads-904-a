@@ -3,7 +3,10 @@
 #include <string>
 #include "queue.hpp"
 
-Queue< std::string > convertStringToInfix(std::string str);
+namespace hrushchev
+{
+	Queue< std::string > convertStringToInfix(std::string str);
+}
 
 #endif
 

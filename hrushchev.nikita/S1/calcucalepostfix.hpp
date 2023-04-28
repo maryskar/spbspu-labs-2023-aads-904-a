@@ -3,7 +3,10 @@
 #include <string>
 #include "queue.hpp"
 
-long long calculatePostfix(Queue< std::string >& postfixQueue);
+namespace hrushchev
+{
+	long long calculatePostfix(Queue< std::string >& postfixQueue);
+}
 
 #endif
 

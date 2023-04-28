@@ -2,7 +2,9 @@
 #include <stdexcept>
 #include <limits>
 
-long long sum(long long a, long long b)
+namespace hr = hrushchev;
+
+long long hr::sum(long long a, long long b)
 {
   constexpr long long max = std::numeric_limits< int long long >::max();
   if (max - a < b)
@@ -12,7 +14,7 @@ long long sum(long long a, long long b)
   return a + b;
 }
 
-long long subtract(long long a, long long b)
+long long hr::subtract(long long a, long long b)
 {
   constexpr long long min = std::numeric_limits< long long >::min();
   if ((b > 0) && (min + b > a))
@@ -22,7 +24,7 @@ long long subtract(long long a, long long b)
   return a - b;
 }
 
-long long multiply(long long a, long long b)
+long long hr::multiply(long long a, long long b)
 {
   constexpr long long max = std::numeric_limits< int long long >::max();
   constexpr long long min = std::numeric_limits< int long long >::min();
@@ -45,7 +47,7 @@ long long multiply(long long a, long long b)
   return a * b;
 }
 
-long long division(long long a, long long b)
+long long hr::division(long long a, long long b)
 {
   if (b == 0)
   {
@@ -54,7 +56,7 @@ long long division(long long a, long long b)
   return a / b;
 }
 
-long long remaind(long long a, long long b)
+long long hr::remaind(long long a, long long b)
 {
   if (b == 0)
   {
