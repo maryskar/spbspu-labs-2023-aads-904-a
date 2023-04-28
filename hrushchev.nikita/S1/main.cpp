@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
   std::ifstream file_input;
   if(argc == 2)
   {
-    std::ifstream file_input(argv[1]);
+    file_input.open(argv[1]);
     if (!file_input)
     {
       std::cerr << "Unable to open file: " << argv[1] << "\n";
