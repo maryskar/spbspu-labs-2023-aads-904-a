@@ -4,9 +4,11 @@
 
 namespace hr = hrushchev;
 
+constexpr long long max = std::numeric_limits< long long >::max();
+constexpr long long min = std::numeric_limits< long long >::min();
+
 long long hr::sum(long long a, long long b)
 {
-  constexpr long long max = std::numeric_limits< int long long >::max();
   if (max - a < b)
   {
     throw std::overflow_error("Sum overflow");
@@ -16,7 +18,7 @@ long long hr::sum(long long a, long long b)
 
 long long hr::subtract(long long a, long long b)
 {
-  constexpr long long min = std::numeric_limits< long long >::min();
+  
   if ((b > 0) && (min + b > a))
   {
     throw std::overflow_error("Subtraction overflow");
@@ -26,8 +28,6 @@ long long hr::subtract(long long a, long long b)
 
 long long hr::multiply(long long a, long long b)
 {
-  constexpr long long max = std::numeric_limits< int long long >::max();
-  constexpr long long min = std::numeric_limits< int long long >::min();
   if ((a > 0) && ((max / a) < b))
   {
     throw std::overflow_error("Multiply overflow");
