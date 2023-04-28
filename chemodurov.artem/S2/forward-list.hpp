@@ -72,6 +72,7 @@ namespace chemodurov
    private:
     iterator fake_;
     iterator last_;
+    void moveLastTo(const_iterator it);
   };
 
   template< typename T >
@@ -219,14 +220,16 @@ namespace chemodurov
   typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, const_reference value)
   {
     pos.node_->next = new detail::List< T >{value, pos.node_->next};
-    return iterator(pos.node_->next);
+    moveLastTo(++pos);
+    return iterator(pos.node_);
   }
 
   template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, T && value)
   {
     pos.node_->next = new detail::List< T >{std::move(value), pos.node_->next};
-    return iterator(pos.node_->next);
+    moveLastTo(++pos);
+    return iterator(pos.node_);
   }
 
   template< typename T >
@@ -236,7 +239,7 @@ namespace chemodurov
     {
       pos = insert_after(pos, value);
     }
-    return pos;
+    return iterator(pos.node_);
   }
 
   template< typename T >
@@ -247,7 +250,7 @@ namespace chemodurov
     {
       pos = insert_after(pos, *first);
     }
-    return pos;
+    return iterator(pos.node_);
   }
 
   template< typename T >
@@ -261,15 +264,25 @@ namespace chemodurov
   typename ForwardList< T >::iterator ForwardList< T >::emplace_after(const_iterator pos, Args && ... args)
   {
     pos.node_->next = new detail::List< T >{T(args...), pos.node_->next};
-    return ++pos;
+    moveLastTo(++pos);
+    return iterator(pos.node_);
   }
 
   template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::erase_after(const_iterator pos)
   {
+    if (empty())
+    {
+      return end();
+    }
+    if (pos == last_)
+    {
+      erase_after(fake_);
+    }
     detail::List< T > * temp = pos.node_->next->next;
     delete pos.node_->next;
     pos.node_->next = temp;
+    moveLastTo(pos);
     return iterator(temp);
   }
 
@@ -280,7 +293,7 @@ namespace chemodurov
     {
       erase_after(first);
     }
-    return last;
+    return iterator(last.node_);
   }
 
   template< typename T >
@@ -447,6 +460,15 @@ namespace chemodurov
     last_.node_->next = reversed.node_;
     fake_.node_->next = last_.node_;
     last_ = beg;
+  }
+
+  template< typename T >
+  void ForwardList< T >::moveLastTo(const_iterator it)
+  {
+    if (last_.node_->next != fake_.node_)
+    {
+      last_ = iterator(it.node_);
+    }
   }
 
   template< typename T >
