@@ -3,10 +3,9 @@
 
 #include <cstddef>
 #include <initializer_list>
-#include <memory>
-#include <new>
+#include <iterator>
 #include <stdexcept>
-#include <type_traits>
+#include <utility>
 
 namespace detail {
   template< typename T >
@@ -16,7 +15,7 @@ namespace detail {
   };
 
   template< typename T >
-  struct ForwardIterator {
+  struct ForwardIterator: public std::iterator< std::forward_iterator_tag, T > {
     Node< T >* nodePtr;
 
     ForwardIterator():
@@ -44,12 +43,12 @@ namespace detail {
       return copy;
     }
 
-    T& operator*()
+    T& operator*() const
     {
       return nodePtr->data;
     }
 
-    T* operator->()
+    T* operator->() const
     {
       return std::addressof(nodePtr->data);
     }
@@ -64,6 +63,57 @@ namespace detail {
       return nodePtr != rhs.nodePtr;
     }
   };
+
+  template< typename T >
+  struct ConstForwardIterator: public std::iterator< std::forward_iterator_tag, T > {
+    const Node< T >* nodePtr;
+
+    ConstForwardIterator():
+      nodePtr(nullptr)
+    {}
+
+    ConstForwardIterator(const Node< T >* ptr):
+      nodePtr(ptr)
+    {}
+
+    ConstForwardIterator& operator++()
+    {
+      if (nodePtr) {
+        nodePtr = nodePtr->next;
+      }
+      return *this;
+    }
+
+    ConstForwardIterator operator++(int)
+    {
+      ConstForwardIterator< T > copy(*this);
+      if (nodePtr) {
+        nodePtr = nodePtr->next;
+      }
+      return copy;
+    }
+
+    const T& operator*() const
+    {
+      return nodePtr->data;
+    }
+
+    const T* operator->() const
+    {
+      return std::addressof(nodePtr->data);
+    }
+
+    bool operator==(const ConstForwardIterator& rhs) const
+    {
+      return nodePtr == rhs.nodePtr;
+    }
+
+    bool operator!=(const ConstForwardIterator& rhs) const
+    {
+      return nodePtr != rhs.nodePtr;
+    }
+  };
+
 }
 
 namespace odintsov {
@@ -71,9 +121,8 @@ namespace odintsov {
   class ForwardList {
    public:
     using Iter = detail::ForwardIterator< T >;
-    using ConstIter = detail::ForwardIterator< const T >;
+    using ConstIter = detail::ConstForwardIterator< T >;
     using Node = detail::Node< T >;
-    using ConstNode = detail::Node< const T >;
 
     ForwardList():
       head_(nullptr)
@@ -172,7 +221,7 @@ namespace odintsov {
 
     ConstIter cbeforeBegin() const
     {
-      return ConstIter(reinterpret_cast< ConstNode* >(std::addressof(head_)));
+      return ConstIter(reinterpret_cast< const Node* >(std::addressof(head_)));
     }
 
     Iter begin()
@@ -239,7 +288,7 @@ namespace odintsov {
     template< class InputIter >
     Iter unsafeInsertAfter(ConstIter pos, InputIter first, InputIter last)
     {
-      Iter lastInserted(pos.nodePtr);
+      Iter lastInserted(const_cast< Node* >(pos.nodePtr));
       while (first != last) {
         lastInserted = unsafeInsertAfter(lastInserted, *first);
         ++first;
@@ -279,10 +328,11 @@ namespace odintsov {
 
     Iter unsafeEraseAfter(ConstIter pos)
     {
-      Node* nextNode = pos.nodePtr->next;
-      pos.nodePtr->next = nextNode->next;
+      const Node* nextNode = pos.nodePtr->next;
+      Node* posPtr = const_cast< Node* >(pos.nodePtr);
+      posPtr->next = const_cast< Node* >(nextNode->next);
       delete nextNode;
-      return Iter(pos.nodePtr->next);
+      return Iter(posPtr->next);
     }
 
     Iter eraseAfter(ConstIter first, ConstIter last)
@@ -368,13 +418,13 @@ namespace odintsov {
 
     void unsafeSpliceAfter(ConstIter pos, ForwardList& fl)
     {
-      Node* next = pos.nodePtr->next;
-      pos.nodePtr->next = fl.head_;
+      Node* next = const_cast< Node* >(pos.nodePtr)->next;
+      const_cast< Node* >(pos.nodePtr)->next = fl.head_;
       while (pos.nodePtr->next != nullptr) {
         ++pos;
       }
-      pos.nodePtr->next = next;
-      fl = nullptr;
+      const_cast< Node* >(pos.nodePtr)->next = next;
+      fl.head_ = nullptr;
     }
 
     void spliceAfter(ConstIter pos, ForwardList&& fl)
@@ -388,13 +438,13 @@ namespace odintsov {
 
     void unsafeSpliceAfter(ConstIter pos, ForwardList&& fl)
     {
-      Node* next = pos.nodePtr->next;
-      pos.nodePtr->next = fl.head_;
+      Node* next = const_cast< Node* >(pos.nodePtr)->next;
+      const_cast< Node* >(pos.nodePtr)->next = fl.head_;
       while (pos.nodePtr->next != nullptr) {
         ++pos;
       }
-      pos.nodePtr->next = next;
-      fl = nullptr;
+      const_cast< Node* >(pos.nodePtr)->next = next;
+      fl.head_ = nullptr;
     }
 
     void remove(const T& val)
@@ -424,9 +474,9 @@ namespace odintsov {
 
     void reverse()
     {
-      ConstNode* lastPtr = nullptr;
+      Node* lastPtr = nullptr;
       const ConstIter end = cend();
-      for (ConstIter iter = cbegin(); iter != end; ++iter) {
+      for (ConstIter iter = begin(); iter != end; ++iter) {
         iter.nodePtr->next = lastPtr;
         lastPtr = iter.nodePtr;
       }
@@ -445,7 +495,7 @@ namespace odintsov {
 
     Iter unsafeInsertAfter(ConstIter pos, Node* n)
     {
-      Node* prevNode = pos.nodePtr;
+      Node* prevNode = const_cast< Node* >(pos.nodePtr);
       n->next = prevNode->next;
       prevNode->next = n->next;
       return Iter(n);
