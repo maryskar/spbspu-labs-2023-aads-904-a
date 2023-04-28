@@ -4,6 +4,8 @@
 #include <cstddef>
 #include <initializer_list>
 #include <iterator>
+#include <memory>
+#include <new>
 #include <stdexcept>
 #include <utility>
 
@@ -125,23 +127,23 @@ namespace odintsov {
     using Node = detail::Node< T >;
 
     ForwardList():
-      head_(nullptr)
+      ForwardList(nullptr)
     {}
 
     ForwardList(const ForwardList& fl):
-      head_(nullptr)
+      ForwardList()
     {
       unsafeSpliceAfter(cbeforeBegin(), fl.cbegin(), fl.cend());
     }
 
     ForwardList(ForwardList&& fl):
-      head_(fl.head_)
+      ForwardList(fl.head_)
     {
       fl.head_ = nullptr;
     }
 
     ForwardList(std::initializer_list< T > il):
-      head_(nullptr)
+      ForwardList()
     {
       unsafeInsertAfter(cbeforeBegin(), il);
     }
@@ -173,8 +175,8 @@ namespace odintsov {
         return *this;
       }
       clear();
-      head_ = rhs.head_;
-      rhs.head_ = nullptr;
+      *head() = *rhs.head();
+      *rhs.head() = nullptr;
       return *this;
     }
 
@@ -206,32 +208,32 @@ namespace odintsov {
 
     T& unsafeFront()
     {
-      return head_->data;
+      return (*head())->data;
     }
 
     const T& unsafeFront() const
     {
-      return head_->data;
+      return (*head())->data;
     }
 
     Iter beforeBegin()
     {
-      return Iter(reinterpret_cast< Node* >(std::addressof(head_)));
+      return Iter(preHead_);
     }
 
     ConstIter cbeforeBegin() const
     {
-      return ConstIter(reinterpret_cast< const Node* >(std::addressof(head_)));
+      return ConstIter(preHead_);
     }
 
     Iter begin()
     {
-      return Iter(head_);
+      return Iter(*head());
     }
 
     ConstIter cbegin() const
     {
-      return ConstIter(head_);
+      return ConstIter(*head());
     }
 
     Iter end()
@@ -246,7 +248,7 @@ namespace odintsov {
 
     bool empty() const
     {
-      return !head_;
+      return !*head();
     }
 
     void clear()
@@ -367,7 +369,7 @@ namespace odintsov {
 
     void popFront()
     {
-      if (!head_) {
+      if (empty()) {
         throw std::logic_error("Attempt to pop empty ForwardList");
       }
       unsafePopFront();
@@ -375,14 +377,14 @@ namespace odintsov {
 
     void unsafePopFront()
     {
-      Node* next = head_->next;
-      delete head_;
-      head_ = next;
+      Node* next = (*head())->next;
+      delete *head();
+      *head() = next;
     }
 
     void swap(ForwardList& fl)
     {
-      std::swap(head_, fl.head_);
+      std::swap(*head(), *fl.head());
     }
 
     void merge(ForwardList& fl)
@@ -413,12 +415,12 @@ namespace odintsov {
     void unsafeSpliceAfter(ConstIter pos, ForwardList& fl)
     {
       Node* next = const_cast< Node* >(pos.nodePtr)->next;
-      const_cast< Node* >(pos.nodePtr)->next = fl.head_;
+      const_cast< Node* >(pos.nodePtr)->next = *fl.head;
       while (pos.nodePtr->next != nullptr) {
         ++pos;
       }
       const_cast< Node* >(pos.nodePtr)->next = next;
-      fl.head_ = nullptr;
+      *fl.head() = nullptr;
     }
 
     void spliceAfter(ConstIter pos, ForwardList&& fl)
@@ -433,12 +435,12 @@ namespace odintsov {
     void unsafeSpliceAfter(ConstIter pos, ForwardList&& fl)
     {
       Node* next = const_cast< Node* >(pos.nodePtr)->next;
-      const_cast< Node* >(pos.nodePtr)->next = fl.head_;
+      const_cast< Node* >(pos.nodePtr)->next = *fl.head();
       while (pos.nodePtr->next != nullptr) {
         ++pos;
       }
       const_cast< Node* >(pos.nodePtr)->next = next;
-      fl.head_ = nullptr;
+      *fl.head() = nullptr;
     }
 
     void remove(const T& val)
@@ -474,11 +476,22 @@ namespace odintsov {
         iter.nodePtr->next = lastPtr;
         lastPtr = iter.nodePtr;
       }
-      head_ = lastPtr;
+      *head() = lastPtr;
     }
 
    private:
-    Node* head_;
+    Node* preHead_;
+
+    ForwardList(Node* headPtr):
+      preHead_(reinterpret_cast< Node* >(::operator new(sizeof(Node))))
+    {
+      preHead_->next = headPtr;
+    }
+
+    Node** head()
+    {
+      return preHead_ ? std::addressof(preHead_->next) : nullptr;
+    }
 
     void assertIterInside(ConstIter it)
     {
@@ -497,8 +510,8 @@ namespace odintsov {
 
     void pushFront(Node* n)
     {
-      n->next = head_;
-      head_ = n;
+      n->next = (*head())->next;
+      (*head())->next = n;
     };
   };
 
