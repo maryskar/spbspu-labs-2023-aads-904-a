@@ -16,7 +16,7 @@ int main(int argc, char * argv[])
     return 1;
   }
   std::string string;
-  azheganova::Stack< std::string > result;
+  azheganova::Stack< long long > result;
   if(argc == 2)
   {
     std::ifstream input(argv[1]);
@@ -47,10 +47,9 @@ int main(int argc, char * argv[])
         std::cerr << e.what() << "\n";
         return 2;
       }
-      azheganova::Stack< std::string > resstack;
       try
       {
-        calculatePostfix(postfixform, result, resstack);
+        result.push(calculatePostfix(postfixform));
       }
       catch (const std::exception & e)
       {
@@ -94,10 +93,9 @@ int main(int argc, char * argv[])
         std::cerr << e.what() << "\n";
         return 2;
       }
-      azheganova::Stack< std::string > resstack;
       try
       {
-        calculatePostfix(postfixform, result, resstack);
+        result.push(calculatePostfix(postfixform));
       }
       catch (const std::exception & e)
       {

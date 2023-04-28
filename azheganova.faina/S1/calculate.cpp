@@ -1,120 +1,141 @@
 #include "calculate.h"
 #include <stdexcept>
 #include <limits>
+#include "stack.h"
 
 long long maximum = std::numeric_limits< long long >::max();
 long long minimum = std::numeric_limits< long long >::min();
-std::string calculateOperations(long long secondnum, long long firstnum, const std::string & element)
+
+long long summarize(long long secondnum, long long firstnum)
 {
-  if (element == "+")
+  if ((firstnum * secondnum >= 0) && (firstnum >= 0))
   {
-    if ((firstnum * secondnum >= 0) && (firstnum >= 0))
+    if (maximum - firstnum >= secondnum)
     {
-      if (maximum - firstnum >= secondnum)
-      {
-        return std::to_string(firstnum + secondnum);
-      }
-      else
-      {
-        throw std::overflow_error("overflow");
-      }
-    }
-    if ((firstnum * secondnum >= 0) && (firstnum <= 0))
-    {
-      if (minimum - firstnum <= secondnum)
-      {
-        return std::to_string(firstnum + secondnum);
-      }
-      else
-      {
-        throw std::overflow_error("overflow");
-      }
+      return firstnum + secondnum;
     }
     else
-    {
-      return std::to_string(firstnum + secondnum);
-    }
-  }
-  if (element == "-")
-  {
-    if ((firstnum > 0) && (minimum + firstnum > secondnum))
     {
       throw std::overflow_error("overflow");
     }
-    return std::to_string(firstnum - secondnum);
   }
-  if (element == "*")
+  if ((firstnum * secondnum >= 0) && (firstnum <= 0))
   {
-    if ((firstnum * secondnum < 0) && (firstnum >= 0))
+    if (minimum - firstnum <= secondnum)
     {
-      if (maximum / firstnum >= secondnum)
-      {
-        return std::to_string(firstnum * secondnum);
-      }
-      else
-      {
-        throw std::overflow_error("overflow");
-      }
-    }
-    if ((firstnum * secondnum >= 0) && (firstnum <= 0))
-    {
-      if (minimum / firstnum >= secondnum)
-      {
-        return std::to_string(firstnum * secondnum);
-      }
-      else
-      {
-        throw std::overflow_error("overflow");
-      }
+      return firstnum + secondnum;
     }
     else
     {
-      return std::to_string(firstnum * secondnum);
+      throw std::overflow_error("overflow");
     }
   }
-  if (element == "/")
+  else
   {
-    if (secondnum == 0)
+    return firstnum + secondnum;
+  }
+}
+
+long long subtract(long long secondnum, long long firstnum)
+{
+  if ((firstnum > 0) && (minimum + firstnum > secondnum))
+  {
+    throw std::overflow_error("overflow");
+  }
+  return firstnum - secondnum;
+}
+
+long long multiply(long long secondnum, long long firstnum)
+{
+  if ((firstnum * secondnum < 0) && (firstnum >= 0))
+  {
+    if (maximum / firstnum >= secondnum)
     {
-      throw std::logic_error("division by 0");
+      return firstnum * secondnum;
     }
-    return std::to_string(firstnum / secondnum);
+    else
+    {
+      throw std::overflow_error("overflow");
+    }
+  }
+  if ((firstnum * secondnum >= 0) && (firstnum <= 0))
+  {
+    if (minimum / firstnum >= secondnum)
+    {
+      return firstnum * secondnum;
+    }
+    else
+    {
+      throw std::overflow_error("overflow");
+    }
+  }
+  else
+  {
+    return firstnum * secondnum;
+  }
+}
+
+long long divide(long long secondnum, long long firstnum)
+{
+  if (secondnum == 0)
+  {
+    throw std::logic_error("division by 0");
+  }
+  return firstnum / secondnum;
+}
+
+long long calculateRemainder(long long secondnum, long long firstnum)
+{
+  if (secondnum == 0)
+  {
+    throw std::logic_error("division by 0");
   }
   if (firstnum < 0)
   {
-    return std::to_string((firstnum % secondnum) + secondnum);
+    return (firstnum % secondnum) + secondnum;
   }
-  return std::to_string(firstnum % secondnum);
+  return firstnum % secondnum;
 }
 
-void calculatePostfix(q_n & postfix, s_n & answer, s_n & stack)
+long long calculatePostfix(azheganova::Queue <std::string> & postfix)
 {
-  stack.push(postfix.drop());
-  postfix.pop();
+  azheganova::Stack < long long > stack;
   while (!postfix.isEmpty())
   {
     std::string element;
     element = postfix.drop();
     postfix.pop();
-    if (isdigit(element[0]))
+    if (std::isdigit(element[0]))
     {
-      stack.push(element);
+      stack.push(std::stoll(element));
     }
     else
     {
-      try
+      long long firstnum = stack.drop();
+      stack.pop();
+      long long secondnum = stack.drop();
+      stack.pop();
+      if (element == "+")
       {
-        long long secondnum = std::stoll(stack.drop(), nullptr, 10);
-        stack.pop();
-        long long firstnum = std::stoll(stack.drop(), nullptr, 10);
-        stack.pop();
-        stack.push(calculateOperations(secondnum, firstnum, element));
+        stack.push(summarize(firstnum, secondnum));
       }
-      catch (...)
+      if (element == "-")
       {
-        throw std::range_error("error");
+        stack.push(subtract(firstnum, secondnum));
+      }
+      if (element == "*")
+      {
+        stack.push(multiply(firstnum, secondnum));
+      }
+      if (element == "/")
+      {
+        stack.push(divide(firstnum, secondnum));
+      }
+      if (element == "%")
+      {
+        stack.push(calculateRemainder(firstnum, secondnum));
       }
     }
   }
-  answer.push(stack.drop());
+  return stack.drop();
 }

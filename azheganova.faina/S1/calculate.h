@@ -1,11 +1,12 @@
 #ifndef CALCULATE_H
 #define CALCULATE_H
 #include "queue.h"
-#include "stack.h"
 
-using q_n = azheganova::Queue <std::string>;
-using s_n = azheganova::Stack <std::string>;
-std::string calculateOperations(long long secondnum, long long firstnum, const std::string & element);
-void calculatePostfix(q_n & postfix, s_n & answer, s_n & stack);
+long long summarize(long long secondnum, long long firstnum);
+long long subtract(long long secondnum, long long firstnum);
+long long multiply(long long secondnum, long long firstnum);
+long long divide(long long secondnum, long long firstnum);
+long long calculateRemainder(long long secondnum, long long firstnum);
+long long calculatePostfix(azheganova::Queue <std::string> & postfix);
 
 #endif
