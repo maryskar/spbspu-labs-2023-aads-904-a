@@ -362,7 +362,7 @@ namespace odintsov {
 
     void pushFront(T&& val)
     {
-      pushFront(new Node{nullptr, val});
+      pushFront(new Node{nullptr, std::move(val)});
     }
 
     void popFront()
