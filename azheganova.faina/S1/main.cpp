@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
 #include <stdexcept>
 #include "convertfrominfixtopostfix.h"
 #include "converttoinfix.h"
@@ -17,101 +18,57 @@ int main(int argc, char * argv[])
   }
   std::string string;
   azheganova::Stack< long long > result;
+  std::fstream inputfile;
   if(argc == 2)
   {
-    std::ifstream input(argv[1]);
-    if (!input)
+    std::ifstream inputfile(argv[1]);
+    if (!inputfile)
     {
       std::cerr << "error";
       return 1;
     }
-    while (std::getline(input, string))
+  }
+  std::istream& input = (argc == 2) ? inputfile : std::cin;
+  while (std::getline(input, string))
+  {
+    if (!input)
     {
-      if (!input)
-      {
-        break;
-      }
-      if (string.empty())
-      {
-        continue;
-      }
-      azheganova::Queue< std::string > infixform = convertToInfix(string);
-      azheganova::Queue< std::string > postfixform;
-      azheganova::Stack< std::string > stack;
-      try
-      {
-        convertFromInfixToPostfix(infixform, stack, postfixform);
-      }
-      catch (const std::exception & e)
-      {
-        std::cerr << e.what() << "\n";
-        return 2;
-      }
-      try
-      {
-        result.push(calculatePostfix(postfixform));
-      }
-      catch (const std::exception & e)
-      {
-        std::cerr << e.what() << "\n";
-        return 2;
-      }
+      break;
     }
-    if (!result.isEmpty())
+    if (string.empty())
     {
-      std::cout << result.drop();
-      result.pop();
-      while (!result.isEmpty())
-      {
-        std::cout << " " << result.drop();
-        result.pop();
-      }
+      continue;
+    }
+    azheganova::Queue< std::string > infixform = convertToInfix(string);
+    azheganova::Queue< std::string > postfixform;
+    azheganova::Stack< std::string > stack;
+    try
+    {
+      convertFromInfixToPostfix(infixform, stack, postfixform);
+    }
+    catch (const std::exception & e)
+    {
+      std::cerr << e.what() << "\n";
+      return 2;
+    }
+    try
+    {
+      result.push(calculatePostfix(postfixform));
+    }
+    catch (const std::exception & e)
+    {
+      std::cerr << e.what() << "\n";
+      return 2;
     }
   }
-  else
+  if (!result.isEmpty())
   {
-    while (std::cin)
+    std::cout << result.drop();
+    result.pop();
+    while (!result.isEmpty())
     {
-      std::getline(std::cin, string);
-      if (!std::cin)
-      {
-        break;
-      }
-      if (string.empty())
-      {
-        continue;
-      }
-      azheganova::Queue< std::string > infixform = convertToInfix(string);
-      azheganova::Queue< std::string > postfixform;
-      azheganova::Stack< std::string > stack;
-      try
-      {
-        convertFromInfixToPostfix(infixform, stack, postfixform);
-      }
-      catch (const std::exception & e)
-      {
-        std::cerr << e.what() << "\n";
-        return 2;
-      }
-      try
-      {
-        result.push(calculatePostfix(postfixform));
-      }
-      catch (const std::exception & e)
-      {
-        std::cerr << e.what() << "\n";
-        return 2;
-      }
-    }
-    if (!result.isEmpty())
-    {
-      std::cout << result.drop();
+      std::cout << " " << result.drop();
       result.pop();
-      while (!result.isEmpty())
-      {
-        std::cout << " " << result.drop();
-        result.pop();
-      }
     }
   }
   std::cout << "\n";
