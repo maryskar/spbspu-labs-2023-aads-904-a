@@ -78,7 +78,7 @@ int main(int argc, char * argv[])
       {
         break;
       }
-        if (string.empty())
+      if (string.empty())
       {
         continue;
       }

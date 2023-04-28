@@ -12,7 +12,7 @@ namespace azheganova
     Queue();
     ~Queue();
     Queue(const Queue< T > & rhs);
-    Queue(const Queue< T > && rhs);
+    Queue(Queue< T > && rhs);
     void push(const T & rhs);
     void pop();
     bool isEmpty();
@@ -45,7 +45,7 @@ namespace azheganova
   }
 
   template< typename T >
-  Queue< T >::Queue(const Queue< T > && rhs):
+  Queue< T >::Queue(Queue< T > && rhs):
    top_(rhs.top_),
    last_(rhs.last_),
    size_(rhs.size_)
@@ -102,7 +102,7 @@ namespace azheganova
   template< typename T >
   T & Queue< T >::drop()
   {
-    if(isEmpty())
+    if (isEmpty())
     {
       throw std::logic_error("empty queue");
     }

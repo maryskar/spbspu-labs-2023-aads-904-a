@@ -87,7 +87,7 @@ std::string calculateOperations(long long secondnum, long long firstnum, const s
   return std::to_string(firstnum % secondnum);
 }
 
-void calculatePostfix(Queue< std::string > & postfix, Stack< std::string > & answer, Stack< std::string > & stack)
+void calculatePostfix(q_n & postfix, s_n & answer, s_n & stack)
 {
   stack.push(postfix.drop());
   postfix.pop();
@@ -104,11 +104,11 @@ void calculatePostfix(Queue< std::string > & postfix, Stack< std::string > & ans
     {
       try
       {
-      long long secondnum = std::stoll(stack.drop(), nullptr, 10);
-      stack.pop();
-      long long firstnum = std::stoll(stack.drop(), nullptr, 10);
-      stack.pop();
-      stack.push(calculateOperations(secondnum, firstnum, element));
+        long long secondnum = std::stoll(stack.drop(), nullptr, 10);
+        stack.pop();
+        long long firstnum = std::stoll(stack.drop(), nullptr, 10);
+        stack.pop();
+        stack.push(calculateOperations(secondnum, firstnum, element));
       }
       catch (...)
       {

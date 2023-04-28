@@ -1,13 +1,12 @@
 #include "convertfrominfixtopostfix.h"
 #include <cctype>
-#include <iostream>
 
 bool isOperator(std::string oper)
 {
   return (oper == "+") || (oper == "-") || (oper == "*") || (oper == "/") || (oper == "%");
 }
 
-void convertFromInfixToPostfix(Queue< std::string > & queue, Stack< std::string > & stack, Queue< std::string > & postfix)
+void convertFromInfixToPostfix(q_n & queue, s_n & stack, q_n & postfix)
 {
   while (!queue.isEmpty())
   {

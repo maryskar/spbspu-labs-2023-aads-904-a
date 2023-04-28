@@ -13,7 +13,7 @@ namespace azheganova
     Stack();
     ~Stack();
     Stack(const Stack< T > & rhs);
-    Stack(const Stack< T > && rhs);
+    Stack(Stack< T > && rhs);
     void push(const T & rhs);
     void pop();
     bool isEmpty() const;
@@ -54,7 +54,7 @@ namespace azheganova
   }
 
   template< typename T >
-  Stack< T >::Stack(const Stack< T > && rhs):
+  Stack< T >::Stack(Stack< T > && rhs):
    top_(rhs.top_)
   {
     rhs.top_ = nullptr;

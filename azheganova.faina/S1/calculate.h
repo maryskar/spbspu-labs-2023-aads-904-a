@@ -3,8 +3,9 @@
 #include "queue.h"
 #include "stack.h"
 
-using namespace azheganova;
+using q_n = azheganova::Queue <std::string>;
+using s_n = azheganova::Stack <std::string>;
 std::string calculateOperations(long long secondnum, long long firstnum, const std::string & element);
-void calculatePostfix(Queue <std::string> & postfix, Stack <std::string> & answer, Stack <std::string> & stack);
+void calculatePostfix(q_n & postfix, s_n & answer, s_n & stack);
 
 #endif

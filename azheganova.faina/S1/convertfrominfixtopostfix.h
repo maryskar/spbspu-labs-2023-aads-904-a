@@ -4,8 +4,9 @@
 #include "queue.h"
 #include "stack.h"
 
-using namespace azheganova;
+using q_n = azheganova::Queue< std::string >;
+using s_n = azheganova::Stack< std::string >;
 bool isOperator(std::string oper);
-void convertFromInfixToPostfix(Queue< std::string > & queue, Stack< std::string > & stack, Queue< std::string > & postfix);
+void convertFromInfixToPostfix(q_n & queue, s_n & stack, q_n & postfix);
 
 #endif
