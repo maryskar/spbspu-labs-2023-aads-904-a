@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
     std::cerr << "Error arg\n";
     return 1;
   }
-  
+
   std::ifstream file_input;
   if(argc == 2)
   {

@@ -5,7 +5,7 @@
 
 namespace hrushchev
 {
-	long long calculatePostfix(Queue< std::string >& postfixQueue);
+  long long calculatePostfix(Queue< std::string >& postfixQueue);
 }
 
 #endif

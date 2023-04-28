@@ -5,7 +5,7 @@
 
 namespace hrushchev
 {
-	Queue< std::string > convertStringToInfix(std::string str);
+  Queue< std::string > convertStringToInfix(std::string str);
 }
 
 #endif
