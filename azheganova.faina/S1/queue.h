@@ -20,21 +20,18 @@ namespace azheganova
   private:
     details::ListNode< T > * top_;
     details::ListNode< T > * last_;
-    size_t size_;
   };
 
   template< typename T >
   Queue< T >::Queue():
    top_(nullptr),
-   last_(nullptr),
-   size_(0)
+   last_(nullptr)
   {}
 
   template< typename T >
   Queue< T >::Queue(const Queue< T > & rhs):
    top_(nullptr),
-   last_(nullptr),
-   size_(0)
+   last_(nullptr)
   {
     details::ListNode< T > * tmp = rhs.top_;
     while (tmp != nullptr)
@@ -47,12 +44,10 @@ namespace azheganova
   template< typename T >
   Queue< T >::Queue(Queue< T > && rhs):
    top_(rhs.top_),
-   last_(rhs.last_),
-   size_(rhs.size_)
+   last_(rhs.last_)
    {
      top_ = nullptr;
      last_ = nullptr;
-     size_ = 0;
    }
 
   template< typename T >
@@ -67,17 +62,16 @@ namespace azheganova
   template < typename T >
   void Queue< T >::push(const T & rhs)
   {
-    if (top_ == nullptr)
-    {
-      top_ = new details::ListNode< T >{rhs, nullptr};
-      last_ = top_;
-    }
-    else
+    if (!isEmpty())
     {
       last_->next_ = new details::ListNode< T >{rhs, nullptr};
       last_ = last_->next_;
     }
-    size_++;
+    else
+    {
+      last_ = new details::ListNode< T >{rhs, nullptr};
+      top_ = last_;
+    }
   }
 
   template < typename T >
@@ -90,13 +84,12 @@ namespace azheganova
     details::ListNode< T > * tmp = top_->next_;
     delete top_;
     top_ = tmp;
-    size_--;
   }
 
   template< typename T >
   bool Queue< T >::isEmpty()
   {
-    return size_ == 0;
+    return top_ == nullptr;
   }
 
   template< typename T >
