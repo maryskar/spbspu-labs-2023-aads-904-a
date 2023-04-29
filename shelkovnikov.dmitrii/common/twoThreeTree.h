@@ -186,6 +186,14 @@ namespace dimkashelk
     {
       return iterator(iterator::goDown(root_)).value;
     }
+    iterator begin()
+    {
+      return iterator(iterator::goDown(root_));
+    }
+    iterator end()
+    {
+      return iterator(nullptr);
+    }
     void insert(const Key &k, const Value &v)
     {
       root_ = insert(root_, k, v);
@@ -228,34 +236,6 @@ namespace dimkashelk
     iterator end() const
     {
       return iterator(nullptr);
-    }
-    friend bool operator>(const two_three_tree_type &first, const two_three_tree_type &second)
-    {
-      auto first_start = first.begin();
-      auto second_start = second.begin();
-      auto first_end = first.end();
-      auto second_end = second.end();
-      while (first_start != first_end && second_start != second_end)
-      {
-        if (*first_start != *second_start)
-        {
-          return *first_start > *second_start;
-        }
-        first_start++;
-        second_start++;
-      }
-      if (first_start == first_end && second_start != second_end)
-      {
-        return true;
-      }
-      else if (first_start != first_end && second_start == second_end)
-      {
-        return false;
-      }
-      else
-      {
-        return false;
-      }
     }
   private:
     node_type *root_;
