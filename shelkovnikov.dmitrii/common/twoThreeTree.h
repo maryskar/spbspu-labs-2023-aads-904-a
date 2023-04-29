@@ -182,6 +182,10 @@ namespace dimkashelk
     {
       return iterator(iterator::goDown(root_)).value;
     }
+    const_reference front() const
+    {
+      return iterator(iterator::goDown(root_)).value;
+    }
     void insert(const Key &k, const Value &v)
     {
       root_ = insert(root_, k, v);
