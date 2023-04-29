@@ -132,6 +132,9 @@ namespace dimkashelk
   {
   using node_type = details::NodeOfTwoThreeTree< Key, Value, Compare >;
   using two_three_tree_type = TwoThreeTree< Key, Value, Compare >;
+  using value_type = std::pair< Key, Value >;
+  using reference = std::pair< Key, Value >&;
+  using const_reference = const std::pair< Key, Value >&;
   public:
     using iterator = dimkashelk::TwoThreeTreeIterator<Key, Value, Compare>;
     TwoThreeTree():
@@ -174,6 +177,10 @@ namespace dimkashelk
     ~TwoThreeTree()
     {
       free();
+    }
+    value_type front()
+    {
+      return iterator(iterator::goDown(root_)).value;
     }
     void insert(const Key &k, const Value &v)
     {
