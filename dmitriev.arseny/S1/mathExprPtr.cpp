@@ -18,6 +18,14 @@ MathExprPtr::MathExprPtr(MathExprPtr&& otherMathExprPtr) noexcept:
   otherMathExprPtr.adress = nullptr;
 }
 
+MathExprPtr& MathExprPtr::operator=(MathExprPtr&& otherMathExprPtr) noexcept
+{
+  adress = otherMathExprPtr.adress;
+  otherMathExprPtr.adress = nullptr;
+
+  return *this;
+}
+
 Expression* MathExprPtr::getRawPointer() const
 {
   return adress;
