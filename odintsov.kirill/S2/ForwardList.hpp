@@ -151,6 +151,7 @@ namespace odintsov {
     ~ForwardList()
     {
       clear();
+      ::operator delete(reinterpret_cast< void* >(preHead_), sizeof(Node));
     }
 
     ForwardList& operator=(const ForwardList& rhs)
