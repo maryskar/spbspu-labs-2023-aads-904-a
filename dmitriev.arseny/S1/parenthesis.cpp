@@ -12,14 +12,10 @@ Parenthesis::Parenthesis(char parenthesis):
 }
 Parenthesis::Parenthesis(const Parenthesis& otherParenthesis):
   parenthesis(otherParenthesis.parenthesis)
-{
-
-}
+{}
 Parenthesis::Parenthesis(Parenthesis&& otherParenthesis) noexcept:
   parenthesis(otherParenthesis.parenthesis)
-{
-
-}
+{}
 char Parenthesis::getCondition()
 {
   return 3;
