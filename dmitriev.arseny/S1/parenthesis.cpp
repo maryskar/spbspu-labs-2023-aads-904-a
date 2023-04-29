@@ -28,11 +28,10 @@ long long Parenthesis::getNumber()
 {
   throw std::logic_error("logic_error");
 }
-long long Parenthesis::getOper(long long, long long)
+long long Parenthesis::operator()(long long, long long)
 {
   throw std::logic_error("logic_error");
 }
-
 bool Parenthesis::isOpenParenthesis()
 {
   return isOpen();

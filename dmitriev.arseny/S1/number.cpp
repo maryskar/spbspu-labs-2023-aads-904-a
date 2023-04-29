@@ -20,7 +20,7 @@ long long Number::getNumber()
   return number;
 }
 
-long long Number::getOper(long long, long long)
+long long Number::operator()(long long, long long)
 {
   throw std::logic_error("logic_error");
 }

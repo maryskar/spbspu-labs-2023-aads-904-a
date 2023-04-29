@@ -65,7 +65,7 @@ long long Operator::getNumber()
 {
   throw std::logic_error("logic_error");
 }
-long long Operator::getOper(long long p1, long long p2)
+long long Operator::operator()(long long p1, long long p2)
 {
   return mathOperator(p1, p2);
 }

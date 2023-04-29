@@ -9,7 +9,7 @@ public:
   bool isParenthesis();
 
   virtual long long getNumber() = 0;
-  virtual long long getOper(long long, long long) = 0;
+  virtual long long operator()(long long, long long) = 0;
   virtual bool isOpenParenthesis() = 0;
   virtual bool isCloseParenthesis() = 0;
   virtual char getPriority() = 0;

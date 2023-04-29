@@ -17,13 +17,12 @@ long long calculateTheExpression(std::string stringInp)
   while(!infQueue.isEmpty())
   {
     MathExprPtr infVal = std::move(infQueue.getTopData());
-    Expression* infQAdrs = infVal.getRawPointer();
-
+    Expression* infAdrs = infVal.getRawPointer();
     infQueue.popBack();
 
-    if (infQAdrs->isParenthesis())
+    if (infAdrs->isParenthesis())
     {
-      if (infQAdrs->isOpenParenthesis())
+      if (infAdrs->isOpenParenthesis())
       {
         stack.push(std::move(infVal));
       }
@@ -33,18 +32,17 @@ long long calculateTheExpression(std::string stringInp)
         {
           MathExprPtr stackVal = std::move(stack.getTopData());
           Expression* stAdrs = stackVal.getRawPointer();
+          stack.popBack();
+
           if (stAdrs->isParenthesis())
           {
-            stack.popBack();
             break;
           }
           calculate(postStack, stAdrs);
-
-          stack.popBack();
         }
       }
     }
-    else if (infQAdrs->isOperator())
+    else if (infAdrs->isOperator())
     {
       if (stack.isEmpty())
       {
@@ -53,31 +51,28 @@ long long calculateTheExpression(std::string stringInp)
       }
       MathExprPtr stackVal = std::move(stack.getTopData());
       Expression* stAdrs = stackVal.getRawPointer();
+      stack.popBack();
 
       if (stAdrs->isParenthesis())
       {
-        stack.popBack();
         stack.push(std::move(stackVal));
         stack.push(std::move(infVal));
         continue;
       }
-      if (infQAdrs->getPriority() > stAdrs->getPriority())
+      if (infAdrs->getPriority() > stAdrs->getPriority())
       {
-        stack.popBack();
         stack.push(std::move(stackVal));
         stack.push(std::move(infVal));
       }
       else
       {
         calculate(postStack, stAdrs);
-        stack.popBack();
-
         stack.push(std::move(infVal));
       }
     }
     else
     {
-      postStack.push(infQAdrs->getNumber());
+      postStack.push(infAdrs->getNumber());
     }
   }
 
@@ -85,14 +80,12 @@ long long calculateTheExpression(std::string stringInp)
   {
     MathExprPtr stackVal = std::move(stack.getTopData());
     Expression* stAdrs = stackVal.getRawPointer();
-
+    stack.popBack();
     if (stAdrs->isParenthesis())
     {
       throw std::logic_error("logic_error");
     }
-
     calculate(postStack, stAdrs);
-    stack.popBack();
   }
 
   return postStack.getTopData();
@@ -128,5 +121,5 @@ void calculate(Stack< long long >& postStack, Expression* oper)
   long long n2 = postStack.getTopData();
   postStack.popBack();
 
-  postStack.push(oper->getOper(n1, n2));
+  postStack.push(oper->operator()(n1, n2));
 }

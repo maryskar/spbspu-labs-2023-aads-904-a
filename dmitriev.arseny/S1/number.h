@@ -12,7 +12,7 @@ public:
 
   char getCondition() override;
   long long getNumber() override;
-  long long getOper(long long, long long) override;
+  long long operator()(long long, long long) override;
   bool isOpenParenthesis() override;
   bool isCloseParenthesis() override;
   char getPriority() override;
