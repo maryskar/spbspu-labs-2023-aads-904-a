@@ -1,5 +1,6 @@
 #include "mathExprPtr.h"
 
+bool isEnd(char inp);
 bool isOperator(char inp);
 bool isParenthesis(char inp);
 Expression* defineMathSymb(std::string inp);
@@ -38,11 +39,11 @@ MathExprPtr::~MathExprPtr()
 
 Expression* defineMathSymb(std::string inp)
 {
-  if (isParenthesis(inp[0]))
+  if (isParenthesis(inp[0]) && isEnd(inp[1]))
   {
     return new Parenthesis(inp[0]);
   }
-  else if (isOperator(inp[0]))
+  else if (isOperator(inp[0]) && isEnd(inp[1]))
   {
     return new Operator(inp[0]);
   }
@@ -55,6 +56,11 @@ Expression* defineMathSymb(std::string inp)
 bool isParenthesis(char inp)
 {
   return (inp == '(') || (inp == ')');
+}
+
+bool isEnd(char inp)
+{
+  return (inp == '\0');
 }
 
 bool isOperator(char inp)
