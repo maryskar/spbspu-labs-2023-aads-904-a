@@ -3,8 +3,8 @@
 #include <iomanip>
 #include <limits>
 
-const long long min = std::numeric_limits< long long >::min();
-const long long max = std::numeric_limits< long long >::max();
+constexpr long long min = std::numeric_limits< long long >::min();
+constexpr long long max = std::numeric_limits< long long >::max();
 
 long long plus(long long p1, long long p2);
 long long minus(long long p1, long long p2);
