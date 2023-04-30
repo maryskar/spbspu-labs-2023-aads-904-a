@@ -59,6 +59,29 @@ namespace tarasenko
      }
      return output;
    }
+   friend dict_type operator-(const dict_type& left, const dict_type& right)
+   {
+     dict_type result;
+     auto iter_left = left.list.cbegin();
+     for (; iter_left != left.list.cend(); iter_left++)
+     {
+       auto iter_right = right.list.cbegin();
+       bool find_equal_keys = false;
+       for (; iter_right != right.list.cend(); iter_right++)
+       {
+         if ((*iter_left).first == (*iter_right).first)
+         {
+           find_equal_keys = true;
+           break;
+         }
+       }
+       if (!find_equal_keys)
+       {
+         result.push((*iter_left).first, (*iter_left).second);
+       }
+     }
+     return result;
+   }
    void push(const Key& k, const Value& v);
    Value get(const Key& k) const;
    void remove(const Key& k);
@@ -96,7 +119,8 @@ namespace tarasenko
       }
     }
     throw std::invalid_argument("Key not found");
-  };
+  }
+
   template< typename Key, typename Value, typename Compare >
   void Dictionary< Key, Value, Compare >::remove(const Key& k)
   {
@@ -113,12 +137,12 @@ namespace tarasenko
       }
       ++current;
     }
-  };
+  }
+
   template< typename Key, typename Value, typename Compare >
   bool Dictionary< Key, Value, Compare >::isEmpty() const
   {
     return list.isEmpty();
   }
 }
-
 #endif
