@@ -119,6 +119,11 @@ namespace dimkashelk
       }
       return iterator(pos.node_);
     }
+    template< class ... ArgsKey, class ... ArgsValue >
+    iterator emplace_after(const_iterator pos, ArgsKey &&...argsKey, ArgsValue &&...argsValue)
+    {
+      return insert_after(pos, std::forward< Key >(Key(argsKey...)), std::forward< Value >(Value(argsValue...)));
+    }
     void insert(const Key &k, const Value &v)
     {
       root_ = insert(root_, k, v);
