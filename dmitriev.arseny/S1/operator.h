@@ -10,7 +10,7 @@ public:
   Operator(const Operator& otherOperator);
   Operator(Operator&& otherOperator) noexcept;
 
-  char getCondition() override;
+  char getCondition() const override;
   long long operator()(long long, long long) override;
   char getPriority() override;
 

@@ -1,17 +1,17 @@
 #include "mathExpression.h"
 #include <iomanip>
 
-bool Expression::isNumber()
+bool Expression::isNumber() const
 {
   return getCondition() == 1;
 }
 
-bool Expression::isOperator()
+bool Expression::isOperator() const
 {
   return getCondition() == 2;
 }
 
-bool Expression::isParenthesis()
+bool Expression::isParenthesis() const
 {
   return getCondition() == 3;
 }

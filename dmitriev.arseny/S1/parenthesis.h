@@ -10,7 +10,7 @@ public:
   Parenthesis(const Parenthesis& otherParenthesis);
   Parenthesis(Parenthesis&& otherParenthesis) noexcept;
 
-  char getCondition() override;
+  char getCondition() const override;
   bool isOpenParenthesis() override;
   bool isCloseParenthesis() override;
 

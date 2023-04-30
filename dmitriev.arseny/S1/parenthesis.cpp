@@ -16,7 +16,7 @@ Parenthesis::Parenthesis(const Parenthesis& otherParenthesis):
 Parenthesis::Parenthesis(Parenthesis&& otherParenthesis) noexcept:
   parenthesis(otherParenthesis.parenthesis)
 {}
-char Parenthesis::getCondition()
+char Parenthesis::getCondition() const
 {
   return 3;
 }

@@ -56,7 +56,7 @@ Operator::Operator(Operator&& otherOperator) noexcept:
   priority(otherOperator.priority)
 {}
 
-char Operator::getCondition()
+char Operator::getCondition() const
 {
   return 2;
 }

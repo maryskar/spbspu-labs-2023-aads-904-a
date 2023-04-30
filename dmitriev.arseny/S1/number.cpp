@@ -11,7 +11,7 @@ Number::Number(const Number& otherNumber):
 Number::Number(Number&& otherNumber) noexcept:
   number(otherNumber.number)
 {}
-char Number::getCondition()
+char Number::getCondition() const
 {
   return 1;
 }

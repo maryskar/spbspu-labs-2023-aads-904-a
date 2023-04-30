@@ -10,7 +10,7 @@ public:
   Number(const Number& otherNumber);
   Number(Number&& otherNumber) noexcept;
 
-  char getCondition() override;
+  char getCondition() const override;
   long long getNumber() override;
 
 private:
