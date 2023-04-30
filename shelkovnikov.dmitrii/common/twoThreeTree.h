@@ -130,7 +130,9 @@ namespace dimkashelk
     }
     iterator erase_after(const_iterator pos)
     {
-
+      root_ = remove(pos.node_, pos.value.first);
+      pos++;
+      return iterator(pos.node_);
     }
     Value &get(const Key &k)
     {
