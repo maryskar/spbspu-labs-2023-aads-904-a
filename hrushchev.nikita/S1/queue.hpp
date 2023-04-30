@@ -66,12 +66,22 @@ namespace hrushchev
   {
     if(isEmpty())
     {
-      throw std::logic_error("Empty queue");
+        throw std::logic_error("Empty queue");
     }
-    details::List< T >* temp = begin_->next;
-    delete begin_;
-    begin_ = temp;
+    if (begin_ == end_)
+    {
+      delete begin_;
+      begin_ = nullptr;
+      end_ = nullptr;
+    }
+    else
+    {
+      details::List< T >* temp = begin_->next;
+      delete begin_;
+      begin_ = temp;
+    }
   }
+
 
   template< typename T >
   Queue< T >::~Queue()
