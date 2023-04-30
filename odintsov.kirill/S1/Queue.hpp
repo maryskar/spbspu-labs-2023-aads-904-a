@@ -71,7 +71,7 @@ namespace odintsov {
 
     void push(T&& data)
     {
-      push(new detail::Node< T >{data, nullptr});
+      push(new detail::Node< T >{std::move(data), nullptr});
     }
 
     void pop()
