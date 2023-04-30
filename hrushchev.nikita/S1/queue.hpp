@@ -55,7 +55,7 @@ namespace hrushchev
   template< typename T >
   T Queue< T >::get() const
   {
-    if(isEmpty())
+    if (isEmpty())
     {
       throw std::logic_error("Empty queue");
     }
@@ -65,7 +65,7 @@ namespace hrushchev
   template< typename T >
   void Queue< T >::pop()
   {
-    if(isEmpty())
+    if (isEmpty())
     {
         throw std::logic_error("Empty queue");
     }

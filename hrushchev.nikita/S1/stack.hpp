@@ -45,7 +45,7 @@ namespace hrushchev
   template< typename T >
   T Stack< T >::get() const
   {
-    if(isEmpty())
+    if (isEmpty())
     {
       throw std::logic_error("Empty stack");
     }
@@ -55,7 +55,7 @@ namespace hrushchev
   template< typename T >
   void Stack< T >::pop()
   {
-    if(isEmpty())
+    if (isEmpty())
     {
       throw std::logic_error("Empty stack");
     }

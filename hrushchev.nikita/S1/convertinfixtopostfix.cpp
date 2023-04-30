@@ -22,7 +22,7 @@ bool isOperator(std::string op)
 hrushchev::Queue< std::string > hrushchev::convertInfixToPostfix(hrushchev::Queue< std::string >& infixQueue)
 {
   namespace hr = hrushchev;
-  
+
   hr::Queue< std::string > postfixQueue;
   hr::Stack< std::string > stack;
   while (!infixQueue.isEmpty())

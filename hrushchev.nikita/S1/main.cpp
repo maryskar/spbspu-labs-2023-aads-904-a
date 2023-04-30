@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
   }
 
   std::ifstream file_input;
-  if(argc == 2)
+  if (argc == 2)
   {
     file_input.open(argv[1]);
     if (!file_input)
