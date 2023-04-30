@@ -98,22 +98,17 @@ long long calculateTheExpression(std::string stringInp)
 Queue< MathExprPtr > getQueueFromInput(std::string stringInp)
 {
   Queue< MathExprPtr > infQueue;
-  std::string curr = "";
+  std::string delimiter = " ";
+  size_t pos = 0;
+  std::string token;
 
-  for (size_t i = 0; stringInp[i] != '\0'; i++)
+  while ((pos = stringInp.find(delimiter)) != std::string::npos)
   {
-    if (stringInp[i] == ' ')
-    {
-      infQueue.push(MathExprPtr(curr));
-
-      curr = "";
-    }
-    else
-    {
-      curr = curr + stringInp[i];
-    }
+    token = stringInp.substr(0, pos);
+    infQueue.push(MathExprPtr(token));
+    stringInp.erase(0, pos + delimiter.length());
   }
-  infQueue.push(MathExprPtr(curr));
+  infQueue.push(MathExprPtr(stringInp));
 
   return infQueue;
 }
