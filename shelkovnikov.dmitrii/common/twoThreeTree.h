@@ -213,13 +213,13 @@ namespace dimkashelk
     {
       return const_iterator(nullptr);
     }
-    void insert(const Key &k, const Value &v)
-    {
-      root_ = insert(root_, k, v);
-    }
     bool empty() const
     {
       return root_ == nullptr;
+    }
+    void insert(const Key &k, const Value &v)
+    {
+      root_ = insert(root_, k, v);
     }
     Value &get(const Key &k)
     {
