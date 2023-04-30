@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
   std::istream& input = (argc == 2) ? file_input : std::cin;
 
   std::string line;
-  hr::Stack < long long > results;
+  hr::Stack< long long > results;
   while (std::getline(input, line))
   {
     if (!input)

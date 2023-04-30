@@ -19,6 +19,7 @@ namespace hrushchev
       void pop();
       T get() const;
       bool isEmpty() const;
+      void clear();
     private:
       details::List< T >* begin_;
       details::List< T >* end_;
@@ -86,10 +87,7 @@ namespace hrushchev
   template< typename T >
   Queue< T >::~Queue()
   {
-    while(!isEmpty())
-    {
-      pop();
-    }
+    clear();
   }
 
   template< typename T >
@@ -108,12 +106,9 @@ namespace hrushchev
   template< typename T >
   Queue< T >& Queue< T >::operator=(const Queue< T >& other)
   {
-    if (this != &other)
+    if (this != std::addressof(other))
     {
-      while (!isEmpty())
-      {
-        pop();
-      }
+      clear();
       details::List< T >* curent = other.begin_;
       while (curent != nullptr)
       {
@@ -136,16 +131,22 @@ namespace hrushchev
   template < typename T >
   Queue< T >& Queue< T >::operator=(Queue< T >&& other)
   {
-    if (this != other)
+    if (this != std::addressof(other))
     {
-      while (!isEmpty())
-      {
-        pop();
-      }
+      clear();
       begin_ = other.begin_;
       other.begin_ = nullptr;
       end_ = other.end_;
       other.end_ = nullptr;
+    }
+  }
+
+  template < typename T >
+  void Queue< T >::clear()
+  {
+    while (!isEmpty())
+    {
+      pop();
     }
   }
 }

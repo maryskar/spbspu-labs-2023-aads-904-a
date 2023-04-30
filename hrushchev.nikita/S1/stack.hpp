@@ -19,6 +19,7 @@ namespace hrushchev
       void pop();
       T get() const;
       bool isEmpty() const;
+      void clear();
     private:
       details::List< T >* top_;
   };
@@ -66,10 +67,7 @@ namespace hrushchev
   template< typename T >
   Stack< T >::~Stack()
   {
-    while(!isEmpty())
-    {
-      pop();
-    }
+    clear();
   }
 
   template< typename T >
@@ -87,12 +85,9 @@ namespace hrushchev
   template< typename T >
   Stack< T >& Stack< T >::operator=(const Stack< T >& other)
   {
-    if (this != &other)
+    if (this != std::addressof(other))
     {
-      while (!isEmpty())
-      {
-        pop();
-      }
+      clear();
       details::List< T >* other_value = other.top_;
       while (other_value != nullptr)
       {
@@ -113,14 +108,20 @@ namespace hrushchev
   template< typename T >
   Stack< T >& Stack< T >::operator=(Stack< T >&& other)
   {
-    if (this != &other)
+    if (this != std::addressof(other))
     {
-      while (!isEmpty())
-      {
-        pop();
-      }
+      clear();
       top_ = other.top_;
       other.top_ = nullptr;
+    }
+  }
+
+  template < typename T >
+  void Stack< T >::clear()
+  {
+    while (!isEmpty())
+    {
+      pop();
     }
   }
 }
