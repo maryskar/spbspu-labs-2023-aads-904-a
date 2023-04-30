@@ -101,9 +101,9 @@ namespace odintsov {
       return std::addressof(boundPtrs_.first);
     }
 
-    const detail::Node< T >** headPtr() const
+    const detail::Node< T >* const* headPtr() const
     {
-      return const_cast< const detail::Node< T >** >(std::addressof(boundPtrs_.first));
+      return const_cast< const detail::Node< T >* const* >(std::addressof(boundPtrs_.first));
     }
 
     detail::Node< T >** tailPtr()
@@ -111,9 +111,9 @@ namespace odintsov {
       return std::addressof(boundPtrs_.second);
     }
 
-    const detail::Node< T >** tailPtr() const
+    const detail::Node< T >* const* tailPtr() const
     {
-      return const_cast< const detail::Node< T >** >(std::addressof(boundPtrs_.second));
+      return const_cast< const detail::Node< T >* const* >(std::addressof(boundPtrs_.second));
     }
 
     void push(detail::Node< T >* n)
