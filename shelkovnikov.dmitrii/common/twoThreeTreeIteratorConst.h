@@ -6,15 +6,15 @@ namespace dimkashelk
   template< typename Key, typename Value, typename Compare >
   class TwoThreeTree;
   template< typename Key, typename Value, typename Compare >
-  class TwoThreeTreeIterator: public std::iterator< std::forward_iterator_tag, Value >
+  class TwoThreeTreeIterator: public std::iterator< std::forward_iterator_tag, const Value >
   {
   friend class TwoThreeTree< Key, Value, Compare >;
   public:
     using iterator_category = std::forward_iterator_tag;
     using difference_type = std::ptrdiff_t;
     using value_type = std::pair< Key, Value >;
-    using pointer = std::pair< Key, Value >*;
-    using reference = std::pair< Key, Value >&;
+    using pointer = const std::pair< Key, Value >*;
+    using reference = const std::pair< Key, Value >&;
     TwoThreeTreeIterator &operator++()
     {
       next();
@@ -26,11 +26,11 @@ namespace dimkashelk
       next();
       return result;
     }
-    reference operator*()
+    reference operator*() const
     {
       return value;
     }
-    pointer operator->()
+    pointer operator->() const
     {
       return std::addressof(value);
     }
