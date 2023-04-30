@@ -209,6 +209,10 @@ namespace dimkashelk
     {
       return iterator(nullptr);
     }
+    const_iterator end() const
+    {
+      return const_iterator(nullptr);
+    }
     void insert(const Key &k, const Value &v)
     {
       root_ = insert(root_, k, v);
