@@ -3,8 +3,6 @@
 #include "queue.h"
 #include "stack.h"
 
-#include <string>
-
 Queue< MathExprPtr > getQueueFromInput(std::string stringInp);
 void calculate(Stack< long long >& postStack, Expression* oper);
 
