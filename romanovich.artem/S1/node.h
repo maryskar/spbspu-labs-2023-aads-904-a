@@ -1,17 +1,17 @@
 #ifndef NODE_H
 #define NODE_H
+#include <stdexcept>
 #include "operations.h"
 #include "parenthesis.h"
-#include <stdexcept>
 namespace details
 {
-  template < typename T >
+  template< typename T >
   struct ListNode
   {
     T data_;
     ListNode< T > *next_;
   };
-  template < typename T >
+  template< typename T >
   void clear(ListNode< T > *node)
   {
     while (node)
@@ -21,8 +21,8 @@ namespace details
       node = nextNode;
     }
   }
-  template < typename T >
-  std::tuple < ListNode< T > *, ListNode< T > * > *copy(const ListNode< T > *listNode)
+  template< typename T >
+  std::tuple< ListNode< T > *, ListNode< T > * > *copy(const ListNode< T > *listNode)
   {
     if (listNode == nullptr)
     {

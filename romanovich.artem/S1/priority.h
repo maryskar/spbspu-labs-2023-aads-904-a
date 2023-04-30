@@ -7,10 +7,7 @@ namespace romanovich
   class Priority
   {
   public:
-    explicit Priority(operations_t op):
-      priority_(Priority::getPriority(op))
-    {
-    }
+    explicit Priority(operations_t op);
     bool operator<(const Priority &op) const;
   private:
     size_t priority_;

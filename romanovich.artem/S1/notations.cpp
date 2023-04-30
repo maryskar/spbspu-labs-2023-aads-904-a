@@ -2,13 +2,29 @@
 #include "priority.h"
 #include "expressionpart.h"
 #include <limits>
-#include <algorithm>
 constexpr long long maxLongLong = std::numeric_limits< long long >::max();
 constexpr long long minLongLong = std::numeric_limits< long long >::min();
 using exp_q = romanovich::Queue< ExpPart >;
 using exp_s = romanovich::Stack< ExpPart >;
 namespace romanovich
 {
+  bool stackPopCondition(const ExpPart &q, const ExpPart &s)
+  {
+    try
+    {
+      if (q.isOperation() && s.isOperation())
+      {
+        romanovich::Priority priorQ(q.getOperation());
+        romanovich::Priority priorS(s.getOperation());
+        return (!(priorQ < priorS));
+      }
+      return false;
+    }
+    catch (...)
+    {
+      return false;
+    }
+  }
   int signum(long long n)
   {
     return (n > 0) - (n < 0);
@@ -31,36 +47,34 @@ namespace romanovich
   }
   ExpPart createFromString(const std::string &string)
   {
-    if (string.size() == 1)
+    const char sym = string[0];
+    if (sym == as_char(parenthesis_t::right))
     {
-      if (string[0] == static_cast<char>(parenthesis_t::right))
-      {
-        return ExpPart(parenthesis_t::right);
-      }
-      if (string[0] == static_cast<char>(parenthesis_t::left))
-      {
-        return ExpPart(parenthesis_t::left);
-      }
-      if (string[0] == static_cast<char>(operations_t::division))
-      {
-        return ExpPart(operations_t::division);
-      }
-      if (string[0] == static_cast<char>(operations_t::multiplication))
-      {
-        return ExpPart(operations_t::multiplication);
-      }
-      if (string[0] == static_cast<char>(operations_t::minus))
-      {
-        return ExpPart(operations_t::minus);
-      }
-      if (string[0] == static_cast<char>(operations_t::plus))
-      {
-        return ExpPart(operations_t::plus);
-      }
-      if (string[0] == static_cast<char>(operations_t::division_remainder))
-      {
-        return ExpPart(operations_t::division_remainder);
-      }
+      return ExpPart(parenthesis_t::right);
+    }
+    if (sym == as_char(parenthesis_t::left))
+    {
+      return ExpPart(parenthesis_t::left);
+    }
+    if (sym == as_char(operations_t::division))
+    {
+      return ExpPart(operations_t::division);
+    }
+    if (sym == as_char(operations_t::multiplication))
+    {
+      return ExpPart(operations_t::multiplication);
+    }
+    if (sym == as_char(operations_t::minus))
+    {
+      return ExpPart(operations_t::minus);
+    }
+    if (sym == as_char(operations_t::plus))
+    {
+      return ExpPart(operations_t::plus);
+    }
+    if (sym == as_char(operations_t::division_remainder))
+    {
+      return ExpPart(operations_t::division_remainder);
     }
     try
     {
@@ -72,22 +86,57 @@ namespace romanovich
       throw;
     }
   }
-}
-bool romanovich::stackPopCondition(const ExpPart &q, const ExpPart &s)
-{
-  try
+  long long doOperation(long long b, long long a, const operations_t &oper)
   {
-    if (q.isOperation() && s.isOperation())
+    if (oper == operations_t::plus)
     {
-      romanovich::Priority priorQ(q.getOperation());
-      romanovich::Priority priorS(s.getOperation());
-      return (!(priorQ < priorS));
+      if (!overflowAdd(a, b))
+      {
+        return a + b;
+      }
+      else
+      {
+        throw std::overflow_error("");
+      }
     }
-    return false;
-  }
-  catch (...)
-  {
-    return false;
+    if (oper == operations_t::minus)
+    {
+      if (!romanovich::overflowSubt(a, b))
+      {
+        return a - b;
+      }
+      else
+      {
+        throw std::overflow_error("");
+      }
+    }
+    if (oper == operations_t::multiplication)
+    {
+      if (!romanovich::overflowMult(a, b))
+      {
+        return a * b;
+      }
+      else
+      {
+        throw std::overflow_error("");
+      }
+    }
+    if (oper == operations_t::division)
+    {
+      if (b != 0)
+      {
+        return a / b;
+      }
+      else
+      {
+        throw std::overflow_error("");
+      }
+    }
+    if (a < 0)
+    {
+      return ((a % b) + b);
+    }
+    return a % b;
   }
 }
 void romanovich::getPostfixFromInfix(exp_q &queue, exp_s &stack, exp_q &postfixQueue)
@@ -156,67 +205,15 @@ romanovich::Queue< ExpPart > romanovich::splitLine(const std::string &string)
 {
   romanovich::Queue< ExpPart > queue;
   int intBegin = 0;
-  int intEnd = string.find(' ');
+  int intEnd = static_cast<int>(string.find(' '));
   while (intEnd != -1)
   {
     queue.push(createFromString(string.substr(intBegin, intEnd - intBegin)));
     intBegin = intEnd + 1;
-    intEnd = string.find(' ', intBegin);
+    intEnd = static_cast<int>(string.find(' ', intBegin));
   }
   queue.push(createFromString(string.substr(intBegin, intEnd - intBegin)));
   return queue;
-}
-long long romanovich::doOperation(long long b, long long a, const operations_t &oper)
-{
-  if (oper == operations_t::plus)
-  {
-    if (!romanovich::overflowAdd(a, b))
-    {
-      return a + b;
-    }
-    else
-    {
-      throw std::overflow_error("");
-    }
-  }
-  if (oper == operations_t::minus)
-  {
-    if (!romanovich::overflowSubt(a, b))
-    {
-      return a - b;
-    }
-    else
-    {
-      throw std::overflow_error("");
-    }
-  }
-  if (oper == operations_t::multiplication)
-  {
-    if (!romanovich::overflowMult(a, b))
-    {
-      return a * b;
-    }
-    else
-    {
-      throw std::overflow_error("");
-    }
-  }
-  if (oper == operations_t::division)
-  {
-    if (b != 0)
-    {
-      return a / b;
-    }
-    else
-    {
-      throw std::overflow_error("");
-    }
-  }
-  if (a < 0)
-  {
-    return ((a % b) + b);
-  }
-  return a % b;
 }
 void romanovich::calcPostfixExpression(exp_q &postfixQueue, exp_s &answer, exp_s &stack)
 {

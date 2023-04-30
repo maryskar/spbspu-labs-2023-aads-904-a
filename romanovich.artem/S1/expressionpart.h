@@ -14,18 +14,18 @@ public:
   operations_t getOperation() const;
   long long int getOperand() const;
   parenthesis_t getParenthesis() const;
-private:
-  bool isOperation_;
-  bool isParenthesis_;
-  bool isOperand_;
   union ExpContent
   {
-    explicit ExpContent(parenthesis_t pr): parenthesis_(pr) {};
-    explicit ExpContent(operations_t op): operation_(op) {};
-    explicit ExpContent(long long op): operand_(op) {}
+    explicit ExpContent(parenthesis_t pr);
+    explicit ExpContent(operations_t op);
+    explicit ExpContent(long long op);
     long long operand_;
     operations_t operation_;
     parenthesis_t parenthesis_;
   } content_;
+private:
+  bool isOperation_;
+  bool isParenthesis_;
+  bool isOperand_;
 };
 #endif

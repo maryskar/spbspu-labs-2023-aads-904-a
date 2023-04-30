@@ -17,3 +17,6 @@ bool romanovich::Priority::operator<(const Priority &rhs) const
 {
   return priority_ < rhs.priority_;
 }
+romanovich::Priority::Priority(operations_t op):
+  priority_(Priority::getPriority(op))
+{}

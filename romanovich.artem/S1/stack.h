@@ -5,7 +5,7 @@
 #include "node.h"
 namespace romanovich
 {
-  template < typename T >
+  template< typename T >
   class Stack
   {
   public:
@@ -20,78 +20,66 @@ namespace romanovich
     T get() const;
     bool isEmpty() const
     {
-      return size_ == 0;
+      return top_ == nullptr;
     }
   private:
     details::ListNode< T > *top_;
-    size_t size_;
     void deleteStack();
     void swapStack(Stack< T > &stack) noexcept;
   };
-  template < typename T >
+  template< typename T >
   void Stack< T >::swapStack(Stack< T > &stack) noexcept
   {
     std::swap(top_, stack.head_);
-    std::swap(size_, stack.size_);
   }
-  template < typename T >
+  template< typename T >
   Stack< T > &Stack< T >::operator=(Stack< T > &&stack) noexcept
   {
-    if (this != &stack)
+    if (this != std::addressof(stack))
     {
       deleteStack();
       doSwap(stack);
     }
     return *this;
   }
-  template < typename T >
+  template< typename T >
   Stack< T > &Stack< T >::operator=(Stack< T > stack)
   {
     doSwap(stack);
     return *this;
   }
-  template < typename T >
+  template< typename T >
   Stack< T >::Stack(Stack< T > &&stack) noexcept:
-    top_(stack.top_),
-    size_(stack.size_)
+    top_(stack.top_)
   {
     stack.top_ = nullptr;
     stack.size_ = 0;
   }
-  template < typename T >
-  Stack< T >::Stack(const Stack< T > &stack)
+  template< typename T >
+  Stack< T >::Stack(const Stack< T > &stack):
+    Stack()
   {
-    if (stack.top_ == nullptr)
-    {
-      top_ = nullptr;
-      size_ = 0;
-    }
-    else
-    {
-      using list_node_tuple = std::tuple < details::ListNode< T > *, details::ListNode< T > * >;
-      list_node_tuple *newStack = details::copy(stack.top_);
-      top_ = std::get<0>(newStack);
-    }
+    using list_node_tuple = std::tuple< details::ListNode< T > *, details::ListNode< T > * >;
+    list_node_tuple *newStack = details::copy(stack.top_);
+    top_ = std::get< 0 >(newStack);
   }
-  template < typename T >
+  template< typename T >
   void Stack< T >::deleteStack()
   {
     details::clear(top_);
     top_ = nullptr;
-    size_ = 0;
   }
-  template < typename T >
+  template< typename T >
   Stack< T >::Stack():
-    top_(nullptr),
-    size_(0)
+    top_(nullptr)
   {
   }
-  template < typename T >
+  template< typename T >
   Stack< T >::~Stack()
   {
     Stack< T >::deleteStack();
   }
-  template < typename T >
+  template< typename T >
   void Stack< T >::push(const T &value)
   {
     if (top_ == nullptr)
@@ -103,9 +91,8 @@ namespace romanovich
       details::ListNode< T > *newNode = new details::ListNode< T >{value, top_};
       top_ = newNode;
     }
-    size_++;
   }
-  template < typename T >
+  template< typename T >
   T Stack< T >::get() const
   {
     if (isEmpty())
@@ -114,7 +101,7 @@ namespace romanovich
     }
     return top_->data_;
   }
-  template < typename T >
+  template< typename T >
   void Stack< T >::pop()
   {
     if (isEmpty())
@@ -124,7 +111,6 @@ namespace romanovich
     details::ListNode< T > *subTop = top_->next_;
     delete top_;
     top_ = subTop;
-    size_--;
   }
 }
 #endif

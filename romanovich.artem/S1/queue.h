@@ -4,7 +4,7 @@
 #include "node.h"
 namespace romanovich
 {
-  template < typename T >
+  template< typename T >
   class Queue
   {
   public:
@@ -19,85 +19,72 @@ namespace romanovich
     T get() const;
     bool isEmpty() const
     {
-      return size_ == 0;
+      return head_ == nullptr;
     }
   private:
     details::ListNode< T > *head_;
     details::ListNode< T > *tail_;
-    size_t size_;
     void deleteQueue();
     void swapQueue(Queue< T > &queue) noexcept;
   };
-  template < typename T >
+  template< typename T >
   Queue< T > &Queue< T >::operator=(Queue< T > &&queue) noexcept
   {
-    if (this != &queue)
+    if (this != std::addressof(queue))
     {
       deleteQueue();
       swapQueue(queue);
     }
     return *this;
   }
-  template < typename T >
+  template< typename T >
   Queue< T > &Queue< T >::operator=(Queue< T > queue)
   {
     swapQueue(queue);
     return *this;
   }
-  template < typename T >
+  template< typename T >
   void Queue< T >::deleteQueue()
   {
     details::clear(head_);
     head_ = nullptr;
     tail_ = nullptr;
   }
-  template < typename T >
+  template< typename T >
   Queue< T >::Queue():
     head_(nullptr),
-    tail_(nullptr),
-    size_(0)
+    tail_(nullptr)
   {
   }
-  template < typename T >
-  Queue< T >::Queue(const Queue< T > &queue)
+  template< typename T >
+  Queue< T >::Queue(const Queue< T > &queue):
+    Queue()
   {
-    if (queue.head_ == nullptr)
-    {
-      head_ = nullptr;
-      tail_ = nullptr;
-      size_ = 0;
-    }
-    else
-    {
-      using list_node_tuple = std::tuple < details::ListNode< T > *, details::ListNode< T > * >;
-      list_node_tuple *newQueue = details::copy(queue.head_);
-      head_ = std::get<0>(newQueue);
-      tail_ = std::get<1>(newQueue);
-    }
+    using list_node_tuple = std::tuple< details::ListNode< T > *, details::ListNode< T > * >;
+    list_node_tuple *newQueue = details::copy(queue.head_);
+    head_ = std::get< 0 >(newQueue);
+    tail_ = std::get< 1 >(newQueue);
   }
-  template < typename T >
+  template< typename T >
   Queue< T >::Queue(Queue< T > &&queue) noexcept:
     head_(queue.head_),
-    tail_(queue.tail_),
-    size_(queue.size_)
+    tail_(queue.tail_)
   {
     queue.head_ = nullptr;
     queue.tail_ = nullptr;
-    queue.size_ = 0;
   }
-  template < typename T >
+  template< typename T >
   void Queue< T >::swapQueue(Queue< T > &queue) noexcept
   {
     std::swap(head_, queue.head_);
     std::swap(tail_, queue.tail_);
-    std::swap(size_, queue.size_);
   }
-  template < typename T >
+  template< typename T >
   Queue< T >::~Queue()
   {
     Queue< T >::deleteQueue();
   }
-  template < typename T >
+  template< typename T >
   void Queue< T >::push(const T &rhs)
   {
     if (head_ == nullptr)
@@ -110,9 +97,8 @@ namespace romanovich
       tail_->next_ = new details::ListNode< T >{rhs, nullptr};
       tail_ = tail_->next_;
     }
-    size_++;
   }
-  template < typename T >
+  template< typename T >
   T Queue< T >::get() const
   {
     if (isEmpty())
@@ -121,7 +107,7 @@ namespace romanovich
     }
     return head_->data_;
   }
-  template < typename T >
+  template< typename T >
   void Queue< T >::pop()
   {
     if (isEmpty())
@@ -131,7 +117,6 @@ namespace romanovich
     details::ListNode< T > *subHead = head_->next_;
     delete head_;
     head_ = subHead;
-    size_--;
   }
 }
 #endif

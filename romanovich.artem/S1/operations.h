@@ -8,4 +8,5 @@ enum class operations_t: char
   division = '/',
   division_remainder = '%',
 };
+char as_char(operations_t operation);
 #endif
