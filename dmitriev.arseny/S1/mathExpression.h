@@ -8,11 +8,11 @@ public:
   bool isOperator();
   bool isParenthesis();
 
-  virtual long long getNumber() = 0;
-  virtual long long operator()(long long, long long) = 0;
-  virtual bool isOpenParenthesis() = 0;
-  virtual bool isCloseParenthesis() = 0;
-  virtual char getPriority() = 0;
+  virtual long long getNumber();
+  virtual long long operator()(long long, long long);
+  virtual bool isOpenParenthesis();
+  virtual bool isCloseParenthesis();
+  virtual char getPriority();
 
   virtual ~Expression() = default;
 private:

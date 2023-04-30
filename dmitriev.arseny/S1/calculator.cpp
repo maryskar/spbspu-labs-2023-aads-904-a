@@ -11,8 +11,10 @@ void calculate(Stack< long long >& postStack, Expression* oper);
 long long calculateTheExpression(std::string stringInp)
 {
   Stack< MathExprPtr > intermStack;
-  Queue< MathExprPtr > infQueue = getQueueFromInput(stringInp);
+  Queue< MathExprPtr > infQueue;
   Stack< long long > postStack;
+
+  infQueue = getQueueFromInput(stringInp);
 
   while(!infQueue.isEmpty())
   {

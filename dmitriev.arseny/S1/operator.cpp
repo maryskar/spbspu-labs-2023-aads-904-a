@@ -41,7 +41,6 @@ auto defineOperator(char op)
   }
 }
 
-
 Operator::Operator(char op):
   mathOperator(defineOperator(op)),
   priority(definePriority(op))
@@ -61,21 +60,9 @@ char Operator::getCondition()
 {
   return 2;
 }
-long long Operator::getNumber()
-{
-  throw std::logic_error("logic_error");
-}
 long long Operator::operator()(long long p1, long long p2)
 {
   return mathOperator(p1, p2);
-}
-bool Operator::isOpenParenthesis()
-{
-  throw std::logic_error("logic_error");
-}
-bool Operator::isCloseParenthesis()
-{
-  throw std::logic_error("logic_error");
 }
 char Operator::getPriority()
 {

@@ -20,14 +20,7 @@ char Parenthesis::getCondition()
 {
   return 3;
 }
-long long Parenthesis::getNumber()
-{
-  throw std::logic_error("logic_error");
-}
-long long Parenthesis::operator()(long long, long long)
-{
-  throw std::logic_error("logic_error");
-}
+
 bool Parenthesis::isOpenParenthesis()
 {
   return isOpen();
@@ -36,11 +29,6 @@ bool Parenthesis::isOpenParenthesis()
 bool Parenthesis::isCloseParenthesis()
 {
   return isClose();
-}
-
-char Parenthesis::getPriority()
-{
-  throw std::logic_error("logic_error");
 }
 
 bool Parenthesis::isOpen()
