@@ -109,6 +109,16 @@ namespace dimkashelk
       pos++;
       return iterator(pos.node_);
     }
+    template< class InputIt >
+    iterator insert_after(const_iterator pos, InputIt first, InputIt last)
+    {
+      for (; first != last; first++)
+      {
+        root_ = insert(pos.node_, (*first).first, (*first).second);
+        pos++;
+      }
+      return iterator(pos.node_);
+    }
     void insert(const Key &k, const Value &v)
     {
       root_ = insert(root_, k, v);
