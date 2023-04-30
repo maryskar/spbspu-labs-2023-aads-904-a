@@ -142,6 +142,10 @@ namespace dimkashelk
       }
       return iterator(last.node_);
     }
+    void push_front(const Key &key, const Value &value)
+    {
+      root_ = insert(key, value);
+    }
     Value &get(const Key &k)
     {
       node_type *node = search(root_, k);
