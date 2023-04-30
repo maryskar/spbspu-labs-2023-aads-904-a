@@ -4,10 +4,10 @@
 #include "stack.hpp"
 #include "arithmetic.hpp"
 
-namespace hr = hrushchev;
-
-long long hr::calculatePostfix(hr::Queue< std::string >& postfixQueue)
+long long hrushchev::calculatePostfix(hrushchev::Queue< std::string >& postfixQueue)
 {
+  namespace hr = hrushchev;
+
   hr::Stack< long long > stack;
   while (!postfixQueue.isEmpty())
   {

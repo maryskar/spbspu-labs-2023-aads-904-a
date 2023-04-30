@@ -4,10 +4,9 @@
 #include <sstream>
 #include "queue.hpp"
 
-namespace hr = hrushchev;
-
-hr::Queue< std::string > hr::convertStringToInfix(std::string str)
+hrushchev::Queue< std::string > hrushchev::convertStringToInfix(std::string str)
 {
+  namespace hr = hrushchev;
   hr::Queue< std::string > infix_queue;
   std::stringstream string_stream(str);
   std::string token;
