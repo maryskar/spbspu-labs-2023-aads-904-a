@@ -10,13 +10,19 @@ public:
 
   virtual long long getNumber();
   virtual long long operator()(long long, long long);
+  virtual bool operator==(Expression* otherExpr);
+  virtual bool operator!=(Expression* otherExpr);
+  virtual bool operator>(Expression* otherExpr);
+  virtual bool operator<(Expression* otherExpr);
+  virtual bool operator>=(Expression* otherExpr);
+  virtual bool operator<=(Expression* otherExpr);
   virtual bool isOpenParenthesis();
   virtual bool isCloseParenthesis();
-  virtual char getPriority();
 
   virtual ~Expression() = default;
 private:
   virtual char getCondition() const = 0;
+  virtual char getPriority() const;
 
 };
 

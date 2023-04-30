@@ -56,7 +56,7 @@ long long calculateTheExpression(std::string stringInp)
         intermStack.push(std::move(infVal));
         continue;
       }
-      if (infVal->getPriority() > stackVal->getPriority())
+      if (infVal->operator>(*stackVal))
       {
         intermStack.push(std::move(stackVal));
         intermStack.push(std::move(infVal));

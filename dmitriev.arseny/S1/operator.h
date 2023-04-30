@@ -11,8 +11,8 @@ public:
   Operator(Operator&& otherOperator) noexcept;
 
   char getCondition() const override;
+  char getPriority() const override;
   long long operator()(long long, long long) override;
-  char getPriority() override;
 
 private:
   long long (*mathOperator)(long long, long long);

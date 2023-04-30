@@ -60,13 +60,13 @@ char Operator::getCondition() const
 {
   return 2;
 }
+char Operator::getPriority() const
+{
+  return priority;
+}
 long long Operator::operator()(long long p1, long long p2)
 {
   return mathOperator(p1, p2);
-}
-char Operator::getPriority()
-{
-  return priority;
 }
 
 char definePriority(char op)
