@@ -1,6 +1,7 @@
 #ifndef SPBSPU_LABS_2023_AADS_904_A_TWOTHREETREEITERATOR_H
 #define SPBSPU_LABS_2023_AADS_904_A_TWOTHREETREEITERATOR_H
 #include "twoThreeTree.h"
+#include "nodeOfTwoThreeTree.h"
 namespace dimkashelk
 {
   template< typename Key, typename Value, typename Compare >
@@ -9,6 +10,7 @@ namespace dimkashelk
   class TwoThreeTreeIterator: public std::iterator< std::forward_iterator_tag, Value >
   {
   friend class TwoThreeTree< Key, Value, Compare >;
+  using node_type = details::NodeOfTwoThreeTree< Key, Value, Compare >;
   public:
     using iterator_category = std::forward_iterator_tag;
     using difference_type = std::ptrdiff_t;
@@ -43,7 +45,6 @@ namespace dimkashelk
       return !(node_ == other.node_);
     }
   private:
-    using node_type = details::NodeOfTwoThreeTree< Key, Value, Compare >;
     value_type value;
     node_type *node_;
     node_type *prev_;
