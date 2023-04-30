@@ -162,6 +162,11 @@ namespace dimkashelk
       }
       throw std::logic_error("No element");
     }
+    template< class ... ArgsKey, class ... ArgsValue >
+    void emplace_front(ArgsKey &&...argsKey, ArgsValue &&...argsValue)
+    {
+      push_front(std::forward< Key >(argsKey...), std::forward< Value >(argsValue...));
+    }
     bool contains(const Key &k) const
     {
       node_type *node = search(root_, k);
