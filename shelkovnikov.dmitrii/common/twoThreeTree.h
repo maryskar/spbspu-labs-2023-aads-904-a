@@ -138,19 +138,27 @@ namespace dimkashelk
   public:
     using iterator = dimkashelk::TwoThreeTreeIterator<Key, Value, Compare>;
     TwoThreeTree():
-      root_(nullptr),
-      compare_(Compare())
-    {}
-    TwoThreeTree(const two_three_tree_type &tree):
+      fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
       root_(nullptr),
       compare_(Compare())
     {
+      fakeNode_->first = nullptr;
+    }
+    TwoThreeTree(const two_three_tree_type &tree):
+      fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
+      root_(nullptr),
+      compare_(Compare())
+    {
+      fakeNode_->first = nullptr;
       copy(tree);
     }
     TwoThreeTree(two_three_tree_type &&tree):
+      fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
       root_(tree.root_),
       compare_(Compare())
     {
+      fakeNode_->first = root_;
+      root_->parent = fakeNode_;
       tree.root_ = nullptr;
     }
     two_three_tree_type &operator=(const two_three_tree_type &tree)
@@ -177,6 +185,7 @@ namespace dimkashelk
     ~TwoThreeTree()
     {
       free();
+      ::operator delete(fakeNode_);
     }
     value_type front()
     {
@@ -229,15 +238,8 @@ namespace dimkashelk
       delete root_;
       root_ = nullptr;
     }
-    iterator begin() const
-    {
-      return Iterator(iterator::goDown(root_));
-    }
-    iterator end() const
-    {
-      return iterator(nullptr);
-    }
   private:
+    node_type *fakeNode_;
     node_type *root_;
     Compare compare_;
     node_type *insert(node_type *p, const Key &k, const Value &v) {
@@ -397,6 +399,8 @@ namespace dimkashelk
       {
         insert(*iter, iter.value);
       }
+      fakeNode_->first = root_;
+      root_->parent = fakeNode_;
     }
   };
 }
