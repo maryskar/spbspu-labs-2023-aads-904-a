@@ -1,5 +1,4 @@
 #include "priority.h"
-#include <cstddef>
 #include <stdexcept>
 size_t romanovich::Priority::getPriority(const operations_t &op)
 {

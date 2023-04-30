@@ -14,6 +14,10 @@ public:
   operations_t getOperation() const;
   long long int getOperand() const;
   parenthesis_t getParenthesis() const;
+private:
+  bool isOperation_;
+  bool isParenthesis_;
+  bool isOperand_;
   union ExpContent
   {
     explicit ExpContent(parenthesis_t pr);
@@ -23,9 +27,5 @@ public:
     operations_t operation_;
     parenthesis_t parenthesis_;
   } content_;
-private:
-  bool isOperation_;
-  bool isParenthesis_;
-  bool isOperand_;
 };
 #endif
