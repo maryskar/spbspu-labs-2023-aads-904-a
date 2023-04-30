@@ -12,28 +12,22 @@ namespace odintsov {
   class Queue {
    public:
     Queue():
-      head_(nullptr),
-      tail_(nullptr)
+      boundPtrs_(nullptr, nullptr)
     {}
 
     Queue(const Queue< T >& q):
-      head_(nullptr),
-      tail_(nullptr)
-    {
-      std::tie(head_, tail_) = detail::duplicateNodes(q.head_);
-    }
+      boundPtrs_(detail::duplicateNodes(*q.headPtr()))
+    {}
 
     Queue(Queue< T >&& q):
-      head_(q.head_),
-      tail_(q.tail_)
+      boundPtrs_(nullptr, nullptr)
     {
-      q.head_ = nullptr;
-      q.tail_ = nullptr;
+      boundPtrs_.swap(q.boundPtrs_);
     }
 
     ~Queue()
     {
-      detail::deleteNodes(head_);
+      detail::deleteNodes(*headPtr());
     }
 
     Queue< T >& operator=(const Queue< T >& q)
@@ -41,19 +35,19 @@ namespace odintsov {
       if (this == std::addressof(q)) {
         return *this;
       }
-      detail::Node< T >* oldHead = head_;
-      std::tie(head_, tail_) = detail::duplicateNodes(q.head_);
+      detail::Node< T >* oldHead = *headPtr();
+      boundPtrs_ = detail::duplicateNodes(q.head_);
       detail::deleteNodes(oldHead);
       return *this;
     }
 
     Queue< T >& operator=(Queue< T >&& q)
     {
-      detail::deleteNodes(head_);
-      head_ = q.head_;
-      tail_ = q.tail_;
-      q.head_ = nullptr;
-      q.tail_ = nullptr;
+      detail::Node< T >** head = headPtr();
+      detail::deleteNodes(*head);
+      boundPtrs_ = q.boundPtrs_;
+      *q.headPtr() = nullptr;
+      *q.tailPtr() = nullptr;
       return *this;
     }
 
@@ -62,7 +56,7 @@ namespace odintsov {
       if (empty()) {
         throw std::runtime_error("Attempt to get head of empty queue");
       }
-      return head_->data;
+      return (*headPtr())->data;
     }
 
     T& head()
@@ -85,31 +79,51 @@ namespace odintsov {
       if (empty()) {
         throw std::runtime_error("Attempt to pop empty queue");
       }
-      detail::Node< T >* oldHead = head_;
-      head_ = head_->next;
-      if (!head_) {
-        tail_ = nullptr;
+      detail::Node< T >** head = headPtr();
+      detail::Node< T >* oldHead = *head;
+      *head = (*head)->next;
+      if (!*head) {
+        *tailPtr() = nullptr;
       }
       delete oldHead;
     }
 
     bool empty() const
     {
-      return !head_ || !tail_;
+      return !*headPtr();
     }
 
    private:
-    detail::Node< T >* head_;
-    detail::Node< T >* tail_;
+    std::pair< detail::Node< T >*, detail::Node< T >* > boundPtrs_;
+
+    detail::Node< T >** headPtr()
+    {
+      return std::addressof(boundPtrs_.first);
+    }
+
+    const detail::Node< T >** headPtr() const
+    {
+      return const_cast< const detail::Node< T >** >(std::addressof(boundPtrs_.first));
+    }
+
+    detail::Node< T >** tailPtr()
+    {
+      return std::addressof(boundPtrs_.second);
+    }
+
+    const detail::Node< T >** tailPtr() const
+    {
+      return const_cast< const detail::Node< T >** >(std::addressof(boundPtrs_.second));
+    }
 
     void push(detail::Node< T >* n)
     {
       if (empty()) {
-        head_ = n;
+        *headPtr() = n;
       } else {
-        tail_->next = n;
+        (*tailPtr())->next = n;
       }
-      tail_ = n;
+      *tailPtr() = n;
     }
   };
 }
