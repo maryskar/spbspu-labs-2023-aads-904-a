@@ -3,7 +3,7 @@
 
 #include "mathExpression.h"
 
-class Number : public Expression
+class Number: public Expression
 {
 public:
   explicit Number(long long number);

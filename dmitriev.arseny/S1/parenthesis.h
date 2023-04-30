@@ -3,7 +3,7 @@
 
 #include "mathExpression.h"
 
-class Parenthesis : public Expression
+class Parenthesis: public Expression
 {
 public:
   explicit Parenthesis(char parenthesis);
