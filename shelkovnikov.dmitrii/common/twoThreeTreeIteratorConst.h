@@ -16,7 +16,7 @@ namespace dimkashelk
     using pointer = const std::pair< Key, Value >*;
     using reference = const std::pair< Key, Value >&;
     TwoThreeTreeIteratorConst(const TwoThreeTreeIterator< Key, Value, Compare > &it):
-      value_(it.value),
+      value_(it.value_),
       node_(it.node_),
       prev_(it.prev_)
     {}
