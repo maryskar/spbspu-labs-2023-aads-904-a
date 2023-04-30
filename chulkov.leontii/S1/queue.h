@@ -33,9 +33,9 @@ public:
     }
   }
 
-  void push(const T& rhs)
+  void push(T&& rhs)
   {
-    Node* node = new Node(rhs);
+    Node* node = new Node(std::move(rhs));
     if (empty()) {
       front_ = back_ = node;
     } else {

@@ -30,12 +30,11 @@ public:
   void push(T rhs)
   {
     Node* node = new Node(rhs);
-    node->val = rhs;
     node->next = top_;
     top_ = node;
   }
 
-  void pop(T rhs)
+  void pop()
   {
     if (top_ == nullptr) {
       throw std::out_of_range("Stack is empty");
