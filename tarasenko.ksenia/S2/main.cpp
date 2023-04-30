@@ -45,6 +45,22 @@ int main(int argc, char* argv[])
       print(std::cout, dict_of_dict, name_of_dict);
       std::cout << "\n";
     }
+    else if (name_of_command == "complement")
+    {
+      std::string name_new_dict = "";
+      std::string name_dict1 = "";
+      std::string name_dict2 = "";
+      std::cin >> name_new_dict >> name_dict1 >> name_dict2;
+      try
+      {
+        complement(dict_of_dict, name_new_dict, name_dict1, name_dict2);
+      }
+      catch (const std::exception& e)
+      {
+        std::cout << e.what() << "\n";
+        return 1;
+      }
+    }
   }
   return 0;
 }

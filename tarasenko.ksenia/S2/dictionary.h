@@ -61,30 +61,29 @@ namespace tarasenko
    }
    friend dict_type operator-(const dict_type& left, const dict_type& right)
    {
-     dict_type result;
+     dict_type result = left;
+     if (right.isEmpty())
+     {
+       return result;
+     }
      auto iter_left = left.list.cbegin();
      for (; iter_left != left.list.cend(); iter_left++)
      {
        auto iter_right = right.list.cbegin();
-       bool find_equal_keys = false;
        for (; iter_right != right.list.cend(); iter_right++)
        {
          if ((*iter_left).first == (*iter_right).first)
          {
-           find_equal_keys = true;
+           result.remove((*iter_left).first);
            break;
          }
-       }
-       if (!find_equal_keys)
-       {
-         result.push((*iter_left).first, (*iter_left).second);
        }
      }
      return result;
    }
    void push(const Key& k, const Value& v);
    Value get(const Key& k) const;
-   void remove(const Key& k);
+   void remove(const Key& key);
    bool isEmpty() const;
   private:
    ForwardList< std::pair< Key, Value > > list;
@@ -122,13 +121,12 @@ namespace tarasenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  void Dictionary< Key, Value, Compare >::remove(const Key& k)
+  void Dictionary< Key, Value, Compare >::remove(const Key& key)
   {
-    std::pair< Key, Value > data(k);
     auto current = list.begin();
     while (current != list.end())
     {
-      if (*current == data)
+      if (current->first == key)
       {
         auto to_delete = current;
         ++current;
