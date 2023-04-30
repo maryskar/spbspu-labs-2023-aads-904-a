@@ -217,7 +217,7 @@ namespace dimkashelk
     {
       return root_ == nullptr;
     }
-    void clear()
+    void clear() noexcept
     {
       free(root_);
       delete root_;
