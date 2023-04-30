@@ -17,12 +17,11 @@ long long calculateTheExpression(std::string stringInp)
   while(!infQueue.isEmpty())
   {
     MathExprPtr infVal = std::move(infQueue.getTopData());
-    Expression* infAdrs = infVal.getRawPointer();
     infQueue.popBack();
 
-    if (infAdrs->isParenthesis())
+    if (infVal->isParenthesis())
     {
-      if (infAdrs->isOpenParenthesis())
+      if (infVal->isOpenParenthesis())
       {
         intermStack.push(std::move(infVal));
       }
@@ -31,18 +30,17 @@ long long calculateTheExpression(std::string stringInp)
         while(!intermStack.isEmpty())
         {
           MathExprPtr stackVal = std::move(intermStack.getTopData());
-          Expression* stAdrs = stackVal.getRawPointer();
           intermStack.popBack();
 
-          if (stAdrs->isParenthesis())
+          if (stackVal->isParenthesis())
           {
             break;
           }
-          calculate(postStack, stAdrs);
+          calculate(postStack, *stackVal);
         }
       }
     }
-    else if (infAdrs->isOperator())
+    else if (infVal->isOperator())
     {
       if (intermStack.isEmpty())
       {
@@ -50,44 +48,42 @@ long long calculateTheExpression(std::string stringInp)
         continue;
       }
       MathExprPtr stackVal = std::move(intermStack.getTopData());
-      Expression* stAdrs = stackVal.getRawPointer();
       intermStack.popBack();
 
-      if (stAdrs->isParenthesis())
+      if (stackVal->isParenthesis())
       {
         intermStack.push(std::move(stackVal));
         intermStack.push(std::move(infVal));
         continue;
       }
-      if (infAdrs->getPriority() > stAdrs->getPriority())
+      if (infVal->getPriority() > stackVal->getPriority())
       {
         intermStack.push(std::move(stackVal));
         intermStack.push(std::move(infVal));
       }
       else
       {
-        calculate(postStack, stAdrs);
+        calculate(postStack, *stackVal);
         intermStack.push(std::move(infVal));
       }
     }
     else
     {
-      postStack.push(infAdrs->getNumber());
+      postStack.push(infVal->getNumber());
     }
   }
 
   while (!intermStack.isEmpty())
   {
     MathExprPtr stackVal = std::move(intermStack.getTopData());
-    Expression* stAdrs = stackVal.getRawPointer();
     intermStack.popBack();
 
-    if (stAdrs->isParenthesis())
+    if (stackVal->isParenthesis())
     {
       throw std::logic_error("logic_error");
     }
 
-    calculate(postStack, stAdrs);
+    calculate(postStack, *stackVal);
   }
 
   return postStack.getTopData();

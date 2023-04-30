@@ -27,7 +27,12 @@ MathExprPtr& MathExprPtr::operator=(MathExprPtr&& otherMathExprPtr) noexcept
   return *this;
 }
 
-Expression* MathExprPtr::getRawPointer() const
+Expression* MathExprPtr::operator*()
+{
+  return adress;
+}
+
+Expression* MathExprPtr::operator->()
 {
   return adress;
 }

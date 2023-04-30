@@ -17,7 +17,9 @@ public:
   MathExprPtr(MathExprPtr&& otherMathExprPtr) noexcept;
   MathExprPtr& operator=(const MathExprPtr& otherMathExprPtr) = delete;
   MathExprPtr& operator=(MathExprPtr&& otherMathExprPtr) noexcept;
-  Expression* getRawPointer() const;
+  Expression* operator*();
+  Expression* operator->();
+
   ~MathExprPtr();
 
 private:
