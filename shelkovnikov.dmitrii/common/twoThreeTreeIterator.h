@@ -30,11 +30,11 @@ namespace dimkashelk
     }
     reference operator*()
     {
-      return value;
+      return value_;
     }
     pointer operator->()
     {
-      return std::addressof(value);
+      return std::addressof(value_);
     }
     bool operator==(const TwoThreeTreeIterator &other) const
     {
@@ -45,11 +45,11 @@ namespace dimkashelk
       return !(node_ == other.node_);
     }
   private:
-    value_type value;
+    value_type value_;
     node_type *node_;
     node_type *prev_;
     explicit TwoThreeTreeIterator(node_type *node):
-      value{(node == nullptr)? Key(): node->key[0], (node == nullptr)? Value(): node->value[0]},
+      value_{(node == nullptr) ? Key() : node->key[0], (node == nullptr) ? Value() : node->value[0]},
       node_(node),
       prev_(nullptr)
     {};
@@ -78,7 +78,7 @@ namespace dimkashelk
         }
         else
         {
-          if (value.first == node_->key[1])
+          if (value_.first == node_->key[1])
           {
             prev_ = goUp(node_);
             node_ = prev_->parent;
@@ -139,8 +139,8 @@ namespace dimkashelk
     }
     void set(unsigned ind)
     {
-      value.first = node_->key[ind];
-      value.second = node_->value[ind];
+      value_.first = node_->key[ind];
+      value_.second = node_->value[ind];
     }
   };
 }
