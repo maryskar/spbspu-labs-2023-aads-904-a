@@ -13,7 +13,7 @@ namespace tarasenko
     {
       Elem elem = q_postfix.getHeadElem();
       q_postfix.popFront();
-      if (elem.isDigit())
+      if (elem.isNumber())
       {
         s.push(elem);
       }
@@ -25,7 +25,7 @@ namespace tarasenko
           s.pop();
           long long a = s.getTopElem().getOperand();
           s.pop();
-          Elem res = calculate(a, b, elem.getOperation().getValue());
+          Elem res(calculate(a, b, elem.getOperation().getValue()));
           s.push(res);
         }
       }
@@ -33,6 +33,6 @@ namespace tarasenko
     Elem res = s.getTopElem();
     s.pop();
     return res.getOperand();
-  };
+  }
 }
 #endif

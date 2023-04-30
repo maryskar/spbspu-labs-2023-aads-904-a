@@ -2,6 +2,7 @@
 #define STACK_H
 #include <stdexcept>
 #include <utility>
+#include <memory>
 #include "forward_list.h"
 namespace tarasenko
 {
@@ -10,27 +11,27 @@ namespace tarasenko
   {
   public:
    Stack():
-     top()
+     top_()
    {}
    Stack(const Stack< T >& s):
-     top(s.top)
+     top_(s.top_)
    {}
    Stack(Stack< T >&& s):
-     top(std::move(s.top))
+     top_(std::move(s.top_))
    {}
    Stack< T >& operator=(const Stack< T >& other)
    {
-     if (*this != other)
+     if (this != std::addressof(other))
      {
-       top = other.top;
+       top_ = other.top_;
      }
      return *this;
    }
    Stack< T >& operator=(Stack< T >&& other)
    {
-     if (*this != other)
+     if (this != std::addressof(other))
      {
-       top = std::move(other.top);
+       top_ = std::move(other.top_);
      }
      return *this;
    }
@@ -41,39 +42,39 @@ namespace tarasenko
    void pop();
    bool isEmpty() const;
   private:
-   ForwardList< T > top;
+   details::ForwardList< T > top_;
   };
 
   template< typename T >
   bool Stack< T >::isEmpty() const
   {
-    return top.isEmpty();
+    return top_.isEmpty();
   }
 
   template< typename T >
   void Stack< T >::push(const T& rhs)
   {
-    top.pushFront(rhs);
+    top_.pushFront(rhs);
   }
 
   template< typename T >
   T Stack< T >::getTopElem() const
   {
-    if (top.isEmpty())
+    if (top_.isEmpty())
     {
-      throw std::underflow_error("Underflow!");
+      throw std::logic_error("It's empty!");
     }
-    return top.getFront();
+    return top_.getFront();
   }
 
   template< typename T >
   void Stack< T >::pop()
   {
-    if (top.isEmpty())
+    if (top_.isEmpty())
     {
-      throw std::underflow_error("Underflow!");
+      throw std::logic_error("It's empty!");
     }
-    top.popFront();
+    top_.popFront();
   }
-};
+}
 #endif

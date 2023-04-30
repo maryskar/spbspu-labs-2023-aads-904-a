@@ -16,7 +16,7 @@ namespace tarasenko
     {
       Elem elem = q_infix.getHeadElem();
       q_infix.popFront();
-      if (elem.isDigit())
+      if (elem.isNumber())
       {
         q_postfix.push(elem);
       }

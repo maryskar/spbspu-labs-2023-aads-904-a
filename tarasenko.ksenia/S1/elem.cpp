@@ -2,26 +2,26 @@
 #include <stdexcept>
 
 tarasenko::Elem::Elem(long long digit):
-  union_elem{digit},
-  is_int(true)
+  union_elem_{digit},
+  is_number_(true)
 {}
 
 tarasenko::Elem::Elem(tarasenko::MathSymbols ms):
-  union_elem{0ll},
-  is_int(false)
+  union_elem_{0ll},
+  is_number_(false)
 {
-  union_elem.math_sym = MathSymbols(ms);
+  union_elem_.math_sym = MathSymbols(ms);
 }
-bool tarasenko::Elem::isDigit() const
+bool tarasenko::Elem::isNumber() const
 {
-  return is_int;
+  return is_number_;
 }
 
 long long tarasenko::Elem::getOperand() const
 {
-  if (is_int)
+  if (is_number_)
   {
-    return union_elem.operand;
+    return union_elem_.operand;
   }
   else
   {
@@ -31,12 +31,12 @@ long long tarasenko::Elem::getOperand() const
 
 tarasenko::MathSymbols tarasenko::Elem::getOperation() const
 {
-  if (is_int)
+  if (is_number_)
   {
     throw std::logic_error("It's not operation!");
   }
   else
   {
-    return union_elem.math_sym;
+    return union_elem_.math_sym;
   }
 }

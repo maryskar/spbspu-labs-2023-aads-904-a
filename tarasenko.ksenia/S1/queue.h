@@ -2,6 +2,7 @@
 #define QUEUE_H
 #include <stdexcept>
 #include <utility>
+#include <memory>
 #include "node.h"
 #include "forward_list.h"
 namespace tarasenko
@@ -11,72 +12,72 @@ namespace tarasenko
   {
   public:
    Queue():
-     head()
+     head_()
    {}
    Queue(const Queue< T >& q):
-     head(q.head)
+     head_(q.head_)
    {}
    Queue(Queue< T >&& q):
-     head(std::move(q.head))
+     head_(std::move(q.head_))
    {}
    Queue< T >& operator=(const Queue< T >& other)
    {
-     if (*this != other)
+     if (this != std::addressof(other))
      {
-       head = other.top;
+       head_ = other.head_;
      }
      return *this;
    }
    Queue< T >& operator=(Queue< T >&& other)
    {
-     if (*this != other)
+     if (this != std::addressof(other))
      {
-       head = std::move(other.head);
+       head_ = std::move(other.head_);
      }
      return *this;
    }
    ~Queue()
    {
-     head.clear();
+     head_.clear();
    }
    void push(const T& rhs);
    T getHeadElem() const;
    void popFront();
    bool isEmpty() const;
   private:
-   ForwardList< T > head;
+   details::ForwardList< T > head_;
   };
 
   template< typename T >
   bool Queue< T >::isEmpty() const
   {
-    return head.isEmpty();
+    return head_.isEmpty();
   }
 
   template< typename T >
   void Queue< T >::push(const T& rhs)
   {
-    head.pushBack(rhs);
+    head_.pushBack(rhs);
   }
 
   template< typename T >
   T Queue< T >::getHeadElem() const
   {
-    if (head.isEmpty())
+    if (head_.isEmpty())
     {
-      throw std::underflow_error("Underflow!");
+      throw std::logic_error("It's empty!");
     }
-    return head.getFront();
+    return head_.getFront();
   }
 
   template< typename T >
   void Queue< T >::popFront()
   {
-    if (head.isEmpty())
+    if (head_.isEmpty())
     {
-      throw std::underflow_error("Underflow!");
+      throw std::logic_error("It's empty!");
     }
-    head.popFront();
+    head_.popFront();
   }
 }
 #endif

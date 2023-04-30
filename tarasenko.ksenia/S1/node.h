@@ -99,6 +99,6 @@ namespace tarasenko
       }
       return new_node;
     }
-  };
+  }
 }
 #endif

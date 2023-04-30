@@ -13,5 +13,5 @@ namespace tarasenko
    char value_;
    int priority_;
   };
-};
+}
 #endif
