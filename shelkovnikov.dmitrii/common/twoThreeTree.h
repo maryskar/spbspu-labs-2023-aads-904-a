@@ -201,7 +201,7 @@ namespace dimkashelk
     {
       return iterator(iterator::goDown(root_));
     }
-    const_iterator begin() const
+    const_iterator cbegin() const
     {
       return const_iterator(iterator::goDown(root_));
     }
@@ -209,7 +209,7 @@ namespace dimkashelk
     {
       return iterator(nullptr);
     }
-    const_iterator end() const
+    const_iterator cend() const
     {
       return const_iterator(nullptr);
     }
