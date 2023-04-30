@@ -189,7 +189,7 @@ namespace dimkashelk
       free();
       ::operator delete(fakeNode_);
     }
-    value_type front()
+    reference front()
     {
       return iterator(iterator::goDown(root_)).value;
     }
