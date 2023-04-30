@@ -15,6 +15,5 @@ int main(int argc, char ** argv)
     std::cerr << "The file doesn't opened\n";
     return 1;
   }
-  chemodurov::ForwardList< int > list {0, 1, 2};
   return 0;
 }

@@ -395,7 +395,7 @@ namespace chemodurov
     pos.node_->next = it.node_->next;
     other.last_.node_->next = temp;
     it.node_->next = other.fake_.node_;
-    other.last_ = it;
+    other.last_.node_ = it.node_;
   }
 
   template< typename T >
@@ -408,7 +408,8 @@ namespace chemodurov
   void ForwardList< T >::splice_after(const_iterator pos, this_t & other, const_iterator first, const_iterator last)
   {
     detail::List< T > * temp = pos.node_->next;
-    iterator moved_first = first;
+    iterator moved_first;
+    moved_first.node_ = first.node_;
     ++moved_first;
     iterator it = insert_after(pos, moved_first, last);
     it.node_->next = temp;
@@ -424,20 +425,20 @@ namespace chemodurov
   template< typename T >
   void ForwardList< T >::remove(const_reference value)
   {
-    remove_if(std::bind(std::equal< T >(), std::placeholders::_1, value));
+    remove_if(std::bind(std::equal_to< T >{}, std::placeholders::_1, value));
   }
 
   template< typename T >
   template< typename UnaryPredicate >
   void ForwardList< T >::remove_if(UnaryPredicate p)
   {
-    iterator end = end();
+    iterator end_ = end();
     iterator it = begin();
     if (p(it.node_->data))
     {
       erase_after(before_begin());
     }
-    for (; it != end; ++it)
+    for (; it != end_; ++it)
     {
       if (p(it.node_->next->data))
       {
