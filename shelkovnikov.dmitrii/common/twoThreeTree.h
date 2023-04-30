@@ -169,7 +169,7 @@ namespace dimkashelk
       {
         return *this;
       }
-      free();
+      clear();
       copy(tree);
       return *this;
     }
@@ -179,14 +179,14 @@ namespace dimkashelk
       {
         return *this;
       }
-      free();
+      clear();
       root_ = tree.root_;
       tree.root_ = nullptr;
       return *this;
     }
     ~TwoThreeTree()
     {
-      free();
+      clear();
       ::operator delete(fakeNode_);
     }
     reference front()
@@ -217,6 +217,12 @@ namespace dimkashelk
     {
       return root_ == nullptr;
     }
+    void clear()
+    {
+      free(root_);
+      delete root_;
+      root_ = nullptr;
+    }
     void insert(const Key &k, const Value &v)
     {
       root_ = insert(root_, k, v);
@@ -241,12 +247,6 @@ namespace dimkashelk
     {
       node_type *node = search(root_, k);
       return node && (k == node->key[0] || (node->size == 2 && k == node->key[1]));
-    }
-    void free()
-    {
-      free(root_);
-      delete root_;
-      root_ = nullptr;
     }
   private:
     node_type *fakeNode_;
