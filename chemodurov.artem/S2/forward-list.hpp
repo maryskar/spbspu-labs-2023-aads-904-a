@@ -263,7 +263,7 @@ namespace chemodurov
   template< typename... Args >
   typename ForwardList< T >::iterator ForwardList< T >::emplace_after(const_iterator pos, Args && ... args)
   {
-    pos.node_->next = new detail::List< T >{T(args...), pos.node_->next};
+    pos.node_->next = new detail::List< T >{T(std::forward< Args >(args)...), pos.node_->next};
     moveLastTo(++pos);
     return iterator(pos.node_);
   }
@@ -312,7 +312,7 @@ namespace chemodurov
   template< typename... Args >
   void ForwardList< T >::emplace_front(Args && ... args)
   {
-    emplace_after(cbefore_begin(), std::move(args...));
+    emplace_after(cbefore_begin(), std::forward< Args >(args)...);
   }
 
   template< typename T >
