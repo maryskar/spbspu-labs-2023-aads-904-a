@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <string>
 #include <stdexcept>
 #include "convertstringtoinfix.hpp"

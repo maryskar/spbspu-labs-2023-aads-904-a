@@ -20,25 +20,25 @@ namespace hrushchev
       T get() const;
       bool isEmpty() const;
     private:
-      details::List< T >* value_;
+      details::List< T >* top_;
   };
 
   template< typename T >
   Stack< T >::Stack():
-    value_(nullptr)
+    top_(nullptr)
   {}
 
   template< typename T >
   bool Stack< T >::isEmpty() const
   {
-    return (value_ == nullptr);
+    return (top_ == nullptr);
   }
 
   template< typename T >
   void Stack< T >::push(const T& value)
   {
-    details::List< T >* temp = new details::List< T >{value, value_};
-    value_ = temp;
+    details::List< T >* temp = new details::List< T >{value, top_};
+    top_ = temp;
   }
 
   template< typename T >
@@ -48,7 +48,7 @@ namespace hrushchev
     {
       throw std::logic_error("Empty stack");
     }
-    return value_->data;
+    return top_->data;
   }
 
   template< typename T >
@@ -58,9 +58,9 @@ namespace hrushchev
     {
       throw std::logic_error("Empty stack");
     }
-    details::List< T >* temp = value_->next;
-    delete value_;
-    value_ = temp;
+    details::List< T >* temp =top_->next;
+    delete top_;
+   top_ = temp;
   }
 
   template< typename T >
@@ -74,9 +74,9 @@ namespace hrushchev
 
   template< typename T >
   Stack< T >::Stack(const Stack< T >& other):
-    value_(nullptr)
+    top_(nullptr)
   {
-    details::List< T >* other_value = other.value_;
+    details::List< T >* other_value = other.top_;
     while (other_value != nullptr)
     {
       push(other_value->data_);
@@ -93,7 +93,7 @@ namespace hrushchev
       {
         pop();
       }
-      details::List< T >* other_value = other.value_;
+      details::List< T >* other_value = other.top_;
       while (other_value != nullptr)
       {
         push(other_value->data_);
@@ -105,9 +105,9 @@ namespace hrushchev
 
   template< typename T >
   Stack< T >::Stack(Stack< T >&& other):
-    value_(other.value_)
+    top_(other.top_)
   {
-    other.value_ = nullptr;
+    other.top_ = nullptr;
   }
 
   template< typename T >
@@ -119,8 +119,8 @@ namespace hrushchev
       {
         pop();
       }
-      value_ = other.value_;
-      other.value_ = nullptr;
+      top_ = other.top_;
+      other.top_ = nullptr;
     }
   }
 }
