@@ -101,6 +101,20 @@ namespace dimkashelk
         }
         return false;
       }
+      void removeFromNode(Key k)
+      {
+        if (size >= 1 && key[0] == k)
+        {
+          key[0] = key[1];
+          key[1] = key[2];
+          size--;
+        }
+        else if (size == 2 && key[1] == k)
+        {
+          key[1] = key[2];
+          size--;
+        }
+      }
     private:
       Compare compare_;
       void sort()

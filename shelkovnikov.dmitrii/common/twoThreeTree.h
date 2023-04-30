@@ -128,6 +128,10 @@ namespace dimkashelk
     {
       root_ = insert(root_, k, v);
     }
+    iterator erase_after(const_iterator pos)
+    {
+
+    }
     Value &get(const Key &k)
     {
       node_type *node = search(root_, k);
@@ -312,6 +316,357 @@ namespace dimkashelk
       }
       fakeNode_->first = root_;
       root_->parent = fakeNode_;
+    }
+    node_type *remove(node_type *p, Key k)
+    {
+      node_type *item = search(p, k);
+      if (!item)
+      {
+        return p;
+      }
+      node_type *min = nullptr;
+      if (item->key[0] == k)
+      {
+        min = iterator::goDown(item->second);
+      }
+      else
+      {
+        min = iterator::goDown(item->third);
+      }
+      if (min)
+      {
+        Key &z = (k == item->key[0]? item->key[0]: item->key[1]);
+        std::swap(z, min->key[0]);
+        item = min;
+      }
+      item->removeFromNode(k);
+      return fix(item);
+    }
+    node_type *fix(node_type *leaf)
+    {
+      if (leaf->size == 0 && leaf->parent == nullptr)
+      {
+        delete leaf;
+        return nullptr;
+      }
+      if (leaf->size != 0)
+      {
+        if (leaf->parent)
+        {
+          return fix(leaf->parent);
+        }
+        else
+        {
+          return leaf;
+        }
+      }
+      node_type *parent = leaf->parent;
+      if (parent->first->size == 2 || parent->second->size == 2 || parent->size == 2)
+      {
+        leaf = rebalance(leaf);
+      }
+      else if (parent->size == 2 && parent->third->size == 2)
+      {
+        leaf = rebalance(leaf);
+      }
+      else
+      {
+        leaf = merge(leaf);
+      }
+      return fix(leaf);
+    }
+    node_type *rebalance(node_type *node)
+    {
+      node_type *parent = node->parent;
+      node_type *first = parent->first;
+      node_type *second = parent->second;
+      node_type *third = parent->third;
+      if ((parent->size == 2) && (first->size < 2) && (second->size < 2) && (third->size < 2))
+      {
+        if (first == node)
+        {
+          parent->first = parent->second;
+          parent->second = parent->third;
+          parent->third = nullptr;
+          parent->first->insert(parent->key[0]);
+          parent->first->third = parent->first->second;
+          parent->first->second = parent->first->first;
+          if (node->first != nullptr)
+          {
+            parent->first->first = node->first;
+          }
+          else if (node->second != nullptr)
+          {
+            parent->first->first = node->second;
+          }
+          if (parent->first->first != nullptr)
+          {
+            parent->first->first->parent = parent->first;
+          }
+          parent->removeFromNode(parent->key[0]);
+          delete first;
+        }
+        else if (second == node)
+        {
+          first->insert(parent->key[0]);
+          parent->removeFromNode(parent->key[0]);
+          if (node->first != nullptr)
+          {
+            first->third = node->first;
+          }
+          else if (node->second != nullptr)
+          {
+            first->third = node->second;
+          }
+          if (first->third != nullptr)
+          {
+            first->third->parent = first;
+          }
+          parent->second = parent->third;
+          parent->third = nullptr;
+          delete second;
+        }
+        else if (third == node)
+        {
+          second->insert(parent->key[1]);
+          parent->third = nullptr;
+          parent->removeFromNode(parent->key[1]);
+          if (node->first != nullptr)
+          {
+            second->third = node->first;
+          }
+          else if (node->second != nullptr)
+          {
+            second->third = node->second;
+          }
+          if (second->third != nullptr)
+          {
+            second->third->parent = second;
+          }
+          delete third;
+        }
+      }
+      else if ((parent->size == 2) && ((first->size == 2) || (second->size == 2) || (third->size == 2)))
+      {
+        if (third == node)
+        {
+          if (node->first != nullptr)
+          {
+            node->second = node->first;
+            node->first = nullptr;
+          }
+          node->insert(parent->key[1]);
+          if (second->size == 2)
+          {
+            parent->key[1] = second->key[1];
+            second->removeFromNode(second->key[1]);
+            node->first = second->third;
+            second->third = nullptr;
+            if (node->first != nullptr)
+            {
+              node->first->parent = node;
+            }
+          }
+          else if (first->size == 2)
+          {
+            parent->key[1] = second->key[0];
+            node->first = second->second;
+            second->second = second->first;
+            if (node->first != nullptr)
+            {
+              node->first->parent = node;
+            }
+            second->key[0] = parent->key[0];
+            parent->key[0] = first->key[1];
+            first->removeFromNode(first->key[1]);
+            second->first = first->third;
+            if (second->first != nullptr)
+            {
+              second->first->parent = second;
+            }
+            first->third = nullptr;
+          }
+        }
+        else if (second == node)
+        {
+          if (third->size == 2)
+          {
+            if (node->first == nullptr)
+            {
+              node->first = node->second;
+              node->second = nullptr;
+            }
+            second->insert(parent->key[1]);
+            parent->key[1] = third->key[0];
+            third->removeFromNode(third->key[0]);
+            second->second = third->first;
+            if (second->second != nullptr)
+            {
+              second->second->parent = second;
+            }
+            third->first = third->second;
+            third->second = third->third;
+            third->third = nullptr;
+          }
+          else if (first->size == 2)
+          {
+            if (node->second == nullptr)
+            {
+              node->second = node->first;
+              node->first = nullptr;
+            }
+            second->insert(parent->key[0]);
+            parent->key[0] = first->key[1];
+            first->removeFromNode(first->key[1]);
+            second->first = first->third;
+            if (second->first != nullptr)
+            {
+              second->first->parent = second;
+            }
+            first->third = nullptr;
+          }
+        }
+        else if (first == node)
+        {
+          if (node->first == nullptr)
+          {
+            node->first = node->second;
+            node->second = nullptr;
+          }
+          first->insert(parent->key[0]);
+          if (second->size == 2)
+          {
+            parent->key[0] = second->key[0];
+            second->removeFromNode(second->key[0]);
+            first->second = second->first;
+            if (first->second != nullptr)
+            {
+              first->second->parent = first;
+            }
+            second->first = second->second;
+            second->second = second->third;
+            second->third = nullptr;
+          }
+          else if (third->size == 2)
+          {
+            parent->key[0] = second->key[0];
+            second->key[0] = parent->key[1];
+            parent->key[1] = third->key[0];
+            third->removeFromNode(third->key[0]);
+            first->second = second->first;
+            if (first->second != nullptr)
+            {
+              first->second->parent = first;
+            }
+            second->first = second->second;
+            second->second = third->first;
+            if (second->second != nullptr)
+            {
+              second->second->parent = second;
+            }
+            third->first = third->second;
+            third->second = third->third;
+            third->third = nullptr;
+          }
+        }
+      }
+      else if (parent->size == 1)
+      {
+        node->insert(parent->key[0]);
+        if (first == node && second->size == 2)
+        {
+          parent->key[0] = second->key[0];
+          second->removeFromNode(second->key[0]);
+          if (node->first == nullptr)
+          {
+            node->first = node->second;
+          }
+          node->second = second->first;
+          second->first = second->second;
+          second->second = second->third;
+          second->third = nullptr;
+          if (node->second != nullptr)
+          {
+            node->second->parent = node;
+          }
+        }
+        else if (second == node && first->size == 2)
+        {
+          parent->key[0] = first->key[1];
+          first->removeFromNode(first->key[1]);
+          if (node->second == nullptr)
+          {
+            node->second = node->first;
+          }
+          node->first = first->third;
+          first->third = nullptr;
+          if (node->first != nullptr)
+          {
+            node->first->parent = node;
+          }
+        }
+      }
+      return parent;
+    }
+    node_type *merge(node_type *leaf)
+    {
+      node_type *parent = leaf->parent;
+      if (parent->first == leaf)
+      {
+        parent->second->insert(parent->key[0]);
+        parent->second->third = parent->second->second;
+        parent->second->second = parent->second->first;
+        if (leaf->first != nullptr)
+        {
+          parent->second->first = leaf->first;
+        }
+        else if (leaf->second != nullptr)
+        {
+          parent->second->first = leaf->second;
+        }
+        if (parent->second->first != nullptr)
+        {
+          parent->second->first->parent = parent->second;
+        }
+        parent->removeFromNode(parent->key[0]);
+        delete parent->first;
+        parent->first = nullptr;
+      }
+      else if (parent->second == leaf)
+      {
+        parent->first->insert(parent->key[0]);
+        if (leaf->first != nullptr)
+        {
+          parent->first->third = leaf->first;
+        }
+        else if (leaf->second != nullptr)
+        {
+          parent->first->third = leaf->second;
+        }
+        if (parent->first->third != nullptr)
+        {
+          parent->first->third->parent = parent->first;
+        }
+        parent->removeFromNode(parent->key[0]);
+        delete parent->second;
+        parent->second = nullptr;
+      }
+      if (parent->parent == nullptr)
+      {
+        node_type *tmp = nullptr;
+        if (parent->first != nullptr)
+        {
+          tmp = parent->first;
+        }
+        else
+        {
+          tmp = parent->second;
+        }
+        tmp->parent = nullptr;
+        delete parent;
+        return tmp;
+      }
+      return parent;
     }
   };
 }
