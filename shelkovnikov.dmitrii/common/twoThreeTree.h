@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <iterator>
 #include "twoThreeTreeIterator.h"
+#include "twoThreeTreeIteratorConst.h"
 namespace dimkashelk
 {
   namespace details
@@ -136,7 +137,8 @@ namespace dimkashelk
   using reference = std::pair< Key, Value >&;
   using const_reference = const std::pair< Key, Value >&;
   public:
-    using iterator = dimkashelk::TwoThreeTreeIterator<Key, Value, Compare>;
+    using iterator = dimkashelk::TwoThreeTreeIterator< Key, Value, Compare >;
+    using const_iterator = dimkashelk::TwoThreeTreeIteratorConst< Key, Value, Compare >;
     TwoThreeTree():
       fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
       root_(nullptr),
@@ -198,6 +200,10 @@ namespace dimkashelk
     iterator begin()
     {
       return iterator(iterator::goDown(root_));
+    }
+    const_iterator begin() const
+    {
+      return const_iterator(iterator::goDown(root_));
     }
     iterator end()
     {

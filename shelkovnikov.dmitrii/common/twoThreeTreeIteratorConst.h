@@ -1,12 +1,12 @@
-#ifndef SPBSPU_LABS_2023_AADS_904_A_TWOTHREETREEITERATOR_H
-#define SPBSPU_LABS_2023_AADS_904_A_TWOTHREETREEITERATOR_H
+#ifndef SPBSPU_LABS_2023_AADS_904_A_TWOTHREETREEITERATORCONST_H
+#define SPBSPU_LABS_2023_AADS_904_A_TWOTHREETREEITERATORCONST_H
 #include "twoThreeTree.h"
 namespace dimkashelk
 {
   template< typename Key, typename Value, typename Compare >
   class TwoThreeTree;
   template< typename Key, typename Value, typename Compare >
-  class TwoThreeTreeIterator: public std::iterator< std::forward_iterator_tag, const Value >
+  class TwoThreeTreeIteratorConst: public std::iterator< std::forward_iterator_tag, const Value >
   {
   friend class TwoThreeTree< Key, Value, Compare >;
   public:
@@ -15,14 +15,14 @@ namespace dimkashelk
     using value_type = std::pair< Key, Value >;
     using pointer = const std::pair< Key, Value >*;
     using reference = const std::pair< Key, Value >&;
-    TwoThreeTreeIterator &operator++()
+    TwoThreeTreeIteratorConst &operator++()
     {
       next();
       return *this;
     }
-    TwoThreeTreeIterator operator++(int)
+    TwoThreeTreeIteratorConst operator++(int)
     {
-      TwoThreeTreeIterator< Key, Value, Compare > result(*this);
+      TwoThreeTreeIteratorConst< Key, Value, Compare > result(*this);
       next();
       return result;
     }
@@ -34,11 +34,11 @@ namespace dimkashelk
     {
       return std::addressof(value);
     }
-    bool operator==(const TwoThreeTreeIterator &other) const
+    bool operator==(const TwoThreeTreeIteratorConst &other) const
     {
       return node_ == other.node_;
     }
-    bool operator!=(const TwoThreeTreeIterator &other) const
+    bool operator!=(const TwoThreeTreeIteratorConst &other) const
     {
       return !(node_ == other.node_);
     }
@@ -47,7 +47,7 @@ namespace dimkashelk
     value_type value;
     node_type *node_;
     node_type *prev_;
-    explicit TwoThreeTreeIterator(node_type *node):
+    explicit TwoThreeTreeIteratorConst(node_type *node):
       value{(node == nullptr)? Key(): node->key[0], (node == nullptr)? Value(): node->value[0]},
       node_(node),
       prev_(nullptr)
