@@ -31,7 +31,7 @@ namespace chemodurov
     Dictionary(InputIt first, InputIt last);
     Dictionary(std::initializer_list< value_type > init, const Compare & comp = Compare());
     Dictionary(std::initializer_list< value_type > init);
-    ~Dictionary();
+    ~Dictionary() = default;
     this_t & operator=(const this_t & other);
     this_t & operator=(this_t && other);
     this_t & operator=(std::initializer_list< value_type > init);
@@ -131,7 +131,9 @@ namespace chemodurov
    data_(std::move(other.data_)),
    comp_(std::move(other.comp_)),
    size_(other.size_)
-  {}
+  {
+    other.size_ = 0;
+  }
 
   template< typename Key, typename Value, typename Compare >
   Dictionary< Key, Value, Compare >::Dictionary(const Compare & comp):
@@ -165,6 +167,33 @@ namespace chemodurov
   Dictionary< Key, Value, Compare >::Dictionary(std::initializer_list< value_type > init):
     Dictionary(init, Compare())
   {}
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare > & Dictionary< Key, Value, Compare >::operator=(const this_t & other)
+  {
+    if (this == std::addressof(other))
+    {
+      return *this;
+    }
+    Compare temp = other.comp_;
+    data_ = other.data_;
+    comp_ = std::move(temp);
+    size_ = other.size_;
+    return *this;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare > & Dictionary< Key, Value, Compare >::operator=(this_t && other)
+  {
+    if (this == std::addressof(other))
+    {
+      return *this;
+    }
+    data_ = std::move(other.data_);
+    comp_ = std::move(other.comp_);
+    size_ = other.size_;
+    other.size_ = 0;
+  }
 
   template< typename Key, typename Value, typename Compare >
   class Dictionary< Key, Value, Compare >::value_compare

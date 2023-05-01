@@ -194,7 +194,7 @@ namespace chemodurov
   template< typename T >
   ForwardList< T > & ForwardList< T >::operator=(const this_t & rhs)
   {
-    if (*this == rhs)
+    if (this == std::addressof(rhs))
     {
       return *this;
     }
@@ -207,7 +207,7 @@ namespace chemodurov
   template< typename T >
   ForwardList< T > & ForwardList< T >::operator=(this_t && rhs)
   {
-    if (*this == rhs)
+    if (this == std::addressof(rhs))
     {
       return *this;
     }
