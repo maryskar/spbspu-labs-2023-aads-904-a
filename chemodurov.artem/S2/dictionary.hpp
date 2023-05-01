@@ -28,10 +28,7 @@ namespace chemodurov
     explicit Dictionary(const Compare & comp);
     template< typename InputIt >
     Dictionary(InputIt first, InputIt last, const Compare & comp = Compare());
-    template< typename InputIt >
-    Dictionary(InputIt first, InputIt last);
     Dictionary(std::initializer_list< value_type > init, const Compare & comp = Compare());
-    Dictionary(std::initializer_list< value_type > init);
     ~Dictionary() = default;
     this_t & operator=(const this_t & other);
     this_t & operator=(this_t && other);
@@ -152,21 +149,10 @@ namespace chemodurov
   {}
 
   template< typename Key, typename Value, typename Compare >
-  template< typename InputIt >
-  Dictionary< Key, Value, Compare >::Dictionary(InputIt first, InputIt last):
-   Dictionary(first, last, Compare())
-  {}
-
-  template< typename Key, typename Value, typename Compare >
   Dictionary< Key, Value, Compare >::Dictionary(std::initializer_list< value_type > init, const Compare & comp):
    data_(init),
    comp_(comp),
    size_(init.size())
-  {}
-
-  template< typename Key, typename Value, typename Compare >
-  Dictionary< Key, Value, Compare >::Dictionary(std::initializer_list< value_type > init):
-    Dictionary(init, Compare())
   {}
 
   template< typename Key, typename Value, typename Compare >
@@ -344,6 +330,40 @@ namespace chemodurov
       ++it;
     }
     return it;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  std::pair< typename Dictionary< Key, Value, Compare >::iterator,
+      typename Dictionary< Key, Value, Compare >::iterator >
+          Dictionary< Key, Value, Compare >::equal_range(const key_type & key)
+  {
+    return std::pair< iterator, iterator >(lower_bound(key), upper_bound(key));
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  std::pair< typename Dictionary< Key, Value, Compare >::const_iterator,
+      typename Dictionary< Key, Value, Compare >::const_iterator >
+          Dictionary< Key, Value, Compare >::equal_range(const key_type & key) const
+  {
+    return std::pair< iterator, iterator >(lower_bound(key), upper_bound(key));
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename K >
+  std::pair< typename Dictionary< Key, Value, Compare >::iterator,
+      typename Dictionary< Key, Value, Compare >::iterator >
+          Dictionary< Key, Value, Compare >::equal_range(const K & x)
+  {
+    return std::pair< iterator, iterator >(lower_bound(x), upper_bound(x));
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename K >
+  std::pair< typename Dictionary< Key, Value, Compare >::const_iterator,
+      typename Dictionary< Key, Value, Compare >::const_iterator >
+          Dictionary< Key, Value, Compare >::equal_range(const K & x) const
+  {
+    return std::pair< iterator, iterator >(lower_bound(x), upper_bound(x));
   }
 
   template< typename Key, typename Value, typename Compare >

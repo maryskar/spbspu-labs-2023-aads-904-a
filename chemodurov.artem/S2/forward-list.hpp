@@ -221,7 +221,7 @@ namespace chemodurov
   {
     pos.node_->next = new detail::List< T >{value, pos.node_->next};
     moveLastTo(++pos);
-    return const_cast< iterator >(pos);
+    return iterator(pos.node_);
   }
 
   template< typename T >
@@ -229,7 +229,7 @@ namespace chemodurov
   {
     pos.node_->next = new detail::List< T >{std::move(value), pos.node_->next};
     moveLastTo(++pos);
-    return const_cast< iterator >(pos);
+    return iterator(pos.node_);
   }
 
   template< typename T >

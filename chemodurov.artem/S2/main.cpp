@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include "forward-list.hpp"
+#include <algorithm>
+#include "dictionary.hpp"
 
 int main(int argc, char ** argv)
 {
@@ -15,5 +16,6 @@ int main(int argc, char ** argv)
     std::cerr << "The file doesn't opened\n";
     return 1;
   }
+  chemodurov::Dictionary< int, std::string, std::less< > > dic = { std::pair< int, std::string >{5, "abc"} };
   return 0;
 }
