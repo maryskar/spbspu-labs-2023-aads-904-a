@@ -495,6 +495,35 @@ namespace chemodurov
   }
 
   template< typename Key, typename Value, typename Compare >
+  std::pair< typename Dictionary< Key, Value, Compare >::iterator,
+      bool > Dictionary< Key, Value, Compare >::insert(const value_type & value)
+  {
+    iterator it = lower_bound(value.first);
+    iterator moved_it = it;
+    ++moved_it;
+    if (moved_it->first == value.first)
+    {
+      moved_it->second = value.second;
+      return {moved_it, false};
+    }
+    data_.insert_after(it, value);
+    return {moved_it, true};
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename P >
+  std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool > Dictionary< Key, Value, Compare >::insert(P && value)
+  {
+    return insert(value_type(std::forward< P >(value)));
+  }
+
+  //template< typename Key, typename Value, typename Compare >
+  //typename Dictionary< Key, Value, Compare >::iterator
+  //    Dictionary< Key, Value, Compare >::insert(const_iterator pos, const value_type & value)
+  //{
+  //  return ;
+  //}
+  template< typename Key, typename Value, typename Compare >
   class Dictionary< Key, Value, Compare >::value_compare
   {
    public:
