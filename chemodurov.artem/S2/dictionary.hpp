@@ -263,11 +263,13 @@ namespace chemodurov
   {
     const_iterator end_ = cend();
     const_iterator it = cbegin();
-    while (it != end_ && key_comp()((*it).first, key))
+    const_iterator res = cbefore_begin();
+    while (it != end_ && key_comp()(it->first, key))
     {
       ++it;
+      ++res;
     }
-    return it;
+    return res;
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -275,11 +277,13 @@ namespace chemodurov
   {
     iterator end_ = end();
     iterator it = begin();
-    while (it != end_ && key_comp()((*it).first, key))
+    iterator res = before_begin();
+    while (it != end_ && key_comp()(it->first, key))
     {
       ++it;
+      ++res;
     }
-    return it;
+    return res;
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -288,11 +292,13 @@ namespace chemodurov
   {
     iterator end_ = end();
     iterator it = begin();
-    while (it != end_ && key_comp()((*it).first, x))
+    iterator res = before_begin();
+    while (it != end_ && key_comp()(it->first, x))
     {
       ++it;
+      ++res;
     }
-    return it;
+    return res;
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -301,11 +307,13 @@ namespace chemodurov
   {
     const_iterator end_ = cend();
     const_iterator it = cbegin();
+    const_iterator res = cbefore_begin();
     while (it != end_ && key_comp()(it->first, x))
     {
       ++it;
+      ++res;
     }
-    return it;
+    return res;
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -313,24 +321,42 @@ namespace chemodurov
   {
     const_iterator end_ = cend();
     const_iterator it = cbegin();
-    while (it != end_ && !(key_comp()(key, (*it).first)))
+    const_iterator res = cbefore_begin();
+    while (it != end_ && !(key_comp()(key, it->first)))
     {
       ++it;
+      ++res;
     }
-    return it;
+    return res;
   }
 
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::upper_bound(const key_type & key)
   {
-    return iterator((static_cast< const this_t >(*this)).upper_bound(key).node_);
+    iterator end_ = end();
+    iterator it = begin();
+    iterator res = before_begin();
+    while (it != end_ && !(key_comp()(key, it->first)))
+    {
+      ++it;
+      ++res;
+    }
+    return res;
   }
 
   template< typename Key, typename Value, typename Compare >
   template< typename K >
   typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::upper_bound(const K & x)
   {
-    return iterator((static_cast< const this_t >(*this)).upper_bound(x).node_);
+    iterator end_ = end();
+    iterator it = begin();
+    iterator res = before_begin();
+    while (it != end_ && !(key_comp()(x, it->first)))
+    {
+      ++it;
+      ++res;
+    }
+    return res;
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -339,11 +365,13 @@ namespace chemodurov
   {
     const_iterator end_ = cend();
     const_iterator it = cbegin();
-    while (it != end_ && !(key_comp()(x, (*it).first)))
+    const_iterator res = cbefore_begin();
+    while (it != end_ && !(key_comp()(x, it->first)))
     {
       ++it;
+      ++res;
     }
-    return it;
+    return res;
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -351,7 +379,7 @@ namespace chemodurov
       typename Dictionary< Key, Value, Compare >::iterator >
           Dictionary< Key, Value, Compare >::equal_range(const key_type & key)
   {
-    return std::pair< iterator, iterator >(lower_bound(key), upper_bound(key));
+    return std::pair< iterator, iterator >(lower_bound(key), ++(upper_bound(key)));
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -359,7 +387,7 @@ namespace chemodurov
       typename Dictionary< Key, Value, Compare >::const_iterator >
           Dictionary< Key, Value, Compare >::equal_range(const key_type & key) const
   {
-    return std::pair< iterator, iterator >(lower_bound(key), upper_bound(key));
+    return std::pair< iterator, iterator >(lower_bound(key), ++(upper_bound(key)));
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -368,7 +396,7 @@ namespace chemodurov
       typename Dictionary< Key, Value, Compare >::iterator >
           Dictionary< Key, Value, Compare >::equal_range(const K & x)
   {
-    return std::pair< iterator, iterator >(lower_bound(x), upper_bound(x));
+    return std::pair< iterator, iterator >(lower_bound(x), ++(upper_bound(x)));
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -377,29 +405,35 @@ namespace chemodurov
       typename Dictionary< Key, Value, Compare >::const_iterator >
           Dictionary< Key, Value, Compare >::equal_range(const K & x) const
   {
-    return std::pair< iterator, iterator >(lower_bound(x), upper_bound(x));
+    return std::pair< iterator, iterator >(lower_bound(x), ++(upper_bound(x)));
   }
 
   template< typename Key, typename Value, typename Compare >
   template< typename K >
   typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::find(const K & x)
   {
-    iterator cit = lower_bound(x);
-    return (*cit).first == x ? cit : cend();
+    iterator it = lower_bound(x);
+    iterator moved_it = it;
+    ++moved_it;
+    return moved_it->first == x ? it : cend();
   }
 
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::find(const key_type & key) const
   {
     const_iterator cit = lower_bound(key);
-    return (*cit).first == key ? cit : cend();
+    const_iterator moved_cit = cit;
+    ++moved_cit;
+    return moved_cit->first == key ? cit : cend();
   }
 
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::find(const key_type & key)
   {
-    iterator cit = lower_bound(key);
-    return (*cit).first == key ? cit : cend();
+    iterator it = lower_bound(key);
+    iterator moved_it = it;
+    ++moved_it;
+    return moved_it->first == key ? it : cend();
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -407,27 +441,29 @@ namespace chemodurov
   typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::find(const K & x) const
   {
     const_iterator cit = lower_bound(x);
-    return (*cit).first == x ? cit : cend();
+    const_iterator moved_cit = cit;
+    ++moved_cit;
+    return moved_cit->first == x ? cit : cend();
   }
 
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::size_type Dictionary< Key, Value, Compare >::count(const key_type & key) const
   {
-    return find(key) == end() ? 0ull : 1ull;
+    return ++(find(key)) == end() ? 0ull : 1ull;
   }
 
   template< typename Key, typename Value, typename Compare >
   template< typename K >
   typename Dictionary< Key, Value, Compare >::size_type Dictionary< Key, Value, Compare >::count(const K & x) const
   {
-    return find(x) == end() ? 0ull : 1ull;
+    return ++(find(x)) == end() ? 0ull : 1ull;
   }
 
   template< typename Key, typename Value, typename Compare >
   const Value & Dictionary< Key, Value, Compare >::at(const key_type & key) const
   {
     const_iterator it = find(key);
-    if (it == cend())
+    if (++it == cend())
     {
       throw std::out_of_range("There is no such key");
     }

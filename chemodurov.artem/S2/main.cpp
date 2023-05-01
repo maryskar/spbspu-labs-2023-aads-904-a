@@ -19,6 +19,5 @@ int main(int argc, char ** argv)
   chemodurov::Dictionary< int, std::string, std::less< > > dic1 = { std::pair< int, std::string >{5, "abc"} };
   const chemodurov::Dictionary< int, std::string, std::less< > > dic2 = { std::pair< int, std::string >{4, "abc"} };
   //dic1 = { std::pair< int, std::string >{4, "abc"} };
-  std::cout << dic1.at(5);
   return 0;
 }
