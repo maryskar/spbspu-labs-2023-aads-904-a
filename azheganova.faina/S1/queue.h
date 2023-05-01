@@ -16,7 +16,7 @@ namespace azheganova
     void push(const T & rhs);
     void pop();
     bool isEmpty();
-    T & drop();
+    T & get();
   private:
     details::ListNode< T > * top_;
     details::ListNode< T > * last_;
@@ -36,7 +36,18 @@ namespace azheganova
     details::ListNode< T > * tmp = rhs.top_;
     while (tmp != nullptr)
     {
-      push(tmp->data_);
+      try
+      {
+        push(tmp->data_);
+      }
+      catch(const std::exception & e)
+      {
+        while (top_ != nullptr)
+        {
+          pop();
+        }
+        throw;
+      }
       tmp = tmp->next_;
     }
   }
@@ -93,7 +104,7 @@ namespace azheganova
   }
 
   template< typename T >
-  T & Queue< T >::drop()
+  T & Queue< T >::get()
   {
     if (isEmpty())
     {

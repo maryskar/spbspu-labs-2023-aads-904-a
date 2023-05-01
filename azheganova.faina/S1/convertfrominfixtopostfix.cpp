@@ -10,7 +10,7 @@ void convertFromInfixToPostfix(q_n & queue, s_n & stack, q_n & postfix)
 {
   while (!queue.isEmpty())
   {
-    std::string element = queue.drop();
+    std::string element = queue.get();
     queue.pop();
     if (isdigit(element[0]))
     {
@@ -22,9 +22,9 @@ void convertFromInfixToPostfix(q_n & queue, s_n & stack, q_n & postfix)
     }
     else if (element == ")")
     {
-      while (stack.drop() != "(")
+      while (stack.get() != "(")
       {
-        postfix.push(stack.drop());
+        postfix.push(stack.get());
         stack.pop();
         if (stack.isEmpty())
         {
@@ -35,9 +35,9 @@ void convertFromInfixToPostfix(q_n & queue, s_n & stack, q_n & postfix)
     }
     else if (isOperator(element))
     {
-      while (!stack.isEmpty() && (isOperator(stack.drop())))
+      while (!stack.isEmpty() && (isOperator(stack.get())))
       {
-        postfix.push(stack.drop());
+        postfix.push(stack.get());
         stack.pop();
       }
       stack.push(element);
@@ -49,7 +49,7 @@ void convertFromInfixToPostfix(q_n & queue, s_n & stack, q_n & postfix)
   }
   while (!stack.isEmpty())
   {
-    postfix.push(stack.drop());
+    postfix.push(stack.get());
     stack.pop();
   }
 }

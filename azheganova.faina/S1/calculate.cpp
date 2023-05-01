@@ -105,7 +105,7 @@ long long calculatePostfix(azheganova::Queue <std::string> & postfix)
   while (!postfix.isEmpty())
   {
     std::string element;
-    element = postfix.drop();
+    element = postfix.get();
     postfix.pop();
     if (std::isdigit(element[0]))
     {
@@ -113,9 +113,9 @@ long long calculatePostfix(azheganova::Queue <std::string> & postfix)
     }
     else
     {
-      long long firstnum = stack.drop();
+      long long firstnum = stack.get();
       stack.pop();
-      long long secondnum = stack.drop();
+      long long secondnum = stack.get();
       stack.pop();
       if (element == "+")
       {
@@ -139,5 +139,5 @@ long long calculatePostfix(azheganova::Queue <std::string> & postfix)
       }
     }
   }
-  return stack.drop();
+  return stack.get();
 }

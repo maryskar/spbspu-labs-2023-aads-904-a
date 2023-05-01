@@ -17,7 +17,7 @@ namespace azheganova
     void push(const T & rhs);
     void pop();
     bool isEmpty() const;
-    T & drop() const;
+    T & get() const;
   private:
     details::ListNode< T > * top_;
   };
@@ -84,7 +84,7 @@ namespace azheganova
   }
 
   template< typename T >
-  T & Stack< T >::drop() const
+  T & Stack< T >::get() const
   {
     if(isEmpty())
     {
