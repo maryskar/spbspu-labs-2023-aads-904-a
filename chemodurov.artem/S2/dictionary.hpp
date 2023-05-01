@@ -8,6 +8,7 @@ namespace chemodurov
   template< typename Key, typename Value, typename Compare >
   class Dictionary
   {
+    friend class ForwardIterator< Value >;
    public:
     using key_type = Key;
     using mapped_type = Value;
@@ -267,6 +268,44 @@ namespace chemodurov
     data_.swap(other.data_);
     std::swap(comp_, other.comp_);
     std::swap(size_, other.size_);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::lower_bound(const key_type & key) const
+  {
+    const_iterator end_ = cend();
+    const_iterator it = cbegin();
+    while (it != end_ && key_comp((*it).first, key))
+    {
+      ++it;
+    }
+    return it;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::lower_bound(const key_type & key)
+  {
+    return iterator((static_cast< const this_t >(*this)).lower_bound(key).node_);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename K >
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::lower_bound(const K & x)
+  {
+    return iterator((static_cast< const this_t >(*this)).lower_bound(x).node_);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename K >
+  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::lower_bound(const K & x) const
+  {
+    const_iterator end_ = cend();
+    const_iterator it = cbegin();
+    while (it != end_ && key_comp((*it).first, x))
+    {
+      ++it;
+    }
+    return it;
   }
 
   template< typename Key, typename Value, typename Compare >
