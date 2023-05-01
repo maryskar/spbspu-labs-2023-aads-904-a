@@ -414,6 +414,13 @@ namespace chemodurov
   }
 
   template< typename Key, typename Value, typename Compare >
+  template< typename K >
+  typename Dictionary< Key, Value, Compare >::size_type Dictionary< Key, Value, Compare >::count(const K & x) const
+  {
+    return find(x) == end() ? 0ull : 1ull;
+  }
+
+  template< typename Key, typename Value, typename Compare >
   class Dictionary< Key, Value, Compare >::value_compare
   {
    public:
