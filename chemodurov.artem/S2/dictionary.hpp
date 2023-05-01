@@ -36,6 +36,9 @@ namespace chemodurov
     Value & operator[](key_type && key);
     Value & at(const key_type & key);
     const Value & at(const key_type & key) const;
+    iterator before_begin() noexcept;
+    const_iterator before_begin() const noexcept;
+    const_iterator cbefore_begin() const noexcept;
     iterator begin() noexcept;
     const_iterator begin() const noexcept;
     const_iterator cbegin() const noexcept;
@@ -298,7 +301,7 @@ namespace chemodurov
   {
     const_iterator end_ = cend();
     const_iterator it = cbegin();
-    while (it != end_ && key_comp()((*it).first, x))
+    while (it != end_ && key_comp()(it->first, x))
     {
       ++it;
     }
@@ -434,7 +437,25 @@ namespace chemodurov
   template< typename Key, typename Value, typename Compare >
   Value & Dictionary< Key, Value, Compare >::at(const key_type & key)
   {
-    return const_cast< Value & >((static_cast< const this_t >(*this)).at(key));
+    return const_cast< Value & >((static_cast< const this_t & >(*this)).at(key));
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::before_begin() noexcept
+  {
+    return data_.before_begin();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::before_begin() const noexcept
+  {
+    return cbefore_begin();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::cbefore_begin() const noexcept
+  {
+    return data_.cbefore_begin();
   }
 
   template< typename Key, typename Value, typename Compare >
