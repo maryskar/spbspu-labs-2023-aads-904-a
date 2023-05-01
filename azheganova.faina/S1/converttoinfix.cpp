@@ -3,9 +3,9 @@
 azheganova::Queue< std::string > convertToInfix(const std::string & string)
 {
   azheganova::Queue< std::string > infix;
-  int begin = 0;
+  size_t begin = 0;
   int end = string.find(' ');
-  while (end > -1)
+  while (end != -1)
   {
     infix.push(string.substr(begin, end - begin));
     begin = end + 1;

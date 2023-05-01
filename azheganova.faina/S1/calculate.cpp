@@ -3,11 +3,10 @@
 #include <limits>
 #include "stack.h"
 
-long long maximum = std::numeric_limits< long long >::max();
-long long minimum = std::numeric_limits< long long >::min();
-
 long long summarize(long long secondnum, long long firstnum)
 {
+  long long maximum = std::numeric_limits< long long >::max();
+  long long minimum = std::numeric_limits< long long >::min();
   if ((firstnum * secondnum >= 0) && (firstnum >= 0))
   {
     if (maximum - firstnum >= secondnum)
@@ -38,6 +37,7 @@ long long summarize(long long secondnum, long long firstnum)
 
 long long subtract(long long secondnum, long long firstnum)
 {
+  long long minimum = std::numeric_limits< long long >::min();
   if ((firstnum > 0) && (minimum + firstnum > secondnum))
   {
     throw std::overflow_error("overflow");
@@ -47,6 +47,8 @@ long long subtract(long long secondnum, long long firstnum)
 
 long long multiply(long long secondnum, long long firstnum)
 {
+  long long maximum = std::numeric_limits< long long >::max();
+  long long minimum = std::numeric_limits< long long >::min();
   if ((firstnum * secondnum < 0) && (firstnum >= 0))
   {
     if (maximum / firstnum >= secondnum)
