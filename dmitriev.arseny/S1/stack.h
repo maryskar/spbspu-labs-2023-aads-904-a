@@ -2,7 +2,6 @@
 #define STACK_H
 
 #include "list.h"
-#include <iomanip>
 
 template< typename T >
 class Stack
@@ -21,7 +20,7 @@ public:
   void push(T&& data);
 
   void popBack();
-  T& getTopData() const;
+  T& getTopData();
 
   bool isEmpty() const;
 
@@ -81,22 +80,21 @@ Stack< T >::Stack(Stack< T >&& otherStack) noexcept:
 template< typename T >
 Stack< T >& Stack< T >::operator=(const Stack& otherStack)
 {
-  if (this == &otherStack)
+  if (this == std::addressof(otherStack))
   {
     return *this;
   }
   Stack< T > newStack(otherStack);
   clear(top);
-  top = newStack.top;
-  newStack.top = nullptr;
+  *this = std::move(newStack);
 
   return *this;
 }
 
 template< typename T >
-inline Stack< T >& Stack< T >::operator=(Stack< T >&& otherStack) noexcept
+Stack< T >& Stack< T >::operator=(Stack< T >&& otherStack) noexcept
 {
-  if (this == &otherStack)
+  if (this == std::addressof(otherStack))
   {
     return *this;
   }
@@ -115,7 +113,7 @@ void Stack<T>::push(const T& data)
 }
 
 template< typename T >
-inline void Stack<T>::push(T&& data)
+void Stack<T>::push(T&& data)
 {
   List< T >* newTop = new List< T >{ std::move(data), top };
   top = newTop;
@@ -135,7 +133,7 @@ void Stack< T >::popBack()
 }
 
 template< typename T >
-T& Stack< T >::getTopData() const
+T& Stack< T >::getTopData()
 {
   if (isEmpty())
   {

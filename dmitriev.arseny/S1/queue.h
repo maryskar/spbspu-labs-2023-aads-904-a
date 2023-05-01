@@ -21,7 +21,7 @@ public:
   void push(T&& inp);
 
   void popBack();
-  T& getTopData() const;
+  T& getTopData();
 
   bool isEmpty() const;
 
@@ -82,25 +82,21 @@ Queue< T >::Queue(Queue< T >&& otherQueue) noexcept:
 template<typename T>
 Queue< T >& Queue< T >::operator=(const Queue< T >& otherQueue)
 {
-  if (this == &otherQueue)
+  if (this == std::addressof(otherQueue))
   {
     return *this;
   }
   Queue< T > newQueue(otherQueue);
   clear(head);
-  head = newQueue.head;
-  tail = newQueue.tail;
-
-  newQueue.head = nullptr;
-  newQueue.tail = nullptr;
+  *this = std::move(newQueue);
 
   return *this;
 }
 
-template<typename T>
+template< typename T >
 Queue< T >& Queue< T >::operator=(Queue< T >&& otherQueue) noexcept
 {
-  if (this == &otherQueue)
+  if (this == std::addressof(otherQueue))
   {
     return *this;
   }
@@ -158,7 +154,7 @@ void Queue< T >::popBack()
 }
 
 template< typename T >
-T& Queue< T >::getTopData() const
+T& Queue< T >::getTopData()
 {
   if (head == nullptr)
   {
@@ -168,7 +164,7 @@ T& Queue< T >::getTopData() const
 }
 
 template< typename T >
-inline bool Queue< T >::isEmpty() const
+bool Queue< T >::isEmpty() const
 {
   return head == nullptr;
 }
