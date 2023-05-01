@@ -421,6 +421,23 @@ namespace chemodurov
   }
 
   template< typename Key, typename Value, typename Compare >
+  const Value & Dictionary< Key, Value, Compare >::at(const key_type & key) const
+  {
+    const_iterator it = find(key);
+    if (it == cend())
+    {
+      throw std::out_of_range("There is no such key");
+    }
+    return it->second;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Value & Dictionary< Key, Value, Compare >::at(const key_type & key)
+  {
+    return const_cast< Value & >((static_cast< const this_t >(*this)).at(key));
+  }
+
+  template< typename Key, typename Value, typename Compare >
   class Dictionary< Key, Value, Compare >::value_compare
   {
    public:

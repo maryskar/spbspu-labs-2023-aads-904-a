@@ -29,6 +29,7 @@ namespace chemodurov
     ~ForwardList();
     this_t & operator=(const this_t & rhs);
     this_t & operator=(this_t && rhs);
+    this_t & operator=(std::initializer_list< T > init);
     iterator before_begin() noexcept;
     const_iterator before_begin() const noexcept;
     const_iterator cbefore_begin() const noexcept;
@@ -95,6 +96,7 @@ namespace chemodurov
     last_.node_->next = nullptr;
     detail::deleteList(fake_.node_->next);
     fake_.node_->next = fake_.node_;
+    last_ = fake_;
   }
 
   template< typename T >
@@ -213,6 +215,15 @@ namespace chemodurov
     }
     clear();
     swap(rhs);
+    return *this;
+  }
+
+  template< typename T >
+  ForwardList< T > & ForwardList< T >::operator=(std::initializer_list< T > init)
+  {
+    ForwardList< T > temp(init);
+    clear();
+    swap(temp);
     return *this;
   }
 
