@@ -93,6 +93,23 @@ namespace tarasenko
      return result;
    }
 
+   friend dict_type operator||(const dict_type& left, const dict_type& right)
+   {
+     dict_type result = left;
+     if (!right.isEmpty())
+     {
+       auto iter_right = right.list.cbegin();
+       for (; iter_right != right.list.cend(); iter_right++)
+       {
+         if (!left.find((*iter_right).first))
+         {
+           result.push((*iter_right).first, (*iter_right).second);
+         }
+       }
+     }
+     return result;
+   }
+
    void push(const Key& k, const Value& v);
    Value get(const Key& k) const;
    bool find(const Key& k) const;
