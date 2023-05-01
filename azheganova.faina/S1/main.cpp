@@ -21,7 +21,7 @@ int main(int argc, char * argv[])
   std::fstream inputfile;
   if(argc == 2)
   {
-    std::ifstream inputfile(argv[1]);
+    inputfile.open(argv[1]);
     if (!inputfile)
     {
       std::cerr << "error";
