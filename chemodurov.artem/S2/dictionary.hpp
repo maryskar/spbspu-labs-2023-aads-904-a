@@ -275,7 +275,7 @@ namespace chemodurov
   {
     const_iterator end_ = cend();
     const_iterator it = cbegin();
-    while (it != end_ && key_comp((*it).first, key))
+    while (it != end_ && key_comp()((*it).first, key))
     {
       ++it;
     }
@@ -301,7 +301,45 @@ namespace chemodurov
   {
     const_iterator end_ = cend();
     const_iterator it = cbegin();
-    while (it != end_ && key_comp((*it).first, x))
+    while (it != end_ && key_comp()((*it).first, x))
+    {
+      ++it;
+    }
+    return it;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::upper_bound(const key_type & key) const
+  {
+    const_iterator end_ = cend();
+    const_iterator it = cbegin();
+    while (it != end_ && !(key_comp()(key, (*it).first)))
+    {
+      ++it;
+    }
+    return it;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::upper_bound(const key_type & key)
+  {
+    return iterator((static_cast< const this_t >(*this)).upper_bound(key).node_);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename K >
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::upper_bound(const K & x)
+  {
+    return iterator((static_cast< const this_t >(*this)).upper_bound(x).node_);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename K >
+  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::upper_bound(const K & x) const
+  {
+    const_iterator end_ = cend();
+    const_iterator it = cbegin();
+    while (it != end_ && !(key_comp()(x, (*it).first)))
     {
       ++it;
     }
@@ -321,7 +359,7 @@ namespace chemodurov
     };
    protected:
     Compare comp;
-    value_compare(Compare c): comp(c) {};
+    explicit value_compare(Compare c): comp(c) {};
   };
 }
 #endif
