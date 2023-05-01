@@ -51,16 +51,16 @@ namespace chemodurov
     std::pair< iterator, bool > insert(const_reference value);
     template< typename P >
     std::pair< iterator, bool > insert(P && value);
-    iterator insert_after(const_iterator pos, const_reference value);
+    iterator insert(const_iterator pos, const_reference value);
     template< typename P >
-    iterator insert_after(const_iterator pos, P && value);
+    iterator insert(const_iterator pos, P && value);
     template< typename InputIt >
     void insert(InputIt first, InputIt last);
     void insert(std::initializer_list< value_type > init);
     template< typename... Args >
     std::pair< iterator, bool > emplace(Args && ... args);
     template< typename... Args >
-    iterator emplace_after(const_iterator pos, Args && ... args);
+    iterator emplace(const_iterator pos, Args && ... args);
     iterator erase_after(const_iterator pos);
     iterator erase_after(const_iterator first, const_iterator last);
     size_type erase(const key_type & key);
@@ -193,6 +193,80 @@ namespace chemodurov
     comp_ = std::move(other.comp_);
     size_ = other.size_;
     other.size_ = 0;
+    return *this;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare > & Dictionary< Key, Value, Compare >::operator=(std::initializer_list< value_type > init)
+  {
+    clear();
+    data_ = init;
+    comp_ = Compare();
+    size_ = init.size();
+    return *this;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::begin() noexcept
+  {
+    return data_.begin();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::begin() const noexcept
+  {
+    return cbegin();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::cbegin() const noexcept
+  {
+    return data_.cbegin();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::end() noexcept
+  {
+    return data_.end();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::end() const noexcept
+  {
+    return cend();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::cend() const noexcept
+  {
+    return data_.cend();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  bool Dictionary< Key, Value, Compare >::empty() const noexcept
+  {
+    return cbegin() == cend();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::size_type Dictionary< Key, Value, Compare >::size() const noexcept
+  {
+    return size_;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  void Dictionary< Key, Value, Compare >::clear() noexcept
+  {
+    data_.clear();
+    size_ = 0;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  void Dictionary< Key, Value, Compare >::swap(this_t & other)
+  {
+    data_.swap(other.data_);
+    std::swap(comp_, other.comp_);
+    std::swap(size_, other.size_);
   }
 
   template< typename Key, typename Value, typename Compare >
