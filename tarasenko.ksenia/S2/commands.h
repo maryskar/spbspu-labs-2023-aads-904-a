@@ -22,13 +22,33 @@ namespace tarasenko
       print(std::cout, dict_of_dict, name_of_dict);
       output << "\n";
     }
-    else if (name_of_command == "complement")
+    else if (name_of_command == "complement" || name_of_command == "intersect" || name_of_command == "union")
     {
       std::string name_new_dict = "";
       std::string name_dict1 = "";
       std::string name_dict2 = "";
       input >> name_new_dict >> name_dict1 >> name_dict2;
-      complement(dict_of_dict, name_new_dict, name_dict1, name_dict2);
+      auto dict1 = dict_of_dict.get(name_dict1);
+      auto dict2 = dict_of_dict.get(name_dict2);
+      if (name_of_command == "complement")
+      {
+        if (dict1.isEmpty())
+        {
+          throw std::logic_error("The first dictionary is empty!");
+        }
+        auto new_dict = dict1 - dict2;
+        dict_of_dict.push(name_new_dict, new_dict);
+      }
+      else if (name_of_command == "intersect")
+      {
+        auto new_dict = dict1 && dict2;
+        dict_of_dict.push(name_new_dict, new_dict);
+      }
+      else if (name_of_command == "union")
+      {
+        auto new_dict = dict1 || dict2;
+        dict_of_dict.push(name_new_dict, new_dict);
+      }
     }
     else
     {
@@ -53,20 +73,6 @@ namespace tarasenko
       return output << "<EMPTY>";
     }
     return output << name_of_dict << " " << given_dict;
-  }
-
-  template< typename Key, typename Value, typename Compare >
-  void complement(dict_type< Key, Value, Compare >& dict_of_dict, std::string name_new_dict, std::string name_dict1,
-                  std::string name_dict2)
-  {
-    auto dict1 = dict_of_dict.get(name_dict1);
-    if (dict1.isEmpty())
-    {
-      throw std::logic_error("The first dictionary is empty!");
-    }
-    auto dict2 = dict_of_dict.get(name_dict2);
-    auto new_dict = dict1 - dict2;
-    dict_of_dict.push(name_new_dict, new_dict);
   }
 }
 #endif
