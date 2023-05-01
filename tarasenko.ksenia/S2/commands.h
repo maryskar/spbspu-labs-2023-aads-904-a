@@ -53,6 +53,8 @@ namespace tarasenko
     else
     {
       output << "<INVALID COMMAND>" << "\n";
+      std::string trash = "";
+      getline(input, trash);
     }
   }
 
