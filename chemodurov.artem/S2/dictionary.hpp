@@ -1,5 +1,6 @@
 #ifndef S2_DICTIONARY_HPP
 #define S2_DICTIONARY_HPP
+#include <cmath>
 #include "forward-list.hpp"
 
 namespace chemodurov
@@ -23,7 +24,7 @@ namespace chemodurov
     Dictionary();
     Dictionary(const this_t & other);
     Dictionary(this_t && other);
-    Dictionary(const Compare & comp);
+    explicit Dictionary(const Compare & comp);
     template< typename InputIt >
     Dictionary(InputIt first, InputIt last, const Compare & comp = Compare());
     template< typename InputIt >
@@ -97,6 +98,88 @@ namespace chemodurov
     ForwardList< value_type > data_;
     Compare comp_;
     size_type size_;
+  };
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::key_compare Dictionary< Key, Value, Compare >::key_comp() const
+  {
+    return comp_;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::value_compare Dictionary< Key, Value, Compare >::value_comp() const
+  {
+    return value_compare(comp_);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare >::Dictionary():
+   data_(),
+   comp_(),
+   size_(0)
+  {}
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare >::Dictionary(const this_t & other):
+   data_(other.data_),
+   comp_(other.comp_),
+   size_(other.size_)
+  {}
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare >::Dictionary(this_t && other):
+   data_(std::move(other.data_)),
+   comp_(std::move(other.comp_)),
+   size_(other.size_)
+  {}
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare >::Dictionary(const Compare & comp):
+   data_(),
+   comp_(comp),
+   size_(0)
+  {}
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename InputIt >
+  Dictionary< Key, Value, Compare >::Dictionary(InputIt first, InputIt last, const Compare & comp):
+   data_(first, last),
+   comp_(comp),
+   size_(std::abs(std::distance(first, last)))
+  {}
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename InputIt >
+  Dictionary< Key, Value, Compare >::Dictionary(InputIt first, InputIt last):
+   Dictionary(first, last, Compare())
+  {}
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare >::Dictionary(std::initializer_list< value_type > init, const Compare & comp):
+   data_(init),
+   comp_(comp),
+   size_(init.size())
+  {}
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare >::Dictionary(std::initializer_list< value_type > init):
+    Dictionary(init, Compare())
+  {}
+
+  template< typename Key, typename Value, typename Compare >
+  class Dictionary< Key, Value, Compare >::value_compare
+  {
+   public:
+    using result_type = bool;
+    using first_argument_type = value_type;
+    using second_argument_type = value_type;
+    bool operator()( const value_type& lhs, const value_type& rhs ) const
+    {
+      return comp(lhs.first, rhs.first);
+    };
+   protected:
+    Compare comp;
+    value_compare(Compare c): comp(c) {};
   };
 }
 #endif
