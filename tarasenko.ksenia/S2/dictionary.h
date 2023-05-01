@@ -62,19 +62,14 @@ namespace tarasenko
    friend dict_type operator-(const dict_type& left, const dict_type& right)
    {
      dict_type result = left;
-     if (right.isEmpty())
+     if (!right.isEmpty())
      {
        auto iter_left = left.list.cbegin();
        for (; iter_left != left.list.cend(); iter_left++)
        {
-         auto iter_right = right.list.cbegin();
-         for (; iter_right != right.list.cend(); iter_right++)
+         if (right.find((*iter_left).first))
          {
-           if ((*iter_left).first == (*iter_right).first)
-           {
-             result.remove((*iter_left).first);
-             break;
-           }
+           result.remove((*iter_left).first);
          }
        }
      }
@@ -89,14 +84,9 @@ namespace tarasenko
        auto iter_left = left.list.cbegin();
        for (; iter_left != left.list.cend(); iter_left++)
        {
-         auto iter_right = right.list.cbegin();
-         for (; iter_right != right.list.cend(); iter_right++)
+         if (right.find((*iter_left).first))
          {
-           if ((*iter_left).first == (*iter_right).first)
-           {
-             result.push((*iter_left).first, (*iter_left).second);
-             break;
-           }
+           result.push((*iter_left).first, (*iter_left).second);
          }
        }
      }
@@ -105,6 +95,7 @@ namespace tarasenko
 
    void push(const Key& k, const Value& v);
    Value get(const Key& k) const;
+   bool find(const Key& k) const;
    void remove(const Key& key);
    bool isEmpty() const;
   private:
@@ -140,6 +131,24 @@ namespace tarasenko
       }
     }
     throw std::invalid_argument("Key not found");
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  bool Dictionary< Key, Value, Compare >::find(const Key& k) const
+  {
+    if (!isEmpty())
+    {
+      auto current = list.cbegin();
+      while (current != list.cend() && (k != current->first))
+      {
+        ++current;
+      }
+      if (current != list.cend() && (k == current->first))
+      {
+        return true;
+      }
+    }
+    return false;
   }
 
   template< typename Key, typename Value, typename Compare >
