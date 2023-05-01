@@ -21,6 +21,8 @@ namespace kryuchkova
     operation_t getOperation() const;
     parenthesis_t getParenthesis() const;
   private:
+    bool isOperand_;
+    bool isParthenesis_;
     union element
     {
       long long operand_;
@@ -29,9 +31,7 @@ namespace kryuchkova
       explicit element(long long operand);
       explicit element(operation_t operation);
       explicit element(parenthesis_t parenthesis);
-    } element_;
-    bool isOperand_;
-    bool isParthenesis_;
+    } element;
   };
 }
 

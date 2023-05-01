@@ -1,6 +1,8 @@
 #include "queue.h"
 #include "stack.h"
 #include "node.h"
+#include "infix_exp.h"
+#include "part_of_exp.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -13,10 +15,8 @@ int main(int argc, char *argv[])
     std::cerr  << "Not correct number of arguments for program\n";
     return 1;
   }
-  kryuchkova::Queue < std::string > inf;
-  kryuchkova::Queue < std::string > post;
+
   std::string str;
-  long long result = 0;
 
   if (argc == 2)
   {
@@ -35,13 +35,12 @@ int main(int argc, char *argv[])
       }
       try
       {
-
+        kryuchkova::Queue< kryuchkova::ExpressionMember > inf = kryuchkova::InfixExp(str);
       }
       catch(const std::exception& e)
       {
         std::cerr << e.what() << '\n';
       }
-      std::cout << result << '\n';
     }
   }
 
@@ -66,7 +65,7 @@ int main(int argc, char *argv[])
       {
         std::cerr << e.what() << '\n';
       }
-      std::cout << result << '\n';
+      std::cout << 'a' << '\n';
     }
   }
   return 0;
