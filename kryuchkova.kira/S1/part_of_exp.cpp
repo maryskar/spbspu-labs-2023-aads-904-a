@@ -74,4 +74,12 @@ namespace kryuchkova
     return element.operand_;
   }
   
+  bool cmpPriority(const operation_t &lhs, const operation_t &rhs)
+  {
+    if (lhs == operation_t::SUBTRACTION || lhs == operation_t::ADDITION)
+    {
+      return !(rhs == operation_t::ADDITION || rhs == operation_t::SUBTRACTION);
+    }
+    return false;
+  }
 }

@@ -33,6 +33,8 @@ namespace kryuchkova
       explicit element(parenthesis_t parenthesis);
     } element;
   };
+
+  bool cmpPriority(const operation_t &lhs, const operation_t &rhs);
 }
 
 #endif

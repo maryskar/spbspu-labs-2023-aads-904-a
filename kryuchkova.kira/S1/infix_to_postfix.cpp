@@ -24,29 +24,57 @@ namespace kryuchkova
         }
         else if (data.getParenthesis() == parenthesis_t::CLOSE)
         {
-          ExpressionMember temp = stack.drop();
-          while (!stack.isEmpty() && !temp.isParenthesis())
-          {
-            post.push(temp);
-            temp = stack.drop();
-          }
           if (stack.isEmpty())
           {
             throw std::invalid_argument("Check your expression");
           }
+          ExpressionMember temp = stack.drop();
+          while (!stack.isEmpty() && !temp.isParenthesis())
+          {
+            post.push(temp);
+            if (stack.isEmpty())
+            {
+              throw std::invalid_argument("Check your expression");
+            }
+            temp = stack.drop();
+          }
+        }
+      }
+      else
+      {
+        if (stack.isEmpty())
+        {
+          stack.push(data);
         }
         else
         {
-          if (stack.isEmpty())
+          ExpressionMember temp = stack.drop();
+          if (cmpPriority(temp.getOperation(), data.getOperation()))
           {
+            stack.push(temp);
             stack.push(data);
           }
           else
           {
-
+            ExpressionMember temp = stack.drop();
+            while (!cmpPriority(temp.getOperation(), data.getOperation()))
+            {
+              post.push(temp);
+              if (stack.isEmpty())
+              {
+                break;
+              }
+              temp = stack.drop();
+            }
+            stack.push(data);
           }
         }
       }
     }
+    while (!stack.isEmpty())
+    {
+      post.push(stack.drop());
+    }
+    return post;
   }
 }
