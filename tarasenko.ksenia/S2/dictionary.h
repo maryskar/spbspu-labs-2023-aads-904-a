@@ -64,23 +64,45 @@ namespace tarasenko
      dict_type result = left;
      if (right.isEmpty())
      {
-       return result;
-     }
-     auto iter_left = left.list.cbegin();
-     for (; iter_left != left.list.cend(); iter_left++)
-     {
-       auto iter_right = right.list.cbegin();
-       for (; iter_right != right.list.cend(); iter_right++)
+       auto iter_left = left.list.cbegin();
+       for (; iter_left != left.list.cend(); iter_left++)
        {
-         if ((*iter_left).first == (*iter_right).first)
+         auto iter_right = right.list.cbegin();
+         for (; iter_right != right.list.cend(); iter_right++)
          {
-           result.remove((*iter_left).first);
-           break;
+           if ((*iter_left).first == (*iter_right).first)
+           {
+             result.remove((*iter_left).first);
+             break;
+           }
          }
        }
      }
      return result;
    }
+
+   friend dict_type operator&&(const dict_type& left, const dict_type& right)
+   {
+     dict_type result;
+     if (!left.isEmpty() && !right.isEmpty())
+     {
+       auto iter_left = left.list.cbegin();
+       for (; iter_left != left.list.cend(); iter_left++)
+       {
+         auto iter_right = right.list.cbegin();
+         for (; iter_right != right.list.cend(); iter_right++)
+         {
+           if ((*iter_left).first == (*iter_right).first)
+           {
+             result.push((*iter_left).first, (*iter_left).second);
+             break;
+           }
+         }
+       }
+     }
+     return result;
+   }
+
    void push(const Key& k, const Value& v);
    Value get(const Key& k) const;
    void remove(const Key& key);
