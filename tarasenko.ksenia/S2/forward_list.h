@@ -1,10 +1,12 @@
 #ifndef FORWARD_LIST_H
 #define FORWARD_LIST_H
+
 #include <memory>
 #include <algorithm>
 #include "node.h"
 #include "forward_list_iterator.h"
 #include "const_forward_list_iterator.h"
+
 namespace tarasenko
 {
   template< typename T >
@@ -12,42 +14,40 @@ namespace tarasenko
   {
   public:
    ForwardList():
-     first(nullptr)
-   {};
-
+     first_(nullptr)
+   {}
    ForwardList(const ForwardList< T >& other):
-     first(nullptr)
-   {
-     copy(other);
-   }
+     first_(details::newCopy(other.first_))
+   {}
    ForwardList(ForwardList< T >&& other):
-     first(other.first)
+     first_(other.first_)
    {
-     other.first = nullptr;
+     other.first_ = nullptr;
    }
    ForwardList< T >& operator=(const ForwardList< T >& other)
    {
-     try
+     if (this != std::addressof(other))
      {
-       details::clear(std::addressof(first));
-       copy(other);
-       return *this;
+       details::NodeOfList< T >* new_node = newCopy(other.first_);
+       details::clear(std::addressof(first_));
+       first_ = new_node;
      }
-     catch (...)
-     {
-       details::clear(std::addressof(first));
-       throw;
-     }
+     return *this;
    }
    ForwardList< T >& operator=(ForwardList< T >&& other)
    {
-     move(other);
+     if (this != std::addressof(other))
+     {
+       details::clear(std::addressof(first_));
+       first_ = other.first_;
+       other.first_ = nullptr;
+     }
      return *this;
    }
    ~ForwardList()
    {
-     details::clear(std::addressof(first));
-   };
+     details::clear(std::addressof(first_));
+   }
    bool isEmpty() const;
    void pushFront(const T& data);
    void pushBack(const T& data);
@@ -55,7 +55,6 @@ namespace tarasenko
    void popFront();
    void clear();
    void copy(const ForwardList< T >& other);
-   void move(const ForwardList< T >&& other);
    void addBefore(details::NodeOfList< T >* pnode, const T& data);
    void removeNode(details::NodeOfList< T >* pnode);
    void removeData(const T& data);
@@ -80,52 +79,52 @@ namespace tarasenko
      return ConstForwardListIterator< T >();
    }
   private:
-   details::NodeOfList< T >* first;
+   details::NodeOfList< T >* first_;
   };
 
   template< typename T >
   bool ForwardList< T >::isEmpty() const
   {
-    return details::isEmpty(first);
+    return details::isEmpty(first_);
   }
 
   template< typename T >
   void ForwardList< T >::pushFront(const T& data)
   {
-    details::pushFront(std::addressof(first), data);
+    details::pushFront(std::addressof(first_), data);
   }
 
   template< typename T >
   void ForwardList< T >::pushBack(const T& data)
   {
-    details::pushBack(std::addressof(first), data);
+    details::pushBack(std::addressof(first_), data);
   }
 
   template< typename T >
   T ForwardList< T >::getFront() const
   {
-    return details::getFront(first);
+    return details::getFront(first_);
   }
 
   template< typename T >
   void ForwardList< T >::popFront()
   {
-    details::popFront(std::addressof(first));
+    details::popFront(std::addressof(first_));
   }
 
   template< typename T >
   void ForwardList< T >::addBefore(details::NodeOfList< T >* pnode, const T& data)
   {
-    if (first == pnode)
+    if (first_ == pnode)
     {
       auto new_node = new details::NodeOfList< T >(data, nullptr);
-      new_node->next = first;
-      first = new_node;
+      new_node->next = first_;
+      first_ = new_node;
     }
     else
     {
-      details::NodeOfList< T >* prev = first;
-      details::NodeOfList< T >* curr = first;
+      details::NodeOfList< T >* prev = first_;
+      details::NodeOfList< T >* curr = first_;
       while (curr != pnode)
       {
         prev = curr;
@@ -140,13 +139,13 @@ namespace tarasenko
   template< typename T >
   void ForwardList< T >::removeNode(details::NodeOfList< T >* pnode)
   {
-    if (pnode == first)
+    if (pnode == first_)
     {
-      details::popFront(std::addressof(first));
+      details::popFront(std::addressof(first_));
     }
     else
     {
-      details::NodeOfList< T >* curr = first;
+      details::NodeOfList< T >* curr = first_;
       while (curr->next != pnode)
       {
         curr = curr->next;
@@ -159,7 +158,7 @@ namespace tarasenko
   template< typename T >
   void ForwardList< T >::clear()
   {
-    details::clear(std::addressof(first));
+    details::clear(std::addressof(first_));
   }
 
   template< typename T >
@@ -171,13 +170,6 @@ namespace tarasenko
       pushBack(copy->data);
       copy = copy->next;
     }
-  }
-  template< typename T >
-  void ForwardList< T >::move(const ForwardList< T >&& other)
-  {
-    details::clear(std::addressof(first));
-    first = other.first;
-    other.first = nullptr;
   }
 }
 #endif

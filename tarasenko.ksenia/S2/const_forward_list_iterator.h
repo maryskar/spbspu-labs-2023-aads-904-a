@@ -1,24 +1,27 @@
 #ifndef CONST_FORWARD_LIST_ITERATOR_H
 #define CONST_FORWARD_LIST_ITERATOR_H
+
 #include <memory>
 #include <cassert>
 #include <iterator>
 #include "forward_list.h"
+
 namespace tarasenko
 {
   template< typename T >
   class ForwardList;
 
   template< typename T >
-  class ConstForwardListIterator: public std::iterator< std::input_iterator_tag, const T >
+  class ConstForwardListIterator: public std::iterator< std::forward_iterator_tag, const T >
   {
   public:
    using this_t = ConstForwardListIterator< T >;
+
    ConstForwardListIterator():
      node(nullptr)
    {}
    explicit ConstForwardListIterator(const ForwardList< T >* list):
-     node(list->first)
+     node(list->first_)
    {}
    ConstForwardListIterator(const this_t&) = default;
    ~ConstForwardListIterator() = default;
@@ -38,8 +41,9 @@ namespace tarasenko
    {
      return node;
    }
+
   private:
-   const details::NodeOfList< T >* node;
+   details::NodeOfList< T >* node;
   };
 
   template< typename T >

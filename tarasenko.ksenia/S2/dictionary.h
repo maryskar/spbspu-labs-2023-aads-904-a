@@ -1,7 +1,9 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
+
 #include <stdexcept>
 #include "forward_list.h"
+
 namespace tarasenko
 {
   template< typename Key, typename Value, typename Compare >
@@ -9,6 +11,7 @@ namespace tarasenko
   {
   public:
    using dict_type = Dictionary< Key, Value, Compare >;
+
    Dictionary():
      list(),
      compare(Compare{})
@@ -37,12 +40,14 @@ namespace tarasenko
    {
      list.clear();
    }
+
    friend bool operator<(const dict_type& dict1, const dict_type& dict2)
    {
      auto iter = dict1.list.cbegin();
      auto other_iter = dict2.list.cbegin();
      return iter->first < other_iter->first;
    }
+
    friend std::ostream& operator<<(std::ostream& output, const dict_type& dict)
    {
      if (dict.isEmpty())
@@ -59,6 +64,7 @@ namespace tarasenko
      }
      return output;
    }
+
    friend dict_type operator-(const dict_type& left, const dict_type& right)
    {
      dict_type result = left;
@@ -115,6 +121,7 @@ namespace tarasenko
    bool find(const Key& k) const;
    void remove(const Key& key);
    bool isEmpty() const;
+
   private:
    ForwardList< std::pair< Key, Value > > list;
    Compare compare;

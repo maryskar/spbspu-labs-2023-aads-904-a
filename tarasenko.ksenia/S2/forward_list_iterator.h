@@ -1,5 +1,6 @@
 #ifndef FORWARD_LIST_ITERATOR_H
 #define FORWARD_LIST_ITERATOR_H
+
 #include <memory>
 #include <cassert>
 #include <iterator>
@@ -11,7 +12,7 @@ namespace tarasenko
   class ForwardList;
 
   template< typename T >
-  class ForwardListIterator: public std::iterator< std::input_iterator_tag, T >
+  class ForwardListIterator: public std::iterator< std::forward_iterator_tag, T >
   {
   public:
    using this_t = ForwardListIterator< T >;
@@ -20,7 +21,7 @@ namespace tarasenko
      node(nullptr)
    {}
    explicit ForwardListIterator(ForwardList< T >* list):
-     node(list->first)
+     node(list->first_)
    {}
    ForwardListIterator(const this_t&) = default;
    ~ForwardListIterator() = default;
