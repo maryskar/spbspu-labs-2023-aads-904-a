@@ -1,7 +1,7 @@
 #include "notations.h"
+#include <limits>
 #include "priority.h"
 #include "expressionpart.h"
-#include <limits>
 constexpr long long maxLongLong = std::numeric_limits< long long >::max();
 constexpr long long minLongLong = std::numeric_limits< long long >::min();
 namespace romanovich
