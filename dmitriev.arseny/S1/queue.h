@@ -165,7 +165,7 @@ void dmitriev::Queue< T >::popBack()
 {
   if (m_ptrPairHT.head == nullptr)
   {
-    throw std::underflow_error("underflow_error");
+    throw std::runtime_error("runtime_error");
   }
   List< T >* newHead = m_ptrPairHT.head->otherList;
   delete m_ptrPairHT.head;
@@ -178,7 +178,7 @@ T& dmitriev::Queue< T >::getTopData()
 {
   if (m_ptrPairHT.head == nullptr)
   {
-    throw std::underflow_error("underflow_error");
+    throw std::runtime_error("runtime_error");
   }
   return m_ptrPairHT.head->data;
 }

@@ -2,7 +2,6 @@
 #define STACK_H
 
 #include "list.h"
-#include <iomanip>
 
 namespace
 {
@@ -135,7 +134,7 @@ namespace dmitriev
   {
     if (isEmpty())
     {
-      throw std::underflow_error("underflow_error");
+      throw std::runtime_error("runtime_error");
     }
     List< T >* currentList = m_top;
     m_top = m_top->otherList;
@@ -148,7 +147,7 @@ namespace dmitriev
   {
     if (isEmpty())
     {
-      throw std::underflow_error("underflow_error");
+      throw std::runtime_error("runtime_error");
     }
     return m_top->data;
   }
