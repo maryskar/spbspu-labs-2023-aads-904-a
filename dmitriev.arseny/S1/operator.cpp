@@ -1,6 +1,5 @@
 #include "operator.h"
-#include <stdexcept>
-#include <limits>
+#include <iomanip>
 
 constexpr long long min = std::numeric_limits< long long >::min();
 constexpr long long max = std::numeric_limits< long long >::max();
