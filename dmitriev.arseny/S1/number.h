@@ -5,7 +5,7 @@
 
 namespace dmitriev
 {
-  class Number : public Expression
+  class Number: public Expression
   {
   public:
     explicit Number(long long m_number);

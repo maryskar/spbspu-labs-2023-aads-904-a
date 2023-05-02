@@ -5,7 +5,7 @@
 
 namespace dmitriev
 {
-  class Operator : public Expression
+  class Operator: public Expression
   {
   public:
     explicit Operator(char op);

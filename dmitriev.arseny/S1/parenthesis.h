@@ -5,7 +5,7 @@
 
 namespace dmitriev
 {
-  class Parenthesis : public Expression
+  class Parenthesis: public Expression
   {
   public:
     explicit Parenthesis(char m_parenthesis);
