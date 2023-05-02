@@ -1,5 +1,4 @@
 #include "operator.h"
-
 #include <iomanip>
 #include <limits>
 

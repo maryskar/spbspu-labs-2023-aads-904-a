@@ -1,5 +1,4 @@
 #include "number.h"
-
 #include <iomanip>
 
 dmitriev::Number::Number(long long m_number):
