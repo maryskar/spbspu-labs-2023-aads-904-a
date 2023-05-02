@@ -2,6 +2,7 @@
 #define STACK_H
 
 #include "list.h"
+#include <iomanip>
 
 namespace
 {
