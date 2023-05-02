@@ -38,8 +38,37 @@ namespace kryuchkova
     }
     return lhs - rhs;
   }
-  
-  long long calcMulti(long long lhs, long long rhs);
-  long long calcDiv(long long lhs, long long rhs);
-  long long calcEucDiv(long long lhs, long long rhs);
+
+  long long calcMulti(long long lhs, long long rhs)
+  {
+    long long max = std::numeric_limits< long long >::max();
+    long long min = std::numeric_limits< long long >::min();
+    if (isSameSign(lhs, rhs) && lhs > 0 && max / lhs < rhs)
+    {
+      throw std::overflow_error("Overflow");
+    }
+    if (!isSameSign(lhs, rhs) && lhs > 0 && min / lhs > rhs)
+    {
+      throw std::overflow_error("Underflow");
+    }
+    if (!isSameSign(lhs, rhs) && lhs < 0 && min / lhs < rhs)
+    {
+      throw std::overflow_error("Underflow");
+    }
+    return lhs / rhs;
+  }
+
+  long long calcDiv(long long lhs, long long rhs)
+  {
+    if (rhs == 0)
+    {
+      throw std::logic_error("Div by 0");
+    }
+    return lhs / rhs;
+  }
+
+  long long calcEucDiv(long long lhs, long long rhs)
+  {
+    return lhs % rhs;
+  }
 }
