@@ -14,7 +14,7 @@ namespace
       return nullptr;
     }
 
-    dmitriev::List< T >* stackTop = new dmitriev::List< T >{ otherTop->data };
+    dmitriev::List< T >* stackTop = new dmitriev::List< T >{otherTop->data};
     dmitriev::List< T >* stackTail = stackTop;
     otherTop = otherTop->otherList;
 
@@ -22,7 +22,7 @@ namespace
     {
       try
       {
-        stackTail->otherList = new dmitriev::List< T >{ otherTop->data };
+        stackTail->otherList = new dmitriev::List< T >{otherTop->data};
       }
       catch (const std::exception&)
       {
@@ -119,14 +119,14 @@ namespace dmitriev
   template< typename T >
   void dmitriev::Stack< T >::push(const T& data)
   {
-    List< T >* newTop = new List< T >{ data, m_top };
+    List< T >* newTop = new List< T >{data, m_top};
     m_top = newTop;
   }
 
   template< typename T >
   void dmitriev::Stack< T >::push(T&& data)
   {
-    List< T >* newTop = new List< T >{ std::move(data), m_top };
+    List< T >* newTop = new List< T >{std::move(data), m_top};
     m_top = newTop;
   }
 

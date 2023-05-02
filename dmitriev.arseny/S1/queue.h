@@ -22,7 +22,7 @@ namespace
     {
       return dmitriev::Pair< T >{nullptr, nullptr};
     }
-    dmitriev::List< T >* newHead = new dmitriev::List< T >{ otherHead->data };
+    dmitriev::List< T >* newHead = new dmitriev::List< T >{otherHead->data};
     dmitriev::List< T >* newTail = newHead;
     otherHead = otherHead->otherList;
 
@@ -31,7 +31,7 @@ namespace
       newTail = newTail->otherList;
       try
       {
-        newTail = new dmitriev::List< T >{ otherHead->data };
+        newTail = new dmitriev::List< T >{otherHead->data};
       }
       catch (const std::exception&)
       {
