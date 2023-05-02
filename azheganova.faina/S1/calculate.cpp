@@ -99,7 +99,7 @@ long long calculateRemainder(long long secondnum, long long firstnum)
   return firstnum % secondnum;
 }
 
-long long calculatePostfix(azheganova::Queue <std::string> & postfix)
+long long calculatePostfix(azheganova::Queue< std::string > & postfix)
 {
   azheganova::Stack < long long > stack;
   while (!postfix.isEmpty())
