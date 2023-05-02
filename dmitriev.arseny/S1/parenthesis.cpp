@@ -1,4 +1,5 @@
 #include "parenthesis.h"
+
 #include <iomanip>
 
 dmitriev::Parenthesis::Parenthesis(char m_parenthesis):
