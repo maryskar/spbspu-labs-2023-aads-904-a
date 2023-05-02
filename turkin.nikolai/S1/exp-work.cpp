@@ -2,6 +2,7 @@
 #include <queue.hpp>
 #include <stack.hpp>
 #include "data-type.hpp"
+#include "calc-verify.hpp"
 #include "assimitation.hpp"
 
 using pinf_t = turkin::datatype::calc_t< turkin::datatype::PINF >;
@@ -9,21 +10,12 @@ using pfix_t = turkin::datatype::calc_t< turkin::datatype::PFIX >;
 using PINF = turkin::datatype::PINF;
 using PFIX = turkin::datatype::PFIX;
 namespace asml = turkin::assimilation;
+namespace vrfy = turkin::verify;
 namespace cnvt = turkin::convert;
 
 bool getPriorityLevel(pfix_t data)
 {
   return !(asml::same(data, PFIX::ADD) || asml::same(data, PFIX::SUB));
-}
-
-bool isOverflow(long long a, long long b)
-{
-  if (a == 0 || b == 0)
-  {
-    return false;
-  }
-  long long result = a * b;
-  return !(a == result / b);
 }
 
 turkin::Queue< pinf_t > str2Inf(std::string & dirt)
@@ -133,31 +125,31 @@ long long post2Result(turkin::Queue< pfix_t > & output)
       long long c = 0;
       if (asml::same(opt, PFIX::ADD))
       {
-        if (a > 0 && b > 0 && (a + b < 0))
+        if (vrfy::isADDerror(a, b))
         {
-          throw std::overflow_error("sum error");
+          throw std::overflow_error("ADD error");
         }
         c = a + b;
       }
       if (asml::same(opt, PFIX::SUB))
       {
-        if (a < 0 && b < 0 && (a + b > 0))
+        if (turkin::verify::isSUBerror(a, b))
         {
-          throw std::overflow_error("sum error");
+          throw std::overflow_error("SUB error");
         }
         c = a - b;
       }
       if (asml::same(opt, PFIX::MUL))
       {
-        if (isOverflow(a, b))
+        if (turkin::verify::isMULerror(a, b))
         {
-          throw std::overflow_error("multiply error");
+          throw std::overflow_error("MUL error");
         }
         c = a * b;
       }
       if (asml::same(opt, PFIX::DIV))
       {
-        if (!b)
+        if (turkin::verify::isDIVerror(a, b))
         {
           throw std::runtime_error("zero division");
         }
@@ -165,7 +157,7 @@ long long post2Result(turkin::Queue< pfix_t > & output)
       }
       if (asml::same(opt, PFIX::MOD))
       {
-        if (!b)
+        if (turkin::verify::isMODerror(a, b))
         {
           throw std::runtime_error("zero division");
         }

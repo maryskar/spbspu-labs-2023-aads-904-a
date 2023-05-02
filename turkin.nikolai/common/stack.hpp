@@ -101,11 +101,7 @@ T turkin::Stack< T >::drop() const
   {
     throw std::runtime_error("stack is empty");
   }
-  pattern::OneWayNode< T > * element = value_;
-  value_ = element->next;
-  T ret = element->data;
-  delete element;
-  return ret;
+  return turkin::sqhelp::remove(value_);
 }
 
 template< typename T >

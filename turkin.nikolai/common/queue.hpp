@@ -126,6 +126,7 @@ T turkin::Queue< T >::drop()
     value_ = value_->next;
   }
   T ret(element->data);
+  delete element;
   return ret;
 }
 
@@ -149,6 +150,7 @@ T turkin::Queue< T >::drop() const
     value_ = value_->next;
   }
   T ret(element->data);
+  delete element;
   return ret;
 }
 
