@@ -107,7 +107,6 @@ dmitriev::Queue< T >& dmitriev::Queue< T >::operator=(const Queue< T >& otherQue
     return *this;
   }
   Queue< T > newQueue(otherQueue);
-  clear(m_ptrPairHT.head);
   *this = std::move(newQueue);
 
   return *this;

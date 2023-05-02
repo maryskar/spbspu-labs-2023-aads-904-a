@@ -96,7 +96,6 @@ namespace dmitriev
       return *this;
     }
     Stack< T > newStack(otherStack);
-    clear(m_top);
     *this = std::move(newStack);
 
     return *this;
