@@ -17,16 +17,18 @@ namespace romanovich
     void push(const T &rhs);
     void pop();
     T get() const;
-    bool isEmpty() const
-    {
-      return head_ == nullptr;
-    }
+    bool isEmpty() const;
   private:
     details::ListNode< T > *head_;
     details::ListNode< T > *tail_;
     void deleteQueue();
     void swapQueue(Queue< T > &queue) noexcept;
   };
+  template< typename T >
+  bool Queue< T >::isEmpty() const
+  {
+    return head_ == nullptr;
+  }
   template< typename T >
   Queue< T > &Queue< T >::operator=(Queue< T > &&queue) noexcept
   {
@@ -61,7 +63,7 @@ namespace romanovich
     Queue()
   {
     using list_node_tuple = std::tuple< details::ListNode< T > *, details::ListNode< T > * >;
-    list_node_tuple *newQueue = details::copy(queue.head_);
+    list_node_tuple newQueue = details::copy(queue.head_);
     head_ = std::get< 0 >(newQueue);
     tail_ = std::get< 1 >(newQueue);
   }

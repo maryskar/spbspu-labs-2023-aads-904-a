@@ -22,7 +22,7 @@ namespace details
     }
   }
   template< typename T >
-  std::tuple< ListNode< T > *, ListNode< T > * > *copy(const ListNode< T > *listNode)
+  std::tuple< ListNode< T > *, ListNode< T > * > copy(const ListNode< T > *listNode)
   {
     if (listNode == nullptr)
     {

@@ -1,5 +1,5 @@
 #include "operations.h"
-char as_char(operations_t operation)
+char romanovich::as_char(romanovich::operations_t operation)
 {
   return static_cast<char>(operation);
 }

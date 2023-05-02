@@ -18,15 +18,17 @@ namespace romanovich
     void push(const T &value);
     void pop();
     T get() const;
-    bool isEmpty() const
-    {
-      return top_ == nullptr;
-    }
+    bool isEmpty() const;
   private:
     details::ListNode< T > *top_;
     void deleteStack();
     void swapStack(Stack< T > &stack) noexcept;
   };
+  template< typename T >
+  bool Stack< T >::isEmpty() const
+  {
+    return top_ == nullptr;
+  }
   template< typename T >
   void Stack< T >::swapStack(Stack< T > &stack) noexcept
   {
@@ -60,7 +62,7 @@ namespace romanovich
     Stack()
   {
     using list_node_tuple = std::tuple< details::ListNode< T > *, details::ListNode< T > * >;
-    list_node_tuple *newStack = details::copy(stack.top_);
+    list_node_tuple newStack = details::copy(stack.top_);
     top_ = std::get< 0 >(newStack);
   }
   template< typename T >

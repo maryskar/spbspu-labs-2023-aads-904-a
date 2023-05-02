@@ -4,18 +4,18 @@
 #include <limits>
 constexpr long long maxLongLong = std::numeric_limits< long long >::max();
 constexpr long long minLongLong = std::numeric_limits< long long >::min();
-using exp_q = romanovich::Queue< ExpPart >;
-using exp_s = romanovich::Stack< ExpPart >;
 namespace romanovich
 {
-  bool stackPopCondition(const ExpPart &q, const ExpPart &s)
+  using exp_q = Queue< ExpPart >;
+  using exp_s = Stack< ExpPart >;
+  bool doStackPopCondition(const ExpPart &q, const ExpPart &s)
   {
     try
     {
       if (q.isOperation() && s.isOperation())
       {
-        romanovich::Priority priorQ(q.getOperation());
-        romanovich::Priority priorS(s.getOperation());
+        Priority priorQ(q.getOperation());
+        Priority priorS(s.getOperation());
         return (!(priorQ < priorS));
       }
       return false;
@@ -138,114 +138,114 @@ namespace romanovich
     }
     return a % b;
   }
-}
-void romanovich::getPostfixFromInfix(exp_q &queue, exp_s &stack, exp_q &postfixQueue)
-{
-  while (!queue.isEmpty() or !stack.isEmpty())
+  void getPostfixFromInfix(exp_q &queue, exp_s &stack, exp_q &postfixQueue)
   {
-    if (!queue.isEmpty())
+    while (!queue.isEmpty() or !stack.isEmpty())
     {
-      ExpPart qEl = queue.get();
-      queue.pop();
-      if (qEl.isParenthesis())
+      if (!queue.isEmpty())
       {
-        if (qEl.getParenthesis() == parenthesis_t::left)
+        ExpPart qEl = queue.get();
+        queue.pop();
+        if (qEl.isParenthesis())
         {
-          stack.push(qEl);
-        }
-        if (qEl.getParenthesis() == parenthesis_t::right)
-        {
-          while (!stack.get().isParenthesis())
+          if (qEl.getParenthesis() == parenthesis_t::left)
           {
-            if (stack.get().isParenthesis())
+            stack.push(qEl);
+          }
+          if (qEl.getParenthesis() == parenthesis_t::right)
+          {
+            while (!stack.get().isParenthesis())
             {
-              if (stack.get().getParenthesis() == parenthesis_t::left)
+              if (stack.get().isParenthesis())
+              {
+                if (stack.get().getParenthesis() == parenthesis_t::left)
+                {
+                  break;
+                }
+              }
+              postfixQueue.push(stack.get());
+              stack.pop();
+              if (stack.isEmpty())
               {
                 break;
               }
             }
-            postfixQueue.push(stack.get());
             stack.pop();
-            if (stack.isEmpty())
+          }
+        }
+        if (qEl.isOperand())
+        {
+          postfixQueue.push(qEl);
+        }
+        if (qEl.isOperation())
+        {
+          if (!stack.isEmpty())
+          {
+            if (doStackPopCondition(qEl, stack.get()))
             {
-              break;
+              postfixQueue.push(stack.get());
+              stack.pop();
             }
           }
+          stack.push(qEl);
+        }
+      }
+      else
+      {
+        while (!stack.isEmpty())
+        {
+          postfixQueue.push(stack.get());
           stack.pop();
         }
       }
-      if (qEl.isOperand())
-      {
-        postfixQueue.push(qEl);
-      }
-      if (qEl.isOperation())
-      {
-        if (!stack.isEmpty())
-        {
-          if (stackPopCondition(qEl, stack.get()))
-          {
-            postfixQueue.push(stack.get());
-            stack.pop();
-          }
-        }
-        stack.push(qEl);
-      }
-    }
-    else
-    {
-      while (!stack.isEmpty())
-      {
-        postfixQueue.push(stack.get());
-        stack.pop();
-      }
     }
   }
-}
-romanovich::Queue< ExpPart > romanovich::splitLine(const std::string &string)
-{
-  romanovich::Queue< ExpPart > queue;
-  int intBegin = 0;
-  int intEnd = static_cast<int>(string.find(' '));
-  while (intEnd != -1)
+  Queue< ExpPart > splitLine(const std::string &string)
   {
+    Queue< ExpPart > queue;
+    int intBegin = 0;
+    int intEnd = string.find(' ');
+    while (intEnd != -1)
+    {
+      queue.push(createFromString(string.substr(intBegin, intEnd - intBegin)));
+      intBegin = intEnd + 1;
+      intEnd = string.find(' ', intBegin);
+    }
     queue.push(createFromString(string.substr(intBegin, intEnd - intBegin)));
-    intBegin = intEnd + 1;
-    intEnd = static_cast<int>(string.find(' ', intBegin));
+    return queue;
   }
-  queue.push(createFromString(string.substr(intBegin, intEnd - intBegin)));
-  return queue;
-}
-void romanovich::calcPostfixExpression(exp_q &postfixQueue, exp_s &answer, exp_s &stack)
-{
-  stack.push(postfixQueue.get());
-  postfixQueue.pop();
-  while (!stack.isEmpty())
+  void calcPostfixExpression(exp_q &postfixQueue, exp_s &answer, exp_s &stack)
   {
-    if (postfixQueue.isEmpty())
-    {
-      break;
-    }
-    ExpPart expPart(postfixQueue.get());
+    stack.push(postfixQueue.get());
     postfixQueue.pop();
-    if (expPart.isOperand())
+    while (!stack.isEmpty())
     {
-      stack.push(expPart);
-    }
-    else
-    {
-      try
+      if (postfixQueue.isEmpty())
       {
-        long long x = std::stoll(std::to_string(stack.get().getOperand()), nullptr, 10);
-        stack.pop();
-        long long y = std::stoll(std::to_string(stack.get().getOperand()), nullptr, 10);
-        stack.pop();
-        stack.push(ExpPart(romanovich::doOperation(x, y, expPart.getOperation())));
+        break;
       }
-      catch (...)
+      ExpPart expPart(postfixQueue.get());
+      postfixQueue.pop();
+      if (expPart.isOperand())
       {
-        throw std::range_error("Error calculating postfix.");
+        stack.push(expPart);
+      }
+      else
+      {
+        try
+        {
+          long long x = std::stoll(std::to_string(stack.get().getOperand()), nullptr, 10);
+          stack.pop();
+          long long y = std::stoll(std::to_string(stack.get().getOperand()), nullptr, 10);
+          stack.pop();
+          stack.push(ExpPart(doOperation(x, y, expPart.getOperation())));
+        }
+        catch (...)
+        {
+          throw std::range_error("Error calculating postfix.");
+        }
       }
     }
+    answer.push(stack.get());
   }
-  answer.push(stack.get());
 }

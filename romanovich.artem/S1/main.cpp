@@ -11,7 +11,7 @@ int main(int argc, char **argv)
     std::cerr << "Not appropriate parameters number.\n";
     return 1;
   }
-  romanovich::Stack< ExpPart > stack;
+  romanovich::Stack< romanovich::ExpPart > stack;
   std::fstream fileInput;
   if (argc == 2)
   {
@@ -28,18 +28,18 @@ int main(int argc, char **argv)
     }
   }
   std::istream &in = (argc == 2) ? fileInput : std::cin;
-  romanovich::Stack< ExpPart > answer;
+  romanovich::Stack< romanovich::ExpPart > answer;
   for (std::string line; std::getline(in, line);)
   {
     if (line.empty())
     {
       continue;
     }
-    romanovich::Queue< ExpPart > postfixQueue;
-    romanovich::Stack< ExpPart > stack1;
+    romanovich::Queue< romanovich::ExpPart > postfixQueue;
+    romanovich::Stack< romanovich::ExpPart > stack1;
     try
     {
-      romanovich::Queue< ExpPart > infixNotation = romanovich::splitLine(line);
+      romanovich::Queue< romanovich::ExpPart > infixNotation = romanovich::splitLine(line);
       romanovich::getPostfixFromInfix(infixNotation, stack1, postfixQueue);
     }
     catch (...)
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
       std::cerr << "Error while calc.\n";
       return 2;
     }
-    romanovich::Stack< ExpPart > calcStack;
+    romanovich::Stack< romanovich::ExpPart > calcStack;
     try
     {
       romanovich::calcPostfixExpression(postfixQueue, answer, calcStack);

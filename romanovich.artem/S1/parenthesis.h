@@ -1,9 +1,12 @@
 #ifndef PARENTHESIS_H
 #define PARENTHESIS_H
-enum class parenthesis_t: char
+namespace romanovich
 {
-  left = '(',
-  right = ')',
-};
-char as_char(parenthesis_t parenthesis);
+  enum class parenthesis_t: char
+  {
+    left = '(',
+    right = ')',
+  };
+  char as_char(parenthesis_t parenthesis);
+}
 #endif
