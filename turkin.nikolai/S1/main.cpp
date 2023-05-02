@@ -2,10 +2,11 @@
 #include <string>
 #include <fstream>
 #include <exception>
-#include <queue.h>
-#include <stack.h>
-#include "data-type.h"
-#include "exp-work.h"
+#include <queue.hpp>
+#include <stack.hpp>
+#include "data-type.hpp"
+#include "exp-work.hpp"
+#include "oneway-list.hpp"
 
 int main(int argc, char * argv[])
 {
@@ -19,9 +20,8 @@ int main(int argc, char * argv[])
       return 1;
     }
   }
-  std::istream & in = (argc == 2) ? std::cin : file;
-  Queue< calc_t > input, output;
-  Stack< long long > answers;
+  std::istream & in = (argc == 2) ? file : std::cin;
+  turkin::Stack< long long > answers;
   std::string dirt;
   try
   {
@@ -37,8 +37,8 @@ int main(int argc, char * argv[])
         continue;
       }
       dirt += "\n";
-      str2Inf(dirt, input);
-      inf2Post(input, output);
+      turkin::Queue< turkin::datatype::calc_t< turkin::datatype::PINF > > input = str2Inf(dirt);
+      turkin::Queue< turkin::datatype::calc_t< turkin::datatype::PFIX > > output = inf2Post(input);
       answers.push(post2Result(output));
     }
   }
@@ -57,11 +57,16 @@ int main(int argc, char * argv[])
     std::cout << " " << answers.drop();
   }
   std::cout << "\n";
-
-  Stack< int > a;
-  Stack< int > b;
-  b = a;
-  std::cout << a.drop() << "\n" << b.drop() << "\n";
   return 0;
+  /*
+  turkin::Queue< turkin::datatype::calc_t< turkin::datatype::PINF > > one;
+  turkin::datatype::calc_t< turkin::datatype::PINF > data('+', turkin::datatype::PINF::ADD);
+  one.push(data);
+  one.push(data);
+  one.push(data);
+  one.push(data);
+  one.push(data);
+  turkin::Queue< turkin::datatype::calc_t< turkin::datatype::PINF > > two(one);
+  two.push(data);
+  */
 }
-
