@@ -1,6 +1,7 @@
 #include "printRezult.h"
 #include "calculator.h"
 #include "stack.h"
+#include <string>
 
 void dmitriev::printSeriesOfNumbers(std::istream& streamInp, std::ostream& streamOut)
 {
@@ -23,12 +24,12 @@ void dmitriev::printSeriesOfNumbers(std::istream& streamInp, std::ostream& strea
 
   if (!arr.isEmpty())
   {
-    streamOut << arr.getConstTopData();
+    streamOut << arr.getTopData();
     arr.popBack();
   }
   while (!arr.isEmpty())
   {
-    streamOut << ' ' << arr.getConstTopData();
+    streamOut << ' ' << arr.getTopData();
     arr.popBack();
   }
   streamOut << '\n';
