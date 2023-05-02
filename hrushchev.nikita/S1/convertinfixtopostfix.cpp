@@ -4,27 +4,30 @@
 #include "queue.hpp"
 #include "stack.hpp"
 
-int getOperatorPriority(std::string op)
+namespace hrushchev
 {
-  if (op == "*" || op == "/")
+  int getOperatorPriority(std::string op)
   {
-    return 2;
+    if (op == "*" || op == "/" || op == "%")
+    {
+      return 2;
+    }
+    else if (op == "+" || op == "-")
+    {
+      return 1;
+    }
+    else if (op == "(" || op == ")")
+    {
+      return 0;
+    }
+    else
+      throw std::logic_error("Invalid operator");
   }
-  else if (op == "+" || op == "-")
-  {
-    return 1;
-  }
-  else if (op == "(" || op == ")")
-  {
-    return 0;
-  }
-  else
-    throw std::logic_error("Invalid operator");
-}
 
-bool isOperator(std::string op)
-{
-  return op == "*" || op == "/" || op == "+" || op == "-" || op == "(" || op == ")";
+  bool isOperator(std::string op)
+  {
+    return op == "*" || op == "/" || op == "+" || op == "-" || op == "(" || op == ")" || op == "%";
+  }
 }
 
 hrushchev::Queue< std::string > hrushchev::convertInfixToPostfix(hrushchev::Queue< std::string >& infixQueue)
@@ -42,7 +45,7 @@ hrushchev::Queue< std::string > hrushchev::convertInfixToPostfix(hrushchev::Queu
     {
       postfixQueue.push(token);
     }
-    else if (isOperator(token))
+    else if (hr::isOperator(token))
     {
       if (token == ")")
       {
@@ -57,9 +60,13 @@ hrushchev::Queue< std::string > hrushchev::convertInfixToPostfix(hrushchev::Queu
         }
         stack.pop();
       }
+      else if (token == "(")
+      {
+        stack.push(token);
+      }
       else
       {
-        while (!stack.isEmpty() && (getOperatorPriority(stack.get()) >= getOperatorPriority(token)))
+        while (!stack.isEmpty() && (hr::getOperatorPriority(stack.get()) >= hr::getOperatorPriority(token)))
         {
           postfixQueue.push(stack.get());
           stack.pop();
@@ -86,5 +93,4 @@ hrushchev::Queue< std::string > hrushchev::convertInfixToPostfix(hrushchev::Queu
 
   return postfixQueue;
 }
-
 
