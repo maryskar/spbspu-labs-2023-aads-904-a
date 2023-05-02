@@ -59,12 +59,8 @@ namespace romanovich
   }
   template< typename T >
   Stack< T >::Stack(const Stack< T > &stack):
-    Stack()
-  {
-    using list_node_tuple = std::tuple< details::ListNode< T > *, details::ListNode< T > * >;
-    list_node_tuple newStack = details::copy(stack.top_);
-    top_ = std::get< 0 >(newStack);
-  }
+    Stack(details::copy(stack.top_))
+  {}
   template< typename T >
   void Stack< T >::deleteStack()
   {
@@ -74,8 +70,7 @@ namespace romanovich
   template< typename T >
   Stack< T >::Stack():
     top_(nullptr)
-  {
-  }
+  {}
   template< typename T >
   Stack< T >::~Stack()
   {

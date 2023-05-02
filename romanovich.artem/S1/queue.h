@@ -56,17 +56,11 @@ namespace romanovich
   Queue< T >::Queue():
     head_(nullptr),
     tail_(nullptr)
-  {
-  }
+  {}
   template< typename T >
   Queue< T >::Queue(const Queue< T > &queue):
-    Queue()
-  {
-    using list_node_tuple = std::tuple< details::ListNode< T > *, details::ListNode< T > * >;
-    list_node_tuple newQueue = details::copy(queue.head_);
-    head_ = std::get< 0 >(newQueue);
-    tail_ = std::get< 1 >(newQueue);
-  }
+    Queue(details::copy(queue.head_))
+  {}
   template< typename T >
   Queue< T >::Queue(Queue< T > &&queue) noexcept:
     head_(queue.head_),
