@@ -2,6 +2,7 @@
 #include <string>
 #include "fstream"
 #include "queue.h"
+#include "stack.h"
 #include "elem.h"
 #include "transformStringToInfixQueue.h"
 #include "transformInfixQueueToPostfix.h"
