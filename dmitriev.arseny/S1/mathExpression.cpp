@@ -1,72 +1,72 @@
 #include "mathExpression.h"
 #include <iomanip>
 
-bool Expression::isNumber() const
+bool dmitriev::Expression::isNumber() const
 {
   return getCondition() == 1;
 }
 
-bool Expression::isOperator() const
+bool dmitriev::Expression::isOperator() const
 {
   return getCondition() == 2;
 }
 
-bool Expression::isParenthesis() const
+bool dmitriev::Expression::isParenthesis() const
 {
   return getCondition() == 3;
 }
 
-long long Expression::getNumber()
+long long dmitriev::Expression::getNumber() const
 {
   throw std::logic_error("logic_error");
 }
 
-long long Expression::operator()(long long, long long)
+long long dmitriev::Expression::operator()(long long, long long)
 {
   throw std::logic_error("logic_error");
 }
 
-bool Expression::operator==(Expression* otherExpr)
+bool dmitriev::Expression::operator==(Expression* otherExpr)
 {
   return getPriority() == otherExpr->getPriority();
 }
 
-bool Expression::operator!=(Expression* otherExpr)
+bool dmitriev::Expression::operator!=(Expression* otherExpr)
 {
   return !operator==(otherExpr);
 }
 
-bool Expression::operator>(Expression* otherExpr)
+bool dmitriev::Expression::operator>(Expression* otherExpr)
 {
   return getPriority() > otherExpr->getPriority();
 }
 
-bool Expression::operator<(Expression* otherExpr)
+bool dmitriev::Expression::operator<(Expression* otherExpr)
 {
   return getPriority() < otherExpr->getPriority();
 }
 
-bool Expression::operator>=(Expression* otherExpr)
+bool dmitriev::Expression::operator>=(Expression* otherExpr)
 {
   return getPriority() >= otherExpr->getPriority();
 }
 
-bool Expression::operator<=(Expression* otherExpr)
+bool dmitriev::Expression::operator<=(Expression* otherExpr)
 {
   return getPriority() <= otherExpr->getPriority();
 }
 
-bool Expression::isOpenParenthesis()
+bool dmitriev::Expression::isOpenParenthesis() const
 {
   throw std::logic_error("logic_error");
 }
 
-bool Expression::isCloseParenthesis()
+bool dmitriev::Expression::isCloseParenthesis() const
 {
   throw std::logic_error("logic_error");
 }
 
-char Expression::getPriority() const
+char dmitriev::Expression::getPriority() const
 {
   throw std::logic_error("logic_error");
 }

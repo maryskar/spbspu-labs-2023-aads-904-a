@@ -8,23 +8,26 @@
 
 #include <string>
 
-class MathExprPtr
+namespace dmitriev
 {
-public:
-  MathExprPtr();
-  MathExprPtr(std::string inp);
-  MathExprPtr(const MathExprPtr& otherMathExprPtr) = delete;
-  MathExprPtr(MathExprPtr&& otherMathExprPtr) noexcept;
-  MathExprPtr& operator=(const MathExprPtr& otherMathExprPtr) = delete;
-  MathExprPtr& operator=(MathExprPtr&& otherMathExprPtr) noexcept;
-  Expression* operator*();
-  Expression* operator->();
+  class MathExprPtr
+  {
+  public:
+    MathExprPtr();
+    MathExprPtr(std::string inp);
+    MathExprPtr(const MathExprPtr& otherMathExprPtr) = delete;
+    MathExprPtr(MathExprPtr&& otherMathExprPtr) noexcept;
+    MathExprPtr& operator=(const MathExprPtr& otherMathExprPtr) = delete;
+    MathExprPtr& operator=(MathExprPtr&& otherMathExprPtr) noexcept;
+    Expression* operator*();
+    Expression* operator->();
 
-  ~MathExprPtr();
+    ~MathExprPtr();
 
-private:
-  Expression* adress;
+  private:
+    Expression* m_adress;
 
-};
+  };
+}
 
 #endif

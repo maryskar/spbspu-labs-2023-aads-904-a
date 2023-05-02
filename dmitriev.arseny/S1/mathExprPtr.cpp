@@ -1,74 +1,72 @@
 #include "mathExprPtr.h"
 
-bool isEnd(char inp);
-bool isOperator(char inp);
-bool isParenthesis(char inp);
-Expression* defineMathSymb(std::string inp);
-
-MathExprPtr::MathExprPtr():
-  adress(nullptr)
-{}
-
-MathExprPtr::MathExprPtr(std::string inp):
-  adress(defineMathSymb(inp))
-{}
-
-MathExprPtr::MathExprPtr(MathExprPtr&& otherMathExprPtr) noexcept:
-  adress(otherMathExprPtr.adress)
+namespace
 {
-  otherMathExprPtr.adress = nullptr;
+  bool isParenthesis(char inp)
+  {
+    return (inp == '(') || (inp == ')');
+  }
+
+  bool isEnd(char inp)
+  {
+    return (inp == '\0');
+  }
+
+  bool isOperator(char inp)
+  {
+    return (inp == '+') || (inp == '-') || (inp == '*') || (inp == '/') || (inp == '%');
+  }
+
+  dmitriev::Expression* defineMathSymb(std::string inp)
+  {
+    if (isParenthesis(inp[0]) && isEnd(inp[1]))
+    {
+      return new dmitriev::Parenthesis(inp[0]);
+    }
+    else if (isOperator(inp[0]) && isEnd(inp[1]))
+    {
+      return new dmitriev::Operator(inp[0]);
+    }
+    else
+    {
+      return new dmitriev::Number(std::stoll(inp));
+    }
+  }
 }
 
-MathExprPtr& MathExprPtr::operator=(MathExprPtr&& otherMathExprPtr) noexcept
+dmitriev::MathExprPtr::MathExprPtr():
+  m_adress(nullptr)
+{}
+
+dmitriev::MathExprPtr::MathExprPtr(std::string inp):
+  m_adress(defineMathSymb(inp))
+{}
+
+dmitriev::MathExprPtr::MathExprPtr(MathExprPtr&& otherMathExprPtr) noexcept:
+  m_adress(otherMathExprPtr.m_adress)
 {
-  adress = otherMathExprPtr.adress;
-  otherMathExprPtr.adress = nullptr;
+  otherMathExprPtr.m_adress = nullptr;
+}
+
+dmitriev::MathExprPtr& dmitriev::MathExprPtr::operator=(MathExprPtr&& otherMathExprPtr) noexcept
+{
+  m_adress = otherMathExprPtr.m_adress;
+  otherMathExprPtr.m_adress = nullptr;
 
   return *this;
 }
 
-Expression* MathExprPtr::operator*()
+dmitriev::Expression* dmitriev::MathExprPtr::operator*()
 {
-  return adress;
+  return m_adress;
 }
 
-Expression* MathExprPtr::operator->()
+dmitriev::Expression* dmitriev::MathExprPtr::operator->()
 {
-  return adress;
+  return m_adress;
 }
 
-MathExprPtr::~MathExprPtr()
+dmitriev::MathExprPtr::~MathExprPtr()
 {
-  delete adress;
-}
-
-Expression* defineMathSymb(std::string inp)
-{
-  if (isParenthesis(inp[0]) && isEnd(inp[1]))
-  {
-    return new Parenthesis(inp[0]);
-  }
-  else if (isOperator(inp[0]) && isEnd(inp[1]))
-  {
-    return new Operator(inp[0]);
-  }
-  else
-  {
-    return new Number(std::stoll(inp));
-  }
-}
-
-bool isParenthesis(char inp)
-{
-  return (inp == '(') || (inp == ')');
-}
-
-bool isEnd(char inp)
-{
-  return (inp == '\0');
-}
-
-bool isOperator(char inp)
-{
-  return (inp == '+') || (inp == '-') || (inp == '*') || (inp == '/') || (inp == '%');
+  delete m_adress;
 }

@@ -3,21 +3,24 @@
 
 #include "mathExpression.h"
 
-class Operator: public Expression
+namespace dmitriev
 {
-public:
-  explicit Operator(char op);
-  Operator(const Operator& otherOperator);
-  Operator(Operator&& otherOperator) noexcept;
+  class Operator : public Expression
+  {
+  public:
+    explicit Operator(char op);
+    Operator(const Operator& otherOperator);
+    Operator(Operator&& otherOperator) noexcept;
 
-  char getCondition() const override;
-  char getPriority() const override;
-  long long operator()(long long, long long) override;
+    char getCondition() const override;
+    char getPriority() const override;
+    long long operator()(long long, long long) override;
 
-private:
-  long long (*mathOperator)(long long, long long);
-  char priority;
+  private:
+    long long (*m_mathOperator)(long long, long long);
+    char m_priority;
 
-};
+  };
+}
 
 #endif

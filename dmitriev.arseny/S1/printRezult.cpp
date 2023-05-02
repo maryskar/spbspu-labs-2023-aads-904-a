@@ -4,9 +4,9 @@
 
 #include <string>
 
-void printSeriesOfNumbers(std::istream& streamInp, std::ostream& streamOut)
+void dmitriev::printSeriesOfNumbers(std::istream& streamInp, std::ostream& streamOut)
 {
-  Stack< long long > arr;
+  dmitriev::Stack< long long > arr;
   std::string stringInp = "";
 
   while (streamInp)

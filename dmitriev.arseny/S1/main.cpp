@@ -10,11 +10,11 @@ int main(int argv, char** argc)
     if (argv == 2)
     {
       std::ifstream file(argc[1]);
-      printSeriesOfNumbers(file, std::cout);
+      dmitriev::printSeriesOfNumbers(file, std::cout);
     }
     else
     {
-      printSeriesOfNumbers(std::cin, std::cout);
+      dmitriev::printSeriesOfNumbers(std::cin, std::cout);
     }
   }
   catch (const std::exception& e)

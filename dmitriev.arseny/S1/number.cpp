@@ -2,20 +2,20 @@
 
 #include <iomanip>
 
-Number::Number(long long number):
-  number(number)
+dmitriev::Number::Number(long long m_number):
+  m_number(m_number)
 {}
-Number::Number(const Number& otherNumber):
-  number(otherNumber.number)
+dmitriev::Number::Number(const Number& otherNumber):
+  m_number(otherNumber.m_number)
 {}
-Number::Number(Number&& otherNumber) noexcept:
-  number(otherNumber.number)
+dmitriev::Number::Number(Number&& otherNumber) noexcept:
+  m_number(otherNumber.m_number)
 {}
-char Number::getCondition() const
+char dmitriev::Number::getCondition() const
 {
   return 1;
 }
-long long Number::getNumber()
+long long dmitriev::Number::getNumber() const
 {
-  return number;
+  return m_number;
 }

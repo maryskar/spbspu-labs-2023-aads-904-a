@@ -2,40 +2,40 @@
 
 #include <iomanip>
 
-Parenthesis::Parenthesis(char parenthesis):
-  parenthesis(parenthesis)
+dmitriev::Parenthesis::Parenthesis(char m_parenthesis):
+  m_parenthesis(m_parenthesis)
 {
   if (!isOpen() && !isClose())
   {
     throw std::logic_error("this is not end or begining");
   }
 }
-Parenthesis::Parenthesis(const Parenthesis& otherParenthesis):
-  parenthesis(otherParenthesis.parenthesis)
+dmitriev::Parenthesis::Parenthesis(const Parenthesis& otherParenthesis):
+  m_parenthesis(otherParenthesis.m_parenthesis)
 {}
-Parenthesis::Parenthesis(Parenthesis&& otherParenthesis) noexcept:
-  parenthesis(otherParenthesis.parenthesis)
+dmitriev::Parenthesis::Parenthesis(Parenthesis&& otherParenthesis) noexcept:
+  m_parenthesis(otherParenthesis.m_parenthesis)
 {}
-char Parenthesis::getCondition() const
+char dmitriev::Parenthesis::getCondition() const
 {
   return 3;
 }
 
-bool Parenthesis::isOpenParenthesis()
+bool dmitriev::Parenthesis::isOpenParenthesis() const
 {
   return isOpen();
 }
 
-bool Parenthesis::isCloseParenthesis()
+bool dmitriev::Parenthesis::isCloseParenthesis() const
 {
   return isClose();
 }
 
-bool Parenthesis::isOpen()
+bool dmitriev::Parenthesis::isOpen() const
 {
-  return parenthesis == '(';
+  return m_parenthesis == '(';
 }
-bool Parenthesis::isClose()
+bool dmitriev::Parenthesis::isClose() const
 {
-  return parenthesis == ')';
+  return m_parenthesis == ')';
 }

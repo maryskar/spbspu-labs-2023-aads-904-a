@@ -3,6 +3,9 @@
 
 #include <iostream>
 
-void printSeriesOfNumbers(std::istream& streamInp, std::ostream& streamOut);
+namespace dmitriev
+{
+  void printSeriesOfNumbers(std::istream& streamInp, std::ostream& streamOut);
+}
 
 #endif

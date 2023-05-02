@@ -3,6 +3,9 @@
 
 #include <string>
 
-long long calculateTheExpression(std::string stringInp);
+namespace dmitriev
+{
+  long long calculateTheExpression(std::string stringInp);
+}
 
 #endif

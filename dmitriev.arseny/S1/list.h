@@ -1,22 +1,25 @@
 #ifndef LIST_H
 #define LIST_H
 
-template< typename T >
-struct List
+namespace dmitriev
 {
-  T data;
-  List< T >* otherList;
-};
-
-template< typename T >
-void clear(List< T >* topAdress)
-{
-  while (topAdress != nullptr)
+  template< typename T >
+  struct List
   {
-    List< T >* currentList = topAdress;
-    topAdress = topAdress->otherList;
+    T data;
+    List< T >* otherList;
+  };
 
-    delete currentList;
+  template< typename T >
+  void clear(List< T >* topAdress)
+  {
+    while (topAdress != nullptr)
+    {
+      List< T >* currentList = topAdress;
+      topAdress = topAdress->otherList;
+
+      delete currentList;
+    }
   }
 }
 

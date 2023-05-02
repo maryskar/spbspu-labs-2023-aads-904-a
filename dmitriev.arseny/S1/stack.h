@@ -4,156 +4,159 @@
 #include "list.h"
 #include <iomanip>
 
-template< typename T >
-class Stack
+namespace
 {
-public:
-  Stack();
-  ~Stack();
-
-  Stack(const Stack< T >& otherStack);
-  Stack(Stack< T >&& otherStack) noexcept;
-
-  Stack< T >& operator=(const Stack< T >& otherStack);
-  Stack< T >& operator=(Stack< T >&& otherStack) noexcept;
-
-  void push(const T& data);
-  void push(T&& data);
-
-  void popBack();
-  T& getTopData();
-
-  bool isEmpty() const;
-
-private:
-  List< T >* top;
-
-};
-
-template< typename T >
-Stack< T >::Stack():
-  top(nullptr)
-{}
-
-template< typename T >
-Stack< T >::~Stack()
-{
-  clear(top);
-}
-
-template< typename T >
-Stack< T >::Stack(const Stack< T >& otherStack):
-  top(copyStack(otherStack.top))
-{}
-
-template< typename T >
-List< T >* copyStack(List< T >* otherTop)
-{
-  if (otherTop == nullptr)
+  template< typename T >
+  dmitriev::List< T >* copyStack(dmitriev::List< T >* otherTop)
   {
-    return nullptr;
-  }
-  List< T >* stackTop = nullptr;
-  List< T >* stackTail = nullptr;
-
-  stackTop = new List< T >{otherTop->data};
-  stackTail = stackTop;
-  otherTop = otherTop->otherList;
-
-  while (otherTop != nullptr)
-  {
-    try
+    if (otherTop == nullptr)
     {
-      stackTail->otherList = new List< T >{otherTop->data};
+      return nullptr;
     }
-    catch (const std::exception&)
-    {
-      clear(stackTop);
-      throw;
-    }
-    stackTail = stackTail->otherList;
+
+    dmitriev::List< T >* stackTop = new dmitriev::List< T >{ otherTop->data };
+    dmitriev::List< T >* stackTail = stackTop;
     otherTop = otherTop->otherList;
+
+    while (otherTop != nullptr)
+    {
+      try
+      {
+        stackTail->otherList = new dmitriev::List< T >{ otherTop->data };
+      }
+      catch (const std::exception&)
+      {
+        clear(stackTop);
+        throw;
+      }
+      stackTail = stackTail->otherList;
+      otherTop = otherTop->otherList;
+    }
+
+    return stackTop;
+  }
+}
+
+namespace dmitriev
+{
+  template< typename T >
+  class Stack
+  {
+  public:
+    Stack();
+    ~Stack();
+
+    Stack(const Stack< T >& otherStack);
+    Stack(Stack< T >&& otherStack) noexcept;
+
+    Stack< T >& operator=(const Stack< T >& otherStack);
+    Stack< T >& operator=(Stack< T >&& otherStack) noexcept;
+
+    void push(const T& data);
+    void push(T&& data);
+
+    void popBack();
+    T& getTopData();
+
+    bool isEmpty() const;
+
+  private:
+    List< T >* m_top;
+
+  };
+}
+  template< typename T >
+  dmitriev::Stack< T >::Stack() :
+    m_top(nullptr)
+  {}
+
+  template< typename T >
+  dmitriev::Stack< T >::~Stack()
+  {
+    clear(m_top);
   }
 
-  return stackTop;
-}
+  template< typename T >
+  dmitriev::Stack< T >::Stack(const Stack< T >& otherStack) :
+    m_top(copyStack(otherStack.m_top))
+  {}
 
-template< typename T >
-Stack< T >::Stack(Stack< T >&& otherStack) noexcept:
-  top(otherStack.top)
-{
-  otherStack.top = nullptr;
-}
-
-template< typename T >
-Stack< T >& Stack< T >::operator=(const Stack& otherStack)
-{
-  if (this == std::addressof(otherStack))
+  template< typename T >
+  dmitriev::Stack< T >::Stack(Stack< T >&& otherStack) noexcept :
+    m_top(otherStack.m_top)
   {
+    otherStack.m_top = nullptr;
+  }
+
+  template< typename T >
+  dmitriev::Stack< T >& dmitriev::Stack< T >::operator=(const Stack& otherStack)
+  {
+    if (this == std::addressof(otherStack))
+    {
+      return *this;
+    }
+    Stack< T > newStack(otherStack);
+    clear(m_top);
+    *this = std::move(newStack);
+
     return *this;
   }
-  Stack< T > newStack(otherStack);
-  clear(top);
-  *this = std::move(newStack);
 
-  return *this;
-}
-
-template< typename T >
-Stack< T >& Stack< T >::operator=(Stack< T >&& otherStack) noexcept
-{
-  if (this == std::addressof(otherStack))
+  template< typename T >
+  dmitriev::Stack< T >& dmitriev::Stack< T >::operator=(Stack< T >&& otherStack) noexcept
   {
+    if (this == std::addressof(otherStack))
+    {
+      return *this;
+    }
+    clear(m_top);
+    m_top = otherStack.m_top;
+    otherStack.m_top = nullptr;
+
     return *this;
   }
-  clear(top);
-  top = otherStack.top;
-  otherStack.top = nullptr;
 
-  return *this;
-}
-
-template< typename T >
-void Stack< T >::push(const T& data)
-{
-  List< T >* newTop = new List< T >{data, top};
-  top = newTop;
-}
-
-template< typename T >
-void Stack< T >::push(T&& data)
-{
-  List< T >* newTop = new List< T >{std::move(data), top};
-  top = newTop;
-}
-
-template< typename T >
-void Stack< T >::popBack()
-{
-  if (isEmpty())
+  template< typename T >
+  void dmitriev::Stack< T >::push(const T& data)
   {
-    throw std::underflow_error("underflow_error");
+    List< T >* newTop = new List< T >{ data, m_top };
+    m_top = newTop;
   }
-  List< T >* currentList = top;
-  top = top->otherList;
 
-  delete currentList;
-}
-
-template< typename T >
-T& Stack< T >::getTopData()
-{
-  if (isEmpty())
+  template< typename T >
+  void dmitriev::Stack< T >::push(T&& data)
   {
-    throw std::underflow_error("underflow_error");
+    List< T >* newTop = new List< T >{ std::move(data), m_top };
+    m_top = newTop;
   }
-  return top->data;
-}
 
-template< typename T >
-bool Stack< T >::isEmpty() const
-{
-  return top == nullptr;
-}
+  template< typename T >
+  void dmitriev::Stack< T >::popBack()
+  {
+    if (isEmpty())
+    {
+      throw std::underflow_error("underflow_error");
+    }
+    List< T >* currentList = m_top;
+    m_top = m_top->otherList;
+
+    delete currentList;
+  }
+
+  template< typename T >
+  T& dmitriev::Stack< T >::getTopData()
+  {
+    if (isEmpty())
+    {
+      throw std::underflow_error("underflow_error");
+    }
+    return m_top->data;
+  }
+
+  template< typename T >
+  bool dmitriev::Stack< T >::isEmpty() const
+  {
+    return m_top == nullptr;
+  }
 
 #endif

@@ -3,19 +3,22 @@
 
 #include "mathExpression.h"
 
-class Number: public Expression
+namespace dmitriev
 {
-public:
-  explicit Number(long long number);
-  Number(const Number& otherNumber);
-  Number(Number&& otherNumber) noexcept;
+  class Number : public Expression
+  {
+  public:
+    explicit Number(long long m_number);
+    Number(const Number& otherNumber);
+    Number(Number&& otherNumber) noexcept;
 
-  char getCondition() const override;
-  long long getNumber() override;
+    char getCondition() const override;
+    long long getNumber() const override;
 
-private:
-  long long number;
+  private:
+    long long m_number;
 
-};
+  };
+}
 
 #endif

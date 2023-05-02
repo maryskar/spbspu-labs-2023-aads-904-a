@@ -3,23 +3,26 @@
 
 #include "mathExpression.h"
 
-class Parenthesis: public Expression
+namespace dmitriev
 {
-public:
-  explicit Parenthesis(char parenthesis);
-  Parenthesis(const Parenthesis& otherParenthesis);
-  Parenthesis(Parenthesis&& otherParenthesis) noexcept;
+  class Parenthesis : public Expression
+  {
+  public:
+    explicit Parenthesis(char m_parenthesis);
+    Parenthesis(const Parenthesis& otherParenthesis);
+    Parenthesis(Parenthesis&& otherParenthesis) noexcept;
 
-  char getCondition() const override;
-  bool isOpenParenthesis() override;
-  bool isCloseParenthesis() override;
+    char getCondition() const override;
+    bool isOpenParenthesis() const override;
+    bool isCloseParenthesis() const override;
 
-  bool isOpen();
-  bool isClose();
+    bool isOpen() const;
+    bool isClose() const;
 
-private:
-  char parenthesis;
+  private:
+    char m_parenthesis;
 
-};
+  };
+}
 
 #endif

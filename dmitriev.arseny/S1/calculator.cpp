@@ -3,20 +3,48 @@
 #include "queue.h"
 #include "stack.h"
 
-Queue< MathExprPtr > getQueueFromInput(std::string stringInp);
-void calculate(Stack< long long >& postStack, Expression* oper);
-
-long long calculateTheExpression(std::string stringInp)
+namespace
 {
-  Stack< MathExprPtr > intermStack;
-  Queue< MathExprPtr > infQueue;
-  Stack< long long > postStack;
+  dmitriev::Queue< dmitriev::MathExprPtr > getQueueFromInput(std::string stringInp)
+  {
+    dmitriev::Queue< dmitriev::MathExprPtr > infQueue;
+    std::string delimiter = " ";
+    size_t pos = 0;
+    std::string token;
+
+    while ((pos = stringInp.find(delimiter)) != std::string::npos)
+    {
+      token = stringInp.substr(0, pos);
+      infQueue.push(dmitriev::MathExprPtr(token));
+      stringInp.erase(0, pos + delimiter.length());
+    }
+    infQueue.push(dmitriev::MathExprPtr(stringInp));
+
+    return infQueue;
+  }
+
+  void calculate(dmitriev::Stack< long long >& postStack, dmitriev::Expression* oper)
+  {
+    long long n1 = postStack.getTopData();
+    postStack.popBack();
+    long long n2 = postStack.getTopData();
+    postStack.popBack();
+
+    postStack.push(oper->operator()(n1, n2));
+  }
+}
+
+long long dmitriev::calculateTheExpression(std::string stringInp)
+{
+  dmitriev::Stack< dmitriev::MathExprPtr > intermStack;
+  dmitriev::Queue< dmitriev::MathExprPtr > infQueue;
+  dmitriev::Stack< long long > postStack;
 
   infQueue = getQueueFromInput(stringInp);
 
   while(!infQueue.isEmpty())
   {
-    MathExprPtr infVal = std::move(infQueue.getTopData());
+    dmitriev::MathExprPtr infVal = std::move(infQueue.getTopData());
     infQueue.popBack();
 
     if (infVal->isParenthesis())
@@ -29,7 +57,7 @@ long long calculateTheExpression(std::string stringInp)
       {
         while(!intermStack.isEmpty())
         {
-          MathExprPtr stackVal = std::move(intermStack.getTopData());
+          dmitriev::MathExprPtr stackVal = std::move(intermStack.getTopData());
           intermStack.popBack();
 
           if (stackVal->isParenthesis())
@@ -47,7 +75,7 @@ long long calculateTheExpression(std::string stringInp)
         intermStack.push(std::move(infVal));
         continue;
       }
-      MathExprPtr stackVal = std::move(intermStack.getTopData());
+      dmitriev::MathExprPtr stackVal = std::move(intermStack.getTopData());
       intermStack.popBack();
 
       if (stackVal->isParenthesis())
@@ -75,7 +103,7 @@ long long calculateTheExpression(std::string stringInp)
 
   while (!intermStack.isEmpty())
   {
-    MathExprPtr stackVal = std::move(intermStack.getTopData());
+    dmitriev::MathExprPtr stackVal = std::move(intermStack.getTopData());
     intermStack.popBack();
 
     if (stackVal->isParenthesis())
@@ -87,32 +115,4 @@ long long calculateTheExpression(std::string stringInp)
   }
 
   return postStack.getTopData();
-}
-
-Queue< MathExprPtr > getQueueFromInput(std::string stringInp)
-{
-  Queue< MathExprPtr > infQueue;
-  std::string delimiter = " ";
-  size_t pos = 0;
-  std::string token;
-
-  while ((pos = stringInp.find(delimiter)) != std::string::npos)
-  {
-    token = stringInp.substr(0, pos);
-    infQueue.push(MathExprPtr(token));
-    stringInp.erase(0, pos + delimiter.length());
-  }
-  infQueue.push(MathExprPtr(stringInp));
-
-  return infQueue;
-}
-
-void calculate(Stack< long long >& postStack, Expression* oper)
-{
-  long long n1 = postStack.getTopData();
-  postStack.popBack();
-  long long n2 = postStack.getTopData();
-  postStack.popBack();
-
-  postStack.push(oper->operator()(n1, n2));
 }
