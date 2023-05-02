@@ -11,6 +11,9 @@ namespace mashkin
   {
   public:
     explicit Queue();
+    Queue(const Queue< T >& lhs);
+    Queue(Queue< T >&& rhs);
+
     void enqueue(T rhs);
     void dequeue();
     bool isEmpty() const;

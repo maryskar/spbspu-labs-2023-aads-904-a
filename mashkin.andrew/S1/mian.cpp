@@ -1,76 +1,43 @@
 #include <fstream>
 #include <iostream>
-#include <string>
 #include <sstream>
-#include "print.h"
+#include <string>
 #include "convertToPostfixNotation.h"
-#include "solvePostfixNotation.h"
+#include "print.h"
 #include "queue.h"
+#include "solvePostfixNotation.h"
 #include "stack.h"
 
 int main(int argc, char** argv)
 {
-  if (argc == 1)
+  std::ifstream inpFile;
+  inpFile.open(argv[1]);
+  if (!inpFile.is_open())
   {
-    try
-    {
-      mashkin::Stack< std::string > stc;
-      mashkin::Queue< std::string > que;
-      mashkin::Stack< std::string > result;
-      while (std::cin)
-      {
-        std::string str;
-        std::getline(std::cin, str);
-        if (str.find_first_not_of(" \n") == std::string::npos)
-        {
-          continue;
-        }
-        std::istringstream inpStr(str);
-        que = convertToPostfixNotation(inpStr, stc, que);
-        result.push(solvePostfixNotation(que));
-      }
-      print(result);
-    }
-    catch (const std::exception& ex)
-    {
-      std::cerr << ex.what() << "\n";
-      return 1;
-    }
+    std::cerr << "File isn't open\n";
+    return 1;
   }
-  else if (argc == 2)
+  std::istream& input = argc == 1 ? std::cin : inpFile;
+  try
   {
     mashkin::Stack< std::string > stc;
     mashkin::Queue< std::string > que;
-    std::ifstream inpFile;
-    try
+    mashkin::Stack< std::string > result;
+    while (std::cin)
     {
-      inpFile.open(argv[1]);
-      if (!inpFile.is_open())
+      std::string str;
+      std::getline(input, str);
+      if (str.find_first_not_of(" \n") == std::string::npos)
       {
-        std::cerr << "File isn't open\n";
-        return 1;
+        continue;
       }
-      mashkin::Stack< std::string > result;
-      while (inpFile)
-      {
-        std::string str;
-        std::getline(inpFile, str);
-        if (str.find_first_not_of(" \n") == std::string::npos)
-        {
-          continue;
-        }
-        std::istringstream inpStr(str);
-        que = convertToPostfixNotation(inpStr, stc, que);
-        result.push(solvePostfixNotation(que));
-      }
-      print(result);
     }
-    catch (const std::exception& ex)
-    {
-      std::cerr << ex.what() << "\n";
-      return 1;
-    }
+    print(result);
   }
-  std::cout << "\n";
+  catch (const std::exception& ex)
+  {
+    std::cerr << ex.what() << "\n";
+    return 1;
+  }
   return 0;
 }
