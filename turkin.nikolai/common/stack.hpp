@@ -71,10 +71,7 @@ turkin::Stack< T >::~Stack()
 template< typename T >
 void turkin::Stack< T >::swap(Stack< T > & rhs) noexcept
 {
-  pattern::OneWayNode< T > * temp = nullptr;
-  temp = rhs.value_;
-  rhs.value_ = value_;
-  value_ = temp;
+  std::swap(value_, rhs.value_);
 }
 
 template< typename T >

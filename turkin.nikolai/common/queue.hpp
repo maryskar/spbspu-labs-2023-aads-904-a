@@ -69,10 +69,10 @@ turkin::Queue< T > & turkin::Queue< T >::operator=(const turkin::Queue< T > & rh
 template< typename T >
 turkin::Queue< T > & turkin::Queue< T >::operator=(turkin::Queue< T > && rhs)
 {
-  Queue< T > temp;
-  swap(temp);
-  value_ = rhs.value_;
-  back_ = rhs.back_;
+  turkin::sqhelp::free(value_);
+  value_ = nullptr;
+  back_ = nullptr;
+  swap(rhs);
   return * this;
 }
 
@@ -85,14 +85,8 @@ turkin::Queue< T >::~Queue()
 template< typename T >
 void turkin::Queue< T >::swap(Queue< T > & rhs) noexcept
 {
-  pattern::OneWayNode< T > * tvalue = nullptr;
-  pattern::OneWayNode< T > * tback = nullptr;
-  tvalue = rhs.value_;
-  tback = rhs.value_;
-  rhs.value_ = value_;
-  rhs.back_ = back_;
-  value_ = tvalue;
-  back_ = tback;
+  std::swap(value_, rhs.value_);
+  std::swap(back_, rhs.back_);
 }
 
 template< typename T >

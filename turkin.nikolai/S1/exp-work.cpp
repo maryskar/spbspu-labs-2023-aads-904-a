@@ -90,7 +90,7 @@ turkin::Queue< pfix_t > inf2Post(turkin::Queue< pinf_t > & input)
         }
         else
         {
-          pinf_t opt(buffer.drop());
+          opt = buffer.drop();
           while (getPriorityLevel(cnvt::convertINF2FIX(data)) >= getPriorityLevel(cnvt::convertINF2FIX(opt)))
           {
             output.push(cnvt::convertINF2FIX(opt));
@@ -98,7 +98,7 @@ turkin::Queue< pfix_t > inf2Post(turkin::Queue< pinf_t > & input)
             {
               break;
             }
-            pinf_t opt(buffer.drop());
+            opt = buffer.drop();
           }
           buffer.push(data);
         }
