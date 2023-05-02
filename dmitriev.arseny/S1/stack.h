@@ -42,32 +42,39 @@ Stack< T >::~Stack()
 
 template< typename T >
 Stack< T >::Stack(const Stack< T >& otherStack):
-  top(nullptr)
+  top(copyStack(otherStack.top))
+{}
+
+template< typename T >
+List< T >* copyStack(List< T >* otherTop)
 {
-  if (otherStack.top != nullptr)
+  if (otherTop == nullptr)
   {
-    List< T >* otherTop = otherStack.top;
-    List< T >* stackTail = nullptr;
-
-    push(otherTop->data);
-    stackTail = top;
-    otherTop = otherTop->otherList;
-
-    while (otherTop != nullptr)
-    {
-      try
-      {
-        stackTail->otherList = new List< T >(otherTop->data);
-      }
-      catch (const std::exception&)
-      {
-        clear(top);
-        throw;
-      }
-      stackTail = stackTail->otherList;
-      otherTop = otherTop->otherList;
-    }
+    return nullptr;
   }
+  List< T >* stackTop = nullptr;
+  List< T >* stackTail = nullptr;
+
+  stackTop = new List< T >{otherTop->data};
+  stackTail = stackTop;
+  otherTop = otherTop->otherList;
+
+  while (otherTop != nullptr)
+  {
+    try
+    {
+      stackTail->otherList = new List< T >{otherTop->data};
+    }
+    catch (const std::exception&)
+    {
+      clear(stackTop);
+      throw;
+    }
+    stackTail = stackTail->otherList;
+    otherTop = otherTop->otherList;
+  }
+
+  return stackTop;
 }
 
 template< typename T >
@@ -106,16 +113,16 @@ Stack< T >& Stack< T >::operator=(Stack< T >&& otherStack) noexcept
 }
 
 template< typename T >
-void Stack<T>::push(const T& data)
+void Stack< T >::push(const T& data)
 {
-  List< T >* newTop = new List< T >{ data, top };
+  List< T >* newTop = new List< T >{data, top};
   top = newTop;
 }
 
 template< typename T >
-void Stack<T>::push(T&& data)
+void Stack< T >::push(T&& data)
 {
-  List< T >* newTop = new List< T >{ std::move(data), top };
+  List< T >* newTop = new List< T >{std::move(data), top};
   top = newTop;
 }
 

@@ -5,6 +5,13 @@
 #include <iomanip>
 
 template< typename T >
+struct pair
+{
+  List< T >* head;
+  List< T >* tail;
+};
+
+template< typename T >
 class Queue
 {
 public:
@@ -26,60 +33,65 @@ public:
   bool isEmpty() const;
 
 private:
-  List< T >* head;
-  List< T >* tail;
+  pair< T > ptrPairHT;
 
 };
 
 template< typename T >
 Queue< T >::Queue():
-  head(nullptr),
-  tail(nullptr)
+  ptrPairHT{nullptr, nullptr}
 {}
 
 template< typename T >
 Queue< T >::~Queue()
 {
-  clear(head);
+  clear(ptrPairHT.head);
 }
 
 template< typename T >
-Queue< T >::Queue(const Queue< T >& otherQueue):
-  head(nullptr),
-  tail(nullptr)
+Queue< T >::Queue(const Queue< T >& otherQueue) :
+  ptrPairHT(copyQueue(otherQueue.ptrPairHT.head))
+{}
+
+template< typename T >
+pair< T > copyQueue(List< T >* otherHead)
 {
-  if (otherQueue.head != nullptr)
+  if (otherHead == nullptr)
   {
-    List< T >* otherTail = otherQueue.head;
-    push(otherTail->data);
-    otherTail = otherTail->otherList;
-    while (otherTail != nullptr)
-    {
-      try
-      {
-        tail->otherList = new List< T >(otherTail->data);
-      }
-      catch (const std::exception&)
-      {
-        clear(head);
-        throw;
-      }
-      tail = tail->otherList;
-      otherTail = otherTail->otherList;
-    }
+    return pair< T >{nullptr, nullptr};
   }
+  List< T >* newHead = new List< T >{otherHead->data};
+  List< T >* newTail = newHead;
+  otherHead = otherHead->otherList;
+
+  while (otherHead != nullptr)
+  {
+    newTail = newTail->otherList;
+    try
+    {
+      newTail = new List< T >{otherHead->data};
+    }
+    catch (const std::exception&)
+    {
+      clear(newHead);
+      throw;
+    }
+
+    otherHead = otherHead->otherList;
+  }
+
+  return pair< T >{newHead, newTail};
 }
 
 template< typename T >
 Queue< T >::Queue(Queue< T >&& otherQueue) noexcept:
-  head(otherQueue.head),
-  tail(otherQueue.tail)
+  ptrPairHT(otherQueue.ptrPairHT)
 {
-  otherQueue.head = nullptr;
-  otherQueue.tail = nullptr;
+  otherQueue.ptrPairHT.head = nullptr;
+  otherQueue.ptrPairHT.tail = nullptr;
 }
 
-template<typename T>
+template< typename T >
 Queue< T >& Queue< T >::operator=(const Queue< T >& otherQueue)
 {
   if (this == std::addressof(otherQueue))
@@ -87,7 +99,7 @@ Queue< T >& Queue< T >::operator=(const Queue< T >& otherQueue)
     return *this;
   }
   Queue< T > newQueue(otherQueue);
-  clear(head);
+  clear(ptrPairHT.head);
   *this = std::move(newQueue);
 
   return *this;
@@ -100,12 +112,12 @@ Queue< T >& Queue< T >::operator=(Queue< T >&& otherQueue) noexcept
   {
     return *this;
   }
-  clear(head);
-  head = otherQueue.head;
-  tail = otherQueue.tail;
+  clear(ptrPairHT.head);
+  ptrPairHT.head = otherQueue.ptrPairHT.head;
+  ptrPairHT.tail = otherQueue.ptrPairHT.tail;
 
-  otherQueue.head = nullptr;
-  otherQueue.tail = nullptr;
+  otherQueue.ptrPairHT.head = nullptr;
+  otherQueue.ptrPairHT.tail = nullptr;
 
   return *this;
 }
@@ -113,60 +125,60 @@ Queue< T >& Queue< T >::operator=(Queue< T >&& otherQueue) noexcept
 template< typename T >
 void Queue< T >::push(const T& rhs)
 {
-  if (head == nullptr)
+  if (ptrPairHT.head == nullptr)
   {
-    head = new List< T >(rhs);
-    tail = head;
+    ptrPairHT.head = new List< T >(rhs);
+    ptrPairHT.tail = ptrPairHT.head;
   }
   else
   {
-    tail->otherList = new List< T >(rhs);
-    tail = tail->otherList;
+    ptrPairHT.tail->otherList = new List< T >(rhs);
+    ptrPairHT.tail = ptrPairHT.tail->otherList;
   }
 }
 
 template< typename T >
-void Queue<T>::push(T&& inp)
+void Queue< T >::push(T&& inp)
 {
-  if (head == nullptr)
+  if (ptrPairHT.head == nullptr)
   {
-    head = new List< T >{ std::move(inp), nullptr };
-    tail = head;
+    ptrPairHT.head = new List< T >{std::move(inp), nullptr};
+    ptrPairHT.tail = ptrPairHT.head;
   }
   else
   {
-    tail->otherList = new List< T >{ std::move(inp), nullptr };
-    tail = tail->otherList;
+    ptrPairHT.tail->otherList = new List< T >{std::move(inp), nullptr};
+    ptrPairHT.tail = ptrPairHT.tail->otherList;
   }
 }
 
 template< typename T >
 void Queue< T >::popBack()
 {
-  if (head == nullptr)
+  if (ptrPairHT.head == nullptr)
   {
     throw std::underflow_error("underflow_error");
   }
-  List< T >* newHead = head->otherList;
-  delete head;
+  List< T >* newHead = ptrPairHT.head->otherList;
+  delete ptrPairHT.head;
 
-  head = newHead;
+  ptrPairHT.head = newHead;
 }
 
 template< typename T >
 T& Queue< T >::getTopData()
 {
-  if (head == nullptr)
+  if (ptrPairHT.head == nullptr)
   {
     throw std::underflow_error("underflow_error");
   }
-  return head->data;
+  return ptrPairHT.head->data;
 }
 
 template< typename T >
 bool Queue< T >::isEmpty() const
 {
-  return head == nullptr;
+  return ptrPairHT.head == nullptr;
 }
 
 #endif
