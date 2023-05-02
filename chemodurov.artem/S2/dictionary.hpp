@@ -569,6 +569,57 @@ namespace chemodurov
   }
 
   template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::erase_after(const_iterator pos)
+  {
+    return data_.erase_after(pos);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::iterator
+      Dictionary< Key, Value, Compare >::erase_after(const_iterator first, const_iterator last)
+  {
+    return data_.erase_after(first, last);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::size_type Dictionary< Key, Value, Compare >::erase(const key_type & key)
+  {
+    iterator it = find(key);
+    if (it == end())
+    {
+      return 0ull;
+    }
+    erase_after(it);
+    return 1ull;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Value & Dictionary< Key, Value, Compare >::operator[](const key_type & key)
+  {
+    try
+    {
+      return at(key);
+    }
+    catch (const std::out_of_range & e)
+    {
+      return emplace(key, mapped_type{});
+    }
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Value & Dictionary< Key, Value, Compare >::operator[](key_type && key)
+  {
+    try
+    {
+      return at(key);
+    }
+    catch (const std::out_of_range & e)
+    {
+      return emplace((std::move(key), mapped_type{});
+    }
+  }
+
+  template< typename Key, typename Value, typename Compare >
   class Dictionary< Key, Value, Compare >::value_compare
   {
    public:
