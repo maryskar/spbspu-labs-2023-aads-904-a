@@ -527,14 +527,14 @@ namespace chemodurov
     {
       return data_.insert_after(pos, value);
     }
-    return insert(value);
+    return (insert(value)).first;
   }
 
   template< typename Key, typename Value, typename Compare >
   template< typename P >
   typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::insert(const_iterator pos, P && value)
   {
-    return insert(pos, value_type(value));
+    return insert(pos, value_type(std::forward< P >(value)));
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -552,6 +552,22 @@ namespace chemodurov
   {
     insert(init.begin(), init.end());
   }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename... Args >
+  std::pair< typename Dictionary< Key, Value, Compare >::iterator,
+      bool > Dictionary< Key, Value, Compare >::emplace(Args && ... args)
+  {
+    return insert(std::forward< Args >(args)...);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename... Args >
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::emplace(const_iterator pos, Args && ... args)
+  {
+    return insert(pos, std::forward< Args >(args)...);
+  }
+
   template< typename Key, typename Value, typename Compare >
   class Dictionary< Key, Value, Compare >::value_compare
   {
