@@ -1,6 +1,5 @@
 #include "number.h"
-
-#include <iomanip>
+#include <stdexcept>
 
 dmitriev::Number::Number(long long m_number):
   m_number(m_number)

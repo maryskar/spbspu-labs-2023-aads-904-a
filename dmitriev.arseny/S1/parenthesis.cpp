@@ -1,6 +1,6 @@
 #include "parenthesis.h"
 
-#include <iomanip>
+#include <stdexcept>
 
 dmitriev::Parenthesis::Parenthesis(char m_parenthesis):
   m_parenthesis(m_parenthesis)
