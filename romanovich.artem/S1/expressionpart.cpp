@@ -1,22 +1,25 @@
 #include "expressionpart.h"
-ExpPart::ExpPart(parenthesis_t pr) :
+ExpPart::ExpPart(parenthesis_t pr):
   isOperation_(false),
   isParenthesis_(true),
   isOperand_(false),
   content_{pr}
-{}
-ExpPart::ExpPart(operations_t op) :
+{
+}
+ExpPart::ExpPart(operations_t op):
   isOperation_(true),
   isParenthesis_(false),
   isOperand_(false),
   content_{op}
-{}
-ExpPart::ExpPart(long long op) :
+{
+}
+ExpPart::ExpPart(long long op):
   isOperation_(false),
   isParenthesis_(false),
   isOperand_(true),
   content_{op}
-{}
+{
+}
 bool ExpPart::isOperation() const
 {
   return isOperation_;
@@ -53,6 +56,12 @@ parenthesis_t ExpPart::getParenthesis() const
   }
   throw;
 }
-ExpPart::ExpContent::ExpContent(parenthesis_t pr): parenthesis_(pr) {}
-ExpPart::ExpContent::ExpContent(operations_t op): operation_(op) {}
-ExpPart::ExpContent::ExpContent(long long op): operand_(op) {}
+ExpPart::ExpContent::ExpContent(parenthesis_t pr): parenthesis_(pr)
+{
+}
+ExpPart::ExpContent::ExpContent(operations_t op): operation_(op)
+{
+}
+ExpPart::ExpContent::ExpContent(long long op): operand_(op)
+{
+}
