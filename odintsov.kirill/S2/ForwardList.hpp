@@ -331,9 +331,9 @@ namespace odintsov {
 
     Iter unsafeEraseAfter(ConstIter pos)
     {
-      const Node* nextNode = pos.nodePtr->next;
       Node* posPtr = const_cast< Node* >(pos.nodePtr);
-      posPtr->next = const_cast< Node* >(nextNode->next);
+      Node* nextNode = posPtr->next;
+      posPtr->next = nextNode->next;
       delete nextNode;
       return Iter(posPtr->next);
     }
