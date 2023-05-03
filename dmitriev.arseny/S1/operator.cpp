@@ -1,5 +1,4 @@
 #include "operator.h"
-
 #include <stdexcept>
 #include <limits>
 

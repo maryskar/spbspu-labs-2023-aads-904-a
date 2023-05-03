@@ -5,7 +5,6 @@
 #include "number.h"
 #include "operator.h"
 #include "parenthesis.h"
-
 #include <string>
 
 namespace dmitriev
