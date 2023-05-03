@@ -55,7 +55,7 @@ namespace kryuchkova
     {
       throw std::overflow_error("Underflow");
     }
-    return lhs / rhs;
+    return lhs * rhs;
   }
 
   long long calcDiv(long long lhs, long long rhs)

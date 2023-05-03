@@ -1,6 +1,7 @@
 #include "queue.h"
 #include "stack.h"
-#include "node.h"
+#include "get_result.h"
+#include "infix_to_postfix.h"
 #include "infix_exp.h"
 #include "part_of_exp.h"
 #include <iostream>
@@ -17,55 +18,38 @@ int main(int argc, char *argv[])
   }
 
   std::string str;
+  long long res;
+  std::ifstream file;
 
   if (argc == 2)
   {
-    std::ifstream file(argv[1]);
-    if (!file)
-    {
-      std::cerr << "Error with opening file";
-      return 1;
-    }
-    while (!file.eof())
-    {
-      std::getline(file, str);
-      if (str.empty())
-      {
-        continue;
-      }
-      try
-      {
-        kryuchkova::Queue< kryuchkova::ExpressionMember > inf = kryuchkova::InfixExp(str);
-      }
-      catch(const std::exception& e)
-      {
-        std::cerr << e.what() << '\n';
-      }
-    }
+    file.open(argv[1]);
   }
+  std::istream &in = (argc == 1) ? std::cin : file;
 
-  else
+  while (in)
   {
-    while (std::cin)
+    std::getline(in, str);
+    if (!in)
     {
-      std::getline(std::cin, str);
-      if (!std::cin)
-      {
-        break;
-      }
-      if (str.empty())
-      {
-        continue;
-      }
-      try
-      {
-
-      }
-      catch(const std::exception& e)
-      {
-        std::cerr << e.what() << '\n';
-      }
-      std::cout << 'a' << '\n';
+      break;
+    }
+    if (str.empty())
+    {
+      continue;
+    }
+    try
+    {
+      kryuchkova::Queue< kryuchkova::ExpressionMember > inf = kryuchkova::InfixExp(str);
+      kryuchkova::Queue< kryuchkova::ExpressionMember > post = kryuchkova::GetPostfixExp(inf);
+      res = kryuchkova::getResult(post);
+      std::cout << res << '\n';
+      return 0;
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << e.what() << '\n';
+      return 1;
     }
   }
   return 0;
