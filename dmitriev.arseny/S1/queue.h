@@ -2,6 +2,49 @@
 #define QUEUE_H
 
 #include "list.h"
+#include <iomanip>
+
+namespace dmitriev
+{
+  template< typename T >
+  struct Pair
+  {
+    List< T >* head;
+    List< T >* tail;
+  };
+}
+namespace
+{
+  template< typename T >
+  dmitriev::Pair< T > copyQueue(dmitriev::List< T >* otherHead)
+  {
+    if (otherHead == nullptr)
+    {
+      return dmitriev::Pair< T >{nullptr, nullptr};
+    }
+    dmitriev::List< T >* newHead = new dmitriev::List< T >{otherHead->data};
+    dmitriev::List< T >* newTail = newHead;
+    otherHead = otherHead->otherList;
+
+    while (otherHead != nullptr)
+    {
+      newTail = newTail->otherList;
+      try
+      {
+        newTail = new dmitriev::List< T >{otherHead->data};
+      }
+      catch (const std::exception&)
+      {
+        clear(newHead);
+        throw;
+      }
+
+      otherHead = otherHead->otherList;
+    }
+
+    return dmitriev::Pair< T >{newHead, newTail};
+  }
+}
 
 namespace dmitriev
 {
@@ -23,12 +66,11 @@ namespace dmitriev
 
     void popBack();
     T& getTopData();
-    const T& getConstTopData() const;
 
     bool isEmpty() const;
 
   private:
-    std::pair< dmitriev::List< T >*, dmitriev::List< T >* > m_ptrPairHT;
+    Pair< T > m_ptrPairHT;
 
   };
 }
@@ -41,20 +83,20 @@ dmitriev::Queue< T >::Queue():
 template< typename T >
 dmitriev::Queue< T >::~Queue()
 {
-  clear(m_ptrPairHT.first);
+  clear(m_ptrPairHT.head);
 }
 
 template< typename T >
-dmitriev::Queue< T >::Queue(const dmitriev::Queue< T >& otherQueue):
-  m_ptrPairHT(dmitriev::copy(otherQueue.m_ptrPairHT.first))
+dmitriev::Queue< T >::Queue(const dmitriev::Queue< T >& otherQueue) :
+  m_ptrPairHT(copyQueue(otherQueue.m_ptrPairHT.head))
 {}
 
 template< typename T >
 dmitriev::Queue< T >::Queue(Queue< T >&& otherQueue) noexcept:
   m_ptrPairHT(otherQueue.m_ptrPairHT)
 {
-  otherQueue.m_ptrPairHT.first = nullptr;
-  otherQueue.m_ptrPairHT.second = nullptr;
+  otherQueue.m_ptrPairHT.head = nullptr;
+  otherQueue.m_ptrPairHT.tail = nullptr;
 }
 
 template< typename T >
@@ -77,12 +119,12 @@ dmitriev::Queue< T >& dmitriev::Queue< T >::operator=(Queue< T >&& otherQueue) n
   {
     return *this;
   }
-  clear(m_ptrPairHT.first);
-  m_ptrPairHT.first = otherQueue.m_ptrPairHT.first;
-  m_ptrPairHT.second = otherQueue.m_ptrPairHT.second;
+  clear(m_ptrPairHT.head);
+  m_ptrPairHT.head = otherQueue.m_ptrPairHT.head;
+  m_ptrPairHT.tail = otherQueue.m_ptrPairHT.tail;
 
-  otherQueue.m_ptrPairHT.first = nullptr;
-  otherQueue.m_ptrPairHT.second = nullptr;
+  otherQueue.m_ptrPairHT.head = nullptr;
+  otherQueue.m_ptrPairHT.tail = nullptr;
 
   return *this;
 }
@@ -90,70 +132,60 @@ dmitriev::Queue< T >& dmitriev::Queue< T >::operator=(Queue< T >&& otherQueue) n
 template< typename T >
 void dmitriev::Queue< T >::push(const T& rhs)
 {
-  if (m_ptrPairHT.first == nullptr)
+  if (m_ptrPairHT.head == nullptr)
   {
-    m_ptrPairHT.first = new List< T >(rhs);
-    m_ptrPairHT.second = m_ptrPairHT.first;
+    m_ptrPairHT.head = new List< T >(rhs);
+    m_ptrPairHT.tail = m_ptrPairHT.head;
   }
   else
   {
-    m_ptrPairHT.second->otherList = new List< T >(rhs);
-    m_ptrPairHT.second = m_ptrPairHT.second->otherList;
+    m_ptrPairHT.tail->otherList = new List< T >(rhs);
+    m_ptrPairHT.tail = m_ptrPairHT.tail->otherList;
   }
 }
 
 template< typename T >
 void dmitriev::Queue< T >::push(T&& inp)
 {
-  if (m_ptrPairHT.first == nullptr)
+  if (m_ptrPairHT.head == nullptr)
   {
-    m_ptrPairHT.first = new List< T >{std::move(inp), nullptr};
-    m_ptrPairHT.second = m_ptrPairHT.first;
+    m_ptrPairHT.head = new List< T >{std::move(inp), nullptr};
+    m_ptrPairHT.tail = m_ptrPairHT.head;
   }
   else
   {
-    m_ptrPairHT.second->otherList = new List< T >{std::move(inp), nullptr};
-    m_ptrPairHT.second = m_ptrPairHT.second->otherList;
+    m_ptrPairHT.tail->otherList = new List< T >{std::move(inp), nullptr};
+    m_ptrPairHT.tail = m_ptrPairHT.tail->otherList;
   }
 }
 
 template< typename T >
 void dmitriev::Queue< T >::popBack()
 {
-  if (m_ptrPairHT.first == nullptr)
+  if (m_ptrPairHT.head == nullptr)
   {
     throw std::runtime_error("runtime_error");
   }
-  List< T >* newHead = m_ptrPairHT.first->otherList;
-  delete m_ptrPairHT.first;
+  List< T >* newHead = m_ptrPairHT.head->otherList;
+  delete m_ptrPairHT.head;
 
-  m_ptrPairHT.first = newHead;
+  m_ptrPairHT.head = newHead;
 }
 
 template< typename T >
 T& dmitriev::Queue< T >::getTopData()
 {
-  if (m_ptrPairHT.first == nullptr)
+  if (m_ptrPairHT.head == nullptr)
   {
     throw std::runtime_error("runtime_error");
   }
-  return m_ptrPairHT.first->data;
-}
-
-template< typename T >
-const T& dmitriev::Queue< T >::getConstTopData() const
-{
-  if (m_ptrPairHT.first == nullptr)
-  {
-    throw std::runtime_error("runtime_error");
-  }
-  return m_ptrPairHT.first->data;
+  return m_ptrPairHT.head->data;
 }
 
 template< typename T >
 bool dmitriev::Queue< T >::isEmpty() const
 {
-  return m_ptrPairHT.first == nullptr;
+  return m_ptrPairHT.head == nullptr;
 }
 
 #endif
