@@ -73,7 +73,7 @@ namespace kryuchkova
   {
     return element.operand_;
   }
-  
+
   bool cmpPriority(const operation_t &lhs, const operation_t &rhs)
   {
     if (lhs == operation_t::SUBTRACTION || lhs == operation_t::ADDITION)
