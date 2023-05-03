@@ -11,6 +11,7 @@ namespace kryuchkova
     public:
       Queue();
       Queue(const Queue< T > &queue);
+      Queue(Queue< T > &&rhs);
       //Queue< T > & operator=(const Queue< T > &);
       //Queue< T > & operator=(Queue< T > &&);
       ~Queue();
@@ -20,6 +21,7 @@ namespace kryuchkova
     private:
       Node< T > *head_;
       Node< T > *tail_;
+      void deleteQueue() noexcept;
   };
 
   template < typename T >
@@ -42,55 +44,61 @@ namespace kryuchkova
   }
 
   template < typename T >
-  Queue< T >::~Queue()
+  void Queue< T >::deleteQueue() noexcept
   {
     while (head_)
     {
-      drop();
+      Node< T > * temp = head_->next_;
+      delete head_;
+      head_ = temp;
     }
+  }
+
+  template < typename T >
+  Queue< T >::Queue(Queue< T > &&rhs):
+    head_(rhs.head_),
+    tail_(rhs.tail_)
+  {
+    head_ = nullptr;
+    tail_ = nullptr;
+  }
+
+  template < typename T >
+  Queue< T >::~Queue()
+  {
+    deleteQueue();
+    head_ = nullptr;
+    tail_ = nullptr;
   }
 
   template < typename T >
   void Queue< T >::push(T rhs)
   {
-    Node< T > *new_node = new Node< T >(rhs);
     if (head_ == nullptr)
     {
-      head_ = new_node;
-      tail_ = new_node;
+      head_ = new Node< T >(rhs);
+      tail_ = head_;
     }
     else
     {
-     new_node->next_ = tail_;
-     tail_ = new_node;
+      Node< T > *new_node = new Node< T >(rhs);
+      tail_->next_ = new_node;
+      tail_ = new_node;
     }
   }
 
   template < typename T >
   T Queue< T >::drop()
   {
-    Node< T > *current = tail_;
     if (isEmpty())
     {
       throw std::logic_error("Empty queue");
     }
-    if (tail_->next_ == head_->next_)
-    {
-      head_ = nullptr;
-      tail_ = nullptr;
-      return current->data_;
-    }
-    else
-    {
-      while (current->next_ != head_)
-      {
-        current = current->next_;
-      }
-      T data = head_->data_;
-      head_ = current;
-      delete current->next_;
-      return data;
-    }
+    Node< T > *tmp = head_;
+    T data = head_->data_;
+    head_ = head_->next_;
+    delete tmp;
+    return data;
   }
 
   template < typename T >

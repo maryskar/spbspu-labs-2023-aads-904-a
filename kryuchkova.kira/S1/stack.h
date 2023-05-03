@@ -18,6 +18,7 @@ namespace kryuchkova
       bool isEmpty();
     private:
       Node< T > *head_;
+      void deleteStack() noexcept;
   };
 
   template < typename T >
@@ -26,12 +27,20 @@ namespace kryuchkova
   {}
 
   template < typename T >
+  void Stack< T >::deleteStack() noexcept
+  {
+    while (!isEmpty())
+    {
+      Node< T > * temp = head_->next_;
+      delete head_;
+      head_ = temp;
+    }
+  }
+
+  template < typename T >
   Stack< T >::~Stack()
   {
-    while (head_)
-    {
-      drop();
-    }
+    deleteStack();
   }
 
   template < typename T >
@@ -52,15 +61,15 @@ namespace kryuchkova
   template < typename T >
   T Stack< T >::drop()
   {
-    T current_data = head_->data_;
     if (isEmpty())
     {
       throw std::logic_error("Empty stack");
     }
-    Node< T > *data = head_->next_;
-    delete head_;
-    head_ = data;
-    return current_data;
+    Node< T > *tmp = head_;
+    T data = head_->data_;
+    head_ = head_->next_;
+    delete tmp;
+    return data;
   }
 
   template < typename T >
