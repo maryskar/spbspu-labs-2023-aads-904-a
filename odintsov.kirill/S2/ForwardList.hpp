@@ -175,14 +175,14 @@ namespace odintsov {
       return unsafeInsertAfter(pos, new Node{nullptr, val});
     }
 
-    template< class InputIter >
+    template< typename InputIter >
     Iter insertAfter(ConstIter pos, InputIter first, InputIter last)
     {
       assertIterInside(pos);
       return unsafeInsertAfter(pos, first, last);
     }
 
-    template< class InputIter >
+    template< typename InputIter >
     Iter unsafeInsertAfter(ConstIter pos, InputIter first, InputIter last)
     {
       Iter lastInserted(const_cast< Node* >(pos.nodePtr));
@@ -204,14 +204,14 @@ namespace odintsov {
       return unsafeInsertAfter(pos, il.begin(), il.end());
     }
 
-    template< class... Args >
+    template< typename... Args >
     Iter emplaceAfter(ConstIter pos, Args&&... args)
     {
       assertIterInside(pos);
       unsafeInsertAfter(pos, new Node{nullptr, T(std::forward< Args >(args)...)});
     }
 
-    template< class... Args >
+    template< typename... Args >
     Iter unsafeEmplaceAfter(ConstIter pos, Args&&... args)
     {
       unsafeInsertAfter(pos, new Node{nullptr, T(std::forward< Args >(args)...)});
@@ -246,7 +246,7 @@ namespace odintsov {
       }
     }
 
-    template< class... Args >
+    template< typename... Args >
     T& emplaceFront(Args&&... args)
     {
       pushFront(new Node{nullptr, T(std::forward< Args >(args)...)});
