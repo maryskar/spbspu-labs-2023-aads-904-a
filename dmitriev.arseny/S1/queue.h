@@ -2,7 +2,7 @@
 #define QUEUE_H
 
 #include "list.h"
-#include <stdexcept>
+#include <iomanip>
 
 namespace dmitriev
 {
