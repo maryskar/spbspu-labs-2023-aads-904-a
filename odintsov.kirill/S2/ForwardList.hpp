@@ -255,7 +255,7 @@ namespace odintsov {
     void clear()
     {
       while (!empty()) {
-        popFront();
+        unsafePopFront();
       }
     }
 
