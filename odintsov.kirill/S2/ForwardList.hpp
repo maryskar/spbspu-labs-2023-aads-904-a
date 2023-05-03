@@ -142,7 +142,7 @@ namespace odintsov {
       fl.head_ = nullptr;
     }
 
-    ForwardList(std::initializer_list< T > il):
+    explicit ForwardList(std::initializer_list< T > il):
       ForwardList()
     {
       unsafeInsertAfter(cbeforeBegin(), il);
@@ -483,7 +483,7 @@ namespace odintsov {
    private:
     Node* preHead_;
 
-    ForwardList(Node* headPtr):
+    explicit ForwardList(Node* headPtr):
       preHead_(reinterpret_cast< Node* >(::operator new(sizeof(Node))))
     {
       preHead_->next = headPtr;
