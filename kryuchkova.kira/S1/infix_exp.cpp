@@ -8,56 +8,67 @@ namespace kryuchkova
   {
     Queue< ExpressionMember > inf;
     size_t j = 0;
-    for (size_t i = 0; i < str.size(); i++)
+    size_t i = 0;
+    while (i < str.size())
     {
-      if (str[i] != ' ')
+      if (str[i] == '(')
       {
-        if (str[i] == '(')
-        {
-          ExpressionMember data(parenthesis_t::OPEN);
-          inf.push(data);
-        }
-        else if (str[i] == ')')
-        {
-          ExpressionMember data(parenthesis_t::CLOSE);
-          inf.push(data);
-        }
-        else if (str[i] == '-')
-        {
-          ExpressionMember data(operation_t::SUBTRACTION);
-          inf.push(data);
-        }
-        else if (str[i] == '+')
-        {
-          ExpressionMember data(operation_t::ADDITION);
-          inf.push(data);
-        }
-        else if (str[i] == '*')
-        {
-          ExpressionMember data(operation_t::MULTIPLICATION);
-          inf.push(data);
-        }
-        else if (str[i] == '/')
-        {
-          ExpressionMember data(operation_t::DIVISION);
-          inf.push(data);
-        }
-        else if (str[i] == '%')
-        {
-          ExpressionMember data(operation_t::EUCLIDEAN_DIVISION);
-          inf.push(data);
-        }
-        else
-        {
-          j = i;
-          while (str[i + 1] != ' ')
-          {
-            i++;
-          }
-          long temp = std::stoll(str.substr(j, i + 1), std::addressof(j));
-          ExpressionMember data(temp);
-          inf.push(data);
-        }
+        ExpressionMember data(parenthesis_t::OPEN);
+        inf.push(data);
+        i += 2;
+      }
+      else if (str[i] == ')')
+      {
+        ExpressionMember data(parenthesis_t::CLOSE);
+        inf.push(data);
+        i += 2;
+      }
+      else if (str[i] == '-')
+      {
+        ExpressionMember data(operation_t::SUBTRACTION);
+        inf.push(data);
+        i += 2;
+      }
+      else if (str[i] == '+')
+      {
+        ExpressionMember data(operation_t::ADDITION);
+        inf.push(data);
+        i += 2;
+      }
+      else if (str[i] == '*')
+      {
+        ExpressionMember data(operation_t::MULTIPLICATION);
+        inf.push(data);
+        i += 2;
+      }
+      else if (str[i] == '/')
+      {
+        ExpressionMember data(operation_t::DIVISION);
+        inf.push(data);
+        i += 2;
+      }
+      else if (str[i] == '%')
+      {
+        ExpressionMember data(operation_t::EUCLIDEAN_DIVISION);
+        inf.push(data);
+        i += 2;
+      }
+      else if (str[i] == ' ')
+      {
+        ++i;
+      }
+      else
+      {
+        // j = i;
+        // while (str[i] != ' ')
+        // {
+        //   i++;
+        // }
+        long temp = std::stoll(str.substr(i), std::addressof(j));
+        j += i;
+        i = j;
+        ExpressionMember data(temp);
+        inf.push(data);
       }
     }
     return inf;
