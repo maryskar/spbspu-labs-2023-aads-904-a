@@ -9,8 +9,8 @@ namespace
   {
     dmitriev::Queue< dmitriev::MathExprPtr > infQueue;
     std::string delimiter = " ";
+    std::string token = "";
     size_t pos = 0;
-    std::string token;
 
     while ((pos = stringInp.find(delimiter)) != std::string::npos)
     {
