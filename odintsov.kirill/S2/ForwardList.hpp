@@ -348,7 +348,7 @@ namespace odintsov {
     {
       const ConstIter end = cend();
       for (ConstIter next = std::next(first); next != last && next != end; next = std::next(first)) {
-        eraseAfter(first);
+        unsafeEraseAfter(first);
       }
     }
 
