@@ -29,50 +29,53 @@ short int returnNumbOfOper(std::string var)
 
 namespace mashkin
 {
-  Queue< std::string > convertToPostfixNotation(std::istream& inp, Stack< std::string >& stc, Queue< std::string >& que)
+  void convertToPostNot(const std::string& line, Stack< std::string >& stc, Queue< std::string >& que)
   {
-    std::string var;
-    while (inp)
+    std::string op;
+    for (auto symb : line)
     {
-      inp >> var;
-      if (!inp)
+      if (symb == ' ')
       {
-        break;
-      }
-      short int NumOfOp = returnNumbOfOper(var);
-      if (NumOfOp == 0)
-      {
-        stc.push(var);
-      }
-      else if (NumOfOp == 1)
-      {
-        while (stc.drop() != "(")
+        short int NumOfOp = returnNumbOfOper(op);
+        if (NumOfOp == 0)
         {
-          que.enqueue(stc.drop());
+          stc.push(op);
+        }
+        else if (NumOfOp == 1)
+        {
+          while (stc.drop() != "(")
+          {
+            que.enqueue(stc.drop());
+            stc.pop();
+          }
           stc.pop();
         }
-        stc.pop();
+        else if (NumOfOp == 2 || NumOfOp == 3)
+        {
+          if (!stc.isEmpty())
+          {
+            stc.push(op);
+          }
+          else if (returnNumbOfOper(stc.drop()) >= NumOfOp)
+          {
+            que.enqueue(stc.drop());
+            stc.pop();
+            stc.push(op);
+          }
+          else
+          {
+            stc.push(op);
+          }
+        }
+        else if (NumOfOp == 4)
+        {
+          que.enqueue(op);
+        }
+        op = "";
       }
-      else if (NumOfOp == 2 || NumOfOp == 3)
+      else
       {
-        if (!stc.isEmpty())
-        {
-          stc.push(var);
-        }
-        else if (returnNumbOfOper(stc.drop()) >= NumOfOp)
-        {
-          que.enqueue(stc.drop());
-          stc.pop();
-          stc.push(var);
-        }
-        else
-        {
-          stc.push(var);
-        }
-      }
-      else if (NumOfOp == 4)
-      {
-        que.enqueue(var);
+        op += symb;
       }
     }
     while (stc.isEmpty())
@@ -80,6 +83,5 @@ namespace mashkin
       que.enqueue(stc.drop());
       stc.pop();
     }
-    return que;
   }
 }

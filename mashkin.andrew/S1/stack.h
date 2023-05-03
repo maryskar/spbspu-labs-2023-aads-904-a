@@ -10,7 +10,7 @@ namespace mashkin
   class Stack
   {
   public:
-    explicit Stack();
+    Stack();
     Stack(const Stack< T >& lhs);
     Stack(Stack< T >&& rhs);
 
