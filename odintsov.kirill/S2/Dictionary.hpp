@@ -485,7 +485,19 @@ namespace odintsov {
   }
 
   template< typename Key, typename Value, typename Compare, typename UnaryPredicate >
-  size_t eraseIf(Dictionary< Key, Value, Compare >& d, UnaryPredicate check);
+  size_t eraseIf(Dictionary< Key, Value, Compare >& d, UnaryPredicate check)
+  {
+    size_t count = 0;
+    for (typename Dictionary< Key, Value, Compare >::Iter i = d.beforeBegin(); i.nodePtr->next != nullptr;) {
+      if (check(i.nodePtr->next->val)) {
+        d.eraseAfter(i);
+        count++;
+      } else {
+        ++i;
+      }
+    }
+    return count;
+  }
 }
 
 #endif
