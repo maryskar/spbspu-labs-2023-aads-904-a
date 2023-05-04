@@ -37,7 +37,11 @@ namespace odintsov {
     Iter end();
     ConstIter cend() const;
 
-    bool empty() const;
+    bool empty() const
+    {
+      return pairs_.empty();
+    }
+
     void clear();
     template< typename V >
     std::pair< Iter, bool > insert(const Key& k, V&& val);
