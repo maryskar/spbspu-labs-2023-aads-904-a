@@ -7,7 +7,6 @@
 #include <stdexcept>
 #include <utility>
 
-#include "ForwardIterator.hpp"
 #include "ForwardList.hpp"
 
 namespace odintsov {
@@ -15,8 +14,8 @@ namespace odintsov {
   class Dictionary {
    public:
     using kvPair = std::pair< const Key, Value >;
-    using Iter = detail::ForwardIterator< kvPair >;
-    using ConstIter = detail::ConstForwardIterator< kvPair >;
+    using Iter = typename ForwardList< kvPair >::Iter;
+    using ConstIter = typename ForwardList< kvPair >::ConstIter;
     using ListNode = typename ForwardList< kvPair >::Node;
 
     struct KVComp {
