@@ -31,9 +31,9 @@ namespace odintsov {
     }
 
     ForwardList(ForwardList&& fl):
-      ForwardList(fl.head_)
+      ForwardList(*fl.head())
     {
-      fl.head_ = nullptr;
+      *fl.head() = nullptr;
     }
 
     explicit ForwardList(std::initializer_list< T > il):
