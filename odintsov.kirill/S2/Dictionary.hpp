@@ -101,9 +101,20 @@ namespace odintsov {
       }
       return std::make_pair(lb, insert);
     }
+
     template< class InputIter >
-    void insert(InputIter first, InputIter second);
-    void insert(std::initializer_list< kvPair > il);
+    void insert(InputIter first, InputIter last)
+    {
+      ConstIter lastPos = cbegin();
+      for (; first != last; ++first) {
+        lastPos = insert(keyComp(lastPos->first, first->first) ? lastPos : cbegin(), first->second).first;
+      }
+    }
+
+    void insert(std::initializer_list< kvPair > il)
+    {
+      insert(il.begin(), il.end());
+    }
 
     template< typename V >
     std::pair< Iter, bool > insertOrAssign(const Key& k, V&& val);
