@@ -4,6 +4,7 @@
 #include <functional>
 #include <initializer_list>
 #include <memory>
+#include <stdexcept>
 #include <utility>
 
 #include "ForwardIterator.hpp"
@@ -60,10 +61,37 @@ namespace odintsov {
       pairs_.sort(kvComp_);
     }
 
-    Value& at(const Key& k);
-    const Value& at(const Key& k) const;
-    Value& operator[](const Key& k);
-    Value& operator[](Key&& k);
+    Value& at(const Key& k)
+    {
+      return const_cast< Value& >(const_cast< const Dictionary* >(this)->at(k));
+    }
+
+    const Value& at(const Key& k) const
+    {
+      ConstIter pos = find(k);
+      if (pos == cend()) {
+        throw std::out_of_range("Invalid key");
+      }
+      return pos->second;
+    }
+
+    Value& operator[](const Key& k)
+    {
+      ConstIter lb = lowerBound(k);
+      if (lb->first == k) {
+        return lb->second;
+      }
+      return pairs_.unsafeInsertAfter(lb, std::make_pair(k, Value()))->second;
+    }
+
+    Value& operator[](Key&& k)
+    {
+      ConstIter lb = lowerBound(k);
+      if (lb->first == k) {
+        return lb->second;
+      }
+      return pairs_.unsafeInsertAfter(lb, std::make_pair(std::move(k), Value()))->second;
+    }
 
     Iter beforeBegin()
     {
