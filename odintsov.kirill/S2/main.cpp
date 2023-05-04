@@ -22,6 +22,9 @@ int main(int argc, char* argv[])
   while (dictFile.good()) {
     std::string dictLine;
     std::getline(dictFile, dictLine);
+    if (dictLine.empty()) {
+      continue;
+    }
     odintsov::StringSplitter split(dictLine);
     std::string setName;
     try {
@@ -48,5 +51,7 @@ int main(int argc, char* argv[])
       }
     }
     dataSetDict.insert(std::move(setName), std::move(dataSet));
+  }
+  while (std::cin.good()) {
   }
 }
