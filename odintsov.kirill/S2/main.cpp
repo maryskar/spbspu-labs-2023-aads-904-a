@@ -55,6 +55,9 @@ int main(int argc, char* argv[])
   while (std::cin.good()) {
     std::string commandLine;
     std::getline(std::cin, commandLine);
+    if (!std::cin.good()) {
+      break;
+    }
     odintsov::StringSplitter split(commandLine);
     std::string commandName;
     split >> commandName;
