@@ -132,8 +132,25 @@ namespace odintsov {
       return bound;
     }
 
-    std::pair< Iter, Iter > equalRange(const Key& k);
-    std::pair< ConstIter, ConstIter > equalRange(const Key& k) const;
+    std::pair< Iter, Iter > equalRange(const Key& k)
+    {
+      Iter lowerBound = lowerBound(k);
+      Iter upperBound = lowerBound;
+      while (!keyComp(k, upperBound->first)) {
+        ++upperBound;
+      }
+      return std::make_pair(lowerBound, upperBound);
+    }
+
+    std::pair< ConstIter, ConstIter > equalRange(const Key& k) const
+    {
+      ConstIter lowerBound = lowerBound(k);
+      ConstIter upperBound = lowerBound;
+      while (!keyComp(k, upperBound->first)) {
+        ++upperBound;
+      }
+      return std::make_pair(lowerBound, upperBound);
+    }
 
    private:
     ForwardList< kvPair > pairs_;
