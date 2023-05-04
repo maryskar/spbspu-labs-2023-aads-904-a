@@ -57,7 +57,7 @@ namespace odintsov {
 
     Dictionary& operator=(std::initializer_list< kvPair > il)
     {
-      pairs_ = ForwardList(il);
+      pairs_ = ForwardList< kvPair >(il);
       pairs_.sort(kvComp_);
     }
 
