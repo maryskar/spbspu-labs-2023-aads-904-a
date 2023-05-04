@@ -372,6 +372,40 @@ namespace odintsov {
       }
     }
 
+    void sort()
+    {
+      return sort(std::less< T >());
+    }
+
+    template< typename Compare >
+    void sort(Compare comp)
+    {
+      const size_t s = size();
+      for (size_t w = 1; w < s;) {
+        const size_t doubleW = w * 2;
+        for (Iter i = beforeBegin(); i.nodePtr->next != nullptr; std::next(i, doubleW)) {
+          Iter split = std::next(i, w);
+          Iter j = split;
+          Iter prev = i++;
+          do {
+            if (comp(*i, *j)) {
+              prev.nodePtr->next = i.nodePtr;
+              ++i;
+            } else {
+              prev.nodePtr->next = j.nodePtr;
+              ++j;
+            }
+            ++prev;
+          } while (i != split && j != end());
+          if (j == end()) {
+            prev.nodePtr->next = i.nodePtr;
+          }
+          i = j;
+        }
+        w = doubleW;
+      }
+    }
+
     void reverse()
     {
       Node* lastPtr = nullptr;
