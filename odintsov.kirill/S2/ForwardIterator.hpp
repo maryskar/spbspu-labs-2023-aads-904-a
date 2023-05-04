@@ -37,12 +37,12 @@ namespace detail {
 
     T& operator*() const
     {
-      return nodePtr->data;
+      return nodePtr->val;
     }
 
     T* operator->() const
     {
-      return std::addressof(nodePtr->data);
+      return std::addressof(nodePtr->val);
     }
 
     bool operator==(const ForwardIterator& rhs) const
@@ -87,12 +87,12 @@ namespace detail {
 
     const T& operator*() const
     {
-      return nodePtr->data;
+      return nodePtr->val;
     }
 
     const T* operator->() const
     {
-      return std::addressof(nodePtr->data);
+      return std::addressof(nodePtr->val);
     }
 
     bool operator==(const ConstForwardIterator& rhs) const

@@ -103,12 +103,12 @@ namespace odintsov {
 
     T& unsafeFront()
     {
-      return (*head())->data;
+      return (*head())->val;
     }
 
     const T& unsafeFront() const
     {
-      return (*head())->data;
+      return (*head())->val;
     }
 
     Iter beforeBegin()
