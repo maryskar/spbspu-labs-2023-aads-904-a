@@ -80,6 +80,7 @@ template< typename T >
 turkin::Queue< T >::~Queue()
 {
   turkin::sqhelp::free(value_);
+  back_ = nullptr;
 }
 
 template< typename T >

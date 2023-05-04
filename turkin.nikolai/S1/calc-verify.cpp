@@ -15,7 +15,7 @@ bool turkin::verify::isMULerror(long long lhs, long long rhs) noexcept
   if (lhs == 0 || lhs == 0)
   {
     return false;
-  }
+  }	
   long long result = lhs * rhs;
   return !(lhs == result / rhs);
 }
