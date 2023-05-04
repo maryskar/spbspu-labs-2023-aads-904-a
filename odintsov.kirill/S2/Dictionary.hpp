@@ -48,23 +48,11 @@ namespace odintsov {
     }
 
     template< typename V >
-    std::pair< Iter, bool > insert(const Key& k, V&& val)
-    {}
-
+    std::pair< Iter, bool > insert(const Key& k, V&& val);
     template< typename V >
-    std::pair< Iter, bool > insert(Key&& k, V&& val)
-    {}
-
-    std::pair< Iter, bool > insert(const kvPair& kv)
-    {
-      return insert(kv.first, kv.second);
-    }
-
-    std::pair< Iter, bool > insert(kvPair&& kv)
-    {
-      return insert(std::move(kv.first), std::move(kv.second));
-    }
-
+    std::pair< Iter, bool > insert(Key&& k, V&& val);
+    std::pair< Iter, bool > insert(const kvPair& kv);
+    std::pair< Iter, bool > insert(kvPair&& kv);
     template< typename V >
     std::pair< Iter, bool > insert(ConstIter pos, const Key& k, V&& v);
     template< typename V >
@@ -116,15 +104,40 @@ namespace odintsov {
     ConstIter find(const Key& k) const;
     bool contains(const Key& k) const;
 
-    Iter lowerBound(const Key& k);
-    ConstIter lowerBound(const Key& k) const;
-    Iter upperBound(const Key& k);
-    ConstIter upperBound(const Key& k) const;
+    Iter lowerBound(const Key& k)
+    {
+      return Iter(const_cast< detail::Node< kvPair >* >(const_cast< const Dictionary* >(this)->lowerBound(k).nodePtr));
+    }
+
+    ConstIter lowerBound(const Key& k) const
+    {
+      ConstIter bound = cbegin();
+      while (keyComp(bound->first, k)) {
+        ++bound;
+      }
+      return bound;
+    }
+
+    Iter upperBound(const Key& k)
+    {
+      return Iter(const_cast< detail::Node< kvPair >* >(const_cast< const Dictionary* >(this)->upperBound(k).nodePtr));
+    }
+
+    ConstIter upperBound(const Key& k) const
+    {
+      ConstIter bound = cbegin();
+      while (!keyComp(k, bound->first)) {
+        ++bound;
+      }
+      return bound;
+    }
+
     std::pair< Iter, Iter > equalRange(const Key& k);
     std::pair< ConstIter, ConstIter > equalRange(const Key& k) const;
 
    private:
     ForwardList< kvPair > pairs_;
+    Compare keyComp;
   };
 
   template< typename Key, typename Value, typename Compare >
