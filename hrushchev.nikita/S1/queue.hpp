@@ -116,13 +116,9 @@ namespace hrushchev
   {
     if (this != std::addressof(other))
     {
-      clear();
-      details::List< T >* curent = other.begin_;
-      while (curent != nullptr)
-      {
-        push(curent->data);
-        curent = curent->next;
-      }
+      Queue< T > temp(other);
+      std::swap(begin_, temp.begin_);
+      std::swap(end_, temp,end_);
     }
     return *this;
   }
