@@ -330,7 +330,11 @@ namespace odintsov {
       return lb;
     }
 
-    bool contains(const Key& k) const;
+    bool contains(const Key& k) const
+    {
+      ConstIter lb = lowerBound(k);
+      return lb->first == k;
+    }
 
     Iter lowerBound(const Key& k)
     {
