@@ -33,6 +33,8 @@ namespace odintsov {
     Value& operator[](const Key& k);
     Value& operator[](Key&& k);
 
+    Iter before_begin();
+    ConstIter cbefore_begin() const;
     Iter begin();
     ConstIter cbegin() const;
     Iter end();
@@ -233,9 +235,31 @@ namespace odintsov {
     }
 
     template< typename C >
-    void merge(Dictionary< Key, Value, C >& src);
+    void merge(Dictionary< Key, Value, C >& src)
+    {
+      ConstIter pos = before_begin();
+      for (Iter siter = src.before_begin(); siter.nodePtr->next != nullptr; ++siter) {
+        bool inserted = false;
+        ListNode* snext = siter.nodePtr->next;
+        if (keyComp(snext->val.first, pos->first)) {
+          pos = before_begin();
+        }
+        while (keyComp(pos.nodePtr->next->val.first, snext->val.first)) {
+          ++pos;
+        }
+        if (pos.nodePtr->next->val.first != snext->val.first) {
+          siter.nodePtr->next = snext->next;
+          snext->next = pos.nodePtr->next;
+          pos.nodePtr->next = snext;
+        }
+      }
+    }
+
     template< typename C >
-    void merge(Dictionary< Key, Value, C >&& src);
+    void merge(Dictionary< Key, Value, C >&& src)
+    {
+      merge(src);
+    }
 
     Iter find(const Key& k);
     ConstIter find(const Key& k) const;
