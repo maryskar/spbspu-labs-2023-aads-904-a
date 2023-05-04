@@ -117,17 +117,56 @@ namespace odintsov {
     }
 
     template< typename V >
-    std::pair< Iter, bool > insertOrAssign(const Key& k, V&& val);
+    std::pair< Iter, bool > insertOrAssign(const Key& k, V&& val)
+    {
+      return insertOrAssign(cbegin(), std::make_pair(k, Value(std::forward(val))));
+    }
+
     template< typename V >
-    std::pair< Iter, bool > insertOrAssign(Key&& k, V&& val);
-    std::pair< Iter, bool > insertOrAssign(const kvPair& kv);
-    std::pair< Iter, bool > insertOrAssign(kvPair&& kv);
+    std::pair< Iter, bool > insertOrAssign(Key&& k, V&& val)
+    {
+      return insertOrAssign(cbegin(), std::make_pair(std::move(k), Value(std::forward(val))));
+    }
+
+    std::pair< Iter, bool > insertOrAssign(const kvPair& kv)
+    {
+      return insertOrAssign(cbegin(), kv);
+    }
+
+    std::pair< Iter, bool > insertOrAssign(kvPair&& kv)
+    {
+      return insertOrAssign(cbegin(), std::move(kv));
+    }
+
     template< typename V >
-    std::pair< Iter, bool > insertOrAssign(ConstIter pos, const Key& k, V&& v);
+    std::pair< Iter, bool > insertOrAssign(ConstIter pos, const Key& k, V&& val)
+    {
+      return insertOrAssign(pos, std::make_pair(k, Value(std::forward(val))));
+    }
+
     template< typename V >
-    std::pair< Iter, bool > insertOrAssign(ConstIter pos, Key&& k, V&& v);
-    std::pair< Iter, bool > insertOrAssign(ConstIter pos, const kvPair& kv);
-    std::pair< Iter, bool > insertOrAssign(ConstIter pos, kvPair&& kv);
+    std::pair< Iter, bool > insertOrAssign(ConstIter pos, Key&& k, V&& val)
+    {
+      return insertOrAssign(pos, std::make_pair(std::move(k), Value(std::forward(val))));
+    }
+
+    std::pair< Iter, bool > insertOrAssign(ConstIter pos, const kvPair& kv)
+    {
+      std::pair< Iter, bool > res = insert(pos, kv);
+      if (!res.second) {
+        *res.first = kv;
+      }
+      return res;
+    }
+
+    std::pair< Iter, bool > insertOrAssign(ConstIter pos, kvPair&& kv)
+    {
+      std::pair< Iter, bool > res = insert(pos, std::move(kv));
+      if (!res.second) {
+        *res.first = std::move(kv);
+      }
+      return res;
+    }
 
     template< typename... Args >
     std::pair< Iter, bool > emplace(Args&&... args);
