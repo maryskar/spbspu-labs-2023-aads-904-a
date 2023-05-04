@@ -174,7 +174,7 @@ namespace odintsov {
     std::pair< Iter, bool > insert(ConstIter pos, const kvPair& kv)
     {
       Iter plb = preLowerBound(pos, kv.first);
-      bool insert = plb->next->val.first != kv.first;
+      bool insert = plb.nodePtr->next->val.first != kv.first;
       if (insert) {
         plb = pairs_.unsafeInsertAfter(plb, kv);
       } else {
@@ -186,7 +186,7 @@ namespace odintsov {
     std::pair< Iter, bool > insert(ConstIter pos, kvPair&& kv)
     {
       Iter plb = preLowerBound(pos, kv.first);
-      bool insert = plb->next->val.first != kv.first;
+      bool insert = plb.nodePtr->next->val.first != kv.first;
       if (insert) {
         plb = pairs_.unsafeInsertAfter(plb, std::move(kv));
       } else {
