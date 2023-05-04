@@ -206,12 +206,12 @@ namespace odintsov {
 
     Iter eraseAfter(ConstIter pos)
     {
-      return pairs_.unsafeEraseAfter(pos);
+      return pairs_.eraseAfter(pos);
     }
 
     Iter eraseAfter(ConstIter first, ConstIter last)
     {
-      return pairs_.unsafeEraseAfter(first, last);
+      return pairs_.eraseAfter(first, last);
     }
 
     bool erase(const Key& k)
