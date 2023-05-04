@@ -615,7 +615,7 @@ namespace chemodurov
     }
     catch (const std::out_of_range & e)
     {
-      return emplace((std::move(key), mapped_type{});
+      return emplace(std::move(key), mapped_type{});
     }
   }
 
