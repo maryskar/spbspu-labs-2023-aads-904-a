@@ -53,5 +53,24 @@ int main(int argc, char* argv[])
     dataSetDict.insert(std::move(setName), std::move(dataSet));
   }
   while (std::cin.good()) {
+    std::string commandLine;
+    std::getline(std::cin, commandLine);
+    odintsov::StringSplitter split(commandLine);
+    std::string commandName;
+    split >> commandName;
+    if (commandName == "print") {
+      std::string dataSetName;
+      split >> dataSetName;
+      std::cout << dataSetName;
+      odintsov::Dictionary< int, std::string > dataSet = dataSetDict[dataSetName];
+      if (dataSet.empty()) {
+        std::cout << " <EMPTY>\n";
+      } else {
+        for (odintsov::Dictionary< int, std::string >::ConstIter i = dataSet.cbegin(); i != dataSet.cend(); ++i) {
+          std::cout << ' ' << i->first << ' ' << i->second;
+        }
+        std::cout << '\n';
+      }
+    }
   }
 }
