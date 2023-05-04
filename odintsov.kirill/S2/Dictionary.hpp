@@ -77,20 +77,20 @@ namespace odintsov {
 
     Value& operator[](const Key& k)
     {
-      ConstIter lb = lowerBound(k);
-      if (lb->first == k) {
-        return lb->second;
+      ConstIter plb = preLowerBound(k);
+      if (plb->next->val.first == k) {
+        return plb->next->val.second;
       }
-      return pairs_.unsafeInsertAfter(lb, std::make_pair(k, Value()))->second;
+      return pairs_.unsafeInsertAfter(plb, std::make_pair(k, Value()))->second;
     }
 
     Value& operator[](Key&& k)
     {
-      ConstIter lb = lowerBound(k);
-      if (lb->first == k) {
-        return lb->second;
+      ConstIter plb = preLowerBound(k);
+      if (plb->next->val.first == k) {
+        return plb->next->val.second;
       }
-      return pairs_.unsafeInsertAfter(lb, std::make_pair(std::move(k), Value()))->second;
+      return pairs_.unsafeInsertAfter(plb, std::make_pair(std::move(k), Value()))->second;
     }
 
     Iter beforeBegin()
@@ -169,22 +169,26 @@ namespace odintsov {
 
     std::pair< Iter, bool > insert(ConstIter pos, const kvPair& kv)
     {
-      Iter lb = lowerBound(pos, kv.first);
-      bool insert = lb->first != kv.first;
+      Iter plb = preLowerBound(pos, kv.first);
+      bool insert = plb->next->val.first != kv.first;
       if (insert) {
-        lb = pairs_.unsafeInsertAfter(lb, kv);
+        plb = pairs_.unsafeInsertAfter(plb, kv);
+      } else {
+        ++plb;
       }
-      return std::make_pair(lb, insert);
+      return std::make_pair(plb, insert);
     }
 
     std::pair< Iter, bool > insert(ConstIter pos, kvPair&& kv)
     {
-      Iter lb = lowerBound(pos, kv.first);
-      bool insert = lb->first != kv.first;
+      Iter plb = preLowerBound(pos, kv.first);
+      bool insert = plb->next->val.first != kv.first;
       if (insert) {
-        lb = pairs_.unsafeInsertAfter(lb, std::move(kv));
+        plb = pairs_.unsafeInsertAfter(plb, std::move(kv));
+      } else {
+        ++plb;
       }
-      return std::make_pair(lb, insert);
+      return std::make_pair(plb, insert);
     }
 
     template< class InputIter >
@@ -360,8 +364,30 @@ namespace odintsov {
 
     bool contains(const Key& k) const
     {
-      ConstIter lb = lowerBound(k);
-      return lb->first == k;
+      return find(k) != cend();
+    }
+
+    Iter preLowerBound(const Key& k)
+    {
+      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preLowerBound(k).nodePtr));
+    }
+
+    Iter preLowerBound(ConstIter pos, const Key& k)
+    {
+      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preLowerBound(pos, k).nodePtr));
+    }
+
+    ConstIter preLowerBound(const Key& k) const
+    {
+      return preLowerBound(cbeforeBegin(), k);
+    }
+
+    ConstIter preLowerBound(ConstIter pos, const Key& k) const
+    {
+      while (kvComp_.keyComp(pos->next->val.first, k)) {
+        ++pos;
+      }
+      return pos;
     }
 
     Iter lowerBound(const Key& k)
