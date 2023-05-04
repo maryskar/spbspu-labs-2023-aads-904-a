@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <stdexcept>
 #include <string>
 
 #include <StringSplitter.hpp>
@@ -23,18 +24,28 @@ int main(int argc, char* argv[])
     std::getline(dictFile, dictLine);
     odintsov::StringSplitter split(dictLine);
     std::string setName;
-    split >> setName;
+    try {
+      split >> setName;
+    } catch (const std::runtime_error& e) {
+      std::cerr << e.what() << '\n';
+      return 1;
+    }
     odintsov::Dictionary< int, std::string > dataSet;
     if (!split.empty()) {
       int key = 0;
-      {
-        std::string keyString;
-        split >> keyString;
-        key = std::stoi(keyString);
+      try {
+        {
+          std::string keyString;
+          split >> keyString;
+          key = std::stoi(keyString);
+        }
+        std::string val;
+        split >> val;
+        dataSet.insert(std::move(key), std::move(val));
+      } catch (const std::exception& e) {
+        std::cerr << e.what() << '\n';
+        return 1;
       }
-      std::string val;
-      split >> val;
-      dataSet.insert(std::move(key), std::move(val));
     }
     dataSetDict.insert(std::move(setName), std::move(dataSet));
   }
