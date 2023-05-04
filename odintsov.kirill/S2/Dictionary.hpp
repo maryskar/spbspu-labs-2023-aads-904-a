@@ -27,6 +27,10 @@ namespace odintsov {
       }
     };
 
+    Dictionary():
+      kvComp_{Compare()}
+    {}
+
     explicit Dictionary(std::initializer_list< kvPair > il, const Compare& comp = Compare()):
       pairs_(il),
       kvComp_{comp}
