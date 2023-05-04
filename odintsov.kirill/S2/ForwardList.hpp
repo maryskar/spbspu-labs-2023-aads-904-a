@@ -146,6 +146,15 @@ namespace odintsov {
       return !*head();
     }
 
+    size_t size() const
+    {
+      size_t s = 0;
+      for (ConstIter i = cbegin(); i != cend(); i++) {
+        s++;
+      }
+      return s;
+    }
+
     void clear()
     {
       while (!empty()) {
