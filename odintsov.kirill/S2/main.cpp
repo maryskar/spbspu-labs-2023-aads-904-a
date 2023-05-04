@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
       return 1;
     }
     odintsov::Dictionary< int, std::string > dataSet;
-    if (!split.empty()) {
+    while (!split.empty()) {
       int key = 0;
       try {
         {
