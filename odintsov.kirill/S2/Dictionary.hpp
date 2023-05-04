@@ -48,11 +48,37 @@ namespace odintsov {
     }
 
     template< typename V >
-    std::pair< Iter, bool > insert(const Key& k, V&& val);
+    std::pair< Iter, bool > insert(const Key& k, V&& val)
+    {
+      return insert(std::make_pair(k, Value(std::forward(val))));
+    }
+
     template< typename V >
-    std::pair< Iter, bool > insert(Key&& k, V&& val);
-    std::pair< Iter, bool > insert(const kvPair& kv);
-    std::pair< Iter, bool > insert(kvPair&& kv);
+    std::pair< Iter, bool > insert(Key&& k, V&& val)
+    {
+      return insert(std::make_pair(std::move(k), Value(std::forward(val))));
+    }
+
+    std::pair< Iter, bool > insert(const kvPair& kv)
+    {
+      Iter lb = lowerBound(kv.first);
+      bool insert = lb->first != kv.first;
+      if (insert) {
+        lb = pairs_.unsafeInsertAfter(lb, kv);
+      }
+      return std::make_pair(lb, insert);
+    }
+
+    std::pair< Iter, bool > insert(kvPair&& kv)
+    {
+      Iter lb = lowerBound(kv.first);
+      bool insert = lb->first != kv.first;
+      if (insert) {
+        lb = pairs_.unsafeInsertAfter(lb, std::move(kv));
+      }
+      return std::make_pair(lb, insert);
+    }
+
     template< typename V >
     std::pair< Iter, bool > insert(ConstIter pos, const Key& k, V&& v);
     template< typename V >
@@ -134,22 +160,22 @@ namespace odintsov {
 
     std::pair< Iter, Iter > equalRange(const Key& k)
     {
-      Iter lowerBound = lowerBound(k);
-      Iter upperBound = lowerBound;
-      while (!keyComp(k, upperBound->first)) {
-        ++upperBound;
+      Iter lb = lowerBound(k);
+      Iter ub = lb;
+      while (!keyComp(k, ub->first)) {
+        ++ub;
       }
-      return std::make_pair(lowerBound, upperBound);
+      return std::make_pair(lb, ub);
     }
 
     std::pair< ConstIter, ConstIter > equalRange(const Key& k) const
     {
-      ConstIter lowerBound = lowerBound(k);
-      ConstIter upperBound = lowerBound;
-      while (!keyComp(k, upperBound->first)) {
-        ++upperBound;
+      ConstIter lb = lowerBound(k);
+      ConstIter ub = lb;
+      while (!keyComp(k, ub->first)) {
+        ++ub;
       }
-      return std::make_pair(lowerBound, upperBound);
+      return std::make_pair(lb, ub);
     }
 
    private:
