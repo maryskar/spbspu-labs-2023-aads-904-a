@@ -32,7 +32,6 @@ namespace odintsov {
     {}
 
     Dictionary(const Dictionary& d) = default;
-
     Dictionary(Dictionary&& d) = default;
 
     explicit Dictionary(std::initializer_list< kvPair > il, const Compare& comp = Compare()):
@@ -86,8 +85,8 @@ namespace odintsov {
     Value& operator[](const Key& k)
     {
       ConstIter plb = preLowerBound(k);
-      if (plb->next->val.first == k) {
-        return plb->next->val.second;
+      if (plb.nodePtr->next->val.first == k) {
+        return plb.nodePtr->next->val.second;
       }
       return pairs_.unsafeInsertAfter(plb, std::make_pair(k, Value()))->second;
     }
@@ -95,8 +94,8 @@ namespace odintsov {
     Value& operator[](Key&& k)
     {
       ConstIter plb = preLowerBound(k);
-      if (plb->next->val.first == k) {
-        return plb->next->val.second;
+      if (plb.nodePtr->next->val.first == k) {
+        return plb.nodePtr->next->val.second;
       }
       return pairs_.unsafeInsertAfter(plb, std::make_pair(std::move(k), Value()))->second;
     }
