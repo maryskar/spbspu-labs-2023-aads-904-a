@@ -204,22 +204,14 @@ namespace odintsov {
       return insert(pos, std::make_pair(std::move(k), Value(std::forward< Args >(args)...)));
     }
 
-    Iter erase(ConstIter pos)
+    Iter eraseAfter(ConstIter pos)
     {
-      ConstIter prev = cbegin();
-      while (prev.nodePtr->next != pos.nodePtr) {
-        ++prev;
-      }
-      return pairs_.unsafeEraseAfter(prev);
+      return pairs_.unsafeEraseAfter(pos);
     }
 
-    Iter erase(ConstIter first, ConstIter last)
+    Iter eraseAfter(ConstIter first, ConstIter last)
     {
-      ConstIter prev = cbegin();
-      while (prev.nodePtr->next != first.nodePtr) {
-        ++prev;
-      }
-      return pairs_.unsafeEraseAfter(prev, last);
+      return pairs_.unsafeEraseAfter(first, last);
     }
 
     bool erase(const Key& k)
