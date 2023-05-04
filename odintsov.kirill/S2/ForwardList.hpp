@@ -438,6 +438,11 @@ namespace odintsov {
       return preHead_ ? std::addressof(preHead_->next) : nullptr;
     }
 
+    const Node* const* head() const
+    {
+      return preHead_ ? std::addressof(preHead_->next) : nullptr;
+    }
+
     void assertIterInside(ConstIter it)
     {
       if (it == cend()) {
