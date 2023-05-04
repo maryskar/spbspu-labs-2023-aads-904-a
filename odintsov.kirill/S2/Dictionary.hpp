@@ -51,18 +51,40 @@ namespace odintsov {
     template< typename V >
     std::pair< Iter, bool > insert(const Key& k, V&& val)
     {
-      return insert(std::make_pair(k, Value(std::forward(val))));
+      return insert(cbegin(), std::make_pair(k, Value(std::forward(val))));
     }
 
     template< typename V >
     std::pair< Iter, bool > insert(Key&& k, V&& val)
     {
-      return insert(std::make_pair(std::move(k), Value(std::forward(val))));
+      return insert(cbegin(), std::make_pair(std::move(k), Value(std::forward(val))));
     }
 
     std::pair< Iter, bool > insert(const kvPair& kv)
     {
-      Iter lb = lowerBound(kv.first);
+      return insert(cbegin(), kv);
+    }
+
+    std::pair< Iter, bool > insert(kvPair&& kv)
+    {
+      return insert(cbegin(), std::move(kv));
+    }
+
+    template< typename V >
+    std::pair< Iter, bool > insert(ConstIter pos, const Key& k, V&& val)
+    {
+      return insert(pos, std::make_pair(k, Value(std::forward(val))));
+    }
+
+    template< typename V >
+    std::pair< Iter, bool > insert(ConstIter pos, Key&& k, V&& val)
+    {
+      return insert(pos, std::make_pair(std::move(k), Value(std::forward(val))));
+    }
+
+    std::pair< Iter, bool > insert(ConstIter pos, const kvPair& kv)
+    {
+      Iter lb = lowerBound(pos, kv.first);
       bool insert = lb->first != kv.first;
       if (insert) {
         lb = pairs_.unsafeInsertAfter(lb, kv);
@@ -70,22 +92,15 @@ namespace odintsov {
       return std::make_pair(lb, insert);
     }
 
-    std::pair< Iter, bool > insert(kvPair&& kv)
+    std::pair< Iter, bool > insert(ConstIter pos, kvPair&& kv)
     {
-      Iter lb = lowerBound(kv.first);
+      Iter lb = lowerBound(pos, kv.first);
       bool insert = lb->first != kv.first;
       if (insert) {
         lb = pairs_.unsafeInsertAfter(lb, std::move(kv));
       }
       return std::make_pair(lb, insert);
     }
-
-    template< typename V >
-    std::pair< Iter, bool > insert(ConstIter pos, const Key& k, V&& v);
-    template< typename V >
-    std::pair< Iter, bool > insert(ConstIter pos, Key&& k, V&& v);
-    std::pair< Iter, bool > insert(ConstIter pos, const kvPair& kv);
-    std::pair< Iter, bool > insert(ConstIter pos, kvPair&& kv);
     template< class InputIter >
     void insert(InputIter first, InputIter second);
     void insert(std::initializer_list< kvPair > il);
