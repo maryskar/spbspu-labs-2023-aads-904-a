@@ -227,7 +227,11 @@ namespace odintsov {
       return false;
     }
 
-    void swap(Dictionary& d);
+    void swap(Dictionary& d)
+    {
+      std::swap(pairs_, d.pairs_);
+    }
+
     template< typename C >
     void merge(Dictionary< Key, Value, C >& src);
     template< typename C >
