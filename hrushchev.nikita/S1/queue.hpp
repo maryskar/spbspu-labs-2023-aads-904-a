@@ -95,11 +95,19 @@ namespace hrushchev
     begin_(nullptr),
     end_(nullptr)
   {
-    details::List< T >* curent = other.begin_;
-    while (curent != nullptr)
+    try
     {
-      push(curent->data);
-      curent = curent->next;
+      details::List< T >* curent = other.begin_;
+      while (curent != nullptr)
+      {
+        push(curent->data);
+        curent = curent->next;
+      }
+    }
+    catch (...)
+    {
+      clear();
+      throw;
     }
   }
 
