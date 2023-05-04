@@ -292,12 +292,12 @@ namespace odintsov {
     template< typename C >
     void merge(Dictionary< Key, Value, C >& src)
     {
-      ConstIter pos = before_begin();
-      for (Iter siter = src.before_begin(); siter.nodePtr->next != nullptr; ++siter) {
+      ConstIter pos = beforeBegin();
+      for (Iter siter = src.beforeBegin(); siter.nodePtr->next != nullptr; ++siter) {
         bool inserted = false;
         ListNode* snext = siter.nodePtr->next;
         if (kvComp_.keyComp(snext->val.first, pos->first)) {
-          pos = before_begin();
+          pos = beforeBegin();
         }
         while (kvComp_.keyComp(pos.nodePtr->next->val.first, snext->val.first)) {
           ++pos;
