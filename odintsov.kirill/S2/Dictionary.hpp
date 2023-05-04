@@ -464,9 +464,25 @@ namespace odintsov {
   };
 
   template< typename Key, typename Value, typename Compare >
-  bool operator==(const Dictionary< Key, Value, Compare >& lhs, const Dictionary< Key, Value, Compare >& rhs);
+  bool operator==(const Dictionary< Key, Value, Compare >& lhs, const Dictionary< Key, Value, Compare >& rhs)
+  {
+    typename Dictionary< Key, Value, Compare >::ConstIter lend = lhs.cend();
+    typename Dictionary< Key, Value, Compare >::ConstIter rend = rhs.cend();
+    typename Dictionary< Key, Value, Compare >::ConstIter liter = lhs.cbegin();
+    typename Dictionary< Key, Value, Compare >::ConstIter riter = rhs.cbegin();
+    for (; liter != lend && riter != rend; ++liter, ++riter) {
+      if (!(*liter == *riter)) {
+        return false;
+      }
+    }
+    return liter == lend && riter == rend;
+  }
+
   template< typename Key, typename Value, typename Compare >
-  bool operator!=(const Dictionary< Key, Value, Compare >& lhs, const Dictionary< Key, Value, Compare >& rhs);
+  bool operator!=(const Dictionary< Key, Value, Compare >& lhs, const Dictionary< Key, Value, Compare >& rhs)
+  {
+    return !(lhs == rhs);
+  }
 
   template< typename Key, typename Value, typename Compare, typename UnaryPredicate >
   size_t eraseIf(Dictionary< Key, Value, Compare >& d, UnaryPredicate check);
