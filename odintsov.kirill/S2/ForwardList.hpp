@@ -172,7 +172,7 @@ namespace odintsov {
 
     Iter unsafeInsertAfter(ConstIter pos, T&& val)
     {
-      return unsafeInsertAfter(pos, new Node{nullptr, val});
+      return unsafeInsertAfter(pos, new Node{nullptr, std::move(val)});
     }
 
     template< typename InputIter >
