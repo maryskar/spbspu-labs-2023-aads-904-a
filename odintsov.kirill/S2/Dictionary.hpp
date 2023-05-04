@@ -204,10 +204,36 @@ namespace odintsov {
       return insert(pos, std::make_pair(std::move(k), Value(std::forward< Args >(args)...)));
     }
 
-    Iter erase(Iter pos);
-    Iter erase(ConstIter pos);
-    Iter erase(ConstIter first, ConstIter last);
-    bool erase(const Key& k);
+    Iter erase(ConstIter pos)
+    {
+      ConstIter prev = cbegin();
+      while (prev.nodePtr->next != pos.nodePtr) {
+        ++prev;
+      }
+      return pairs_.unsafeEraseAfter(prev);
+    }
+
+    Iter erase(ConstIter first, ConstIter last)
+    {
+      ConstIter prev = cbegin();
+      while (prev.nodePtr->next != first.nodePtr) {
+        ++prev;
+      }
+      return pairs_.unsafeEraseAfter(prev, last);
+    }
+
+    bool erase(const Key& k)
+    {
+      ConstIter prev = cbegin();
+      while (keyComp(prev.nodePtr->next->val.first, k)) {
+        ++prev;
+      }
+      if (prev.nodePtr->next->val.first == k) {
+        pairs_.unsafeEraseAfter(prev);
+        return true;
+      }
+      return false;
+    }
 
     void swap(Dictionary& d);
     template< typename C >
