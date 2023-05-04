@@ -383,24 +383,31 @@ namespace odintsov {
       const size_t s = size();
       for (size_t w = 1; w < s;) {
         const size_t doubleW = w * 2;
-        for (Iter i = beforeBegin(); i.nodePtr->next != nullptr; std::next(i, doubleW)) {
+        for (Iter i = beforeBegin(); i.nodePtr->next != nullptr;) {
           Iter split = std::next(i, w);
+          Iter preSplit = split++;
+          Iter cur = i++;
           Iter j = split;
-          Iter prev = i++;
-          do {
+          Iter preJ = preSplit;
+          while (i != split && w != 0 && j != end()) {
             if (comp(*i, *j)) {
-              prev.nodePtr->next = i.nodePtr;
+              cur.nodePtr->next = i.nodePtr;
               ++i;
             } else {
-              prev.nodePtr->next = j.nodePtr;
-              ++j;
+              cur.nodePtr->next = j.nodePtr;
+              preJ = j++;
+              --w;
             }
-            ++prev;
-          } while (i != split && j != end());
-          if (j == end()) {
-            prev.nodePtr->next = i.nodePtr;
+            ++cur;
           }
-          i = j;
+          if (i == split) {
+            cur.nodePtr->next = j.nodePtr;
+          }
+          if (w == 0 || j == end()) {
+            cur.nodePtr->next = i.nodePtr;
+            preSplit.nodePtr->next = j.nodePtr;
+          }
+          i = preJ;
         }
         w = doubleW;
       }
