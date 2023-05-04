@@ -17,12 +17,15 @@ namespace odintsov {
     using ConstIter = detail::ConstForwardIterator< kvPair >;
     using ListNode = typename ForwardList< kvPair >::Node;
 
-    Dictionary();
-    Dictionary(const Dictionary& d);
-    Dictionary(Dictionary&& d);
-    explicit Dictionary(std::initializer_list< kvPair > il, const Compare& comp = Compare());
-    explicit Dictionary(const Compare& comp);
-    ~Dictionary();
+    explicit Dictionary(std::initializer_list< kvPair > il, const Compare& comp = Compare()):
+      keyComp(comp)
+    {
+      insert(il);
+    }
+
+    explicit Dictionary(const Compare& comp):
+      keyComp(comp)
+    {}
 
     Dictionary& operator=(const Dictionary& d);
     Dictionary& operator=(Dictionary&& d);
