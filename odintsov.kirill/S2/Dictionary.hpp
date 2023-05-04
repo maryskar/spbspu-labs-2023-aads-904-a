@@ -65,12 +65,35 @@ namespace odintsov {
     Value& operator[](const Key& k);
     Value& operator[](Key&& k);
 
-    Iter before_begin();
-    ConstIter cbefore_begin() const;
-    Iter begin();
-    ConstIter cbegin() const;
-    Iter end();
-    ConstIter cend() const;
+    Iter beforeBegin()
+    {
+      return pairs_.beforeBegin();
+    }
+
+    ConstIter cbeforeBegin() const
+    {
+      return pairs_.cbeforeBegin();
+    }
+
+    Iter begin()
+    {
+      return pairs_.begin();
+    }
+
+    ConstIter cbegin() const
+    {
+      return pairs_.cbegin();
+    }
+
+    Iter end()
+    {
+      return pairs_.end();
+    }
+
+    ConstIter cend() const
+    {
+      return pairs_.cend();
+    }
 
     bool empty() const
     {
