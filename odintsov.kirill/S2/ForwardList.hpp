@@ -27,7 +27,7 @@ namespace odintsov {
     ForwardList(const ForwardList& fl):
       ForwardList()
     {
-      unsafeSpliceAfter(cbeforeBegin(), fl.cbegin(), fl.cend());
+      unsafeInsertAfter(cbeforeBegin(), fl.cbegin(), fl.cend());
     }
 
     ForwardList(ForwardList&& fl):
