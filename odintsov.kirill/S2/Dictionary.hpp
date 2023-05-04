@@ -85,7 +85,7 @@ namespace odintsov {
     Value& operator[](const Key& k)
     {
       ConstIter plb = preLowerBound(k);
-      if (plb.nodePtr->next->val.first == k) {
+      if (plb.nodePtr->next && plb.nodePtr->next->val.first == k) {
         return plb.nodePtr->next->val.second;
       }
       return pairs_.unsafeInsertAfter(plb, std::make_pair(k, Value()))->second;
@@ -94,7 +94,7 @@ namespace odintsov {
     Value& operator[](Key&& k)
     {
       ConstIter plb = preLowerBound(k);
-      if (plb.nodePtr->next->val.first == k) {
+      if (plb.nodePtr->next && plb.nodePtr->next->val.first == k) {
         return plb.nodePtr->next->val.second;
       }
       return pairs_.unsafeInsertAfter(plb, std::make_pair(std::move(k), Value()))->second;
