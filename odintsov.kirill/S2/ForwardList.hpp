@@ -381,35 +381,31 @@ namespace odintsov {
     void sort(Compare comp)
     {
       const size_t s = size();
-      for (size_t w = 1; w < s;) {
-        const size_t doubleW = w * 2;
+      for (size_t w = 1; w < s; w *= 2) {
         for (Iter i = beforeBegin(); i.nodePtr->next != nullptr;) {
           Iter split = std::next(i, w);
-          Iter preSplit = split++;
-          Iter cur = i++;
-          Iter j = split;
-          Iter preJ = preSplit;
-          while (i != split && w != 0 && j != end()) {
-            if (comp(*i, *j)) {
-              cur.nodePtr->next = i.nodePtr;
-              ++i;
-            } else {
-              cur.nodePtr->next = j.nodePtr;
-              preJ = j++;
-              --w;
+          if (split == end() || split.nodePtr->next == nullptr) {
+            break;
+          }
+          Node* otherSide = split.nodePtr->next;
+          Iter end = split;
+          for (size_t subW = w; subW != 0 && end.nodePtr->next != nullptr; --subW) {
+            ++end;
+          }
+          Node* endPtr = end.nodePtr->next;
+          split.nodePtr->next = endPtr;
+          for (; i.nodePtr->next != endPtr; ++i) {
+            if (comp(otherSide->val, i.nodePtr->next->val)) {
+              std::swap(otherSide, i.nodePtr->next);
             }
-            ++cur;
           }
-          if (i == split) {
-            cur.nodePtr->next = j.nodePtr;
+          if (otherSide != endPtr) {
+            i.nodePtr->next = otherSide;
           }
-          if (w == 0 || j == end()) {
-            cur.nodePtr->next = i.nodePtr;
-            preSplit.nodePtr->next = j.nodePtr;
+          while (i.nodePtr->next != endPtr) {
+            ++i;
           }
-          i = preJ;
         }
-        w = doubleW;
       }
     }
 
