@@ -13,9 +13,14 @@ namespace asml = turkin::assimilation;
 namespace vrfy = turkin::verify;
 namespace cnvt = turkin::convert;
 
-bool getPriorityLevel(pinf_t data)
+bool getPriorityLevel(const pinf_t & data)
 {
   return !(asml::same(data, PINF::ADD) || asml::same(data, PINF::SUB));
+}
+
+bool isLowerPriority(const pinf_t & lhs, const pinf_t & rhs)
+{
+  return getPriorityLevel(lhs) < getPriorityLevel(rhs);
 }
 
 turkin::Queue< pinf_t > str2Inf(std::string & dirt)
@@ -76,14 +81,14 @@ turkin::Queue< pfix_t > inf2Post(turkin::Queue< pinf_t > & input)
       {
         pinf_t opt(buffer.drop());
         buffer.push(opt);
-        if (getPriorityLevel(data) < getPriorityLevel(opt) || asml::same(opt, PINF::LEFT_BRACKET))
+        if (isLowerPriority(data, opt) || asml::same(opt, PINF::LEFT_BRACKET))
         {
           buffer.push(data);
         }
         else
         {
           opt = buffer.drop();
-          while (getPriorityLevel(data) >= getPriorityLevel(opt))
+          while (!isLowerPriority(data, opt))
           {
             output.push(cnvt::convertINF2FIX(opt));
             if (buffer.isEmpty())
