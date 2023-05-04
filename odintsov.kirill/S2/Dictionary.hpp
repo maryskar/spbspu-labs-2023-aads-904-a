@@ -15,6 +15,7 @@ namespace odintsov {
     using kvPair = std::pair< const Key, Value >;
     using Iter = detail::ForwardIterator< kvPair >;
     using ConstIter = detail::ConstForwardIterator< kvPair >;
+    using ListNode = typename ForwardList< kvPair >::Node;
 
     Dictionary();
     Dictionary(const Dictionary& d);
@@ -132,50 +133,60 @@ namespace odintsov {
 
     Iter lowerBound(const Key& k)
     {
-      return Iter(const_cast< detail::Node< kvPair >* >(const_cast< const Dictionary* >(this)->lowerBound(k).nodePtr));
+      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->lowerBound(k).nodePtr));
+    }
+
+    Iter lowerBound(ConstIter pos, const Key& k)
+    {
+      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->lowerBound(pos, k).nodePtr));
     }
 
     ConstIter lowerBound(const Key& k) const
     {
-      ConstIter bound = cbegin();
-      while (keyComp(bound->first, k)) {
-        ++bound;
+      return lowerBound(cbegin(), k);
+    }
+
+    ConstIter lowerBound(ConstIter pos, const Key& k) const
+    {
+      while (keyComp(pos->first, k)) {
+        ++pos;
       }
-      return bound;
+      return pos;
     }
 
     Iter upperBound(const Key& k)
     {
-      return Iter(const_cast< detail::Node< kvPair >* >(const_cast< const Dictionary* >(this)->upperBound(k).nodePtr));
+      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->upperBound(k).nodePtr));
+    }
+
+    Iter upperBound(ConstIter pos, const Key& k)
+    {
+      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->upperBound(pos, k).nodePtr));
     }
 
     ConstIter upperBound(const Key& k) const
     {
-      ConstIter bound = cbegin();
-      while (!keyComp(k, bound->first)) {
-        ++bound;
+      return upperBound(cbegin(), k);
+    }
+
+    ConstIter upperBound(ConstIter pos, const Key& k) const
+    {
+      while (!keyComp(k, pos->first)) {
+        ++pos;
       }
-      return bound;
+      return pos;
     }
 
     std::pair< Iter, Iter > equalRange(const Key& k)
     {
       Iter lb = lowerBound(k);
-      Iter ub = lb;
-      while (!keyComp(k, ub->first)) {
-        ++ub;
-      }
-      return std::make_pair(lb, ub);
+      return std::make_pair(lb, upperBound(lb, k));
     }
 
     std::pair< ConstIter, ConstIter > equalRange(const Key& k) const
     {
       ConstIter lb = lowerBound(k);
-      ConstIter ub = lb;
-      while (!keyComp(k, ub->first)) {
-        ++ub;
-      }
-      return std::make_pair(lb, ub);
+      return std::make_pair(lb, upperBound(lb, k));
     }
 
    private:
