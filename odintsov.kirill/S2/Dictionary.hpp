@@ -391,7 +391,7 @@ namespace odintsov {
 
     ConstIter preLowerBound(ConstIter pos, const Key& k) const
     {
-      while (kvComp_.keyComp(pos->next->val.first, k)) {
+      while (kvComp_.keyComp(pos.nodePtr->next->val.first, k)) {
         ++pos;
       }
       return pos;
