@@ -454,7 +454,7 @@ namespace odintsov {
     {
       Node* prevNode = const_cast< Node* >(pos.nodePtr);
       n->next = prevNode->next;
-      prevNode->next = n->next;
+      prevNode->next = n;
       return Iter(n);
     }
 
