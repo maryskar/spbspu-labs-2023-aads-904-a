@@ -42,13 +42,29 @@ namespace odintsov {
       return pairs_.empty();
     }
 
-    void clear();
+    void clear()
+    {
+      return pairs_.clear();
+    }
+
     template< typename V >
-    std::pair< Iter, bool > insert(const Key& k, V&& val);
+    std::pair< Iter, bool > insert(const Key& k, V&& val)
+    {}
+
     template< typename V >
-    std::pair< Iter, bool > insert(Key&& k, V&& val);
-    std::pair< Iter, bool > insert(const kvPair& kv);
-    std::pair< Iter, bool > insert(kvPair&& kv);
+    std::pair< Iter, bool > insert(Key&& k, V&& val)
+    {}
+
+    std::pair< Iter, bool > insert(const kvPair& kv)
+    {
+      return insert(kv.first, kv.second);
+    }
+
+    std::pair< Iter, bool > insert(kvPair&& kv)
+    {
+      return insert(std::move(kv.first), std::move(kv.second));
+    }
+
     template< typename V >
     std::pair< Iter, bool > insert(ConstIter pos, const Key& k, V&& v);
     template< typename V >
