@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <initializer_list>
+#include <memory>
 #include <utility>
 
 #include "ForwardIterator.hpp"
@@ -17,19 +18,47 @@ namespace odintsov {
     using ConstIter = detail::ConstForwardIterator< kvPair >;
     using ListNode = typename ForwardList< kvPair >::Node;
 
+    struct KVComp {
+      Compare keyComp;
+
+      bool operator()(const kvPair& lhs, const kvPair& rhs)
+      {
+        return keyComp(lhs.first, rhs.first);
+      }
+    };
+
     explicit Dictionary(std::initializer_list< kvPair > il, const Compare& comp = Compare()):
-      keyComp(comp)
+      kvComp_{comp}
     {
       insert(il);
     }
 
     explicit Dictionary(const Compare& comp):
-      keyComp(comp)
+      kvComp_{comp}
     {}
 
-    Dictionary& operator=(const Dictionary& d);
-    Dictionary& operator=(Dictionary&& d);
-    Dictionary& operator=(std::initializer_list< kvPair > il);
+    Dictionary& operator=(const Dictionary& d)
+    {
+      if (this == std::addressof(d)) {
+        return *this;
+      }
+      pairs_ = d.pairs_;
+      kvComp_ = d.kvComp_;
+      return *this;
+    }
+
+    Dictionary& operator=(Dictionary&& d)
+    {
+      pairs_ = std::move(d.pairs_);
+      kvComp_ = std::move(d.kvComp_);
+      return *this;
+    }
+
+    Dictionary& operator=(std::initializer_list< kvPair > il)
+    {
+      pairs_ = ForwardList(il);
+      pairs_.sort(kvComp_);
+    }
 
     Value& at(const Key& k);
     const Value& at(const Key& k) const;
@@ -112,7 +141,7 @@ namespace odintsov {
     {
       ConstIter lastPos = cbegin();
       for (; first != last; ++first) {
-        lastPos = insert(keyComp(lastPos->first, first->first) ? lastPos : cbegin(), first->second).first;
+        lastPos = insert(kvComp_.keyComp(lastPos->first, first->first) ? lastPos : cbegin(), first->second).first;
       }
     }
 
@@ -222,7 +251,7 @@ namespace odintsov {
     bool erase(const Key& k)
     {
       ConstIter prev = cbegin();
-      while (keyComp(prev.nodePtr->next->val.first, k)) {
+      while (kvComp_.keyComp(prev.nodePtr->next->val.first, k)) {
         ++prev;
       }
       if (prev.nodePtr->next->val.first == k) {
@@ -244,10 +273,10 @@ namespace odintsov {
       for (Iter siter = src.before_begin(); siter.nodePtr->next != nullptr; ++siter) {
         bool inserted = false;
         ListNode* snext = siter.nodePtr->next;
-        if (keyComp(snext->val.first, pos->first)) {
+        if (kvComp_.keyComp(snext->val.first, pos->first)) {
           pos = before_begin();
         }
-        while (keyComp(pos.nodePtr->next->val.first, snext->val.first)) {
+        while (kvComp_.keyComp(pos.nodePtr->next->val.first, snext->val.first)) {
           ++pos;
         }
         if (pos.nodePtr->next->val.first != snext->val.first) {
@@ -297,7 +326,7 @@ namespace odintsov {
 
     ConstIter lowerBound(ConstIter pos, const Key& k) const
     {
-      while (keyComp(pos->first, k)) {
+      while (kvComp_.keyComp(pos->first, k)) {
         ++pos;
       }
       return pos;
@@ -320,7 +349,7 @@ namespace odintsov {
 
     ConstIter upperBound(ConstIter pos, const Key& k) const
     {
-      while (!keyComp(k, pos->first)) {
+      while (!kvComp_.keyComp(k, pos->first)) {
         ++pos;
       }
       return pos;
@@ -338,9 +367,19 @@ namespace odintsov {
       return std::make_pair(lb, upperBound(lb, k));
     }
 
+    Compare keyComp() const
+    {
+      return kvComp_.keyComp;
+    }
+
+    KVComp kvComp() const
+    {
+      return kvComp_;
+    }
+
    private:
     ForwardList< kvPair > pairs_;
-    Compare keyComp;
+    KVComp kvComp_;
   };
 
   template< typename Key, typename Value, typename Compare >
