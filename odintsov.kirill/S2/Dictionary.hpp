@@ -261,8 +261,20 @@ namespace odintsov {
       merge(src);
     }
 
-    Iter find(const Key& k);
-    ConstIter find(const Key& k) const;
+    Iter find(const Key& k)
+    {
+      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->find(k).nodePtr));
+    }
+
+    ConstIter find(const Key& k) const
+    {
+      ConstIter lb = lowerBound(k);
+      if (lb->first != k) {
+        return cend();
+      }
+      return lb;
+    }
+
     bool contains(const Key& k) const;
 
     Iter lowerBound(const Key& k)
