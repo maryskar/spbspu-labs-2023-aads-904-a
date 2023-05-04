@@ -68,6 +68,14 @@ namespace detail {
       nodePtr(ptr)
     {}
 
+    ConstForwardIterator(const ForwardIterator< T >& fi):
+      nodePtr(fi.nodePtr)
+    {}
+
+    ConstForwardIterator(ForwardIterator< T >&& fi):
+      nodePtr(fi.nodePtr)
+    {}
+
     ConstForwardIterator& operator++()
     {
       if (nodePtr) {
