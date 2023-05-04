@@ -95,13 +95,8 @@ namespace hrushchev
   {
     if (this != std::addressof(other))
     {
-      clear();
-      details::List< T >* other_value = other.top_;
-      while (other_value != nullptr)
-      {
-        push(other_value->data_);
-        other_value = other_value->next;
-      }
+      Stack< T > temp(other);
+      std::swap(top_, other.top_);
     }
     return *this;
   }
