@@ -143,23 +143,23 @@ namespace odintsov {
     template< typename V >
     std::pair< Iter, bool > insert(const Key& k, V&& val)
     {
-      return insert(cbegin(), std::make_pair(k, Value(std::forward< V >(val))));
+      return insert(cbeforeBegin(), std::make_pair(k, Value(std::forward< V >(val))));
     }
 
     template< typename V >
     std::pair< Iter, bool > insert(Key&& k, V&& val)
     {
-      return insert(cbegin(), std::make_pair(std::move(k), Value(std::forward< V >(val))));
+      return insert(cbeforeBegin(), std::make_pair(std::move(k), Value(std::forward< V >(val))));
     }
 
     std::pair< Iter, bool > insert(const kvPair& kv)
     {
-      return insert(cbegin(), kv);
+      return insert(cbeforeBegin(), kv);
     }
 
     std::pair< Iter, bool > insert(kvPair&& kv)
     {
-      return insert(cbegin(), std::move(kv));
+      return insert(cbeforeBegin(), std::move(kv));
     }
 
     template< typename V >
@@ -177,7 +177,7 @@ namespace odintsov {
     std::pair< Iter, bool > insert(ConstIter pos, const kvPair& kv)
     {
       Iter plb = preLowerBound(pos, kv.first);
-      bool insert = plb.nodePtr->next->val.first != kv.first;
+      bool insert = !plb.nodePtr->next || plb.nodePtr->next->val.first != kv.first;
       if (insert) {
         plb = pairs_.unsafeInsertAfter(plb, kv);
       } else {
@@ -189,7 +189,7 @@ namespace odintsov {
     std::pair< Iter, bool > insert(ConstIter pos, kvPair&& kv)
     {
       Iter plb = preLowerBound(pos, kv.first);
-      bool insert = plb.nodePtr->next->val.first != kv.first;
+      bool insert = !plb.nodePtr->next || plb.nodePtr->next->val.first != kv.first;
       if (insert) {
         plb = pairs_.unsafeInsertAfter(plb, std::move(kv));
       } else {
@@ -201,9 +201,9 @@ namespace odintsov {
     template< class InputIter >
     void insert(InputIter first, InputIter last)
     {
-      ConstIter lastPos = cbegin();
+      ConstIter lastPos = cbeforeBegin();
       for (; first != last; ++first) {
-        lastPos = insert(kvComp_.keyComp(lastPos->first, first->first) ? lastPos : cbegin(), first->second).first;
+        lastPos = insert(kvComp_.keyComp(lastPos->first, first->first) ? lastPos : cbeforeBegin(), first->second).first;
       }
     }
 
@@ -215,23 +215,23 @@ namespace odintsov {
     template< typename V >
     std::pair< Iter, bool > insertOrAssign(const Key& k, V&& val)
     {
-      return insertOrAssign(cbegin(), std::make_pair(k, Value(std::forward< V >(val))));
+      return insertOrAssign(cbeforeBegin(), std::make_pair(k, Value(std::forward< V >(val))));
     }
 
     template< typename V >
     std::pair< Iter, bool > insertOrAssign(Key&& k, V&& val)
     {
-      return insertOrAssign(cbegin(), std::make_pair(std::move(k), Value(std::forward< V >(val))));
+      return insertOrAssign(cbeforeBegin(), std::make_pair(std::move(k), Value(std::forward< V >(val))));
     }
 
     std::pair< Iter, bool > insertOrAssign(const kvPair& kv)
     {
-      return insertOrAssign(cbegin(), kv);
+      return insertOrAssign(cbeforeBegin(), kv);
     }
 
     std::pair< Iter, bool > insertOrAssign(kvPair&& kv)
     {
-      return insertOrAssign(cbegin(), std::move(kv));
+      return insertOrAssign(cbeforeBegin(), std::move(kv));
     }
 
     template< typename V >
@@ -391,7 +391,10 @@ namespace odintsov {
 
     ConstIter preLowerBound(ConstIter pos, const Key& k) const
     {
-      while (kvComp_.keyComp(pos.nodePtr->next->val.first, k)) {
+      if (pos == cend()) {
+        return pos;
+      }
+      while (pos.nodePtr->next != nullptr && kvComp_.keyComp(pos.nodePtr->next->val.first, k)) {
         ++pos;
       }
       return pos;
