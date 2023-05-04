@@ -74,11 +74,19 @@ namespace hrushchev
   Stack< T >::Stack(const Stack< T >& other):
     top_(nullptr)
   {
-    details::List< T >* other_value = other.top_;
-    while (other_value != nullptr)
+    try
     {
-      push(other_value->data_);
-      other_value = other_value->next;
+      details::List< T >* other_value = other.top_;
+      while (other_value != nullptr)
+      {
+        push(other_value->data_);
+        other_value = other_value->next;
+      }
+    }
+    catch(...)
+    {
+      clear();
+      throw;
     }
   }
 
