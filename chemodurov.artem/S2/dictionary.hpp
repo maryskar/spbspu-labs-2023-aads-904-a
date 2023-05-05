@@ -517,7 +517,8 @@ namespace chemodurov
   template< typename P >
   std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool > Dictionary< Key, Value, Compare >::insert(P && value)
   {
-    return insert(value_type(std::forward< P >(value)));
+    const value_type temp(std::forward< P >(value));
+    return insert(temp);
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -538,7 +539,8 @@ namespace chemodurov
   template< typename P >
   typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::insert(const_iterator pos, P && value)
   {
-    return insert(pos, value_type(std::forward< P >(value)));
+    const value_type temp(std::forward< P >(value));
+    return insert(pos, temp);
   }
 
   template< typename Key, typename Value, typename Compare >

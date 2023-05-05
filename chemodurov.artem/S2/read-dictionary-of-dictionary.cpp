@@ -42,14 +42,14 @@ namespace chemodurov
   }
 }
 
-chemodurov::Dictionary< std::string, dic_t, std::less<> > chemodurov::readDictionaryOfDictionary(std::istream & in)
+chemodurov::Dictionary< std::string, dic_t, std::less< > > chemodurov::readDictionaryOfDictionary(std::istream & in)
 {
-  Dictionary< std::string, dic_t, std::less<> > res;
-  while (in.good())
+  Dictionary< std::string, dic_t, std::less< > > res;
+  while (in)
   {
     std::string line;
     std::getline(in, line);
-    if (in.fail())
+    if (!in)
     {
       break;
     }
