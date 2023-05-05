@@ -65,11 +65,11 @@ int main(int argc, char* argv[])
       if (commandName == "print") {
         std::string dataSetName;
         split >> dataSetName;
-        std::cout << dataSetName;
         odintsov::Dictionary< int, std::string > dataSet = dataSetDict.at(dataSetName);
         if (dataSet.empty()) {
-          std::cout << " <EMPTY>\n";
+          std::cout << "<EMPTY>\n";
         } else {
+          std::cout << dataSetName;
           for (odintsov::Dictionary< int, std::string >::ConstIter i = dataSet.cbegin(); i != dataSet.cend(); ++i) {
             std::cout << ' ' << i->first << ' ' << i->second;
           }
