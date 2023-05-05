@@ -142,6 +142,8 @@ int main(int argc, char* argv[])
           lastInserted = outDataSet.insert(lastInserted, *set2Iter).first;
         }
         dataSetDict[outDataSetName] = std::move(outDataSet);
+      } else {
+        throw std::runtime_error("Unknown command");
       }
     } catch (const std::runtime_error& e) {
       std::cerr << "<INVALID COMMAND>\n";
