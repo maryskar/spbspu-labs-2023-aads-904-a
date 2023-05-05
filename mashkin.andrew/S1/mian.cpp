@@ -42,7 +42,7 @@ int main(int argc, char** argv)
       mashkin::convertToPostNot(line, stc, que);
       result.push(solvePostfixNotation(que));
     }
-    print(result);
+    mashkin::print(result);
     std::cout << "\n";
   }
   catch (const std::exception& ex)
