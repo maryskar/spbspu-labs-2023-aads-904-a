@@ -85,14 +85,15 @@ int main(int argc, char* argv[])
         const odintsov::Dictionary< int, std::string >& inDataSet2 = dataSetDict.at(inDataSet2Name);
         odintsov::Dictionary< int, std::string >::ConstIter set1Iter = inDataSet1.cbegin();
         odintsov::Dictionary< int, std::string >::ConstIter set2Iter = inDataSet2.cbegin();
+        odintsov::Dictionary< int, std::string >::Iter lastInserted = outDataSet.beforeBegin();
         auto comp = inDataSet1.keyComp();
         for (; set1Iter != inDataSet1.cend(); ++set1Iter) {
           while (set2Iter != inDataSet2.cend() && comp(set2Iter->first, set1Iter->first)) {
-            outDataSet.insert(*set2Iter);
+            lastInserted = outDataSet.insert(lastInserted, *set2Iter).first;
             ++set2Iter;
           }
           if (set2Iter == inDataSet2.cend() || set2Iter->first != set1Iter->first) {
-            outDataSet.insert(*set1Iter);
+            lastInserted = outDataSet.insert(lastInserted, *set1Iter).first;
           } else {
             ++set2Iter;
           }
@@ -108,6 +109,7 @@ int main(int argc, char* argv[])
         const odintsov::Dictionary< int, std::string >& inDataSet2 = dataSetDict.at(inDataSet2Name);
         odintsov::Dictionary< int, std::string >::ConstIter set1Iter = inDataSet1.cbegin();
         odintsov::Dictionary< int, std::string >::ConstIter set2Iter = inDataSet2.cbegin();
+        odintsov::Dictionary< int, std::string >::Iter lastInserted = outDataSet.beforeBegin();
         auto comp = inDataSet1.keyComp();
         for (; set1Iter != inDataSet1.cend(); ++set1Iter) {
           while (set2Iter != inDataSet2.cend() && comp(set2Iter->first, set1Iter->first)) {
@@ -117,7 +119,7 @@ int main(int argc, char* argv[])
             break;
           }
           if (set2Iter->first == set1Iter->first) {
-            outDataSet.insert(*set1Iter);
+            lastInserted = outDataSet.insert(lastInserted, *set1Iter).first;
           }
         }
         dataSetDict[outDataSetName] = std::move(outDataSet);
@@ -131,16 +133,17 @@ int main(int argc, char* argv[])
         const odintsov::Dictionary< int, std::string >& inDataSet2 = dataSetDict.at(inDataSet2Name);
         odintsov::Dictionary< int, std::string >::ConstIter set1Iter = inDataSet1.cbegin();
         odintsov::Dictionary< int, std::string >::ConstIter set2Iter = inDataSet2.cbegin();
+        odintsov::Dictionary< int, std::string >::Iter lastInserted = outDataSet.beforeBegin();
         auto comp = inDataSet1.keyComp();
         for (; set1Iter != inDataSet1.cend(); ++set1Iter) {
           while (set2Iter != inDataSet2.cend() && comp(set2Iter->first, set1Iter->first)) {
-            outDataSet.insert(*set2Iter);
+            lastInserted = outDataSet.insert(lastInserted, *set2Iter).first;
             ++set2Iter;
           }
-          outDataSet.insert(*set1Iter);
+          lastInserted = outDataSet.insert(lastInserted, *set1Iter).first;
         }
         while (set2Iter != inDataSet2.cend()) {
-          outDataSet.insert(*set2Iter);
+          lastInserted = outDataSet.insert(lastInserted, *set2Iter).first;
           ++set2Iter;
         }
         dataSetDict[outDataSetName] = std::move(outDataSet);
