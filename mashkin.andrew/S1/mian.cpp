@@ -11,11 +11,11 @@ int main(int argc, char** argv)
 {
   std::ifstream inpFile;
   inpFile.open(argv[1]);
-  if (!inpFile.is_open())
+  /*if (!inpFile.is_open())
   {
     std::cerr << "File isn't open\n";
     return 1;
-  }
+  }*/
   std::istream& input = argc == 1 ? std::cin : inpFile;
   try
   {
