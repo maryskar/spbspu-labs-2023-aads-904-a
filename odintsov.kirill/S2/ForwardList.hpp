@@ -217,13 +217,13 @@ namespace odintsov {
     Iter emplaceAfter(ConstIter pos, Args&&... args)
     {
       assertIterInside(pos);
-      unsafeInsertAfter(pos, new Node{nullptr, T(std::forward< Args >(args)...)});
+      return unsafeInsertAfter(pos, new Node{nullptr, T(std::forward< Args >(args)...)});
     }
 
     template< typename... Args >
     Iter unsafeEmplaceAfter(ConstIter pos, Args&&... args)
     {
-      unsafeInsertAfter(pos, new Node{nullptr, T(std::forward< Args >(args)...)});
+      return unsafeInsertAfter(pos, new Node{nullptr, T(std::forward< Args >(args)...)});
     }
 
     Iter eraseAfter(ConstIter pos)
@@ -253,6 +253,7 @@ namespace odintsov {
       for (ConstIter next = std::next(first); next != last && next != end; next = std::next(first)) {
         unsafeEraseAfter(first);
       }
+      return Iter(const_cast< Node* >(last.nodePtr));
     }
 
     template< typename... Args >
