@@ -4,9 +4,25 @@ using dic_t = chemodurov::Dictionary< int, std::string, std::less< > >;
 
 namespace chemodurov
 {
-  dic_t readDicOfIntString(std::istream & in)
+  std::pair< std::string, dic_t > readDicOfIntString(const std::string & data)
   {
-
+    std::string name;
+    dic_t dic;
+    size_t read = 0;
+    size_t read_from = data.find(' ');
+    name = data.substr(read, read_from);
+    read = read_from;
+    while (read < data.size())
+    {
+      int key = std::stoi(data.substr(read_from), std::addressof(read));
+      read_from += read + 1;
+      read = read_from;
+      read_from = data.substr(read).find(' ');
+      std::string value = data.substr(read, read_from - read);
+      read = read_from;
+      dic.insert({key, value});
+    }
+    return {name, dic};
   }
 }
 
