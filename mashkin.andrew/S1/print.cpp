@@ -9,5 +9,9 @@ void print(mashkin::Stack< std::string >& result)
   {
     std::cout << result.drop() << " ";
     result.pop();
+    if (result.isEmpty())
+    {
+      std::cout << " ";
+    }
   }
 }
