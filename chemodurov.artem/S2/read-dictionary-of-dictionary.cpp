@@ -1,4 +1,5 @@
 #include "read-dictionary-of-dictionary.hpp"
+#include <iostream>
 
 using dic_t = chemodurov::Dictionary< int, std::string, std::less< > >;
 
