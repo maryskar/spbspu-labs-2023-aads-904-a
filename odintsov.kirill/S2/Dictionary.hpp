@@ -359,7 +359,7 @@ namespace odintsov {
     ConstIter find(const Key& k) const
     {
       ConstIter lb = lowerBound(k);
-      if (lb->first != k) {
+      if (lb == cend() || lb->first != k) {
         return cend();
       }
       return lb;
@@ -368,6 +368,29 @@ namespace odintsov {
     bool contains(const Key& k) const
     {
       return find(k) != cend();
+    }
+
+    Iter lowerBound(const Key& k)
+    {
+      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->lowerBound(k).nodePtr));
+    }
+
+    Iter lowerBound(ConstIter pos, const Key& k)
+    {
+      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->lowerBound(pos, k).nodePtr));
+    }
+
+    ConstIter lowerBound(const Key& k) const
+    {
+      return lowerBound(cbegin(), k);
+    }
+
+    ConstIter lowerBound(ConstIter pos, const Key& k) const
+    {
+      while (pos != cend() && kvComp_.keyComp(pos->first, k)) {
+        ++pos;
+      }
+      return pos;
     }
 
     Iter preUpperBound(const Key& k)
@@ -396,29 +419,6 @@ namespace odintsov {
       return pos;
     }
 
-    Iter lowerBound(const Key& k)
-    {
-      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->lowerBound(k).nodePtr));
-    }
-
-    Iter lowerBound(ConstIter pos, const Key& k)
-    {
-      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->lowerBound(pos, k).nodePtr));
-    }
-
-    ConstIter lowerBound(const Key& k) const
-    {
-      return lowerBound(cbegin(), k);
-    }
-
-    ConstIter lowerBound(ConstIter pos, const Key& k) const
-    {
-      while (kvComp_.keyComp(pos->first, k)) {
-        ++pos;
-      }
-      return pos;
-    }
-
     Iter upperBound(const Key& k)
     {
       return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->upperBound(k).nodePtr));
@@ -436,7 +436,7 @@ namespace odintsov {
 
     ConstIter upperBound(ConstIter pos, const Key& k) const
     {
-      while (!kvComp_.keyComp(k, pos->first)) {
+      while (pos != cend() && !kvComp_.keyComp(k, pos->first)) {
         ++pos;
       }
       return pos;
