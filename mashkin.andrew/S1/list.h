@@ -8,6 +8,19 @@ namespace mashkin
   {
     T data;
     list_t< T >* next;
+    void clear();
   };
 }
 #endif
+
+template< typename T >
+void mashkin::list_t< T >::clear()
+{
+  list_t< T >* current = this;
+  while (current != nullptr)
+  {
+    list_t< T >* next = current->next;
+    delete current;
+    current = next;
+  }
+}

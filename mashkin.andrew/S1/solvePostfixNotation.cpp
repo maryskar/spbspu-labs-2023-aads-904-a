@@ -22,16 +22,6 @@ void deleteSomeElem(mashkin::list_t< std::string >* endList)
   }
 }
 
-void clear(mashkin::list_t< std::string >* list)
-{
-  while (list)
-  {
-    mashkin::list_t< std::string >* toDelete = list;
-    list = list->next;
-    delete toDelete;
-  }
-}
-
 mashkin::list_t< std::string >* solve(mashkin::list_t< std::string >* endList, mashkin::list_t< std::string >* list)
 {
   int long long fNum = 0;
@@ -72,7 +62,7 @@ mashkin::list_t< std::string >* solve(mashkin::list_t< std::string >* endList, m
   }
   catch (const std::exception& exception)
   {
-    clear(list);
+    list->clear();
     throw;
   }
   deleteSomeElem(endList);
@@ -130,7 +120,7 @@ std::string mashkin::solvePostfixNotation(Queue< std::string >& que)
   }
   catch (const std::bad_alloc& ex)
   {
-    clear(list);
+    list->clear();
     throw;
   }
   std::string result = list->data;
