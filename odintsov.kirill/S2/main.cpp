@@ -146,10 +146,10 @@ int main(int argc, char* argv[])
         throw std::runtime_error("Unknown command");
       }
     } catch (const std::runtime_error& e) {
-      std::cerr << "<INVALID COMMAND>\n";
+      std::cout << "<INVALID COMMAND>\n";
       continue;
     } catch (const std::out_of_range& e) {
-      std::cerr << "<INVALID COMMAND>\n";
+      std::cout << "<INVALID COMMAND>\n";
       continue;
     } catch (const std::exception& e) {
       std::cerr << e.what() << '\n';
