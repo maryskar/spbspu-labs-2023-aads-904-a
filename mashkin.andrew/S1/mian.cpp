@@ -43,6 +43,7 @@ int main(int argc, char** argv)
       result.push(solvePostfixNotation(que));
     }
     print(result);
+    std::cout << "\n";
   }
   catch (const std::exception& ex)
   {
