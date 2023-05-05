@@ -96,6 +96,28 @@ int main(int argc, char* argv[])
           ++set2Iter;
         }
       }
+    } else if (commandName == "intersect") {
+      std::string outDataSetName;
+      std::string inDataSet1Name;
+      std::string inDataSet2Name;
+      split >> outDataSetName >> inDataSet1Name >> inDataSet2Name;
+      odintsov::Dictionary< int, std::string >& outDataSet = dataSetDict[outDataSetName];
+      const odintsov::Dictionary< int, std::string >& inDataSet1 = dataSetDict.at(inDataSet1Name);
+      const odintsov::Dictionary< int, std::string >& inDataSet2 = dataSetDict.at(inDataSet2Name);
+      odintsov::Dictionary< int, std::string >::ConstIter set1Iter = inDataSet1.cbegin();
+      odintsov::Dictionary< int, std::string >::ConstIter set2Iter = inDataSet2.cbegin();
+      auto comp = inDataSet1.keyComp();
+      for (; set1Iter != inDataSet1.cend(); ++set1Iter) {
+        while (set2Iter != inDataSet2.cend() && comp(set2Iter->first, set1Iter->first)) {
+          ++set2Iter;
+        }
+        if (set2Iter == inDataSet2.cend()) {
+          break;
+        }
+        if (set2Iter->first == set1Iter->first) {
+          outDataSet.insert(*set1Iter);
+        }
+      }
     }
   }
 }
