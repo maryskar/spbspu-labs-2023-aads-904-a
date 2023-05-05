@@ -3,7 +3,7 @@
 #include <string>
 #include "stack.h"
 
-namespace machkin
+namespace mashkin
 {
   void print(mashkin::Stack< std::string >& result)
   {
