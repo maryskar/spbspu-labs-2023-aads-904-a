@@ -5,7 +5,7 @@
 
 namespace chemodurov
 {
-  template< typename Key, typename Value, typename Compare >
+  template< typename Key, typename Value, typename Compare = std::less< > >
   class Dictionary
   {
    public:
@@ -501,6 +501,10 @@ namespace chemodurov
     iterator it = lower_bound(value.first);
     iterator moved_it = it;
     ++moved_it;
+    if (moved_it == end())
+    {
+      return {data_.insert_after(it, value), true};
+    }
     if (moved_it->first == value.first)
     {
       moved_it->second = value.second;

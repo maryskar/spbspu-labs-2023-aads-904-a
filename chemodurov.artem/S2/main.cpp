@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include "dictionary.hpp"
+#include "read-dictionary-of-dictionary.hpp"
 
 int main(int argc, char ** argv)
 {
@@ -16,8 +16,7 @@ int main(int argc, char ** argv)
     std::cerr << "The file doesn't opened\n";
     return 1;
   }
-  chemodurov::Dictionary< int, std::string, std::less< > > dic1 = { std::pair< int, std::string >{5, "abc"} };
-  const chemodurov::Dictionary< int, std::string, std::less< > > dic2 = { std::pair< int, std::string >{4, "abc"} };
-  //dic1 = { std::pair< int, std::string >{4, "abc"} };
+  auto dictionaries = chemodurov::readDictionaryOfDictionary(input);
+
   return 0;
 }

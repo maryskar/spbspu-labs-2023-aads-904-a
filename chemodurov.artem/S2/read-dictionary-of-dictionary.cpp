@@ -22,8 +22,19 @@ namespace chemodurov
       read_from += read + 1;
       read = read_from;
       read_from = data.substr(read).find(' ');
-      std::string value = data.substr(read, read_from - read);
-      read = read_from;
+      std::string value;
+      if (read_from != std::string::npos)
+      {
+        value = data.substr(read, read_from);
+      }
+      else
+      {
+        value = data.substr(read);
+        dic.insert({key, value});
+        return {name, dic};
+      }
+      read += read_from;
+      read_from = read;
       dic.insert({key, value});
     }
     return {name, dic};
@@ -37,6 +48,10 @@ chemodurov::Dictionary< std::string, dic_t, std::less<> > chemodurov::readDictio
   {
     std::string line;
     std::getline(in, line);
+    if (!in)
+    {
+      break;
+    }
     std::pair< std::string, dic_t > temp = readDicOfIntString(line);
     if (temp.first.empty())
     {
