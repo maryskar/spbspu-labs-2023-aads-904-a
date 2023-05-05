@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
         std::string inDataSet1Name;
         std::string inDataSet2Name;
         split >> outDataSetName >> inDataSet1Name >> inDataSet2Name;
-        odintsov::Dictionary< int, std::string >& outDataSet = dataSetDict[outDataSetName];
+        odintsov::Dictionary< int, std::string > outDataSet;
         const odintsov::Dictionary< int, std::string >& inDataSet1 = dataSetDict.at(inDataSet1Name);
         const odintsov::Dictionary< int, std::string >& inDataSet2 = dataSetDict.at(inDataSet2Name);
         odintsov::Dictionary< int, std::string >::ConstIter set1Iter = inDataSet1.cbegin();
@@ -97,12 +97,13 @@ int main(int argc, char* argv[])
             ++set2Iter;
           }
         }
+        dataSetDict[outDataSetName] = std::move(outDataSet);
       } else if (commandName == "intersect") {
         std::string outDataSetName;
         std::string inDataSet1Name;
         std::string inDataSet2Name;
         split >> outDataSetName >> inDataSet1Name >> inDataSet2Name;
-        odintsov::Dictionary< int, std::string >& outDataSet = dataSetDict[outDataSetName];
+        odintsov::Dictionary< int, std::string > outDataSet;
         const odintsov::Dictionary< int, std::string >& inDataSet1 = dataSetDict.at(inDataSet1Name);
         const odintsov::Dictionary< int, std::string >& inDataSet2 = dataSetDict.at(inDataSet2Name);
         odintsov::Dictionary< int, std::string >::ConstIter set1Iter = inDataSet1.cbegin();
@@ -119,12 +120,13 @@ int main(int argc, char* argv[])
             outDataSet.insert(*set1Iter);
           }
         }
+        dataSetDict[outDataSetName] = std::move(outDataSet);
       } else if (commandName == "union") {
         std::string outDataSetName;
         std::string inDataSet1Name;
         std::string inDataSet2Name;
         split >> outDataSetName >> inDataSet1Name >> inDataSet2Name;
-        odintsov::Dictionary< int, std::string >& outDataSet = dataSetDict[outDataSetName];
+        odintsov::Dictionary< int, std::string > outDataSet;
         const odintsov::Dictionary< int, std::string >& inDataSet1 = dataSetDict.at(inDataSet1Name);
         const odintsov::Dictionary< int, std::string >& inDataSet2 = dataSetDict.at(inDataSet2Name);
         odintsov::Dictionary< int, std::string >::ConstIter set1Iter = inDataSet1.cbegin();
@@ -141,6 +143,7 @@ int main(int argc, char* argv[])
           outDataSet.insert(*set2Iter);
           ++set2Iter;
         }
+        dataSetDict[outDataSetName] = std::move(outDataSet);
       }
     } catch (const std::runtime_error& e) {
       std::cerr << "<INVALID COMMAND>\n";
