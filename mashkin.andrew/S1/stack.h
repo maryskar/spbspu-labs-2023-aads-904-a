@@ -39,14 +39,7 @@ void mashkin::Stack< T >::push(T rhs)
   }
   else
   {
-    try
-    {
-      top_ = new list_t< T >{rhs, top_};
-    }
-    catch (const std::bad_alloc& ex)
-    {
-      throw;
-    }
+    top_ = new list_t< T >{rhs, top_};
   }
 }
 
@@ -73,7 +66,7 @@ void mashkin::Stack< T >::pop()
 template< typename T >
 T& mashkin::Stack< T >::drop()
 {
-   return top_->data;
+  return top_->data;
 }
 
 template< typename T >
