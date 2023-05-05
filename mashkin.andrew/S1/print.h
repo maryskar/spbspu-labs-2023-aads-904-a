@@ -2,6 +2,8 @@
 #define PRINT_H
 #include <string>
 #include "stack.h"
-
-void print(mashkin::Stack< std::string >& result);
+namespace mashkin
+{
+  void print(mashkin::Stack< std::string >& result);
+}
 #endif

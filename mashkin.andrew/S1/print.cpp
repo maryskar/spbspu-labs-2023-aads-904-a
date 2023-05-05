@@ -3,15 +3,18 @@
 #include <string>
 #include "stack.h"
 
-void print(mashkin::Stack< std::string >& result)
+namespace machkin
 {
-  while (result.isEmpty())
+  void print(mashkin::Stack< std::string >& result)
   {
-    std::cout << result.drop() << " ";
-    result.pop();
-    if (result.isEmpty())
+    while (result.isEmpty())
     {
-      std::cout << " ";
+      std::cout << result.drop() << " ";
+      result.pop();
+      if (result.isEmpty())
+      {
+        std::cout << " ";
+      }
     }
   }
 }
