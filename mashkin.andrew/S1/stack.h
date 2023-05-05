@@ -11,13 +11,14 @@ namespace mashkin
   {
   public:
     Stack();
-    /*Stack(const Stack< T >& lhs);
-    Stack(Stack< T >&& rhs);*/
+    Stack(const Stack< T >& lhs);
+    Stack(Stack< T >&& rhs) noexcept;
+    ~Stack();
 
-    void push(T rhs);
+    void push(const T& rhs);
     void pop();
-    bool isEmpty() const;
-    T& drop();
+    bool isEmpty() const noexcept;
+    T& getTop();
 
   private:
     list_t< T >* top_;
@@ -31,7 +32,29 @@ mashkin::Stack< T >::Stack():
 }
 
 template< typename T >
-void mashkin::Stack< T >::push(T rhs)
+mashkin::Stack< T >::Stack(const Stack< T >& lhs):
+  top_(lhs.top_)
+{
+}
+
+template< typename T >
+mashkin::Stack< T >::Stack(Stack< T >&& rhs) noexcept:
+  top_(rhs.top_)
+{
+  rhs.top_ = nullptr;
+}
+
+template< typename T >
+mashkin::Stack< T >::~Stack()
+{
+  while(isEmpty())
+  {
+    this->pop();
+  }
+}
+
+template< typename T >
+void mashkin::Stack< T >::push(const T& rhs)
 {
   if (!top_)
   {
@@ -50,11 +73,6 @@ void mashkin::Stack< T >::pop()
   {
     throw std::underflow_error("Stack underflow");
   }
-  else if (!top_->next)
-  {
-    delete top_;
-    top_ = nullptr;
-  }
   else
   {
     list_t< T >* newhead = top_->next;
@@ -64,13 +82,13 @@ void mashkin::Stack< T >::pop()
 }
 
 template< typename T >
-T& mashkin::Stack< T >::drop()
+T& mashkin::Stack< T >::getTop()
 {
   return top_->data;
 }
 
 template< typename T >
-bool mashkin::Stack< T >::isEmpty() const
+bool mashkin::Stack< T >::isEmpty() const noexcept
 {
   return top_;
 }

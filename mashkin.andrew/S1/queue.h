@@ -11,13 +11,14 @@ namespace mashkin
   {
   public:
     Queue();
-    /*Queue(const Queue< T >& lhs);
-    Queue(Queue< T >&& rhs);*/
+    Queue(const Queue< T >& lhs);
+    Queue(Queue< T >&& rhs) noexcept;
+    ~Queue();
 
-    void enqueue(T rhs);
+    void enqueue(const T& rhs);
     void dequeue();
-    bool isEmpty() const;
-    T& drop();
+    bool isEmpty() const noexcept;
+    T& getHead();
 
   private:
     list_t< T >* head_;
@@ -33,7 +34,32 @@ mashkin::Queue< T >::Queue():
 }
 
 template< typename T >
-void mashkin::Queue< T >::enqueue(T rhs)
+mashkin::Queue< T >::Queue(const Queue< T >& lhs):
+  head_(lhs.head_),
+  tail_(lhs.tail_)
+{
+}
+
+template< typename T >
+mashkin::Queue< T >::Queue(Queue< T >&& rhs) noexcept:
+  head_(rhs.head_),
+  tail_(rhs.tail_)
+{
+  rhs.head_ = nullptr;
+  rhs.tail_ = nullptr;
+}
+
+template< typename T >
+mashkin::Queue< T >::~Queue()
+{
+  while(isEmpty())
+  {
+    this->dequeue();
+  }
+}
+
+template< typename T >
+void mashkin::Queue< T >::enqueue(const T& rhs)
 {
   if (!head_)
   {
@@ -69,7 +95,7 @@ void mashkin::Queue< T >::dequeue()
 }
 
 template< typename T >
-T& mashkin::Queue< T >::drop()
+T& mashkin::Queue< T >::getHead()
 {
   if (!head_)
   {
@@ -79,7 +105,7 @@ T& mashkin::Queue< T >::drop()
 }
 
 template< typename T >
-bool mashkin::Queue< T >::isEmpty() const
+bool mashkin::Queue< T >::isEmpty() const noexcept
 {
   return head_;
 }

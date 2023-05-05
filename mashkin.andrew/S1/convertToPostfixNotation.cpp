@@ -43,9 +43,9 @@ namespace mashkin
         }
         else if (NumOfOp == 1)
         {
-          while (stc.drop() != "(")
+          while (stc.getTop() != "(")
           {
-            que.enqueue(stc.drop());
+            que.enqueue(stc.getTop());
             stc.pop();
           }
           stc.pop();
@@ -56,9 +56,9 @@ namespace mashkin
           {
             stc.push(op);
           }
-          else if (returnNumbOfOper(stc.drop()) >= NumOfOp)
+          else if (returnNumbOfOper(stc.getTop()) >= NumOfOp)
           {
-            que.enqueue(stc.drop());
+            que.enqueue(stc.getTop());
             stc.pop();
             stc.push(op);
           }
@@ -80,7 +80,7 @@ namespace mashkin
     }
     while (stc.isEmpty())
     {
-      que.enqueue(stc.drop());
+      que.enqueue(stc.getTop());
       stc.pop();
     }
   }

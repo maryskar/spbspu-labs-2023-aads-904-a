@@ -9,7 +9,7 @@ namespace mashkin
   {
     while (result.isEmpty())
     {
-      std::cout << result.drop();
+      std::cout << result.getTop();
       result.pop();
       if (result.isEmpty())
       {
