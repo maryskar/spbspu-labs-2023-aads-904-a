@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
         std::string dataSetName;
         split >> dataSetName;
         std::cout << dataSetName;
-        odintsov::Dictionary< int, std::string > dataSet = dataSetDict[dataSetName];
+        odintsov::Dictionary< int, std::string > dataSet = dataSetDict.at(dataSetName);
         if (dataSet.empty()) {
           std::cout << " <EMPTY>\n";
         } else {
@@ -144,6 +144,9 @@ int main(int argc, char* argv[])
         dataSetDict[outDataSetName] = std::move(outDataSet);
       }
     } catch (const std::runtime_error& e) {
+      std::cerr << "<INVALID COMMAND>\n";
+      continue;
+    } catch (const std::out_of_range& e) {
       std::cerr << "<INVALID COMMAND>\n";
       continue;
     } catch (const std::exception& e) {
