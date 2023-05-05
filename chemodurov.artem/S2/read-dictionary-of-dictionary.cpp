@@ -6,6 +6,10 @@ namespace chemodurov
 {
   std::pair< std::string, dic_t > readDicOfIntString(const std::string & data)
   {
+    if (data.empty())
+    {
+      return {"", dic_t{}};
+    }
     std::string name;
     dic_t dic;
     size_t read = 0;
@@ -28,5 +32,17 @@ namespace chemodurov
 
 chemodurov::Dictionary< std::string, dic_t, std::less<> > chemodurov::readDictionaryOfDictionary(std::istream & in)
 {
-
+  Dictionary< std::string, dic_t, std::less<> > res;
+  while (in)
+  {
+    std::string line;
+    std::getline(in, line);
+    std::pair< std::string, dic_t > temp = readDicOfIntString(line);
+    if (temp.first.empty())
+    {
+      continue;
+    }
+    res.insert(temp);
+  }
+  return res;
 }
