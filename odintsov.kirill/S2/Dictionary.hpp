@@ -84,18 +84,18 @@ namespace odintsov {
 
     Value& operator[](const Key& k)
     {
-      ConstIter plb = preLowerBound(k);
-      if (plb.nodePtr->next && plb.nodePtr->next->val.first == k) {
-        return plb.nodePtr->next->val.second;
+      Iter plb = preUpperBound(k);
+      if (plb != beforeBegin() && plb->first == k) {
+        return plb->second;
       }
       return pairs_.unsafeInsertAfter(plb, std::make_pair(k, Value()))->second;
     }
 
     Value& operator[](Key&& k)
     {
-      ConstIter plb = preLowerBound(k);
-      if (plb.nodePtr->next && plb.nodePtr->next->val.first == k) {
-        return plb.nodePtr->next->val.second;
+      Iter plb = preUpperBound(k);
+      if (plb != beforeBegin() && plb->first == k) {
+        return plb->second;
       }
       return pairs_.unsafeInsertAfter(plb, std::make_pair(std::move(k), Value()))->second;
     }
@@ -176,24 +176,20 @@ namespace odintsov {
 
     std::pair< Iter, bool > insert(ConstIter pos, const kvPair& kv)
     {
-      Iter plb = preLowerBound(pos, kv.first);
-      bool insert = !plb.nodePtr->next || plb.nodePtr->next->val.first != kv.first;
+      Iter plb = preUpperBound(pos, kv.first);
+      bool insert = plb == beforeBegin() || plb->first != kv.first;
       if (insert) {
         plb = pairs_.unsafeInsertAfter(plb, kv);
-      } else {
-        ++plb;
       }
       return std::make_pair(plb, insert);
     }
 
     std::pair< Iter, bool > insert(ConstIter pos, kvPair&& kv)
     {
-      Iter plb = preLowerBound(pos, kv.first);
-      bool insert = !plb.nodePtr->next || plb.nodePtr->next->val.first != kv.first;
+      Iter plb = preUpperBound(pos, kv.first);
+      bool insert = plb == beforeBegin() || plb->first != kv.first;
       if (insert) {
         plb = pairs_.unsafeInsertAfter(plb, std::move(kv));
-      } else {
-        ++plb;
       }
       return std::make_pair(plb, insert);
     }
@@ -374,27 +370,27 @@ namespace odintsov {
       return find(k) != cend();
     }
 
-    Iter preLowerBound(const Key& k)
+    Iter preUpperBound(const Key& k)
     {
-      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preLowerBound(k).nodePtr));
+      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preUpperBound(k).nodePtr));
     }
 
-    Iter preLowerBound(ConstIter pos, const Key& k)
+    Iter preUpperBound(ConstIter pos, const Key& k)
     {
-      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preLowerBound(pos, k).nodePtr));
+      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preUpperBound(pos, k).nodePtr));
     }
 
-    ConstIter preLowerBound(const Key& k) const
+    ConstIter preUpperBound(const Key& k) const
     {
-      return preLowerBound(cbeforeBegin(), k);
+      return preUpperBound(cbeforeBegin(), k);
     }
 
-    ConstIter preLowerBound(ConstIter pos, const Key& k) const
+    ConstIter preUpperBound(ConstIter pos, const Key& k) const
     {
       if (pos == cend()) {
         return pos;
       }
-      while (pos.nodePtr->next != nullptr && kvComp_.keyComp(pos.nodePtr->next->val.first, k)) {
+      while (pos.nodePtr->next != nullptr && !kvComp_.keyComp(k, pos.nodePtr->next->val.first)) {
         ++pos;
       }
       return pos;
