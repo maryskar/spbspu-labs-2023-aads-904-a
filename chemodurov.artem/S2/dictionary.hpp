@@ -94,6 +94,7 @@ namespace chemodurov
     const_iterator upper_bound(const K & x) const;
     key_compare key_comp() const;
     value_compare value_comp() const;
+    bool isEqualTo(const this_t & other) const noexcept;
    private:
     ForwardList< value_type > data_;
     Compare comp_;
@@ -626,13 +627,19 @@ namespace chemodurov
   }
 
   template< typename Key, typename Value, typename Compare >
+  bool Dictionary< Key, Value, Compare >::isEqualTo(const Dictionary< Key, Value, Compare > & other) const noexcept
+  {
+    return size_ == other.size_ && data_ == other.data_;
+  }
+
+  template< typename Key, typename Value, typename Compare >
   class Dictionary< Key, Value, Compare >::value_compare
   {
    public:
     using result_type = bool;
     using first_argument_type = value_type;
     using second_argument_type = value_type;
-    bool operator()( const value_type& lhs, const value_type& rhs ) const
+    bool operator()(const value_type & lhs, const value_type & rhs) const
     {
       return comp(lhs.first, rhs.first);
     };
@@ -640,5 +647,17 @@ namespace chemodurov
     Compare comp;
     explicit value_compare(Compare c): comp(c) {};
   };
+
+  template< typename Key, typename Value, typename Compare >
+  bool operator==(const Dictionary< Key, Value, Compare > & lhs, const Dictionary< Key, Value, Compare > & rhs)
+  {
+    return lhs.isEqualTo(rhs);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  bool operator!=(const Dictionary< Key, Value, Compare > & lhs, const Dictionary< Key, Value, Compare > & rhs)
+  {
+    return !(lhs == rhs);
+  }
 }
 #endif
