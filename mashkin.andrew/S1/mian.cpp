@@ -9,13 +9,21 @@
 
 int main(int argc, char** argv)
 {
-  std::ifstream inpFile;
-  inpFile.open(argv[1]);
-  /*if (!inpFile.is_open())
+  if (argc > 2)
   {
-    std::cerr << "File isn't open\n";
+    std::cerr << "Error\n";
     return 1;
-  }*/
+  }
+  std::ifstream inpFile;
+  if (argc == 2)
+  {
+    inpFile.open(argv[1]);
+    if (!inpFile.is_open())
+    {
+      std::cerr << "File isn't open\n";
+      return 1;
+    }
+  }
   std::istream& input = argc == 1 ? std::cin : inpFile;
   try
   {
