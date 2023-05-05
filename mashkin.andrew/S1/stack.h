@@ -11,8 +11,8 @@ namespace mashkin
   {
   public:
     Stack();
-    Stack(const Stack< T >& lhs);
-    Stack(Stack< T >&& rhs);
+    /*Stack(const Stack< T >& lhs);
+    Stack(Stack< T >&& rhs);*/
 
     void push(T rhs);
     void pop();

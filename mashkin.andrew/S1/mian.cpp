@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include "convertToPostfixNotation.h"
+#include "print.h"
 #include "queue.h"
 #include "solvePostfixNotation.h"
 #include "stack.h"
@@ -20,7 +21,7 @@ int main(int argc, char** argv)
   {
     mashkin::Stack< std::string > stc;
     mashkin::Queue< std::string > que;
-    std::string result;
+    mashkin::Stack< std::string > result;
     while (input)
     {
       std::string line;
@@ -31,9 +32,9 @@ int main(int argc, char** argv)
       }
       line += " ";
       mashkin::convertToPostNot(line, stc, que);
-      result = solvePostfixNotation(que);
+      result.push(solvePostfixNotation(que));
     }
-    std::cout << result << "\n";
+    print(result);
   }
   catch (const std::exception& ex)
   {
