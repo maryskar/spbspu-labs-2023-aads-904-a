@@ -1,8 +1,9 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 
+#include <iostream>
 #include <stdexcept>
-#include "forward_list.h"
+#include <forward_list.h>
 
 namespace tarasenko
 {
