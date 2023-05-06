@@ -1,5 +1,6 @@
 #include "convertToPostfixNotation.h"
 #include <string>
+#include "isLessPriority.h"
 #include "queue.h"
 #include "stack.h"
 
@@ -21,10 +22,6 @@ short int returnNumbOfOper(std::string var)
   {
     return 3;
   }
-  else
-  {
-    return 4;
-  }
 }
 
 namespace mashkin
@@ -36,40 +33,46 @@ namespace mashkin
     {
       if (symb == ' ')
       {
-        short int NumOfOp = returnNumbOfOper(op);
-        if (NumOfOp == 0)
+        if (isdigit(op[0]))
         {
-          stc.push(op);
+          que.enqueue(op);
         }
-        else if (NumOfOp == 1)
+        else
         {
-          while (stc.getTop() != "(")
-          {
-            que.enqueue(stc.getTop());
-            stc.pop();
-          }
-          stc.pop();
-        }
-        else if (NumOfOp == 2 || NumOfOp == 3)
-        {
-          if (!stc.isEmpty())
+          short int NumOfOp = returnNumbOfOper(op);
+          if (NumOfOp == 0)
           {
             stc.push(op);
           }
-          else if (returnNumbOfOper(stc.getTop()) >= NumOfOp)
+          else if (NumOfOp == 1)
           {
-            que.enqueue(stc.getTop());
+            while (stc.getTop() != "(")
+            {
+              que.enqueue(stc.getTop());
+              stc.pop();
+            }
             stc.pop();
+          }
+          else if (!stc.isEmpty())
+          {
             stc.push(op);
           }
           else
           {
-            stc.push(op);
+            if (isLessPriority(returnNumbOfOper(stc.getTop()), NumOfOp))
+            {
+              while (stc.isEmpty())
+              {
+                que.enqueue(stc.getTop());
+                stc.pop();
+              }
+              stc.push(op);
+            }
+            else
+            {
+              stc.push(op);
+            }
           }
-        }
-        else if (NumOfOp == 4)
-        {
-          que.enqueue(op);
         }
         op = "";
       }
