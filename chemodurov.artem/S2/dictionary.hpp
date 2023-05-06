@@ -416,7 +416,7 @@ namespace chemodurov
     iterator it = lower_bound(x);
     iterator moved_it = it;
     ++moved_it;
-    return moved_it->first == x ? it : cend();
+    return moved_it->first == x ? it : end();
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -434,7 +434,7 @@ namespace chemodurov
     iterator it = lower_bound(key);
     iterator moved_it = it;
     ++moved_it;
-    return moved_it->first == key ? it : cend();
+    return moved_it->first == key ? it : end();
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -627,7 +627,7 @@ namespace chemodurov
   }
 
   template< typename Key, typename Value, typename Compare >
-  bool Dictionary< Key, Value, Compare >::isEqualTo(const Dictionary< Key, Value, Compare > & other) const noexcept
+  bool Dictionary< Key, Value, Compare >::isEqualTo(const this_t & other) const noexcept
   {
     return size_ == other.size_ && data_ == other.data_;
   }
@@ -659,5 +659,30 @@ namespace chemodurov
   {
     return !(lhs == rhs);
   }
+
+  template< typename T, typename U >
+  std::ostream & operator<<(std::ostream & out, const std::pair< T, U > & pair)
+  {
+    return (out << pair.first << ' ' << pair.second);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  std::ostream & operator<<(std::ostream & out, const Dictionary< Key, Value, Compare > & dict)
+  {
+    auto end_ = dict.end();
+    for (auto i = dict.begin(); i != end_; ++i)
+    {
+      if (i == dict.begin())
+      {
+        out << *i;
+      }
+      else
+      {
+        out << ' ' << *i;
+      }
+    }
+    return out;
+  }
 }
+
 #endif
