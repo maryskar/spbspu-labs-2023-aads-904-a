@@ -71,15 +71,15 @@ namespace dimkashelk
     }
     reference front()
     {
-      return iterator(iterator::goDown(root_)).value;
+      return iterator(iterator::goDown(root_)).value_;
     }
     const_reference front() const
     {
-      return iterator(iterator::goDown(root_)).value;
+      return iterator(iterator::goDown(root_)).value_;
     }
     iterator begin()
     {
-      return iterator(iterator::goDown(root_));
+      return iterator(iterator::goDown(root_), this);
     }
     const_iterator cbegin() const
     {
@@ -87,7 +87,7 @@ namespace dimkashelk
     }
     iterator end()
     {
-      return iterator(nullptr);
+      return iterator(nullptr, this);
     }
     const_iterator cend() const
     {
@@ -331,7 +331,7 @@ namespace dimkashelk
     {
       for (auto iter = tree.begin(); iter != tree.end(); iter++)
       {
-        insert(*iter, iter.value);
+        insert(*iter, iter.value_);
       }
       fakeNode_->first = root_;
       root_->parent = fakeNode_;

@@ -11,6 +11,7 @@ namespace dimkashelk
   {
   friend class TwoThreeTree< Key, Value, Compare >;
   using node_type = details::NodeOfTwoThreeTree< Key, Value, Compare >;
+  using tree_type = TwoThreeTree< Key, Value, Compare >;
   public:
     using iterator_category = std::forward_iterator_tag;
     using difference_type = std::ptrdiff_t;
@@ -48,10 +49,12 @@ namespace dimkashelk
     value_type value_;
     node_type *node_;
     node_type *prev_;
-    explicit TwoThreeTreeIterator(node_type *node):
-      value_{(node == nullptr) ? Key() : node->key[0], (node == nullptr) ? Value() : node->value[0]},
+    tree_type *parent_;
+    explicit TwoThreeTreeIterator(node_type *node, tree_type *parent):
+      value_{(node == nullptr)? Key() : node->key[0], (node == nullptr)? Value() : node->value[0]},
       node_(node),
-      prev_(nullptr)
+      prev_(nullptr),
+      parent_(parent)
     {};
     void next()
     {
