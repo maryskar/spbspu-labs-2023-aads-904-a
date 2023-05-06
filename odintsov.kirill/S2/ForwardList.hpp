@@ -194,12 +194,11 @@ namespace odintsov {
     template< typename InputIter >
     Iter unsafeInsertAfter(ConstIter pos, InputIter first, InputIter last)
     {
-      Iter lastInserted(const_cast< Node* >(pos.nodePtr));
       while (first != last) {
-        lastInserted = unsafeInsertAfter(lastInserted, *first);
+        pos = unsafeInsertAfter(pos, *first);
         ++first;
       }
-      return lastInserted;
+      return Iter(const_cast< Node* >(pos.nodePtr));
     }
 
     Iter insertAfter(ConstIter pos, std::initializer_list< T > il)
