@@ -2,6 +2,7 @@
 #include <fstream>
 #include <algorithm>
 #include "read-dictionary-of-dictionary.hpp"
+#include "create-command-dictionary.hpp"
 
 int main(int argc, char ** argv)
 {
@@ -17,6 +18,6 @@ int main(int argc, char ** argv)
     return 1;
   }
   auto dictionaries = chemodurov::readDictionaryOfDictionary(input);
-
+  auto command_dic = chemodurov::createCommandDictionary();
   return 0;
 }
