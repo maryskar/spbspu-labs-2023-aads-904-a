@@ -248,8 +248,7 @@ namespace odintsov {
 
     Iter unsafeEraseAfter(ConstIter first, ConstIter last)
     {
-      const ConstIter end = cend();
-      for (ConstIter next = std::next(first); next != last && next != end; next = std::next(first)) {
+      for (ConstIter next = std::next(first); next != last && next != cend(); next = std::next(first)) {
         unsafeEraseAfter(first);
       }
       return Iter(const_cast< Node* >(last.nodePtr));
