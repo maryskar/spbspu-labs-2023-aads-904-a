@@ -10,17 +10,15 @@ namespace dimkashelk
     {
     public:
       using node_type = NodeOfTwoThreeTree<Key, Value, Compare>;
-      Key *key;
-      Value *value;
+      std::pair< Key, Value > data[3];
       unsigned size;
       node_type *first;
       node_type *second;
       node_type *third;
       node_type *fourth;
       node_type *parent;
-      NodeOfTwoThreeTree() :
-        key(static_cast< Key * >(::operator new[](sizeof(Key) * 3))),
-        value(static_cast< Value * >(::operator new[](sizeof(Value) * 3))),
+      NodeOfTwoThreeTree():
+        data(),
         size(0),
         first(nullptr),
         second(nullptr),
@@ -28,11 +26,9 @@ namespace dimkashelk
         fourth(nullptr),
         parent(nullptr),
         compare_(Compare())
-      {
-      }
-      NodeOfTwoThreeTree(const Key &k, const Value &v) :
-        key(static_cast< Key * >(::operator new[](sizeof(Key) * 3))),
-        value(static_cast< Value * >(::operator new[](sizeof(Value) * 3))),
+      {}
+      NodeOfTwoThreeTree(const Key &k, const Value &v):
+        data({k, v}),
         size(1),
         first(nullptr),
         second(nullptr),
@@ -40,14 +36,9 @@ namespace dimkashelk
         fourth(nullptr),
         parent(nullptr),
         compare_(Compare())
-      {
-        key[0] = key;
-        value[0] = value;
-      }
-      NodeOfTwoThreeTree(const Key &k, const Value &v, node_type *fi, node_type *s, node_type *t, node_type *fo,
-                         node_type *p) :
-        key(static_cast< Key * >(::operator new[](sizeof(Key) * 3))),
-        value(static_cast< Value * >(::operator new[](sizeof(Value) * 3))),
+      {}
+      NodeOfTwoThreeTree(const Key &k, const Value &v, node_type *fi, node_type *s, node_type *t, node_type *fo, node_type *p):
+        data({k, v}),
         size(1),
         first(fi),
         second(s),
@@ -55,30 +46,21 @@ namespace dimkashelk
         fourth(fo),
         parent(p),
         compare_(Compare())
-      {
-        key[0] = key;
-        value[0] = value;
-      }
-      ~NodeOfTwoThreeTree()
-      {
-        ::operator delete[](key);
-        ::operator delete[](value);
-      }
+      {}
+      ~NodeOfTwoThreeTree() = default;
       bool isList() const
       {
         return (first == nullptr) && (second == nullptr) && (third == nullptr);
       }
       void insert(const Key &k, const Value &v)
       {
-        key[size] = k;
-        value[size] = v;
+        data[size] = {k, v};
         size++;
         sort();
       }
       void becomeNode2(const Key &k, const Value &v, node_type *first_, node_type *second_)
       {
-        key[0] = k;
-        value[0] = v;
+        data[0] = {k, v};
         first = first_;
         second = second_;
         third = nullptr;
@@ -88,13 +70,13 @@ namespace dimkashelk
       }
       node_type *getLastChildren()
       {
-        return (third) ? third : (second) ? second : first;
+        return (third)? third: (second)? second: first;
       }
       bool contains(const Key &k)
       {
         for (unsigned int i = 0; i < size; ++i)
         {
-          if (key[i] == k)
+          if (data[i].first == k)
           {
             return true;
           }
@@ -103,15 +85,15 @@ namespace dimkashelk
       }
       void removeFromNode(Key k)
       {
-        if (size >= 1 && key[0] == k)
+        if (size >= 1 && data[0].first == k)
         {
-          key[0] = key[1];
-          key[1] = key[2];
+          data[0] = data[1];
+          data[1] = data[2];
           size--;
         }
-        else if (size == 2 && key[1] == k)
+        else if (size == 2 && data[1].first == k)
         {
-          key[1] = key[2];
+          data[1] = data[2];
           size--;
         }
       }
@@ -119,22 +101,19 @@ namespace dimkashelk
       Compare compare_;
       void sort()
       {
-        if (!compare_(key[0], key[1]))
+        if (!compare_(data[0].first, data[1].first))
         {
-          std::swap(key[0], key[1]);
-          std::swap(value[0], value[1]);
+          std::swap(data[0], data[1]);
         }
         if (size == 3)
         {
-          if (!compare_(key[0], key[2]))
+          if (!compare_(data[0].first, data[2].first))
           {
-            std::swap(key[0], key[2]);
-            std::swap(value[0], value[2]);
+            std::swap(data[0], data[2]);
           }
-          if (!compare_(key[1], key[2]))
+          if (!compare_(data[1].first, data[2].first))
           {
-            std::swap(key[1], key[2]);
-            std::swap(value[1], value[2]);
+            std::swap(data[1], data[2]);
           }
         }
       }
