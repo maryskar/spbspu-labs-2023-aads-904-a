@@ -176,7 +176,7 @@ namespace odintsov {
     Iter insertAfter(ConstIter pos, T&& val)
     {
       assertIterInside(pos);
-      return unsafeInsertAfter(pos, val);
+      return unsafeInsertAfter(pos, std::move(val));
     }
 
     Iter unsafeInsertAfter(ConstIter pos, T&& val)
