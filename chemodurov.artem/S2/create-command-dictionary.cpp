@@ -19,7 +19,8 @@ namespace chemodurov
     out << *(it) << '\n';
   }
 
-  void complement(std::istream & in, std::ostream & out, Dictionary< std::string, dic_t > & data)
+  template< typename P >
+  void complementOrIntersect(std::istream & in, std::ostream &, Dictionary< std::string, dic_t > & data, P p)
   {
     std::string name_res = "";
     in >> name_res;
@@ -38,11 +39,21 @@ namespace chemodurov
     res = (++it_fst)->second;
     for (auto i = res.begin(); i != res.end(); ++i)
     {
-      if (it_snd->second.find(i->first) != it_snd->second.end())
+      if (p(it_snd->second.find(i->first), it_snd->second.end()))
       {
         res.erase(i->first);
       }
     }
     data.insert({name_res, res});
+  }
+
+  void complement(std::istream & in, std::ostream & out, Dictionary< std::string, dic_t > & data)
+  {
+    complementOrIntersect(in, out, data, std::not_equal_to< >{});
+  }
+
+  void intersect(std::istream & in, std::ostream & out, Dictionary< std::string, dic_t > & data)
+  {
+    complementOrIntersect(in, out, data, std::equal_to< >{});
   }
 }
