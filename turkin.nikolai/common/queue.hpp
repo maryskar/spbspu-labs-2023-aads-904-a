@@ -42,7 +42,7 @@ turkin::Queue< T >::Queue(const Queue< T > & rhs):
 {
   value_ = turkin::pattern::copyList(rhs.value_);
   pattern::OneWayNode< T > * element = value_;
-  while (element->next != nullptr)
+  while (element->next)
   {
     element = element->next;
   }

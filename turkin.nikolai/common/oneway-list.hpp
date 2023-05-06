@@ -15,7 +15,7 @@ namespace turkin
     template< typename T >
     OneWayNode< T > * copyList(OneWayNode< T > * rhs)
     {
-      if (rhs == nullptr)
+      if (!rhs)
       {
         return nullptr;
       }

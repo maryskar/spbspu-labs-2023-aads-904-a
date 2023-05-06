@@ -19,8 +19,8 @@ namespace turkin
       ~Stack();
       void swap(Stack< T > & rhs) noexcept;
       void push(const T & rhs);
-      T drop();
-      T drop() const;
+      T & drop();
+      const T & drop() const;
       bool isEmpty() const;
     private:
       pattern::OneWayNode< T > * value_;
@@ -81,7 +81,7 @@ void turkin::Stack< T >::push(const T & rhs)
 }
 
 template< typename T >
-T turkin::Stack< T >::drop()
+T & turkin::Stack< T >::drop()
 {
   if (isEmpty())
   {
@@ -95,7 +95,7 @@ T turkin::Stack< T >::drop()
 }
 
 template< typename T >
-T turkin::Stack< T >::drop() const
+const T & turkin::Stack< T >::drop() const
 {
   if (isEmpty())
   {

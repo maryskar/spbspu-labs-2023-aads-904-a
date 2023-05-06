@@ -58,15 +58,4 @@ int main(int argc, char * argv[])
   }
   std::cout << "\n";
   return 0;
-  /*
-  turkin::Queue< turkin::datatype::calc_t< turkin::datatype::PINF > > one;
-  turkin::datatype::calc_t< turkin::datatype::PINF > data('+', turkin::datatype::PINF::ADD);
-  one.push(data);
-  one.push(data);
-  one.push(data);
-  one.push(data);
-  one.push(data);
-  turkin::Queue< turkin::datatype::calc_t< turkin::datatype::PINF > > two(one);
-  two.push(data);
-  */
 }
