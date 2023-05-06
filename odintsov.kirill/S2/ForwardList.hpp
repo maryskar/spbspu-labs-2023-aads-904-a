@@ -228,6 +228,7 @@ namespace odintsov {
     Iter eraseAfter(ConstIter pos)
     {
       assertIterInside(pos);
+      assertIterInside(std::next(pos));
       return unsafeEraseAfter(pos);
     }
 
