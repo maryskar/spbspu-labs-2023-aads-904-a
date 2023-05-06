@@ -50,9 +50,10 @@ int main(int argc, char *argv[])
       return 1;
     }
   }
+  std::cout << results.drop();
   while (!results.isEmpty())
   {
-    std::cout << results.drop() << '/n';
+    std::cout << ' ' << results.drop();
   }
   return 0;
 }
