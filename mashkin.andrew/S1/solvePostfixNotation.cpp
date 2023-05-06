@@ -1,78 +1,58 @@
 #include "solvePostfixNotation.h"
 #include <stdexcept>
 #include <string>
-#include "list.h"
 #include "queue.h"
 #include "solving.h"
+#include "stack.h"
 
-void deleteSomeElem(mashkin::list_t< std::string >* endList)
-{
-  if (endList->next->next->next)
-  {
-    mashkin::list_t< std::string >* var = endList->next->next->next;
-    delete endList->next->next;
-    delete endList->next;
-    endList->next = var;
-  }
-  else
-  {
-    delete endList->next->next;
-    delete endList->next;
-    endList->next = nullptr;
-  }
-}
-
-mashkin::list_t< std::string >* solve(mashkin::list_t< std::string >* endList, mashkin::list_t< std::string >* list)
+void solve(mashkin::Stack< int long long >& solution, mashkin::Queue< std::string >& que)
 {
   int long long fNum = 0;
   int long long sNum = 0;
-  try
+  fNum = solution.getTop();
+  solution.pop();
+  sNum = solution.getTop();
+  solution.pop();
+  std::string operation = que.getHead();
+  if (operation == "+")
   {
-    fNum = std::stoll(endList->data);
-    sNum = std::stoll(endList->next->data);
-    if (!endList->next->next)
+    solution.push(mashkin::sum(fNum, sNum));
+  }
+  else if (operation == "-")
+  {
+    solution.push(mashkin::sum(fNum, sNum * (-1)));
+  }
+  else if (operation == "*")
+  {
+    solution.push(mashkin::multiplicate(fNum, sNum));
+  }
+  else if (operation == "/")
+  {
+    solution.push(fNum / sNum);
+  }
+  else if (operation == "%")
+  {
+    solution.push(mashkin::divide(fNum, sNum));
+  }
+}
+
+int long long mashkin::solvePostfixNotation(Queue< std::string >& que)
+{
+  mashkin::Stack< int long long > solution;
+  while (que.isEmpty())
+  {
+    if (!que.getHead().find_first_of("()-+*%/"))
     {
-      return endList;
-    }
-    else if (endList->next->next->data == "+")
-    {
-      endList->data = std::to_string(mashkin::sum(fNum, sNum));
-    }
-    else if (endList->next->next->data == "-")
-    {
-      endList->data = std::to_string(mashkin::sum(fNum, sNum * (-1)));
-    }
-    else if (endList->next->next->data == "*")
-    {
-      endList->data = std::to_string(mashkin::multiplicate(fNum, sNum));
-    }
-    else if (endList->next->next->data == "/")
-    {
-      endList->data = std::to_string(fNum / sNum);
-    }
-    else if (endList->next->next->data == "%")
-    {
-      endList->data = std::to_string(mashkin::divide(fNum, sNum));
+      solve(solution, que);
+      que.dequeue();
     }
     else
     {
-      endList = endList->next;
-      return endList;
+      solution.push(std::stoll(que.getHead()));
+      que.dequeue();
     }
   }
-  catch (const std::exception& exception)
-  {
-    list->clear();
-    throw;
-  }
-  deleteSomeElem(endList);
-  endList = list;
-  return endList;
-}
-
-std::string mashkin::solvePostfixNotation(Queue< std::string >& que)
-{
-  list_t< std::string >* list = nullptr;
+  /*list_t< std::string >* list = nullptr;
   try
   {
     list = new list_t< std::string >{que.getHead(), nullptr};
@@ -124,6 +104,6 @@ std::string mashkin::solvePostfixNotation(Queue< std::string >& que)
     throw;
   }
   std::string result = list->data;
-  delete list;
-  return result;
+  delete list;*/
+  return solution.getTop();
 }

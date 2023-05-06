@@ -29,7 +29,7 @@ int main(int argc, char** argv)
   {
     mashkin::Stack< std::string > stc;
     mashkin::Queue< std::string > que;
-    mashkin::Stack< std::string > result;
+    mashkin::Stack< int long long > result;
     while (input)
     {
       std::string line;

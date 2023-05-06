@@ -5,6 +5,6 @@
 
 namespace mashkin
 {
-  void print(mashkin::Stack< std::string >& result);
+  void print(mashkin::Stack< int long long >& result);
 }
 #endif

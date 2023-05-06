@@ -5,6 +5,6 @@
 
 namespace mashkin
 {
-  std::string solvePostfixNotation(Queue< std::string >& que);
+  int long long solvePostfixNotation(Queue< std::string >& que);
 }
 #endif
