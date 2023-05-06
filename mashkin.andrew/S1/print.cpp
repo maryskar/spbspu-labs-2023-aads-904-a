@@ -1,6 +1,5 @@
 #include "print.h"
 #include <iostream>
-#include <string>
 #include "stack.h"
 
 namespace mashkin
