@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
   }
   while (!results.isEmpty())
   {
-    std::cout << results.drop() << ' ';
+    std::cout << results.drop() << '/n';
   }
   return 0;
 }
