@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
   if (results.isEmpty())
   {
     std::cout << "Empty file!\n";
-    return 1;
+    return 0;
   }
 
   std::cout << results.drop();
