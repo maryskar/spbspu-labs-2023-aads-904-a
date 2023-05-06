@@ -85,7 +85,7 @@ namespace mashkin
     {
       if (stc.getTop() == "(")
       {
-        throw std::logic_error("There is parentheses");
+        throw std::logic_error("There are parentheses");
       }
       que.enqueue(stc.getTop());
       stc.pop();
