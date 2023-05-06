@@ -411,13 +411,12 @@ namespace odintsov {
 
     void reverse()
     {
-      Node* lastPtr = nullptr;
-      const ConstIter end = cend();
-      for (ConstIter iter = begin(); iter != end; ++iter) {
-        iter.nodePtr->next = lastPtr;
-        lastPtr = iter.nodePtr;
+      Node* i = *head();
+      for (Node* nextPtr = nullptr; i; i = nextPtr) {
+        nextPtr = i->next;
+        i->next = i;
       }
-      *head() = lastPtr;
+      *head() = i;
     }
 
    private:
