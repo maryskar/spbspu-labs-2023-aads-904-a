@@ -249,7 +249,7 @@ namespace odintsov {
 
     Iter unsafeEraseAfter(ConstIter first, ConstIter last)
     {
-      while (first.nodePtr->next != last.nodePtr && first.nodePtr->next != nullptr) {
+      while (first.nodePtr->next != last.nodePtr && first.nodePtr->next) {
         unsafeEraseAfter(first);
       }
       return Iter(const_cast< Node* >(last.nodePtr));
@@ -320,7 +320,7 @@ namespace odintsov {
     {
       Node* next = const_cast< Node* >(pos.nodePtr)->next;
       const_cast< Node* >(pos.nodePtr)->next = *fl.head;
-      while (pos.nodePtr->next != nullptr) {
+      while (pos.nodePtr->next) {
         ++pos;
       }
       const_cast< Node* >(pos.nodePtr)->next = next;
@@ -340,7 +340,7 @@ namespace odintsov {
     {
       Node* next = const_cast< Node* >(pos.nodePtr)->next;
       const_cast< Node* >(pos.nodePtr)->next = *fl.head();
-      while (pos.nodePtr->next != nullptr) {
+      while (pos.nodePtr->next) {
         ++pos;
       }
       const_cast< Node* >(pos.nodePtr)->next = next;
@@ -357,7 +357,7 @@ namespace odintsov {
     template< class UnaryPredicate >
     void removeIf(UnaryPredicate check)
     {
-      for (ConstIter iter = cbeforeBegin(); iter.nodePtr->next != nullptr;) {
+      for (ConstIter iter = cbeforeBegin(); iter.nodePtr->next;) {
         if (check(iter.nodePtr->next->val)) {
           eraseAfter(iter);
         } else {
@@ -376,14 +376,14 @@ namespace odintsov {
     {
       const size_t s = size();
       for (size_t w = 1; w < s; w *= 2) {
-        for (Iter i = beforeBegin(); i.nodePtr->next != nullptr;) {
+        for (Iter i = beforeBegin(); i.nodePtr->next;) {
           Iter split = std::next(i, w);
-          if (split == end() || split.nodePtr->next == nullptr) {
+          if (split == end() || !split.nodePtr->next) {
             break;
           }
           Node* otherSide = split.nodePtr->next;
           Iter end = split;
-          for (size_t subW = w; subW != 0 && end.nodePtr->next != nullptr; --subW) {
+          for (size_t subW = w; subW != 0 && end.nodePtr->next; --subW) {
             ++end;
           }
           Node* endPtr = end.nodePtr->next;
