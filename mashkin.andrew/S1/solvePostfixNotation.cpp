@@ -9,9 +9,9 @@ void solve(mashkin::Stack< int long long >& solution, mashkin::Queue< std::strin
 {
   int long long fNum = 0;
   int long long sNum = 0;
-  fNum = solution.getTop();
-  solution.pop();
   sNum = solution.getTop();
+  solution.pop();
+  fNum = solution.getTop();
   solution.pop();
   std::string operation = que.getHead();
   if (operation == "+")
