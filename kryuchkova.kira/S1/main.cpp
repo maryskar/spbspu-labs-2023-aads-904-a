@@ -18,8 +18,8 @@ int main(int argc, char *argv[])
   }
 
   std::string str;
-  long long res;
   std::ifstream file;
+  kryuchkova::Stack< long long > results;
 
   if (argc == 2)
   {
@@ -42,15 +42,17 @@ int main(int argc, char *argv[])
     {
       kryuchkova::Queue< kryuchkova::ExpressionMember > inf = kryuchkova::InfixExp(str);
       kryuchkova::Queue< kryuchkova::ExpressionMember > post = kryuchkova::GetPostfixExp(inf);
-      res = kryuchkova::getResult(post);
-      std::cout << res << '\n';
-      return 0;
+      results.push(kryuchkova::getResult(post));
     }
     catch (const std::exception &e)
     {
       std::cerr << e.what() << '\n';
       return 1;
     }
+  }
+  while (!results.isEmpty())
+  {
+    std::cout << results.drop() << ' ';
   }
   return 0;
 }

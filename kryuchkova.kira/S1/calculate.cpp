@@ -69,6 +69,11 @@ namespace kryuchkova
 
   long long calcEucDiv(long long lhs, long long rhs)
   {
-    return lhs % rhs;
+    long long res = lhs % rhs;
+    if (lhs * rhs < 0)
+    {
+      res += rhs;
+    }
+    return res;
   }
 }
