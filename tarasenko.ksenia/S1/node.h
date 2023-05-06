@@ -1,5 +1,6 @@
 #ifndef NODE_H
 #define NODE_H
+#include <memory>
 namespace tarasenko
 {
   namespace details
@@ -7,7 +8,7 @@ namespace tarasenko
     template< typename T >
     struct NodeOfList
     {
-      NodeOfList(T& data, NodeOfList< T >* next) :
+      NodeOfList(const T& data, NodeOfList< T >* next):
         data(data),
         next(next)
       {}
@@ -17,27 +18,27 @@ namespace tarasenko
     };
 
     template< typename T >
-    bool isEmpty(NodeOfList< T >* list)
+    bool isEmpty(NodeOfList< T >* node)
     {
-      return list == nullptr;
+      return node == nullptr;
     }
 
     template< typename T >
-    void pushFront(NodeOfList< T >** plist, T& d)
+    void pushFront(NodeOfList< T >** pnode, const T& d)
     {
-      *plist = new NodeOfList< T >(d, *plist);
+      *pnode = new NodeOfList< T >(d, *pnode);
     }
 
     template< typename T >
-    void pushBack(NodeOfList< T >** plist, T& data)
+    void pushBack(NodeOfList< T >** pnode, const T& data)
     {
-      if (*plist == nullptr)
+      if (*pnode == nullptr)
       {
-        *plist = new NodeOfList< T >(data, nullptr);
+        *pnode = new NodeOfList< T >(data, nullptr);
       }
       else
       {
-        NodeOfList< T >* current = *plist;
+        NodeOfList< T >* current = *pnode;
 
         while (current->next != nullptr)
         {
@@ -48,29 +49,56 @@ namespace tarasenko
     }
 
     template< typename T >
-    T getFront(NodeOfList< T >* list)
+    T getFront(NodeOfList< T >* node)
     {
-      T res = list->data;
+      T res = node->data;
       return res;
     }
 
     template< typename T >
-    void popFront(NodeOfList< T >** plist)
+    void popFront(NodeOfList< T >** pnode)
     {
-      NodeOfList< T >* p = *plist;
-      *plist = p->next;
+      NodeOfList< T >* p = *pnode;
+      *pnode = p->next;
       delete p;
     }
 
     template< typename T >
-    void clear(NodeOfList< T >** plist)
+    void clear(NodeOfList< T >** pnode)
     {
-      while (*plist)
+      while (*pnode)
       {
-        details::popFront(plist);
+        details::popFront(pnode);
       }
-      *plist = nullptr;
+      *pnode = nullptr;
     }
-  };
+
+    template< typename T >
+    void copy(NodeOfList< T >* first, NodeOfList< T >** result)
+    {
+      details::NodeOfList< T >* current = first;
+      while (current)
+      {
+        details::pushBack(result, current->data);
+        current = current->next;
+      }
+    }
+
+    template< typename T >
+    NodeOfList< T >* newCopy(NodeOfList< T >* other)
+    {
+      NodeOfList< T >* new_node = nullptr;
+      try
+      {
+        copy(other, std::addressof(new_node));
+      }
+      catch (...)
+      {
+        clear(std::addressof(new_node));
+        throw;
+      }
+      return new_node;
+    }
+  }
 }
 #endif

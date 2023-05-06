@@ -1,7 +1,9 @@
 #ifndef STACK_H
 #define STACK_H
 #include <stdexcept>
-#include "node.h"
+#include <utility>
+#include <memory>
+#include "forward_list.h"
 namespace tarasenko
 {
   template< typename T >
@@ -9,83 +11,70 @@ namespace tarasenko
   {
   public:
    Stack():
-     top(nullptr)
+     top_()
    {}
    Stack(const Stack< T >& s):
-     top(nullptr)
-   {
-     details::NodeOfList< T >* copy = s.top;
-     while (copy)
-     {
-       push(copy->data);
-       copy = copy->next;
-     }
-   }
+     top_(s.top_)
+   {}
    Stack(Stack< T >&& s):
-     top(s.top)
+     top_(std::move(s.top_))
+   {}
+   Stack< T >& operator=(const Stack< T >& other)
    {
-     s.top = nullptr;
-   }
-   Stack< T >& operator=(const Stack< T >& s)
-   {
-     details::clear(&top);
-     details::NodeOfList< T >* temp = s.top;
-     while (temp)
+     if (this != std::addressof(other))
      {
-       push(temp->data);
-       temp = temp->next;
+       top_ = other.top_;
      }
      return *this;
    }
-   Stack< T >& operator=(Stack< T >&& s)
+   Stack< T >& operator=(Stack< T >&& other)
    {
-     details::clear(&top);
-     top = s.top;
-     s.top = nullptr;
+     if (this != std::addressof(other))
+     {
+       top_ = std::move(other.top_);
+     }
      return *this;
    }
    ~Stack()
-   {
-     details::clear(&top);
-   }
-   void push(T& rhs);
+   {}
+   void push(const T& rhs);
    T getTopElem() const;
    void pop();
    bool isEmpty() const;
   private:
-   details::NodeOfList< T >* top;
+   details::ForwardList< T > top_;
   };
 
   template< typename T >
   bool Stack< T >::isEmpty() const
   {
-    return details::isEmpty(top);
+    return top_.isEmpty();
   }
 
   template< typename T >
-  void Stack< T >::push(T& rhs)
+  void Stack< T >::push(const T& rhs)
   {
-    details::pushFront(&top, rhs);
+    top_.pushFront(rhs);
   }
 
   template< typename T >
   T Stack< T >::getTopElem() const
   {
-    if (details::isEmpty(top))
+    if (top_.isEmpty())
     {
-      throw std::underflow_error("Underflow!");
+      throw std::logic_error("It's empty!");
     }
-    return details::getFront(top);
+    return top_.getFront();
   }
 
   template< typename T >
   void Stack< T >::pop()
   {
-    if (details::isEmpty(top))
+    if (top_.isEmpty())
     {
-      throw std::underflow_error("Underflow!");
+      throw std::logic_error("It's empty!");
     }
-    details::popFront(&top);
+    top_.popFront();
   }
-};
+}
 #endif

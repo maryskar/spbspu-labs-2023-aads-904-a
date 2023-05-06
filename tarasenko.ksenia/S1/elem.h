@@ -12,14 +12,14 @@ namespace tarasenko
   class Elem
   {
   public:
-   Elem(long long digit);
-   Elem(MathSymbols symbols);
-   bool isDigit() const;
+   explicit Elem(long long digit);
+   explicit Elem(MathSymbols symbols);
+   bool isNumber() const;
    long long getOperand() const;
    MathSymbols getOperation() const;
   private:
-   Types union_elem;
-   bool is_int;
+   Types union_elem_;
+   bool is_number_;
   };
 }
 #endif

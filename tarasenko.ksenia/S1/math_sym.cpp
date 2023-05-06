@@ -1,7 +1,7 @@
 #include "math_sym.h"
 #include <stdexcept>
 
-tarasenko::MathSymbols::MathSymbols(char ms) :
+tarasenko::MathSymbols::MathSymbols(char ms):
   value_(ms)
 {
   if (ms == '(')
@@ -31,7 +31,13 @@ char tarasenko::MathSymbols::getValue() const
   return value_;
 }
 
-bool tarasenko::MathSymbols::operator<=(const MathSymbols& rhs) const
+bool tarasenko::MathSymbols::operator>=(const MathSymbols& rhs) const
 {
-  return priority_ <= rhs.priority_;
+  return !(priority_ < rhs.priority_);
 }
+
+bool tarasenko::MathSymbols::operator<(const MathSymbols& rhs) const
+{
+  return priority_ < rhs.priority_;
+}
+

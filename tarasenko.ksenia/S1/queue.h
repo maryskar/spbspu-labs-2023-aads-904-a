@@ -1,7 +1,10 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 #include <stdexcept>
+#include <utility>
+#include <memory>
 #include "node.h"
+#include "forward_list.h"
 namespace tarasenko
 {
   template< typename T>
@@ -9,83 +12,72 @@ namespace tarasenko
   {
   public:
    Queue():
-     head(nullptr)
+     head_()
    {}
    Queue(const Queue< T >& q):
-     head(nullptr)
-   {
-     details::NodeOfList< T >* copy = q.head;
-     while (copy)
-     {
-       push(copy->data);
-       copy = copy->next;
-     }
-   }
+     head_(q.head_)
+   {}
    Queue(Queue< T >&& q):
-     head(q.head)
+     head_(std::move(q.head_))
+   {}
+   Queue< T >& operator=(const Queue< T >& other)
    {
-     q.head = nullptr;
-   }
-   Queue< T >& operator=(const Queue< T >& q)
-   {
-     details::clear(&head);
-     details::NodeOfList< T >* temp = q.head;
-     while (temp)
+     if (this != std::addressof(other))
      {
-       push(temp->data);
-       temp = temp->next;
+       head_ = other.head_;
      }
      return *this;
    }
-   Queue< T >& operator=(Queue< T >&& q)
+   Queue< T >& operator=(Queue< T >&& other)
    {
-     details::clear(&head);
-     head = q.head;
-     q.head = nullptr;
+     if (this != std::addressof(other))
+     {
+       head_ = std::move(other.head_);
+     }
      return *this;
    }
    ~Queue()
    {
-     details::clear(&head);
+     head_.clear();
    }
-   void push(T& rhs);
+   void push(const T& rhs);
    T getHeadElem() const;
    void popFront();
    bool isEmpty() const;
   private:
-   details::NodeOfList< T >* head;
+   details::ForwardList< T > head_;
   };
 
   template< typename T >
   bool Queue< T >::isEmpty() const
   {
-    return details::isEmpty(head);
+    return head_.isEmpty();
   }
 
   template< typename T >
-  void Queue< T >::push(T& rhs)
+  void Queue< T >::push(const T& rhs)
   {
-    details::pushBack(&head, rhs);
+    head_.pushBack(rhs);
   }
 
   template< typename T >
   T Queue< T >::getHeadElem() const
   {
-    if (details::isEmpty(head))
+    if (head_.isEmpty())
     {
-      throw std::underflow_error("Underflow!");
+      throw std::logic_error("It's empty!");
     }
-    return details::getFront(head);
+    return head_.getFront();
   }
 
   template< typename T >
   void Queue< T >::popFront()
   {
-    if (details::isEmpty(head))
+    if (head_.isEmpty())
     {
-      throw std::underflow_error("Underflow!");
+      throw std::logic_error("It's empty!");
     }
-    details::popFront(&head);
+    head_.popFront();
   }
 }
 #endif
