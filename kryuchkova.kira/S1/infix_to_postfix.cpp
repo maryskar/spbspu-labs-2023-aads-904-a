@@ -49,15 +49,13 @@ namespace kryuchkova
         else
         {
           ExpressionMember temp = stack.drop();
-          if (cmpPriority(temp.getOperation(), data.getOperation()))
+          if (cmpPriority(temp.getOperation(), data.getOperation()) && !temp.isParenthesis())
           {
             stack.push(temp);
-            stack.push(data);
           }
           else
           {
-            ExpressionMember temp = stack.drop();
-            while (!cmpPriority(temp.getOperation(), data.getOperation()))
+            while (!cmpPriority(temp.getOperation(), data.getOperation()) && !temp.isParenthesis())
             {
               post.push(temp);
               if (stack.isEmpty())
@@ -66,8 +64,9 @@ namespace kryuchkova
               }
               temp = stack.drop();
             }
-            stack.push(data);
+            stack.push(temp);
           }
+          stack.push(data);
         }
       }
     }

@@ -78,7 +78,7 @@ namespace kryuchkova
   {
     if (lhs == operation_t::SUBTRACTION || lhs == operation_t::ADDITION)
     {
-      return !(rhs == operation_t::ADDITION || rhs == operation_t::SUBTRACTION);
+      return rhs == operation_t::MULTIPLICATION || rhs == operation_t::DIVISION || rhs == operation_t::EUCLIDEAN_DIVISION;
     }
     return false;
   }

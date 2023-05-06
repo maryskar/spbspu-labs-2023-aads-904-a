@@ -1,6 +1,5 @@
 #include "infix_exp.h"
 #include <string>
-#include <iostream>
 
 namespace kryuchkova
 {
@@ -59,11 +58,6 @@ namespace kryuchkova
       }
       else
       {
-        // j = i;
-        // while (str[i] != ' ')
-        // {
-        //   i++;
-        // }
         long temp = std::stoll(str.substr(i), std::addressof(j));
         j += i;
         i = j;
