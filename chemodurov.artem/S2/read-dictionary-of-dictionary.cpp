@@ -42,9 +42,9 @@ namespace chemodurov
   }
 }
 
-chemodurov::Dictionary< std::string, dic_t, std::less< > > chemodurov::readDictionaryOfDictionary(std::istream & in)
+chemodurov::Dictionary< std::string, dic_t > chemodurov::readDictionaryOfDictionary(std::istream & in)
 {
-  Dictionary< std::string, dic_t, std::less< > > res;
+  Dictionary< std::string, dic_t > res;
   while (in)
   {
     std::string line;
