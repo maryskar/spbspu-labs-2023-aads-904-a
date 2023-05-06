@@ -22,14 +22,16 @@ namespace dimkashelk
     TwoThreeTree():
       fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
       root_(nullptr),
-      compare_(Compare())
+      compare_(Compare()),
+      size_(0)
     {
       fakeNode_->first = nullptr;
     }
     TwoThreeTree(const two_three_tree_type &tree):
       fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
       root_(nullptr),
-      compare_(Compare())
+      compare_(Compare()),
+      size_(0)
     {
       fakeNode_->first = nullptr;
       copy(tree);
@@ -37,7 +39,8 @@ namespace dimkashelk
     TwoThreeTree(two_three_tree_type &&tree):
       fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
       root_(tree.root_),
-      compare_(Compare())
+      compare_(Compare()),
+      size_(tree.size_)
     {
       fakeNode_->first = root_;
       root_->parent = fakeNode_;
@@ -62,6 +65,7 @@ namespace dimkashelk
       clear();
       root_ = tree.root_;
       tree.root_ = nullptr;
+      size_ = tree.size_;
       return *this;
     }
     ~TwoThreeTree()
@@ -97,16 +101,22 @@ namespace dimkashelk
     {
       return root_ == nullptr;
     }
+    size_t size() const
+    {
+      return size_;
+    }
     void clear() noexcept
     {
       free(root_);
       delete root_;
       root_ = nullptr;
+      size_ = 0;
     }
     iterator insert_after(const_iterator pos, const Key &k, const Value &v)
     {
       root_ = insert(pos.node_, k, v);
       pos++;
+      size_++;
       return iterator(pos.node_);
     }
     template< class InputIt >
@@ -117,21 +127,27 @@ namespace dimkashelk
         root_ = insert(pos.node_, (*first).first, (*first).second);
         pos++;
       }
+      size_++;
       return iterator(pos.node_);
     }
     template< class ... ArgsKey, class ... ArgsValue >
     iterator emplace_after(const_iterator pos, ArgsKey &&...argsKey, ArgsValue &&...argsValue)
     {
-      return insert_after(pos, std::forward< Key >(Key(argsKey...)), std::forward< Value >(Value(argsValue...)));
+      Key key = Key(argsKey...);
+      Value value = Value(argsValue...);
+      size_++;
+      return insert_after(pos, std::forward< Key >(key), std::forward< Value >(value));
     }
     void insert(const Key &k, const Value &v)
     {
       root_ = insert(root_, k, v);
+      size_++;
     }
     iterator erase_after(const_iterator pos)
     {
       root_ = remove(pos.node_, pos.value_.first);
       pos++;
+      size_--;
       return iterator(pos.node_);
     }
     iterator erase_after(const_iterator first, const_iterator last)
@@ -140,11 +156,13 @@ namespace dimkashelk
       {
         erase_after(first);
       }
+      size_--;
       return iterator(last.node_);
     }
     void push_front(const Key &key, const Value &value)
     {
       root_ = insert(key, value);
+      size_++;
     }
     Value &get(const Key &k)
     {
@@ -166,6 +184,7 @@ namespace dimkashelk
     void emplace_front(ArgsKey &&...argsKey, ArgsValue &&...argsValue)
     {
       push_front(std::forward< Key >(argsKey...), std::forward< Value >(argsValue...));
+      size_++;
     }
     bool contains(const Key &k) const
     {
@@ -176,6 +195,7 @@ namespace dimkashelk
     node_type *fakeNode_;
     node_type *root_;
     Compare compare_;
+    size_t size_;
     node_type *insert(node_type *p, const Key &k, const Value &v) {
       if (!p)
       {
