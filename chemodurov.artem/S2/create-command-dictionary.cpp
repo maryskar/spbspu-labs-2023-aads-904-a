@@ -77,4 +77,14 @@ namespace chemodurov
     res.insert(it_fst->second.begin(), it_fst->second.end());
     data.insert({name_res, res});
   }
+
+  Dictionary< std::string, command_t > createCommandDictionary()
+  {
+    Dictionary< std::string, command_t > res;
+    res.insert({"print", printCommand});
+    res.insert({"complement", complementCommand});
+    res.insert({"intersect", intersectCommand});
+    res.insert({"union", unionCommand});
+    return res;
+  }
 }
