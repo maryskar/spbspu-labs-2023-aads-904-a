@@ -11,7 +11,6 @@ namespace mashkin
     void clear();
   };
 }
-#endif
 
 template< typename T >
 void mashkin::list_t< T >::clear()
@@ -24,3 +23,4 @@ void mashkin::list_t< T >::clear()
     current = next;
   }
 }
+#endif
