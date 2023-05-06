@@ -349,7 +349,6 @@ namespace odintsov {
 
     void remove(const T& val)
     {
-      const ConstIter end = cend();
       for (ConstIter iter = cbeforeBegin(); iter.nodePtr->next != nullptr;) {
         if (iter.nodePtr->next->val == val) {
           eraseAfter(iter);
@@ -362,7 +361,6 @@ namespace odintsov {
     template< class UnaryPredicate >
     void removeIf(UnaryPredicate check)
     {
-      const ConstIter end = cend();
       for (ConstIter iter = cbeforeBegin(); iter.nodePtr->next != nullptr;) {
         if (check(iter.nodePtr->next->val)) {
           eraseAfter(iter);
