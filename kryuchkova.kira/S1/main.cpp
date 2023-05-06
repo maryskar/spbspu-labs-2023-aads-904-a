@@ -38,16 +38,19 @@ int main(int argc, char *argv[])
     {
       continue;
     }
-    try
+    else
     {
-      kryuchkova::Queue< kryuchkova::ExpressionMember > inf = kryuchkova::InfixExp(str);
-      kryuchkova::Queue< kryuchkova::ExpressionMember > post = kryuchkova::GetPostfixExp(inf);
-      results.push(kryuchkova::getResult(post));
-    }
-    catch (const std::exception &e)
-    {
-      std::cerr << e.what() << '\n';
-      return 1;
+      try
+      {
+        kryuchkova::Queue< kryuchkova::ExpressionMember > inf = kryuchkova::InfixExp(str);
+        kryuchkova::Queue< kryuchkova::ExpressionMember > post = kryuchkova::GetPostfixExp(inf);
+        results.push(kryuchkova::getResult(post));
+      }
+      catch (const std::exception &e)
+      {
+        std::cerr << e.what() << '\n';
+        return 1;
+      }
     }
   }
   if (results.isEmpty())
