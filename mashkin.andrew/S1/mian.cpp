@@ -27,7 +27,7 @@ int main(int argc, char** argv)
   std::istream& input = argc == 1 ? std::cin : inpFile;
   try
   {
-    mashkin::Stack< std::string > stc;
+
     mashkin::Queue< std::string > que;
     mashkin::Stack< int long long > result;
     while (input)
@@ -39,7 +39,7 @@ int main(int argc, char** argv)
         continue;
       }
       line += " ";
-      mashkin::convertToPostNot(line, stc, que);
+      mashkin::convertToPostNot(line, que);
       result.push(solvePostfixNotation(que));
     }
     mashkin::print(result);

@@ -7,6 +7,6 @@
 
 namespace mashkin
 {
-  void convertToPostNot(const std::string& line, Stack< std::string >& stc, Queue< std::string >& que);
+  void convertToPostNot(const std::string& line, Queue< std::string >& que);
 }
 #endif
