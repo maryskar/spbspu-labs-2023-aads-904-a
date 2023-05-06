@@ -33,11 +33,7 @@ namespace mashkin
     {
       if (symb == ' ')
       {
-        if (isdigit(op[0]))
-        {
-          que.enqueue(op);
-        }
-        else
+        if (!op.find_first_of("()-+*/%"))
         {
           short int NumOfOp = returnNumbOfOper(op);
           if (NumOfOp == 0)
@@ -73,6 +69,10 @@ namespace mashkin
               stc.push(op);
             }
           }
+        }
+        else
+        {
+          que.enqueue(op);
         }
         op = "";
       }
