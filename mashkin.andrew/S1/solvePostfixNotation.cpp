@@ -52,58 +52,5 @@ int long long mashkin::solvePostfixNotation(Queue< std::string >& que)
       que.dequeue();
     }
   }
-  /*list_t< std::string >* list = nullptr;
-  try
-  {
-    list = new list_t< std::string >{que.getHead(), nullptr};
-    que.dequeue();
-    list_t< std::string >* endList = list;
-    if (que.isEmpty())
-    {
-      endList->next = new list_t< std::string >{que.getHead(), nullptr};
-      que.dequeue();
-      if (que.isEmpty())
-      {
-        endList->next->next = new list_t< std::string >{que.getHead(), nullptr};
-        que.dequeue();
-      }
-      else
-      {
-        throw std::logic_error("Not enough arguments");
-      }
-    }
-    else
-    {
-      std::string result = list->data;
-      delete list;
-      return result;
-    }
-    if (que.isEmpty())
-    {
-      endList = list->next->next;
-      while (que.isEmpty())
-      {
-        endList->next = new list_t< std::string >{que.getHead(), nullptr};
-        que.dequeue();
-        endList = endList->next;
-      }
-      endList = list;
-      while (list->next)
-      {
-        endList = solve(endList, list);
-      }
-    }
-    else
-    {
-      endList = solve(endList, list);
-    }
-  }
-  catch (const std::bad_alloc& ex)
-  {
-    list->clear();
-    throw;
-  }
-  std::string result = list->data;
-  delete list;*/
   return solution.getTop();
 }
