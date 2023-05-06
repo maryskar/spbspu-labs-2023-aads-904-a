@@ -333,18 +333,12 @@ namespace odintsov {
       if (this == std::addressof(fl)) {
         return;
       }
-      unsafeSpliceAfter(pos, fl);
+      unsafeSpliceAfter(pos, std::move(fl));
     }
 
     void unsafeSpliceAfter(ConstIter pos, ForwardList&& fl)
     {
-      Node* next = const_cast< Node* >(pos.nodePtr)->next;
-      const_cast< Node* >(pos.nodePtr)->next = *fl.head();
-      while (pos.nodePtr->next) {
-        ++pos;
-      }
-      const_cast< Node* >(pos.nodePtr)->next = next;
-      *fl.head() = nullptr;
+      unsafeSpliceAfter(pos, fl);
     }
 
     void remove(const T& val)
