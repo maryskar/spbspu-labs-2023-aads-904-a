@@ -2,7 +2,7 @@
 
 namespace chemodurov
 {
-  void print(std::istream & in, std::ostream & out, Dictionary< std::string, dic_t > & data)
+  void printCommand(std::istream & in, std::ostream & out, Dictionary< std::string, dic_t > & data)
   {
     std::string name = "";
     in >> name;
@@ -47,13 +47,34 @@ namespace chemodurov
     data.insert({name_res, res});
   }
 
-  void complement(std::istream & in, std::ostream & out, Dictionary< std::string, dic_t > & data)
+  void complementCommand(std::istream & in, std::ostream & out, Dictionary< std::string, dic_t > & data)
   {
     complementOrIntersect(in, out, data, std::not_equal_to< >{});
   }
 
-  void intersect(std::istream & in, std::ostream & out, Dictionary< std::string, dic_t > & data)
+  void intersectCommand(std::istream & in, std::ostream & out, Dictionary< std::string, dic_t > & data)
   {
     complementOrIntersect(in, out, data, std::equal_to< >{});
+  }
+
+  void unionCommand(std::istream & in, std::ostream & out, Dictionary< std::string, dic_t > & data)
+  {
+    std::string name_res = "";
+    in >> name_res;
+    dic_t res;
+    std::string name_fst = "";
+    in >> name_fst;
+    std::string name_snd = "";
+    in >> name_snd;
+    Dictionary< std::string, dic_t >::iterator it_fst = data.find(name_fst);
+    Dictionary< std::string, dic_t >::iterator it_snd = data.find(name_snd);
+    if (!in || it_fst == data.end() || it_snd == data.end())
+    {
+      throw std::invalid_argument("Invalid command");
+    }
+    ++it_snd;
+    res = (++it_snd)->second;
+    res.insert(it_fst->second.begin(), it_fst->second.end());
+    data.insert({name_res, res});
   }
 }
