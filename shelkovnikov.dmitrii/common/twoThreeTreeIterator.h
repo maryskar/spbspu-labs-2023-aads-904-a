@@ -7,7 +7,7 @@ namespace dimkashelk
   template< typename Key, typename Value, typename Compare >
   class TwoThreeTree;
   template< typename Key, typename Value, typename Compare >
-  class TwoThreeTreeIterator: public std::iterator< std::forward_iterator_tag, Value >
+  class TwoThreeTreeIterator: public std::iterator< std::forward_iterator_tag, std::pair< Key, Value > >
   {
   friend class TwoThreeTree< Key, Value, Compare >;
   using node_type = details::NodeOfTwoThreeTree< Key, Value, Compare >;
@@ -31,11 +31,11 @@ namespace dimkashelk
     }
     reference operator*()
     {
-      return value_;
+      return node_->data[ind_];
     }
     pointer operator->()
     {
-      return std::addressof(value_);
+      return std::addressof(node_->data[ind_]);
     }
     bool operator==(const TwoThreeTreeIterator &other) const
     {
@@ -46,12 +46,12 @@ namespace dimkashelk
       return !(node_ == other.node_);
     }
   private:
-    value_type value_;
+    size_t ind_;
     node_type *node_;
     node_type *prev_;
     tree_type *parent_;
     explicit TwoThreeTreeIterator(node_type *node, tree_type *parent):
-      value_{(node == nullptr)? Key() : node->key[0], (node == nullptr)? Value() : node->value[0]},
+      ind_(0),
       node_(node),
       prev_(nullptr),
       parent_(parent)
@@ -72,16 +72,16 @@ namespace dimkashelk
           prev_ = new_node;
           if (prev_ == node_->first)
           {
-            set(0);
+            ind_ = 0;
           }
           else if (prev_ == node_->second && node_->size == 2)
           {
-            set(1);
+            ind_ = 1;
           }
         }
         else
         {
-          if (value_.first == node_->key[1])
+          if (node_->data[ind_].second == node_->key[1])
           {
             prev_ = goUp(node_);
             node_ = prev_->parent;
@@ -91,16 +91,16 @@ namespace dimkashelk
             }
             if (node_->first == prev_)
             {
-              set(0);
+              ind_ = 0;
             }
             else
             {
-              set(1);
+              ind_ = 1;
             }
           }
           else
           {
-            set(1);
+            ind_ = 1;
           }
         }
       }
@@ -115,7 +115,7 @@ namespace dimkashelk
           node_ = goDown(node_->third);
         }
         prev_ = node_->parent;
-        set(0);
+        ind_ = 0;
       }
     }
     node_type *goUp(node_type *node)
@@ -139,11 +139,6 @@ namespace dimkashelk
         node = node->first;
       }
       return node;
-    }
-    void set(unsigned ind)
-    {
-      value_.first = node_->key[ind];
-      value_.second = node_->value[ind];
     }
   };
 }
