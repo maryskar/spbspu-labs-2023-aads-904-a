@@ -30,11 +30,16 @@ namespace potapova
       end_ptr = end_ptr->next_node_ptr = new Node(elem);
     }
 
-    T drop()
+    T& front()
     {
-      T prev_begin_data = begin_ptr->data;
-      pop();
-      return prev_begin_data;
+      return begin_ptr->data;
+    }
+
+    void pop()
+    {
+      Node* prev_begin_ptr = begin_ptr;
+      begin_ptr = begin_ptr->next_node_ptr;
+      delete prev_begin_ptr;
     }
   private:
     struct Node
@@ -49,13 +54,6 @@ namespace potapova
     };
     Node* begin_ptr;
     Node* end_ptr;
-      
-    void pop()
-    {
-      Node* prev_begin_ptr = begin_ptr;
-      begin_ptr = begin_ptr->next_node_ptr;
-      delete prev_begin_ptr;
-    }
   };
 }
 
