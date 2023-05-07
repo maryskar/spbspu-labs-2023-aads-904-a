@@ -46,6 +46,13 @@ namespace potapova
       Node* prev_node_ptr;
     };
     Node* end_ptr;
+
+    void pop()
+    {
+      Node* prev_end_ptr = end_ptr;
+      end_ptr = end_ptr->prev_node_ptr;
+      delete prev_end_ptr;
+    }
   };
 }
 
