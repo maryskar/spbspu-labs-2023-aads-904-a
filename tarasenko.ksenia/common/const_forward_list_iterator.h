@@ -4,7 +4,7 @@
 #include <memory>
 #include <cassert>
 #include <iterator>
-#include "forward_list.h"
+#include "node.h"
 
 namespace tarasenko
 {
