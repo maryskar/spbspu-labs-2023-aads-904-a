@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
   }
   if (results.isEmpty())
   {
+    std::cout << '\n';
     return 0;
   }
 
