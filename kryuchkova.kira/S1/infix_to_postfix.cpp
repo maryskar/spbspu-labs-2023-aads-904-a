@@ -50,7 +50,7 @@ namespace kryuchkova
             post.push(temp);
             temp = stack.drop();
           }
-          stack.push(temp);
+          post.push(temp);
         }
         stack.push(data);
       }

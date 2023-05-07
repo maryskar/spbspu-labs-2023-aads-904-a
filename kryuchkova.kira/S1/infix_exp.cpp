@@ -58,7 +58,7 @@ namespace kryuchkova
       }
       else
       {
-        long temp = std::stoll(str.substr(i), std::addressof(j));
+        long long temp = std::stoll(str.substr(i), std::addressof(j));
         j += i;
         i = j;
         ExpressionMember data(temp);
