@@ -28,6 +28,11 @@ namespace tarasenko
       std::string name_dict1 = "";
       std::string name_dict2 = "";
       input >> name_new_dict >> name_dict1 >> name_dict2;
+      if (!dict_of_dict.find(name_dict1) || !dict_of_dict.find(name_dict2))
+      {
+        output << "<INVALID COMMAND>" << "\n";
+        return;
+      }
       auto dict1 = dict_of_dict.get(name_dict1);
       auto dict2 = dict_of_dict.get(name_dict2);
       if (name_of_command == "complement")
@@ -68,7 +73,7 @@ namespace tarasenko
     }
     catch (const std::invalid_argument& e)
     {
-      return output << e.what();
+      return output << "<INVALID COMMAND>";
     }
     if (given_dict.isEmpty())
     {

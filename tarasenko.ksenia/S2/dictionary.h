@@ -51,17 +51,16 @@ namespace tarasenko
 
    friend std::ostream& operator<<(std::ostream& output, const dict_type& dict)
    {
-     if (dict.isEmpty())
+     if (!dict.isEmpty())
      {
-       return output << "<EMPTY>";
-     }
-     auto iter = dict.list.cbegin();
-     output << iter->first << " " << iter->second;
-     ++iter;
-     while (iter != dict.list.cend())
-     {
-       output << " " << iter->first << " " << iter->second;
+       auto iter = dict.list.cbegin();
+       output << iter->first << " " << iter->second;
        ++iter;
+       while (iter != dict.list.cend())
+       {
+         output << " " << iter->first << " " << iter->second;
+         ++iter;
+       }
      }
      return output;
    }
@@ -69,7 +68,7 @@ namespace tarasenko
    friend dict_type operator-(const dict_type& left, const dict_type& right)
    {
      dict_type result = left;
-     if (!right.isEmpty())
+     if (!left.isEmpty() && !right.isEmpty())
      {
        auto iter_left = left.list.cbegin();
        for (; iter_left != left.list.cend(); iter_left++)
@@ -85,8 +84,12 @@ namespace tarasenko
 
    friend dict_type operator&&(const dict_type& left, const dict_type& right)
    {
-     dict_type result;
-     if (!left.isEmpty() && !right.isEmpty())
+     if (right.isEmpty())
+     {
+       return right;
+     }
+     dict_type result = left;
+     if (!left.isEmpty())
      {
        auto iter_left = left.list.cbegin();
        for (; iter_left != left.list.cend(); iter_left++)
@@ -102,6 +105,10 @@ namespace tarasenko
 
    friend dict_type operator||(const dict_type& left, const dict_type& right)
    {
+     if (left.isEmpty())
+     {
+       return right;
+     }
      dict_type result = left;
      if (!right.isEmpty())
      {
@@ -132,6 +139,10 @@ namespace tarasenko
   void Dictionary< Key, Value, Compare >::push(const Key& k, const Value& v)
   {
     std::pair< Key, Value > data(k, v);
+    if (find(k))
+    {
+      remove(k);
+    }
     auto current = list.begin();
     while (current != list.end() && compare(*current, data))
     {
