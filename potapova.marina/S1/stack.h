@@ -28,11 +28,16 @@ namespace potapova
       end_ptr = new_end_ptr;
     }
 
-    T drop()
+    T& back()
     {
-      T prev_end_data = end_ptr->data;
-      pop();
-      return prev_end_data;
+      return end_ptr->data;
+    }
+
+    void pop()
+    {
+      Node* prev_end_ptr = end_ptr;
+      end_ptr = end_ptr->prev_node_ptr;
+      delete prev_end_ptr;
     }
   private:
     struct Node
@@ -46,13 +51,6 @@ namespace potapova
       Node* prev_node_ptr;
     };
     Node* end_ptr;
-
-    void pop()
-    {
-      Node* prev_end_ptr = end_ptr;
-      end_ptr = end_ptr->prev_node_ptr;
-      delete prev_end_ptr;
-    }
   };
 }
 
