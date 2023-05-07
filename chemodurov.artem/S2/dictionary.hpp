@@ -423,7 +423,7 @@ namespace chemodurov
     {
       return end();
     }
-    return moved_it->first == x ? it : end();
+    return moved_it->first == x ? it : last();
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -436,7 +436,7 @@ namespace chemodurov
     {
       return end();
     }
-    return moved_cit->first == key ? cit : cend();
+    return moved_cit->first == key ? cit : clast();
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -449,7 +449,7 @@ namespace chemodurov
     {
       return end();
     }
-    return moved_it->first == key ? it : end();
+    return moved_it->first == key ? it : last();
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -463,7 +463,7 @@ namespace chemodurov
     {
       return end();
     }
-    return moved_cit->first == x ? cit : cend();
+    return moved_cit->first == x ? cit : clast();
   }
 
   template< typename Key, typename Value, typename Compare >
