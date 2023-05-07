@@ -88,7 +88,7 @@ namespace tarasenko
      {
        return right;
      }
-     dict_type result = left;
+     dict_type result;
      if (!left.isEmpty())
      {
        auto iter_left = left.list.cbegin();
