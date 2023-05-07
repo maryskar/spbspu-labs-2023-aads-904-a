@@ -421,7 +421,7 @@ namespace chemodurov
     ++moved_it;
     if (moved_it == end())
     {
-      return end();
+      return last();
     }
     return moved_it->first == x ? it : last();
   }
@@ -434,7 +434,7 @@ namespace chemodurov
     ++moved_cit;
     if (moved_cit == end())
     {
-      return end();
+      return clast();
     }
     return moved_cit->first == key ? cit : clast();
   }
@@ -447,7 +447,7 @@ namespace chemodurov
     ++moved_it;
     if (moved_it == end())
     {
-      return end();
+      return last();
     }
     return moved_it->first == key ? it : last();
   }
@@ -461,7 +461,7 @@ namespace chemodurov
     ++moved_cit;
     if (moved_cit == end())
     {
-      return end();
+      return clast();
     }
     return moved_cit->first == x ? cit : clast();
   }

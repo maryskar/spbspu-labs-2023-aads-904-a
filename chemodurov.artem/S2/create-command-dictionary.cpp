@@ -4,7 +4,7 @@ namespace chemodurov
 {
   void printCommand(std::istream & in, std::ostream & out, Dictionary< std::string, dic_t > & data)
   {
-    std::string name = "";
+    std::string name;
     in >> name;
     Dictionary< std::string, dic_t >::iterator it = data.find(name);
     if (!in || ++it == data.end())
@@ -22,12 +22,12 @@ namespace chemodurov
   template< typename P >
   void complementOrIntersect(std::istream & in, std::ostream &, Dictionary< std::string, dic_t > & data, P p)
   {
-    std::string name_res = "";
+    std::string name_res;
     in >> name_res;
     dic_t res;
-    std::string name_fst = "";
+    std::string name_fst;
     in >> name_fst;
-    std::string name_snd = "";
+    std::string name_snd;
     in >> name_snd;
     Dictionary< std::string, dic_t >::iterator it_fst = data.find(name_fst);
     Dictionary< std::string, dic_t >::iterator it_snd = data.find(name_snd);
@@ -59,12 +59,12 @@ namespace chemodurov
 
   void unionCommand(std::istream & in, std::ostream & out, Dictionary< std::string, dic_t > & data)
   {
-    std::string name_res = "";
+    std::string name_res;
     in >> name_res;
     dic_t res;
-    std::string name_fst = "";
+    std::string name_fst;
     in >> name_fst;
-    std::string name_snd = "";
+    std::string name_snd;
     in >> name_snd;
     Dictionary< std::string, dic_t >::iterator it_fst = data.find(name_fst);
     Dictionary< std::string, dic_t >::iterator it_snd = data.find(name_snd);

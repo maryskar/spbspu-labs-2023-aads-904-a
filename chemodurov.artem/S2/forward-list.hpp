@@ -82,7 +82,7 @@ namespace chemodurov
   template< typename T >
   ForwardList< T >::ForwardList():
    fake_(static_cast< detail::List< T > * >(::operator new (sizeof(detail::List< T >)))),
-   last_(fake_)
+   last_(iterator(nullptr))
   {
     fake_.node_->next = fake_.node_;
   }
@@ -96,10 +96,14 @@ namespace chemodurov
   template< typename T >
   void ForwardList< T >::clear() noexcept
   {
+    if (empty())
+    {
+      return;
+    }
     last_.node_->next = nullptr;
     detail::deleteList(fake_.node_->next);
     fake_.node_->next = fake_.node_;
-    last_ = fake_;
+    last_.node_ = nullptr;
   }
 
   template< typename T >
@@ -121,8 +125,15 @@ namespace chemodurov
     fake_.node_->next = rhs.fake_.node_->next;
     last_ = rhs.last_;
     rhs.fake_.node_->next = rhs.fake_.node_;
-    rhs.last_ = rhs.fake_;
-    last_.node_->next = fake_.node_;
+    rhs.last_.node_ = nullptr;
+    if (!empty())
+    {
+      last_.node_->next = fake_.node_;
+    }
+    else
+    {
+      last_.node_ = nullptr;
+    }
   }
 
   template< typename T >
@@ -234,7 +245,15 @@ namespace chemodurov
   typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, const_reference value)
   {
     pos.node_->next = new detail::List< T >{value, pos.node_->next};
-    moveLastTo(++pos);
+    ++pos;
+    if (!last_.node_)
+    {
+      last_.node_ = pos.node_;
+    }
+    else
+    {
+      moveLastTo(pos);
+    }
     return iterator(pos.node_);
   }
 
@@ -242,7 +261,15 @@ namespace chemodurov
   typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, T && value)
   {
     pos.node_->next = new detail::List< T >{std::move(value), pos.node_->next};
-    moveLastTo(++pos);
+    ++pos;
+    if (!last_.node_)
+    {
+      last_.node_ = pos.node_;
+    }
+    else
+    {
+      moveLastTo(pos);
+    }
     return iterator(pos.node_);
   }
 
@@ -278,7 +305,15 @@ namespace chemodurov
   typename ForwardList< T >::iterator ForwardList< T >::emplace_after(const_iterator pos, Args && ... args)
   {
     pos.node_->next = new detail::List< T >{T(std::forward< Args >(args)...), pos.node_->next};
-    moveLastTo(++pos);
+    ++pos;
+    if (!last_.node_)
+    {
+      last_.node_ = pos.node_;
+    }
+    else
+    {
+      moveLastTo(pos);
+    }
     return iterator(pos.node_);
   }
 
@@ -296,10 +331,13 @@ namespace chemodurov
     detail::List< T > * temp = pos.node_->next->next;
     delete pos.node_->next;
     pos.node_->next = temp;
-    moveLastTo(pos);
     if (empty())
     {
-      last_ = fake_;
+      last_.node_ = nullptr;
+    }
+    else
+    {
+      moveLastTo(pos);
     }
     return iterator(temp);
   }
