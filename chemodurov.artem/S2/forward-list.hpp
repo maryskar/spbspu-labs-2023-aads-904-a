@@ -100,8 +100,12 @@ namespace chemodurov
     {
       return;
     }
-    last_.node_->next = nullptr;
-    detail::deleteList(fake_.node_->next);
+    while (fake_.node_->next != fake_.node_)
+    {
+      detail::List< T > * temp = fake_.node_->next;
+      fake_.node_->next = temp->next;
+      delete temp;
+    }
     fake_.node_->next = fake_.node_;
     last_.node_ = nullptr;
   }
@@ -329,15 +333,15 @@ namespace chemodurov
       erase_after(fake_);
     }
     detail::List< T > * temp = pos.node_->next->next;
+    if (pos.node_->next == last_.node_)
+    {
+      last_ = iterator(pos.node_);
+    }
     delete pos.node_->next;
     pos.node_->next = temp;
     if (empty())
     {
       last_.node_ = nullptr;
-    }
-    else
-    {
-      moveLastTo(pos);
     }
     return iterator(temp);
   }
