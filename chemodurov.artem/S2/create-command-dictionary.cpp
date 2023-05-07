@@ -38,10 +38,10 @@ namespace chemodurov
     res = it_fst->second;
     for (auto i = res.begin(); i != res.end(); ++i)
     {
-      if (p(it_snd->second.find(i->first), it_snd->second.end()))
+      if (p(it_snd->second.find(i->first), it_snd->second.last()))
       {
         res.erase(i->first);
-        i = res.begin();
+        i = res.before_begin();
       }
     }
     data.insert({name_res, res});

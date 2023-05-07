@@ -297,6 +297,10 @@ namespace chemodurov
     delete pos.node_->next;
     pos.node_->next = temp;
     moveLastTo(pos);
+    if (empty())
+    {
+      last_ = fake_;
+    }
     return iterator(temp);
   }
 

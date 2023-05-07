@@ -611,7 +611,7 @@ namespace chemodurov
   typename Dictionary< Key, Value, Compare >::size_type Dictionary< Key, Value, Compare >::erase(const key_type & key)
   {
     iterator it = find(key);
-    if (it == end())
+    if (it == last())
     {
       return 0ull;
     }
