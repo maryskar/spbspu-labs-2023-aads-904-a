@@ -38,7 +38,7 @@ namespace odintsov {
       pairs_(il),
       kvComp_{comp}
     {
-      pairs_.sort();
+      pairs_.sort(kvComp_);
     }
 
     explicit Dictionary(const Compare& comp):
