@@ -49,23 +49,12 @@ namespace kryuchkova
         else
         {
           ExpressionMember temp = stack.drop();
-          if (cmpPriority(temp.getOperation(), data.getOperation()) && !temp.isParenthesis())
+          while (!stack.isEmpty() && !cmpPriority(temp.getOperation(), data.getOperation()) && !temp.isParenthesis())
           {
-            stack.push(temp);
+            post.push(temp);
+            temp = stack.drop();
           }
-          else
-          {
-            while (!cmpPriority(temp.getOperation(), data.getOperation()) && !temp.isParenthesis())
-            {
-              post.push(temp);
-              if (stack.isEmpty())
-              {
-                break;
-              }
-              temp = stack.drop();
-            }
-            stack.push(temp);
-          }
+          stack.push(temp);
           stack.push(data);
         }
       }
