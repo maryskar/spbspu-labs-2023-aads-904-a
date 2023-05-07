@@ -50,7 +50,14 @@ namespace kryuchkova
             post.push(temp);
             temp = stack.drop();
           }
-          post.push(temp);
+          if (!temp.isParenthesis())
+          {
+            post.push(temp);
+          }
+          else
+          {
+            stack.push(temp);
+          }
         }
         stack.push(data);
       }
