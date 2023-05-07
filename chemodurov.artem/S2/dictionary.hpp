@@ -1,6 +1,7 @@
 #ifndef S2_DICTIONARY_HPP
 #define S2_DICTIONARY_HPP
 #include <cmath>
+#include <iostream>
 #include "forward-list.hpp"
 
 namespace chemodurov

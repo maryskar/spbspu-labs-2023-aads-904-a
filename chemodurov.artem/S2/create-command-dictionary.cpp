@@ -57,7 +57,7 @@ namespace chemodurov
     complementOrIntersect(in, out, data, std::equal_to< >{});
   }
 
-  void unionCommand(std::istream & in, std::ostream & out, Dictionary< std::string, dic_t > & data)
+  void unionCommand(std::istream & in, std::ostream &, Dictionary< std::string, dic_t > & data)
   {
     std::string name_res;
     in >> name_res;
