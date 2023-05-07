@@ -29,7 +29,7 @@ namespace kryuchkova
             throw std::invalid_argument("Check your expression");
           }
           ExpressionMember temp = stack.drop();
-          while (!stack.isEmpty() && !temp.isParenthesis())
+          while (!temp.isParenthesis())
           {
             post.push(temp);
             if (stack.isEmpty())
@@ -45,7 +45,7 @@ namespace kryuchkova
         if (!stack.isEmpty())
         {
           ExpressionMember temp = stack.drop();
-          while (!stack.isEmpty() && cmpPriority(temp.getOperation(), data.getOperation()) && !temp.isParenthesis())
+          while (!stack.isEmpty() && !cmpPriority(temp.getOperation(), data.getOperation()))
           {
             post.push(temp);
             temp = stack.drop();
