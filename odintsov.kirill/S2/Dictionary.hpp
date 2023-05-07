@@ -45,22 +45,8 @@ namespace odintsov {
       kvComp_{comp}
     {}
 
-    Dictionary& operator=(const Dictionary& d)
-    {
-      if (this == std::addressof(d)) {
-        return *this;
-      }
-      pairs_ = d.pairs_;
-      kvComp_ = d.kvComp_;
-      return *this;
-    }
-
-    Dictionary& operator=(Dictionary&& d)
-    {
-      pairs_ = std::move(d.pairs_);
-      kvComp_ = std::move(d.kvComp_);
-      return *this;
-    }
+    Dictionary& operator=(const Dictionary& d) = default;
+    Dictionary& operator=(Dictionary&& d) = default;
 
     Dictionary& operator=(std::initializer_list< kvPair > il)
     {
