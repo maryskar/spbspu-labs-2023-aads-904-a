@@ -39,6 +39,9 @@ namespace chemodurov
     iterator end() noexcept;
     const_iterator end() const noexcept;
     const_iterator cend() const noexcept;
+    iterator last() noexcept;
+    const_iterator last() const noexcept;
+    const_iterator clast() const noexcept;
     bool empty() const noexcept;
     void clear() noexcept;
     iterator insert_after(const_iterator pos, const_reference value);
@@ -221,7 +224,7 @@ namespace chemodurov
   template< typename T >
   ForwardList< T > & ForwardList< T >::operator=(std::initializer_list< T > init)
   {
-    ForwardList< T > temp(init);
+    this_t temp(init);
     clear();
     swap(temp);
     return *this;
@@ -481,6 +484,24 @@ namespace chemodurov
     {
       last_ = iterator(it.node_);
     }
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::last() noexcept
+  {
+    return last_;
+  }
+
+  template< typename T >
+  typename ForwardList< T >::const_iterator ForwardList< T >::last() const noexcept
+  {
+    return clast();
+  }
+
+  template< typename T >
+  typename ForwardList< T >::const_iterator ForwardList< T >::clast() const noexcept
+  {
+    return const_iterator(last_);
   }
 
   template< typename T >

@@ -45,6 +45,9 @@ namespace chemodurov
     iterator end() noexcept;
     const_iterator end() const noexcept;
     const_iterator cend() const noexcept;
+    iterator last() noexcept;
+    const_iterator last() const noexcept;
+    const_iterator clast() const noexcept;
     bool empty() const noexcept;
     size_type size() const noexcept;
     void clear() noexcept;
@@ -416,6 +419,10 @@ namespace chemodurov
     iterator it = lower_bound(x);
     iterator moved_it = it;
     ++moved_it;
+    if (moved_it == end())
+    {
+      return end();
+    }
     return moved_it->first == x ? it : end();
   }
 
@@ -425,6 +432,10 @@ namespace chemodurov
     const_iterator cit = lower_bound(key);
     const_iterator moved_cit = cit;
     ++moved_cit;
+    if (moved_cit == end())
+    {
+      return end();
+    }
     return moved_cit->first == key ? cit : cend();
   }
 
@@ -434,6 +445,10 @@ namespace chemodurov
     iterator it = lower_bound(key);
     iterator moved_it = it;
     ++moved_it;
+    if (moved_it == end())
+    {
+      return end();
+    }
     return moved_it->first == key ? it : end();
   }
 
@@ -444,6 +459,10 @@ namespace chemodurov
     const_iterator cit = lower_bound(x);
     const_iterator moved_cit = cit;
     ++moved_cit;
+    if (moved_cit == end())
+    {
+      return end();
+    }
     return moved_cit->first == x ? cit : cend();
   }
 
@@ -630,6 +649,24 @@ namespace chemodurov
   bool Dictionary< Key, Value, Compare >::isEqualTo(const this_t & other) const noexcept
   {
     return size_ == other.size_ && data_ == other.data_;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::last() noexcept
+  {
+    return data_.last();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::last() const noexcept
+  {
+    return clast();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::clast() const noexcept
+  {
+    return data_.clast();
   }
 
   template< typename Key, typename Value, typename Compare >

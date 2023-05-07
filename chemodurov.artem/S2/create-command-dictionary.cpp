@@ -7,11 +7,11 @@ namespace chemodurov
     std::string name = "";
     in >> name;
     Dictionary< std::string, dic_t >::iterator it = data.find(name);
-    if (!in || it == data.end())
+    if (!in || ++it == data.end())
     {
       throw std::invalid_argument("Invalid command");
     }
-    if ((++it)->second.empty())
+    if (it->second.empty())
     {
       out << "<EMPTY>\n";
       return;
@@ -31,17 +31,17 @@ namespace chemodurov
     in >> name_snd;
     Dictionary< std::string, dic_t >::iterator it_fst = data.find(name_fst);
     Dictionary< std::string, dic_t >::iterator it_snd = data.find(name_snd);
-    if (!in || it_fst == data.end() || it_snd == data.end())
+    if (!in || ++it_fst == data.end() || ++it_snd == data.end())
     {
       throw std::invalid_argument("Invalid command");
     }
-    ++it_snd;
-    res = (++it_fst)->second;
+    res = it_fst->second;
     for (auto i = res.begin(); i != res.end(); ++i)
     {
       if (p(it_snd->second.find(i->first), it_snd->second.end()))
       {
         res.erase(i->first);
+        i = res.begin();
       }
     }
     data.insert({name_res, res});
@@ -68,12 +68,11 @@ namespace chemodurov
     in >> name_snd;
     Dictionary< std::string, dic_t >::iterator it_fst = data.find(name_fst);
     Dictionary< std::string, dic_t >::iterator it_snd = data.find(name_snd);
-    if (!in || it_fst == data.end() || it_snd == data.end())
+    if (!in || ++it_fst == data.end() || ++it_snd == data.end())
     {
       throw std::invalid_argument("Invalid command");
     }
-    ++it_snd;
-    res = (++it_snd)->second;
+    res = it_snd->second;
     res.insert(it_fst->second.begin(), it_fst->second.end());
     data.insert({name_res, res});
   }

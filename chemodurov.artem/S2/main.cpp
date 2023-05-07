@@ -2,7 +2,7 @@
 #include <fstream>
 #include <algorithm>
 #include "read-dictionary-of-dictionary.hpp"
-#include "create-command-dictionary.hpp"
+#include "read-and-do-command.hpp"
 
 int main(int argc, char ** argv)
 {
@@ -19,5 +19,18 @@ int main(int argc, char ** argv)
   }
   auto dictionaries = chemodurov::readDictionaryOfDictionary(input);
   auto command_dic = chemodurov::createCommandDictionary();
+  do
+  {
+    try
+    {
+      chemodurov::readAndDoCommand(std::cin, std::cout, command_dic, dictionaries);
+    }
+    catch (const std::invalid_argument & e)
+    {
+      std::cerr << "<INVALID COMMAND>\n";
+      continue;
+    }
+  }
+  while (std::cin);
   return 0;
 }
