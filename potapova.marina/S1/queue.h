@@ -7,9 +7,7 @@ namespace potapova
   class Queue
   {
   public:
-    Queue():
-      begin_ptr(nullptr),
-      end_ptr(nullptr)
+    Queue(): begin_ptr(nullptr), end_ptr(nullptr)
     {
 
     }
@@ -41,9 +39,7 @@ namespace potapova
   private:
     struct Node
     {
-      Node(const T& data):
-        data(data),
-        next_node_ptr(nullptr)
+      Node(const T& data): data(data), next_node_ptr(nullptr)
       {
 
       }
