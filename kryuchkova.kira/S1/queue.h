@@ -12,8 +12,8 @@ namespace kryuchkova
       Queue();
       Queue(const Queue< T > &queue);
       Queue(Queue< T > &&rhs);
-      //Queue< T > & operator=(const Queue< T > &);
-      //Queue< T > & operator=(Queue< T > &&);
+      Queue< T > & operator=(const Queue< T > &);
+      Queue< T > & operator=(Queue< T > &&);
       ~Queue();
       void push(T rhs);
       T drop();
@@ -22,6 +22,7 @@ namespace kryuchkova
       Node< T > *head_;
       Node< T > *tail_;
       void deleteQueue() noexcept;
+      void copyQueue(const Queue< T > &);
   };
 
   template < typename T >
@@ -32,26 +33,17 @@ namespace kryuchkova
 
   template < typename T >
   Queue< T >::Queue(const Queue< T > &queue):
-    head_(nullptr),
-    tail_(nullptr)
+    Queue()
   {
-    Node< T > *first = queue.head_;
-    while (first)
-    {
-      push(first->data_);
-      first = first->next_;
-    }
+    copyQueue();
   }
 
   template < typename T >
   void Queue< T >::deleteQueue() noexcept
   {
-    while (head_)
-    {
-      Node< T > * temp = head_->next_;
-      delete head_;
-      head_ = temp;
-    }
+    deleteNode(head_);
+    head_ = nullptr;
+    tail_ = nullptr;
   }
 
   template < typename T >
@@ -67,8 +59,6 @@ namespace kryuchkova
   Queue< T >::~Queue()
   {
     deleteQueue();
-    head_ = nullptr;
-    tail_ = nullptr;
   }
 
   template < typename T >
@@ -105,6 +95,51 @@ namespace kryuchkova
   bool Queue< T >::isEmpty()
   {
     return head_ == nullptr;
+  }
+
+  template< typename T >
+  void Queue< T >::copyQueue(const Queue< T > & queue)
+  {
+    std::pair< Node< T > *, Node< T > * > temp = copyNode(queue.head_);
+    head_ = temp.first;
+    tail_ = temp.second;
+  }
+
+  template< typename T >
+  Queue< T > &Queue< T >::operator=(const Queue< T > &queue)
+  {
+    if (this == std::addressof(queue))
+    {
+      return *this;
+    }
+    Node< T > * temp = head_;
+    try
+    {
+      copyQueue(queue);
+    }
+    catch (...)
+    {
+      deleteQueue();
+      head_ = temp;
+      throw;
+    }
+    deleteNode(temp);
+    return *this;
+  }
+
+  template< typename T >
+  Queue< T > &Queue< T >::operator=(Queue< T > && queue)
+  {
+    if (this == std::addressof(queue))
+    {
+      return *this;
+    }
+    deleteQueue();
+    head_ = queue.head_;
+    tail_ = queue.last_;
+    queue.head_ = nullptr;
+    queue.tail_ = nullptr;
+    return *this;
   }
 }
 
