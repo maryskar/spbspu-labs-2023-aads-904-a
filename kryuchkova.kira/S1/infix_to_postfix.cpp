@@ -45,7 +45,7 @@ namespace kryuchkova
         if (!stack.isEmpty())
         {
           ExpressionMember temp = stack.drop();
-          while (!stack.isEmpty() && !cmpPriority(temp.getOperation(), data.getOperation()))
+          while (!stack.isEmpty() && !cmpPriority(temp.getOperation(), data.getOperation()) && !temp.isParenthesis())
           {
             post.push(temp);
             temp = stack.drop();
