@@ -42,21 +42,17 @@ namespace kryuchkova
       }
       else
       {
-        if (stack.isEmpty())
-        {
-          stack.push(data);
-        }
-        else
+        if (!stack.isEmpty())
         {
           ExpressionMember temp = stack.drop();
-          while (!stack.isEmpty() && !cmpPriority(temp.getOperation(), data.getOperation()) && !temp.isParenthesis())
+          while (!stack.isEmpty() && cmpPriority(temp.getOperation(), data.getOperation()) && !temp.isParenthesis())
           {
             post.push(temp);
             temp = stack.drop();
           }
           stack.push(temp);
-          stack.push(data);
         }
+        stack.push(data);
       }
     }
     while (!stack.isEmpty())
