@@ -10,7 +10,8 @@ namespace mashkin
   {
   public:
     ForwardList();
-    ForwardList(const ForwardList< T >& rhs);
+    ForwardList(const ForwardList< T >& lhs);
+    ForwardList(ForwardList< T >&& rhs);
     Iterator< T > begin() noexcept;
     Iterator< T > end() noexcept;
     void push_front(const T& value);
@@ -32,9 +33,9 @@ mashkin::ForwardList< T >::ForwardList():
 }
 
 template< class T >
-mashkin::ForwardList< T >::ForwardList(const ForwardList< T >& rhs):
-  head(rhs.head),
-  tail(rhs.tail)
+mashkin::ForwardList< T >::ForwardList(const ForwardList< T >& lhs):
+  head(lhs.head),
+  tail(lhs.tail)
 {
 }
 
