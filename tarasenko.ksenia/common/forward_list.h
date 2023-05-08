@@ -14,19 +14,28 @@ namespace tarasenko
   {
   public:
    ForwardList():
+     null_(static_cast< details::NodeOfList< T >* >(::operator new (sizeof(details::NodeOfList< T >)))),
      first_(nullptr)
-   {}
+   {
+     null_->next = nullptr;
+   }
    ForwardList(const ForwardList< T >& other):
+     null_(static_cast< details::NodeOfList< T >* >(::operator new (sizeof(details::NodeOfList< T >)))),
      first_(details::newCopy(other.first_))
-   {}
+   {
+     null_->next = first_;
+   }
    ForwardList(ForwardList< T >&& other):
+     null_(other.null_),
      first_(other.first_)
    {
+     other.null_ = nullptr;
      other.first_ = nullptr;
    }
    ~ForwardList()
    {
      details::clear(std::addressof(first_));
+     ::operator delete(null_);
    }
    ForwardList< T >& operator=(const ForwardList< T >& other)
    {
@@ -35,6 +44,7 @@ namespace tarasenko
        details::NodeOfList< T >* new_node = newCopy(other.first_);
        details::clear(std::addressof(first_));
        first_ = new_node;
+       null_->next = first_;
      }
      return *this;
    }
@@ -44,7 +54,9 @@ namespace tarasenko
      {
        details::clear(std::addressof(first_));
        first_ = other.first_;
+       null_->next = first_;
        other.first_ = nullptr;
+       other.null_ = nullptr;
      }
      return *this;
    }
@@ -60,19 +72,27 @@ namespace tarasenko
    void removeNode(details::NodeOfList< T >* pnode);
 
    friend class ForwardListIterator< T >;
-   ForwardListIterator< T > begin()
+   ForwardListIterator< T > beforeBegin() const
    {
-     return ForwardListIterator< T >(this);
+     return ForwardListIterator< T >(null_);
    }
-   ForwardListIterator< T > end()
+   ForwardListIterator< T > begin() const
+   {
+     return ForwardListIterator< T >(first_);
+   }
+   ForwardListIterator< T > end() const
    {
      return ForwardListIterator< T >();
    }
 
    friend class ConstForwardListIterator< T >;
+   ConstForwardListIterator< T > cbeforeBegin() const
+   {
+     return ConstForwardListIterator< T >(null_);
+   }
    ConstForwardListIterator< T > cbegin() const
    {
-     return ConstForwardListIterator< T >(this);
+     return ConstForwardListIterator< T >(first_);
    }
    ConstForwardListIterator< T > cend() const
    {
@@ -80,6 +100,7 @@ namespace tarasenko
    }
 
   private:
+   details::NodeOfList< T >* null_;
    details::NodeOfList< T >* first_;
   };
 
@@ -93,6 +114,7 @@ namespace tarasenko
   void ForwardList< T >::pushFront(const T& data)
   {
     details::pushFront(std::addressof(first_), data);
+    null_->next = first_;
   }
 
   template< typename T >
@@ -117,6 +139,7 @@ namespace tarasenko
   void ForwardList< T >::popFront()
   {
     details::popFront(std::addressof(first_));
+    null_->next = first_;
   }
 
   template< typename T >
@@ -124,9 +147,7 @@ namespace tarasenko
   {
     if (first_ == pnode)
     {
-      auto new_node = new details::NodeOfList< T >(data, nullptr);
-      new_node->next = first_;
-      first_ = new_node;
+      pushFront(data);
     }
     else
     {
@@ -148,7 +169,7 @@ namespace tarasenko
   {
     if (pnode == first_)
     {
-      details::popFront(std::addressof(first_));
+      popFront();
     }
     else
     {

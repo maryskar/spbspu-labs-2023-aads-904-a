@@ -20,8 +20,8 @@ namespace tarasenko
    ConstForwardListIterator():
      node(nullptr)
    {}
-   explicit ConstForwardListIterator(const ForwardList< T >* list):
-     node(list->first_)
+   explicit ConstForwardListIterator(details::NodeOfList< T >* node):
+     node(node)
    {}
    ConstForwardListIterator(const this_t&) = default;
    ~ConstForwardListIterator() = default;
