@@ -17,7 +17,7 @@ namespace tarasenko
   public:
    using this_t = ForwardListIterator< T >;
 
-   ForwardListIterator() :
+   ForwardListIterator():
      node(nullptr)
    {}
    explicit ForwardListIterator(ForwardList< T >* list):
@@ -33,6 +33,7 @@ namespace tarasenko
 
    T& operator*();
    T* operator->();
+
    T& operator*() const;
    T* operator->() const;
 
@@ -104,6 +105,5 @@ namespace tarasenko
     assert(node != nullptr);
     return std::addressof(node->data);
   }
-
 }
 #endif

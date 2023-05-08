@@ -53,6 +53,7 @@ namespace tarasenko
     node = node->next;
     return *this;
   }
+
   template< typename T >
   ConstForwardListIterator< T > ConstForwardListIterator< T >::operator++(int)
   {
@@ -61,23 +62,27 @@ namespace tarasenko
     ++(*this);
     return temp;
   }
+
   template< typename T >
   const T& ConstForwardListIterator< T >::operator*() const
   {
     assert(node != nullptr);
     return node->data;
   }
+
   template< typename T >
   const T* ConstForwardListIterator< T >::operator->() const
   {
     assert(node != nullptr);
     return std::addressof(node->data);
   }
+
   template< typename T >
   bool ConstForwardListIterator< T >::operator==(const this_t& other) const
   {
     return node == other.node;
   }
+
   template< typename T >
   bool ConstForwardListIterator< T >::operator!=(const this_t& other) const
   {
