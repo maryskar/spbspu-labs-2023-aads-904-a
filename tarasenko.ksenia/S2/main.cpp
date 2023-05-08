@@ -17,11 +17,6 @@ int main(int argc, char* argv[])
     std::cout << "File not found\n";
     return 1;
   }
-  if (!input.is_open())
-  {
-    std::cout << "File not found\n";
-    return 1;
-  }
   using dict_type = tarasenko::Dictionary< size_t, std::string, std::less<> >;
   tarasenko::Dictionary< std::string, dict_type, std::greater<> > dict_of_dict;
   while (input)

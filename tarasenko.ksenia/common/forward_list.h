@@ -147,7 +147,10 @@ namespace tarasenko
   {
     if (first_ == pnode)
     {
-      pushFront(data);
+      auto new_node = new details::NodeOfList< T >(data, nullptr);
+      new_node->next = first_;
+      first_ = new_node;
+      null_->next = first_;
     }
     else
     {
