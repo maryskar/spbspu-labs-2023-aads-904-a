@@ -2,10 +2,12 @@
 #define COMMAND_H
 #include <iostream>
 #include <string>
+#include "murmurhash2.h"
 struct Command
 {
-  enum class Commands
+  enum class CommandList
   {
+    invalid_command,
     add_dict,
     add_word,
     add_translation,
@@ -21,70 +23,83 @@ struct Command
     create_level_dict,
     merge_dicts
   };
-  Commands command;
-  Commands stringToCommand(const std::string &str);
 };
-Command::Commands Command::stringToCommand(const std::string &str)
+void executeCommand(Command::CommandList command, std::string parametersLine)
 {
-  if (str == "add_dict" || str == "ad")
+  if (command == Command::CommandList::add_word)
   {
-    return Commands::add_dict;
+    std::cout << parametersLine << " " << generateMurmurHash2(parametersLine, 0x5bd1e995, 24) << "\n";
   }
-  else if (str == "add_word" || str == "aw")
+}
+void commandFromString(const std::string &str)
+{
+  int intBegin = 0;
+  int intEnd = str.find(' ');
+  if (intEnd != -1)
   {
-    return Commands::add_word;
+    ///
   }
-  else if (str == "add_translation" || str == "at")
+  std::string commandStr = str.substr(intBegin, intEnd - intBegin);
+  std::string parametersLine = str.substr(intEnd - intBegin + 1);
+  if (commandStr == "add_dict" || commandStr == "ad")
   {
-    return Commands::add_translation;
+    executeCommand(Command::CommandList::add_dict, std::string());
   }
-  else if (str == "remove_word" || str == "rw")
+  else if (commandStr == "add_word" || commandStr == "aw")
   {
-    return Commands::remove_word;
+    executeCommand(Command::CommandList::add_word, parametersLine);
   }
-  else if (str == "remove_translation" || str == "rt")
+  else if (commandStr == "add_translation" || commandStr == "at")
   {
-    return Commands::remove_translation;
+    executeCommand(Command::CommandList::add_translation, std::string());
   }
-  else if (str == "search_word" || str == "w")
+  else if (commandStr == "remove_word" || commandStr == "rw")
   {
-    return Commands::search_word;
+    executeCommand(Command::CommandList::remove_word, std::string());
   }
-  else if (str == "show_all_words" || str == "words")
+  else if (commandStr == "remove_translation" || commandStr == "rt")
   {
-    return Commands::show_all_words;
+    executeCommand(Command::CommandList::remove_translation, std::string());
   }
-  else if (str == "count_words" || str == "cw")
+  else if (commandStr == "search_word" || commandStr == "w")
   {
-    return Commands::count_words;
+    executeCommand(Command::CommandList::search_word, std::string());
   }
-  else if (str == "count_translations" || str == "ct")
+  else if (commandStr == "show_all_words" || commandStr == "words")
   {
-    return Commands::count_translations;
+    executeCommand(Command::CommandList::show_all_words, std::string());
   }
-  else if (str == "export")
+  else if (commandStr == "count_words" || commandStr == "cw")
   {
-    return Commands::export_to_file;
+    executeCommand(Command::CommandList::count_words, std::string());
   }
-  else if (str == "help")
+  else if (commandStr == "count_translations" || commandStr == "ct")
   {
-    return Commands::help;
+    executeCommand(Command::CommandList::count_translations, std::string());
   }
-  else if (str == "add_missing_words" || str == "amw")
+  else if (commandStr == "export")
   {
-    return Commands::add_missing_words;
+    executeCommand(Command::CommandList::export_to_file, std::string());
   }
-  else if (str == "create_level_dict" || str == "cld")
+  else if (commandStr == "help")
   {
-    return Commands::create_level_dict;
+    executeCommand(Command::CommandList::help, std::string());
   }
-  else if (str == "merge_dicts" || str == "md")
+  else if (commandStr == "add_missing_words" || commandStr == "amw")
   {
-    return Commands::merge_dicts;
+    executeCommand(Command::CommandList::add_missing_words, std::string());
+  }
+  else if (commandStr == "create_level_dict" || commandStr == "cld")
+  {
+    executeCommand(Command::CommandList::create_level_dict, std::string());
+  }
+  else if (commandStr == "merge_dicts" || commandStr == "md")
+  {
+    executeCommand(Command::CommandList::merge_dicts, std::string());
   }
   else
   {
-    throw std::invalid_argument("Invalid Commands: " + str);
+    std::cout << "Invalid command: " + commandStr + "\n";
   }
 }
 #endif

@@ -1,10 +1,10 @@
 #include "murmurhash2.h"
-uint32_t generateMurmurHash2(const std::string *key, uint32_t m, int r)
+uint32_t generateMurmurHash2(const std::string &key, uint32_t m, int r)
 {
-  size_t len = key->length();
+  size_t len = key.length();
   uint32_t h = 0;
   //
-  const uint8_t *data = (const uint8_t *) key;
+  const uint8_t *data = reinterpret_cast<const uint8_t *>(key.data());
   //
   while (len >= 4)
   {

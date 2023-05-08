@@ -1,7 +1,13 @@
 #include <iostream>
-#include "murmurhash2.h"
+#include "commands.h"
 int main()
 {
-  std::string input = "Hello world";
-  std::cout << generateMurmurHash2(std::addressof(input), 0x5bd1e995, 24);
+  for (std::string line; std::getline(std::cin, line);)
+  {
+    if (line.empty())
+    {
+      continue;
+    }
+    commandFromString(line);
+  }
 }
