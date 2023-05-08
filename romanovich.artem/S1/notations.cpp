@@ -8,7 +8,7 @@ namespace romanovich
 {
   using exp_q = Queue< ExpPart >;
   using exp_s = Stack< ExpPart >;
-  bool doStackPopCondition(const ExpPart &q, const ExpPart &s)
+  bool checkStackPopCondition(const ExpPart &q, const ExpPart &s)
   {
     try
     {
@@ -181,7 +181,7 @@ namespace romanovich
         {
           if (!stack.isEmpty())
           {
-            if (doStackPopCondition(qEl, stack.get()))
+            if (checkStackPopCondition(qEl, stack.get()))
             {
               postfixQueue.push(stack.get());
               stack.pop();
