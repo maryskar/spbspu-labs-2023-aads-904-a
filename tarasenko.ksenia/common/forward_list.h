@@ -34,7 +34,7 @@ namespace tarasenko
    }
    ~ForwardList()
    {
-     details::clear(std::addressof(first_));
+     clear();
      ::operator delete(null_);
    }
    ForwardList< T >& operator=(const ForwardList< T >& other)
@@ -56,7 +56,6 @@ namespace tarasenko
        first_ = other.first_;
        null_->next = first_;
        other.first_ = nullptr;
-       other.null_ = nullptr;
      }
      return *this;
    }
@@ -147,10 +146,7 @@ namespace tarasenko
   {
     if (first_ == pnode)
     {
-      auto new_node = new details::NodeOfList< T >(data, nullptr);
-      new_node->next = first_;
-      first_ = new_node;
-      null_->next = first_;
+      pushFront(data);
     }
     else
     {

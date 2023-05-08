@@ -37,10 +37,7 @@ namespace tarasenko
      compare = other.compare;
      return *this;
    }
-   ~Dictionary()
-   {
-     list.clear();
-   }
+   ~Dictionary() = default;
 
    friend bool operator<(const dict_type& dict1, const dict_type& dict2)
    {
