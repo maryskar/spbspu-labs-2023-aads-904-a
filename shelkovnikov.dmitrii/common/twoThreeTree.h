@@ -13,7 +13,6 @@ namespace dimkashelk
   {
   using node_type = details::NodeOfTwoThreeTree< Key, Value, Compare >;
   using two_three_tree_type = TwoThreeTree< Key, Value, Compare >;
-  using value_type = std::pair< Key, Value >;
   using reference = std::pair< Key, Value >&;
   using const_reference = const std::pair< Key, Value >&;
   public:
