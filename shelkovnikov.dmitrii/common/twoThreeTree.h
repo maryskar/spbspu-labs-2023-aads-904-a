@@ -203,13 +203,13 @@ namespace dimkashelk
       }
       if (p->contains(k))
       {
-        if (p->key[0] == k)
+        if (p->data[0].first == k)
         {
-          p->value[0] = v;
+          p->data[0].second = v;
         }
-        else if (p->key[1] == k)
+        else if (p->data[1].first == k)
         {
-          p->value[1] = v;
+          p->data[1].second = v;
         }
         return split(p);
       }
@@ -217,11 +217,11 @@ namespace dimkashelk
       {
         p->insert(k, v);
       }
-      else if (compare_(k, p->key[0]) && k != p->key[0])
+      else if (compare_(k, p->data[0].first) && k != p->data[0].first)
       {
         insert(p->first, k, v);
       }
-      else if (((p->size == 1) || ((p->size == 2) && compare_(k, p->key[1]))) && k != p->key[1])
+      else if (((p->size == 1) || ((p->size == 2) && compare_(k, p->data[1].first))) && k != p->data[1].first)
       {
         insert(p->second, k, v);
       }
@@ -237,8 +237,8 @@ namespace dimkashelk
       {
         return item;
       }
-      auto *x = new node_type(item->key[0], item->value[0], item->first, item->second, nullptr, nullptr, item->parent);
-      auto *y = new node_type(item->key[2], item->value[2], item->third, item->fourth, nullptr, nullptr, item->parent);
+      auto *x = new node_type(item->data[0].first, item->data[0].second, item->first, item->second, nullptr, nullptr, item->parent);
+      auto *y = new node_type(item->data[2].first, item->data[2].second, item->third, item->fourth, nullptr, nullptr, item->parent);
       if (x->first)
       {
         x->first->parent = x;
@@ -257,7 +257,7 @@ namespace dimkashelk
       }
       if (item->parent)
       {
-        item->parent->insert(item->key[1], item->value[1]);
+        item->parent->insert(item->data[1].first, item->data[1].second);
         if (item->parent->first == item)
         {
           item->parent->first = nullptr;
@@ -296,7 +296,7 @@ namespace dimkashelk
       {
         x->parent = item;
         y->parent = item;
-        item->becomeNode2(item->key[1], item->value[1], x, y);
+        item->becomeNode2(item->data[1].first, item->data[1].second, x, y);
         return item;
       }
     }
@@ -310,11 +310,11 @@ namespace dimkashelk
       {
         return node;
       }
-      else if (compare_(k, node->key[0]))
+      else if (compare_(k, node->data[0].first))
       {
         return search(node->first, k);
       }
-      else if ((node->size == 2 && compare_(k, node->key[1])) || node->size == 1)
+      else if ((node->size == 2 && compare_(k, node->data[1].first)) || node->size == 1)
       {
         return search(node->second, k);
       }
@@ -351,7 +351,7 @@ namespace dimkashelk
     {
       for (auto iter = tree.begin(); iter != tree.end(); iter++)
       {
-        insert(*iter, iter.value_);
+        insert(iter.first, iter.second);
       }
       fakeNode_->first = root_;
       root_->parent = fakeNode_;
@@ -364,7 +364,7 @@ namespace dimkashelk
         return p;
       }
       node_type *min = nullptr;
-      if (item->key[0] == k)
+      if (item->data[0].first == k)
       {
         min = iterator::goDown(item->second);
       }
@@ -374,8 +374,8 @@ namespace dimkashelk
       }
       if (min)
       {
-        Key &z = (k == item->key[0]? item->key[0]: item->key[1]);
-        std::swap(z, min->key[0]);
+        std::pair< Key, Value > &z = (k == item->data[0].first? item->data[0]: item->data[1]);
+        std::swap(z, min->data[0]);
         item = min;
       }
       item->removeFromNode(k);
@@ -427,7 +427,7 @@ namespace dimkashelk
           parent->first = parent->second;
           parent->second = parent->third;
           parent->third = nullptr;
-          parent->first->insert(parent->key[0]);
+          parent->first->insert(parent->data[0].first, parent->data[0].second);
           parent->first->third = parent->first->second;
           parent->first->second = parent->first->first;
           if (node->first != nullptr)
@@ -442,13 +442,13 @@ namespace dimkashelk
           {
             parent->first->first->parent = parent->first;
           }
-          parent->removeFromNode(parent->key[0]);
+          parent->removeFromNode(parent->data[0].first);
           delete first;
         }
         else if (second == node)
         {
-          first->insert(parent->key[0]);
-          parent->removeFromNode(parent->key[0]);
+          first->insert(parent->data[0].first, parent->data[0].second);
+          parent->removeFromNode(parent->data[0].first);
           if (node->first != nullptr)
           {
             first->third = node->first;
@@ -467,9 +467,9 @@ namespace dimkashelk
         }
         else if (third == node)
         {
-          second->insert(parent->key[1]);
+          second->insert(parent->data[1].first, parent->data[1].second);
           parent->third = nullptr;
-          parent->removeFromNode(parent->key[1]);
+          parent->removeFromNode(parent->data[1].first);
           if (node->first != nullptr)
           {
             second->third = node->first;
@@ -494,11 +494,11 @@ namespace dimkashelk
             node->second = node->first;
             node->first = nullptr;
           }
-          node->insert(parent->key[1]);
+          node->insert(parent->data[1].first, parent->data[1].second);
           if (second->size == 2)
           {
-            parent->key[1] = second->key[1];
-            second->removeFromNode(second->key[1]);
+            parent->data[1] = second->data[1];
+            second->removeFromNode(second->data[1].first);
             node->first = second->third;
             second->third = nullptr;
             if (node->first != nullptr)
@@ -508,16 +508,16 @@ namespace dimkashelk
           }
           else if (first->size == 2)
           {
-            parent->key[1] = second->key[0];
+            parent->data[1] = second->data[0];
             node->first = second->second;
             second->second = second->first;
             if (node->first != nullptr)
             {
               node->first->parent = node;
             }
-            second->key[0] = parent->key[0];
-            parent->key[0] = first->key[1];
-            first->removeFromNode(first->key[1]);
+            second->data[0] = parent->data[0];
+            parent->data[0] = first->data[1];
+            first->removeFromNode(first->data[1].first);
             second->first = first->third;
             if (second->first != nullptr)
             {
@@ -535,9 +535,9 @@ namespace dimkashelk
               node->first = node->second;
               node->second = nullptr;
             }
-            second->insert(parent->key[1]);
-            parent->key[1] = third->key[0];
-            third->removeFromNode(third->key[0]);
+            second->insert(parent->data[1].first, parent->data[1].second);
+            parent->data[1] = third->data[0];
+            third->removeFromNode(third->data[0].first);
             second->second = third->first;
             if (second->second != nullptr)
             {
@@ -554,8 +554,8 @@ namespace dimkashelk
               node->second = node->first;
               node->first = nullptr;
             }
-            second->insert(parent->key[0]);
-            parent->key[0] = first->key[1];
+            second->insert(parent->data[0].first, parent->data[0].second);
+            parent->data[0] = first->data[1];
             first->removeFromNode(first->key[1]);
             second->first = first->third;
             if (second->first != nullptr)
@@ -572,11 +572,11 @@ namespace dimkashelk
             node->first = node->second;
             node->second = nullptr;
           }
-          first->insert(parent->key[0]);
+          first->insert(parent->data[0].first, parent->data[0].second);
           if (second->size == 2)
           {
-            parent->key[0] = second->key[0];
-            second->removeFromNode(second->key[0]);
+            parent->data[0] = second->data[0];
+            second->removeFromNode(second->data[0].first);
             first->second = second->first;
             if (first->second != nullptr)
             {
@@ -588,10 +588,10 @@ namespace dimkashelk
           }
           else if (third->size == 2)
           {
-            parent->key[0] = second->key[0];
-            second->key[0] = parent->key[1];
-            parent->key[1] = third->key[0];
-            third->removeFromNode(third->key[0]);
+            parent->data[0] = second->data[0];
+            second->data[0] = parent->data[1];
+            parent->data[1] = third->data[0];
+            third->removeFromNode(third->data[0].first);
             first->second = second->first;
             if (first->second != nullptr)
             {
@@ -611,11 +611,11 @@ namespace dimkashelk
       }
       else if (parent->size == 1)
       {
-        node->insert(parent->key[0]);
+        node->insert(parent->data[0].first, parent->data[0].second);
         if (first == node && second->size == 2)
         {
-          parent->key[0] = second->key[0];
-          second->removeFromNode(second->key[0]);
+          parent->data[0] = second->data[0];
+          second->removeFromNode(second->data[0].first);
           if (node->first == nullptr)
           {
             node->first = node->second;
@@ -631,8 +631,8 @@ namespace dimkashelk
         }
         else if (second == node && first->size == 2)
         {
-          parent->key[0] = first->key[1];
-          first->removeFromNode(first->key[1]);
+          parent->data[0] = first->data[1];
+          first->removeFromNode(first->data[1].first);
           if (node->second == nullptr)
           {
             node->second = node->first;
@@ -652,7 +652,7 @@ namespace dimkashelk
       node_type *parent = leaf->parent;
       if (parent->first == leaf)
       {
-        parent->second->insert(parent->key[0]);
+        parent->second->insert(parent->data[0].first, parent->data[0].second);
         parent->second->third = parent->second->second;
         parent->second->second = parent->second->first;
         if (leaf->first != nullptr)
@@ -667,13 +667,13 @@ namespace dimkashelk
         {
           parent->second->first->parent = parent->second;
         }
-        parent->removeFromNode(parent->key[0]);
+        parent->removeFromNode(parent->data[0].first);
         delete parent->first;
         parent->first = nullptr;
       }
       else if (parent->second == leaf)
       {
-        parent->first->insert(parent->key[0]);
+        parent->first->insert(parent->data[0].first, parent->data[0].second);
         if (leaf->first != nullptr)
         {
           parent->first->third = leaf->first;
@@ -686,7 +686,7 @@ namespace dimkashelk
         {
           parent->first->third->parent = parent->first;
         }
-        parent->removeFromNode(parent->key[0]);
+        parent->removeFromNode(parent->data[0].first, parent->data[0].second);
         delete parent->second;
         parent->second = nullptr;
       }
