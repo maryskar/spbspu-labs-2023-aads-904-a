@@ -5,6 +5,8 @@
 #include "murmurhash2.h"
 #include "dict.h"
 #include "../common/rstrings.h"
+//Todo:
+//Переписать входные данные как в T2
 struct Command
 {
   enum class CommandList
@@ -25,11 +27,19 @@ struct Command
     merge_dicts
   };
 };
-void executeCommand(Command::CommandList command, const std::string &argument)
+void addWord(HashTable &hashTable, const std::string &word)
+{
+  uint32_t hashValue = generateMurmurHash2(word, 0x5bd1e995, 24);
+  uint32_t index = hashValue % hashTable.capacity_;
+  std::cout << hashValue << " " << index << "\n";
+  hashTable.data_[index] = {word, {}};
+  hashTable.print();
+}
+void executeCommand(Command::CommandList command, const std::string &argument, HashTable &hashTable)
 {
   if (command == Command::CommandList::add_word)
   {
-    std::cout << argument << " " << generateMurmurHash2(argument, 0x5bd1e995, 24) << "\n";
+    addWord(hashTable, argument);
   }
   if (command == Command::CommandList::add_dict)
   {
@@ -37,7 +47,7 @@ void executeCommand(Command::CommandList command, const std::string &argument)
     std::cout << "Dict created: " + argument + "\n";
   }
 }
-void processCommand(const std::string &str)
+void processCommand(const std::string &str, HashTable hashTable)
 {
   const char sep = ' ';
   int intBegin = 0;
@@ -50,59 +60,59 @@ void processCommand(const std::string &str)
     std::string argument = parametersLine.substr(i + (i != 0), (j = parametersLine.find(sep, i + 1)) - i - (i != 0));
     if (commandStr == "add_dict" || commandStr == "ad")
     {
-      executeCommand(Command::CommandList::add_dict, argument);
+      executeCommand(Command::CommandList::add_dict, argument, hashTable);
     }
     else if (commandStr == "add_word" || commandStr == "aw")
     {
-      executeCommand(Command::CommandList::add_word, argument);
+      executeCommand(Command::CommandList::add_word, argument, hashTable);
     }
     else if (commandStr == "add_translation" || commandStr == "at")
     {
-      executeCommand(Command::CommandList::add_translation, argument);
+      executeCommand(Command::CommandList::add_translation, argument, hashTable);
     }
     else if (commandStr == "remove_word" || commandStr == "rw")
     {
-      executeCommand(Command::CommandList::remove_word, argument);
+      executeCommand(Command::CommandList::remove_word, argument, hashTable);
     }
     else if (commandStr == "remove_translation" || commandStr == "rt")
     {
-      executeCommand(Command::CommandList::remove_translation, argument);
+      executeCommand(Command::CommandList::remove_translation, argument, hashTable);
     }
     else if (commandStr == "search_word" || commandStr == "w")
     {
-      executeCommand(Command::CommandList::search_word, argument);
+      executeCommand(Command::CommandList::search_word, argument, hashTable);
     }
     else if (commandStr == "show_all_words" || commandStr == "words")
     {
-      executeCommand(Command::CommandList::show_all_words, argument);
+      executeCommand(Command::CommandList::show_all_words, argument, hashTable);
     }
     else if (commandStr == "count_words" || commandStr == "cw")
     {
-      executeCommand(Command::CommandList::count_words, argument);
+      executeCommand(Command::CommandList::count_words, argument, hashTable);
     }
     else if (commandStr == "count_translations" || commandStr == "ct")
     {
-      executeCommand(Command::CommandList::count_translations, argument);
+      executeCommand(Command::CommandList::count_translations, argument, hashTable);
     }
     else if (commandStr == "export")
     {
-      executeCommand(Command::CommandList::export_to_file, argument);
+      executeCommand(Command::CommandList::export_to_file, argument, hashTable);
     }
     else if (commandStr == "help")
     {
-      executeCommand(Command::CommandList::help, argument);
+      executeCommand(Command::CommandList::help, argument, hashTable);
     }
     else if (commandStr == "add_missing_words" || commandStr == "amw")
     {
-      executeCommand(Command::CommandList::add_missing_words, argument);
+      executeCommand(Command::CommandList::add_missing_words, argument, hashTable);
     }
     else if (commandStr == "create_level_dict" || commandStr == "cld")
     {
-      executeCommand(Command::CommandList::create_level_dict, argument);
+      executeCommand(Command::CommandList::create_level_dict, argument, hashTable);
     }
     else if (commandStr == "merge_dicts" || commandStr == "md")
     {
-      executeCommand(Command::CommandList::merge_dicts, argument);
+      executeCommand(Command::CommandList::merge_dicts, argument, hashTable);
     }
     else
     {

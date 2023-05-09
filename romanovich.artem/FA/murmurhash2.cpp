@@ -1,3 +1,4 @@
+#include <iostream>
 #include "murmurhash2.h"
 uint32_t generateMurmurHash2(const std::string &key, uint32_t m, int r)
 {
@@ -32,4 +33,19 @@ uint32_t generateMurmurHash2(const std::string &key, uint32_t m, int r)
   h *= m;
   h ^= h >> 15;
   return h;
+}
+HashTable::HashTable(size_t size):
+  data_(size),
+  capacity_(size)
+{
+}
+void HashTable::print()
+{
+  for (size_t i = 0; i < capacity_; i++)
+  {
+    if (!data_[i].word.empty())
+    {
+      std::cout << "Key: " << data_[i].word << ", Value: " << data_[i].translations.size() << std::endl;
+    }
+  }
 }
