@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "ForwardIterator.hpp"
+#include "MergeSort.hpp"
 #include "Node.hpp"
 
 namespace odintsov {
@@ -368,33 +369,7 @@ namespace odintsov {
     template< typename Compare >
     void sort(Compare comp)
     {
-      const size_t s = size();
-      for (size_t w = 1; w < s; w *= 2) {
-        for (Iter i = beforeBegin(); i.nodePtr->next;) {
-          Iter split = std::next(i, w);
-          if (split == end() || !split.nodePtr->next) {
-            break;
-          }
-          Node* otherSide = split.nodePtr->next;
-          Iter end = split;
-          for (size_t subW = w; subW != 0 && end.nodePtr->next; --subW) {
-            ++end;
-          }
-          Node* endPtr = end.nodePtr->next;
-          split.nodePtr->next = endPtr;
-          for (; i.nodePtr->next != endPtr; ++i) {
-            if (comp(otherSide->val, i.nodePtr->next->val)) {
-              std::swap(otherSide, i.nodePtr->next);
-            }
-          }
-          if (otherSide != endPtr) {
-            i.nodePtr->next = otherSide;
-          }
-          while (i.nodePtr->next != endPtr) {
-            ++i;
-          }
-        }
-      }
+      mergeSort(beforeBegin(), comp);
     }
 
     void reverse()

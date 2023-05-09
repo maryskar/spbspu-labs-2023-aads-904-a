@@ -8,13 +8,14 @@
 namespace detail {
   template< typename T >
   struct ForwardIterator: public std::iterator< std::forward_iterator_tag, T > {
-    Node< T >* nodePtr;
+    using Node = detail::Node< T >;
+    Node* nodePtr;
 
     ForwardIterator():
       nodePtr(nullptr)
     {}
 
-    ForwardIterator(Node< T >* ptr):
+    ForwardIterator(Node* ptr):
       nodePtr(ptr)
     {}
 
@@ -58,13 +59,14 @@ namespace detail {
 
   template< typename T >
   struct ConstForwardIterator: public std::iterator< std::forward_iterator_tag, T > {
-    const Node< T >* nodePtr;
+    using Node = detail::Node< T >;
+    const Node* nodePtr;
 
     ConstForwardIterator():
       nodePtr(nullptr)
     {}
 
-    ConstForwardIterator(const Node< T >* ptr):
+    ConstForwardIterator(const Node* ptr):
       nodePtr(ptr)
     {}
 
