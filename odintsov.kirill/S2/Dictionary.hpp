@@ -510,7 +510,7 @@ namespace odintsov {
         ++i;
       }
     }
-    cbegin return count;
+    return count;
   }
 }
 
