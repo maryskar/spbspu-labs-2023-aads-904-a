@@ -294,11 +294,8 @@ namespace odintsov {
 
     bool erase(const Key& k)
     {
-      ConstIter prev = cbegin();
-      while (kvComp_.keyComp(prev.nodePtr->next->val.first, k)) {
-        ++prev;
-      }
-      if (prev.nodePtr->next->val.first == k) {
+      ConstIter prev = preLowerBound();
+      if (prev != cbeforeBegin() && prev.nodePtr->next->val.first == k) {
         pairs_.unsafeEraseAfter(prev);
         return true;
       }
