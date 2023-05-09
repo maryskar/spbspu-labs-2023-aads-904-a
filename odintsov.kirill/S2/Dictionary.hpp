@@ -310,21 +310,20 @@ namespace odintsov {
     template< typename C >
     void merge(Dictionary< Key, Value, C >& src)
     {
-      ConstIter pos = beforeBegin();
-      for (Iter siter = src.beforeBegin(); siter.nodePtr->next != nullptr; ++siter) {
-        bool inserted = false;
-        ListNode* snext = siter.nodePtr->next;
-        if (kvComp_.keyComp(snext->val.first, pos->first)) {
+      Iter pos = beforeBegin();
+      for (Iter i = src.beforeBegin(); i.nodePtr->next != nullptr;) {
+        if (kvComp_(*(i.nodePtr->next), *(pos.nodePtr->next))) {
           pos = beforeBegin();
         }
-        while (kvComp_.keyComp(pos.nodePtr->next->val.first, snext->val.first)) {
-          ++pos;
+        pos = preUpperBound(pos, i.nodePtr->next->first);
+        if (pos != beforeBegin() && pos->first == i.nodePtr->next->first) {
+          ++i;
+          continue;
         }
-        if (pos.nodePtr->next->val.first != snext->val.first) {
-          siter.nodePtr->next = snext->next;
-          snext->next = pos.nodePtr->next;
-          pos.nodePtr->next = snext;
-        }
+        ListNode* after = pos.nodePtr->next;
+        pos.nodePtr->next = i.nodePtr->next;
+        i.nodePtr->next = i.nodePtr->next->next;
+        (++pos).nodePtr->next = after;
       }
     }
 
@@ -511,7 +510,7 @@ namespace odintsov {
         ++i;
       }
     }
-    return count;
+    cbegin return count;
   }
 }
 
