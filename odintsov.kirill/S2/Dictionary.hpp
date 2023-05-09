@@ -232,7 +232,7 @@ namespace odintsov {
     {
       std::pair< Iter, bool > res = insert(pos, kv);
       if (!res.second) {
-        *res.first = kv;
+        *(res.first) = kv;
       }
       return res;
     }
@@ -241,7 +241,7 @@ namespace odintsov {
     {
       std::pair< Iter, bool > res = insert(pos, std::move(kv));
       if (!res.second) {
-        *res.first = std::move(kv);
+        *(res.first) = std::move(kv);
       }
       return res;
     }
