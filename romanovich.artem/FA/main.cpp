@@ -8,6 +8,6 @@ int main()
     {
       continue;
     }
-    commandFromString(line);
+    processCommand(line);
   }
 }
