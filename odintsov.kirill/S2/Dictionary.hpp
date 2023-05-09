@@ -356,6 +356,32 @@ namespace odintsov {
       return find(k) != cend();
     }
 
+    Iter preLowerBound(const Key& k)
+    {
+      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preLowerBound(k).nodePtr));
+    }
+
+    Iter preLowerBound(ConstIter pos, const Key& k)
+    {
+      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preLowerBound(pos, k).nodePtr));
+    }
+
+    ConstIter preLowerBound(const Key& k) const
+    {
+      return preLowerBound(cbeforeBegin(), k);
+    }
+
+    ConstIter preLowerBound(ConstIter pos, const Key& k) const
+    {
+      if (pos == cend()) {
+        return pos;
+      }
+      while (pos.nodePtr->next != nullptr && kvComp_.keyComp(pos.nodePtr->next->val.first, k)) {
+        ++pos;
+      }
+      return pos;
+    }
+
     Iter lowerBound(const Key& k)
     {
       return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->lowerBound(k).nodePtr));
