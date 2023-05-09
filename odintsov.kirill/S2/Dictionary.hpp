@@ -311,7 +311,7 @@ namespace odintsov {
     void merge(Dictionary< Key, Value, C >& src)
     {
       Iter pos = beforeBegin();
-      for (Iter i = src.beforeBegin(); i.nodePtr->next != nullptr;) {
+      for (Iter i = src.beforeBegin(); i.nodePtr->next;) {
         if (kvComp_(*(i.nodePtr->next), *(pos.nodePtr->next))) {
           pos = beforeBegin();
         }
@@ -372,7 +372,7 @@ namespace odintsov {
       if (pos == cend()) {
         return pos;
       }
-      while (pos.nodePtr->next != nullptr && kvComp_.keyComp(pos.nodePtr->next->val.first, k)) {
+      while (pos.nodePtr->next && kvComp_.keyComp(pos.nodePtr->next->val.first, k)) {
         ++pos;
       }
       return pos;
@@ -421,7 +421,7 @@ namespace odintsov {
       if (pos == cend()) {
         return pos;
       }
-      while (pos.nodePtr->next != nullptr && !kvComp_.keyComp(k, pos.nodePtr->next->val.first)) {
+      while (pos.nodePtr->next && !kvComp_.keyComp(k, pos.nodePtr->next->val.first)) {
         ++pos;
       }
       return pos;
@@ -502,7 +502,7 @@ namespace odintsov {
   size_t eraseIf(Dictionary< Key, Value, Compare >& d, UnaryPredicate check)
   {
     size_t count = 0;
-    for (typename Dictionary< Key, Value, Compare >::Iter i = d.beforeBegin(); i.nodePtr->next != nullptr;) {
+    for (typename Dictionary< Key, Value, Compare >::Iter i = d.beforeBegin(); i.nodePtr->next;) {
       if (check(i.nodePtr->next->val)) {
         d.eraseAfter(i);
         count++;
