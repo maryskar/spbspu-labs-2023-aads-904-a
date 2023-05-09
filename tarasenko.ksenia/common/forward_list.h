@@ -67,7 +67,8 @@ namespace tarasenko
    const T& getFront() const;
    void popFront();
    void clear();
-   void addBefore(details::NodeOfList< T >* pnode, const T& data);
+   ForwardListIterator< T > insertAfter(ConstForwardListIterator< T > pos, const T& value);
+   ForwardListIterator< T > insertBefore(ConstForwardListIterator< T > pos, const T& value);
    void removeNode(details::NodeOfList< T >* pnode);
 
    friend class ForwardListIterator< T >;
@@ -142,25 +143,36 @@ namespace tarasenko
   }
 
   template< typename T >
-  void ForwardList< T >::addBefore(details::NodeOfList< T >* pnode, const T& data)
+  ForwardListIterator< T > ForwardList< T >::insertAfter(ConstForwardListIterator< T > pos, const T& value)
   {
-    if (first_ == pnode)
+    auto new_node = new details::NodeOfList< T >(value, pos.getNode()->next);
+    pos.node_->next = new_node;
+    return ForwardListIterator< T >(new_node);
+  }
+
+  template< typename T >
+  ForwardListIterator< T > ForwardList< T >::insertBefore(ConstForwardListIterator< T > pos, const T& value)
+  {
+    auto new_node = new details::NodeOfList< T >(value, nullptr);
+    if (pos == cbegin())
     {
-      pushFront(data);
+      new_node->next = first_;
+      first_ = new_node;
+      null_->next = first_;
     }
     else
     {
-      details::NodeOfList< T >* prev = first_;
-      details::NodeOfList< T >* curr = first_;
-      while (curr != pnode)
+      auto prev = cbegin();
+      auto curr = cbegin();
+      while (curr != pos)
       {
         prev = curr;
-        curr = curr->next;
+        curr++;
       }
-      auto new_node = new details::NodeOfList< T >(data, nullptr);
-      new_node->next = prev->next;
-      prev->next = new_node;
+      new_node->next = prev.node_->next;
+      prev.node_->next = new_node;
     }
+    return ForwardListIterator< T >(new_node);
   }
 
   template< typename T >

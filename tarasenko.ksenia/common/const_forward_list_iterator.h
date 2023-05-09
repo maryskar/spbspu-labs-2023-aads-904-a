@@ -16,12 +16,13 @@ namespace tarasenko
   {
   public:
    using this_t = ConstForwardListIterator< T >;
+   friend class ForwardList< T >;
 
    ConstForwardListIterator():
-     node(nullptr)
+     node_(nullptr)
    {}
    explicit ConstForwardListIterator(details::NodeOfList< T >* node):
-     node(node)
+     node_(node)
    {}
    ConstForwardListIterator(const this_t&) = default;
    ~ConstForwardListIterator() = default;
@@ -37,27 +38,22 @@ namespace tarasenko
    bool operator!=(const this_t&) const;
    bool operator==(const this_t&) const;
 
-   const details::NodeOfList< T >* getNode() const
-   {
-     return node;
-   }
-
   private:
-   details::NodeOfList< T >* node;
+   details::NodeOfList< T >* node_;
   };
 
   template< typename T >
   ConstForwardListIterator< T >& ConstForwardListIterator< T >::operator++()
   {
-    assert(node != nullptr);
-    node = node->next;
+    assert(node_ != nullptr);
+    node_ = node_->next;
     return *this;
   }
 
   template< typename T >
   ConstForwardListIterator< T > ConstForwardListIterator< T >::operator++(int)
   {
-    assert(node != nullptr);
+    assert(node_ != nullptr);
     this_t temp(*this);
     ++(*this);
     return temp;
@@ -66,27 +62,27 @@ namespace tarasenko
   template< typename T >
   const T& ConstForwardListIterator< T >::operator*() const
   {
-    assert(node != nullptr);
-    return node->data;
+    assert(node_ != nullptr);
+    return node_->data;
   }
 
   template< typename T >
   const T* ConstForwardListIterator< T >::operator->() const
   {
-    assert(node != nullptr);
-    return std::addressof(node->data);
+    assert(node_ != nullptr);
+    return std::addressof(node_->data);
   }
 
   template< typename T >
   bool ConstForwardListIterator< T >::operator==(const this_t& other) const
   {
-    return node == other.node;
+    return node_ == other.node_;
   }
 
   template< typename T >
   bool ConstForwardListIterator< T >::operator!=(const this_t& other) const
   {
-    return !(node == other.node);
+    return !(node_ == other.node_);
   }
 }
 #endif

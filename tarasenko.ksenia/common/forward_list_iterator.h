@@ -16,12 +16,13 @@ namespace tarasenko
   {
   public:
    using this_t = ForwardListIterator< T >;
+   friend class ForwardList< T >;
 
    ForwardListIterator():
-     node(nullptr)
+     node_(nullptr)
    {}
    explicit ForwardListIterator(details::NodeOfList< T >* node):
-     node(node)
+     node_(node)
    {}
    ForwardListIterator(const this_t&) = default;
    ~ForwardListIterator() = default;
@@ -42,25 +43,25 @@ namespace tarasenko
 
    details::NodeOfList< T >* getNode() const
    {
-     return node;
+     return node_;
    }
 
   private:
-   details::NodeOfList< T >* node;
+   details::NodeOfList< T >* node_;
   };
 
   template< typename T >
   ForwardListIterator< T >& ForwardListIterator< T >::operator++()
   {
-    assert(node != nullptr);
-    node = node->next;
+    assert(node_ != nullptr);
+    node_ = node_->next;
     return *this;
   }
 
   template< typename T >
   ForwardListIterator< T > ForwardListIterator< T >::operator++(int)
   {
-    assert(node != nullptr);
+    assert(node_ != nullptr);
     this_t result(*this);
     ++(*this);
     return result;
@@ -69,7 +70,7 @@ namespace tarasenko
   template< typename T >
   bool ForwardListIterator< T >::operator==(const this_t& rhs) const
   {
-    return node == rhs.node;
+    return node_ == rhs.node_;
   }
 
   template< typename T >
@@ -81,29 +82,29 @@ namespace tarasenko
   template< typename T >
   T& ForwardListIterator< T >::operator*()
   {
-    assert(node != nullptr);
-    return node->data;
+    assert(node_ != nullptr);
+    return node_->data;
   }
 
   template< typename T >
   T* ForwardListIterator< T >::operator->()
   {
-    assert(node != nullptr);
-    return std::addressof(node->data);
+    assert(node_ != nullptr);
+    return std::addressof(node_->data);
   }
 
   template< typename T >
   T& ForwardListIterator< T >::operator*() const
   {
-    assert(node != nullptr);
-    return node->data;
+    assert(node_ != nullptr);
+    return node_->data;
   }
 
   template< typename T >
   T* ForwardListIterator< T >::operator->() const
   {
-    assert(node != nullptr);
-    return std::addressof(node->data);
+    assert(node_ != nullptr);
+    return std::addressof(node_->data);
   }
 }
 #endif
