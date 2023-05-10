@@ -9,6 +9,7 @@ namespace dimkashelk
   class TwoThreeTreeIteratorConst: public std::iterator< std::forward_iterator_tag, const std::pair< Key, Value > >
   {
   friend class TwoThreeTree< Key, Value, Compare >;
+  using tree_type = TwoThreeTree< Key, Value, Compare >;
   public:
     using iterator_category = std::forward_iterator_tag;
     using difference_type = std::ptrdiff_t;
@@ -18,7 +19,8 @@ namespace dimkashelk
     TwoThreeTreeIteratorConst(const TwoThreeTreeIterator< Key, Value, Compare > &it):
       ind_(it.ind_),
       node_(it.node_),
-      prev_(it.prev_)
+      prev_(it.prev_),
+      parent_(it.parent_)
     {}
     TwoThreeTreeIteratorConst &operator++()
     {
@@ -52,13 +54,19 @@ namespace dimkashelk
     size_t ind_;
     node_type *node_;
     node_type *prev_;
-    explicit TwoThreeTreeIteratorConst(node_type *node):
+    tree_type *parent_;
+    explicit TwoThreeTreeIteratorConst(node_type *node, tree_type *parent):
       ind_(0),
       node_(node),
       prev_(nullptr)
     {};
     void next()
     {
+      if (node_ == parent_->fakeNode_)
+      {
+        node_ = goDown(parent_->root_);
+        return;
+      }
       if (node_->getLastChildren() == nullptr)
       {
         if (node_->size == 1)
