@@ -31,7 +31,6 @@ void addWord(HashTable &hashTable, const std::string &word)
 {
   uint32_t hashValue = generateMurmurHash2(word, 0x5bd1e995, 24);
   uint32_t index = hashValue % hashTable.capacity_;
-  std::cout << hashValue << " " << index << "\n";
   hashTable.data_[index] = {word, {}};
   hashTable.print();
 }
@@ -54,7 +53,7 @@ void processCommand(const std::string &str, HashTable hashTable)
   int intEnd = str.find(sep);
   std::string commandStr = str.substr(intBegin, intEnd - intBegin);
   std::string parametersLine = str.substr(intEnd - intBegin + 1); //проверить что когда одно слова это ""
-  trim(parametersLine);
+  trim(parametersLine);///
   for (size_t i = 0, j = 0; i != std::string::npos; i = j)
   {
     std::string argument = parametersLine.substr(i + (i != 0), (j = parametersLine.find(sep, i + 1)) - i - (i != 0));
