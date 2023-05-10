@@ -69,6 +69,7 @@ namespace tarasenko
    void clear();
    ForwardListIterator< T > insertAfter(ConstForwardListIterator< T > pos, const T& value);
    ForwardListIterator< T > insertBefore(ConstForwardListIterator< T > pos, const T& value);
+   ForwardListIterator< T > eraseAfter(ConstForwardListIterator< T > pos);
    void removeNode(details::NodeOfList< T >* pnode);
 
    friend class ForwardListIterator< T >;
@@ -173,6 +174,18 @@ namespace tarasenko
       prev.node_->next = new_node;
     }
     return ForwardListIterator< T >(new_node);
+  }
+
+  template< typename T >
+  ForwardListIterator< T > ForwardList< T >::eraseAfter(ConstForwardListIterator< T > pos)
+  {
+    auto to_delete = pos.node_->next;
+    if (to_delete)
+    {
+      pos.node_->next = pos.node_->next->next;
+      delete to_delete;
+    }
+    return ForwardListIterator< T >(pos.node_->next);
   }
 
   template< typename T >
