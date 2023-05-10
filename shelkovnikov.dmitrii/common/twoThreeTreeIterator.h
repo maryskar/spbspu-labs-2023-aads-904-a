@@ -50,14 +50,21 @@ namespace dimkashelk
     node_type *node_;
     node_type *prev_;
     tree_type *parent_;
-    explicit TwoThreeTreeIterator(node_type *node, tree_type *parent):
+    node_type fakeNodeTree_;
+    explicit TwoThreeTreeIterator(node_type *node, tree_type *parent, node_type *fake):
       ind_(0),
       node_(node),
       prev_(nullptr),
-      parent_(parent)
+      parent_(parent),
+      fakeNodeTree_(fake)
     {};
     void next()
     {
+      if (node_ == fakeNodeTree_)
+      {
+        node_ = goDown(fakeNodeTree_.first);
+        return;
+      }
       if (node_->getLastChildren() == nullptr)
       {
         if (node_->size == 1)
