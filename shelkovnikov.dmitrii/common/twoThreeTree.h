@@ -80,6 +80,10 @@ namespace dimkashelk
     {
       return iterator(iterator::goDown(root_)).value_;
     }
+    iterator beforeBegin()
+    {
+      return iterator(fakeNode_, this);
+    }
     iterator begin()
     {
       return iterator(iterator::goDown(root_), this);
