@@ -84,6 +84,10 @@ namespace dimkashelk
     {
       return iterator(fakeNode_, this);
     }
+    const_iterator cbeforeBegin()
+    {
+      return const_iterator(fakeNode_, this);
+    }
     iterator begin()
     {
       return iterator(iterator::goDown(root_), this);
