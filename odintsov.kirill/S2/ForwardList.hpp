@@ -344,9 +344,17 @@ namespace odintsov {
 
     void remove(const T& val)
     {
-      removeIf([&val](const T& other) {
-        return other == val;
-      });
+      struct Equal {
+        bool operator()(const T& other) const
+        {
+          return val_ == other;
+        }
+
+       private:
+        const T& val_;
+      };
+
+      removeIf(Equal{val});
     }
 
     template< class UnaryPredicate >
