@@ -1,8 +1,6 @@
 #ifndef NODE_H
 #define NODE_H
-#include <stdexcept>
-#include "operations.h"
-#include "parenthesis.h"
+#include <tuple>
 namespace details
 {
   template< typename T >

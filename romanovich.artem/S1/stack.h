@@ -1,6 +1,5 @@
 #ifndef STACK_H
 #define STACK_H
-#include <tuple>
 #include <stdexcept>
 #include "node.h"
 namespace romanovich
