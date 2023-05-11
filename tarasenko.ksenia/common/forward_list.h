@@ -268,6 +268,14 @@ namespace tarasenko
   }
 
   template< typename T >
+  void ForwardList< T >::swap(ForwardList< T >& other)
+  {
+    std::swap(null_, other.null_);
+    std::swap(first_, other.first_);
+    std::swap(size_, other.size_);
+  }
+
+  template< typename T >
   void ForwardList< T >::removeNode(details::NodeOfList< T >* pnode) //...
   {
     if (pnode == first_)
