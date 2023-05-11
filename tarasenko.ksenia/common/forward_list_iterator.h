@@ -10,6 +10,8 @@ namespace tarasenko
 {
   template< typename T >
   class ForwardList;
+  template< typename T >
+  class ConstForwardListIterator;
 
   template< typename T >
   class ForwardListIterator: public std::iterator< std::forward_iterator_tag, T >
@@ -17,6 +19,7 @@ namespace tarasenko
   public:
    using this_t = ForwardListIterator< T >;
    friend class ForwardList< T >;
+   friend class ConstForwardListIterator< T >;
 
    ForwardListIterator():
      node_(nullptr)

@@ -10,6 +10,8 @@ namespace tarasenko
 {
   template< typename T >
   class ForwardList;
+  template< typename T >
+  class ForwardListIterator;
 
   template< typename T >
   class ConstForwardListIterator: public std::iterator< std::forward_iterator_tag, const T >
@@ -17,6 +19,7 @@ namespace tarasenko
   public:
    using this_t = ConstForwardListIterator< T >;
    friend class ForwardList< T >;
+   friend class ForwardListIterator< T >;
 
    ConstForwardListIterator():
      node_(nullptr)
@@ -24,10 +27,14 @@ namespace tarasenko
    explicit ConstForwardListIterator(details::NodeOfList< T >* node):
      node_(node)
    {}
+   ConstForwardListIterator(const ForwardListIterator< T >& iter):
+     node_(iter.node_)
+   {}
    ConstForwardListIterator(const this_t&) = default;
    ~ConstForwardListIterator() = default;
 
    this_t& operator=(const this_t&) = default;
+   this_t& operator=(const ForwardListIterator< T >& other);
 
    this_t& operator++();
    this_t operator++(int);
@@ -41,6 +48,13 @@ namespace tarasenko
   private:
    details::NodeOfList< T >* node_;
   };
+
+  template< typename T >
+  ConstForwardListIterator< T >& ConstForwardListIterator< T >::operator=(const ForwardListIterator< T >& other)
+  {
+    node_ = other.node_;
+    return *this;
+  }
 
   template< typename T >
   ConstForwardListIterator< T >& ConstForwardListIterator< T >::operator++()
