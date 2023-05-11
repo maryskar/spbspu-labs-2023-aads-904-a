@@ -209,9 +209,9 @@ namespace tarasenko
       ConstForwardListIterator< T > last)
   {
     auto pos = first;
-    while (pos != last)
+    while (first != last)
     {
-      pos = eraseAfter(pos);
+      first = eraseAfter(pos);
     }
     return ForwardListIterator< T >(last.node_);
   }
@@ -219,9 +219,25 @@ namespace tarasenko
   template< typename T >
   void ForwardList< T >::resize(size_t count)
   {
+    if (count == size_)
+    {
+      return;
+    }
+    auto curr = cbegin();
+    for (size_t i = 1; i < size_ && i < count; i++)
+    {
+      curr++;
+    }
     if (count < size_)
     {
-
+      eraseAfter(curr, cend());
+    }
+    else if (count > size_)
+    {
+      while (size_ < count)
+      {
+        pushBack(T());
+      }
     }
   }
 
