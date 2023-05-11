@@ -79,6 +79,7 @@ namespace tarasenko
    ForwardListIterator< T > eraseAfter(ConstForwardListIterator< T > first, ConstForwardListIterator< T > last);
    void resize(size_t count);
    void resize(size_t count, const T& value);
+   void swap(ForwardList< T >& other);
    void removeNode(details::NodeOfList< T >* pnode);
 
    friend class ForwardListIterator< T >;
@@ -243,7 +244,28 @@ namespace tarasenko
 
   template< typename T >
   void ForwardList< T >::resize(size_t count, const T& value)
-  {}
+  {
+    if (count == size_)
+    {
+      return;
+    }
+    auto curr = cbegin();
+    for (size_t i = 1; i < size_ && i < count; i++)
+    {
+      curr++;
+    }
+    if (count < size_)
+    {
+      eraseAfter(curr, cend());
+    }
+    else if (count > size_)
+    {
+      while (size_ < count)
+      {
+        pushBack(value);
+      }
+    }
+  }
 
   template< typename T >
   void ForwardList< T >::removeNode(details::NodeOfList< T >* pnode) //...
