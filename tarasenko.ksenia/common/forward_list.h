@@ -12,6 +12,8 @@ namespace tarasenko
   template< typename T >
   class ForwardList
   {
+   using iterator = ForwardListIterator< T >;
+   using const_iterator = ConstForwardListIterator< T >;
   public:
    ForwardList():
      null_(static_cast< details::NodeOfList< T >* >(::operator new (sizeof(details::NodeOfList< T >)))),
@@ -73,41 +75,41 @@ namespace tarasenko
    const T& getFront() const;
    void popFront();
    void clear();
-   ForwardListIterator< T > insertAfter(ConstForwardListIterator< T > pos, const T& value);
-   ForwardListIterator< T > insertBefore(ConstForwardListIterator< T > pos, const T& value);
-   ForwardListIterator< T > eraseAfter(ConstForwardListIterator< T > pos);
-   ForwardListIterator< T > eraseAfter(ConstForwardListIterator< T > first, ConstForwardListIterator< T > last);
+   iterator insertAfter(const_iterator pos, const T& value);
+   iterator insertBefore(const_iterator pos, const T& value);
+   iterator eraseAfter(const_iterator pos);
+   iterator eraseAfter(const_iterator first, const_iterator last);
    void resize(size_t count);
    void resize(size_t count, const T& value);
    void swap(ForwardList< T >& other);
    void removeNode(details::NodeOfList< T >* pnode);
 
    friend class ForwardListIterator< T >;
-   ForwardListIterator< T > beforeBegin() const
+   iterator beforeBegin() const
    {
-     return ForwardListIterator< T >(null_);
+     return iterator(null_);
    }
-   ForwardListIterator< T > begin() const
+   iterator begin() const
    {
-     return ForwardListIterator< T >(first_);
+     return iterator(first_);
    }
-   ForwardListIterator< T > end() const
+   iterator end() const
    {
-     return ForwardListIterator< T >();
+     return iterator();
    }
 
    friend class ConstForwardListIterator< T >;
-   ConstForwardListIterator< T > cbeforeBegin() const
+   const_iterator cbeforeBegin() const
    {
-     return ConstForwardListIterator< T >(null_);
+     return const_iterator(null_);
    }
-   ConstForwardListIterator< T > cbegin() const
+   const_iterator cbegin() const
    {
-     return ConstForwardListIterator< T >(first_);
+     return const_iterator(first_);
    }
-   ConstForwardListIterator< T > cend() const
+   const_iterator cend() const
    {
-     return ConstForwardListIterator< T >();
+     return const_iterator();
    }
 
   private:
@@ -158,16 +160,16 @@ namespace tarasenko
   }
 
   template< typename T >
-  ForwardListIterator< T > ForwardList< T >::insertAfter(ConstForwardListIterator< T > pos, const T& value)
+  ForwardListIterator< T > ForwardList< T >::insertAfter(const_iterator pos, const T& value)
   {
     auto new_node = new details::NodeOfList< T >(value, pos.node_->next);
     pos.node_->next = new_node;
     size_++;
-    return ForwardListIterator< T >(new_node);
+    return iterator(new_node);
   }
 
   template< typename T >
-  ForwardListIterator< T > ForwardList< T >::insertBefore(ConstForwardListIterator< T > pos, const T& value)
+  ForwardListIterator< T > ForwardList< T >::insertBefore(const_iterator pos, const T& value)
   {
     auto new_node = new details::NodeOfList< T >(value, nullptr);
     if (pos == cbegin())
@@ -193,28 +195,32 @@ namespace tarasenko
   }
 
   template< typename T >
-  ForwardListIterator< T > ForwardList< T >::eraseAfter(ConstForwardListIterator< T > pos)
+  ForwardListIterator< T > ForwardList< T >::eraseAfter(const_iterator pos)
   {
     auto to_delete = pos.node_->next;
     if (to_delete)
     {
       pos.node_->next = pos.node_->next->next;
     }
+    if (pos.node_ == null_)
+    {
+      first_ = pos.node_->next;
+      null_->next = first_;
+    }
     delete to_delete;
     size_--;
-    return ForwardListIterator< T >(pos.node_->next);
+    return iterator(pos.node_->next);
   }
 
   template< typename T >
-  ForwardListIterator< T > ForwardList< T >::eraseAfter(ConstForwardListIterator< T > first,
-      ConstForwardListIterator< T > last)
+  ForwardListIterator< T > ForwardList< T >::eraseAfter(const_iterator first, const_iterator last)
   {
     auto pos = first;
     while (first != last)
     {
       first = eraseAfter(pos);
     }
-    return ForwardListIterator< T >(last.node_);
+    return iterator(last.node_);
   }
 
   template< typename T >
@@ -298,6 +304,8 @@ namespace tarasenko
   void ForwardList< T >::clear()
   {
     details::clear(std::addressof(first_));
+    first_ = nullptr;
+    size_ = 0;
   }
 }
 #endif
