@@ -7,7 +7,7 @@
 namespace mashkin
 {
   template< class T >
-  struct Iterator
+  struct Iterator: public std::iterator< std::forward_iterator_tag, T >
   {
     ForwardList< T >* node;
 
