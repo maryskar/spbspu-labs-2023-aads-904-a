@@ -82,7 +82,6 @@ namespace tarasenko
    void resize(size_t count);
    void resize(size_t count, const T& value);
    void swap(ForwardList< T >& other);
-   void removeNode(details::NodeOfList< T >* pnode);
 
    friend class ForwardListIterator< T >;
    iterator beforeBegin() const
@@ -292,25 +291,6 @@ namespace tarasenko
     std::swap(null_, other.null_);
     std::swap(first_, other.first_);
     std::swap(size_, other.size_);
-  }
-
-  template< typename T >
-  void ForwardList< T >::removeNode(details::NodeOfList< T >* pnode) //...
-  {
-    if (pnode == first_)
-    {
-      popFront();
-    }
-    else
-    {
-      details::NodeOfList< T >* curr = first_;
-      while (curr->next != pnode)
-      {
-        curr = curr->next;
-      }
-      curr->next = pnode->next;
-      details::popFront(std::addressof(pnode));
-    }
   }
 
   template< typename T >

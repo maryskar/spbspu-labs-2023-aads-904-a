@@ -187,17 +187,19 @@ namespace tarasenko
   template< typename Key, typename Value, typename Compare >
   void Dictionary< Key, Value, Compare >::remove(const Key& key)
   {
-    auto current = list.begin();
+    auto prev = list.cbeforeBegin();
+    auto current = list.cbegin();
     while (current != list.end())
     {
       if (current->first == key)
       {
-        auto to_delete = current;
         ++current;
-        list.removeNode(to_delete.getNode());
+        list.eraseAfter(prev);
+        ++prev;
         continue;
       }
       ++current;
+      ++prev;
     }
   }
 

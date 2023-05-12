@@ -44,11 +44,6 @@ namespace tarasenko
    bool operator!=(const this_t&) const;
    bool operator==(const this_t&) const;
 
-   details::NodeOfList< T >* getNode() const
-   {
-     return node_;
-   }
-
   private:
    details::NodeOfList< T >* node_;
   };
