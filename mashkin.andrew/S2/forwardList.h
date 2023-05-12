@@ -15,8 +15,13 @@ namespace mashkin
     ForwardList();
     ForwardList(const ForwardList< T >& lhs);
     ForwardList(ForwardList< T >&& rhs);
+
     Iterator< T > begin() noexcept;
     Iterator< T > end() noexcept;
+
+    ConstIterator< T > cbegin() noexcept;
+    ConstIterator< T > cend() noexcept;
+
     void push_front(const T& value);
     T pop();
 
@@ -67,5 +72,12 @@ template< class T >
 mashkin::Iterator< T > mashkin::ForwardList< T >::begin() noexcept
 {
   return iter(head);
+}
+
+template< class T >
+mashkin::Iterator< T > mashkin::ForwardList< T >::end() noexcept
+{
+  iter it(tail);
+  return ++it;
 }
 #endif
