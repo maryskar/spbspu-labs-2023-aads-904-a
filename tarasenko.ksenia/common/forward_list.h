@@ -121,21 +121,32 @@ namespace tarasenko
   template< typename T >
   bool ForwardList< T >::isEmpty() const
   {
-    return details::isEmpty(first_);
+    return size_ == 0;
   }
 
   template< typename T >
   void ForwardList< T >::pushFront(const T& data)
   {
-    details::pushFront(std::addressof(first_), data);
-    null_->next = first_;
-    size_++;
+    insertAfter(cbeforeBegin());
   }
 
   template< typename T >
   void ForwardList< T >::pushBack(const T& data)
   {
-    details::pushBack(std::addressof(first_), data);
+    if (first_ == nullptr)
+    {
+      first_ = new details::NodeOfList< T >(data, nullptr);
+      null_->next = first_;
+    }
+    else
+    {
+      details::NodeOfList< T >* current = first_;
+      while (current->next != nullptr)
+      {
+        current = current->next;
+      }
+      current->next = new details::NodeOfList< T >(data, nullptr);
+    }
     size_++;
   }
 
@@ -154,9 +165,7 @@ namespace tarasenko
   template< typename T >
   void ForwardList< T >::popFront()
   {
-    details::popFront(std::addressof(first_));
-    null_->next = first_;
-    size_--;
+    eraseAfter(cbeforeBegin());
   }
 
   template< typename T >
@@ -164,6 +173,10 @@ namespace tarasenko
   {
     auto new_node = new details::NodeOfList< T >(value, pos.node_->next);
     pos.node_->next = new_node;
+    if (pos.node_ == null_)
+    {
+      first_ = new_node;
+    }
     size_++;
     return iterator(new_node);
   }
