@@ -3,9 +3,9 @@
 
 
 template< class T >
-struct nodeList
+struct NodeList
 {
   T data;
-  nodeList< T >* next;
+  NodeList< T >* next;
 };
 #endif
