@@ -140,12 +140,14 @@ namespace tarasenko
     {
       remove(k);
     }
+    auto prev = list.cbeforeBegin();
     auto current = list.cbegin();
     while (current != list.cend() && compare(*current, data))
     {
+      ++prev;
       ++current;
     }
-    list.insertBefore(current, data);
+    list.insertAfter(prev, data);
   };
 
   template< typename Key, typename Value, typename Compare >

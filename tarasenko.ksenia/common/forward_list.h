@@ -76,7 +76,6 @@ namespace tarasenko
    void popFront();
    void clear();
    iterator insertAfter(const_iterator pos, const T& value);
-   iterator insertBefore(const_iterator pos, const T& value);
    iterator eraseAfter(const_iterator pos);
    iterator eraseAfter(const_iterator first, const_iterator last);
    void resize(size_t count);
@@ -178,32 +177,6 @@ namespace tarasenko
     }
     size_++;
     return iterator(new_node);
-  }
-
-  template< typename T >
-  ForwardListIterator< T > ForwardList< T >::insertBefore(const_iterator pos, const T& value)
-  {
-    auto new_node = new details::NodeOfList< T >(value, nullptr);
-    if (pos == cbegin())
-    {
-      new_node->next = first_;
-      first_ = new_node;
-      null_->next = first_;
-    }
-    else
-    {
-      auto prev = cbegin();
-      auto curr = cbegin();
-      while (curr != pos)
-      {
-        prev = curr;
-        curr++;
-      }
-      new_node->next = prev.node_->next;
-      prev.node_->next = new_node;
-    }
-    size_++;
-    return ForwardListIterator< T >(new_node);
   }
 
   template< typename T >
