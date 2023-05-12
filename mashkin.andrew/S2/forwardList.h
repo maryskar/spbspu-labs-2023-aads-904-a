@@ -80,4 +80,10 @@ mashkin::Iterator< T > mashkin::ForwardList< T >::end() noexcept
   iter it(tail);
   return ++it;
 }
+
+template< class T >
+mashkin::ConstIterator< T > mashkin::ForwardList< T >::cbegin() noexcept
+{
+  return citer(head);
+}
 #endif
