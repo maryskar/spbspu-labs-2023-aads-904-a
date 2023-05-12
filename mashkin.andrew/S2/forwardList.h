@@ -1,6 +1,7 @@
 #ifndef FORWARDLIST_H
 #define FORWARDLIST_H
 #include "iterator.h"
+#include "constIterator.h"
 #include "nodeList.h"
 
 namespace mashkin
@@ -9,6 +10,8 @@ namespace mashkin
   class ForwardList
   {
   public:
+    using iter = mashkin::Iterator< T >;
+    using citer = mashkin::ConstIterator< T >;
     ForwardList();
     ForwardList(const ForwardList< T >& lhs);
     ForwardList(ForwardList< T >&& rhs);
@@ -20,8 +23,8 @@ namespace mashkin
     bool empty() const noexcept;
 
   private:
-    nodeList< T >* head;
-    nodeList< T >* tail;
+    NodeList< T >* head;
+    NodeList< T >* tail;
   };
 }
 
@@ -44,12 +47,12 @@ void mashkin::ForwardList< T >::push_front(const T& value)
 {
   if (empty())
   {
-    head = new nodeList< T >{value, nullptr};
+    head = new NodeList< T >{value, nullptr};
     tail = head;
   }
   else
   {
-    tail->next = new nodeList< T >{value, nullptr};
+    tail->next = new NodeList< T >{value, nullptr};
     tail = tail->next;
   }
 }
@@ -58,5 +61,11 @@ template< class T >
 bool mashkin::ForwardList< T >::empty() const noexcept
 {
   return !head;
+}
+
+template< class T >
+mashkin::Iterator< T > mashkin::ForwardList< T >::begin() noexcept
+{
+  return iter(head);
 }
 #endif
