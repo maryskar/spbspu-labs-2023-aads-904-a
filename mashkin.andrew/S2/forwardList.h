@@ -27,6 +27,8 @@ namespace mashkin
     void push_front(const T& value);
     void pop_front();
 
+    Iterator< T > erase_after(citer pos);
+
     bool empty() const noexcept;
 
   private:
@@ -66,7 +68,7 @@ void mashkin::ForwardList< T >::push_front(const T& value)
   }
   else
   {
-    NodeList< T >* var = new NodeList< T >{value, head};
+    auto var = new NodeList< T >{value, head};
     head = var;
   }
 }
@@ -114,9 +116,17 @@ void mashkin::ForwardList< T >::pop_front()
   {
     throw std::out_of_range("You got the end of list");
   }
-  NodeList< T >* toDel = head;
+  auto toDel = head;
   head = head->next;
   delete toDel;
 }
 
+template< class T >
+mashkin::Iterator< T >  mashkin::ForwardList< T >::erase_after(citer pos)
+{
+  auto toDel = pos.node->next;
+  pos.node->next = pos.node->next->next;
+  delete toDel;
+  return iter(pos.node->next);
+}
 #endif
