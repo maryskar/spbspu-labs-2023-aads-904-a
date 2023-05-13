@@ -269,27 +269,6 @@ namespace dimkashelk
       }
       return new_dict;
     }
-    friend dict_type operator&(const dict_type &first, const dict_type &second)
-    {
-      dict_type result;
-      for (auto it_first = second.list_.cbegin(); it_first != second.list_.cend(); it_first++)
-      {
-        iterator_t res = second.list_.cend();
-        for (auto i = first.list_.cbegin(); i != first.list_.cend(); i++)
-        {
-          if ((*it_first).first == (*i).first)
-          {
-            res = i;
-            break;
-          }
-        }
-        if (res != second.list_.cend())
-        {
-          result.push(*res);
-        }
-      }
-      return result;
-    }
     friend dict_type operator|(const dict_type &first, const dict_type &second)
     {
       dict_type new_dict;
@@ -357,9 +336,31 @@ namespace dimkashelk
     }
   };
   template< class Key, class T, class Compare >
-  void swap(dimkashelk::Dictionary< Key, T, Compare > &lhs, dimkashelk::Dictionary< Key, T, Compare > &rhs )
+  void swap(Dictionary< Key, T, Compare > &lhs, Dictionary< Key, T, Compare > &rhs )
   {
     lhs.swap(rhs);
+  }
+  template< typename K, typename V, typename C >
+  Dictionary< K, V, C > getIntersection(const Dictionary< K, V, C > &first, const Dictionary< K, V, C > &second)
+  {
+    Dictionary< K, V, C > result;
+    for (auto it_first = second.list_.cbegin(); it_first != second.list_.cend(); it_first++)
+    {
+      ForwardListIterator< std::pair< K, V > > res = second.list_.cend();
+      for (auto i = first.list_.cbegin(); i != first.list_.cend(); i++)
+      {
+        if ((*it_first).first == (*i).first)
+        {
+          res = i;
+          break;
+        }
+      }
+      if (res != second.list_.cend())
+      {
+        result.push(*res);
+      }
+    }
+    return result;
   }
 }
 #endif
