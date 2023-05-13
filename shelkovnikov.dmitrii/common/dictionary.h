@@ -300,10 +300,10 @@ namespace dimkashelk
     Dictionary< K, V, C > result;
     for (auto it_first = second.cbegin(); it_first != second.cend(); it_first++)
     {
-      ForwardListIterator< std::pair< K, V > > res = second.list_.cend();
+      ForwardListIterator< std::pair< K, V > > res = second.cend();
       for (auto i = first.cbegin(); i != first.cend(); i++)
       {
-        if ((*it_first).first == (*i).first)
+        if (details::isEqual< K, C >(it_first->first, i->first))
         {
           res = i;
           break;
