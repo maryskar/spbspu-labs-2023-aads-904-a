@@ -65,6 +65,8 @@ mashkin::Stack< T >::Stack(Stack< T >&& rhs) noexcept:
       end->next = new list_t< T >{var->data, nullptr};
       end = end->next;
       var = var->next;
+    }
+  }
 }
 
 template< typename T >
