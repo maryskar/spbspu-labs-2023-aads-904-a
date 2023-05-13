@@ -165,7 +165,7 @@ namespace odintsov {
 
     Iter insertAfter(ConstIter pos, const T& val)
     {
-      assertIterInside(pos);
+      throwOutsideIter(pos);
       return unsafeInsertAfter(pos, val);
     }
 
@@ -176,7 +176,7 @@ namespace odintsov {
 
     Iter insertAfter(ConstIter pos, T&& val)
     {
-      assertIterInside(pos);
+      throwOutsideIter(pos);
       return unsafeInsertAfter(pos, std::move(val));
     }
 
@@ -188,7 +188,7 @@ namespace odintsov {
     template< typename InputIter >
     Iter insertAfter(ConstIter pos, InputIter first, InputIter last)
     {
-      assertIterInside(pos);
+      throwOutsideIter(pos);
       return unsafeInsertAfter(pos, first, last);
     }
 
@@ -204,7 +204,7 @@ namespace odintsov {
 
     Iter insertAfter(ConstIter pos, std::initializer_list< T > il)
     {
-      assertIterInside(pos);
+      throwOutsideIter(pos);
       return unsafeInsertAfter(pos, il);
     }
 
@@ -216,7 +216,7 @@ namespace odintsov {
     template< typename... Args >
     Iter emplaceAfter(ConstIter pos, Args&&... args)
     {
-      assertIterInside(pos);
+      throwOutsideIter(pos);
       return unsafeInsertAfter(pos, new Node{nullptr, T(std::forward< Args >(args)...)});
     }
 
@@ -228,8 +228,8 @@ namespace odintsov {
 
     Iter eraseAfter(ConstIter pos)
     {
-      assertIterInside(pos);
-      assertIterInside(std::next(pos));
+      throwOutsideIter(pos);
+      throwOutsideIter(std::next(pos));
       return unsafeEraseAfter(pos);
     }
 
@@ -244,7 +244,7 @@ namespace odintsov {
 
     Iter eraseAfter(ConstIter first, ConstIter last)
     {
-      assertIterInside(first);
+      throwOutsideIter(first);
       return unsafeEraseAfter(first, last);
     }
 
@@ -310,7 +310,7 @@ namespace odintsov {
 
     void spliceAfter(ConstIter pos, ForwardList& fl)
     {
-      assertIterInside(pos);
+      throwOutsideIter(pos);
       if (this == std::addressof(fl)) {
         return;
       }
@@ -330,7 +330,7 @@ namespace odintsov {
 
     void spliceAfter(ConstIter pos, ForwardList&& fl)
     {
-      assertIterInside(pos);
+      throwOutsideIter(pos);
       if (this == std::addressof(fl)) {
         return;
       }
@@ -409,7 +409,7 @@ namespace odintsov {
       return preHead_ ? std::addressof(preHead_->next) : nullptr;
     }
 
-    void assertIterInside(ConstIter it)
+    void throwOutsideIter(ConstIter it)
     {
       if (it == cend()) {
         throw std::range_error("Invalid attempt to use iterator outside ForwardList");
