@@ -2,8 +2,15 @@
 
 namespace chemodurov
 {
-  void readAndDoCommand(std::istream & in, std::ostream & out, const Dictionary< std::string, command_t > & commands,
-      Dictionary< std::string, dic_t > & data)
+  void doCommand(const std::string & name_command,
+    const Dictionary< std::string, command_t > & commands,
+    std::istream & in, std::ostream & out,
+    Dictionary< std::string, dic_t > & data)
+  {
+    (commands.at(name_command))(in, out, data);
+  }
+
+  std::string readCommand(std::istream & in)
   {
     std::string name_command;
     in >> name_command;
@@ -11,12 +18,6 @@ namespace chemodurov
     {
       throw std::logic_error("Error");
     }
-    Dictionary< std::string, command_t >::const_iterator cit = commands.find(name_command);
-    if (cit == commands.clast())
-    {
-      throw std::invalid_argument("Invalid command");
-    }
-    ++cit;
-    cit->second(in, out, data);
+    return name_command;
   }
 }

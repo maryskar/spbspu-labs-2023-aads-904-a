@@ -4,7 +4,7 @@
 
 namespace chemodurov
 {
-  using dic_t = chemodurov::Dictionary< int, std::string, std::less< > >;
+  using dic_t = chemodurov::Dictionary< int, std::string >;
   using command_t = void(*)(std::istream &, std::ostream &, Dictionary< std::string, dic_t > &);
   Dictionary< std::string, command_t > createCommandDictionary();
 }

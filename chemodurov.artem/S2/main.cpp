@@ -23,7 +23,7 @@ int main(int argc, char ** argv)
   {
     try
     {
-      chemodurov::readAndDoCommand(std::cin, std::cout, command_dic, dictionaries);
+      chemodurov::doCommand(chemodurov::readCommand(std::cin), command_dic, dictionaries, std::cin, std::cout);
     }
     catch (const std::invalid_argument & e)
     {

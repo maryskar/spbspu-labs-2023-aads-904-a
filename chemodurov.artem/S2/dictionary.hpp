@@ -34,10 +34,10 @@ namespace chemodurov
     this_t & operator=(const this_t & other);
     this_t & operator=(this_t && other);
     this_t & operator=(std::initializer_list< value_type > init);
-    Value & operator[](const key_type & key);
-    Value & operator[](key_type && key);
-    Value & at(const key_type & key);
-    const Value & at(const key_type & key) const;
+    mapped_type & operator[](const key_type & key);
+    mapped_type & operator[](key_type && key);
+    mapped_type & at(const key_type & key);
+    const mapped_type & at(const key_type & key) const;
     iterator before_begin() noexcept;
     const_iterator before_begin() const noexcept;
     const_iterator cbefore_begin() const noexcept;
@@ -342,6 +342,7 @@ namespace chemodurov
     {
       return last();
     }
+    key_compare compare = key_comp();
     return (!compare(moved_it->first, key) && !compare(key, moved_it->first)) ? it : last();
   }
 

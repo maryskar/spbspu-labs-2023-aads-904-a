@@ -17,7 +17,7 @@ namespace chemodurov
     friend class ForwardList< T >;
    public:
     using this_t = ConstForwardIterator< T >;
-    ConstForwardIterator(): node_(nullptr) {};
+    ConstForwardIterator();
     ConstForwardIterator(ForwardIterator< T > rhs);
     ~ConstForwardIterator() = default;
     this_t & operator=(const this_t & rhs) = default;
@@ -29,27 +29,13 @@ namespace chemodurov
     bool operator!=(const this_t & rhs) const;
    private:
     detail::List< T > * node_;
-    explicit ConstForwardIterator(detail::List< T > * list): node_(list) {};
-    void assertNotNullptr();
-    void assertNotNullptr() const;
+    explicit ConstForwardIterator(detail::List< T > * list);
   };
-
-  template< typename T >
-  void ConstForwardIterator< T >::assertNotNullptr() const
-  {
-    assert(node_ != nullptr);
-  }
-
-  template< typename T >
-  void ConstForwardIterator< T >::assertNotNullptr()
-  {
-    (static_cast< const this_t >(*this)).assertNotNullptr();
-  }
 
   template< typename T >
   ConstForwardIterator< T > & ConstForwardIterator< T >::operator++()
   {
-    assertNotNullptr();
+    assert(node_ != nullptr);
     node_ = node_->next;
     return *this;
   }
@@ -57,6 +43,7 @@ namespace chemodurov
   template< typename T >
   ConstForwardIterator< T > ConstForwardIterator< T >::operator++(int)
   {
+    assert(node_ != nullptr);
     this_t temp(*this);
     ++(*this);
     return temp;
@@ -65,12 +52,14 @@ namespace chemodurov
   template< typename T >
   const T & ConstForwardIterator< T >::operator*() const
   {
+    assert(node_ != nullptr);
     return node_->data;
   }
 
   template< typename T >
   const T * ConstForwardIterator< T >::operator->() const
   {
+    assert(node_ != nullptr);
     return std::addressof(node_->data);
   }
 
@@ -89,6 +78,16 @@ namespace chemodurov
   template< typename T >
   ConstForwardIterator< T >::ConstForwardIterator(ForwardIterator< T > rhs):
    node_(rhs.node_)
+  {}
+
+  template< typename T >
+  ConstForwardIterator< T >::ConstForwardIterator():
+   node_(nullptr)
+  {}
+
+  template< typename T >
+  ConstForwardIterator< T >::ConstForwardIterator(detail::List< T > * list):
+   node_(list)
   {}
 }
 

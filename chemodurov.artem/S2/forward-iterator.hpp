@@ -18,7 +18,7 @@ namespace chemodurov
     friend class ForwardList< T >;
    public:
     using this_t = ForwardIterator< T >;
-    ForwardIterator(): node_(nullptr) {};
+    ForwardIterator();
     ~ForwardIterator() = default;
     this_t & operator=(const this_t & rhs) = default;
     this_t & operator++();
@@ -31,27 +31,13 @@ namespace chemodurov
     bool operator!=(const this_t & rhs) const;
    private:
     detail::List< T > * node_;
-    explicit ForwardIterator(detail::List< T > * list): node_(list) {};
-    void assertNotNullptr();
-    void assertNotNullptr() const;
+    explicit ForwardIterator(detail::List< T > * list);
   };
-
-  template< typename T >
-  void ForwardIterator< T >::assertNotNullptr() const
-  {
-    assert(node_ != nullptr);
-  }
-
-  template< typename T >
-  void ForwardIterator< T >::assertNotNullptr()
-  {
-    (static_cast< const ForwardIterator< T > >(*this)).assertNotNullptr();
-  }
 
   template< typename T >
   ForwardIterator< T > & ForwardIterator< T >::operator++()
   {
-    assertNotNullptr();
+    assert(node_ != nullptr);
     node_ = node_->next;
     return *this;
   }
@@ -59,7 +45,7 @@ namespace chemodurov
   template< typename T >
   ForwardIterator< T > ForwardIterator< T >::operator++(int)
   {
-    assertNotNullptr();
+    assert(node_ != nullptr);
     ForwardIterator< T > temp(*this);
     ++(*this);
     return temp;
@@ -68,7 +54,7 @@ namespace chemodurov
   template< typename T >
   const T & ForwardIterator< T >::operator*() const
   {
-    assertNotNullptr();
+    assert(node_ != nullptr);
     return node_->data;
   }
 
@@ -81,7 +67,7 @@ namespace chemodurov
   template< typename T >
   const T * ForwardIterator< T >::operator->() const
   {
-    assertNotNullptr();
+    assert(node_ != nullptr);
     return std::addressof(node_->data);
   }
 
@@ -102,6 +88,16 @@ namespace chemodurov
   {
     return !(*this == rhs);
   }
+
+  template< typename T >
+  ForwardIterator< T >::ForwardIterator():
+   node_(nullptr)
+  {}
+
+  template< typename T >
+  ForwardIterator< T >::ForwardIterator(detail::List< T > * list):
+   node_(list)
+  {}
 }
 
 #endif
