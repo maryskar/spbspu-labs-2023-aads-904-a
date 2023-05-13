@@ -2,6 +2,7 @@
 #define S2_DICTIONARY_HPP
 #include <cmath>
 #include <iostream>
+#include <type_traits>
 #include "forward-list.hpp"
 
 namespace chemodurov
@@ -408,6 +409,7 @@ namespace chemodurov
   template< typename P >
   std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool > Dictionary< Key, Value, Compare >::insert(P && value)
   {
+    static_assert(std::is_constructible< value_type, P&& >::value, "Value type isn't constructible from type you try to insert");
     const value_type temp(std::forward< P >(value));
     return insert(temp);
   }
@@ -430,6 +432,7 @@ namespace chemodurov
   template< typename P >
   typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::insert(const_iterator pos, P && value)
   {
+    static_assert(std::is_constructible< value_type, P&& >::value, "Value type isn't constructible from type you try to insert");
     const value_type temp(std::forward< P >(value));
     return insert(pos, temp);
   }
