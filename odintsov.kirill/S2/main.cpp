@@ -9,7 +9,7 @@
 
 std::ostream& outInvalidCommandMsg(std::ostream& out)
 {
-  out << "<INVALID COMMAND>";
+  return out << "<INVALID COMMAND>";
 }
 
 int main(int argc, char* argv[])
@@ -150,10 +150,10 @@ int main(int argc, char* argv[])
       } else {
         outInvalidCommandMsg(std::cout) << '\n';
       }
-    } catch (const std::runtime_error& e) {
+    } catch (const std::runtime_error&) {
       outInvalidCommandMsg(std::cout) << '\n';
       continue;
-    } catch (const std::out_of_range& e) {
+    } catch (const std::out_of_range&) {
       outInvalidCommandMsg(std::cout) << '\n';
       continue;
     } catch (const std::exception& e) {
