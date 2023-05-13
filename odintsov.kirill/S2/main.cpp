@@ -7,6 +7,11 @@
 
 #include "Dictionary.hpp"
 
+std::ostream& outInvalidCommandMsg(std::ostream& out)
+{
+  out << "<INVALID COMMAND>";
+}
+
 int main(int argc, char* argv[])
 {
   if (argc != 2) {
@@ -143,13 +148,13 @@ int main(int argc, char* argv[])
         }
         dataSetDict[outDataSetName] = std::move(outDataSet);
       } else {
-        throw std::runtime_error("Unknown command");
+        outInvalidCommandMsg(std::cout) << '\n';
       }
     } catch (const std::runtime_error& e) {
-      std::cout << "<INVALID COMMAND>\n";
+      outInvalidCommandMsg(std::cout) << '\n';
       continue;
     } catch (const std::out_of_range& e) {
-      std::cout << "<INVALID COMMAND>\n";
+      outInvalidCommandMsg(std::cout) << '\n';
       continue;
     } catch (const std::exception& e) {
       std::cerr << e.what() << '\n';
