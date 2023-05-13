@@ -241,7 +241,7 @@ namespace dimkashelk
       auto second_it = second.cbegin();
       for (; first_it != first.cend() && second_it != second.cend(); first_it++, second_it++)
       {
-        if ((*first_it) != (*second_it))
+        if (details::isNotEqual< Key, Compare >(first_it->first, second_it->first))
         {
           return false;
         }
