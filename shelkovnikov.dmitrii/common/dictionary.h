@@ -246,29 +246,6 @@ namespace dimkashelk
       }
       return out;
     }
-    friend dict_type operator|(const dict_type &first, const dict_type &second)
-    {
-      dict_type new_dict;
-      auto iter_second = second.list_.cbegin();
-      auto iter_second_end = second.list_.cend();
-      while (iter_second != iter_second_end)
-      {
-        Key key = (*iter_second).first;
-        Value value = (*iter_second).second;
-        new_dict.push(value_type(key, value));
-        iter_second++;
-      }
-      auto iter_first = first.list_.cbegin();
-      auto iter_first_end = first.list_.cend();
-      while (iter_first != iter_first_end)
-      {
-        Key key = (*iter_first).first;
-        Value value = (*iter_first).second;
-        new_dict.push(value_type(key, value));
-        iter_first++;
-      }
-      return new_dict;
-    }
     friend bool operator==(const dict_type &first, const dict_type &second)
     {
       auto first_it = first.cbegin();
@@ -370,6 +347,26 @@ namespace dimkashelk
     while (iter_first != iter_first_end)
     {
       new_dict.push(*iter_first);
+      iter_first++;
+    }
+    return new_dict;
+  }
+  template< typename K, typename V, typename C >
+  Dictionary< K, V, C > getUnion(const Dictionary< K, V, C > &first, const Dictionary< K, V, C > &second)
+  {
+    Dictionary< K, V, C > new_dict;
+    auto iter_second = second.list_.cbegin();
+    auto iter_second_end = second.list_.cend();
+    while (iter_second != iter_second_end)
+    {
+      new_dict.push(value_type(*iter_second));
+      iter_second++;
+    }
+    auto iter_first = first.list_.cbegin();
+    auto iter_first_end = first.list_.cend();
+    while (iter_first != iter_first_end)
+    {
+      new_dict.push(value_type(*iter_first));
       iter_first++;
     }
     return new_dict;
