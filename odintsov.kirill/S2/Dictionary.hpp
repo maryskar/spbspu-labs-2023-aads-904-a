@@ -352,32 +352,6 @@ namespace odintsov {
       return find(k) != cend();
     }
 
-    Iter preLowerBound(const Key& k)
-    {
-      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preLowerBound(k).nodePtr));
-    }
-
-    Iter preLowerBound(ConstIter pos, const Key& k)
-    {
-      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preLowerBound(pos, k).nodePtr));
-    }
-
-    ConstIter preLowerBound(const Key& k) const
-    {
-      return preLowerBound(cbeforeBegin(), k);
-    }
-
-    ConstIter preLowerBound(ConstIter pos, const Key& k) const
-    {
-      if (pos == cend()) {
-        return pos;
-      }
-      while (pos.nodePtr->next && kvComp_.keyComp(pos.nodePtr->next->val.first, k)) {
-        ++pos;
-      }
-      return pos;
-    }
-
     Iter lowerBound(const Key& k)
     {
       return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->lowerBound(k).nodePtr));
@@ -396,32 +370,6 @@ namespace odintsov {
     ConstIter lowerBound(ConstIter pos, const Key& k) const
     {
       while (pos != cend() && kvComp_.keyComp(pos->first, k)) {
-        ++pos;
-      }
-      return pos;
-    }
-
-    Iter preUpperBound(const Key& k)
-    {
-      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preUpperBound(k).nodePtr));
-    }
-
-    Iter preUpperBound(ConstIter pos, const Key& k)
-    {
-      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preUpperBound(pos, k).nodePtr));
-    }
-
-    ConstIter preUpperBound(const Key& k) const
-    {
-      return preUpperBound(cbeforeBegin(), k);
-    }
-
-    ConstIter preUpperBound(ConstIter pos, const Key& k) const
-    {
-      if (pos == cend()) {
-        return pos;
-      }
-      while (pos.nodePtr->next && !kvComp_.keyComp(k, pos.nodePtr->next->val.first)) {
         ++pos;
       }
       return pos;
@@ -475,6 +423,58 @@ namespace odintsov {
    private:
     ForwardList< kvPair > pairs_;
     KVComp kvComp_;
+
+    Iter preLowerBound(const Key& k)
+    {
+      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preLowerBound(k).nodePtr));
+    }
+
+    Iter preLowerBound(ConstIter pos, const Key& k)
+    {
+      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preLowerBound(pos, k).nodePtr));
+    }
+
+    ConstIter preLowerBound(const Key& k) const
+    {
+      return preLowerBound(cbeforeBegin(), k);
+    }
+
+    ConstIter preLowerBound(ConstIter pos, const Key& k) const
+    {
+      if (pos == cend()) {
+        return pos;
+      }
+      while (pos.nodePtr->next && kvComp_.keyComp(pos.nodePtr->next->val.first, k)) {
+        ++pos;
+      }
+      return pos;
+    }
+
+    Iter preUpperBound(const Key& k)
+    {
+      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preUpperBound(k).nodePtr));
+    }
+
+    Iter preUpperBound(ConstIter pos, const Key& k)
+    {
+      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preUpperBound(pos, k).nodePtr));
+    }
+
+    ConstIter preUpperBound(const Key& k) const
+    {
+      return preUpperBound(cbeforeBegin(), k);
+    }
+
+    ConstIter preUpperBound(ConstIter pos, const Key& k) const
+    {
+      if (pos == cend()) {
+        return pos;
+      }
+      while (pos.nodePtr->next && !kvComp_.keyComp(k, pos.nodePtr->next->val.first)) {
+        ++pos;
+      }
+      return pos;
+    }
   };
 
   template< typename Key, typename Value, typename Compare >
