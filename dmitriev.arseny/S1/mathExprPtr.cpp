@@ -7,10 +7,10 @@ namespace
     return (inp == '(') || (inp == ')');
   }
 
-  bool isEnd(char inp)
-  {
-    return (inp == '\0');
-  }
+  //bool isEnd(char inp)
+  //{
+  //  return (inp == '\0');
+  //}
 
   bool isOperator(char inp)
   {
@@ -19,11 +19,11 @@ namespace
 
   dmitriev::Expression* defineMathSymb(std::string inp)
   {
-    if (isParenthesis(inp[0]) && isEnd(inp[1]))
+    if (isParenthesis(inp[0]) && (inp.size() == 1))
     {
       return new dmitriev::Parenthesis(inp[0]);
     }
-    else if (isOperator(inp[0]) && isEnd(inp[1]))
+    else if (isOperator(inp[0]) && (inp.size() == 1))
     {
       return new dmitriev::Operator(inp[0]);
     }
