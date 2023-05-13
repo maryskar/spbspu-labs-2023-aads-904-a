@@ -1,7 +1,8 @@
 #ifndef FORWARDLIST_H
 #define FORWARDLIST_H
-#include "iterator.h"
+#include <stdexcept>
 #include "constIterator.h"
+#include "iterator.h"
 #include "nodeList.h"
 
 namespace mashkin
@@ -22,9 +23,9 @@ namespace mashkin
     ConstIterator< T > cbegin() noexcept;
     ConstIterator< T > cend() noexcept;
 
-    T front();
+    T& front();
     void push_front(const T& value);
-    T pop_front();
+    void pop_front();
 
     bool empty() const noexcept;
 
@@ -49,6 +50,13 @@ mashkin::ForwardList< T >::ForwardList(const ForwardList< T >& lhs):
 }
 
 template< class T >
+mashkin::ForwardList< T >::ForwardList(ForwardList< T >&& rhs):
+  head(rhs.head),
+  tail(rhs.tail)
+{
+}
+
+template< class T >
 void mashkin::ForwardList< T >::push_front(const T& value)
 {
   if (empty())
@@ -58,8 +66,8 @@ void mashkin::ForwardList< T >::push_front(const T& value)
   }
   else
   {
-    tail->next = new NodeList< T >{value, nullptr};
-    tail = tail->next;
+    NodeList< T >* var = new NodeList< T >{value, head};
+    head = var;
   }
 }
 
@@ -78,8 +86,7 @@ mashkin::Iterator< T > mashkin::ForwardList< T >::begin() noexcept
 template< class T >
 mashkin::Iterator< T > mashkin::ForwardList< T >::end() noexcept
 {
-  iter it(tail);
-  return ++it;
+  return iter(tail->next);
 }
 
 template< class T >
@@ -91,13 +98,25 @@ mashkin::ConstIterator< T > mashkin::ForwardList< T >::cbegin() noexcept
 template< class T >
 mashkin::ConstIterator< T > mashkin::ForwardList< T >::cend() noexcept
 {
-  citer it(tail);
-  return ++it;
+  return citer(tail->next);
 }
 
 template< class T >
-T mashkin::ForwardList< T >::front()
+T& mashkin::ForwardList< T >::front()
 {
   return *this->begin();
 }
+
+template< class T >
+void mashkin::ForwardList< T >::pop_front()
+{
+  if (!head)
+  {
+    throw std::out_of_range("You got the end of list");
+  }
+  NodeList< T >* toDel = head;
+  head = head->next;
+  delete toDel;
+}
+
 #endif
