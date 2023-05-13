@@ -45,9 +45,14 @@ mashkin::Stack< T >::Stack(const Stack< T >& lhs):
 
 template< typename T >
 mashkin::Stack< T >::Stack(Stack< T >&& rhs) noexcept:
-  top_(rhs.top_)
+  top_(nullptr)
 {
-  rhs.top_ = nullptr;
+  auto var = rhs.top_;
+  while (var)
+  {
+    push(var->data);
+    var = var->next;
+  }
 }
 
 template< typename T >
