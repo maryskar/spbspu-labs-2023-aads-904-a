@@ -412,7 +412,7 @@ namespace odintsov {
     void throwOutsideIter(ConstIter it)
     {
       if (it == cend()) {
-        throw std::range_error("Invalid attempt to use iterator outside ForwardList");
+        throw std::out_of_range("Invalid attempt to use iterator outside ForwardList");
       }
     }
 
