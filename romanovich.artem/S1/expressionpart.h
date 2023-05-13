@@ -31,6 +31,5 @@ namespace romanovich
       parenthesis_t parenthesis_;
     } content_;
   };
-  ExpPart createFromString(const std::string &string);
 }
 #endif
