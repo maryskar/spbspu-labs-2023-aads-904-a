@@ -341,7 +341,7 @@ namespace odintsov {
     ConstIter find(const Key& k) const
     {
       ConstIter lb = lowerBound(k);
-      if (lb == cend() || lb->first != k) {
+      if (lb == cend() || kvComp_.keyComp(k, lb->first)) {
         return cend();
       }
       return lb;
