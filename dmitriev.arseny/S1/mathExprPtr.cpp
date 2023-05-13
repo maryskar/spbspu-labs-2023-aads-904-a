@@ -7,6 +7,11 @@ namespace
     return (inp == '(') || (inp == ')');
   }
 
+  //bool isEnd(char inp)
+  //{
+  //  return (inp == '\0');
+  //}
+
   bool isOperator(char inp)
   {
     return (inp == '+') || (inp == '-') || (inp == '*') || (inp == '/') || (inp == '%');
@@ -51,9 +56,9 @@ dmitriev::MathExprPtr& dmitriev::MathExprPtr::operator=(MathExprPtr&& otherMathE
   return *this;
 }
 
-dmitriev::Expression& dmitriev::MathExprPtr::operator*()
+dmitriev::Expression* dmitriev::MathExprPtr::operator*()
 {
-  return *m_adress;
+  return m_adress;
 }
 
 dmitriev::Expression* dmitriev::MathExprPtr::operator->()
