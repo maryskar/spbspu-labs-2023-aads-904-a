@@ -264,17 +264,7 @@ namespace chemodurov
   template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, T && value)
   {
-    pos.node_->next = new detail::List< T >{std::move(value), pos.node_->next};
-    ++pos;
-    if (!last_.node_)
-    {
-      last_.node_ = pos.node_;
-    }
-    else
-    {
-      moveLastTo(pos);
-    }
-    return iterator(pos.node_);
+    return insert_after(pos, value);
   }
 
   template< typename T >

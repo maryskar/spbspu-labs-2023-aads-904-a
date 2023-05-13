@@ -3,9 +3,10 @@
 namespace chemodurov
 {
   void doCommand(const std::string & name_command,
-    const Dictionary< std::string, command_t > & commands,
-    std::istream & in, std::ostream & out,
-    Dictionary< std::string, dic_t > & data)
+      const Dictionary< std::string, command_t > & commands,
+      Dictionary< std::string, dic_t > & data,
+      std::istream & in,
+      std::ostream & out)
   {
     (commands.at(name_command))(in, out, data);
   }

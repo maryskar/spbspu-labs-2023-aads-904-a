@@ -303,17 +303,19 @@ namespace chemodurov
   }
 
   template< typename Key, typename Value, typename Compare >
-  std::pair< typename Dictionary< Key, Value, Compare >::iterator,
-      typename Dictionary< Key, Value, Compare >::iterator >
-          Dictionary< Key, Value, Compare >::equal_range(const key_type & key)
+  std::pair<
+      typename Dictionary< Key, Value, Compare >::iterator,
+      typename Dictionary< Key, Value, Compare >::iterator
+  > Dictionary< Key, Value, Compare >::equal_range(const key_type & key)
   {
     return std::pair< iterator, iterator >(lower_bound(key), ++(upper_bound(key)));
   }
 
   template< typename Key, typename Value, typename Compare >
-  std::pair< typename Dictionary< Key, Value, Compare >::const_iterator,
-      typename Dictionary< Key, Value, Compare >::const_iterator >
-          Dictionary< Key, Value, Compare >::equal_range(const key_type & key) const
+  std::pair<
+      typename Dictionary< Key, Value, Compare >::const_iterator,
+      typename Dictionary< Key, Value, Compare >::const_iterator
+  > Dictionary< Key, Value, Compare >::equal_range(const key_type & key) const
   {
     return std::pair< iterator, iterator >(lower_bound(key), ++(upper_bound(key)));
   }
@@ -388,8 +390,10 @@ namespace chemodurov
   }
 
   template< typename Key, typename Value, typename Compare >
-  std::pair< typename Dictionary< Key, Value, Compare >::iterator,
-      bool > Dictionary< Key, Value, Compare >::insert(const value_type & value)
+  std::pair<
+      typename Dictionary< Key, Value, Compare >::iterator,
+      bool
+  > Dictionary< Key, Value, Compare >::insert(const value_type & value)
   {
     iterator it = lower_bound(value.first);
     iterator moved_it = it;
@@ -456,8 +460,10 @@ namespace chemodurov
 
   template< typename Key, typename Value, typename Compare >
   template< typename... Args >
-  std::pair< typename Dictionary< Key, Value, Compare >::iterator,
-      bool > Dictionary< Key, Value, Compare >::emplace(Args && ... args)
+  std::pair<
+      typename Dictionary< Key, Value, Compare >::iterator,
+      bool
+  > Dictionary< Key, Value, Compare >::emplace(Args && ... args)
   {
     return insert(std::forward< Args >(args)...);
   }
@@ -572,28 +578,34 @@ namespace chemodurov
     return !(lhs == rhs);
   }
 
-  template< typename T, typename U >
-  std::ostream & operator<<(std::ostream & out, const std::pair< T, U > & pair)
+  void print(std::ostream & out, const std::pair< int, std::string > & pair)
   {
-    return (out << pair.first << ' ' << pair.second);
+    out << pair.first << ' ' << pair.second;
   }
 
+  void print(std::ostream & out, const std::pair< std::string, Dictionary< int, std::string > > & pair);
+
   template< typename Key, typename Value, typename Compare >
-  std::ostream & operator<<(std::ostream & out, const Dictionary< Key, Value, Compare > & dict)
+  void print(std::ostream & out, const Dictionary< Key, Value, Compare > & dict)
   {
     auto end_ = dict.end();
     for (auto i = dict.begin(); i != end_; ++i)
     {
       if (i == dict.begin())
       {
-        out << *i;
+        print(out, *i);
       }
       else
       {
-        out << ' ' << *i;
+        print(out << ' ', *i);
       }
     }
-    return out;
+  }
+
+  void print(std::ostream & out, const std::pair< std::string, Dictionary< int, std::string > > & pair)
+  {
+    out << pair.first << ' ';
+    print(out, pair.second);
   }
 }
 

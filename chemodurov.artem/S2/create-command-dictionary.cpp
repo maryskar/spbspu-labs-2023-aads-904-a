@@ -16,7 +16,8 @@ namespace chemodurov
       out << "<EMPTY>\n";
       return;
     }
-    out << *(it) << '\n';
+    print(out, *(it));
+    out << '\n';
   }
 
   template< typename P >
