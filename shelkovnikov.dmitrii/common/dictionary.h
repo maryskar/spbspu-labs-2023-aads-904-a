@@ -9,14 +9,14 @@ namespace dimkashelk
   namespace details
   {
     template< typename K, typename Comp >
-    bool isEqual(K key1, K key2, Comp comp)
+    bool isEqual(K key1, K key2)
     {
-      return !comp(key1, key2) && !comp(key2, key1);
+      return !Comp{}(key1, key2) && !Comp{}(key2, key1);
     }
     template< typename K, typename Comp >
-    bool isNotEqual(K key1, K key2, Comp comp)
+    bool isNotEqual(K key1, K key2)
     {
-      return !isEqual(key1, key2, comp);
+      return !isEqual< K, Comp >(key1, key2);
     }
   }
   template< typename Key, typename Value, typename Compare >
@@ -64,7 +64,7 @@ namespace dimkashelk
     }
     Value &at(const Key &k)
     {
-      auto res = search(list_.beforeBegin(), k, details::isEqual);
+      auto res = search(list_.beforeBegin(), k, details::isEqual< Key, Compare >);
       if (res.second == end())
       {
         throw std::out_of_range("Out of range");
@@ -77,7 +77,7 @@ namespace dimkashelk
     }
     Value &operator[](const Key &key)
     {
-      auto res = search(list_.beforeBegin(), key, details::isEqual);
+      auto res = search(list_.beforeBegin(), key, details::isEqual< Key, Compare >);
       if (res.second == end())
       {
         value_type value_to_insert = {key, Value()};
@@ -141,7 +141,7 @@ namespace dimkashelk
     }
     size_t erase(const Key &k)
     {
-      auto res = search(list_.beforeBegin(), k, details::isEqual);
+      auto res = search(list_.beforeBegin(), k, details::isEqual< Key, Compare >);
       if (res.second == end())
       {
         return 0;
@@ -167,7 +167,7 @@ namespace dimkashelk
     }
     iterator_t find(const Key &x)
     {
-      auto res = search(list_.beforeBegin(), x, details::isEqual);
+      auto res = search(list_.beforeBegin(), x, details::isEqual< Key, Compare >);
       return res.second;
     }
     std::pair< iterator_t, iterator_t > equal_range(const Key &x)
@@ -200,22 +200,22 @@ namespace dimkashelk
     {
       return upper_bound(x);
     }
-    bool operator==(const dict_type &first, const dict_type &second)
+    bool operator==(const dict_type &second)
     {
-      auto first_it = first.cbegin();
+      auto first_it = cbegin();
       auto second_it = second.cbegin();
-      for (; first_it != first.cend() && second_it != second.cend(); first_it++, second_it++)
+      for (; first_it != cend() && second_it != second.cend(); first_it++, second_it++)
       {
-        if (details::isNotEqual(first_it->first, second_it->first, Compare{}))
+        if (details::isNotEqual(first_it->first, second_it->first))
         {
           return false;
         }
       }
       return true;
     }
-    bool operator!=(const dict_type &first, const dict_type &second)
+    bool operator!=(const dict_type &second)
     {
-      return !(first == second);
+      return !(*this == second);
     }
   private:
     ForwardList< value_type > list_;
@@ -232,7 +232,7 @@ namespace dimkashelk
         }
         prev = it;
       }
-      if (prev != list_.beforeBegin() && details::isEqual(prev->first, value.first, compare_))
+      if (prev != list_.beforeBegin() && details::isEqual< Key, Compare >(prev->first, value.first))
       {
         (*prev).second = value.second;
       }
@@ -242,14 +242,14 @@ namespace dimkashelk
       }
       return iterator_t(prev);
     }
-    std::pair< iterator_t, iterator_t > search(iterator_t start, const Key &key, std::function< bool(Key, Key, Compare) > func)
+    std::pair< iterator_t, iterator_t > search(iterator_t start, const Key &key, std::function< bool(Key, Key) > func)
     {
       auto prev = start;
       start++;
       auto cur = start;
       for (; cur != end(); prev = cur, cur++)
       {
-        if (func(cur->first, key, compare_))
+        if (func(cur->first, key))
         {
           return {prev, cur};
         }
@@ -271,7 +271,7 @@ namespace dimkashelk
       auto res = second.cend();
       for (auto i = first.cbegin(); i != first.cend(); i++)
       {
-        if (details::isEqual(it_first->first, i->first, C{}))
+        if (details::isEqual< K, C >(it_first->first, i->first))
         {
           res = i;
           break;
@@ -307,7 +307,7 @@ namespace dimkashelk
       {
         break;
       }
-      if (details::isNotEqual(iter_first->first, iter_second->first, comp))
+      if (details::isNotEqual< K, C >(iter_first->first, iter_second->first))
       {
         new_dict[iter_first->first] = iter_first->second;
       }
