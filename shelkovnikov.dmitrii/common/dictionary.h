@@ -66,7 +66,7 @@ namespace dimkashelk
     {
       for (auto i = begin(); i != end(); i++)
       {
-        if (details::isEqual< Key, Compare >(i->first == k))
+        if (details::isEqual(i->first, k, compare_))
         {
           return (*i).second;
         }
@@ -83,7 +83,7 @@ namespace dimkashelk
       auto cur = begin();
       for (; cur != end(); prev = cur, cur++)
       {
-        if (details::isEqual< Key, Compare >(cur->first == key))
+        if (details::isEqual(cur->first, key, compare_))
         {
           return (*cur).second;
         }
@@ -154,7 +154,7 @@ namespace dimkashelk
       auto prev = list_.beforeBegin();
       for (auto cur = begin(); cur != end(); prev = cur, cur++)
       {
-        if (details::isEqual< Key, Compare >(cur->first == k))
+        if (details::isEqual(cur->first, k, compare_))
         {
           list_.eraseAfter(prev);
           return 1;
@@ -171,7 +171,7 @@ namespace dimkashelk
       size_t count = 0;
       for (auto i: *this)
       {
-        if (details::isEqual< Key, Compare >(i.first == x))
+        if (details::isEqual(i.first, x, compare_))
         {
           count++;
         }
@@ -182,7 +182,7 @@ namespace dimkashelk
     {
       for (auto i = begin(); i != end(); i++)
       {
-        if (details::isEqual< Key, Compare >(i->first == x))
+        if (details::isEqual(i->first, x, compare_))
         {
           return i;
         }
@@ -217,7 +217,7 @@ namespace dimkashelk
     iterator_t upper_bound(const Key &x)
     {
       auto res = lower_bound(x);
-      if (details::isEqual< Key, Compare >(res->first == x))
+      if (details::isEqual(res->first, x, compare_))
       {
         res++;
       }
@@ -233,7 +233,7 @@ namespace dimkashelk
       auto second_it = second.cbegin();
       for (; first_it != first.cend() && second_it != second.cend(); first_it++, second_it++)
       {
-        if (details::isNotEqual< Key, Compare >(first_it->first, second_it->first))
+        if (details::isNotEqual(first_it->first, second_it->first, Compare{}))
         {
           return false;
         }
@@ -259,7 +259,7 @@ namespace dimkashelk
         }
         prev = it;
       }
-      if (prev != list_.beforeBegin() && details::isEqual< Key, Compare >(prev->first == value.first))
+      if (prev != list_.beforeBegin() && details::isEqual(prev->first, value.first, compare_))
       {
         (*prev).second = value.second;
       }
@@ -269,7 +269,8 @@ namespace dimkashelk
       }
       return iterator_t(prev);
     }
-    std::pair< iterator_t, iterator_t > search(iterator_t start, iterator_t end, const Key &key, std::function< )
+    std::pair< iterator_t, iterator_t > search(iterator_t start, iterator_t end, const Key &key)
+    {}
   };
   template< class Key, class T, class Compare >
   void swap(Dictionary< Key, T, Compare > &lhs, Dictionary< Key, T, Compare > &rhs )
@@ -285,7 +286,7 @@ namespace dimkashelk
       auto res = second.cend();
       for (auto i = first.cbegin(); i != first.cend(); i++)
       {
-        if (details::isEqual< K, C >(it_first->first, i->first))
+        if (details::isEqual(it_first->first, i->first, C{}))
         {
           res = i;
           break;
@@ -310,9 +311,10 @@ namespace dimkashelk
     auto iter_first_end = first.cend();
     auto iter_second = second.cbegin();
     auto iter_second_end = second.cend();
+    C comp = C{};
     while (iter_first != iter_first_end && iter_second != iter_second_end)
     {
-      while (iter_second != iter_second_end && C{}((*iter_second).first, (*iter_first).first))
+      while (iter_second != iter_second_end && comp((*iter_second).first, (*iter_first).first))
       {
         iter_second++;
       }
@@ -320,7 +322,7 @@ namespace dimkashelk
       {
         break;
       }
-      if (details::isNotEqual< K, C >(iter_first->first, iter_second->first))
+      if (details::isNotEqual(iter_first->first, iter_second->first, comp))
       {
         new_dict[iter_first->first] = iter_first->second;
       }
