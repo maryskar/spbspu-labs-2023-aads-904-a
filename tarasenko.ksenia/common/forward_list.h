@@ -18,6 +18,7 @@ namespace tarasenko
    ForwardList():
      null_(static_cast< details::NodeOfList< T >* >(::operator new (sizeof(details::NodeOfList< T >)))),
      first_(nullptr),
+     last_(nullptr),
      size_(0)
    {
      null_->next = nullptr;
@@ -25,17 +26,21 @@ namespace tarasenko
    ForwardList(const ForwardList< T >& other):
      null_(static_cast< details::NodeOfList< T >* >(::operator new (sizeof(details::NodeOfList< T >)))),
      first_(details::newCopy(other.first_)),
+     last_(nullptr),
      size_(other.size_)
    {
+     setLast();
      null_->next = first_;
    }
    ForwardList(ForwardList< T >&& other):
      null_(other.null_),
      first_(other.first_),
+     last_(other.last_),
      size_(other.size_)
    {
      other.null_ = nullptr;
      other.first_ = nullptr;
+     other.last_ = nullptr;
      other.size_ = 0;
    }
    ~ForwardList()
@@ -51,6 +56,7 @@ namespace tarasenko
        details::clear(std::addressof(first_));
        first_ = new_node;
        null_->next = first_;
+       setLast();
        size_ = other.size_;
      }
      return *this;
@@ -62,6 +68,7 @@ namespace tarasenko
        details::clear(std::addressof(first_));
        first_ = other.first_;
        null_->next = first_;
+       last_ = other.last_;
        size_ = other.size_;
        other.first_ = nullptr;
      }
@@ -81,6 +88,9 @@ namespace tarasenko
    void resize(size_t count);
    void resize(size_t count, const T& value);
    void swap(ForwardList< T >& other);
+   void splice_after(const_iterator pos, ForwardList< T >& other );
+   void splice_after(const_iterator pos, ForwardList< T >& other, const_iterator it);
+   void splice_after(const_iterator pos, ForwardList< T >& other, const_iterator first, const_iterator last);
 
    friend class ForwardListIterator< T >;
    iterator beforeBegin() const
@@ -113,7 +123,21 @@ namespace tarasenko
   private:
    details::NodeOfList< T >* null_;
    details::NodeOfList< T >* first_;
+   details::NodeOfList< T >* last_;
    size_t size_;
+   void setLast()
+   {
+     last_ = first_;
+     if (first_)
+     {
+       auto curr = first_->next;
+       while (curr && curr->next)
+       {
+         curr = curr->next;
+       }
+       last_ = curr;
+     }
+   }
   };
 
   template< typename T >
@@ -134,16 +158,18 @@ namespace tarasenko
     if (first_ == nullptr)
     {
       first_ = new details::NodeOfList< T >(data, nullptr);
+      last_ = first_;
       null_->next = first_;
+    }
+    else if (last_ == first_)
+    {
+      last_ = new details::NodeOfList< T >(data, nullptr);
+      first_->next = last_;
     }
     else
     {
-      details::NodeOfList< T >* current = first_;
-      while (current->next != nullptr)
-      {
-        current = current->next;
-      }
-      current->next = new details::NodeOfList< T >(data, nullptr);
+      last_->next = new details::NodeOfList< T >(data, nullptr);
+      last_ = last_->next;
     }
     size_++;
   }
@@ -174,6 +200,14 @@ namespace tarasenko
     if (pos.node_ == null_)
     {
       first_ = new_node;
+      if (last_ == nullptr)
+      {
+        last_ = first_;
+      }
+    }
+    if (pos.node_ == last_)
+    {
+      last_ = new_node;
     }
     size_++;
     return iterator(new_node);
@@ -183,6 +217,10 @@ namespace tarasenko
   ForwardListIterator< T > ForwardList< T >::eraseAfter(const_iterator pos)
   {
     auto to_delete = pos.node_->next;
+    if (to_delete == last_)
+    {
+      last_ = pos.node_;
+    }
     if (to_delete)
     {
       pos.node_->next = pos.node_->next->next;
@@ -192,7 +230,10 @@ namespace tarasenko
       first_ = pos.node_->next;
       null_->next = first_;
     }
-    delete to_delete;
+    if (to_delete)
+    {
+      delete to_delete;
+    }
     size_--;
     return iterator(pos.node_->next);
   }
@@ -263,7 +304,27 @@ namespace tarasenko
   {
     std::swap(null_, other.null_);
     std::swap(first_, other.first_);
+    std::swap(last_, other.last_);
     std::swap(size_, other.size_);
+  }
+
+  template< typename T >
+  void ForwardList< T >::splice_after(const_iterator pos, ForwardList< T >& other )
+  {
+
+  }
+
+  template< typename T >
+  void ForwardList< T >::splice_after(const_iterator pos, ForwardList< T >& other, const_iterator it)
+  {
+
+  }
+
+  template< typename T >
+  void ForwardList< T >::splice_after(const_iterator pos, ForwardList< T >& other, const_iterator first,
+                                      const_iterator last)
+  {
+
   }
 
   template< typename T >
@@ -271,6 +332,7 @@ namespace tarasenko
   {
     details::clear(std::addressof(first_));
     first_ = nullptr;
+    last_ = nullptr;
     size_ = 0;
   }
 }
