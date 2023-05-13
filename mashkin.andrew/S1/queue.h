@@ -19,7 +19,6 @@ namespace mashkin
     void dequeue();
     bool isEmpty() const noexcept;
     T& getHead() const;
-    T& getHead();
 
   private:
     list_t< T >* head_;
@@ -103,12 +102,6 @@ T& mashkin::Queue< T >::getHead() const
     throw std::underflow_error("Queue underflow");
   }
   return head_->data;
-}
-
-template< typename T >
-T& mashkin::Queue< T >::getHead()
-{
-  return *this->getHead();
 }
 
 template< typename T >
