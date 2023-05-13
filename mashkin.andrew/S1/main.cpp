@@ -27,7 +27,6 @@ int main(int argc, char** argv)
   std::istream& input = argc == 1 ? std::cin : inpFile;
   try
   {
-
     mashkin::Queue< std::string > que;
     mashkin::Stack< int long long > result;
     while (input)

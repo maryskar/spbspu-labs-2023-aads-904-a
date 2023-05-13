@@ -47,7 +47,7 @@ mashkin::Stack< T >::Stack(Stack< T >&& rhs) noexcept:
 template< typename T >
 mashkin::Stack< T >::~Stack()
 {
-  while(isEmpty())
+  while (isEmpty())
   {
     this->pop();
   }

@@ -4,7 +4,7 @@
 
 namespace mashkin
 {
-  void print(mashkin::Stack< int long long >& result)
+  void print(mashkin::Stack< int long long > result)
   {
     while (result.isEmpty())
     {

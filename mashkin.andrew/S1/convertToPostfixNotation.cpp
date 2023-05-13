@@ -30,7 +30,7 @@ namespace mashkin
   {
     mashkin::Stack< std::string > stc;
     std::string op;
-    for (auto symb : line)
+    for (auto symb: line)
     {
       if (symb == ' ')
       {
