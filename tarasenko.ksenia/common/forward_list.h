@@ -103,6 +103,9 @@ namespace tarasenko
        ++curr;
      }
    }
+   void reverse();
+   bool operator==(const ForwardList< T > &rhs);
+   bool operator!=(const ForwardList< T > &rhs);
 
    friend class ForwardListIterator< T >;
    iterator beforeBegin() const
@@ -365,6 +368,26 @@ namespace tarasenko
         curr++;
       }
     }
+  }
+
+  template< typename T >
+  void ForwardList< T >::reverse()
+  {
+    details::NodeOfList< T >* prev = nullptr;
+    details::NodeOfList< T >* curr = first_;
+    details::NodeOfList< T >* next = nullptr;
+    last_ = first_;
+
+    while (curr != null_ && curr)
+    {
+      next = curr->next;
+      curr->next = prev;
+      prev = curr;
+      curr = next;
+    }
+
+    first_ = prev;
+    null_->next = first_;
   }
 
   template< typename T >
