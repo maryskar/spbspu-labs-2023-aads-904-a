@@ -105,26 +105,6 @@ namespace tarasenko
    }
    void reverse();
 
-   friend bool operator==(const ForwardList< T > &lhs, const ForwardList< T > &rhs)
-   {
-     auto lhs_begin = lhs.cbegin();
-     auto rhs_begin = rhs.cbegin();
-     while (lhs_begin != lhs.cend() && rhs_begin != rhs.cend())
-     {
-       if (*lhs_begin != *rhs_begin)
-       {
-         return false;
-       }
-       ++lhs_begin;
-       ++rhs_begin;
-     }
-     return lhs.size_ == rhs.size_;
-   }
-   friend bool operator!=(const ForwardList< T > &lhs, const ForwardList< T > &rhs)
-   {
-     return !(lhs == rhs);
-   }
-
    friend class ForwardListIterator< T >;
    iterator beforeBegin() const
    {
@@ -409,11 +389,33 @@ namespace tarasenko
   }
 
   template< typename T >
+  bool operator==(const ForwardList< T > &lhs, const ForwardList< T > &rhs)
+  {
+    auto lhs_begin = lhs.cbegin();
+    auto rhs_begin = rhs.cbegin();
+    while (lhs_begin != lhs.cend() && rhs_begin != rhs.cend())
+    {
+      if (*lhs_begin != *rhs_begin)
+      {
+        return false;
+      }
+      ++lhs_begin;
+      ++rhs_begin;
+    }
+    return lhs.size_ == rhs.size_;
+  }
+
+  template< typename T >
+  bool operator!=(const ForwardList< T > &lhs, const ForwardList< T > &rhs)
+  {
+    return !(lhs == rhs);
+  }
+
+  template< typename T >
   void ForwardList< T >::clear()
   {
     details::clear(std::addressof(first_));
     first_ = nullptr;
-    null_->next = first_;
     last_ = nullptr;
     size_ = 0;
   }
