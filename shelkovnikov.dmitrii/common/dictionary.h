@@ -324,10 +324,10 @@ namespace dimkashelk
     {
       return new_dict;
     }
-    auto iter_first = first.list_.cbegin();
-    auto iter_first_end = first.list_.cend();
-    auto iter_second = second.list_.cbegin();
-    auto iter_second_end = second.list_.cend();
+    auto iter_first = first.cbegin();
+    auto iter_first_end = first.cend();
+    auto iter_second = second.cbegin();
+    auto iter_second_end = second.cend();
     while (iter_first != iter_first_end && iter_second != iter_second_end)
     {
       while (iter_second != iter_second_end && C{}((*iter_second).first, (*iter_first).first))
