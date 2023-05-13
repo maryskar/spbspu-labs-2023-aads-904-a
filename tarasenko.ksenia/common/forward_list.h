@@ -89,8 +89,20 @@ namespace tarasenko
    void resize(size_t count, const T& value);
    void swap(ForwardList< T >& other);
    void spliceAfter(const_iterator pos, ForwardList< T >& other );
-   void spliceAfter(const_iterator pos, ForwardList< T >& other, const_iterator it);
-   void spliceAfter(const_iterator pos, ForwardList< T >& other, const_iterator first, const_iterator last);
+   void remove(const T& value);
+   template< typename UnaryPredicate >
+   void removeIf(UnaryPredicate p)
+   {
+     auto curr = begin();
+     while (curr != end())
+     {
+       if (p(curr.node_->data))
+       {
+         remove(curr.node_->data);
+       }
+       ++curr;
+     }
+   }
 
    friend class ForwardListIterator< T >;
    iterator beforeBegin() const
@@ -311,11 +323,11 @@ namespace tarasenko
   template< typename T >
   void ForwardList< T >::spliceAfter(const_iterator pos, ForwardList< T >& other )
   {
-    auto o_first = other.first_;
-    auto o_last = other.last_;
-    auto next = pos.node_->next;
     if (!other.isEmpty())
     {
+      auto o_first = other.first_;
+      auto o_last = other.last_;
+      auto next = pos.node_->next;
       if (other.last_)
       {
         other.last_->next = next;
@@ -339,16 +351,20 @@ namespace tarasenko
   }
 
   template< typename T >
-  void ForwardList< T >::spliceAfter(const_iterator pos, ForwardList< T >& other, const_iterator it)
+  void ForwardList< T >::remove(const T& value)
   {
-
-  }
-
-  template< typename T >
-  void ForwardList< T >::spliceAfter(const_iterator pos, ForwardList< T >& other, const_iterator first,
-      const_iterator last)
-  {
-
+    auto curr = begin();
+    while (curr != end())
+    {
+      if (curr.node_ && curr.node_->next->data == value)
+      {
+        eraseAfter(curr);
+      }
+      else
+      {
+        curr++;
+      }
+    }
   }
 
   template< typename T >
