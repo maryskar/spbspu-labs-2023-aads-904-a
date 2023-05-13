@@ -22,8 +22,9 @@ namespace mashkin
     ConstIterator< T > cbegin() noexcept;
     ConstIterator< T > cend() noexcept;
 
+    T front();
     void push_front(const T& value);
-    T pop();
+    T pop_front();
 
     bool empty() const noexcept;
 
@@ -92,5 +93,11 @@ mashkin::ConstIterator< T > mashkin::ForwardList< T >::cend() noexcept
 {
   citer it(tail);
   return ++it;
+}
+
+template< class T >
+T mashkin::ForwardList< T >::front()
+{
+  return *this->begin();
 }
 #endif
