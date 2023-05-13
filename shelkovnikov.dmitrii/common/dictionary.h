@@ -367,8 +367,8 @@ namespace dimkashelk
     {
       return out << "<EMPTY>";
     }
-    auto it = dict.list_.begin();
-    auto end = dict.list_.end();
+    auto it = dict.begin();
+    auto end = dict.end();
     out << it->first << " " << it->second;
     it++;
     for (; it != end; it++) {
