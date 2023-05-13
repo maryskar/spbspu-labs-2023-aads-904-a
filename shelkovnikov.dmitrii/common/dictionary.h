@@ -2,7 +2,7 @@
 #define SPBSPU_LABS_2023_AADS_904_A_DICTIONARY_H
 #include <utility>
 #include <ostream>
-#include <algorithm>
+#include <functional>
 #include "forwardlist.h"
 namespace dimkashelk
 {
@@ -64,14 +64,12 @@ namespace dimkashelk
     }
     Value &at(const Key &k)
     {
-      for (auto i = begin(); i != end(); i++)
+      auto res = search(list_.beforeBegin(), k, details::isEqual);
+      if (res.second == end())
       {
-        if (details::isEqual(i->first, k, compare_))
-        {
-          return (*i).second;
-        }
+        throw std::out_of_range("Out of range");
       }
-      throw std::out_of_range("Out of range");
+      return res.second->second;
     }
     const Value &at(const Key &k) const
     {
@@ -79,22 +77,14 @@ namespace dimkashelk
     }
     Value &operator[](const Key &key)
     {
-      auto prev = list_.beforeBegin();
-      auto cur = begin();
-      for (; cur != end(); prev = cur, cur++)
+      auto res = search(list_.beforeBegin(), key, details::isEqual);
+      if (res.second == end())
       {
-        if (details::isEqual(cur->first, key, compare_))
-        {
-          return (*cur).second;
-        }
-        if (compare_((*cur).first, key))
-        {
-          break;
-        }
+        value_type value_to_insert = {key, Value()};
+        auto insert_res = list_.insertAfter(res.first, value_to_insert);
+        return insert_res->second;
       }
-      value_type value_to_insert = {key, Value()};
-      auto res = list_.insertAfter(prev, value_to_insert);
-      return (*res).second;
+      return res.second->second;
     }
     Value &operator[](Key &&key)
     {
@@ -151,16 +141,13 @@ namespace dimkashelk
     }
     size_t erase(const Key &k)
     {
-      auto prev = list_.beforeBegin();
-      for (auto cur = begin(); cur != end(); prev = cur, cur++)
+      auto res = search(list_.beforeBegin(), k, details::isEqual);
+      if (res.second == end())
       {
-        if (details::isEqual(cur->first, k, compare_))
-        {
-          list_.eraseAfter(prev);
-          return 1;
-        }
+        return 0;
       }
-      return 0;
+      list_.eraseAfter(res.first);
+      return 1;
     }
     void swap(Dictionary< Key, Value, Compare > &other)
     {
@@ -180,14 +167,8 @@ namespace dimkashelk
     }
     iterator_t find(const Key &x)
     {
-      for (auto i = begin(); i != end(); i++)
-      {
-        if (details::isEqual(i->first, x, compare_))
-        {
-          return i;
-        }
-      }
-      return end();
+      auto res = search(list_.beforeBegin(), x, details::isEqual);
+      return res.second;
     }
     std::pair< iterator_t, iterator_t > equal_range(const Key &x)
     {
@@ -199,16 +180,8 @@ namespace dimkashelk
     }
     iterator_t lower_bound(const Key &x)
     {
-      auto prev = begin();
-      auto cur = begin();
-      for (auto i = begin(); i != end(); i++)
-      {
-        if (!compare_(i->first, x))
-        {
-          return i;
-        }
-      }
-      return end();
+      auto res = search(list_.beforeBegin(), x, !compare_);
+      return res.second;
     }
     const_iterator_t lower_bound(const Key &x) const
     {
@@ -269,8 +242,20 @@ namespace dimkashelk
       }
       return iterator_t(prev);
     }
-    std::pair< iterator_t, iterator_t > search(iterator_t start, iterator_t end, const Key &key)
-    {}
+    std::pair< iterator_t, iterator_t > search(iterator_t start, const Key &key, std::function< bool(Key, Key, Compare) > func)
+    {
+      auto prev = start;
+      start++;
+      auto cur = start;
+      for (; cur != end(); prev = cur, cur++)
+      {
+        if (func(cur->first, key, compare_))
+        {
+          return {prev, cur};
+        }
+      }
+      return {prev, cur};
+    }
   };
   template< class Key, class T, class Compare >
   void swap(Dictionary< Key, T, Compare > &lhs, Dictionary< Key, T, Compare > &rhs )
