@@ -35,9 +35,9 @@ mashkin::Iterator< T >::Iterator():
 }
 
 template< class T >
-mashkin::Iterator< T >::Iterator(NodeList< T >* rhs)
+mashkin::Iterator< T >::Iterator(NodeList< T >* lhs)
 {
-  node = rhs;
+  node = lhs;
 }
 
 template< class T >
@@ -45,6 +45,7 @@ mashkin::Iterator< T >& mashkin::Iterator< T >::operator++()
 {
   assert(node != nullptr);
   node = node->next;
+  return *this;
 }
 
 template< class T >
