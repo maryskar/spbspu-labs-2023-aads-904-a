@@ -340,7 +340,7 @@ namespace dimkashelk
       }
       if (details::isNotEqual< K, C >(iter_first->first, iter_second->first))
       {
-        new_dict.push(value_type(*iter_first));
+        new_dict.push(std::pair< K, V >(*iter_first));
       }
       iter_first++;
     }
