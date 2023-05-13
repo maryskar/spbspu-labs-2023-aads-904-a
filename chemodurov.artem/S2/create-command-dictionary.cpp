@@ -6,17 +6,17 @@ namespace chemodurov
   {
     std::string name;
     in >> name;
-    Dictionary< std::string, dic_t >::iterator it = data.find(name);
-    if (!in || ++it == data.end())
+    Dictionary< std::string, dic_t >::mapped_type dic = data.at(name);
+    if (!in)
     {
       throw std::invalid_argument("Invalid command");
     }
-    if (it->second.empty())
+    if (dic.empty())
     {
       out << "<EMPTY>\n";
       return;
     }
-    print(out, *(it));
+    print(out, {name, dic});
     out << '\n';
   }
 

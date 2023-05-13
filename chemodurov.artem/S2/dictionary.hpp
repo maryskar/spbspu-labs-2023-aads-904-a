@@ -1,6 +1,5 @@
 #ifndef S2_DICTIONARY_HPP
 #define S2_DICTIONARY_HPP
-#include <cmath>
 #include <iostream>
 #include <type_traits>
 #include "forward-list.hpp"
@@ -87,6 +86,10 @@ namespace chemodurov
     Compare comp_;
     size_type size_;
   };
+
+  void print(std::ostream & out, const std::pair< int, std::string > & pair);
+  void print(std::ostream & out, const Dictionary< int, std::string > & dict);
+  void print(std::ostream & out, const std::pair< std::string, Dictionary< int, std::string > > & pair);
 
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::key_compare Dictionary< Key, Value, Compare >::key_comp() const
@@ -576,36 +579,6 @@ namespace chemodurov
   bool operator!=(const Dictionary< Key, Value, Compare > & lhs, const Dictionary< Key, Value, Compare > & rhs)
   {
     return !(lhs == rhs);
-  }
-
-  void print(std::ostream & out, const std::pair< int, std::string > & pair)
-  {
-    out << pair.first << ' ' << pair.second;
-  }
-
-  void print(std::ostream & out, const std::pair< std::string, Dictionary< int, std::string > > & pair);
-
-  template< typename Key, typename Value, typename Compare >
-  void print(std::ostream & out, const Dictionary< Key, Value, Compare > & dict)
-  {
-    auto end_ = dict.end();
-    for (auto i = dict.begin(); i != end_; ++i)
-    {
-      if (i == dict.begin())
-      {
-        print(out, *i);
-      }
-      else
-      {
-        print(out << ' ', *i);
-      }
-    }
-  }
-
-  void print(std::ostream & out, const std::pair< std::string, Dictionary< int, std::string > > & pair)
-  {
-    out << pair.first << ' ';
-    print(out, pair.second);
   }
 }
 
