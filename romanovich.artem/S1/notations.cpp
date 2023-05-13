@@ -88,7 +88,6 @@ romanovich::Queue< romanovich::ExpPart > romanovich::splitLine(const std::string
   size_t intEnd = string.find(' ');
   while (intEnd != std::string::npos)
   {
-    createFromString(string.substr(intBegin, intEnd - intBegin));
     queue.push(createFromString(string.substr(intBegin, intEnd - intBegin)));
     intBegin = intEnd + 1;
     intEnd = string.find(' ', intBegin);
