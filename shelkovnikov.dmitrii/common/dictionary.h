@@ -235,21 +235,6 @@ namespace dimkashelk
     {
       return upper_bound(x);
     }
-    friend std::ostream &operator<<(std::ostream &out, dict_type &dict)
-    {
-      if (dict.empty())
-      {
-        return out << "<EMPTY>";
-      }
-      auto it = dict.list_.begin();
-      auto end = dict.list_.end();
-      out << (*it).first << " " << (*it).second;
-      it++;
-      for (; it != end; it++) {
-        out << " " << (*it).first << " " << (*it).second;
-      }
-      return out;
-    }
     friend bool operator==(const dict_type &first, const dict_type &second)
     {
       auto first_it = first.cbegin();
@@ -374,6 +359,22 @@ namespace dimkashelk
       iter_first++;
     }
     return new_dict;
+  }
+  template< typename K, typename V, typename C >
+  std::ostream &operator<<(std::ostream &out, Dictionary< K, V, C > &dict)
+  {
+    if (dict.empty())
+    {
+      return out << "<EMPTY>";
+    }
+    auto it = dict.list_.begin();
+    auto end = dict.list_.end();
+    out << it->first << " " << it->second;
+    it++;
+    for (; it != end; it++) {
+      out << " " << it->first << " " << it->second;
+    }
+    return out;
   }
 }
 #endif
