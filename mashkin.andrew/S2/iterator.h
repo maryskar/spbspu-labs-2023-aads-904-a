@@ -7,10 +7,9 @@
 namespace mashkin
 {
   template< class T >
-  struct Iterator: public std::iterator< std::forward_iterator_tag, T >
+  class Iterator: public std::iterator< std::forward_iterator_tag, T >
   {
-    NodeList< T >* node;
-
+  public:
     Iterator();
     ~Iterator() = default;
     Iterator(const Iterator< T >&) = default;
@@ -25,6 +24,8 @@ namespace mashkin
 
     bool operator!=(const Iterator< T >& rhs) const;
     bool operator==(const Iterator< T >& rhs) const;
+  private:
+    NodeList< T >* node;
   };
 }
 
