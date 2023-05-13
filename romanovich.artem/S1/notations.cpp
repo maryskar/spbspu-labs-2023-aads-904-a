@@ -203,9 +203,9 @@ namespace romanovich
   Queue< ExpPart > splitLine(const std::string &string)
   {
     Queue< ExpPart > queue;
-    int intBegin = 0;
-    int intEnd = string.find(' ');
-    while (intEnd != -1)
+    size_t intBegin = 0;
+    size_t intEnd = string.find(' ');
+    while (intEnd != std::string::npos)
     {
       queue.push(createFromString(string.substr(intBegin, intEnd - intBegin)));
       intBegin = intEnd + 1;
