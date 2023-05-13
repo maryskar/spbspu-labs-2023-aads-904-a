@@ -359,14 +359,14 @@ namespace dimkashelk
     auto iter_second_end = second.cend();
     while (iter_second != iter_second_end)
     {
-      new_dict.push(value_type(*iter_second));
+      new_dict.push(std::pair< K, V >(*iter_second));
       iter_second++;
     }
     auto iter_first = first.cbegin();
     auto iter_first_end = first.cend();
     while (iter_first != iter_first_end)
     {
-      new_dict.push(value_type(*iter_first));
+      new_dict.push(std::pair< K, V >(*iter_first));
       iter_first++;
     }
     return new_dict;
