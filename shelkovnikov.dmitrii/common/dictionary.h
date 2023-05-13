@@ -66,7 +66,7 @@ namespace dimkashelk
     {
       for (auto i = begin(); i != end(); i++)
       {
-        if ((*i).first == k)
+        if (details::isEqual< Key, Compare >(i->first == k))
         {
           return (*i).second;
         }
@@ -83,7 +83,7 @@ namespace dimkashelk
       auto cur = begin();
       for (; cur != end(); prev = cur, cur++)
       {
-        if ((*cur).first == key)
+        if (details::isEqual< Key, Compare >(cur->first == key))
         {
           return (*cur).second;
         }
@@ -154,7 +154,7 @@ namespace dimkashelk
       auto prev = list_.beforeBegin();
       for (auto cur = begin(); cur != end(); prev = cur, cur++)
       {
-        if ((*cur).first == k)
+        if (details::isEqual< Key, Compare >(cur->first == k))
         {
           list_.eraseAfter(prev);
           return 1;
@@ -172,7 +172,7 @@ namespace dimkashelk
       size_t count = 0;
       for (auto i: *this)
       {
-        if (i.first == x)
+        if (details::isEqual< Key, Compare >(i.first == x))
         {
           count++;
         }
@@ -184,7 +184,7 @@ namespace dimkashelk
     {
       for (auto i = begin(); i != end(); i++)
       {
-        if ((*i).first == x)
+        if (details::isEqual< Key, Compare >(i->first == x))
         {
           return i;
         }
@@ -208,7 +208,7 @@ namespace dimkashelk
       auto cur = begin();
       for (auto i = begin(); i != end(); i++)
       {
-        if ((*i).first >= x)
+        if (!compare_(i->first, x))
         {
           return i;
         }
@@ -224,7 +224,7 @@ namespace dimkashelk
     iterator_t upper_bound(const K &x)
     {
       auto res = lower_bound(x);
-      if ((*res).first == x)
+      if (details::isEqual< Key, Compare >(res->first == x))
       {
         res++;
       }
@@ -267,7 +267,7 @@ namespace dimkashelk
         }
         prev = it;
       }
-      if (prev != list_.beforeBegin() && (*prev).first == value.first)
+      if (prev != list_.beforeBegin() && details::isEqual< Key, Compare >(prev->first == value.first))
       {
         (*prev).second = value.second;
       }
