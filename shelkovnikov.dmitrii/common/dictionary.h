@@ -9,14 +9,14 @@ namespace dimkashelk
   namespace details
   {
     template< typename K, typename Comp >
-    bool isEqual(K key1, K key2)
+    bool isEqual(K key1, K key2, Comp comp)
     {
-      return !Comp{}(key1, key2) && !Comp{}(key2, key1);
+      return !comp(key1, key2) && !comp(key2, key1);
     }
     template< typename K, typename Comp >
-    bool isNotEqual(K key1, K key2)
+    bool isNotEqual(K key1, K key2, Comp comp)
     {
-      return !isEqual< K, Comp >(key1, key2);
+      return !isEqual(key1, key2, comp);
     }
   }
   template< typename Key, typename Value, typename Compare >
@@ -269,6 +269,7 @@ namespace dimkashelk
       }
       return iterator_t(prev);
     }
+    std::pair< iterator_t, iterator_t > search(iterator_t start, iterator_t end, const Key &key, std::function< )
   };
   template< class Key, class T, class Compare >
   void swap(Dictionary< Key, T, Compare > &lhs, Dictionary< Key, T, Compare > &rhs )
