@@ -3,29 +3,29 @@
 
 #include "ForwardIterator.hpp"
 
-namespace detail {
-  template< typename T, typename Compare >
-  ForwardIterator< T > mergeSorted(const ForwardIterator< T >& bBegin, const ForwardIterator< T >& bSplit,
-      const ForwardIterator< T >& bEnd, Compare& comp)
-  {
-    typename ForwardIterator< T >::Node* other = bSplit.nodePtr->next;
-    typename ForwardIterator< T >::Node* endPtr = bEnd.nodePtr->next;
-    bSplit.nodePtr->next = endPtr;
-    ForwardIterator< T > i = bBegin;
-    for (; i.nodePtr->next != endPtr; ++i) {
-      if (comp(other->val, i.nodePtr->next->val)) {
-        std::swap(other, i.nodePtr->next);
-      }
-    }
-    i.nodePtr->next = other;
-    while (i.nodePtr->next != endPtr) {
-      ++i;
-    }
-    return i;
-  }
-}
-
 namespace odintsov {
+  namespace detail {
+    template< typename T, typename Compare >
+    ForwardIterator< T > mergeSorted(const ForwardIterator< T >& bBegin, const ForwardIterator< T >& bSplit,
+        const ForwardIterator< T >& bEnd, Compare& comp)
+    {
+      typename ForwardIterator< T >::Node* other = bSplit.nodePtr->next;
+      typename ForwardIterator< T >::Node* endPtr = bEnd.nodePtr->next;
+      bSplit.nodePtr->next = endPtr;
+      ForwardIterator< T > i = bBegin;
+      for (; i.nodePtr->next != endPtr; ++i) {
+        if (comp(other->val, i.nodePtr->next->val)) {
+          std::swap(other, i.nodePtr->next);
+        }
+      }
+      i.nodePtr->next = other;
+      while (i.nodePtr->next != endPtr) {
+        ++i;
+      }
+      return i;
+    }
+  }
+
   template< typename T, typename Compare >
   void mergeSort(detail::ForwardIterator< T > beforeBegin, Compare& comp)
   {

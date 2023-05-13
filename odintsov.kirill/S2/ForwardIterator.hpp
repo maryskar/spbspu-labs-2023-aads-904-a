@@ -5,116 +5,118 @@
 
 #include "Node.hpp"
 
-namespace detail {
-  template< typename T >
-  struct ForwardIterator: public std::iterator< std::forward_iterator_tag, T > {
-    using Node = detail::Node< T >;
-    Node* nodePtr;
+namespace odintsov {
+  namespace detail {
+    template< typename T >
+    struct ForwardIterator: public std::iterator< std::forward_iterator_tag, T > {
+      using Node = detail::Node< T >;
+      Node* nodePtr;
 
-    ForwardIterator():
-      nodePtr(nullptr)
-    {}
+      ForwardIterator():
+        nodePtr(nullptr)
+      {}
 
-    ForwardIterator(Node* ptr):
-      nodePtr(ptr)
-    {}
+      ForwardIterator(Node* ptr):
+        nodePtr(ptr)
+      {}
 
-    ForwardIterator& operator++()
-    {
-      if (nodePtr) {
-        nodePtr = nodePtr->next;
+      ForwardIterator& operator++()
+      {
+        if (nodePtr) {
+          nodePtr = nodePtr->next;
+        }
+        return *this;
       }
-      return *this;
-    }
 
-    ForwardIterator operator++(int)
-    {
-      ForwardIterator< T > copy(*this);
-      if (nodePtr) {
-        nodePtr = nodePtr->next;
+      ForwardIterator operator++(int)
+      {
+        ForwardIterator< T > copy(*this);
+        if (nodePtr) {
+          nodePtr = nodePtr->next;
+        }
+        return copy;
       }
-      return copy;
-    }
 
-    T& operator*() const
-    {
-      return nodePtr->val;
-    }
-
-    T* operator->() const
-    {
-      return std::addressof(nodePtr->val);
-    }
-
-    bool operator==(const ForwardIterator& rhs) const
-    {
-      return nodePtr == rhs.nodePtr;
-    }
-
-    bool operator!=(const ForwardIterator& rhs) const
-    {
-      return nodePtr != rhs.nodePtr;
-    }
-  };
-
-  template< typename T >
-  struct ConstForwardIterator: public std::iterator< std::forward_iterator_tag, T > {
-    using Node = detail::Node< T >;
-    const Node* nodePtr;
-
-    ConstForwardIterator():
-      nodePtr(nullptr)
-    {}
-
-    ConstForwardIterator(const Node* ptr):
-      nodePtr(ptr)
-    {}
-
-    ConstForwardIterator(const ForwardIterator< T >& fi):
-      nodePtr(fi.nodePtr)
-    {}
-
-    ConstForwardIterator(ForwardIterator< T >&& fi):
-      nodePtr(fi.nodePtr)
-    {}
-
-    ConstForwardIterator& operator++()
-    {
-      if (nodePtr) {
-        nodePtr = nodePtr->next;
+      T& operator*() const
+      {
+        return nodePtr->val;
       }
-      return *this;
-    }
 
-    ConstForwardIterator operator++(int)
-    {
-      ConstForwardIterator< T > copy(*this);
-      if (nodePtr) {
-        nodePtr = nodePtr->next;
+      T* operator->() const
+      {
+        return std::addressof(nodePtr->val);
       }
-      return copy;
-    }
 
-    const T& operator*() const
-    {
-      return nodePtr->val;
-    }
+      bool operator==(const ForwardIterator& rhs) const
+      {
+        return nodePtr == rhs.nodePtr;
+      }
 
-    const T* operator->() const
-    {
-      return std::addressof(nodePtr->val);
-    }
+      bool operator!=(const ForwardIterator& rhs) const
+      {
+        return nodePtr != rhs.nodePtr;
+      }
+    };
 
-    bool operator==(const ConstForwardIterator& rhs) const
-    {
-      return nodePtr == rhs.nodePtr;
-    }
+    template< typename T >
+    struct ConstForwardIterator: public std::iterator< std::forward_iterator_tag, T > {
+      using Node = detail::Node< T >;
+      const Node* nodePtr;
 
-    bool operator!=(const ConstForwardIterator& rhs) const
-    {
-      return nodePtr != rhs.nodePtr;
-    }
-  };
+      ConstForwardIterator():
+        nodePtr(nullptr)
+      {}
+
+      ConstForwardIterator(const Node* ptr):
+        nodePtr(ptr)
+      {}
+
+      ConstForwardIterator(const ForwardIterator< T >& fi):
+        nodePtr(fi.nodePtr)
+      {}
+
+      ConstForwardIterator(ForwardIterator< T >&& fi):
+        nodePtr(fi.nodePtr)
+      {}
+
+      ConstForwardIterator& operator++()
+      {
+        if (nodePtr) {
+          nodePtr = nodePtr->next;
+        }
+        return *this;
+      }
+
+      ConstForwardIterator operator++(int)
+      {
+        ConstForwardIterator< T > copy(*this);
+        if (nodePtr) {
+          nodePtr = nodePtr->next;
+        }
+        return copy;
+      }
+
+      const T& operator*() const
+      {
+        return nodePtr->val;
+      }
+
+      const T* operator->() const
+      {
+        return std::addressof(nodePtr->val);
+      }
+
+      bool operator==(const ConstForwardIterator& rhs) const
+      {
+        return nodePtr == rhs.nodePtr;
+      }
+
+      bool operator!=(const ConstForwardIterator& rhs) const
+      {
+        return nodePtr != rhs.nodePtr;
+      }
+    };
+  }
 }
 
 #endif
