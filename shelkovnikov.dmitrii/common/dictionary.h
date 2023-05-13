@@ -274,11 +274,15 @@ namespace dimkashelk
       dict_type result;
       for (auto it_first = second.list_.cbegin(); it_first != second.list_.cend(); it_first++)
       {
-        auto comp = [&](const auto &item)
+        iterator_t res = second.list_.cend();
+        for (auto i = first.list_.cbegin(); i != first.list_.cend(); i++)
         {
-          return item.first == (*it_first).first;
-        };
-        auto res = std::find_if(first.list_.cbegin(), first.list_.cend(), comp);
+          if ((*it_first).first == (*i).first)
+          {
+            res = i;
+            break;
+          }
+        }
         if (res != second.list_.cend())
         {
           result.push(*res);
