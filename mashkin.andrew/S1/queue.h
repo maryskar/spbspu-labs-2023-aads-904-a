@@ -35,9 +35,15 @@ mashkin::Queue< T >::Queue():
 
 template< typename T >
 mashkin::Queue< T >::Queue(const Queue< T >& lhs):
-  head_(lhs.head_),
-  tail_(lhs.tail_)
+  head_(nullptr),
+  tail_(nullptr)
 {
+  auto var = head_;
+  while (var)
+  {
+    enqueue(var->data);
+    var = var->next;
+  }
 }
 
 template< typename T >
