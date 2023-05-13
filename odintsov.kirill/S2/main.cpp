@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -24,7 +25,8 @@ int main(int argc, char* argv[])
     std::cerr << "Dataset could not be opened\n";
     return 1;
   }
-  odintsov::Dictionary< std::string, odintsov::Dictionary< int, std::string > > dataSetDict;
+  using NumericDictionary = odintsov::Dictionary< int, std::string >;
+  odintsov::Dictionary< std::string, NumericDictionary > dataSetDict;
   while (dictFile.good()) {
     std::string dictLine;
     std::getline(dictFile, dictLine);
@@ -39,7 +41,7 @@ int main(int argc, char* argv[])
       std::cerr << e.what() << '\n';
       return 1;
     }
-    odintsov::Dictionary< int, std::string > dataSet;
+    NumericDictionary dataSet;
     while (!split.empty()) {
       int key = 0;
       try {
@@ -71,12 +73,12 @@ int main(int argc, char* argv[])
       if (commandName == "print") {
         std::string dataSetName;
         split >> dataSetName;
-        odintsov::Dictionary< int, std::string > dataSet = dataSetDict.at(dataSetName);
+        NumericDictionary dataSet = dataSetDict.at(dataSetName);
         if (dataSet.empty()) {
           std::cout << "<EMPTY>\n";
         } else {
           std::cout << dataSetName;
-          for (odintsov::Dictionary< int, std::string >::ConstIter i = dataSet.cbegin(); i != dataSet.cend(); ++i) {
+          for (NumericDictionary::ConstIter i = dataSet.cbegin(); i != dataSet.cend(); ++i) {
             std::cout << ' ' << i->first << ' ' << i->second;
           }
           std::cout << '\n';
@@ -86,13 +88,13 @@ int main(int argc, char* argv[])
         std::string inDataSet1Name;
         std::string inDataSet2Name;
         split >> outDataSetName >> inDataSet1Name >> inDataSet2Name;
-        odintsov::Dictionary< int, std::string > outDataSet;
-        const odintsov::Dictionary< int, std::string >& inDataSet1 = dataSetDict.at(inDataSet1Name);
-        const odintsov::Dictionary< int, std::string >& inDataSet2 = dataSetDict.at(inDataSet2Name);
-        odintsov::Dictionary< int, std::string >::ConstIter set1Iter = inDataSet1.cbegin();
-        odintsov::Dictionary< int, std::string >::ConstIter set2Iter = inDataSet2.cbegin();
-        odintsov::Dictionary< int, std::string >::Iter lastInserted = outDataSet.beforeBegin();
-        auto comp = inDataSet1.keyComp();
+        NumericDictionary outDataSet;
+        const NumericDictionary& inDataSet1 = dataSetDict.at(inDataSet1Name);
+        const NumericDictionary& inDataSet2 = dataSetDict.at(inDataSet2Name);
+        NumericDictionary::ConstIter set1Iter = inDataSet1.cbegin();
+        NumericDictionary::ConstIter set2Iter = inDataSet2.cbegin();
+        NumericDictionary::Iter lastInserted = outDataSet.beforeBegin();
+        NumericDictionary::KeyComp comp = inDataSet1.keyComp();
         for (; set1Iter != inDataSet1.cend(); ++set1Iter) {
           while (set2Iter != inDataSet2.cend() && comp(set2Iter->first, set1Iter->first)) {
             lastInserted = outDataSet.insert(lastInserted, *set2Iter).first;
@@ -110,13 +112,13 @@ int main(int argc, char* argv[])
         std::string inDataSet1Name;
         std::string inDataSet2Name;
         split >> outDataSetName >> inDataSet1Name >> inDataSet2Name;
-        odintsov::Dictionary< int, std::string > outDataSet;
-        const odintsov::Dictionary< int, std::string >& inDataSet1 = dataSetDict.at(inDataSet1Name);
-        const odintsov::Dictionary< int, std::string >& inDataSet2 = dataSetDict.at(inDataSet2Name);
-        odintsov::Dictionary< int, std::string >::ConstIter set1Iter = inDataSet1.cbegin();
-        odintsov::Dictionary< int, std::string >::ConstIter set2Iter = inDataSet2.cbegin();
-        odintsov::Dictionary< int, std::string >::Iter lastInserted = outDataSet.beforeBegin();
-        auto comp = inDataSet1.keyComp();
+        NumericDictionary outDataSet;
+        const NumericDictionary& inDataSet1 = dataSetDict.at(inDataSet1Name);
+        const NumericDictionary& inDataSet2 = dataSetDict.at(inDataSet2Name);
+        NumericDictionary::ConstIter set1Iter = inDataSet1.cbegin();
+        NumericDictionary::ConstIter set2Iter = inDataSet2.cbegin();
+        NumericDictionary::Iter lastInserted = outDataSet.beforeBegin();
+        NumericDictionary::KeyComp comp = inDataSet1.keyComp();
         for (; set1Iter != inDataSet1.cend(); ++set1Iter) {
           while (set2Iter != inDataSet2.cend() && comp(set2Iter->first, set1Iter->first)) {
             ++set2Iter;
@@ -134,12 +136,12 @@ int main(int argc, char* argv[])
         std::string inDataSet1Name;
         std::string inDataSet2Name;
         split >> outDataSetName >> inDataSet1Name >> inDataSet2Name;
-        odintsov::Dictionary< int, std::string > outDataSet;
-        const odintsov::Dictionary< int, std::string >& inDataSet1 = dataSetDict.at(inDataSet1Name);
-        const odintsov::Dictionary< int, std::string >& inDataSet2 = dataSetDict.at(inDataSet2Name);
-        odintsov::Dictionary< int, std::string >::ConstIter set1Iter = inDataSet1.cbegin();
-        odintsov::Dictionary< int, std::string >::ConstIter set2Iter = inDataSet2.cbegin();
-        odintsov::Dictionary< int, std::string >::Iter lastInserted = outDataSet.beforeBegin();
+        NumericDictionary outDataSet;
+        const NumericDictionary& inDataSet1 = dataSetDict.at(inDataSet1Name);
+        const NumericDictionary& inDataSet2 = dataSetDict.at(inDataSet2Name);
+        NumericDictionary::ConstIter set1Iter = inDataSet1.cbegin();
+        NumericDictionary::ConstIter set2Iter = inDataSet2.cbegin();
+        NumericDictionary::Iter lastInserted = outDataSet.beforeBegin();
         for (; set1Iter != inDataSet1.cend(); ++set1Iter) {
           lastInserted = outDataSet.insert(lastInserted, *set1Iter).first;
         }

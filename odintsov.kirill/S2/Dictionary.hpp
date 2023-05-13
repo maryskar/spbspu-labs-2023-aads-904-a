@@ -17,9 +17,10 @@ namespace odintsov {
     using Iter = typename ForwardList< kvPair >::Iter;
     using ConstIter = typename ForwardList< kvPair >::ConstIter;
     using ListNode = typename ForwardList< kvPair >::Node;
+    using KeyComp = Compare;
 
     struct KVComp {
-      Compare keyComp;
+      KeyComp keyComp;
 
       bool operator()(const kvPair& lhs, const kvPair& rhs)
       {
@@ -410,7 +411,7 @@ namespace odintsov {
       return std::make_pair(lb, upperBound(lb, k));
     }
 
-    Compare keyComp() const
+    KeyComp keyComp() const
     {
       return kvComp_.keyComp;
     }
