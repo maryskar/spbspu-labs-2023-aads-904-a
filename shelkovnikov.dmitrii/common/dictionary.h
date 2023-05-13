@@ -200,7 +200,7 @@ namespace dimkashelk
     {
       return upper_bound(x);
     }
-    friend bool operator==(const dict_type &first, const dict_type &second)
+    bool operator==(const dict_type &first, const dict_type &second)
     {
       auto first_it = first.cbegin();
       auto second_it = second.cbegin();
@@ -213,7 +213,7 @@ namespace dimkashelk
       }
       return true;
     }
-    friend bool operator!=(const dict_type &first, const dict_type &second)
+    bool operator!=(const dict_type &first, const dict_type &second)
     {
       return !(first == second);
     }
