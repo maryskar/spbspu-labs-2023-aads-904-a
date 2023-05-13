@@ -166,8 +166,7 @@ namespace dimkashelk
     {
       list_.swap(other.list_);
     }
-    template< class K >
-    size_t count(const K &x) const
+    size_t count(const Key &x) const
     {
       size_t count = 0;
       for (auto i: *this)
@@ -179,8 +178,7 @@ namespace dimkashelk
       }
       return count;
     }
-    template< class K >
-    iterator_t find(const K &x)
+    iterator_t find(const Key &x)
     {
       for (auto i = begin(); i != end(); i++)
       {
@@ -191,18 +189,15 @@ namespace dimkashelk
       }
       return end();
     }
-    template< class K >
-    std::pair< iterator_t, iterator_t > equal_range(const K& x)
+    std::pair< iterator_t, iterator_t > equal_range(const Key &x)
     {
       return {lower_bound(x), upper_bound(x)};
     }
-    template< class K >
-    std::pair< const_iterator_t, const_iterator_t > equal_range(const K& x) const
+    std::pair< const_iterator_t, const_iterator_t > equal_range(const Key &x) const
     {
       return {lower_bound(x), upper_bound(x)};
     }
-    template< class K >
-    iterator_t lower_bound(const K &x)
+    iterator_t lower_bound(const Key &x)
     {
       auto prev = begin();
       auto cur = begin();
@@ -215,13 +210,11 @@ namespace dimkashelk
       }
       return end();
     }
-    template< class K >
-    const_iterator_t lower_bound(const K &x) const
+    const_iterator_t lower_bound(const Key &x) const
     {
       return lower_bound(x);
     }
-    template< class K >
-    iterator_t upper_bound(const K &x)
+    iterator_t upper_bound(const Key &x)
     {
       auto res = lower_bound(x);
       if (details::isEqual< Key, Compare >(res->first == x))
@@ -230,8 +223,7 @@ namespace dimkashelk
       }
       return res;
     }
-    template < class K >
-    const_iterator_t upper_bound(const K &x) const
+    const_iterator_t upper_bound(const Key &x) const
     {
       return upper_bound(x);
     }
