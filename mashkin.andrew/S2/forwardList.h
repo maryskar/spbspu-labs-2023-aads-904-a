@@ -15,7 +15,7 @@ namespace mashkin
     using citer = mashkin::ConstIterator< T >;
     ForwardList();
     ForwardList(const ForwardList< T >& lhs);
-    ForwardList(ForwardList< T >&& rhs);
+    ForwardList(ForwardList< T >&& rhs) noexcept;
 
     Iterator< T > begin() noexcept;
     Iterator< T > end() noexcept;
@@ -50,7 +50,7 @@ mashkin::ForwardList< T >::ForwardList(const ForwardList< T >& lhs):
 }
 
 template< class T >
-mashkin::ForwardList< T >::ForwardList(ForwardList< T >&& rhs):
+mashkin::ForwardList< T >::ForwardList(ForwardList< T >&& rhs) noexcept:
   head(rhs.head),
   tail(rhs.tail)
 {
