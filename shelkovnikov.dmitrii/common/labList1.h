@@ -96,15 +96,15 @@ namespace dimkashelk
           dict_type new_dict;
           if (command == "complement")
           {
-            new_dict = data_1 - data_2;
+            new_dict = getComplement(data_1, data_2);
           }
           else if (command == "intersect")
           {
-            new_dict = data_1 & data_2;
+            new_dict = getIntersection(data_1, data_2);
           }
           else if (command == "union")
           {
-            new_dict = data_1 | data_2;
+            new_dict = getUnion(data_1, data_2);
           }
           dict.emplace(new_dataset_name, new_dict);
         }
