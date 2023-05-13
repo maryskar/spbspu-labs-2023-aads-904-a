@@ -18,6 +18,7 @@ namespace mashkin
     void push(const T& rhs);
     void pop();
     bool isEmpty() const noexcept;
+    T& getTop() const;
     T& getTop();
 
   private:
@@ -82,9 +83,19 @@ void mashkin::Stack< T >::pop()
 }
 
 template< typename T >
+T& mashkin::Stack< T >::getTop() const
+{
+  if (!top_)
+  {
+    throw std::underflow_error("Stack underflow");
+  }
+  return top_->data;
+}
+
+template< typename T >
 T& mashkin::Stack< T >::getTop()
 {
-  return top_->data;
+  return *this->getTop();
 }
 
 template< typename T >
