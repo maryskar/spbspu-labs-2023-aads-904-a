@@ -77,7 +77,7 @@ namespace dimkashelk
     {
       return at(k);
     }
-    Value &operator[](Key &&key)
+    Value &operator[](const Key &key)
     {
       auto prev = list_.beforeBegin();
       auto cur = begin();
@@ -95,6 +95,10 @@ namespace dimkashelk
       value_type value_to_insert = {key, Value()};
       auto res = list_.insertAfter(prev, value_to_insert);
       return (*res).second;
+    }
+    Value &operator[](Key &&key)
+    {
+      return this->operator[](key);
     }
     iterator_t begin()
     {
@@ -300,7 +304,7 @@ namespace dimkashelk
     Dictionary< K, V, C > result;
     for (auto it_first = second.cbegin(); it_first != second.cend(); it_first++)
     {
-      ForwardListIterator< std::pair< K, V > > res = second.cend();
+      auto res = second.cend();
       for (auto i = first.cbegin(); i != first.cend(); i++)
       {
         if (details::isEqual< K, C >(it_first->first, i->first))
@@ -311,7 +315,7 @@ namespace dimkashelk
       }
       if (res != second.cend())
       {
-        result.push(*res);
+        result[res->first] = res->second;
       }
     }
     return result;
@@ -340,13 +344,13 @@ namespace dimkashelk
       }
       if (details::isNotEqual< K, C >(iter_first->first, iter_second->first))
       {
-        new_dict.push(std::pair< K, V >(*iter_first));
+        new_dict[iter_first->first] = iter_first->second;
       }
       iter_first++;
     }
     while (iter_first != iter_first_end)
     {
-      new_dict.push(*iter_first);
+      new_dict[iter_first->first] = iter_first->second;
       iter_first++;
     }
     return new_dict;
@@ -359,14 +363,14 @@ namespace dimkashelk
     auto iter_second_end = second.cend();
     while (iter_second != iter_second_end)
     {
-      new_dict.push(std::pair< K, V >(*iter_second));
+      new_dict[iter_second->first] = iter_second->second;
       iter_second++;
     }
     auto iter_first = first.cbegin();
     auto iter_first_end = first.cend();
     while (iter_first != iter_first_end)
     {
-      new_dict.push(std::pair< K, V >(*iter_first));
+      new_dict[iter_first->first] = iter_first->second;
       iter_first++;
     }
     return new_dict;
