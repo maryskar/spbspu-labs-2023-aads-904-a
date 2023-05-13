@@ -6,6 +6,19 @@
 #include "forwardlist.h"
 namespace dimkashelk
 {
+  namespace details
+  {
+    template< typename K, typename Comp >
+    bool isEqual(K key1, K key2)
+    {
+      return !Comp{}(key1, key2) && !Comp{}(key2, key1);
+    }
+    template< typename K, typename Comp >
+    bool isNotEqual(K key1, K key2)
+    {
+      return !isEqual< K, Comp >(key1, key2);
+    }
+  }
   template< typename Key, typename Value, typename Compare >
   class Dictionary
   {
@@ -233,42 +246,6 @@ namespace dimkashelk
       }
       return out;
     }
-    friend dict_type operator-(const dict_type &first, const dict_type &second)
-    {
-      if (std::addressof(first) == std::addressof(second))
-      {
-        return dict_type();
-      }
-      dict_type new_dict;
-      auto iter_first = first.list_.cbegin();
-      auto iter_first_end = first.list_.cend();
-      auto iter_second = second.list_.cbegin();
-      auto iter_second_end = second.list_.cend();
-      while (iter_first != iter_first_end && iter_second != iter_second_end)
-      {
-        while (iter_second != iter_second_end && Compare{}((*iter_second).first, (*iter_first).first))
-        {
-          iter_second++;
-        }
-        if (iter_second == iter_second_end)
-        {
-          break;
-        }
-        if ((*iter_first).first != (*iter_second).first)
-        {
-          Key key = (*iter_first).first;
-          Value value = (*iter_first).second;
-          new_dict.push(value_type(key, value));
-        }
-        iter_first++;
-      }
-      while (iter_first != iter_first_end)
-      {
-        new_dict.push(*iter_first);
-        iter_first++;
-      }
-      return new_dict;
-    }
     friend dict_type operator|(const dict_type &first, const dict_type &second)
     {
       dict_type new_dict;
@@ -361,6 +338,41 @@ namespace dimkashelk
       }
     }
     return result;
+  }
+  template< typename K, typename V, typename C >
+  Dictionary< K, V, C > getComplement(const Dictionary< K, V, C > &first, const Dictionary< K, V, C > &second)
+  {
+    Dictionary< K, V, C > new_dict;
+    if (std::addressof(first) == std::addressof(second))
+    {
+      return new_dict;
+    }
+    auto iter_first = first.list_.cbegin();
+    auto iter_first_end = first.list_.cend();
+    auto iter_second = second.list_.cbegin();
+    auto iter_second_end = second.list_.cend();
+    while (iter_first != iter_first_end && iter_second != iter_second_end)
+    {
+      while (iter_second != iter_second_end && C{}((*iter_second).first, (*iter_first).first))
+      {
+        iter_second++;
+      }
+      if (iter_second == iter_second_end)
+      {
+        break;
+      }
+      if (details::isNotEqual< K, C >(iter_first->first, iter_second->first))
+      {
+        new_dict.push(value_type(*iter_first));
+      }
+      iter_first++;
+    }
+    while (iter_first != iter_first_end)
+    {
+      new_dict.push(*iter_first);
+      iter_first++;
+    }
+    return new_dict;
   }
 }
 #endif
