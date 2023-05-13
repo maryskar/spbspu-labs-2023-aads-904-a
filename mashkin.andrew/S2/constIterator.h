@@ -2,6 +2,7 @@
 #define S2_CONSTITERATOR_H
 #include <cassert>
 #include <memory>
+#include "nodeList.h"
 #include "forwardList.h"
 
 namespace mashkin
@@ -14,6 +15,7 @@ namespace mashkin
     ConstIterator();
     ~ConstIterator() = default;
     ConstIterator(const ConstIterator< T >&) = default;
+    ConstIterator(NodeList< T >* rhs);
 
     ConstIterator< T >& operator=(const ConstIterator< T >&) = default;
     ConstIterator< T >& operator++();
@@ -34,6 +36,13 @@ mashkin::ConstIterator< T >::ConstIterator():
 }
 
 template< class T >
+mashkin::ConstIterator< T >::ConstIterator(NodeList< T >* lhs)
+{
+  node = lhs;
+}
+
+
+template< class T >
 mashkin::ConstIterator< T >& mashkin::ConstIterator< T >::operator++()
 {
   assert(node != nullptr);
@@ -44,7 +53,7 @@ template< class T >
 mashkin::ConstIterator< T > mashkin::ConstIterator< T >::operator++(int)
 {
   assert(node != nullptr);
-  Iterator< T > res(*this);
+  ConstIterator< T > res(*this);
   ++(*this);
   return res;
 }

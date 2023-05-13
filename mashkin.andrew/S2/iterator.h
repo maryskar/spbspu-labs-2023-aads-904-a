@@ -2,6 +2,7 @@
 #define ITERATOR_H
 #include <cassert>
 #include <memory>
+#include "nodeList.h"
 #include "forwardList.h"
 
 namespace mashkin
@@ -83,5 +84,4 @@ T* mashkin::Iterator< T >::operator->()
   assert(node != nullptr);
   return std::addressof(node->data);
 }
-
 #endif
