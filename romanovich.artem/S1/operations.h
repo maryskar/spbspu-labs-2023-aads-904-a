@@ -11,5 +11,6 @@ namespace romanovich
     division_remainder = '%',
   };
   char as_char(operations_t operation);
+  long long doOperation(long long b, long long a, const romanovich::operations_t &oper);
 }
 #endif

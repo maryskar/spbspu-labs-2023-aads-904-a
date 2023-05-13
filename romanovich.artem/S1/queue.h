@@ -1,7 +1,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H
-#include "node.h"
 #include <stdexcept>
+#include "node.h"
 namespace romanovich
 {
   template< typename T >
@@ -56,11 +56,13 @@ namespace romanovich
   Queue< T >::Queue():
     head_(nullptr),
     tail_(nullptr)
-  {}
+  {
+  }
   template< typename T >
   Queue< T >::Queue(const Queue< T > &queue):
     Queue(details::copy(queue.head_))
-  {}
+  {
+  }
   template< typename T >
   Queue< T >::Queue(Queue< T > &&queue) noexcept:
     head_(queue.head_),
