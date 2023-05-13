@@ -298,10 +298,10 @@ namespace dimkashelk
   Dictionary< K, V, C > getIntersection(const Dictionary< K, V, C > &first, const Dictionary< K, V, C > &second)
   {
     Dictionary< K, V, C > result;
-    for (auto it_first = second.list_.cbegin(); it_first != second.list_.cend(); it_first++)
+    for (auto it_first = second.cbegin(); it_first != second.cend(); it_first++)
     {
       ForwardListIterator< std::pair< K, V > > res = second.list_.cend();
-      for (auto i = first.list_.cbegin(); i != first.list_.cend(); i++)
+      for (auto i = first.cbegin(); i != first.cend(); i++)
       {
         if ((*it_first).first == (*i).first)
         {
@@ -309,7 +309,7 @@ namespace dimkashelk
           break;
         }
       }
-      if (res != second.list_.cend())
+      if (res != second.cend())
       {
         result.push(*res);
       }
