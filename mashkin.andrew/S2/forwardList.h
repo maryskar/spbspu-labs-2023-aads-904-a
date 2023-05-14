@@ -28,6 +28,7 @@ namespace mashkin
     void pop_front();
 
     Iterator< T > erase_after(citer pos);
+    Iterator< T > erase_after(citer pos, citer last);
 
     bool empty() const noexcept;
 
@@ -127,6 +128,25 @@ mashkin::Iterator< T >  mashkin::ForwardList< T >::erase_after(citer pos)
   auto toDel = pos.node->next;
   pos.node->next = pos.node->next->next;
   delete toDel;
+  return iter(pos.node->next);
+}
+
+template< class T >
+mashkin::Iterator< T > mashkin::ForwardList< T >::erase_after(citer pos, citer last)
+{
+  while (pos != last)
+  {
+    auto toDel = pos.node->next;
+    pos.node->next = pos.node->next->next;
+    delete toDel;
+    if (!pos.node->next->next)
+    {
+      auto toDel = pos.node->next;
+      pos.node->next = pos.node->next->next;
+      delete toDel;
+      return iter(pos.node->next);
+    }
+  }
   return iter(pos.node->next);
 }
 #endif
