@@ -17,7 +17,7 @@ namespace azheganova
     void push(const T & rhs);
     void pop();
     bool isEmpty() const;
-    T & get() const;
+    T get() const;
   private:
     details::ListNode< T > * top_;
   };
@@ -40,15 +40,15 @@ namespace azheganova
   Stack< T >::Stack(const Stack< T > & rhs):
    top_(nullptr)
   {
-      details::ListNode< T > * node1 = rhs.top_;
-      top_ = new details::ListNode< T >(node1->data_);
-      details::ListNode< T > * node2 = top_;
-      while (node1->next_)
-      {
-        node1 = node1->next_;
-        node2->next_ = new details::ListNode< T >(node1->data_);
-        node2 = node2->next_;
-      }
+    details::ListNode< T > * node1 = rhs.top_;
+    top_ = new details::ListNode< T >(node1->data_);
+    details::ListNode< T > * node2 = top_;
+    while (node1->next_)
+    {
+      node1 = node1->next_;
+      node2->next_ = new details::ListNode< T >(node1->data_);
+      node2 = node2->next_;
+    }
   }
 
   template< typename T >
@@ -84,7 +84,7 @@ namespace azheganova
   }
 
   template< typename T >
-  T & Stack< T >::get() const
+  T Stack< T >::get() const
   {
     if(isEmpty())
     {

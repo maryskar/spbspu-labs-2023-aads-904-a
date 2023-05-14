@@ -15,8 +15,8 @@ namespace azheganova
     Queue(Queue< T > && rhs);
     void push(const T & rhs);
     void pop();
-    bool isEmpty();
-    T & get();
+    bool isEmpty() const;
+    T get() const;
   private:
     details::ListNode< T > * top_;
     details::ListNode< T > * last_;
@@ -98,13 +98,13 @@ namespace azheganova
   }
 
   template< typename T >
-  bool Queue< T >::isEmpty()
+  bool Queue< T >::isEmpty() const
   {
     return top_ == nullptr;
   }
 
   template< typename T >
-  T & Queue< T >::get()
+  T Queue< T >::get() const
   {
     if (isEmpty())
     {

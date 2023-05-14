@@ -1,6 +1,6 @@
 #include "converttoinfix.h"
 
-azheganova::Queue< std::string > convertToInfix(const std::string & string)
+azheganova::Queue< std::string > azheganova::convertToInfix(const std::string & string)
 {
   azheganova::Queue< std::string > infix;
   size_t begin = 0;

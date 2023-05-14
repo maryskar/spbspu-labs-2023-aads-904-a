@@ -1,18 +1,18 @@
 #include "convertfrominfixtopostfix.h"
 #include <cctype>
 
-bool isOperator(std::string oper)
+bool azheganova::isOperator(std::string oper)
 {
   return (oper == "+") || (oper == "-") || (oper == "*") || (oper == "/") || (oper == "%");
 }
 
-void convertFromInfixToPostfix(q_n & queue, s_n & stack, q_n & postfix)
+void azheganova::convertFromInfixToPostfix(queue_str & queue, stack_str & stack, queue_str & postfix)
 {
   while (!queue.isEmpty())
   {
     std::string element = queue.get();
     queue.pop();
-    if (isdigit(element[0]))
+    if (std::isdigit(element[0]))
     {
       postfix.push(element);
     }

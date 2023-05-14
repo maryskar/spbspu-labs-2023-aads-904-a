@@ -3,6 +3,9 @@
 #include <string>
 #include "queue.h"
 
-azheganova::Queue< std::string > convertToInfix(const std::string & string);
+namespace azheganova
+{
+  azheganova::Queue< std::string > convertToInfix(const std::string & string);
+}
 
 #endif
