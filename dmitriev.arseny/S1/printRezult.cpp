@@ -24,12 +24,12 @@ void dmitriev::printSeriesOfNumbers(std::istream& streamInp, std::ostream& strea
 
   if (!arr.isEmpty())
   {
-    streamOut << arr.getTopData();
+    streamOut << arr.getConstTopData();
     arr.popBack();
   }
   while (!arr.isEmpty())
   {
-    streamOut << ' ' << arr.getTopData();
+    streamOut << ' ' << arr.getConstTopData();
     arr.popBack();
   }
   streamOut << '\n';
