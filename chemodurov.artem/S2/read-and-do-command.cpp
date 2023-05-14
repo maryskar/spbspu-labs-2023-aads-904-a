@@ -3,12 +3,19 @@
 namespace chemodurov
 {
   void doCommand(const std::string & name_command,
-      const Dictionary< std::string, command_t > & commands,
+      const std::pair< Dictionary< std::string, union_t >, Dictionary< std::string, print_t > > & commands,
       Dictionary< std::string, dic_t > & data,
       std::istream & in,
       std::ostream & out)
   {
-    (commands.at(name_command))(in, out, data);
+    try
+    {
+      (commands.first.at(name_command))(in, data);
+    }
+    catch (...)
+    {
+      (commands.second.at(name_command))(in, out, data);
+    }
   }
 
   std::string readCommand(std::istream & in)

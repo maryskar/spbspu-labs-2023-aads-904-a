@@ -18,12 +18,12 @@ int main(int argc, char ** argv)
     return 1;
   }
   auto dictionaries = chemodurov::readDictionaryOfDictionary(input);
-  auto command_dic = chemodurov::createCommandDictionary();
+  auto command_dics = chemodurov::createCommandDictionary();
   do
   {
     try
     {
-      chemodurov::doCommand(chemodurov::readCommand(std::cin), command_dic, dictionaries, std::cin, std::cout);
+      chemodurov::doCommand(chemodurov::readCommand(std::cin), command_dics, dictionaries, std::cin, std::cout);
     }
     catch (const std::invalid_argument & e)
     {

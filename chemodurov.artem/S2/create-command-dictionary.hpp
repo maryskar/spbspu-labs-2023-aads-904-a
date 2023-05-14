@@ -5,7 +5,8 @@
 namespace chemodurov
 {
   using dic_t = chemodurov::Dictionary< int, std::string >;
-  using command_t = void(*)(std::istream &, std::ostream &, Dictionary< std::string, dic_t > &);
-  Dictionary< std::string, command_t > createCommandDictionary();
+  using union_t = void(*)(std::istream &, Dictionary< std::string, dic_t > &);
+  using print_t = void(*)(std::istream &, std::ostream & out, const Dictionary< std::string, dic_t > &);
+  std::pair< Dictionary< std::string, union_t >, Dictionary< std::string, print_t > > createCommandDictionary();
 }
 #endif
