@@ -161,13 +161,22 @@ namespace tarasenko
   template< typename Key, typename Value, typename Compare >
   Value& Dictionary< Key, Value, Compare >::at(const Key& key)
   {
-    //...
-    throw std::out_of_range("");
+    auto curr = begin();
+    while (curr != end())
+    {
+      if ((*curr).first == key)
+      {
+        return (*curr).second;
+      }
+      ++curr;
+    }
+    throw std::out_of_range("Out of range!");
   }
+
   template< typename Key, typename Value, typename Compare >
   const Value& Dictionary< Key, Value, Compare >::at(const Key& key) const
   {
-    //...
+    return at(key);
   }
 
   template< typename Key, typename Value, typename Compare >
