@@ -25,22 +25,21 @@ namespace dmitriev
   }
 
   template< typename T >
-  List< T >* copy(List< T >*& newHead, List< T >* otherHead)
+  std::pair< List< T >*, List< T >* > copy(List< T >* otherHead)
   {
     if (otherHead == nullptr)
     {
-      return nullptr;
+      return std::pair< List< T >*, List< T >* >{nullptr, nullptr};
     }
-    newHead = new dmitriev::List< T >{otherHead->data};
+    List< T >* newHead = new dmitriev::List< T >{otherHead->data};
     List< T >* newTail = newHead;
     otherHead = otherHead->otherList;
 
     while (otherHead != nullptr)
     {
-      newTail = newTail->otherList;
       try
       {
-        newTail = new dmitriev::List< T >{otherHead->data};
+        newTail->otherList = new dmitriev::List< T >{otherHead->data};
       }
       catch (const std::exception&)
       {
@@ -48,10 +47,11 @@ namespace dmitriev
         throw;
       }
 
+      newTail = newTail->otherList;
       otherHead = otherHead->otherList;
     }
 
-    return newTail;
+    return std::pair< List< T >*, List< T >* >{newHead, newTail};
   }
 }
 

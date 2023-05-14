@@ -3,19 +3,6 @@
 
 #include "list.h"
 
-namespace
-{
-  template< typename T >
-  std::pair< dmitriev::List< T >*, dmitriev::List< T >* > copyQueue(dmitriev::List< T >* otherHead)
-  {
-    dmitriev::List< T >* newHead{nullptr};
-    dmitriev::List< T >* newTail{nullptr};
-    newTail = dmitriev::copy(newHead, otherHead);
-
-    return std::pair< dmitriev::List< T >*, dmitriev::List< T >* >{newHead, newTail};
-  }
-}
-
 namespace dmitriev
 {
   template< typename T >
@@ -59,7 +46,7 @@ dmitriev::Queue< T >::~Queue()
 
 template< typename T >
 dmitriev::Queue< T >::Queue(const dmitriev::Queue< T >& otherQueue):
-  m_ptrPairHT(copyQueue(otherQueue.m_ptrPairHT.first))
+  m_ptrPairHT(dmitriev::copy(otherQueue.m_ptrPairHT.first))
 {}
 
 template< typename T >
