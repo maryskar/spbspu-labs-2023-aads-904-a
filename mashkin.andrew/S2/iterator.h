@@ -3,7 +3,6 @@
 #include <cassert>
 #include <memory>
 #include "nodeList.h"
-#include "forwardList.h"
 
 namespace mashkin
 {

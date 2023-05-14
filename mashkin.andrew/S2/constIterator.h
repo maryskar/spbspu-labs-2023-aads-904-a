@@ -3,7 +3,6 @@
 #include <cassert>
 #include <memory>
 #include "nodeList.h"
-#include "forwardList.h"
 
 namespace mashkin
 {
@@ -83,5 +82,4 @@ T* mashkin::ConstIterator< T >::operator->() const
   assert(node != nullptr);
   return std::addressof(node->data);
 }
-
 #endif
