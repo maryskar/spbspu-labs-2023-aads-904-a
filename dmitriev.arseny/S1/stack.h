@@ -8,10 +8,10 @@ namespace
   template< typename T >
   dmitriev::List< T >* copyStack(dmitriev::List< T >* otherTop)
   {
-    dmitriev::List< T >* stackTop{nullptr};
-    dmitriev::copy(stackTop, otherTop);
+    std::pair< dmitriev::List< T >*, dmitriev::List< T >* > headTail;
+    headTail = dmitriev::copy(otherTop);
 
-    return stackTop;
+    return headTail.first;
   }
 }
 
