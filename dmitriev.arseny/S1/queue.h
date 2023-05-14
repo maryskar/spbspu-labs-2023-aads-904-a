@@ -66,6 +66,7 @@ namespace dmitriev
 
     void popBack();
     T& getTopData();
+    const T& getConstTopData() const;
 
     bool isEmpty() const;
 
@@ -174,6 +175,16 @@ void dmitriev::Queue< T >::popBack()
 
 template< typename T >
 T& dmitriev::Queue< T >::getTopData()
+{
+  if (m_ptrPairHT.head == nullptr)
+  {
+    throw std::runtime_error("runtime_error");
+  }
+  return m_ptrPairHT.head->data;
+}
+
+template< typename T >
+const T& dmitriev::Queue< T >::getConstTopData() const
 {
   if (m_ptrPairHT.head == nullptr)
   {

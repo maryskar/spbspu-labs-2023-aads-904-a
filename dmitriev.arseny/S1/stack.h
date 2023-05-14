@@ -57,6 +57,7 @@ namespace dmitriev
 
     void popBack();
     T& getTopData();
+    const T& getConstTopData() const;
 
     bool isEmpty() const;
 
@@ -144,6 +145,16 @@ namespace dmitriev
 
   template< typename T >
   T& dmitriev::Stack< T >::getTopData()
+  {
+    if (isEmpty())
+    {
+      throw std::runtime_error("runtime_error");
+    }
+    return m_top->data;
+  }
+
+  template< typename T >
+  const T& dmitriev::Stack< T >::getConstTopData() const
   {
     if (isEmpty())
     {
