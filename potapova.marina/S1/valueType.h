@@ -1,6 +1,8 @@
 #ifndef VALUETYPE_H
 #define VALUETYPE_H
 
+#include <cstdint>
+
 namespace potapova
 {
   union Value
@@ -17,14 +19,6 @@ namespace potapova
 
   Value value;
   ValueType type;
-  if (type == ValueType::Operation)
-  {
-    value.operation;
-  }
-  else
-  {
-    value.num;
-  }
 }
 
 #endif
