@@ -159,6 +159,7 @@ namespace tarasenko
    Value& operator[](Key&& key);
    bool isEmpty() const;
    size_t size() const;
+   void clear();
    void push(const Key& k, const Value& v);
    Value get(const Key& k) const;
    bool find(const Key& k) const;
@@ -225,6 +226,13 @@ namespace tarasenko
   size_t Dictionary< Key, Value, Compare >::size() const
   {
     return size_;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  void Dictionary< Key, Value, Compare >::clear()
+  {
+    list_.clear();
+    size_ = 0;
   }
 
   template< typename Key, typename Value, typename Compare >
