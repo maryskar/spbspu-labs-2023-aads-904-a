@@ -18,29 +18,9 @@ namespace
   template< typename T >
   dmitriev::Pair< T > copyQueue(dmitriev::List< T >* otherHead)
   {
-    if (otherHead == nullptr)
-    {
-      return dmitriev::Pair< T >{nullptr, nullptr};
-    }
-    dmitriev::List< T >* newHead = new dmitriev::List< T >{otherHead->data};
-    dmitriev::List< T >* newTail = newHead;
-    otherHead = otherHead->otherList;
-
-    while (otherHead != nullptr)
-    {
-      newTail = newTail->otherList;
-      try
-      {
-        newTail = new dmitriev::List< T >{otherHead->data};
-      }
-      catch (const std::exception&)
-      {
-        clear(newHead);
-        throw;
-      }
-
-      otherHead = otherHead->otherList;
-    }
+    dmitriev::List< T >* newHead{nullptr};
+    dmitriev::List< T >* newTail{nullptr};
+    newTail = dmitriev::copy(newHead, otherHead);
 
     return dmitriev::Pair< T >{newHead, newTail};
   }

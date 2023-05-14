@@ -9,29 +9,8 @@ namespace
   template< typename T >
   dmitriev::List< T >* copyStack(dmitriev::List< T >* otherTop)
   {
-    if (otherTop == nullptr)
-    {
-      return nullptr;
-    }
-
-    dmitriev::List< T >* stackTop = new dmitriev::List< T >{otherTop->data};
-    dmitriev::List< T >* stackTail = stackTop;
-    otherTop = otherTop->otherList;
-
-    while (otherTop != nullptr)
-    {
-      try
-      {
-        stackTail->otherList = new dmitriev::List< T >{otherTop->data};
-      }
-      catch (const std::exception&)
-      {
-        clear(stackTop);
-        throw;
-      }
-      stackTail = stackTail->otherList;
-      otherTop = otherTop->otherList;
-    }
+    dmitriev::List< T >* stackTop{nullptr};
+    dmitriev::copy(stackTop, otherTop);
 
     return stackTop;
   }
