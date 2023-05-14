@@ -194,7 +194,16 @@ namespace tarasenko
   template< typename Key, typename Value, typename Compare >
   const Value& Dictionary< Key, Value, Compare >::at(const Key& key) const
   {
-    return at(key);
+    auto curr = cbegin();
+    while (curr != cend())
+    {
+      if ((*curr).first == key)
+      {
+        return (*curr).second;
+      }
+      ++curr;
+    }
+    throw std::out_of_range("Out of range!");
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -271,24 +280,6 @@ namespace tarasenko
     std::pair< Key, Value > data(k, v);
     return insert(data);
   };
-
-  template< typename Key, typename Value, typename Compare >
-  Value Dictionary< Key, Value, Compare >::get(const Key& k) const
-  {
-    if (!isEmpty())
-    {
-      auto current = list_.cbegin();
-      while (current != list_.cend() && (k != current->first))
-      {
-        ++current;
-      }
-      if (current != list_.cend() && (k == current->first))
-      {
-        return current->second;
-      }
-    }
-    throw std::invalid_argument("Key not found");
-  }
 
   template< typename Key, typename Value, typename Compare >
   bool Dictionary< Key, Value, Compare >::find(const Key& k) const
