@@ -4,7 +4,7 @@
 
 namespace chemodurov
 {
-  std::string readCommand(std::istream & in);
+    std::string readCommand(std::istream & in);
   void doCommand(const std::string & name_command,
       const std::pair< Dictionary< std::string, union_t >, Dictionary< std::string, print_t > > & commands,
       Dictionary< std::string, dic_t > & data,

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <tuple>
 #include "read-dictionary-of-dictionary.hpp"
 #include "read-and-do-command.hpp"
 
@@ -19,6 +20,9 @@ int main(int argc, char ** argv)
   }
   auto dictionaries = chemodurov::readDictionaryOfDictionary(input);
   auto command_dics = chemodurov::createCommandDictionary();
+  using namespace std::placeholders;
+  auto read = std::bind(chemodurov::readCommand, std::cin);
+  //auto doComm = std::bind(chemodurov::doCommand, read, command_dics, _1, std::cin, std::cout);
   do
   {
     try

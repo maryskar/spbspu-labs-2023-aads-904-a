@@ -264,7 +264,7 @@ namespace chemodurov
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::lower_bound(const key_type & key)
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::  lower_bound(const key_type & key)
   {
     iterator end_ = end();
     iterator it = begin();
