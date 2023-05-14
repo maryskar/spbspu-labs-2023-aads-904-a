@@ -39,7 +39,8 @@ namespace tarasenko
       {
         if (dict1.isEmpty())
         {
-          throw std::logic_error("The first dictionary is empty!");
+          output << "<INVALID COMMAND>" << "\n";
+          return;
         }
         auto new_dict = dict1 - dict2;
         dict_of_dict.push(name_new_dict, new_dict);

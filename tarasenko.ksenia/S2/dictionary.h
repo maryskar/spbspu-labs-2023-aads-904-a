@@ -161,14 +161,13 @@ namespace tarasenko
    size_t size() const;
    void clear();
    std::pair< iterator, bool > insert(const std::pair< Key, Value >& value);
-   //iterator erase(const_iterator pos);
    std::pair< iterator, bool > push(const Key& k, const Value& v);
    //void swap(dict_type& other);
    //size_t count(const Key& key) const;
    //const_iterator find( const Key& key ) const;
    Value get(const Key& k) const;
    bool find(const Key& k) const;
-   void remove(const Key& key);
+   size_t remove(const Key& key);
 
   private:
    ForwardList< std::pair< Key, Value > > list_;
@@ -300,23 +299,22 @@ namespace tarasenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  void Dictionary< Key, Value, Compare >::remove(const Key& key)
+  size_t Dictionary< Key, Value, Compare >::remove(const Key& key)
   {
     auto prev = list_.cbeforeBegin();
-    auto current = list_.cbegin();
-    while (current != list_.end())
+    auto curr = list_.cbegin();
+    while (curr != list_.end())
     {
-      if (current->first == key)
+      if (curr->first == key)
       {
-        ++current;
         list_.eraseAfter(prev);
-        ++prev;
-        continue;
+        --size_;
+        return 1;
       }
-      ++current;
+      ++curr;
       ++prev;
     }
-    --size_;
+    return 0;
   }
 
   template< class Key, class T, class Compare >
