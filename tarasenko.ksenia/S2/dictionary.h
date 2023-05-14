@@ -102,7 +102,7 @@ namespace tarasenko
        auto iter_left = left.list_.cbegin();
        for (; iter_left != left.list_.cend(); iter_left++)
        {
-         if (right.find((*iter_left).first))
+         if (right.find((*iter_left).first) != left.cend())
          {
            result.remove((*iter_left).first);
          }
@@ -123,7 +123,7 @@ namespace tarasenko
        auto iter_left = left.list_.cbegin();
        for (; iter_left != left.list_.cend(); iter_left++)
        {
-         if (right.find((*iter_left).first))
+         if (right.find((*iter_left).first) != right.cend())
          {
            result.push((*iter_left).first, (*iter_left).second);
          }
@@ -144,7 +144,7 @@ namespace tarasenko
        auto iter_right = right.list_.cbegin();
        for (; iter_right != right.list_.cend(); iter_right++)
        {
-         if (!left.find((*iter_right).first))
+         if (left.find((*iter_right).first) == left.cend())
          {
            result.push((*iter_right).first, (*iter_right).second);
          }
@@ -164,8 +164,7 @@ namespace tarasenko
    std::pair< iterator, bool > push(const Key& k, const Value& v);
    void swap(dict_type& other);
    size_t count(const Key& key) const;
-   //const_iterator find(const Key& key) const;
-   bool find(const Key& k) const;
+   const_iterator find(const Key& key) const;
    size_t remove(const Key& key);
 
   private:
@@ -280,21 +279,18 @@ namespace tarasenko
   };
 
   template< typename Key, typename Value, typename Compare >
-  bool Dictionary< Key, Value, Compare >::find(const Key& k) const
+  ConstForwardListIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::find(const Key& k) const
   {
-    if (!isEmpty())
+    auto curr = cbegin();
+    while (curr != cend())
     {
-      auto current = list_.cbegin();
-      while (current != list_.cend() && (k != current->first))
+      if (k == curr->first)
       {
-        ++current;
+        return curr;
       }
-      if (current != list_.cend() && (k == current->first))
-      {
-        return true;
-      }
+      ++curr;
     }
-    return false;
+    return cend();
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -325,8 +321,8 @@ namespace tarasenko
   template< class Key, class Value, class Compare >
   size_t Dictionary< Key, Value, Compare >::count(const Key& key) const
   {
-    auto curr = list_.cbegin();
-    while (curr != list_.end())
+    auto curr = cbegin();
+    while (curr != cend())
     {
       if (curr->first == key)
       {
@@ -338,11 +334,9 @@ namespace tarasenko
   }
 
   template< class Key, class Value, class Compare >
-  bool operator==(const Dictionary<Key, Value, Compare >& lhs, const Dictionary<Key, Value, Compare >& rhs)
-  {}
+  bool operator==(const Dictionary<Key, Value, Compare >& lhs, const Dictionary<Key, Value, Compare >& rhs);
 
   template< class Key, class Value, class Compare >
-  bool operator!=(const Dictionary<Key, Value, Compare >& lhs, const Dictionary<Key, Value, Compare >& rhs)
-  {}
+  bool operator!=(const Dictionary<Key, Value, Compare >& lhs, const Dictionary<Key, Value, Compare >& rhs);
 }
 #endif

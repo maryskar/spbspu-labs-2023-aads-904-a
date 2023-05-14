@@ -28,7 +28,7 @@ namespace tarasenko
       std::string name_dict1 = "";
       std::string name_dict2 = "";
       input >> name_new_dict >> name_dict1 >> name_dict2;
-      if (!dict_of_dict.find(name_dict1) || !dict_of_dict.find(name_dict2))
+      if (dict_of_dict.find(name_dict1) == dict_of_dict.cend() || dict_of_dict.find(name_dict2) == dict_of_dict.cend())
       {
         output << "<INVALID COMMAND>" << "\n";
         return;
