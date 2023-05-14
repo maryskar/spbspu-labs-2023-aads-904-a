@@ -13,7 +13,7 @@ namespace chemodurov
     {
       (std::bind(commands.first.at(name_command), std::ref(in), _1))(data);
     }
-    catch (...)
+    catch (const std::out_of_range & e)
     {
       (std::bind(commands.second.at(name_command), std::ref(in), std::ref(out), _1))(data);
     }
@@ -25,7 +25,7 @@ namespace chemodurov
     in >> name_command;
     if (!in)
     {
-      throw std::logic_error("Error");
+      throw std::runtime_error("Error");
     }
     return name_command;
   }

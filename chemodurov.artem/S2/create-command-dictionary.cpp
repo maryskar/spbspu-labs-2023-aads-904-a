@@ -2,6 +2,16 @@
 
 namespace chemodurov
 {
+  std::ostream & outEmpty(std::ostream & out)
+  {
+    return out << "<EMPTY>";
+  }
+
+  std::ostream & outInvalidCommand(std::ostream & out)
+  {
+    return out << "<INVALID COMMAND>";
+  }
+
   void printCommand(std::istream & in, std::ostream & out, const Dictionary< std::string, dic_t > & data)
   {
     std::string name;
@@ -13,7 +23,8 @@ namespace chemodurov
     }
     if (dic.empty())
     {
-      out << "<EMPTY>\n";
+      outEmpty(out);
+      out << '\n';
       return;
     }
     print(out, {name, dic});

@@ -28,22 +28,19 @@ int main(int argc, char ** argv)
     {
       doComm(dictionaries);
     }
-    catch (const std::invalid_argument & e)
+    catch (const std::logic_error & e)
     {
-      std::cout << "<INVALID COMMAND>\n";
+      chemodurov::outInvalidCommand(std::cout);
+      std::cout << '\n';
       std::string line;
       std::getline(std::cin, line);
       continue;
     }
-    catch (const std::logic_error & e)
+    catch (const std::runtime_error & e)
     {
       break;
     }
   }
   while (std::cin);
-  auto dic = dictionaries.at("second");
-  auto pair = dic.emplace(5, "zalupa");
-  chemodurov::print(std::cout, *(pair.first));
-  auto val = dictionaries["fourth"];
   return 0;
 }
