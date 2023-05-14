@@ -160,7 +160,12 @@ namespace tarasenko
    bool isEmpty() const;
    size_t size() const;
    void clear();
-   void push(const Key& k, const Value& v);
+   std::pair< iterator, bool > insert(const std::pair< Key, Value >& value);
+   //iterator erase(const_iterator pos);
+   std::pair< iterator, bool > push(const Key& k, const Value& v);
+   //void swap(dict_type& other);
+   //size_t count(const Key& key) const;
+   //const_iterator find( const Key& key ) const;
    Value get(const Key& k) const;
    bool find(const Key& k) const;
    void remove(const Key& key);
@@ -236,22 +241,35 @@ namespace tarasenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  void Dictionary< Key, Value, Compare >::push(const Key& k, const Value& v)
+  std::pair< ForwardListIterator< std::pair< Key, Value > >, bool >
+      Dictionary< Key, Value, Compare >::insert(const std::pair< Key, Value >& value)
   {
-    std::pair< Key, Value > data(k, v);
-    if (find(k))
-    {
-      remove(k);
-    }
-    auto prev = list_.cbeforeBegin();
-    auto current = list_.cbegin();
-    while (current != list_.cend() && compare_(*current, data))
+    auto prev = list_.beforeBegin();
+    auto curr = list_.begin();
+    while (curr != list_.end() && compare_((*curr).first, value.first))
     {
       ++prev;
-      ++current;
+      ++curr;
     }
-    list_.insertAfter(prev, data);
-    ++size_;
+    if (prev != list_.beforeBegin() && (*prev).first == value.first)
+    {
+      (*prev).second = value.second;
+      return std::pair< iterator, bool >(iterator(prev), false);
+    }
+    else
+    {
+      list_.insertAfter(prev, value);
+      ++size_;
+      return std::pair< iterator, bool >(iterator(prev), true);
+    }
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  std::pair< ForwardListIterator< std::pair< Key, Value > >, bool >
+      Dictionary< Key, Value, Compare >::push(const Key& k, const Value& v)
+  {
+    std::pair< Key, Value > data(k, v);
+    return insert(data);
   };
 
   template< typename Key, typename Value, typename Compare >
@@ -309,5 +327,10 @@ namespace tarasenko
     }
     --size_;
   }
+
+  template< class Key, class T, class Compare >
+  bool operator==( const Dictionary<Key, T, Compare >& lhs, const Dictionary<Key, T, Compare >& rhs );
+  template< class Key, class T, class Compare, class Alloc >
+  bool operator!=( const Dictionary<Key, T, Compare >& lhs, const Dictionary<Key, T, Compare >& rhs );
 }
 #endif
