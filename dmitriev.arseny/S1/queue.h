@@ -88,7 +88,7 @@ dmitriev::Queue< T >::~Queue()
 }
 
 template< typename T >
-dmitriev::Queue< T >::Queue(const dmitriev::Queue< T >& otherQueue) :
+dmitriev::Queue< T >::Queue(const dmitriev::Queue< T >& otherQueue):
   m_ptrPairHT(copyQueue(otherQueue.m_ptrPairHT.head))
 {}
 

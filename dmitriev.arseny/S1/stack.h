@@ -67,7 +67,7 @@ namespace dmitriev
   };
 }
   template< typename T >
-  dmitriev::Stack< T >::Stack() :
+  dmitriev::Stack< T >::Stack():
     m_top(nullptr)
   {}
 
@@ -78,12 +78,12 @@ namespace dmitriev
   }
 
   template< typename T >
-  dmitriev::Stack< T >::Stack(const Stack< T >& otherStack) :
+  dmitriev::Stack< T >::Stack(const Stack< T >& otherStack):
     m_top(copyStack(otherStack.m_top))
   {}
 
   template< typename T >
-  dmitriev::Stack< T >::Stack(Stack< T >&& otherStack) noexcept :
+  dmitriev::Stack< T >::Stack(Stack< T >&& otherStack) noexcept:
     m_top(otherStack.m_top)
   {
     otherStack.m_top = nullptr;
