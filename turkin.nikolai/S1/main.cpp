@@ -20,6 +20,7 @@ int main(int argc, char * argv[])
       return 1;
     }
   }
+
   std::istream & in = (argc == 2) ? file : std::cin;
   turkin::Stack< long long > answers;
   std::string dirt;
