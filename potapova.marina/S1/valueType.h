@@ -5,20 +5,22 @@
 
 namespace potapova
 {
-  union Value
+  struct ArithmExpMember
   {
-    std::int64_t num;
-    char operation;
-  };
+    enum class Type
+    {
+      Num,
+      Operation
+    };
 
-  enum class ValueType
-  {
-    Num,
-    Operation 
-  };
+    union Value
+    {
+      std::int64_t num;
+      char operation;
+    };
 
-  Value value;
-  ValueType type;
+    Type type;
+  };
 }
 
 #endif
