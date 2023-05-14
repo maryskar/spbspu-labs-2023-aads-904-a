@@ -16,22 +16,28 @@ namespace tarasenko
   public:
    Dictionary():
      list_(),
+     size_(0),
      compare_()
    {}
    Dictionary(const dict_type& other):
      list_(other.list_),
+     size_(other.size_),
      compare_(other.compare_)
    {}
    Dictionary(dict_type&& other):
      list_(std::move(other.list_)),
+     size_(other.size_),
      compare_(other.compare_)
-   {}
+   {
+     other.size_ = 0;
+   }
    ~Dictionary() = default;
    dict_type& operator=(const dict_type& other)
    {
      if (this != std::addressof(other))
      {
        list_ = other.list_;
+       size_ = other.size_;
        compare_ = other.compare_;
      }
      return *this;
@@ -41,7 +47,9 @@ namespace tarasenko
      if (this != std::addressof(other))
      {
        list_ = std::move(other.list_);
+       size_ = other.size_;
        compare_ = other.compare_;
+       other.size_ = 0;
      }
      return *this;
    }
@@ -149,14 +157,16 @@ namespace tarasenko
    const Value& at(const Key& key) const;
    Value& operator[](const Key& key);
    Value& operator[](Key&& key);
+   bool isEmpty() const;
+   size_t size() const;
    void push(const Key& k, const Value& v);
    Value get(const Key& k) const;
    bool find(const Key& k) const;
    void remove(const Key& key);
-   bool isEmpty() const;
 
   private:
    ForwardList< std::pair< Key, Value > > list_;
+   size_t size_;
    Compare compare_;
   };
 
@@ -206,6 +216,18 @@ namespace tarasenko
   }
 
   template< typename Key, typename Value, typename Compare >
+  bool Dictionary< Key, Value, Compare >::isEmpty() const
+  {
+    return list_.isEmpty();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  size_t Dictionary< Key, Value, Compare >::size() const
+  {
+    return size_;
+  }
+
+  template< typename Key, typename Value, typename Compare >
   void Dictionary< Key, Value, Compare >::push(const Key& k, const Value& v)
   {
     std::pair< Key, Value > data(k, v);
@@ -221,6 +243,7 @@ namespace tarasenko
       ++current;
     }
     list_.insertAfter(prev, data);
+    ++size_;
   };
 
   template< typename Key, typename Value, typename Compare >
@@ -276,12 +299,7 @@ namespace tarasenko
       ++current;
       ++prev;
     }
-  }
-
-  template< typename Key, typename Value, typename Compare >
-  bool Dictionary< Key, Value, Compare >::isEmpty() const
-  {
-    return list_.isEmpty();
+    --size_;
   }
 }
 #endif
