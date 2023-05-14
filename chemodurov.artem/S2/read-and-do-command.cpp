@@ -8,13 +8,14 @@ namespace chemodurov
       std::istream & in,
       std::ostream & out)
   {
+    using namespace std::placeholders;
     try
     {
-      (commands.first.at(name_command))(in, data);
+      (std::bind(commands.first.at(name_command), std::ref(in), _1))(data);
     }
     catch (...)
     {
-      (commands.second.at(name_command))(in, out, data);
+      (std::bind(commands.second.at(name_command), std::ref(in), std::ref(out), _1))(data);
     }
   }
 

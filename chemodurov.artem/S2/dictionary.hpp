@@ -252,19 +252,14 @@ namespace chemodurov
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::lower_bound(const key_type & key) const
   {
-    const_iterator end_ = cend();
-    const_iterator it = cbegin();
-    const_iterator res = cbefore_begin();
-    while (it != end_ && key_comp()(it->first, key))
-    {
-      ++it;
-      ++res;
-    }
+    auto res = before_begin();
+    for (auto it = begin(); it != end() && key_comp()(it->first, key); ++it, ++res)
+    {}
     return res;
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::  lower_bound(const key_type & key)
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::lower_bound(const key_type & key)
   {
     iterator end_ = end();
     iterator it = begin();

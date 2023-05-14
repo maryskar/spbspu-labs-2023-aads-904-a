@@ -21,13 +21,13 @@ int main(int argc, char ** argv)
   auto dictionaries = chemodurov::readDictionaryOfDictionary(input);
   auto command_dics = chemodurov::createCommandDictionary();
   using namespace std::placeholders;
-  auto read = std::bind(chemodurov::readCommand, std::cin);
-  //auto doComm = std::bind(chemodurov::doCommand, read, command_dics, _1, std::cin, std::cout);
+  auto read = std::bind(chemodurov::readCommand, std::ref(std::cin));
+  auto doComm = std::bind(chemodurov::doCommand, read, command_dics, _1, std::ref(std::cin), std::ref(std::cout));
   do
   {
     try
     {
-      chemodurov::doCommand(chemodurov::readCommand(std::cin), command_dics, dictionaries, std::cin, std::cout);
+      doComm(dictionaries);
     }
     catch (const std::invalid_argument & e)
     {
