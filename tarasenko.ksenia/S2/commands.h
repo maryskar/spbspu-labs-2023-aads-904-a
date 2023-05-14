@@ -71,7 +71,7 @@ namespace tarasenko
     {
       given_dict = dict.at(name_of_dict);
     }
-    catch (const std::invalid_argument& e)
+    catch (const std::out_of_range& e)
     {
       return output << "<INVALID COMMAND>";
     }
