@@ -162,10 +162,9 @@ namespace tarasenko
    void clear();
    std::pair< iterator, bool > insert(const std::pair< Key, Value >& value);
    std::pair< iterator, bool > push(const Key& k, const Value& v);
-   //void swap(dict_type& other);
-   //size_t count(const Key& key) const;
-   //const_iterator find( const Key& key ) const;
-   Value get(const Key& k) const;
+   void swap(dict_type& other);
+   size_t count(const Key& key) const;
+   //const_iterator find(const Key& key) const;
    bool find(const Key& k) const;
    size_t remove(const Key& key);
 
@@ -317,9 +316,33 @@ namespace tarasenko
     return 0;
   }
 
-  template< class Key, class T, class Compare >
-  bool operator==( const Dictionary<Key, T, Compare >& lhs, const Dictionary<Key, T, Compare >& rhs );
-  template< class Key, class T, class Compare, class Alloc >
-  bool operator!=( const Dictionary<Key, T, Compare >& lhs, const Dictionary<Key, T, Compare >& rhs );
+  template< class Key, class Value, class Compare >
+  void Dictionary< Key, Value, Compare >::swap(dict_type& other)
+  {
+    list_.swap(other.list_);
+  }
+
+  template< class Key, class Value, class Compare >
+  size_t Dictionary< Key, Value, Compare >::count(const Key& key) const
+  {
+    auto curr = list_.cbegin();
+    while (curr != list_.end())
+    {
+      if (curr->first == key)
+      {
+        return 1;
+      }
+      ++curr;
+    }
+    return 0;
+  }
+
+  template< class Key, class Value, class Compare >
+  bool operator==(const Dictionary<Key, Value, Compare >& lhs, const Dictionary<Key, Value, Compare >& rhs)
+  {}
+
+  template< class Key, class Value, class Compare >
+  bool operator!=(const Dictionary<Key, Value, Compare >& lhs, const Dictionary<Key, Value, Compare >& rhs)
+  {}
 }
 #endif
