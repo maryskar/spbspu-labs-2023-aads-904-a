@@ -334,9 +334,26 @@ namespace tarasenko
   }
 
   template< class Key, class Value, class Compare >
-  bool operator==(const Dictionary<Key, Value, Compare >& lhs, const Dictionary<Key, Value, Compare >& rhs);
+  bool operator==(const Dictionary<Key, Value, Compare >& lhs, const Dictionary<Key, Value, Compare >& rhs)
+  {
+    auto lhs_iter = lhs.cbegin();
+    auto rhs_iter = rhs.cbegin();
+    while (lhs_iter != lhs.cend() && rhs_iter != rhs.cend())
+    {
+      if (*lhs_iter != *rhs_iter)
+      {
+        return false;
+      }
+      ++lhs_iter;
+      ++rhs_iter;
+    }
+    return true;
+  }
 
   template< class Key, class Value, class Compare >
-  bool operator!=(const Dictionary<Key, Value, Compare >& lhs, const Dictionary<Key, Value, Compare >& rhs);
+  bool operator!=(const Dictionary<Key, Value, Compare >& lhs, const Dictionary<Key, Value, Compare >& rhs)
+  {
+    return !(lhs == rhs);
+  }
 }
 #endif
