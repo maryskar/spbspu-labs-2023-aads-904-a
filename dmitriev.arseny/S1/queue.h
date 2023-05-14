@@ -2,7 +2,6 @@
 #define QUEUE_H
 
 #include "list.h"
-#include <stdexcept>
 
 namespace
 {

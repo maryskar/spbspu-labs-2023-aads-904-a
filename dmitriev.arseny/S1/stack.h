@@ -2,7 +2,6 @@
 #define STACK_H
 
 #include "list.h"
-#include <stdexcept>
 
 namespace
 {
