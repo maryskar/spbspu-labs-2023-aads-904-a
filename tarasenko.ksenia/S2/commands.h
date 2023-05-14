@@ -33,8 +33,8 @@ namespace tarasenko
         output << "<INVALID COMMAND>" << "\n";
         return;
       }
-      auto dict1 = dict_of_dict.get(name_dict1);
-      auto dict2 = dict_of_dict.get(name_dict2);
+      auto dict1 = dict_of_dict.at(name_dict1);
+      auto dict2 = dict_of_dict.at(name_dict2);
       if (name_of_command == "complement")
       {
         if (dict1.isEmpty())
@@ -69,7 +69,7 @@ namespace tarasenko
     Value given_dict;
     try
     {
-      given_dict = dict.get(name_of_dict);
+      given_dict = dict.at(name_of_dict);
     }
     catch (const std::invalid_argument& e)
     {
