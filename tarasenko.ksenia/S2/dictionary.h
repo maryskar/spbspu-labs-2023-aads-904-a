@@ -10,39 +10,46 @@ namespace tarasenko
   template< typename Key, typename Value, typename Compare >
   class Dictionary
   {
-  public:
    using dict_type = Dictionary< Key, Value, Compare >;
-
+   using iterator = ForwardListIterator< std::pair< Key, Value > >;
+   using const_iterator = ConstForwardListIterator< std::pair< Key, Value > >;
+  public:
    Dictionary():
-     list(),
-     compare(Compare{})
+     list_(),
+     compare_()
    {}
-   Dictionary(const Dictionary< Key, Value, Compare >& other):
-     list(other.list),
-     compare(other.compare)
+   Dictionary(const dict_type& other):
+     list_(other.list_),
+     compare_(other.compare_)
    {}
-   Dictionary(Dictionary< Key, Value, Compare >&& other):
-     list(std::move(other.list)),
-     compare(other.compare)
+   Dictionary(dict_type&& other):
+     list_(std::move(other.list_)),
+     compare_(other.compare_)
    {}
+   ~Dictionary() = default;
    dict_type& operator=(const dict_type& other)
    {
-     list = other.list;
-     compare = other.compare;
+     if (this != std::addressof(other))
+     {
+       list_ = other.list_;
+       compare_ = other.compare_;
+     }
      return *this;
    }
    dict_type& operator=(dict_type&& other)
    {
-     list = std::move(other.list);
-     compare = other.compare;
+     if (this != std::addressof(other))
+     {
+       list_ = std::move(other.list_);
+       compare_ = other.compare_;
+     }
      return *this;
    }
-   ~Dictionary() = default;
 
    friend bool operator<(const dict_type& dict1, const dict_type& dict2)
    {
-     auto iter = dict1.list.cbegin();
-     auto other_iter = dict2.list.cbegin();
+     auto iter = dict1.list_.cbegin();
+     auto other_iter = dict2.list_.cbegin();
      return iter->first < other_iter->first;
    }
 
@@ -50,10 +57,10 @@ namespace tarasenko
    {
      if (!dict.isEmpty())
      {
-       auto iter = dict.list.cbegin();
+       auto iter = dict.list_.cbegin();
        output << iter->first << " " << iter->second;
        ++iter;
-       while (iter != dict.list.cend())
+       while (iter != dict.list_.cend())
        {
          output << " " << iter->first << " " << iter->second;
          ++iter;
@@ -67,8 +74,8 @@ namespace tarasenko
      dict_type result = left;
      if (!left.isEmpty() && !right.isEmpty())
      {
-       auto iter_left = left.list.cbegin();
-       for (; iter_left != left.list.cend(); iter_left++)
+       auto iter_left = left.list_.cbegin();
+       for (; iter_left != left.list_.cend(); iter_left++)
        {
          if (right.find((*iter_left).first))
          {
@@ -88,8 +95,8 @@ namespace tarasenko
      dict_type result;
      if (!left.isEmpty())
      {
-       auto iter_left = left.list.cbegin();
-       for (; iter_left != left.list.cend(); iter_left++)
+       auto iter_left = left.list_.cbegin();
+       for (; iter_left != left.list_.cend(); iter_left++)
        {
          if (right.find((*iter_left).first))
          {
@@ -109,8 +116,8 @@ namespace tarasenko
      dict_type result = left;
      if (!right.isEmpty())
      {
-       auto iter_right = right.list.cbegin();
-       for (; iter_right != right.list.cend(); iter_right++)
+       auto iter_right = right.list_.cbegin();
+       for (; iter_right != right.list_.cend(); iter_right++)
        {
          if (!left.find((*iter_right).first))
          {
@@ -121,6 +128,8 @@ namespace tarasenko
      return result;
    }
 
+   Value& at(const Key& key);
+   const Value& at(const Key& key) const;
    void push(const Key& k, const Value& v);
    Value get(const Key& k) const;
    bool find(const Key& k) const;
@@ -128,9 +137,21 @@ namespace tarasenko
    bool isEmpty() const;
 
   private:
-   ForwardList< std::pair< Key, Value > > list;
-   Compare compare;
+   ForwardList< std::pair< Key, Value > > list_;
+   Compare compare_;
   };
+
+  template< typename Key, typename Value, typename Compare >
+  Value& Dictionary< Key, Value, Compare >::at(const Key& key)
+  {
+    //...
+    throw std::out_of_range("");
+  }
+  template< typename Key, typename Value, typename Compare >
+  const Value& Dictionary< Key, Value, Compare >::at(const Key& key) const
+  {
+    //...
+  }
 
   template< typename Key, typename Value, typename Compare >
   void Dictionary< Key, Value, Compare >::push(const Key& k, const Value& v)
@@ -140,14 +161,14 @@ namespace tarasenko
     {
       remove(k);
     }
-    auto prev = list.cbeforeBegin();
-    auto current = list.cbegin();
-    while (current != list.cend() && compare(*current, data))
+    auto prev = list_.cbeforeBegin();
+    auto current = list_.cbegin();
+    while (current != list_.cend() && compare_(*current, data))
     {
       ++prev;
       ++current;
     }
-    list.insertAfter(prev, data);
+    list_.insertAfter(prev, data);
   };
 
   template< typename Key, typename Value, typename Compare >
@@ -155,12 +176,12 @@ namespace tarasenko
   {
     if (!isEmpty())
     {
-      auto current = list.cbegin();
-      while (current != list.cend() && (k != current->first))
+      auto current = list_.cbegin();
+      while (current != list_.cend() && (k != current->first))
       {
         ++current;
       }
-      if (current != list.cend() && (k == current->first))
+      if (current != list_.cend() && (k == current->first))
       {
         return current->second;
       }
@@ -173,12 +194,12 @@ namespace tarasenko
   {
     if (!isEmpty())
     {
-      auto current = list.cbegin();
-      while (current != list.cend() && (k != current->first))
+      auto current = list_.cbegin();
+      while (current != list_.cend() && (k != current->first))
       {
         ++current;
       }
-      if (current != list.cend() && (k == current->first))
+      if (current != list_.cend() && (k == current->first))
       {
         return true;
       }
@@ -189,14 +210,14 @@ namespace tarasenko
   template< typename Key, typename Value, typename Compare >
   void Dictionary< Key, Value, Compare >::remove(const Key& key)
   {
-    auto prev = list.cbeforeBegin();
-    auto current = list.cbegin();
-    while (current != list.end())
+    auto prev = list_.cbeforeBegin();
+    auto current = list_.cbegin();
+    while (current != list_.end())
     {
       if (current->first == key)
       {
         ++current;
-        list.eraseAfter(prev);
+        list_.eraseAfter(prev);
         ++prev;
         continue;
       }
@@ -208,7 +229,7 @@ namespace tarasenko
   template< typename Key, typename Value, typename Compare >
   bool Dictionary< Key, Value, Compare >::isEmpty() const
   {
-    return list.isEmpty();
+    return list_.isEmpty();
   }
 }
 #endif
