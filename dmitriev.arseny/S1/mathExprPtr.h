@@ -18,7 +18,7 @@ namespace dmitriev
     MathExprPtr(MathExprPtr&& otherMathExprPtr) noexcept;
     MathExprPtr& operator=(const MathExprPtr& otherMathExprPtr) = delete;
     MathExprPtr& operator=(MathExprPtr&& otherMathExprPtr) noexcept;
-    Expression* operator*();
+    Expression& operator*();
     Expression* operator->();
 
     ~MathExprPtr();

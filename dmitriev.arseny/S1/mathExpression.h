@@ -12,12 +12,12 @@ namespace dmitriev
 
     virtual long long getNumber() const;
     virtual long long operator()(long long, long long);
-    virtual bool operator==(Expression* otherExpr);
-    virtual bool operator!=(Expression* otherExpr);
-    virtual bool operator>(Expression* otherExpr);
-    virtual bool operator<(Expression* otherExpr);
-    virtual bool operator>=(Expression* otherExpr);
-    virtual bool operator<=(Expression* otherExpr);
+    virtual bool operator==(Expression& otherExpr);
+    virtual bool operator!=(Expression& otherExpr);
+    virtual bool operator>(Expression& otherExpr);
+    virtual bool operator<(Expression& otherExpr);
+    virtual bool operator>=(Expression& otherExpr);
+    virtual bool operator<=(Expression& otherExpr);
     virtual bool isOpenParenthesis() const;
     virtual bool isCloseParenthesis() const;
 

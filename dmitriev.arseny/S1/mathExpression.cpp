@@ -26,34 +26,34 @@ long long dmitriev::Expression::operator()(long long, long long)
   throw std::logic_error("logic_error");
 }
 
-bool dmitriev::Expression::operator==(Expression* otherExpr)
+bool dmitriev::Expression::operator==(Expression& otherExpr)
 {
-  return getPriority() == otherExpr->getPriority();
+  return getPriority() == otherExpr.getPriority();
 }
 
-bool dmitriev::Expression::operator!=(Expression* otherExpr)
+bool dmitriev::Expression::operator!=(Expression& otherExpr)
 {
   return !operator==(otherExpr);
 }
 
-bool dmitriev::Expression::operator>(Expression* otherExpr)
+bool dmitriev::Expression::operator>(Expression& otherExpr)
 {
-  return getPriority() > otherExpr->getPriority();
+  return getPriority() > otherExpr.getPriority();
 }
 
-bool dmitriev::Expression::operator<(Expression* otherExpr)
+bool dmitriev::Expression::operator<(Expression& otherExpr)
 {
-  return getPriority() < otherExpr->getPriority();
+  return getPriority() < otherExpr.getPriority();
 }
 
-bool dmitriev::Expression::operator>=(Expression* otherExpr)
+bool dmitriev::Expression::operator>=(Expression& otherExpr)
 {
-  return getPriority() >= otherExpr->getPriority();
+  return getPriority() >= otherExpr.getPriority();
 }
 
-bool dmitriev::Expression::operator<=(Expression* otherExpr)
+bool dmitriev::Expression::operator<=(Expression& otherExpr)
 {
-  return getPriority() <= otherExpr->getPriority();
+  return getPriority() <= otherExpr.getPriority();
 }
 
 bool dmitriev::Expression::isOpenParenthesis() const

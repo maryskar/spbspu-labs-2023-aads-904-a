@@ -23,7 +23,7 @@ namespace
     return infQueue;
   }
 
-  void calculate(dmitriev::Stack< long long >& postStack, dmitriev::Expression* oper)
+  void calculate(dmitriev::Stack< long long >& postStack, dmitriev::MathExprPtr& oper)
   {
     long long n1 = postStack.getTopData();
     postStack.popBack();
@@ -64,7 +64,7 @@ long long dmitriev::calculateTheExpression(std::string stringInp)
           {
             break;
           }
-          calculate(postStack, *stackVal);
+          calculate(postStack, stackVal);
         }
       }
     }
@@ -91,7 +91,7 @@ long long dmitriev::calculateTheExpression(std::string stringInp)
       }
       else
       {
-        calculate(postStack, *stackVal);
+        calculate(postStack, stackVal);
         intermStack.push(std::move(infVal));
       }
     }
@@ -111,7 +111,7 @@ long long dmitriev::calculateTheExpression(std::string stringInp)
       throw std::logic_error("logic_error");
     }
 
-    calculate(postStack, *stackVal);
+    calculate(postStack, stackVal);
   }
 
   return postStack.getTopData();
