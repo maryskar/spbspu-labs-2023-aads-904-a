@@ -147,6 +147,8 @@ namespace tarasenko
 
    Value& at(const Key& key);
    const Value& at(const Key& key) const;
+   Value& operator[](const Key& key);
+   Value& operator[](Key&& key);
    void push(const Key& k, const Value& v);
    Value get(const Key& k) const;
    bool find(const Key& k) const;
@@ -177,6 +179,30 @@ namespace tarasenko
   const Value& Dictionary< Key, Value, Compare >::at(const Key& key) const
   {
     return at(key);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Value& Dictionary< Key, Value, Compare >::operator[](const Key& key)
+  {
+    auto prev = list_.beforeBegin();
+    auto curr = begin();
+    while (curr != end())
+    {
+      if ((*curr).first == key)
+      {
+        return (*curr).second;
+      }
+      prev = curr;
+      ++curr;
+    }
+    auto res = list_.insertAfter(prev, std::pair< Key, Value >(key, Value()));
+    return (*res).second;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Value& Dictionary< Key, Value, Compare >::operator[](Key&& key)
+  {
+    return (*this)[key];
   }
 
   template< typename Key, typename Value, typename Compare >
