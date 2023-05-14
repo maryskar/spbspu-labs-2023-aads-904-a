@@ -261,43 +261,24 @@ namespace chemodurov
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::lower_bound(const key_type & key)
   {
-    iterator end_ = end();
-    iterator it = begin();
-    iterator res = before_begin();
-    while (it != end_ && key_comp()(it->first, key))
-    {
-      ++it;
-      ++res;
-    }
-    return res;
+    const_iterator cit = (static_cast< const this_t & >(*this)).lower_bound(key);
+    return data_.erase_after(cit, cit);
   }
 
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::upper_bound(const key_type & key) const
   {
-    const_iterator end_ = cend();
-    const_iterator it = cbegin();
-    const_iterator res = cbefore_begin();
-    while (it != end_ && !(key_comp()(key, it->first)))
-    {
-      ++it;
-      ++res;
-    }
+    auto res = before_begin();
+    for (auto it = begin(); it != end() && !key_comp()(it->first, key); ++it, ++res)
+    {}
     return res;
   }
 
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::upper_bound(const key_type & key)
   {
-    iterator end_ = end();
-    iterator it = begin();
-    iterator res = before_begin();
-    while (it != end_ && !(key_comp()(key, it->first)))
-    {
-      ++it;
-      ++res;
-    }
-    return res;
+    const_iterator cit = (static_cast< const this_t & >(*this)).upper_bound(key);
+    return data_.erase_after(cit, cit);
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -335,15 +316,8 @@ namespace chemodurov
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::find(const key_type & key)
   {
-    iterator it = lower_bound(key);
-    iterator moved_it = it;
-    ++moved_it;
-    if (moved_it == end())
-    {
-      return last();
-    }
-    key_compare compare = key_comp();
-    return (!compare(moved_it->first, key) && !compare(key, moved_it->first)) ? it : last();
+    const_iterator cit = (static_cast< const this_t & >(*this)).find(key);
+    return data_.erase_after(cit, cit);
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -463,14 +437,14 @@ namespace chemodurov
       bool
   > Dictionary< Key, Value, Compare >::emplace(Args && ... args)
   {
-    return insert(std::forward< Args >(args)...);
+    return insert(value_type(std::forward< Args >(args)...));
   }
 
   template< typename Key, typename Value, typename Compare >
   template< typename... Args >
   typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::emplace(const_iterator pos, Args && ... args)
   {
-    return insert(pos, std::forward< Args >(args)...);
+    return insert(pos, value_type(std::forward< Args >(args)...));
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -506,22 +480,14 @@ namespace chemodurov
       return at(key);
     }
     catch (const std::out_of_range & e)
-    {
-      return emplace(key, mapped_type{});
-    }
+    {}
+    return (*(emplace(key, mapped_type{}).first)).second;
   }
 
   template< typename Key, typename Value, typename Compare >
   Value & Dictionary< Key, Value, Compare >::operator[](key_type && key)
   {
-    try
-    {
-      return at(key);
-    }
-    catch (const std::out_of_range & e)
-    {
-      return emplace(std::move(key), mapped_type{});
-    }
+    return (*this)[key];
   }
 
   template< typename Key, typename Value, typename Compare >

@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include <tuple>
 #include "read-dictionary-of-dictionary.hpp"
 #include "read-and-do-command.hpp"
 
@@ -42,5 +41,9 @@ int main(int argc, char ** argv)
     }
   }
   while (std::cin);
+  auto dic = dictionaries.at("second");
+  auto pair = dic.emplace(5, "zalupa");
+  chemodurov::print(std::cout, *(pair.first));
+  auto val = dictionaries["fourth"];
   return 0;
 }

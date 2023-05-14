@@ -126,18 +126,7 @@ namespace chemodurov
   ForwardList< T >::ForwardList(this_t && rhs):
    ForwardList()
   {
-    fake_.node_->next = rhs.fake_.node_->next;
-    last_ = rhs.last_;
-    rhs.fake_.node_->next = rhs.fake_.node_;
-    rhs.last_.node_ = nullptr;
-    if (!empty())
-    {
-      last_.node_->next = fake_.node_;
-    }
-    else
-    {
-      last_.node_ = nullptr;
-    }
+    swap(rhs);
   }
 
   template< typename T >
