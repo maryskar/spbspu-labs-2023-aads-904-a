@@ -19,7 +19,8 @@ namespace turkin
       ~Stack();
       void swap(Stack< T > & rhs) noexcept;
       void push(const T & rhs);
-      T & drop();
+      T & get();
+      void pop();
       const T & drop() const;
       bool isEmpty() const;
     private:
@@ -81,27 +82,21 @@ void turkin::Stack< T >::push(const T & rhs)
 }
 
 template< typename T >
-T & turkin::Stack< T >::drop()
+T & turkin::Stack< T >::get()
 {
   if (isEmpty())
   {
     throw std::runtime_error("stack is empty");
   }
-  pattern::OneWayNode< T > * element = value_;
-  value_ = element->next;
-  T ret = element->data;
-  delete element;
-  return ret;
+  return value_->data;
 }
 
 template< typename T >
-const T & turkin::Stack< T >::drop() const
+void turkin::Stack< T >::pop()
 {
-  if (isEmpty())
-  {
-    throw std::runtime_error("stack is empty");
-  }
-  return turkin::sqhelp::remove(value_);
+  pattern::OneWayNode< T > * element = value_;
+  value_ = element->next;
+  delete element;
 }
 
 template< typename T >

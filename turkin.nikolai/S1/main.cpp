@@ -50,11 +50,13 @@ int main(int argc, char * argv[])
 
   if (!answers.isEmpty())
   {
-    std::cout << answers.drop();
+    std::cout << answers.get();
+    answers.pop();
   }
   while (!answers.isEmpty())
   {
-    std::cout << " " << answers.drop();
+    std::cout << " " << answers.get();
+    answers.pop();
   }
   std::cout << "\n";
   return 0;

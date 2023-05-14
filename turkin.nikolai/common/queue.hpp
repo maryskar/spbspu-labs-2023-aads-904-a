@@ -20,8 +20,8 @@ namespace turkin
       ~Queue();
       void swap(Queue< T > & rhs) noexcept;
       void push(const T & rhs);
-      T drop();
-      T drop() const;
+      T & get();
+      void pop();
       bool isEmpty() const;
     private:
       pattern::OneWayNode< T > * value_;
@@ -108,51 +108,33 @@ void turkin::Queue< T >::push(const T & rhs)
 }
 
 template< typename T >
-T turkin::Queue< T >::drop()
+T & turkin::Queue< T >::get()
 {
   if (isEmpty())
   {
     throw std::runtime_error("queue is empty");
   }
-  pattern::OneWayNode< T > * element = nullptr;
-  if (value_ == back_)
-  {
-    element = value_;
-    value_ = nullptr;
-    back_ = nullptr;
-  }
-  else
-  {
-    element = value_;
-    value_ = value_->next;
-  }
-  T ret(element->data);
-  delete element;
-  return ret;
+  return value_->data;
 }
 
 template< typename T >
-T turkin::Queue< T >::drop() const
+void turkin::Queue< T >::pop()
 {
   if (isEmpty())
   {
     throw std::runtime_error("queue is empty");
   }
-  pattern::OneWayNode< T > * element = nullptr;
+  pattern::OneWayNode< T > * element = value_;
   if (value_ == back_)
   {
-    element = value_;
     value_ = nullptr;
     back_ = nullptr;
   }
   else
   {
-    element = value_;
     value_ = value_->next;
   }
-  T ret(element->data);
   delete element;
-  return ret;
 }
 
 template< typename T >

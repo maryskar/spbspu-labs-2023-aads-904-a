@@ -58,7 +58,8 @@ turkin::Queue< pfix_t > inf2Post(turkin::Queue< pinf_t > & input)
   turkin::Queue< pfix_t > output;
   while (!input.isEmpty())
   {
-    pinf_t data(input.drop());
+    pinf_t data(input.get());
+    input.pop();
     if (asml::same(data, PINF::NUM))
     {
       output.push(cnvt::convertINF2FIX(data));
@@ -69,7 +70,8 @@ turkin::Queue< pfix_t > inf2Post(turkin::Queue< pinf_t > & input)
       {
         while (!buffer.isEmpty())
         {
-          pinf_t opt = buffer.drop();
+          pinf_t opt = buffer.get();
+          buffer.pop();
           if (asml::same(opt, PINF::LEFT_BRACKET))
           {
             break;
@@ -79,7 +81,8 @@ turkin::Queue< pfix_t > inf2Post(turkin::Queue< pinf_t > & input)
       }
       else if (!buffer.isEmpty() && !asml::same(data, PINF::LEFT_BRACKET))
       {
-        pinf_t opt(buffer.drop());
+        pinf_t opt(buffer.get());
+        buffer.pop();
         buffer.push(opt);
         if (isLowerPriority(data, opt) || asml::same(opt, PINF::LEFT_BRACKET))
         {
@@ -87,7 +90,8 @@ turkin::Queue< pfix_t > inf2Post(turkin::Queue< pinf_t > & input)
         }
         else
         {
-          opt = buffer.drop();
+          opt = buffer.get();
+          buffer.pop();
           while (!isLowerPriority(data, opt))
           {
             output.push(cnvt::convertINF2FIX(opt));
@@ -95,7 +99,8 @@ turkin::Queue< pfix_t > inf2Post(turkin::Queue< pinf_t > & input)
             {
               break;
             }
-            opt = buffer.drop();
+            opt = buffer.get();
+            buffer.pop();
           }
           buffer.push(data);
         }
@@ -108,7 +113,8 @@ turkin::Queue< pfix_t > inf2Post(turkin::Queue< pinf_t > & input)
   }
   while (!buffer.isEmpty())
   {
-    output.push(cnvt::convertINF2FIX(buffer.drop()));
+    output.push(cnvt::convertINF2FIX(buffer.get()));
+    buffer.pop();
   }
   return output;
 }
@@ -118,15 +124,18 @@ long long post2Result(turkin::Queue< pfix_t > & output)
   turkin::Stack< long long > buffer;
   while (!output.isEmpty())
   {
-    pfix_t opt(output.drop());
+    pfix_t opt(output.get());
+    output.pop();
     if (asml::same(opt, PFIX::NUM))
     {
       buffer.push(opt.calc.num);
     }
     else
     {
-      long long b = buffer.drop();
-      long long a = buffer.drop();
+      long long b = buffer.get();
+      buffer.pop();
+      long long a = buffer.get();
+      buffer.pop();
       long long c = 0;
       if (asml::same(opt, PFIX::ADD))
       {
@@ -171,5 +180,5 @@ long long post2Result(turkin::Queue< pfix_t > & output)
       buffer.push(c);
     }
   }
-  return buffer.drop();
+  return buffer.get();
 }
