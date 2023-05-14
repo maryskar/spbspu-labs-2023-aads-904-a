@@ -46,6 +46,23 @@ namespace tarasenko
      return *this;
    }
 
+   iterator begin()
+   {
+     return list_.begin();
+   }
+   iterator end()
+   {
+     return list_.end();
+   }
+   const_iterator cbegin() const
+   {
+     return list_.cbegin();
+   }
+   const_iterator cend() const
+   {
+     return list_.cend();
+   }
+
    friend bool operator<(const dict_type& dict1, const dict_type& dict2)
    {
      auto iter = dict1.list_.cbegin();
