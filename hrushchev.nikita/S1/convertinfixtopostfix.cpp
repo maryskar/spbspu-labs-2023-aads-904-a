@@ -21,7 +21,14 @@ namespace hrushchev
       return 0;
     }
     else
+    {
       throw std::logic_error("Invalid operator");
+    }
+  }
+
+  bool isHigherPriority(std::string op1, std::string op2)
+  {
+    return getOperatorPriority(op1) >= getOperatorPriority(op2);
   }
 
   bool isOperator(std::string op)
@@ -32,9 +39,9 @@ namespace hrushchev
 
 hrushchev::Queue< std::string > hrushchev::convertInfixToPostfix(hrushchev::Queue< std::string >& infixQueue)
 {
-  namespace hr = hrushchev;
-  hr::Queue< std::string > postfixQueue;
-  hr::Stack< std::string > stack;
+  namespace hrn = hrushchev;
+  hrn::Queue< std::string > postfixQueue;
+  hrn::Stack< std::string > stack;
 
   while (!infixQueue.isEmpty())
   {
@@ -45,7 +52,7 @@ hrushchev::Queue< std::string > hrushchev::convertInfixToPostfix(hrushchev::Queu
     {
       postfixQueue.push(token);
     }
-    else if (hr::isOperator(token))
+    else if (hrn::isOperator(token))
     {
       if (token == ")")
       {
@@ -66,7 +73,7 @@ hrushchev::Queue< std::string > hrushchev::convertInfixToPostfix(hrushchev::Queu
       }
       else
       {
-        while (!stack.isEmpty() && (hr::getOperatorPriority(stack.get()) >= hr::getOperatorPriority(token)))
+        while (!stack.isEmpty() && (hrn::isHigherPriority(stack.get(),token)))
         {
           postfixQueue.push(stack.get());
           stack.pop();

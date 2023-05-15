@@ -6,9 +6,9 @@
 
 long long hrushchev::calculatePostfix(hrushchev::Queue< std::string >& postfixQueue)
 {
-  namespace hr = hrushchev;
+  namespace hrn = hrushchev;
 
-  hr::Stack< long long > stack;
+  hrn::Stack< long long > stack;
   while (!postfixQueue.isEmpty())
   {
     std::string token = postfixQueue.get();
@@ -26,23 +26,23 @@ long long hrushchev::calculatePostfix(hrushchev::Queue< std::string >& postfixQu
       long long result;
       if (token == "+")
       {
-        result = hr::sum(operand1, operand2);
+        result = hrn::sum(operand1, operand2);
       }
       else if (token == "-")
       {
-        result = hr::subtract(operand1, operand2);
+        result = hrn::subtract(operand1, operand2);
       }
       else if (token == "*")
       {
-        result = hr::multiply(operand1, operand2);
+        result = hrn::multiply(operand1, operand2);
       }
       else if (token == "/")
       {
-        result = hr::division(operand1, operand2);
+        result = hrn::division(operand1, operand2);
       }
       else if (token == "%")
       {
-        result = hr::remaind(operand1, operand2);
+        result = hrn::remaind(operand1, operand2);
       }
       stack.push(result);
     }

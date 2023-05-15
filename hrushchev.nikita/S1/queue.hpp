@@ -67,7 +67,7 @@ namespace hrushchev
   {
     if (isEmpty())
     {
-        throw std::logic_error("Empty queue");
+      throw std::logic_error("Empty queue");
     }
     if (begin_ == end_)
     {

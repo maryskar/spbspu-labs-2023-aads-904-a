@@ -6,8 +6,8 @@
 
 hrushchev::Queue< std::string > hrushchev::convertStringToInfix(std::string str)
 {
-  namespace hr = hrushchev;
-  hr::Queue< std::string > infix_queue;
+  namespace hrn = hrushchev;
+  hrn::Queue< std::string > infix_queue;
   std::stringstream string_stream(str);
   std::string token;
   while (string_stream >> token)

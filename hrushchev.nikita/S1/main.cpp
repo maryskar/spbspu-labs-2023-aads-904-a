@@ -10,7 +10,7 @@
 
 int main(int argc, char* argv[])
 {
-  namespace hr = hrushchev;
+  namespace hrn = hrushchev;
 
   if (argc > 2)
   {
@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
   std::istream& input = (argc == 2) ? file_input : std::cin;
 
   std::string line;
-  hr::Stack< long long > results;
+  hrn::Stack< long long > results;
   while (std::getline(input, line))
   {
     if (!input)
@@ -42,11 +42,11 @@ int main(int argc, char* argv[])
     {
       continue;
     }
-    hr::Queue< std::string > infix = hr::convertStringToInfix(line);
+    hrn::Queue< std::string > infix = hrn::convertStringToInfix(line);
     try
     {
-      hr::Queue< std::string > postfix = hr::convertInfixToPostfix(infix);
-      long long result = hr::calculatePostfix(postfix);
+      hrn::Queue< std::string > postfix = hrn::convertInfixToPostfix(infix);
+      long long result = hrn::calculatePostfix(postfix);
       results.push(result);
     }
     catch (const std::exception& e)
