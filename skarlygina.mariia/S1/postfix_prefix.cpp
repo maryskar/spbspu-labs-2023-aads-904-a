@@ -1,5 +1,24 @@
 #include "postfix_prefix.h"
 #include "calculator.h"
+
+Queue< std::string > makeInfix(std::string string)
+{
+  Queue< std::string > infix_queue;
+  size_t infix_size = 0;
+  while (string.size() != infix_size)
+  {
+    std::string member = "";
+    while (string.size() < infix_size && !std:isspace(member))
+    {
+      infix_queue.push(string[i]);
+      member += string[i];
+      i++;
+    }
+    i++
+  }
+  return infix_queue;
+}
+
 Queue< std::string > infixToPostfix(Queue<std::string>& infix_queue)
 {
   Queue< std::string > postfix_queue;
