@@ -1,6 +1,6 @@
 #ifndef CALCULATOR_H
 #define CALCULATOR_H
-
+#include <string>
 namespace calculator
 {
   long long sum(long long a, long long b);
