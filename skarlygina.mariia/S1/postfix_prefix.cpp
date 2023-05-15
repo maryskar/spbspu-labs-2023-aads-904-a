@@ -7,11 +7,11 @@ Queue< std::string > operation::makeInfix(std::string string)
   size_t infix_size = 0;
   while (string.size() != infix_size)
   {
-    std::string member = "";
-    while (string.size() < infix_size && !std:isspace(member))
+    std::string token = "";
+    while (string.size() < infix_size && !std:isspace(string[i]))
     {
       infix_queue.push(string[i]);
-      member += string[i];
+      token += string[i];
       i++;
     }
     i++
@@ -19,24 +19,29 @@ Queue< std::string > operation::makeInfix(std::string string)
   return infix_queue;
 }
 
-Queue< std::string > infixToPostfix(Queue<std::string>& infix_queue)
+
+Queue<std::string> infixToPostfix(Queue<std::string>& infix_queue) 
 {
-  Queue< std::string > postfix_queue;
-  Stack< std::string > operator_stack;
+  Queue<std::string> postfix_queue;
+  Stack<std::string> operator_stack;
 
   while (!infix_queue.isEmpty())
   {
-    std::string token = infix_queue.dequeue();
+    std::string token = infix_queue.get();
+    infix_queue.pop();
 
-    if (calculator::isOperation(token))
+    if (isOperator(token))
     {
-      while (!operator_stack.empty() && calculator::isOperation(operator_stack.top()) &&
-        getPrecedence(token) <= getPrecedence(operator_stack.top()))
+      while (!operator_stack.isEmpty() && hasHigherPrecedence(operator_stack.get(), token))
       {
-        postfix_queue.enqueue(operator_stack.top());
+        postfix_queue.push(operator_stack.get());
         operator_stack.pop();
       }
       operator_stack.push(token);
+    }
+    else if (isOperand(token))
+    {
+      postfix_queue.push(token);
     }
     else if (token == "(")
     {
@@ -44,27 +49,24 @@ Queue< std::string > infixToPostfix(Queue<std::string>& infix_queue)
     }
     else if (token == ")")
     {
-      while (!operator_stack.empty() && operator_stack.top() != "(")
+      while (!operator_stack.isEmpty() && operator_stack.get() != "(")
       {
-        postfix_queue.enqueue(operator_stack.top());
+        postfix_queue.push(operator_stack.get());
         operator_stack.pop();
       }
       operator_stack.pop();
     }
-    else
-    {
-      postfix_queue.enqueue(token);
-    }
   }
 
-  while (!operator_stack.empty())
+  while (!operator_stack.isEmpty())
   {
-    // postfix_queue.push(operator_stack.top());
+    postfix_queue.push(operator_stack.get());
     operator_stack.pop();
   }
 
   return postfix_queue;
 }
+
 
 Queue< std::string > operation::makePrefix(Queue< std::string >& infix_queue);
 
