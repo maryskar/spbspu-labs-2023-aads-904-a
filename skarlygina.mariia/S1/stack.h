@@ -12,6 +12,7 @@ public:
   void push(const T& rhs);
   T& get() const;
   void pop();
+  bool isEmpty() const;
   ~Stack();
 private:
   List< T >* head_;
@@ -86,6 +87,12 @@ void Stack< T >::pop()
     head_ = nullptr;
   }
   delete node_temp;
+}
+
+template< typename T >
+bool Stack< T >::isEmpty() const
+{
+  return head_.isEmpty();
 }
 
 template< typename T>

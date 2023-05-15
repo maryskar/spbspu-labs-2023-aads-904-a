@@ -13,6 +13,7 @@ public:
   void push(const T& rhs);
   T& get() const;
   void pop();
+  bool isEmpty() const;
   ~Queue();
 private:
   List< T >* head_;
@@ -85,6 +86,12 @@ T& Queue< T >::get() const
     throw std::out_of_range("Queue is empty");
   }
   return head_->data;
+}
+
+template< typename T >
+bool Queue< T >::isEmpty() const
+{
+  return head_.isEmpty();
 }
 
 template< typename T >
