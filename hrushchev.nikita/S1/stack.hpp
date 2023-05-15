@@ -83,7 +83,7 @@ namespace hrushchev
         other_value = other_value->next;
       }
     }
-    catch(...)
+    catch (...)
     {
       clear();
       throw;
