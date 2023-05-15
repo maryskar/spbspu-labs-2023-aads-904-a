@@ -3,9 +3,7 @@
 
 namespace potapova
 {
-  
-  Queue< potapova::ArithmExpMember > getInfixQueue();
-  
+  bool getInfixQueue(potapova::Queue< potapova::ArithmExpMember >& dest, std::istream& in = std::cin);
 }
 
 #endif

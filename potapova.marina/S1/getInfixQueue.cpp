@@ -7,15 +7,15 @@
 #include "valueType.h"
 #include "queue.h"
 
-potapova::Queue< potapova::ArithmExpMember > getInfixQueue()
+bool getInfixQueue(potapova::Queue< potapova::ArithmExpMember >& dest, std::istream& in = std::cin)
 {
   std::string string_member;
-  if (!(std::cin >> string_member))
+  if (!(in >> string_member))
   {
     std::cerr << "Input error\n";
     return 1;
   }
-  while (std::cin >> string_member)
+  while (in >> string_member)
   {
     potapova::ArithmExpMember member;
     if (isdigit(string_member.front()))
