@@ -5,6 +5,10 @@
 #include "dictionary.h"
 namespace dimkashelk
 {
+  std::ostream &outCustomErrorMessage(std::ostream &out)
+  {
+    return out << "<INVALID COMMAND>";
+  }
   void labList1(std::istream &in, std::ostream &out, int argc, char *argv[])
   {
     using dict_type = dimkashelk::Dictionary< int, std::string, std::less< > >;
@@ -61,10 +65,6 @@ namespace dimkashelk
       {
         std::string dataset_name;
         in >> dataset_name;
-        if (!in)
-        {
-          out << "<INVALID COMMAND>\n";
-        }
         try
         {
           dict_type d = dict.at(dataset_name);
@@ -79,7 +79,7 @@ namespace dimkashelk
         }
         catch (...)
         {
-          out << "<INVALID COMMAND>\n";
+          outCustomErrorMessage(out);
         }
       }
       else
@@ -98,7 +98,7 @@ namespace dimkashelk
         }
         catch (...)
         {
-          out << "<INVALID COMMAND>\n";
+          outCustomErrorMessage(out);
           std::getline(in, command);
         }
       }
