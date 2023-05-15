@@ -51,7 +51,7 @@ namespace dimkashelk
     }
     dimkashelk::Dictionary< std::string, dict_type(*)(const dict_type &, const dict_type &), std::greater< > > commands;
     commands["complement"] = getComplement;
-    commands["intersection"] = getIntersection;
+    commands["intersect"] = getIntersection;
     commands["union"] = getUnion;
     while (in)
     {
