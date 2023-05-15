@@ -13,7 +13,7 @@ namespace potapova
       Operation
     };
 
-    union Value
+    union
     {
       std::int64_t num;
       char operation;
