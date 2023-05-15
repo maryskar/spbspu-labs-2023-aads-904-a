@@ -10,11 +10,6 @@
 bool getInfixQueue(potapova::Queue< potapova::ArithmExpMember >& dest, std::istream& in = std::cin)
 {
   std::string string_member;
-  if (!(in >> string_member))
-  {
-    std::cerr << "Input error\n";
-    return 1;
-  }
   while (in >> string_member)
   {
     potapova::ArithmExpMember member;
@@ -32,6 +27,7 @@ bool getInfixQueue(potapova::Queue< potapova::ArithmExpMember >& dest, std::istr
     {
       throw std::logic_error("The parameters of the expression are incorrect");
     }
+    dest.push(member);
   }
 }
 
