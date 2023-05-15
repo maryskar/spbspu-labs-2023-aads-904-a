@@ -57,16 +57,12 @@ namespace dimkashelk
     {
       std::string command;
       in >> command;
-      if (!in)
+      try
       {
-        break;
-      }
-      if (command == "print")
-      {
-        std::string dataset_name;
-        in >> dataset_name;
-        try
+        if (command == "print")
         {
+          std::string dataset_name;
+          in >> dataset_name;
           dict_type d = dict.at(dataset_name);
           if (d.empty())
           {
@@ -77,14 +73,7 @@ namespace dimkashelk
             out << dataset_name << " " << d << "\n";
           }
         }
-        catch (...)
-        {
-          outCustomErrorMessage(out);
-        }
-      }
-      else
-      {
-        try
+        else
         {
           auto to_do = commands.at(command);
           std::string new_dataset_name;
@@ -96,11 +85,11 @@ namespace dimkashelk
           dict_type new_dict = to_do(data_1, data_2);
           dict.emplace(new_dataset_name, new_dict);
         }
-        catch (...)
-        {
-          outCustomErrorMessage(out);
-          std::getline(in, command);
-        }
+      }
+      catch (...)
+      {
+        outCustomErrorMessage(out);
+        std::getline(in, command);
       }
     }
   }
