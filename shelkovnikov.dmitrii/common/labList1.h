@@ -57,6 +57,10 @@ namespace dimkashelk
     {
       std::string command;
       in >> command;
+      if (!in)
+      {
+        break;
+      }
       try
       {
         if (command == "print")
@@ -88,7 +92,7 @@ namespace dimkashelk
       }
       catch (...)
       {
-        outCustomErrorMessage(out);
+        outCustomErrorMessage(out) << "\n";
         std::getline(in, command);
       }
     }
