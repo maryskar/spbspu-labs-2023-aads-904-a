@@ -107,5 +107,17 @@ namespace chemodurov
     assert(node_ != nullptr);
     return std::addressof(node_->data);
   }
+
+  template< typename T >
+  bool operator==(const ConstBidirectionalIterator< T > & lhs, const ConstBidirectionalIterator< T > & rhs)
+  {
+    return lhs.operator->() == rhs.operator->();
+  }
+
+  template< typename T >
+  bool operator!=(const ConstBidirectionalIterator< T > & lhs, const ConstBidirectionalIterator< T > & rhs)
+  {
+    return !(lhs == rhs);
+  }
 }
 #endif
