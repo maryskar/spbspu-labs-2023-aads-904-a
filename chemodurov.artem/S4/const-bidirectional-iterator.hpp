@@ -1,15 +1,17 @@
 #ifndef S4_CONST_BIDIRECTIONAL_ITERATOR_HPP
 #define S4_CONST_BIDIRECTIONAL_ITERATOR_HPP
-#include "tree.hpp"
+#include "bidirectional-iterator.hpp"
 
 namespace chemodurov
 {
   template< typename T >
   class ConstBidirectionalIterator
   {
+    friend class BidirectionalIterator< T >;
    public:
     using this_t = ConstBidirectionalIterator< T >;
     ConstBidirectionalIterator();
+    ConstBidirectionalIterator(const BidirectionalIterator< T > & rhs);
     ConstBidirectionalIterator(const this_t &) = default;
     ~ConstBidirectionalIterator() = default;
     this_t & operator=(const this_t &) = default;
@@ -29,5 +31,68 @@ namespace chemodurov
    node_(nullptr),
    fake_(nullptr)
   {}
+
+  template< typename T >
+  ConstBidirectionalIterator< T > & ConstBidirectionalIterator< T >::operator++()
+  {
+    assert(node_ != nullptr);
+    if (node_->right != fake_)
+    {
+      node_= node_->right;
+      return *this;
+    }
+    Tree< T > * previous = node_;
+    node_ = node_->parent;
+    while (node_ != fake_ && node_->right == previous)
+    {
+      previous = node_;
+      node_ = node_->parent;
+    }
+    return *this;
+  }
+
+  template< typename T >
+  ConstBidirectionalIterator< T >::ConstBidirectionalIterator(const BidirectionalIterator< T > & rhs):
+   node_(rhs.node_),
+   fake_(rhs.fake_)
+  {}
+
+  template< typename T >
+  ConstBidirectionalIterator< T > ConstBidirectionalIterator< T >::operator++(int)
+  {
+    assert(node_ != nullptr);
+    this_t temp(*this);
+    ++(*this);
+    return temp;
+  }
+
+  template< typename T >
+  ConstBidirectionalIterator< T > & ConstBidirectionalIterator< T >::operator--()
+  {
+    assert(node_ != nullptr);
+    if (node_->left != fake_)
+    {
+      node_ = node_->left;
+      return *this;
+    }
+    Tree< T > * previous = node_;
+    node_ = node_->parent;
+    while (node_ != fake_ && node_->left == previous)
+    {
+      previous = node_;
+      node_ = node_->parent;
+    }
+    return *this;
+  }
+
+  template< typename T >
+  ConstBidirectionalIterator< T > ConstBidirectionalIterator< T >::operator--(int)
+  {
+    assert(node_ != nullptr);
+    this_t temp(*this);
+    --(*this);
+    return temp;
+  }
+
 }
 #endif

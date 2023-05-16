@@ -6,8 +6,12 @@
 namespace chemodurov
 {
   template< typename T >
+  class ConstBidirectionalIterator;
+
+  template< typename T >
   class BidirectionalIterator
   {
+    friend class ConstBidirectionalIterator< T >;
    public:
     using this_t = BidirectionalIterator< T >;
     BidirectionalIterator();
@@ -36,19 +40,10 @@ namespace chemodurov
   template< typename T >
   BidirectionalIterator< T > & BidirectionalIterator< T >::operator++()
   {
-    assert(node_ != nullptr);
-    if (node_->right != fake_)
-    {
-      node_= node_->right;
-      return *this;
-    }
-    Tree< T > * previous = node_;
-    node_ = node_->parent;
-    while (node_ != fake_ && node_->right == previous)
-    {
-      previous = node_;
-      node_ = node_->parent;
-    }
+    ConstBidirectionalIterator< T > temp(*this);
+    ++temp;
+    this->node_ = temp.node_;
+    this->fake_ = temp.fake_;
     return *this;
   }
 
@@ -64,19 +59,10 @@ namespace chemodurov
   template< typename T >
   BidirectionalIterator< T > & BidirectionalIterator< T >::operator--()
   {
-    assert(node_ != nullptr);
-    if (node_->left != fake_)
-    {
-      node_ = node_->left;
-      return *this;
-    }
-    Tree< T > * previous = node_;
-    node_ = node_->parent;
-    while (node_ != fake_ && node_->left == previous)
-    {
-      previous = node_;
-      node_ = node_->parent;
-    }
+    ConstBidirectionalIterator< T > temp(*this);
+    --temp;
+    this->node_ = temp.node_;
+    this->fake_ = temp.fake_;
     return *this;
   }
 
