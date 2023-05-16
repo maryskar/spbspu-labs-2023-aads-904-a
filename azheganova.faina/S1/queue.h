@@ -43,7 +43,7 @@ namespace azheganova
       {
         push(tmp->data_);
       }
-      catch(const std::exception & e)
+      catch (const std::exception & e)
       {
         while (top_ != nullptr)
         {

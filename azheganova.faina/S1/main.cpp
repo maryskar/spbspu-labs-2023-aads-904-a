@@ -16,7 +16,7 @@ int main(int argc, char * argv[])
     return 1;
   }
   std::fstream inputfile;
-  if(argc == 2)
+  if (argc == 2)
   {
     inputfile.open(argv[1]);
     if (!inputfile)

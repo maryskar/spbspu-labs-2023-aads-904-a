@@ -52,7 +52,7 @@ namespace azheganova
       {
         node2->next_ = new details::ListNode< T >(node1->data_);
       }
-      catch(const std::exception & e)
+      catch (const std::exception & e)
       {
         while (top_ != nullptr)
         {
@@ -119,7 +119,7 @@ namespace azheganova
   template< typename T >
   T Stack< T >::get() const
   {
-    if(isEmpty())
+    if (isEmpty())
     {
       throw std::logic_error("empty stack");
     }
