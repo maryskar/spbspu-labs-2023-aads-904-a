@@ -71,88 +71,6 @@ namespace tarasenko
      return list_.cend();
    }
 
-   friend bool operator<(const dict_type& dict1, const dict_type& dict2)
-   {
-     auto iter = dict1.list_.cbegin();
-     auto other_iter = dict2.list_.cbegin();
-     return iter->first < other_iter->first;
-   }
-
-   friend std::ostream& operator<<(std::ostream& output, const dict_type& dict)
-   {
-     if (!dict.isEmpty())
-     {
-       auto iter = dict.list_.cbegin();
-       output << iter->first << " " << iter->second;
-       ++iter;
-       while (iter != dict.list_.cend())
-       {
-         output << " " << iter->first << " " << iter->second;
-         ++iter;
-       }
-     }
-     return output;
-   }
-
-   friend dict_type operator-(const dict_type& left, const dict_type& right)
-   {
-     dict_type result = left;
-     if (!left.isEmpty() && !right.isEmpty())
-     {
-       auto iter_left = left.list_.cbegin();
-       for (; iter_left != left.list_.cend(); iter_left++)
-       {
-         if (right.find((*iter_left).first) != left.cend())
-         {
-           result.remove((*iter_left).first);
-         }
-       }
-     }
-     return result;
-   }
-
-   friend dict_type operator&&(const dict_type& left, const dict_type& right)
-   {
-     if (right.isEmpty())
-     {
-       return right;
-     }
-     dict_type result;
-     if (!left.isEmpty())
-     {
-       auto iter_left = left.list_.cbegin();
-       for (; iter_left != left.list_.cend(); iter_left++)
-       {
-         if (right.find((*iter_left).first) != right.cend())
-         {
-           result.push((*iter_left).first, (*iter_left).second);
-         }
-       }
-     }
-     return result;
-   }
-
-   friend dict_type operator||(const dict_type& left, const dict_type& right)
-   {
-     if (left.isEmpty())
-     {
-       return right;
-     }
-     dict_type result = left;
-     if (!right.isEmpty())
-     {
-       auto iter_right = right.list_.cbegin();
-       for (; iter_right != right.list_.cend(); iter_right++)
-       {
-         if (left.find((*iter_right).first) == left.cend())
-         {
-           result.push((*iter_right).first, (*iter_right).second);
-         }
-       }
-     }
-     return result;
-   }
-
    Value& at(const Key& key);
    const Value& at(const Key& key) const;
    Value& operator[](const Key& key);
@@ -354,6 +272,88 @@ namespace tarasenko
   bool operator!=(const Dictionary<Key, Value, Compare >& lhs, const Dictionary<Key, Value, Compare >& rhs)
   {
     return !(lhs == rhs);
+  }
+
+  template< class Key, class Value, class Compare >
+  Dictionary<Key, Value, Compare > operator-(const Dictionary<Key, Value, Compare >& lhs,
+      const Dictionary<Key, Value, Compare >& rhs)
+  {
+    auto result = lhs;
+    if (!lhs.isEmpty() && !rhs.isEmpty())
+    {
+      auto iter_lhs = lhs.cbegin();
+      for (; iter_lhs != lhs.cend(); iter_lhs++)
+      {
+        if (rhs.find((*iter_lhs).first) != lhs.cend())
+        {
+          result.remove((*iter_lhs).first);
+        }
+      }
+    }
+    return result;
+  }
+
+  template< class Key, class Value, class Compare >
+  Dictionary<Key, Value, Compare > operator&&(const Dictionary<Key, Value, Compare >& lhs,
+      const Dictionary<Key, Value, Compare >& rhs)
+  {
+    if (rhs.isEmpty())
+    {
+      return rhs;
+    }
+    Dictionary<Key, Value, Compare > result;
+    if (!lhs.isEmpty())
+    {
+      auto iter_lhs = lhs.cbegin();
+      for (; iter_lhs != lhs.cend(); iter_lhs++)
+      {
+        if (rhs.find((*iter_lhs).first) != rhs.cend())
+        {
+          result.push((*iter_lhs).first, (*iter_lhs).second);
+        }
+      }
+    }
+    return result;
+  }
+
+  template< class Key, class Value, class Compare >
+  Dictionary<Key, Value, Compare > operator||(const Dictionary<Key, Value, Compare >& lhs,
+      const Dictionary<Key, Value, Compare >& rhs)
+  {
+    if (lhs.isEmpty())
+    {
+      return rhs;
+    }
+    auto result = lhs;
+    if (!rhs.isEmpty())
+    {
+      auto iter_rhs = rhs.cbegin();
+      for (; iter_rhs != rhs.cend(); iter_rhs++)
+      {
+        if (lhs.find((*iter_rhs).first) == lhs.cend())
+        {
+          result.push((*iter_rhs).first, (*iter_rhs).second);
+        }
+      }
+    }
+    return result;
+  }
+
+  template< class Key, class Value, class Compare >
+  std::ostream& operator<<(std::ostream& output, const Dictionary<Key, Value, Compare >& dict)
+  {
+    if (!dict.isEmpty())
+    {
+      auto iter = dict.cbegin();
+      output << iter->first << " " << iter->second;
+      ++iter;
+      while (iter != dict.cend())
+      {
+        output << " " << iter->first << " " << iter->second;
+        ++iter;
+      }
+    }
+    return output;
   }
 }
 #endif
