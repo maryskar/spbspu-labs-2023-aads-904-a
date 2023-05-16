@@ -86,7 +86,7 @@ namespace dimkashelk
         }
         else
         {
-          if (node_->data[ind_].second == node_->key[1])
+          if (ind_ == 1)
           {
             prev_ = goUp(node_);
             node_ = prev_->parent;
@@ -123,9 +123,58 @@ namespace dimkashelk
         ind_ = 0;
       }
     }
+    void updateNodeUpBack()
+    {
+      node_type *new_node = goUpBack(node_);
+      if (new_node->parent == nullptr)
+      {
+        node_ = nullptr;
+        return;
+      }
+      node_ = new_node->parent;
+      prev_ = new_node;
+      if (prev_ == node_->first)
+      {
+        ind_ = 1;
+      }
+      else
+      {
+        ind_ = 0;
+      }
+    }
     void prev()
     {
-
+      if (node_->getLastChildren() == nullptr)
+      {
+        if (node_->size == 1)
+        {
+          updateNodeUpBack();
+        }
+        else
+        {
+          if (ind_ == 0)
+          {
+            updateNodeUpBack();
+          }
+          else
+          {
+            ind_ = 1;
+          }
+        }
+      }
+      else
+      {
+        if (node_->getLastChildren() == prev_)
+        {
+          node_ = goDownBack(node_->second);
+        }
+        else if (node_->second == prev_ && node_->size == 2)
+        {
+          node_ = goDownBack(node_->first);
+        }
+        prev_ = node_->parent;
+        ind_ = 1;
+      }
     }
     node_type *goUp(node_type *node)
     {
