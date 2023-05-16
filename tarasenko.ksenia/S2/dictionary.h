@@ -275,7 +275,7 @@ namespace tarasenko
   }
 
   template< class Key, class Value, class Compare >
-  Dictionary<Key, Value, Compare > operator-(const Dictionary<Key, Value, Compare >& lhs,
+  Dictionary<Key, Value, Compare > complement(const Dictionary<Key, Value, Compare >& lhs,
       const Dictionary<Key, Value, Compare >& rhs)
   {
     auto result = lhs;
@@ -294,7 +294,7 @@ namespace tarasenko
   }
 
   template< class Key, class Value, class Compare >
-  Dictionary<Key, Value, Compare > operator&&(const Dictionary<Key, Value, Compare >& lhs,
+  Dictionary<Key, Value, Compare > intersect(const Dictionary<Key, Value, Compare >& lhs,
       const Dictionary<Key, Value, Compare >& rhs)
   {
     if (rhs.isEmpty())
@@ -317,7 +317,7 @@ namespace tarasenko
   }
 
   template< class Key, class Value, class Compare >
-  Dictionary<Key, Value, Compare > operator||(const Dictionary<Key, Value, Compare >& lhs,
+  Dictionary<Key, Value, Compare > unionWith(const Dictionary<Key, Value, Compare >& lhs,
       const Dictionary<Key, Value, Compare >& rhs)
   {
     if (lhs.isEmpty())
@@ -340,7 +340,7 @@ namespace tarasenko
   }
 
   template< class Key, class Value, class Compare >
-  std::ostream& operator<<(std::ostream& output, const Dictionary<Key, Value, Compare >& dict)
+  std::ostream& print(std::ostream& output, const Dictionary<Key, Value, Compare >& dict)
   {
     if (!dict.isEmpty())
     {

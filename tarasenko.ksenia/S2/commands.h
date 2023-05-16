@@ -42,17 +42,17 @@ namespace tarasenko
           output << "<INVALID COMMAND>" << "\n";
           return;
         }
-        auto new_dict = dict1 - dict2;
+        auto new_dict = complement(dict1, dict2);
         dict_of_dict.push(name_new_dict, new_dict);
       }
       else if (name_of_command == "intersect")
       {
-        auto new_dict = dict1 && dict2;
+        auto new_dict = intersect(dict1, dict2);
         dict_of_dict.push(name_new_dict, new_dict);
       }
       else if (name_of_command == "union")
       {
-        auto new_dict = dict1 || dict2;
+        auto new_dict = unionWith(dict1, dict2);
         dict_of_dict.push(name_new_dict, new_dict);
       }
     }
@@ -80,7 +80,9 @@ namespace tarasenko
     {
       return output << "<EMPTY>";
     }
-    return output << name_of_dict << " " << given_dict;
+    output << name_of_dict << " ";
+    print(output, given_dict);
+    return output;
   }
 }
 #endif
