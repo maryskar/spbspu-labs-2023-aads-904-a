@@ -29,6 +29,17 @@ namespace dimkashelk
       next();
       return result;
     }
+    TwoThreeTreeIterator &operator--()
+    {
+      prev();
+      return *this;
+    }
+    TwoThreeTreeIterator operator--(int)
+    {
+      TwoThreeTreeIterator< Key, Value, Compare > result(*this);
+      prev();
+      return result;
+    }
     reference operator*()
     {
       return node_->data[ind_];
