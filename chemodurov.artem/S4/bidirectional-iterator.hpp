@@ -37,12 +37,12 @@ namespace chemodurov
   BidirectionalIterator< T > & BidirectionalIterator< T >::operator++()
   {
     assert(node_ != nullptr);
-    Tree< T > * previous = node_;
     if (node_->right != fake_)
     {
       node_= node_->right;
       return *this;
     }
+    Tree< T > * previous = node_;
     node_ = node_->parent;
     while (node_ != fake_ && node_->right == previous)
     {
@@ -51,6 +51,7 @@ namespace chemodurov
     }
     return *this;
   }
+
   template< typename T >
   BidirectionalIterator< T > BidirectionalIterator< T >::operator++(int)
   {
@@ -59,11 +60,34 @@ namespace chemodurov
     ++(*this);
     return temp;
   }
+
   template< typename T >
   BidirectionalIterator< T > & BidirectionalIterator< T >::operator--()
   {
     assert(node_ != nullptr);
-    //
+    if (node_->left != fake_)
+    {
+      node_ = node_->left;
+      return *this;
+    }
+    Tree< T > * previous = node_;
+    node_ = node_->parent;
+    while (node_ != fake_ && node_->left == previous)
+    {
+      previous = node_;
+      node_ = node_->parent;
+    }
+    return *this;
   }
+
+  template< typename T >
+  BidirectionalIterator< T > BidirectionalIterator< T >::operator--(int)
+  {
+    assert(node_ != nullptr);
+    this_t temp(*this);
+    --(*this);
+    return temp;
+  }
+
 }
 #endif
