@@ -94,5 +94,18 @@ namespace chemodurov
     return temp;
   }
 
+  template< typename T >
+  const T & ConstBidirectionalIterator< T >::operator*() const
+  {
+    assert(node_ != nullptr);
+    return node_->data;
+  }
+
+  template< typename T >
+  const T * ConstBidirectionalIterator< T >::operator->() const
+  {
+    assert(node_ != nullptr);
+    return std::addressof(node_->data);
+  }
 }
 #endif
