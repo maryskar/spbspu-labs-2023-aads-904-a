@@ -123,6 +123,10 @@ namespace dimkashelk
         ind_ = 0;
       }
     }
+    void prev()
+    {
+
+    }
     node_type *goUp(node_type *node)
     {
       node_type *parent = node->parent;
@@ -142,6 +146,16 @@ namespace dimkashelk
       while (node->first)
       {
         node = node->first;
+      }
+      return node;
+    }
+    node_type *goUpBack(node_type *node)
+    {
+      node_type *parent = node->parent;
+      while (parent && ((parent->first == node && parent->size == 1) || (parent->second == node && parent->size == 2)))
+      {
+        node = parent;
+        parent = parent->parent;
       }
       return node;
     }
