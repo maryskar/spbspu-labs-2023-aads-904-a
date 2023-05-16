@@ -159,6 +159,18 @@ namespace dimkashelk
       }
       return node;
     }
+  node_type *goDownBack(node_type *node)
+  {
+    if (node == nullptr)
+    {
+      return nullptr;
+    }
+    while (node->getLastChildren())
+    {
+      node = node->getLastChildren();
+    }
+    return node;
+  }
   };
 }
 #endif
