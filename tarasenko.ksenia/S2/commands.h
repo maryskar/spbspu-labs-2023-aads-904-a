@@ -4,85 +4,53 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <functional>
 #include "dictionary.h"
+#include "funcs_for_commands.h"
 
 namespace tarasenko
 {
   template< typename Key, typename Value, typename Compare >
-  using dict_type = tarasenko::Dictionary< Key, Value, Compare >;
-
-  template< typename Key, typename Value, typename Compare >
-  void call(const std::string& name_of_command, dict_type< Key, Value, Compare >& dict_of_dict, std::istream& input,
-            std::ostream& output)
+  class Commands
   {
-    if (name_of_command == "print")
-    {
-      std::string name_of_dict = "";
-      input >> name_of_dict;
-      print(std::cout, dict_of_dict, name_of_dict);
-      output << "\n";
-    }
-    else if (name_of_command == "complement" || name_of_command == "intersect" || name_of_command == "union")
-    {
-      std::string name_new_dict = "";
-      std::string name_dict1 = "";
-      std::string name_dict2 = "";
-      input >> name_new_dict >> name_dict1 >> name_dict2;
-      if (dict_of_dict.find(name_dict1) == dict_of_dict.cend() || dict_of_dict.find(name_dict2) == dict_of_dict.cend())
-      {
-        output << "<INVALID COMMAND>" << "\n";
-        return;
-      }
-      auto dict1 = dict_of_dict.at(name_dict1);
-      auto dict2 = dict_of_dict.at(name_dict2);
-      if (name_of_command == "complement")
-      {
-        if (dict1.isEmpty())
-        {
-          output << "<INVALID COMMAND>" << "\n";
-          return;
-        }
-        auto new_dict = complement(dict1, dict2);
-        dict_of_dict.push(name_new_dict, new_dict);
-      }
-      else if (name_of_command == "intersect")
-      {
-        auto new_dict = intersect(dict1, dict2);
-        dict_of_dict.push(name_new_dict, new_dict);
-      }
-      else if (name_of_command == "union")
-      {
-        auto new_dict = unionWith(dict1, dict2);
-        dict_of_dict.push(name_new_dict, new_dict);
-      }
-    }
-    else
-    {
-      output << "<INVALID COMMAND>" << "\n";
-      std::string trash = "";
-      getline(input, trash);
-    }
-  }
+   using dict_type = Dictionary< Key, Value, Compare >;
+  public:
+   Commands():
+     type_create(),
+     type_print()
+   {
+     type_create.push("complement", &complement< Key, Value, Compare >);
+     type_create.push("intersect", &intersect< Key, Value, Compare >);
+     type_create.push("union", &unionWith< Key, Value, Compare >);
 
-  template< typename Key, typename Value, typename Compare >
-  std::ostream& print(std::ostream& output, const dict_type< Key, Value, Compare >& dict, const Key& name_of_dict)
-  {
-    Value given_dict;
-    try
-    {
-      given_dict = dict.at(name_of_dict);
-    }
-    catch (const std::out_of_range& e)
-    {
-      return output << "<INVALID COMMAND>";
-    }
-    if (given_dict.isEmpty())
-    {
-      return output << "<EMPTY>";
-    }
-    output << name_of_dict << " ";
-    print(output, given_dict);
-    return output;
-  }
+     type_print.push("print", &print< Key, Value, Compare >);
+   }
+
+   std::function< std::ostream&(std::ostream& output, const dict_type& dict) >& printType(const std::string& key)
+   {
+     return type_print.at(key);
+   }
+
+   std::function< dict_type(const dict_type&, const dict_type&) >& createType(const std::string& key)
+   {
+     return type_create.at(key);
+   }
+
+   bool findInTypePrint(std::string name_of_command)
+   {
+     return type_print.find(name_of_command) != type_print.cend();
+   }
+
+   bool findInTypeCreate(std::string name_of_command)
+   {
+     return type_create.find(name_of_command) != type_create.cend();
+   }
+
+  private:
+   Dictionary< std::string,
+     std::function< dict_type(const dict_type&, const dict_type&) >, Compare > type_create;
+   Dictionary< std::string,
+     std::function< std::ostream&(std::ostream& output, const dict_type& dict) >, Compare > type_print;
+  };
 }
 #endif
