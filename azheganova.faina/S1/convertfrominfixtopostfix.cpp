@@ -25,11 +25,11 @@ bool azheganova::getPriority(std::string oper)
   }
   else if (oper == ")")
   {
-    return 1;
+    return 2;
   }
   else if (oper == "(")
   {
-    return 1;
+    return 2;
   }
   else
   {
@@ -66,7 +66,7 @@ void azheganova::convertFromInfixToPostfix(queue_str & queue, stack_str & stack,
     }
     else if (!getPriority(element))
     {
-      while (!stack.isEmpty() && (!getPriority(stack.get())))
+      while (!stack.isEmpty() && (!getPriority(stack.get()) > getPriority(element)))
       {
         postfix.push(stack.get());
         stack.pop();
@@ -75,7 +75,7 @@ void azheganova::convertFromInfixToPostfix(queue_str & queue, stack_str & stack,
     }
     else if (getPriority(element))
     {
-      while (!stack.isEmpty() && (getPriority(stack.get())))
+      while (!stack.isEmpty() && (getPriority(stack.get()) > getPriority(element)))
       {
         postfix.push(stack.get());
         stack.pop();
