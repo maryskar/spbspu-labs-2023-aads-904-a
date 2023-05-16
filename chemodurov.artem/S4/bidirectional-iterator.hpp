@@ -21,7 +21,7 @@ namespace chemodurov
     T & operator*();
     const T & operator*() const;
     T * operator->();
-    T * operator->() const;
+    const T * operator->() const;
    private:
     Tree< T > * node_;
     Tree< T > * fake_;
@@ -99,7 +99,32 @@ namespace chemodurov
   template< typename T >
   T & BidirectionalIterator< T >::operator*()
   {
-    return const_cast< T & >(*(static_cast< const this_t * >(this)));
+    return const_cast< T & >((static_cast< const this_t >(*this)).operator*());
+  }
+
+  template< typename T >
+  const T * BidirectionalIterator< T >::operator->() const
+  {
+    assert(node_ != nullptr);
+    return std::addressof(node_->data);
+  }
+
+  template< typename T >
+  T * BidirectionalIterator< T >::operator->()
+  {
+    return const_cast< T * >((static_cast< const this_t >(*this)).operator->());
+  }
+
+  template< typename T >
+  bool operator==(const BidirectionalIterator< T > & lhs, const BidirectionalIterator< T > & rhs)
+  {
+    return lhs.operator->() == rhs.operator->();
+  }
+
+  template< typename T >
+  bool operator!=(const BidirectionalIterator< T > & lhs, const BidirectionalIterator< T > & rhs)
+  {
+    return !(lhs == rhs);
   }
 }
 #endif
