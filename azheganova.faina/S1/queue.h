@@ -13,6 +13,8 @@ namespace azheganova
     ~Queue();
     Queue(const Queue< T > & rhs);
     Queue(Queue< T > && rhs);
+    Queue< T > & operator=(const Queue< T > & rhs);
+    Queue< T > & operator=(Queue< T > && rhs);
     void push(const T & rhs);
     void pop();
     bool isEmpty() const;
@@ -20,6 +22,7 @@ namespace azheganova
   private:
     details::ListNode< T > * top_;
     details::ListNode< T > * last_;
+    void deleteQueue();
   };
 
   template< typename T >
@@ -60,6 +63,26 @@ namespace azheganova
      top_ = nullptr;
      last_ = nullptr;
    }
+
+  template< typename T>
+  Queue< T > & Queue<T>::operator=(const Queue< T > & rhs)
+  {
+    std::swap(top_, rhs.top_);
+    std::swap(last_, rhs.top_);
+    return * this;
+  }
+
+  template< typename T >
+  Queue< T > & Queue< T >::operator=(Queue< T > && rhs)
+  {
+    if (this != std::addressof(rhs))
+    {
+      deleteQueue();
+      std::swap(top_, rhs.top_);
+      std::swap(last_, rhs.top_);
+    }
+    return * this;
+  }
 
   template< typename T >
   Queue< T >::~Queue()
@@ -111,6 +134,19 @@ namespace azheganova
       throw std::logic_error("empty queue");
     }
     return top_->data_;
+  }
+
+  template< typename T >
+  void Queue<T>::deleteQueue()
+  {
+    while (top_)
+    {
+      details::ListNode< T > * newtop = top_->next_;
+      delete top_;
+      top_ = newtop;
+    }
+    top_ = nullptr;
+    last_ = nullptr;
   }
 }
 

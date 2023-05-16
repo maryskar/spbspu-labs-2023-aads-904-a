@@ -14,6 +14,8 @@ namespace azheganova
     ~Stack();
     Stack(const Stack< T > & rhs);
     Stack(Stack< T > && rhs);
+    Stack< T > & operator=(const Stack< T > & rhs);
+    Stack< T > & operator=(Stack< T > && rhs);
     void push(const T & rhs);
     void pop();
     bool isEmpty() const;
@@ -46,7 +48,18 @@ namespace azheganova
     while (node1->next_)
     {
       node1 = node1->next_;
-      node2->next_ = new details::ListNode< T >(node1->data_);
+      try
+      {
+        node2->next_ = new details::ListNode< T >(node1->data_);
+      }
+      catch(const std::exception & e)
+      {
+        while (top_ != nullptr)
+        {
+          pop();
+        }
+        throw;
+      }
       node2 = node2->next_;
     }
   }
@@ -63,6 +76,26 @@ namespace azheganova
   {
     details::ListNode< T > * tmp = new details::ListNode< T >{rhs, top_};
     top_ = tmp;
+  }
+
+  template< typename T >
+  Stack< T > & Stack< T >::operator=(const Stack< T > & rhs)
+   {
+     if (this != std::addressof(rhs))
+     {
+       top_ = rhs.top_;
+     }
+     return *this;
+   }
+
+  template< typename T >
+  Stack< T > & Stack< T >::operator=(Stack< T > && rhs)
+  {
+    if (this != std::addressof(rhs))
+    {
+      top_ = std::move(rhs.top_);
+    }
+    return *this;
   }
 
   template< typename T >
