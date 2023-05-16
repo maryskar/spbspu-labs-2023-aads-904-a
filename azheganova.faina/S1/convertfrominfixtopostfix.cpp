@@ -1,9 +1,32 @@
 #include "convertfrominfixtopostfix.h"
 #include <cctype>
 
-bool azheganova::isOperator(std::string oper)
+bool azheganova::getPriority(std::string oper)
 {
-  return (oper == "+") || (oper == "-") || (oper == "*") || (oper == "/") || (oper == "%");
+  if (oper == "+")
+  {
+    return 0;
+  }
+  else if (oper == "-")
+  {
+    return 0;
+  }
+  else if (oper == "*")
+  {
+    return 1;
+  }
+  else if (oper == "/")
+  {
+    return 1;
+  }
+  else if (oper == "%")
+  {
+    return 1;
+  }
+  else
+  {
+    throw std::logic_error("error");
+  }
 }
 
 void azheganova::convertFromInfixToPostfix(queue_str & queue, stack_str & stack, queue_str & postfix)
@@ -33,9 +56,18 @@ void azheganova::convertFromInfixToPostfix(queue_str & queue, stack_str & stack,
       }
       stack.pop();
     }
-    else if (isOperator(element))
+    else if (!getPriority(element))
     {
-      while (!stack.isEmpty() && (isOperator(stack.get())))
+      while (!stack.isEmpty() && (!getPriority(stack.get())))
+      {
+        postfix.push(stack.get());
+        stack.pop();
+      }
+      stack.push(element);
+    }
+    else if (getPriority(element))
+    {
+      while (!stack.isEmpty() && (getPriority(stack.get())))
       {
         postfix.push(stack.get());
         stack.pop();
