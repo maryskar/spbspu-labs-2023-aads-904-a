@@ -2,13 +2,16 @@
 #define S4_TREE_HPP
 #include <functional>
 
-template< typename T, typename Compare = std::less< > >
-struct Tree
+namespace chemodurov
 {
-  T data;
-  Tree< T, Compare > * left;
-  Tree< T, Compare > * right;
-  Tree< T, Compare > * parent;
-};
+  template< typename T, typename Compare = std::less<> >
+  struct Tree
+  {
+    T data;
+    Tree< T, Compare > * left;
+    Tree< T, Compare > * right;
+    Tree< T, Compare > * parent;
+  };
+}
 
 #endif

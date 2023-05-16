@@ -1,13 +1,19 @@
 #ifndef S4_UNBALANCED_BINARY_SEARCH_TREE_HPP
 #define S4_UNBALANCED_BINARY_SEARCH_TREE_HPP
 #include <functional>
+#include "tree.hpp"
 
-template< typename Key, typename Value, typename Compare = std::less< > >
-class UnbalancedBinarySearchTree
+namespace chemodurov
 {
- public:
- private:
+  template< typename T, typename Compare = std::less<> >
+  class UnbalancedBinarySearchTree
+  {
+   public:
 
-};
+   private:
+    Tree< T, Compare > * fake_;
+    Compare comp_;
+  };
+}
 
 #endif
