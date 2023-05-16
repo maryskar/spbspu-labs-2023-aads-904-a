@@ -23,6 +23,14 @@ bool azheganova::getPriority(std::string oper)
   {
     return 1;
   }
+  else if (oper == ")")
+  {
+    return 1;
+  }
+  else if (oper == "(")
+  {
+    return 1;
+  }
   else
   {
     throw std::logic_error("error");
