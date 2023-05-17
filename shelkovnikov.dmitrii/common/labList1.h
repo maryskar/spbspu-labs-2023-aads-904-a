@@ -5,6 +5,10 @@
 #include "dictionary.h"
 namespace dimkashelk
 {
+  std::ostream &outCustomErrorMessage(std::ostream &out)
+  {
+    return out << "<INVALID COMMAND>";
+  }
   void labList1(std::istream &in, std::ostream &out, int argc, char *argv[])
   {
     using dict_type = dimkashelk::Dictionary< int, std::string, std::less< > >;
@@ -45,6 +49,10 @@ namespace dimkashelk
       file_in.clear();
       dict.emplace(container_value_type(dict_name, data));
     }
+    dimkashelk::Dictionary< std::string, dict_type(*)(const dict_type &, const dict_type &), std::greater< > > commands;
+    commands["complement"] = getComplement;
+    commands["intersect"] = getIntersection;
+    commands["union"] = getUnion;
     while (in)
     {
       std::string command;
@@ -53,16 +61,12 @@ namespace dimkashelk
       {
         break;
       }
-      if (command == "print")
+      try
       {
-        std::string dataset_name;
-        in >> dataset_name;
-        if (!in)
+        if (command == "print")
         {
-          out << "<INVALID COMMAND>\n";
-        }
-        try
-        {
+          std::string dataset_name;
+          in >> dataset_name;
           dict_type d = dict.at(dataset_name);
           if (d.empty())
           {
@@ -73,49 +77,22 @@ namespace dimkashelk
             out << dataset_name << " " << d << "\n";
           }
         }
-        catch (...)
+        else
         {
-          out << "<INVALID COMMAND>\n";
-        }
-      }
-      else if (command == "complement" || command == "intersect" || command == "union")
-      {
-        std::string new_dataset_name;
-        std::string dataset_1;
-        std::string dataset_2;
-        in >> new_dataset_name >> dataset_1 >> dataset_2;
-        if (!in)
-        {
-          out << "<INVALID COMMAND>\n";
-          continue;
-        }
-        try
-        {
+          auto to_do = commands.at(command);
+          std::string new_dataset_name;
+          std::string dataset_1;
+          std::string dataset_2;
+          in >> new_dataset_name >> dataset_1 >> dataset_2;
           dict_type data_1 = dict.at(dataset_1);
           dict_type data_2 = dict.at(dataset_2);
-          dict_type new_dict;
-          if (command == "complement")
-          {
-            new_dict = data_1 - data_2;
-          }
-          else if (command == "intersect")
-          {
-            new_dict = data_1 & data_2;
-          }
-          else if (command == "union")
-          {
-            new_dict = data_1 | data_2;
-          }
+          dict_type new_dict = to_do(data_1, data_2);
           dict.emplace(new_dataset_name, new_dict);
         }
-        catch (...)
-        {
-          out << "<INVALID COMMAND>\n";
-        }
       }
-      else
+      catch (...)
       {
-        out << "<INVALID COMMAND>\n";
+        outCustomErrorMessage(out) << "\n";
         std::getline(in, command);
       }
     }

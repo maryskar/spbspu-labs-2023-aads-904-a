@@ -2,10 +2,23 @@
 #define SPBSPU_LABS_2023_AADS_904_A_DICTIONARY_H
 #include <utility>
 #include <ostream>
-#include <algorithm>
+#include <functional>
 #include "forwardlist.h"
 namespace dimkashelk
 {
+  namespace details
+  {
+    template< typename K, typename Comp >
+    bool isEqual(K key1, K key2)
+    {
+      return !Comp{}(key1, key2) && !Comp{}(key2, key1);
+    }
+    template< typename K, typename Comp >
+    bool isNotEqual(K key1, K key2)
+    {
+      return !isEqual< K, Comp >(key1, key2);
+    }
+  }
   template< typename Key, typename Value, typename Compare >
   class Dictionary
   {
@@ -16,7 +29,7 @@ namespace dimkashelk
     using const_iterator_t = dimkashelk::ForwardListIteratorConst< value_type >;
     Dictionary():
       list_(),
-      compare_(Compare{})
+      compare_()
     {}
     Dictionary(const dict_type &dict):
       list_(dict.list_),
@@ -28,7 +41,7 @@ namespace dimkashelk
     {}
     Dictionary(std::initializer_list< value_type > init):
       list_(init),
-      compare_(Compare{})
+      compare_()
     {}
     ~Dictionary() = default;
     dict_type &operator=(const dict_type &other)
@@ -51,37 +64,31 @@ namespace dimkashelk
     }
     Value &at(const Key &k)
     {
-      for (auto i = begin(); i != end(); i++)
+      auto res = search(list_.beforeBegin(), k, details::isEqual< Key, Compare >);
+      if (res.second == end())
       {
-        if ((*i).first == k)
-        {
-          return (*i).second;
-        }
+        throw std::out_of_range("Out of range");
       }
-      throw std::out_of_range("Out of range");
+      return res.second->second;
     }
     const Value &at(const Key &k) const
     {
       return at(k);
     }
+    Value &operator[](const Key &key)
+    {
+      auto res = search(list_.beforeBegin(), key, details::isEqual< Key, Compare >);
+      if (res.second == end())
+      {
+        value_type value_to_insert = {key, Value()};
+        auto insert_res = list_.insertAfter(res.first, value_to_insert);
+        return insert_res->second;
+      }
+      return res.second->second;
+    }
     Value &operator[](Key &&key)
     {
-      auto prev = list_.beforeBegin();
-      auto cur = begin();
-      for (; cur != end(); prev = cur, cur++)
-      {
-        if ((*cur).first == key)
-        {
-          return (*cur).second;
-        }
-        if (compare_((*cur).first, key))
-        {
-          break;
-        }
-      }
-      value_type value_to_insert = {key, Value()};
-      auto res = list_.insertAfter(prev, value_to_insert);
-      return (*res).second;
+      return this->operator[](key);
     }
     iterator_t begin()
     {
@@ -134,197 +141,81 @@ namespace dimkashelk
     }
     size_t erase(const Key &k)
     {
-      auto prev = list_.beforeBegin();
-      for (auto cur = begin(); cur != end(); prev = cur, cur++)
+      auto res = search(list_.beforeBegin(), k, details::isEqual< Key, Compare >);
+      if (res.second == end())
       {
-        if ((*cur).first == k)
-        {
-          list_.eraseAfter(prev);
-          return 1;
-        }
+        return 0;
       }
-      return 0;
+      list_.eraseAfter(res.first);
+      return 1;
     }
     void swap(Dictionary< Key, Value, Compare > &other)
     {
       list_.swap(other.list_);
     }
-    template< class K >
-    size_t count(const K &x) const
+    size_t count(const Key &x) const
     {
       size_t count = 0;
       for (auto i: *this)
       {
-        if (i.first == x)
+        if (details::isEqual(i.first, x, compare_))
         {
           count++;
         }
       }
       return count;
     }
-    template< class K >
-    iterator_t find(const K &x)
+    iterator_t find(const Key &x)
     {
-      for (auto i = begin(); i != end(); i++)
-      {
-        if ((*i).first == x)
-        {
-          return i;
-        }
-      }
-      return end();
+      auto res = search(list_.beforeBegin(), x, details::isEqual< Key, Compare >);
+      return res.second;
     }
-    template< class K >
-    std::pair< iterator_t, iterator_t > equal_range(const K& x)
+    std::pair< iterator_t, iterator_t > equal_range(const Key &x)
     {
       return {lower_bound(x), upper_bound(x)};
     }
-    template< class K >
-    std::pair< const_iterator_t, const_iterator_t > equal_range(const K& x) const
+    std::pair< const_iterator_t, const_iterator_t > equal_range(const Key &x) const
     {
       return {lower_bound(x), upper_bound(x)};
     }
-    template< class K >
-    iterator_t lower_bound(const K &x)
+    iterator_t lower_bound(const Key &x)
     {
-      auto prev = begin();
-      auto cur = begin();
-      for (auto i = begin(); i != end(); i++)
-      {
-        if ((*i).first >= x)
-        {
-          return i;
-        }
-      }
-      return end();
+      auto res = search(list_.beforeBegin(), x, !compare_);
+      return res.second;
     }
-    template< class K >
-    const_iterator_t lower_bound(const K &x) const
+    const_iterator_t lower_bound(const Key &x) const
     {
       return lower_bound(x);
     }
-    template< class K >
-    iterator_t upper_bound(const K &x)
+    iterator_t upper_bound(const Key &x)
     {
       auto res = lower_bound(x);
-      if ((*res).first == x)
+      if (details::isEqual(res->first, x, compare_))
       {
         res++;
       }
       return res;
     }
-    template < class K >
-    const_iterator_t upper_bound(const K &x) const
+    const_iterator_t upper_bound(const Key &x) const
     {
       return upper_bound(x);
     }
-    friend std::ostream &operator<<(std::ostream &out, dict_type &dict)
+    bool operator==(const dict_type &second)
     {
-      if (dict.empty())
-      {
-        return out << "<EMPTY>";
-      }
-      auto it = dict.list_.begin();
-      auto end = dict.list_.end();
-      out << (*it).first << " " << (*it).second;
-      it++;
-      for (; it != end; it++) {
-        out << " " << (*it).first << " " << (*it).second;
-      }
-      return out;
-    }
-    friend dict_type operator-(const dict_type &first, const dict_type &second)
-    {
-      if (std::addressof(first) == std::addressof(second))
-      {
-        return dict_type();
-      }
-      dict_type new_dict;
-      auto iter_first = first.list_.cbegin();
-      auto iter_first_end = first.list_.cend();
-      auto iter_second = second.list_.cbegin();
-      auto iter_second_end = second.list_.cend();
-      while (iter_first != iter_first_end && iter_second != iter_second_end)
-      {
-        while (iter_second != iter_second_end && Compare{}((*iter_second).first, (*iter_first).first))
-        {
-          iter_second++;
-        }
-        if (iter_second == iter_second_end)
-        {
-          break;
-        }
-        if ((*iter_first).first != (*iter_second).first)
-        {
-          Key key = (*iter_first).first;
-          Value value = (*iter_first).second;
-          new_dict.push(value_type(key, value));
-        }
-        iter_first++;
-      }
-      while (iter_first != iter_first_end)
-      {
-        new_dict.push(*iter_first);
-        iter_first++;
-      }
-      return new_dict;
-    }
-    friend dict_type operator&(const dict_type &first, const dict_type &second)
-    {
-      dict_type result;
-      for (auto it_first = second.list_.cbegin(); it_first != second.list_.cend(); it_first++)
-      {
-        auto comp = [&](const auto &item)
-        {
-          return item.first == (*it_first).first;
-        };
-        auto res = std::find_if(first.list_.cbegin(), first.list_.cend(), comp);
-        if (res != second.list_.cend())
-        {
-          result.push(*res);
-        }
-      }
-      return result;
-    }
-    friend dict_type operator|(const dict_type &first, const dict_type &second)
-    {
-      dict_type new_dict;
-      auto iter_second = second.list_.cbegin();
-      auto iter_second_end = second.list_.cend();
-      while (iter_second != iter_second_end)
-      {
-        Key key = (*iter_second).first;
-        Value value = (*iter_second).second;
-        new_dict.push(value_type(key, value));
-        iter_second++;
-      }
-      auto iter_first = first.list_.cbegin();
-      auto iter_first_end = first.list_.cend();
-      while (iter_first != iter_first_end)
-      {
-        Key key = (*iter_first).first;
-        Value value = (*iter_first).second;
-        new_dict.push(value_type(key, value));
-        iter_first++;
-      }
-      return new_dict;
-    }
-    friend bool operator==(const dict_type &first, const dict_type &second)
-    {
-      auto first_it = first.cbegin();
+      auto first_it = cbegin();
       auto second_it = second.cbegin();
-      for (; first_it != first.cend() && second_it != second.cend(); first_it++, second_it++)
+      for (; first_it != cend() && second_it != second.cend(); first_it++, second_it++)
       {
-        if ((*first_it) != (*second_it))
+        if (details::isNotEqual(first_it->first, second_it->first))
         {
           return false;
         }
       }
       return true;
     }
-    friend bool operator!=(const dict_type &first, const dict_type &second)
+    bool operator!=(const dict_type &second)
     {
-      return !(first == second);
+      return !(*this == second);
     }
   private:
     ForwardList< value_type > list_;
@@ -341,7 +232,7 @@ namespace dimkashelk
         }
         prev = it;
       }
-      if (prev != list_.beforeBegin() && (*prev).first == value.first)
+      if (prev != list_.beforeBegin() && details::isEqual< Key, Compare >(prev->first, value.first))
       {
         (*prev).second = value.second;
       }
@@ -351,11 +242,119 @@ namespace dimkashelk
       }
       return iterator_t(prev);
     }
+    std::pair< iterator_t, iterator_t > search(iterator_t start, const Key &key, std::function< bool(Key, Key) > func)
+    {
+      auto prev = start;
+      start++;
+      auto cur = start;
+      for (; cur != end(); prev = cur, cur++)
+      {
+        if (func(cur->first, key))
+        {
+          return {prev, cur};
+        }
+      }
+      return {prev, cur};
+    }
   };
   template< class Key, class T, class Compare >
-  void swap(dimkashelk::Dictionary< Key, T, Compare > &lhs, dimkashelk::Dictionary< Key, T, Compare > &rhs )
+  void swap(Dictionary< Key, T, Compare > &lhs, Dictionary< Key, T, Compare > &rhs )
   {
     lhs.swap(rhs);
+  }
+  template< typename K, typename V, typename C >
+  Dictionary< K, V, C > getIntersection(const Dictionary< K, V, C > &first, const Dictionary< K, V, C > &second)
+  {
+    Dictionary< K, V, C > result;
+    for (auto it_first = second.cbegin(); it_first != second.cend(); it_first++)
+    {
+      auto res = second.cend();
+      for (auto i = first.cbegin(); i != first.cend(); i++)
+      {
+        if (details::isEqual< K, C >(it_first->first, i->first))
+        {
+          res = i;
+          break;
+        }
+      }
+      if (res != second.cend())
+      {
+        result[res->first] = res->second;
+      }
+    }
+    return result;
+  }
+  template< typename K, typename V, typename C >
+  Dictionary< K, V, C > getComplement(const Dictionary< K, V, C > &first, const Dictionary< K, V, C > &second)
+  {
+    Dictionary< K, V, C > new_dict;
+    if (std::addressof(first) == std::addressof(second))
+    {
+      return new_dict;
+    }
+    auto iter_first = first.cbegin();
+    auto iter_first_end = first.cend();
+    auto iter_second = second.cbegin();
+    auto iter_second_end = second.cend();
+    C comp = C{};
+    while (iter_first != iter_first_end && iter_second != iter_second_end)
+    {
+      while (iter_second != iter_second_end && comp((*iter_second).first, (*iter_first).first))
+      {
+        iter_second++;
+      }
+      if (iter_second == iter_second_end)
+      {
+        break;
+      }
+      if (details::isNotEqual< K, C >(iter_first->first, iter_second->first))
+      {
+        new_dict[iter_first->first] = iter_first->second;
+      }
+      iter_first++;
+    }
+    while (iter_first != iter_first_end)
+    {
+      new_dict[iter_first->first] = iter_first->second;
+      iter_first++;
+    }
+    return new_dict;
+  }
+  template< typename K, typename V, typename C >
+  Dictionary< K, V, C > getUnion(const Dictionary< K, V, C > &first, const Dictionary< K, V, C > &second)
+  {
+    Dictionary< K, V, C > new_dict;
+    auto iter_second = second.cbegin();
+    auto iter_second_end = second.cend();
+    while (iter_second != iter_second_end)
+    {
+      new_dict[iter_second->first] = iter_second->second;
+      iter_second++;
+    }
+    auto iter_first = first.cbegin();
+    auto iter_first_end = first.cend();
+    while (iter_first != iter_first_end)
+    {
+      new_dict[iter_first->first] = iter_first->second;
+      iter_first++;
+    }
+    return new_dict;
+  }
+  template< typename K, typename V, typename C >
+  std::ostream &operator<<(std::ostream &out, Dictionary< K, V, C > &dict)
+  {
+    if (dict.empty())
+    {
+      return out << "<EMPTY>";
+    }
+    auto it = dict.begin();
+    auto end = dict.end();
+    out << it->first << " " << it->second;
+    it++;
+    for (; it != end; it++) {
+      out << " " << it->first << " " << it->second;
+    }
+    return out;
   }
 }
 #endif

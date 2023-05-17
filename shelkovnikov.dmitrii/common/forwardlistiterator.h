@@ -23,7 +23,7 @@ namespace dimkashelk
     ForwardListIterator operator++(int)
     {
       ForwardListIterator< T > result(*this);
-      (*this)++;
+      ++(*this);
       return result;
     }
     T &operator*()
