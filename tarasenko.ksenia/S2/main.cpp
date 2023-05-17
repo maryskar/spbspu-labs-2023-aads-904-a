@@ -3,6 +3,7 @@
 #include <string>
 #include "call.h"
 #include "dictionary.h"
+#include "read_dicts_in_dict.h"
 
 int main(int argc, char* argv[])
 {
@@ -17,24 +18,9 @@ int main(int argc, char* argv[])
     std::cout << "File not found\n";
     return 1;
   }
-  using dict_type = tarasenko::Dictionary< size_t, std::string, std::less<> >;
-  tarasenko::Dictionary< std::string, dict_type, std::greater<> > dict_of_dict;
-  while (input)
-  {
-    std::string name_of_dict = "";
-    while (input >> name_of_dict)
-    {
-      size_t key;
-      std::string value;
-      dict_type dict;
-      while (input >> key >> value)
-      {
-        dict.push(key, value);
-      }
-      dict_of_dict.push(name_of_dict, dict);
-      input.clear();
-    }
-  }
+  using dict_t = tarasenko::Dictionary< size_t, std::string, std::less<> >;
+  tarasenko::Dictionary< std::string, dict_t, std::greater<> > dict_of_dict;
+  readDictsInDict(input, dict_of_dict);
   std::string name_of_command = "";
   while (std::cin >> name_of_command)
   {

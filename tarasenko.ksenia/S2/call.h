@@ -6,19 +6,10 @@
 #include <string>
 #include "dictionary.h"
 #include "commands.h"
+#include "message.h"
 
 namespace tarasenko
 {
-  std::ostream& outMessageInvalidCommand(std::ostream& out)
-  {
-    return out << "<INVALID COMMAND>";
-  }
-
-  std::ostream& outMessageEmpty(std::ostream& out)
-  {
-    return out << "<EMPTY>";
-  }
-
   template< typename Key, typename Value, typename Compare >
   void call(const std::string& name_of_command, Dictionary< Key, Value, Compare >& dict_of_dict, std::istream& input,
             std::ostream& output)
