@@ -9,8 +9,8 @@
 namespace tarasenko
 {
   template< class Key, class Value, class Compare >
-  Dictionary<Key, Value, Compare > complement(const Dictionary<Key, Value, Compare >& lhs,
-      const Dictionary<Key, Value, Compare >& rhs)
+  Dictionary< Key, Value, Compare > complement(const Dictionary< Key, Value, Compare >& lhs,
+      const Dictionary< Key, Value, Compare >& rhs)
   {
     auto result = lhs;
     if (!lhs.isEmpty() && !rhs.isEmpty())
@@ -28,14 +28,14 @@ namespace tarasenko
   }
 
   template< class Key, class Value, class Compare >
-  Dictionary<Key, Value, Compare > intersect(const Dictionary<Key, Value, Compare >& lhs,
-      const Dictionary<Key, Value, Compare >& rhs)
+  Dictionary< Key, Value, Compare > intersect(const Dictionary< Key, Value, Compare >& lhs,
+      const Dictionary< Key, Value, Compare >& rhs)
   {
     if (rhs.isEmpty())
     {
       return rhs;
     }
-    Dictionary<Key, Value, Compare > result;
+    Dictionary< Key, Value, Compare > result;
     if (!lhs.isEmpty())
     {
       auto iter_lhs = lhs.cbegin();
@@ -51,8 +51,8 @@ namespace tarasenko
   }
 
   template< class Key, class Value, class Compare >
-  Dictionary<Key, Value, Compare > unionWith(const Dictionary<Key, Value, Compare >& lhs,
-      const Dictionary<Key, Value, Compare >& rhs)
+  Dictionary< Key, Value, Compare > unionWith(const Dictionary< Key, Value, Compare >& lhs,
+     const Dictionary< Key, Value, Compare >& rhs)
   {
     if (lhs.isEmpty())
     {
@@ -74,7 +74,7 @@ namespace tarasenko
   }
 
   template< class Key, class Value, class Compare >
-  std::ostream& print(std::ostream& output, std::string name_of_dict, const Dictionary<Key, Value, Compare >& dict)
+  std::ostream& print(std::ostream& output, std::string name_of_dict, const Dictionary< Key, Value, Compare >& dict)
   {
     if (!dict.isEmpty())
     {

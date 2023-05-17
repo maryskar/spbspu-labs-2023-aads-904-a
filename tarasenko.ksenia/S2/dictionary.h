@@ -19,11 +19,13 @@ namespace tarasenko
      size_(0),
      compare_()
    {}
+
    Dictionary(const dict_type& other):
      list_(other.list_),
      size_(other.size_),
      compare_(other.compare_)
    {}
+
    Dictionary(dict_type&& other):
      list_(std::move(other.list_)),
      size_(other.size_),
@@ -31,7 +33,9 @@ namespace tarasenko
    {
      other.size_ = 0;
    }
+
    ~Dictionary() = default;
+
    dict_type& operator=(const dict_type& other)
    {
      if (this != std::addressof(other))
@@ -42,6 +46,7 @@ namespace tarasenko
      }
      return *this;
    }
+
    dict_type& operator=(dict_type&& other)
    {
      if (this != std::addressof(other))
@@ -58,14 +63,17 @@ namespace tarasenko
    {
      return list_.begin();
    }
+
    iterator end()
    {
      return list_.end();
    }
+
    const_iterator cbegin() const
    {
      return list_.cbegin();
    }
+
    const_iterator cend() const
    {
      return list_.cend();
@@ -166,7 +174,7 @@ namespace tarasenko
 
   template< typename Key, typename Value, typename Compare >
   std::pair< ForwardListIterator< std::pair< Key, Value > >, bool >
-      Dictionary< Key, Value, Compare >::insert(const std::pair< Key, Value >& value)
+  Dictionary< Key, Value, Compare >::insert(const std::pair< Key, Value >& value)
   {
     auto prev = list_.beforeBegin();
     auto curr = list_.begin();
@@ -190,7 +198,7 @@ namespace tarasenko
 
   template< typename Key, typename Value, typename Compare >
   std::pair< ForwardListIterator< std::pair< Key, Value > >, bool >
-      Dictionary< Key, Value, Compare >::push(const Key& k, const Value& v)
+  Dictionary< Key, Value, Compare >::push(const Key& k, const Value& v)
   {
     std::pair< Key, Value > data(k, v);
     return insert(data);
@@ -252,7 +260,7 @@ namespace tarasenko
   }
 
   template< class Key, class Value, class Compare >
-  bool operator==(const Dictionary<Key, Value, Compare >& lhs, const Dictionary<Key, Value, Compare >& rhs)
+  bool operator==(const Dictionary< Key, Value, Compare >& lhs, const Dictionary< Key, Value, Compare >& rhs)
   {
     auto lhs_iter = lhs.cbegin();
     auto rhs_iter = rhs.cbegin();
@@ -269,7 +277,7 @@ namespace tarasenko
   }
 
   template< class Key, class Value, class Compare >
-  bool operator!=(const Dictionary<Key, Value, Compare >& lhs, const Dictionary<Key, Value, Compare >& rhs)
+  bool operator!=(const Dictionary< Key, Value, Compare >& lhs, const Dictionary< Key, Value, Compare >& rhs)
   {
     return !(lhs == rhs);
   }
