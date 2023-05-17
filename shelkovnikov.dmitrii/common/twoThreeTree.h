@@ -119,45 +119,19 @@ namespace dimkashelk
       root_ = nullptr;
       size_ = 0;
     }
-    iterator insert_after(const_iterator pos, const Key &k, const Value &v)
-    {
-      root_ = insert(pos.node_, k, v);
-      pos++;
-      size_++;
-      return iterator(pos.node_);
-    }
-    template< class InputIt >
-    iterator insert_after(const_iterator pos, InputIt first, InputIt last)
-    {
-      for (; first != last; first++)
-      {
-        root_ = insert(pos.node_, (*first).first, (*first).second);
-        pos++;
-      }
-      size_++;
-      return iterator(pos.node_);
-    }
-    template< class ... ArgsKey, class ... ArgsValue >
-    iterator emplace_after(const_iterator pos, ArgsKey &&...argsKey, ArgsValue &&...argsValue)
-    {
-      Key key = Key(argsKey...);
-      Value value = Value(argsValue...);
-      size_++;
-      return insert_after(pos, std::forward< Key >(key), std::forward< Value >(value));
-    }
     void insert(const Key &k, const Value &v)
     {
       root_ = insert(root_, k, v);
       size_++;
     }
-    iterator erase_after(const_iterator pos)
+    iterator eraseAfter(const_iterator pos)
     {
       root_ = remove(pos.node_, pos.value_.first);
       pos++;
       size_--;
       return iterator(pos.node_);
     }
-    iterator erase_after(const_iterator first, const_iterator last)
+    iterator eraseAfter(const_iterator first, const_iterator last)
     {
       for (; first != last; first++)
       {
@@ -165,11 +139,6 @@ namespace dimkashelk
       }
       size_--;
       return iterator(last.node_);
-    }
-    void push_front(const Key &key, const Value &value)
-    {
-      root_ = insert(key, value);
-      size_++;
     }
     Value &get(const Key &k)
     {
@@ -186,12 +155,6 @@ namespace dimkashelk
         }
       }
       throw std::logic_error("No element");
-    }
-    template< class ... ArgsKey, class ... ArgsValue >
-    void emplace_front(ArgsKey &&...argsKey, ArgsValue &&...argsValue)
-    {
-      push_front(std::forward< Key >(argsKey...), std::forward< Value >(argsValue...));
-      size_++;
     }
     bool contains(const Key &k) const
     {
