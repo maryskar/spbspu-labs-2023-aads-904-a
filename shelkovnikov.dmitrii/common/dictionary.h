@@ -3,7 +3,7 @@
 #include <utility>
 #include <ostream>
 #include <functional>
-#include "forwardlist.h"
+#include "twoThreeTree.h"
 namespace dimkashelk
 {
   namespace details
@@ -25,8 +25,8 @@ namespace dimkashelk
   public:
     using dict_type = Dictionary< Key, Value, Compare >;
     using value_type = std::pair< Key, Value >;
-    using iterator_t = dimkashelk::ForwardListIterator< value_type >;
-    using const_iterator_t = dimkashelk::ForwardListIteratorConst< value_type >;
+    using iterator_t = dimkashelk::TwoThreeTreeIterator< Key, Value, Compare >;
+    using const_iterator_t = dimkashelk::TwoThreeTreeIteratorConst< Key, Value, Compare >;
     Dictionary():
       list_(),
       compare_()
@@ -218,7 +218,7 @@ namespace dimkashelk
       return !(*this == second);
     }
   private:
-    ForwardList< value_type > list_;
+    TwoThreeTree< Key, Value, Compare > list_;
     Compare compare_;
     iterator_t push(const value_type &value)
     {
