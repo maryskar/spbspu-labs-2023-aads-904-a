@@ -5,10 +5,10 @@
 
 namespace chemodurov
 {
-  template< typename T, typename Compare = std::less<> >
+  template< typename T, typename Compare = std::less< > >
   class UnbalancedBinarySearchTree
   {
-    friend class BidirectionalIterator< T >;
+    friend class BidirectionalIterator< T, Compare >;
    public:
     using value_type = T;
     using size_type = std::size_t;
@@ -16,8 +16,8 @@ namespace chemodurov
     using value_compare = Compare;
     using reference = value_type &;
     using const_reference = const value_type &;
-    using iterator = BidirectionalIterator< value_type >;
-    using const_iterator = ConstBidirectionalIterator< value_type >;
+    using iterator = BidirectionalIterator< value_type, value_compare >;
+    using const_iterator = ConstBidirectionalIterator< value_type, value_compare >;
     using this_t = UnbalancedBinarySearchTree< value_type, value_compare >;
     UnbalancedBinarySearchTree();
     UnbalancedBinarySearchTree(const this_t & other);
@@ -76,6 +76,23 @@ namespace chemodurov
     Compare comp_;
     std::size_t size_;
   };
+
+  template< typename T, typename Compare >
+  UnbalancedBinarySearchTree< T, Compare >::UnbalancedBinarySearchTree():
+   fake_(::operator new (sizeof(Tree< T, Compare >))),
+   comp_(),
+   size_(0)
+  {
+    fake_->left_ = nullptr;
+    fake_->right_ = fake_;
+    fake_->parent_ = fake_;
+  }
+
+  template< typename T, typename Compare >
+  typename UnbalancedBinarySearchTree< T, Compare >::iterator UnbalancedBinarySearchTree< T, Compare >::begin() noexcept
+  {
+    return iterator(fake_->parent_);
+  }
 }
 
 #endif

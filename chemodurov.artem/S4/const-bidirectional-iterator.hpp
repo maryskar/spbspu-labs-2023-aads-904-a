@@ -4,14 +4,14 @@
 
 namespace chemodurov
 {
-  template< typename T >
+  template< typename T, typename Compare = std::less< > >
   class ConstBidirectionalIterator
   {
-    friend class BidirectionalIterator< T >;
+    friend class BidirectionalIterator< T, Compare >;
    public:
-    using this_t = ConstBidirectionalIterator< T >;
+    using this_t = ConstBidirectionalIterator< T, Compare >;
     ConstBidirectionalIterator();
-    ConstBidirectionalIterator(const BidirectionalIterator< T > & rhs);
+    ConstBidirectionalIterator(const BidirectionalIterator< T, Compare > & rhs);
     ConstBidirectionalIterator(const this_t &) = default;
     ~ConstBidirectionalIterator() = default;
     this_t & operator=(const this_t &) = default;
@@ -22,18 +22,18 @@ namespace chemodurov
     const T & operator*() const;
     const T * operator->() const;
    private:
-    Tree< T > * node_;
-    Tree< T > * fake_;
+    Tree< T, Compare > * node_;
+    Tree< T, Compare > * fake_;
   };
 
-  template< typename T >
-  ConstBidirectionalIterator< T >::ConstBidirectionalIterator():
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare >::ConstBidirectionalIterator():
    node_(nullptr),
    fake_(nullptr)
   {}
 
-  template< typename T >
-  ConstBidirectionalIterator< T > & ConstBidirectionalIterator< T >::operator++()
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare > & ConstBidirectionalIterator< T, Compare >::operator++()
   {
     assert(node_ != nullptr);
     if (node_->right != fake_)
@@ -51,14 +51,14 @@ namespace chemodurov
     return *this;
   }
 
-  template< typename T >
-  ConstBidirectionalIterator< T >::ConstBidirectionalIterator(const BidirectionalIterator< T > & rhs):
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare >::ConstBidirectionalIterator(const BidirectionalIterator< T, Compare > & rhs):
    node_(rhs.node_),
    fake_(rhs.fake_)
   {}
 
-  template< typename T >
-  ConstBidirectionalIterator< T > ConstBidirectionalIterator< T >::operator++(int)
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare > ConstBidirectionalIterator< T, Compare >::operator++(int)
   {
     assert(node_ != nullptr);
     this_t temp(*this);
@@ -66,8 +66,8 @@ namespace chemodurov
     return temp;
   }
 
-  template< typename T >
-  ConstBidirectionalIterator< T > & ConstBidirectionalIterator< T >::operator--()
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare > & ConstBidirectionalIterator< T, Compare >::operator--()
   {
     assert(node_ != nullptr);
     if (node_->left != fake_)
@@ -85,8 +85,8 @@ namespace chemodurov
     return *this;
   }
 
-  template< typename T >
-  ConstBidirectionalIterator< T > ConstBidirectionalIterator< T >::operator--(int)
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare > ConstBidirectionalIterator< T, Compare >::operator--(int)
   {
     assert(node_ != nullptr);
     this_t temp(*this);
@@ -94,28 +94,28 @@ namespace chemodurov
     return temp;
   }
 
-  template< typename T >
-  const T & ConstBidirectionalIterator< T >::operator*() const
+  template< typename T, typename Compare >
+  const T & ConstBidirectionalIterator< T, Compare >::operator*() const
   {
     assert(node_ != nullptr);
     return node_->data;
   }
 
-  template< typename T >
-  const T * ConstBidirectionalIterator< T >::operator->() const
+  template< typename T, typename Compare >
+  const T * ConstBidirectionalIterator< T, Compare >::operator->() const
   {
     assert(node_ != nullptr);
     return std::addressof(node_->data);
   }
 
-  template< typename T >
-  bool operator==(const ConstBidirectionalIterator< T > & lhs, const ConstBidirectionalIterator< T > & rhs)
+  template< typename T, typename Compare >
+  bool operator==(const ConstBidirectionalIterator< T, Compare > & lhs, const ConstBidirectionalIterator< T, Compare > & rhs)
   {
     return lhs.operator->() == rhs.operator->();
   }
 
-  template< typename T >
-  bool operator!=(const ConstBidirectionalIterator< T > & lhs, const ConstBidirectionalIterator< T > & rhs)
+  template< typename T, typename Compare >
+  bool operator!=(const ConstBidirectionalIterator< T, Compare > & lhs, const ConstBidirectionalIterator< T, Compare > & rhs)
   {
     return !(lhs == rhs);
   }

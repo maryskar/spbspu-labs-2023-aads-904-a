@@ -5,15 +5,19 @@
 
 namespace chemodurov
 {
-  template< typename T >
+  template< typename T, typename Compare >
   class ConstBidirectionalIterator;
 
-  template< typename T >
+  template< typename T, typename Compare >
+  class UnbalancedBinarySearchTree;
+
+  template< typename T, typename Compare = std::less< > >
   class BidirectionalIterator
   {
-    friend class ConstBidirectionalIterator< T >;
+    friend class UnbalancedBinarySearchTree< T, Compare >;
+    friend class ConstBidirectionalIterator< T, Compare >;
    public:
-    using this_t = BidirectionalIterator< T >;
+    using this_t = BidirectionalIterator< T, Compare >;
     BidirectionalIterator();
     BidirectionalIterator(const this_t &) = default;
     ~BidirectionalIterator() = default;
@@ -27,28 +31,29 @@ namespace chemodurov
     T * operator->();
     const T * operator->() const;
    private:
-    Tree< T > * node_;
-    Tree< T > * fake_;
+    Tree< T, Compare > * node_;
+    Tree< T, Compare > * fake_;
+    BidirectionalIterator(Tree< T, Compare > * node, Tree< T, Compare > * fake);
   };
 
-  template< typename T >
-  BidirectionalIterator< T >::BidirectionalIterator():
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare >::BidirectionalIterator():
    node_(nullptr),
    fake_(nullptr)
   {}
 
-  template< typename T >
-  BidirectionalIterator< T > & BidirectionalIterator< T >::operator++()
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare > & BidirectionalIterator< T, Compare >::operator++()
   {
-    ConstBidirectionalIterator< T > temp(*this);
+    ConstBidirectionalIterator< T, Compare > temp(*this);
     ++temp;
     this->node_ = temp.node_;
     this->fake_ = temp.fake_;
     return *this;
   }
 
-  template< typename T >
-  BidirectionalIterator< T > BidirectionalIterator< T >::operator++(int)
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare > BidirectionalIterator< T, Compare >::operator++(int)
   {
     assert(node_ != nullptr);
     this_t temp(*this);
@@ -56,18 +61,18 @@ namespace chemodurov
     return temp;
   }
 
-  template< typename T >
-  BidirectionalIterator< T > & BidirectionalIterator< T >::operator--()
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare > & BidirectionalIterator< T, Compare >::operator--()
   {
-    ConstBidirectionalIterator< T > temp(*this);
+    ConstBidirectionalIterator< T, Compare > temp(*this);
     --temp;
     this->node_ = temp.node_;
     this->fake_ = temp.fake_;
     return *this;
   }
 
-  template< typename T >
-  BidirectionalIterator< T > BidirectionalIterator< T >::operator--(int)
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare > BidirectionalIterator< T, Compare >::operator--(int)
   {
     assert(node_ != nullptr);
     this_t temp(*this);
@@ -75,40 +80,46 @@ namespace chemodurov
     return temp;
   }
 
-  template< typename T >
-  const T & BidirectionalIterator< T >::operator*() const
+  template< typename T, typename Compare >
+  const T & BidirectionalIterator< T, Compare >::operator*() const
   {
     assert(node_ != nullptr);
     return node_->data;
   }
 
-  template< typename T >
-  T & BidirectionalIterator< T >::operator*()
+  template< typename T, typename Compare >
+  T & BidirectionalIterator< T, Compare >::operator*()
   {
     return const_cast< T & >((static_cast< const this_t >(*this)).operator*());
   }
 
-  template< typename T >
-  const T * BidirectionalIterator< T >::operator->() const
+  template< typename T, typename Compare >
+  const T * BidirectionalIterator< T, Compare >::operator->() const
   {
     assert(node_ != nullptr);
     return std::addressof(node_->data);
   }
 
-  template< typename T >
-  T * BidirectionalIterator< T >::operator->()
+  template< typename T, typename Compare >
+  T * BidirectionalIterator< T, Compare >::operator->()
   {
     return const_cast< T * >((static_cast< const this_t >(*this)).operator->());
   }
 
-  template< typename T >
-  bool operator==(const BidirectionalIterator< T > & lhs, const BidirectionalIterator< T > & rhs)
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare >::BidirectionalIterator(Tree< T, Compare > * node, Tree< T, Compare > * fake):
+   node_(node),
+   fake_(fake)
+  {}
+
+  template< typename T, typename Compare >
+  bool operator==(const BidirectionalIterator< T, Compare > & lhs, const BidirectionalIterator< T, Compare > & rhs)
   {
     return lhs.operator->() == rhs.operator->();
   }
 
-  template< typename T >
-  bool operator!=(const BidirectionalIterator< T > & lhs, const BidirectionalIterator< T > & rhs)
+  template< typename T, typename Compare >
+  bool operator!=(const BidirectionalIterator< T, Compare > & lhs, const BidirectionalIterator< T, Compare > & rhs)
   {
     return !(lhs == rhs);
   }
