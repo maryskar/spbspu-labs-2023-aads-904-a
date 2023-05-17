@@ -26,7 +26,7 @@ namespace tarasenko
      type_print.push("print", &print< Key, Value, Compare >);
    }
 
-   std::function< std::ostream&(std::ostream& output, const dict_type& dict) >& printType(const std::string& key)
+   std::function< std::ostream&(std::ostream&, std::string, const dict_type&) >& printType(const std::string& key)
    {
      return type_print.at(key);
    }
@@ -50,7 +50,7 @@ namespace tarasenko
    Dictionary< std::string,
      std::function< dict_type(const dict_type&, const dict_type&) >, Compare > type_create;
    Dictionary< std::string,
-     std::function< std::ostream&(std::ostream& output, const dict_type& dict) >, Compare > type_print;
+     std::function< std::ostream&(std::ostream&, std::string, const dict_type&) >, Compare > type_print;
   };
 }
 #endif

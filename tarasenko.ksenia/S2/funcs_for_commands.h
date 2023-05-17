@@ -74,10 +74,11 @@ namespace tarasenko
   }
 
   template< class Key, class Value, class Compare >
-  std::ostream& print(std::ostream& output, const Dictionary<Key, Value, Compare >& dict)
+  std::ostream& print(std::ostream& output, std::string name_of_dict, const Dictionary<Key, Value, Compare >& dict)
   {
     if (!dict.isEmpty())
     {
+      output << name_of_dict << " ";
       auto iter = dict.cbegin();
       output << iter->first << " " << iter->second;
       ++iter;
