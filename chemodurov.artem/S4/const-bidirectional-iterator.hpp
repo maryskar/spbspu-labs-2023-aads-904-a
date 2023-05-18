@@ -7,6 +7,7 @@ namespace chemodurov
   template< typename T, typename Compare = std::less< > >
   class ConstBidirectionalIterator
   {
+    friend class UnbalancedBinarySearchTree< T, Compare >;
     friend class BidirectionalIterator< T, Compare >;
    public:
     using this_t = ConstBidirectionalIterator< T, Compare >;
@@ -24,6 +25,7 @@ namespace chemodurov
    private:
     Tree< T, Compare > * node_;
     Tree< T, Compare > * fake_;
+    ConstBidirectionalIterator(Tree< T, Compare > * node, Tree< T, Compare > * fake);
   };
 
   template< typename T, typename Compare >
@@ -107,6 +109,12 @@ namespace chemodurov
     assert(node_ != nullptr);
     return std::addressof(node_->data);
   }
+
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare >::ConstBidirectionalIterator(Tree< T, Compare > * node, Tree< T, Compare > * fake):
+   node_(node),
+   fake_(fake)
+  {}
 
   template< typename T, typename Compare >
   bool operator==(const ConstBidirectionalIterator< T, Compare > & lhs, const ConstBidirectionalIterator< T, Compare > & rhs)
