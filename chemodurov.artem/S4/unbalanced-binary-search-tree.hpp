@@ -2,7 +2,7 @@
 #define S4_UNBALANCED_BINARY_SEARCH_TREE_HPP
 #include <functional>
 #include "bidirectional-iterator.hpp"
-
+#include "const-bidirectional-iterator.hpp"
 namespace chemodurov
 {
   template< typename T, typename Compare = std::less<> >
@@ -217,7 +217,8 @@ namespace chemodurov
   }
 
   template< typename T, typename Compare >
-  typename UnbalancedBinarySearchTree< T, Compare >::value_compare UnbalancedBinarySearchTree< T, Compare >::value_comp() const
+  typename UnbalancedBinarySearchTree< T, Compare >::value_compare
+      UnbalancedBinarySearchTree< T, Compare >::value_comp() const
   {
     return comp_;
   }
@@ -246,6 +247,29 @@ namespace chemodurov
   > UnbalancedBinarySearchTree< T, Compare >::equal_range(const_reference value)
   {
     return {lower_bound(value), upper_bound(value)};
+  }
+
+  template< typename T, typename Compare >
+  typename UnbalancedBinarySearchTree< T, Compare >::const_iterator
+      UnbalancedBinarySearchTree< T, Compare >::find(const_reference value) const
+  {
+    const_iterator cit = lower_bound(value);
+    return *cit == value ? cit : cend();
+  }
+
+  template< typename T, typename Compare >
+  typename UnbalancedBinarySearchTree< T, Compare >::iterator
+      UnbalancedBinarySearchTree< T, Compare >::find(const_reference value)
+  {
+    const_iterator cit = find(value);
+    return iterator(cit.node_, cit.fake_);
+  }
+
+  template< typename T, typename Compare >
+  typename UnbalancedBinarySearchTree< T, Compare >::size_type
+      UnbalancedBinarySearchTree< T, Compare >::count(const_reference value) const
+  {
+    return find(value) == end() ? 0ull : 1ull;
   }
 }
 
