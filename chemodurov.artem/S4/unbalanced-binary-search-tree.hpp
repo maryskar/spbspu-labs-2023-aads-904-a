@@ -174,17 +174,45 @@ namespace chemodurov
     value_compare comp = value_comp();
     while (!comp(*cit, value) || comp(value, *(++moved_cit)))
     {
-      if (!comp(*cit, value))
+      if (!comp(*cit, value) && cit.node_->left != cit.node_->fake_)
       {
         cit.node_ = cit.node_->left_;
       }
-      else
+      else if (comp(value, *moved_cit) && cit.node_->left != cit.node_->fake_)
       {
         cit.node_ = cit.node_->right_;
+      }
+      else
+      {
+        return moved_cit;
       }
       moved_cit = cit;
     }
     return moved_cit;
+  }
+
+  template< typename T, typename Compare >
+  typename UnbalancedBinarySearchTree< T, Compare >::iterator
+        UnbalancedBinarySearchTree< T, Compare >::lower_bound(const_reference value)
+  {
+    const_iterator cit = (static_cast< const this_t >(*this)).lower_bound(value);
+    return iterator(cit.node_, cit.fake_);
+  }
+
+  template< typename T, typename Compare >
+  typename UnbalancedBinarySearchTree< T, Compare >::const_iterator
+      UnbalancedBinarySearchTree< T, Compare >::upper_bound(const_reference value) const
+  {
+    const_iterator cit = lower_bound(value);
+    return cit == cend() ? cend() : ++cit;
+  }
+
+  template< typename T, typename Compare >
+  typename UnbalancedBinarySearchTree< T, Compare >::iterator
+      UnbalancedBinarySearchTree< T, Compare >::upper_bound(const_reference value)
+  {
+    const_iterator cit = (static_cast< const this_t >(*this)).upper_bound(value);
+    return iterator(cit.node_, cit.fake_);
   }
 }
 
