@@ -123,6 +123,36 @@ namespace chemodurov
   {
     return const_iterator(fake_, fake_);
   }
+
+  template< typename T, typename Compare >
+  bool UnbalancedBinarySearchTree< T, Compare >::empty() const noexcept
+  {
+    return !size_;
+  }
+
+  template< typename T, typename Compare >
+  size_t UnbalancedBinarySearchTree< T, Compare >::size() const noexcept
+  {
+    return size_;
+  }
+
+  template< typename T, typename Compare >
+  void clearTree(Tree< T, Compare > * root, Tree< T, Compare > * fake)
+  {
+    if (root == fake)
+    {
+      return;
+    }
+    clearTree(root->left_, fake);
+    clearTree(root->right_, fake);
+    delete root;
+  }
+
+  template< typename T, typename Compare >
+  void UnbalancedBinarySearchTree< T, Compare >::clear() noexcept
+  {
+    clearTree(fake_->left_, fake_);
+  }
 }
 
 #endif
