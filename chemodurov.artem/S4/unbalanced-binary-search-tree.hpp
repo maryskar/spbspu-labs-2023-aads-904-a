@@ -5,7 +5,7 @@
 
 namespace chemodurov
 {
-  template< typename T, typename Compare = std::less< > >
+  template< typename T, typename Compare = std::less<> >
   class UnbalancedBinarySearchTree
   {
     friend class BidirectionalIterator< T, Compare >;
@@ -50,26 +50,26 @@ namespace chemodurov
     void insert(std::initializer_list< value_type > init);
     template< typename... Args >
     std::pair< iterator, bool > emplace(Args && ... args);
-    template < typename... Args >
+    template< typename... Args >
     iterator emplace_hint(const_iterator hint, Args && ... args);
-    T& at( const_reference value );
-    const T& at( const_reference value ) const;
-    T& operator[]( const_reference value );
-    T& operator[]( value_type && value );
-    iterator erase( iterator pos );
-    iterator erase( const_iterator pos );
-    iterator erase( const_iterator first, const_iterator last );
-    size_type erase( const_reference value );
+    T & at(const_reference value);
+    const T & at(const_reference value) const;
+    T & operator[](const_reference value);
+    T & operator[](value_type && value);
+    iterator erase(iterator pos);
+    iterator erase(const_iterator pos);
+    iterator erase(const_iterator first, const_iterator last);
+    size_type erase(const_reference value);
     void swap(this_t & other);
-    size_type count( const_reference value ) const;
-    iterator find( const_reference value );
-    const_iterator find( const_reference value ) const;
-    std::pair<iterator,iterator> equal_range( const_reference value );
-    std::pair<const_iterator,const_iterator> equal_range( const_reference value ) const;
-    iterator lower_bound( const_reference value);
-    const_iterator lower_bound( const_reference value ) const;
-    iterator upper_bound( const_reference value );
-    const_iterator upper_bound( const_reference value ) const;
+    size_type count(const_reference value) const;
+    iterator find(const_reference value);
+    const_iterator find(const_reference value) const;
+    std::pair< iterator, iterator > equal_range(const_reference value);
+    std::pair< const_iterator, const_iterator > equal_range(const_reference value) const;
+    iterator lower_bound(const_reference value);
+    const_iterator lower_bound(const_reference value) const;
+    iterator upper_bound(const_reference value);
+    const_iterator upper_bound(const_reference value) const;
     value_compare value_comp() const;
    private:
     Tree< T, Compare > * fake_;
@@ -79,7 +79,7 @@ namespace chemodurov
 
   template< typename T, typename Compare >
   UnbalancedBinarySearchTree< T, Compare >::UnbalancedBinarySearchTree():
-   fake_(::operator new (sizeof(Tree< T, Compare >))),
+   fake_(::operator new(sizeof(Tree< T, Compare >))),
    comp_(),
    size_(0)
   {
@@ -95,13 +95,15 @@ namespace chemodurov
   }
 
   template< typename T, typename Compare >
-  typename UnbalancedBinarySearchTree< T, Compare >::const_iterator UnbalancedBinarySearchTree< T, Compare >::begin() const noexcept
+  typename UnbalancedBinarySearchTree< T, Compare >::const_iterator
+  UnbalancedBinarySearchTree< T, Compare >::begin() const noexcept
   {
     return cbegin();
   }
 
   template< typename T, typename Compare >
-  typename UnbalancedBinarySearchTree< T, Compare >::const_iterator UnbalancedBinarySearchTree< T, Compare >::cbegin() const noexcept
+  typename UnbalancedBinarySearchTree< T, Compare >::const_iterator
+  UnbalancedBinarySearchTree< T, Compare >::cbegin() const noexcept
   {
     return const_iterator(fake_->parent_, fake_);
   }
@@ -113,13 +115,15 @@ namespace chemodurov
   }
 
   template< typename T, typename Compare >
-  typename UnbalancedBinarySearchTree< T, Compare >::const_iterator UnbalancedBinarySearchTree< T, Compare >::end() const noexcept
+  typename UnbalancedBinarySearchTree< T, Compare >::const_iterator
+  UnbalancedBinarySearchTree< T, Compare >::end() const noexcept
   {
     return cend();
   }
 
   template< typename T, typename Compare >
-  typename UnbalancedBinarySearchTree< T, Compare >::const_iterator UnbalancedBinarySearchTree< T, Compare >::cend() const noexcept
+  typename UnbalancedBinarySearchTree< T, Compare >::const_iterator
+  UnbalancedBinarySearchTree< T, Compare >::cend() const noexcept
   {
     return const_iterator(fake_, fake_);
   }
@@ -152,6 +156,35 @@ namespace chemodurov
   void UnbalancedBinarySearchTree< T, Compare >::clear() noexcept
   {
     clearTree(fake_->left_, fake_);
+  }
+
+  template< typename T, typename Compare >
+  UnbalancedBinarySearchTree< T, Compare >::~UnbalancedBinarySearchTree()
+  {
+    clear();
+    ::operator delete(fake_);
+  }
+
+  template< typename T, typename Compare >
+  typename UnbalancedBinarySearchTree< T, Compare >::const_iterator
+      UnbalancedBinarySearchTree< T, Compare >::lower_bound(const_reference value) const
+  {
+    const_iterator cit = const_iterator(fake_->left_);
+    const_iterator moved_cit = cit;
+    value_compare comp = value_comp();
+    while (!comp(*cit, value) || comp(value, *(++moved_cit)))
+    {
+      if (!comp(*cit, value))
+      {
+        cit.node_ = cit.node_->left_;
+      }
+      else
+      {
+        cit.node_ = cit.node_->right_;
+      }
+      moved_cit = cit;
+    }
+    return moved_cit;
   }
 }
 
