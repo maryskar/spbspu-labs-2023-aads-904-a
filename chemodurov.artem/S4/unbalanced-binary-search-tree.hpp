@@ -271,6 +271,27 @@ namespace chemodurov
   {
     return find(value) == end() ? 0ull : 1ull;
   }
+
+  template< typename T, typename Compare >
+  std::pair<
+      typename UnbalancedBinarySearchTree< T, Compare >::iterator,
+      bool
+  > UnbalancedBinarySearchTree< T, Compare >::insert(const_reference value)
+  {
+    iterator it = lower_bound(value);
+    if (it == end())
+    {
+      (--end()).node_->right_ = new Tree< T, Compare >(value, fake_, fake_, (--end()).node_);
+      return {--end(), true};
+    }
+    if (!value_comp()(*it, value) && !value_comp()(value, *it))
+    {
+      return {it, false};
+    }
+    Tree< T, Compare> * inserted = new Tree< T, Compare >(value, it.node_->left_, fake_, it.node_);
+    it.node_->left_ = inserted;
+    return {iterator(inserted, fake_), true};
+  }
 }
 
 #endif
