@@ -204,7 +204,8 @@ namespace chemodurov
       UnbalancedBinarySearchTree< T, Compare >::upper_bound(const_reference value) const
   {
     const_iterator cit = lower_bound(value);
-    return cit == cend() ? cend() : ++cit;
+    const_iterator moved_cit = cit;
+    return cit == cend() ? cend() : (!value_comp()(*cit, value) && !value_comp()(value, *cit)) ? ++moved_cit : cit;
   }
 
   template< typename T, typename Compare >
@@ -213,6 +214,38 @@ namespace chemodurov
   {
     const_iterator cit = (static_cast< const this_t >(*this)).upper_bound(value);
     return iterator(cit.node_, cit.fake_);
+  }
+
+  template< typename T, typename Compare >
+  typename UnbalancedBinarySearchTree< T, Compare >::value_compare UnbalancedBinarySearchTree< T, Compare >::value_comp() const
+  {
+    return comp_;
+  }
+
+  template< typename T, typename Compare >
+  void UnbalancedBinarySearchTree< T, Compare >::swap(this_t & other)
+  {
+    std::swap(fake_, other.fake_);
+    std::swap(comp_, other.comp_);
+    std::swap(size_, other.size_);
+  }
+
+  template< typename T, typename Compare >
+  std::pair<
+      typename UnbalancedBinarySearchTree< T, Compare >::const_iterator,
+      typename UnbalancedBinarySearchTree< T, Compare >::const_iterator
+  > UnbalancedBinarySearchTree< T, Compare >::equal_range(const_reference value) const
+  {
+    return {lower_bound(value), upper_bound(value)};
+  }
+
+  template< typename T, typename Compare >
+  std::pair<
+      typename UnbalancedBinarySearchTree< T, Compare >::iterator,
+      typename UnbalancedBinarySearchTree< T, Compare >::iterator
+  > UnbalancedBinarySearchTree< T, Compare >::equal_range(const_reference value)
+  {
+    return {lower_bound(value), upper_bound(value)};
   }
 }
 
