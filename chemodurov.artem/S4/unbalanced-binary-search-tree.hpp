@@ -292,6 +292,25 @@ namespace chemodurov
     it.node_->left_ = inserted;
     return {iterator(inserted, fake_), true};
   }
+
+  template< typename T, typename Compare >
+  template< typename P >
+  std::pair<
+      typename UnbalancedBinarySearchTree< T, Compare >::iterator,
+      bool
+  > UnbalancedBinarySearchTree< T, Compare >::insert(P && value)
+  {
+    static_assert(std::is_constructible< value_type, P&& >::value, "Value type isn't constructible from type you try to insert");
+    value_type val(std::forward< P >(value));
+    return insert(val);
+  }
+
+  template< typename T, typename Compare >
+  typename UnbalancedBinarySearchTree< T, Compare >::iterator
+      UnbalancedBinarySearchTree< T, Compare >::insert(const_iterator pos, const_reference value)
+  {
+    //
+  }
 }
 
 #endif
