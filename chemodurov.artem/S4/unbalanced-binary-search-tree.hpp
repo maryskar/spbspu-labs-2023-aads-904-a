@@ -205,7 +205,7 @@ namespace chemodurov
   {
     const_iterator cit = lower_bound(value);
     const_iterator moved_cit = cit;
-    return cit == cend() ? cend() : (!value_comp()(*cit, value) && !value_comp()(value, *cit)) ? ++moved_cit : cit;
+    return (cit == cend()) ? cend() : ((!value_comp()(*cit, value) && !value_comp()(value, *cit)) ? ++moved_cit : cit);
   }
 
   template< typename T, typename Compare >
@@ -254,7 +254,7 @@ namespace chemodurov
       UnbalancedBinarySearchTree< T, Compare >::find(const_reference value) const
   {
     const_iterator cit = lower_bound(value);
-    return *cit == value ? cit : cend();
+    return (*cit == value) ? cit : cend();
   }
 
   template< typename T, typename Compare >
@@ -269,7 +269,7 @@ namespace chemodurov
   typename UnbalancedBinarySearchTree< T, Compare >::size_type
       UnbalancedBinarySearchTree< T, Compare >::count(const_reference value) const
   {
-    return find(value) == end() ? 0ull : 1ull;
+    return (find(value) == end()) ? 0ull : 1ull;
   }
 
   template< typename T, typename Compare >
@@ -395,6 +395,35 @@ namespace chemodurov
   T & UnbalancedBinarySearchTree< T, Compare >::operator[](value_type && value)
   {
     return (*this)[value];
+  }
+
+  template< typename T, typename Compare >
+  typename UnbalancedBinarySearchTree< T, Compare >::iterator
+      UnbalancedBinarySearchTree< T, Compare >::erase(iterator pos)
+  {
+    Tree< T, Compare > * todel = pos.node_;
+    ++pos;
+    Tree< T, Compare > * swapped = todel;
+    if (todel->left_ == fake_)
+    {
+      todel->parent_->left_ == todel ? todel->parent_->left_ = todel->right_ : todel->parent_->right_ = todel->right_;
+      if (todel->right_ != fake_)
+      {
+        todel->right_->parent_ = todel->parent_;
+      }
+    }
+    else
+    {
+      todel = todel->left_;
+      while (todel->right_ != fake_)
+      {
+        todel = todel->right_;
+      }
+      std::swap(swapped->data_, todel->data_);
+      todel->parent_->right_ == todel ? todel->parent_->right_ = fake_ : todel->parent_->left_ = fake_;
+    }
+    delete todel;
+    return pos;
   }
 }
 
