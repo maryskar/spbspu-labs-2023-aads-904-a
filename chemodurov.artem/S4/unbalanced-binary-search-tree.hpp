@@ -22,7 +22,7 @@ namespace chemodurov
     UnbalancedBinarySearchTree();
     UnbalancedBinarySearchTree(const this_t & other);
     UnbalancedBinarySearchTree(this_t && other);
-    UnbalancedBinarySearchTree(const value_compare & comp);
+    explicit UnbalancedBinarySearchTree(const value_compare & comp);
     template< typename InputIt >
     UnbalancedBinarySearchTree(InputIt first, InputIt last, const value_compare & comp = value_compare());
     UnbalancedBinarySearchTree(std::initializer_list< value_type > init, const value_compare & comp = value_compare());
@@ -456,6 +456,39 @@ namespace chemodurov
     }
     return 0ull;
   }
+
+  template< typename T, typename Compare >
+  UnbalancedBinarySearchTree< T, Compare >::UnbalancedBinarySearchTree(const value_compare & comp):
+   UnbalancedBinarySearchTree()
+  {
+    comp_ = comp;
+  }
+
+  template< typename T, typename Compare >
+  template< typename InputIt >
+  UnbalancedBinarySearchTree< T, Compare >::UnbalancedBinarySearchTree(InputIt first, InputIt last, const value_compare & comp):
+   UnbalancedBinarySearchTree(comp)
+  {
+    insert(first, last);
+  }
+
+  template< typename T, typename Compare >
+  UnbalancedBinarySearchTree< T, Compare >::UnbalancedBinarySearchTree(const this_t & other):
+    UnbalancedBinarySearchTree(other.begin(), other.end(), Compare())
+  {}
+
+  template< typename T, typename Compare >
+  UnbalancedBinarySearchTree< T, Compare >::UnbalancedBinarySearchTree(this_t && other):
+   UnbalancedBinarySearchTree()
+  {
+    swap(other);
+  }
+
+  template< typename T, typename Compare >
+  UnbalancedBinarySearchTree< T, Compare >::UnbalancedBinarySearchTree(std::initializer_list< value_type > init,
+      const value_compare & comp):
+    UnbalancedBinarySearchTree(init.begin(), init.end(), comp)
+  {}
 }
 
 #endif
