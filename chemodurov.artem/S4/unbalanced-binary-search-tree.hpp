@@ -309,7 +309,38 @@ namespace chemodurov
   typename UnbalancedBinarySearchTree< T, Compare >::iterator
       UnbalancedBinarySearchTree< T, Compare >::insert(const_iterator pos, const_reference value)
   {
-    //
+    if (value_comp()(value, *pos) && value_comp()(*(--pos), value))
+    {
+      pos.node_->left_ = new Tree< T, Compare >(value, pos.node_->left_, fake_, pos.node_);
+      return iterator(pos.node_->left_, fake_);
+    }
+    return insert(value);
+  }
+
+  template< typename T, typename Compare >
+  template< typename P >
+  typename UnbalancedBinarySearchTree< T, Compare >::iterator
+      UnbalancedBinarySearchTree< T, Compare >::insert(const_iterator pos, P && value)
+  {
+    static_assert(std::is_constructible< value_type, P&& >::value, "Value type isn't constructible from type you try to insert");
+    value_type val(std::forward< P >(value));
+    return insert(pos, val);
+  }
+
+  template< typename T, typename Compare >
+  template< typename InputIt >
+  void UnbalancedBinarySearchTree< T, Compare >::insert(InputIt first, InputIt last)
+  {
+    while (first != last)
+    {
+      insert(*first++);
+    }
+  }
+
+  template< typename T, typename Compare >
+  void UnbalancedBinarySearchTree< T, Compare >::insert(std::initializer_list< value_type > init)
+  {
+    insert(init.begin(), init.end());
   }
 }
 
