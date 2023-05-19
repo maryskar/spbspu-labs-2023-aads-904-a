@@ -401,6 +401,13 @@ namespace chemodurov
   typename UnbalancedBinarySearchTree< T, Compare >::iterator
       UnbalancedBinarySearchTree< T, Compare >::erase(iterator pos)
   {
+    return erase(const_iterator(pos));
+  }
+
+  template< typename T, typename Compare >
+  typename UnbalancedBinarySearchTree< T, Compare >::iterator
+      UnbalancedBinarySearchTree< T, Compare >::erase(const_iterator pos)
+  {
     Tree< T, Compare > * todel = pos.node_;
     ++pos;
     Tree< T, Compare > * swapped = todel;
@@ -424,6 +431,30 @@ namespace chemodurov
     }
     delete todel;
     return pos;
+  }
+
+  template< typename T, typename Compare >
+  typename UnbalancedBinarySearchTree< T, Compare >::iterator
+      UnbalancedBinarySearchTree< T, Compare >::erase(const_iterator first, const_iterator last)
+  {
+    while (first != last)
+    {
+      first = erase(first);
+    }
+    return first;
+  }
+
+  template< typename T, typename Compare >
+  typename UnbalancedBinarySearchTree< T, Compare >::size_type
+      UnbalancedBinarySearchTree< T, Compare >::erase(const_reference value)
+  {
+    const_iterator cit = find(value);
+    if (cit != cend())
+    {
+      erase(cit);
+      return 1ull;
+    }
+    return 0ull;
   }
 }
 
