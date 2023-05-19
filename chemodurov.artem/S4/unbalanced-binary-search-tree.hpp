@@ -378,6 +378,24 @@ namespace chemodurov
   {
     return const_cast< T & >((static_cast< const this_t >(*this)).at(value));
   }
+
+  template< typename T, typename Compare >
+  T & UnbalancedBinarySearchTree< T, Compare >::operator[](const_reference value)
+  {
+    try
+    {
+      return at(value);
+    }
+    catch (const std::out_of_range & e)
+    {}
+    return *(emplace(value).first);
+  }
+
+  template< typename T, typename Compare >
+  T & UnbalancedBinarySearchTree< T, Compare >::operator[](value_type && value)
+  {
+    return (*this)[value];
+  }
 }
 
 #endif
