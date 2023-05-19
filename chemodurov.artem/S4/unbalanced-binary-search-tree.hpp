@@ -3,6 +3,7 @@
 #include <functional>
 #include "bidirectional-iterator.hpp"
 #include "const-bidirectional-iterator.hpp"
+
 namespace chemodurov
 {
   template< typename T, typename Compare = std::less<> >
@@ -512,6 +513,15 @@ namespace chemodurov
     }
     clear();
     swap(other);
+    return *this;
+  }
+  template< typename T, typename Compare >
+  UnbalancedBinarySearchTree< T, Compare > &
+      UnbalancedBinarySearchTree< T, Compare >::operator=(std::initializer_list< value_type > init)
+  {
+    this_t temp(init);
+    clear();
+    swap(temp);
     return *this;
   }
 }
