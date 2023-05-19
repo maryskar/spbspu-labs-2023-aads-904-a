@@ -361,6 +361,23 @@ namespace chemodurov
     value_type val(std::forward< Args >(args)...);
     return insert(hint, std::move(val));
   }
+
+  template< typename T, typename Compare >
+  const T & UnbalancedBinarySearchTree< T, Compare >::at(const_reference value) const
+  {
+    const_iterator cit = find(value);
+    if (cit == cend())
+    {
+      throw std::out_of_range("No such value in tree");
+    }
+    return *cit;
+  }
+
+  template< typename T, typename Compare >
+  T & UnbalancedBinarySearchTree< T, Compare >::at(const_reference value)
+  {
+    return const_cast< T & >((static_cast< const this_t >(*this)).at(value));
+  }
 }
 
 #endif
