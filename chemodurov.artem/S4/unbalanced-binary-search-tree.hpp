@@ -489,6 +489,31 @@ namespace chemodurov
       const value_compare & comp):
     UnbalancedBinarySearchTree(init.begin(), init.end(), comp)
   {}
+
+  template< typename T, typename Compare >
+  UnbalancedBinarySearchTree< T, Compare > & UnbalancedBinarySearchTree< T, Compare >::operator=(const this_t & other)
+  {
+    if (this == std::addressof(other))
+    {
+      return *this;
+    }
+    this_t temp(other);
+    clear();
+    swap(temp);
+    return *this;
+  }
+
+  template< typename T, typename Compare >
+  UnbalancedBinarySearchTree< T, Compare > & UnbalancedBinarySearchTree< T, Compare >::operator=(this_t && other)
+  {
+    if (this == std::addressof(other))
+    {
+      return *this;
+    }
+    clear();
+    swap(other);
+    return *this;
+  }
 }
 
 #endif
