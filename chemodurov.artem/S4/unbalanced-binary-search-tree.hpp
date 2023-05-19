@@ -342,6 +342,25 @@ namespace chemodurov
   {
     insert(init.begin(), init.end());
   }
+
+  template< typename T, typename Compare >
+  template< typename... Args >
+  std::pair<
+      typename UnbalancedBinarySearchTree< T, Compare >::iterator,
+      bool
+  > UnbalancedBinarySearchTree< T, Compare >::emplace(Args && ... args)
+  {
+    value_type val(std::forward< Args >(args)...);
+    return insert(std::move(val));
+  }
+  template< typename T, typename Compare >
+  template< typename... Args >
+  typename UnbalancedBinarySearchTree< T, Compare >::iterator
+      UnbalancedBinarySearchTree< T, Compare >::emplace_hint(const_iterator hint, Args && ... args)
+  {
+    value_type val(std::forward< Args >(args)...);
+    return insert(hint, std::move(val));
+  }
 }
 
 #endif
