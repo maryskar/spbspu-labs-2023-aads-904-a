@@ -181,6 +181,53 @@ namespace chemodurov
   {
     data.clear();
   }
+
+  template< typename T, typename Compare >
+  std::pair<
+      typename RotatableBinarySearchTree< T, Compare >::iterator,
+      bool
+  > RotatableBinarySearchTree< T, Compare >::insert(const_reference value)
+  {
+    return data.insert(value);
+  }
+
+  template< typename T, typename Compare >
+  template< typename P >
+  std::pair<
+      typename RotatableBinarySearchTree< T, Compare >::iterator,
+      bool
+  > RotatableBinarySearchTree< T, Compare >::insert(P && value)
+  {
+    return data.insert(value);
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::iterator
+      RotatableBinarySearchTree< T, Compare >::insert(const_iterator pos, const_reference value)
+  {
+    return data.insert(pos, value);
+  }
+
+  template< typename T, typename Compare >
+  template< typename P >
+  typename RotatableBinarySearchTree< T, Compare >::iterator
+      RotatableBinarySearchTree< T, Compare >::insert(const_iterator pos, P && value)
+  {
+    return data.insert(pos, value);
+  }
+
+  template< typename T, typename Compare >
+  template< typename InputIt >
+  void RotatableBinarySearchTree< T, Compare >::insert(InputIt first, InputIt last)
+  {
+    data.insert(first, last);
+  }
+
+  template< typename T, typename Compare >
+  void RotatableBinarySearchTree< T, Compare >::insert(std::initializer_list< value_type > init)
+  {
+    data.insert(init);
+  }
 }
 
 #endif
