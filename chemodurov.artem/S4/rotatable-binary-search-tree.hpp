@@ -5,8 +5,12 @@
 namespace chemodurov
 {
   template< typename T, typename Compare >
+  class RBTree;
+
+  template< typename T, typename Compare >
   class RotatableBinarySearchTree
   {
+    friend class RBTree< T, Compare >;
    public:
     using value_type = T;
     using size_type = std::size_t;

@@ -70,7 +70,7 @@ namespace chemodurov
     const_iterator upper_bound(const_reference value) const;
     value_compare value_comp() const;
    private:
-    RotatableBinarySearchTree< T, Compare > data;
+    RotatableBinarySearchTree< std::pair< T, char >, Compare > data;
   };
 
   template< typename T, typename Compare >
