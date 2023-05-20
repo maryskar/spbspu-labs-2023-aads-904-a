@@ -99,6 +99,28 @@ namespace chemodurov
       const value_compare & comp):
    data(init, comp)
   {}
+
+  template< typename T, typename Compare >
+  RotatableBinarySearchTree< T, Compare > & RotatableBinarySearchTree< T, Compare >::operator=(const this_t & other)
+  {
+    data = other.data;
+    return *this;
+  }
+
+  template< typename T, typename Compare >
+  RotatableBinarySearchTree< T, Compare > & RotatableBinarySearchTree< T, Compare >::operator=(this_t && other) noexcept
+  {
+    data = std::move(other.data);
+    return *this;
+  }
+
+  template< typename T, typename Compare >
+  RotatableBinarySearchTree< T, Compare > &
+      RotatableBinarySearchTree< T, Compare >::operator=(std::initializer_list< value_type > init)
+  {
+    data = init;
+    return *this;
+  }
 }
 
 #endif
