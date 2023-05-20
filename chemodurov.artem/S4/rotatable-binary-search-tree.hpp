@@ -246,6 +246,34 @@ namespace chemodurov
   {
     return data.emplace_hint(hint, std::forward< Args >(args)...);
   }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::reference
+      RotatableBinarySearchTree< T, Compare >::at(const_reference value)
+  {
+    return data.at(value);
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::const_reference
+      RotatableBinarySearchTree< T, Compare >::at(const_reference value) const
+  {
+    return data.at(value);
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::reference
+      RotatableBinarySearchTree< T, Compare >::operator[](const_reference value)
+  {
+    return data[value];
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::reference
+      RotatableBinarySearchTree< T, Compare >::operator[](value_type && value)
+  {
+    return data[std::move(value)];
+  }
 }
 
 #endif
