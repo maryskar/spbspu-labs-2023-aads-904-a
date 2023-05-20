@@ -12,7 +12,7 @@ namespace chemodurov
   class ForwardList;
 
   template< typename T >
-  class ForwardIterator
+  class ForwardIterator: public std::iterator< std::forward_iterator_tag, T >
   {
     friend class ConstForwardIterator< T >;
     friend class ForwardList< T >;
