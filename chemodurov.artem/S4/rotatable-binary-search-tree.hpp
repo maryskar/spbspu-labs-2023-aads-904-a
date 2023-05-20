@@ -163,6 +163,24 @@ namespace chemodurov
   {
     return data.cend();
   }
+
+  template< typename T, typename Compare >
+  bool RotatableBinarySearchTree< T, Compare >::empty() const noexcept
+  {
+    return data.empty();
+  }
+
+  template< typename T, typename Compare >
+  size_t RotatableBinarySearchTree< T, Compare >::size() const noexcept
+  {
+    return data.size();
+  }
+
+  template< typename T, typename Compare >
+  void RotatableBinarySearchTree< T, Compare >::clear() noexcept
+  {
+    data.clear();
+  }
 }
 
 #endif
