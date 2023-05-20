@@ -5,8 +5,12 @@
 #include "iterator.h"
 #include "nodeList.h"
 
+
+
 namespace mashkin
 {
+  template< class T >
+  class ConstIterator;
   template< class T >
   class ForwardList
   {
@@ -89,19 +93,23 @@ mashkin::Iterator< T > mashkin::ForwardList< T >::begin() noexcept
 template< class T >
 mashkin::Iterator< T > mashkin::ForwardList< T >::end() noexcept
 {
+  if (empty())
+  {
+    return iter(head);
+  }
   return iter(tail->next);
 }
 
 template< class T >
 mashkin::ConstIterator< T > mashkin::ForwardList< T >::cbegin() noexcept
 {
-  return citer(head);
+  return begin();
 }
 
 template< class T >
 mashkin::ConstIterator< T > mashkin::ForwardList< T >::cend() noexcept
 {
-  return citer(tail->next);
+  return end();
 }
 
 template< class T >
@@ -113,7 +121,7 @@ T& mashkin::ForwardList< T >::front()
 template< class T >
 void mashkin::ForwardList< T >::pop_front()
 {
-  if (!head)
+  if (empty())
   {
     throw std::out_of_range("You got the end of list");
   }
@@ -125,6 +133,10 @@ void mashkin::ForwardList< T >::pop_front()
 template< class T >
 mashkin::Iterator< T >  mashkin::ForwardList< T >::erase_after(citer pos)
 {
+  if (pos == cend())
+  {
+    return iter(pos.node);
+  }
   auto toDel = pos.node->next;
   pos.node->next = pos.node->next->next;
   delete toDel;
@@ -134,18 +146,9 @@ mashkin::Iterator< T >  mashkin::ForwardList< T >::erase_after(citer pos)
 template< class T >
 mashkin::Iterator< T > mashkin::ForwardList< T >::erase_after(citer pos, citer last)
 {
-  while (pos != last)
+  while (pos.node->next != last.node)
   {
-    auto toDel = pos.node->next;
-    pos.node->next = pos.node->next->next;
-    delete toDel;
-    if (!pos.node->next->next)
-    {
-      auto toDel = pos.node->next;
-      pos.node->next = pos.node->next->next;
-      delete toDel;
-      return iter(pos.node->next);
-    }
+    erase_after(pos);
   }
   return iter(pos.node->next);
 }
