@@ -1,6 +1,7 @@
 #ifndef S2_CONST_FORWARD_ITERATOR_HPP
 #define S2_CONST_FORWARD_ITERATOR_HPP
 #include <cassert>
+#include <iterator>
 #include <list.hpp>
 
 namespace chemodurov
