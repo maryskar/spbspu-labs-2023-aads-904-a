@@ -71,6 +71,8 @@ namespace chemodurov
     value_compare value_comp() const;
    private:
     UnbalancedBinarySearchTree< T, Compare > data;
+    void rotateLeftLeft(Tree< T, Compare > * to_rotate);
+    void rotateRightRight(Tree< T, Compare > * to_rotate);
   };
 
   template< typename T, typename Compare >
@@ -380,6 +382,24 @@ namespace chemodurov
       RotatableBinarySearchTree< T, Compare >::value_comp() const
   {
     return data.value_comp();
+  }
+
+  template< typename T, typename Compare >
+  void RotatableBinarySearchTree< T, Compare >::rotateLeftLeft(Tree< T, Compare > * to_rotate)
+  {
+    to_rotate->parent_->right_ = to_rotate->left_;
+    to_rotate->left_ = to_rotate->parent_;
+    to_rotate->parent_ = to_rotate->parent_->parent_;
+    to_rotate->left_->parent_ = to_rotate;
+  }
+
+  template< typename T, typename Compare >
+  void RotatableBinarySearchTree< T, Compare >::rotateRightRight(Tree< T, Compare > * to_rotate)
+  {
+    to_rotate->parent_->left_ = to_rotate->right_;
+    to_rotate->right_ = to_rotate->parent_;
+    to_rotate->parent_ = to_rotate->parent_->parent_;
+    to_rotate->right_->parent_ = to_rotate;
   }
 }
 
