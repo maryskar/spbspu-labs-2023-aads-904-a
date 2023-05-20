@@ -328,6 +328,59 @@ namespace chemodurov
   {
     return data.find(value);
   }
+
+  template< typename T, typename Compare >
+  std::pair<
+      typename RotatableBinarySearchTree< T, Compare >::iterator,
+      typename RotatableBinarySearchTree< T, Compare >::iterator
+  > RotatableBinarySearchTree< T, Compare >::equal_range(const_reference value)
+  {
+    return data.equal_range(value);
+  }
+
+  template< typename T, typename Compare >
+  std::pair<
+      typename RotatableBinarySearchTree< T, Compare >::const_iterator,
+      typename RotatableBinarySearchTree< T, Compare >::const_iterator
+  > RotatableBinarySearchTree< T, Compare >::equal_range(const_reference value) const
+  {
+    return data.equal_range(value);
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::iterator
+      RotatableBinarySearchTree< T, Compare >::lower_bound(const_reference value)
+  {
+    return data.lower_bound(value);
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::const_iterator
+      RotatableBinarySearchTree< T, Compare >::lower_bound(const_reference value) const
+  {
+    return data.lower_bound(value);
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::iterator
+      RotatableBinarySearchTree< T, Compare >::upper_bound(const_reference value)
+  {
+    return data.upper_bound(value);
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::const_iterator
+      RotatableBinarySearchTree< T, Compare >::upper_bound(const_reference value) const
+  {
+    return data.upper_bound(value);
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::value_compare
+      RotatableBinarySearchTree< T, Compare >::value_comp() const
+  {
+    return data.value_comp();
+  }
 }
 
 #endif
