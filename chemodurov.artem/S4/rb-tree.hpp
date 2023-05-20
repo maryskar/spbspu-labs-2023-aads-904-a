@@ -1,6 +1,7 @@
 #ifndef S4_RB_TREE_HPP
 #define S4_RB_TREE_HPP
 #include "rotatable-binary-search-tree.hpp"
+#include "const-rb-iterator.hpp"
 
 namespace chemodurov
 {
@@ -14,8 +15,8 @@ namespace chemodurov
     using value_compare = Compare;
     using reference = value_type &;
     using const_reference = const value_type &;
-    using iterator = typename RotatableBinarySearchTree< value_type, value_compare >::iterator;
-    using const_iterator = typename RotatableBinarySearchTree< value_type, value_compare >::const_iterator;
+    using iterator = RBIterator< value_type, value_compare >;
+    using const_iterator = ConstRBIterator< value_type, value_compare >;
     using this_t = RBTree< value_type, value_compare >;
     RBTree();
     RBTree(const this_t & other) = default;
@@ -93,12 +94,14 @@ namespace chemodurov
   template< typename T, typename Compare >
   template< typename InputIt >
   RBTree< T, Compare >::RBTree(InputIt first, InputIt last, const value_compare & comp):
-   data_(first, last, comp)
-  {}
+   data_(comp)
+  {
+    data_.insert(first, last);
+  }
 
   template< typename T, typename Compare >
   RBTree< T, Compare >::RBTree(std::initializer_list< value_type > init, const value_compare & comp):
-   data_(init, comp)
+   data_(init.begin(), init.end()   , comp)
   {}
 
   template< typename T, typename Compare >
@@ -118,7 +121,8 @@ namespace chemodurov
   template< typename T, typename Compare >
   RBTree< T, Compare > & RBTree< T, Compare >::operator=(std::initializer_list< value_type > init)
   {
-    data_ = init;
+    RBTree< T, Compare > temp(init);
+    data_.swap(temp);
     return *this;
   }
 

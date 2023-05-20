@@ -8,6 +8,8 @@ namespace chemodurov
   template< typename T, typename Compare >
   class ConstRBIterator: public std::iterator< std::bidirectional_iterator_tag, std::pair< T, char > >
   {
+    friend class RBTree< T, Compare >;
+   public:
     using this_t = ConstRBIterator< T, Compare >;
     ConstRBIterator();
     ConstRBIterator(const RBIterator< T, Compare > & rhs);
@@ -22,6 +24,7 @@ namespace chemodurov
     const T * operator->() const;
    private:
     ConstBidirectionalIterator< std::pair< T, char >, Compare > iter;
+    ConstRBIterator(ConstBidirectionalIterator< T, Compare > iter);
   };
 
   template< typename T, typename Compare >
@@ -69,6 +72,11 @@ namespace chemodurov
   {
     return std::addressof((*iter).first);
   }
+
+  template< typename T, typename Compare >
+  ConstRBIterator< T, Compare >::ConstRBIterator(ConstBidirectionalIterator< T, Compare > iter):
+   iter(iter)
+  {}
 }
 
 #endif

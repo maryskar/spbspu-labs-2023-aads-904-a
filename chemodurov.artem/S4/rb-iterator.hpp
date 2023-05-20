@@ -8,9 +8,13 @@ namespace chemodurov
   class ConstRBIterator;
 
   template< typename T, typename Compare >
+  class RBTree;
+
+  template< typename T, typename Compare >
   class RBIterator: public std::iterator< std::bidirectional_iterator_tag, std::pair< T, char > >
   {
     friend class ConstRBIterator< T, Compare >;
+    friend class RBTree< T, Compare >;
    public:
     using this_t = RBIterator< T, Compare >;
     RBIterator();
