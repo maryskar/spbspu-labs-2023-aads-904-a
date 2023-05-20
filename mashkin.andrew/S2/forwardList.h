@@ -1,16 +1,16 @@
 #ifndef FORWARDLIST_H
 #define FORWARDLIST_H
 #include <stdexcept>
+#include <utility>
 #include "constIterator.h"
 #include "iterator.h"
 #include "nodeList.h"
-
-
 
 namespace mashkin
 {
   template< class T >
   class ConstIterator;
+
   template< class T >
   class ForwardList
   {
@@ -21,8 +21,20 @@ namespace mashkin
     ForwardList(const ForwardList< T >& lhs);
     ForwardList(ForwardList< T >&& rhs) noexcept;
 
+    ForwardList< T >& operator=(const ForwardList< T >& rhs);
+    ForwardList< T >& operator=(ForwardList< T >&& rhs);
+
+    Iterator< T > before_begin() noexcept;
+    ConstIterator< T > cbefore_begin() noexcept;
+
     Iterator< T > begin() noexcept;
     Iterator< T > end() noexcept;
+
+    Iterator< T > insert_after(ConstIterator< T > position, const T& val);
+    Iterator< T > insert_after(ConstIterator< T > position, T&& val);
+    Iterator< T > insert_after(ConstIterator< T > position, size_t n, const T& val);
+    template< class InputIterator >
+    Iterator< T > insert_after(ConstIterator< T > position, InputIterator first, InputIterator last);
 
     ConstIterator< T > cbegin() noexcept;
     ConstIterator< T > cend() noexcept;
@@ -34,32 +46,35 @@ namespace mashkin
     Iterator< T > erase_after(citer pos);
     Iterator< T > erase_after(citer pos, citer last);
 
+    void swap(ForwardList< T >& list);
+
     bool empty() const noexcept;
 
   private:
-    NodeList< T >* head;
-    NodeList< T >* tail;
+    NodeList< T >* fake_;
+    NodeList< T >* tail_;
   };
 }
 
 template< class T >
 mashkin::ForwardList< T >::ForwardList():
-  head(nullptr),
-  tail(nullptr)
+  fake_(static_cast< NodeList< T >* >(::operator new(sizeof(NodeList< T >)))),
+  tail_(nullptr)
 {
+  fake_->next = fake_;
 }
 
 template< class T >
 mashkin::ForwardList< T >::ForwardList(const ForwardList< T >& lhs):
-  head(lhs.head),
-  tail(lhs.tail)
+  fake_(lhs.fake_),
+  tail_(lhs.tail)
 {
 }
 
 template< class T >
 mashkin::ForwardList< T >::ForwardList(ForwardList< T >&& rhs) noexcept:
-  head(rhs.head),
-  tail(rhs.tail)
+  fake_(rhs.fake_),
+  tail_(rhs.tail)
 {
 }
 
@@ -68,36 +83,44 @@ void mashkin::ForwardList< T >::push_front(const T& value)
 {
   if (empty())
   {
-    head = new NodeList< T >{value, nullptr};
-    tail = head;
+    fake_->next = new NodeList< T >{value, nullptr};
+    tail_ = fake_->next->next;
   }
   else
   {
-    auto var = new NodeList< T >{value, head};
-    head = var;
+    auto var = new NodeList< T >{value, fake_->next};
+    fake_->next = var;
   }
 }
 
 template< class T >
 bool mashkin::ForwardList< T >::empty() const noexcept
 {
-  return !head;
+  return fake_->next == fake_;
+}
+
+template< class T >
+mashkin::Iterator< T > mashkin::ForwardList< T >::before_begin() noexcept
+{
+  return iter(fake_);
+}
+
+template< class T >
+mashkin::ConstIterator< T > mashkin::ForwardList< T >::cbefore_begin() noexcept
+{
+  return before_begin();
 }
 
 template< class T >
 mashkin::Iterator< T > mashkin::ForwardList< T >::begin() noexcept
 {
-  return iter(head);
+  return iter(fake_->next);
 }
 
 template< class T >
 mashkin::Iterator< T > mashkin::ForwardList< T >::end() noexcept
 {
-  if (empty())
-  {
-    return iter(head);
-  }
-  return iter(tail->next);
+  return iter(tail_);
 }
 
 template< class T >
@@ -113,6 +136,41 @@ mashkin::ConstIterator< T > mashkin::ForwardList< T >::cend() noexcept
 }
 
 template< class T >
+mashkin::Iterator< T > mashkin::ForwardList< T >::insert_after(citer position, const T& val)
+{
+  return insert_after(position, std::move(val));
+}
+
+template< class T >
+mashkin::Iterator< T > mashkin::ForwardList< T >::insert_after(citer position, T&& val)
+{
+  position.node->next = new NodeList< T >{val, position.node->next};
+  ++position;
+  return iter(position.node);
+}
+
+template< class T >
+mashkin::Iterator< T > mashkin::ForwardList< T >::insert_after(citer position, size_t n, const T& val)
+{
+  Iterator< T > res = position.node;
+  for (auto i = 0; i < n; i++)
+  {
+    res = insert_after(res, val);
+  }
+}
+
+template< class T >
+template< class InpIter >
+mashkin::Iterator< T > mashkin::ForwardList< T >::insert_after(citer position, InpIter first, InpIter last)
+{
+  iter var(position.node);
+  while (first != last)
+  {
+    insert_after(var, first.node->data);
+  }
+}
+
+template< class T >
 T& mashkin::ForwardList< T >::front()
 {
   return *this->begin();
@@ -125,13 +183,13 @@ void mashkin::ForwardList< T >::pop_front()
   {
     throw std::out_of_range("You got the end of list");
   }
-  auto toDel = head;
-  head = head->next;
+  auto toDel = fake_->next;
+  fake_->next = fake_->next->next;
   delete toDel;
 }
 
 template< class T >
-mashkin::Iterator< T >  mashkin::ForwardList< T >::erase_after(citer pos)
+mashkin::Iterator< T > mashkin::ForwardList< T >::erase_after(citer pos)
 {
   if (pos == cend())
   {
@@ -151,5 +209,14 @@ mashkin::Iterator< T > mashkin::ForwardList< T >::erase_after(citer pos, citer l
     erase_after(pos);
   }
   return iter(pos.node->next);
+}
+
+template< class T >
+void mashkin::ForwardList< T >::swap(ForwardList< T >& list)
+{
+  ForwardList< T > var;
+  var.insert_after(var.before_begin(), list.begin(), list.end());
+  list.insert_after(list.before_begin(), begin(), end());
+  *this.isert_after(before_begin(), var.begin(), var.end());
 }
 #endif
