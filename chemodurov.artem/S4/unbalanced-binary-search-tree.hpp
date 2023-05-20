@@ -53,10 +53,10 @@ namespace chemodurov
     std::pair< iterator, bool > emplace(Args && ... args);
     template< typename... Args >
     iterator emplace_hint(const_iterator hint, Args && ... args);
-    T & at(const_reference value);
-    const T & at(const_reference value) const;
-    T & operator[](const_reference value);
-    T & operator[](value_type && value);
+    reference at(const_reference value);
+    const_reference at(const_reference value) const;
+    reference operator[](const_reference value);
+    reference operator[](value_type && value);
     iterator erase(iterator pos);
     iterator erase(const_iterator pos);
     iterator erase(const_iterator first, const_iterator last);
@@ -515,6 +515,7 @@ namespace chemodurov
     swap(other);
     return *this;
   }
+
   template< typename T, typename Compare >
   UnbalancedBinarySearchTree< T, Compare > &
       UnbalancedBinarySearchTree< T, Compare >::operator=(std::initializer_list< value_type > init)
