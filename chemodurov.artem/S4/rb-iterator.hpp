@@ -8,7 +8,7 @@ namespace chemodurov
   class ConstRBIterator;
 
   template< typename T, typename Compare >
-  class RBIterator
+  class RBIterator: public std::iterator< std::bidirectional_iterator_tag, std::pair< T, char > >
   {
     friend class ConstRBIterator< T, Compare >;
    public:

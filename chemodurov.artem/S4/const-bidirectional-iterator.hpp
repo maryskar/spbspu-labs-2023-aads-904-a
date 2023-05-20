@@ -5,7 +5,7 @@
 namespace chemodurov
 {
   template< typename T, typename Compare = std::less< > >
-  class ConstBidirectionalIterator
+  class ConstBidirectionalIterator: public std::iterator< std::bidirectional_iterator_tag, T >
   {
     friend class UnbalancedBinarySearchTree< T, Compare >;
     friend class BidirectionalIterator< T, Compare >;

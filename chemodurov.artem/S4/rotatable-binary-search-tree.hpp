@@ -74,49 +74,49 @@ namespace chemodurov
     const_iterator upper_bound(const_reference value) const;
     value_compare value_comp() const;
    private:
-    UnbalancedBinarySearchTree< T, Compare > data;
+    UnbalancedBinarySearchTree< T, Compare > data_;
     void rotateLeftLeft(Tree< T, Compare > * to_rotate);
     void rotateRightRight(Tree< T, Compare > * to_rotate);
   };
 
   template< typename T, typename Compare >
   RotatableBinarySearchTree< T, Compare >::RotatableBinarySearchTree():
-   data()
+   data_()
   {}
 
   template< typename T, typename Compare >
   RotatableBinarySearchTree< T, Compare >::RotatableBinarySearchTree(this_t && other) noexcept:
-   data(std::move(other.data))
+   data_(std::move(other.data))
   {}
 
   template< typename T, typename Compare >
   RotatableBinarySearchTree< T, Compare >::RotatableBinarySearchTree(const value_compare & comp):
-   data(comp)
+   data_(comp)
   {}
 
   template< typename T, typename Compare >
   template< typename InputIt >
   RotatableBinarySearchTree< T, Compare >::RotatableBinarySearchTree(InputIt first, InputIt last, const value_compare & comp):
-   data(first, last, comp)
+   data_(first, last, comp)
   {}
 
   template< typename T, typename Compare >
   RotatableBinarySearchTree< T, Compare >::RotatableBinarySearchTree(std::initializer_list< value_type > init,
       const value_compare & comp):
-   data(init, comp)
+   data_(init, comp)
   {}
 
   template< typename T, typename Compare >
   RotatableBinarySearchTree< T, Compare > & RotatableBinarySearchTree< T, Compare >::operator=(const this_t & other)
   {
-    data = other.data;
+    data_ = other.data;
     return *this;
   }
 
   template< typename T, typename Compare >
   RotatableBinarySearchTree< T, Compare > & RotatableBinarySearchTree< T, Compare >::operator=(this_t && other) noexcept
   {
-    data = std::move(other.data);
+    data_ = std::move(other.data);
     return *this;
   }
 
@@ -124,7 +124,7 @@ namespace chemodurov
   RotatableBinarySearchTree< T, Compare > &
       RotatableBinarySearchTree< T, Compare >::operator=(std::initializer_list< value_type > init)
   {
-    data = init;
+    data_ = init;
     return *this;
   }
 
@@ -132,60 +132,60 @@ namespace chemodurov
   typename RotatableBinarySearchTree< T, Compare >::iterator
       RotatableBinarySearchTree< T, Compare >::begin() noexcept
   {
-    return data.begin();
+    return data_.begin();
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::const_iterator
       RotatableBinarySearchTree< T, Compare >::begin() const noexcept
   {
-    return data.begin();
+    return data_.begin();
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::const_iterator
       RotatableBinarySearchTree< T, Compare >::cbegin() const noexcept
   {
-    return data.cbegin();
+    return data_.cbegin();
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::iterator
       RotatableBinarySearchTree< T, Compare >::end() noexcept
   {
-    return data.end();
+    return data_.end();
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::const_iterator
       RotatableBinarySearchTree< T, Compare >::end() const noexcept
   {
-    return data.end();
+    return data_.end();
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::const_iterator
       RotatableBinarySearchTree< T, Compare >::cend() const noexcept
   {
-    return data.cend();
+    return data_.cend();
   }
 
   template< typename T, typename Compare >
   bool RotatableBinarySearchTree< T, Compare >::empty() const noexcept
   {
-    return data.empty();
+    return data_.empty();
   }
 
   template< typename T, typename Compare >
   size_t RotatableBinarySearchTree< T, Compare >::size() const noexcept
   {
-    return data.size();
+    return data_.size();
   }
 
   template< typename T, typename Compare >
   void RotatableBinarySearchTree< T, Compare >::clear() noexcept
   {
-    data.clear();
+    data_.clear();
   }
 
   template< typename T, typename Compare >
@@ -194,7 +194,7 @@ namespace chemodurov
       bool
   > RotatableBinarySearchTree< T, Compare >::insert(const_reference value)
   {
-    return data.insert(value);
+    return data_.insert(value);
   }
 
   template< typename T, typename Compare >
@@ -204,14 +204,14 @@ namespace chemodurov
       bool
   > RotatableBinarySearchTree< T, Compare >::insert(P && value)
   {
-    return data.insert(value);
+    return data_.insert(value);
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::iterator
       RotatableBinarySearchTree< T, Compare >::insert(const_iterator pos, const_reference value)
   {
-    return data.insert(pos, value);
+    return data_.insert(pos, value);
   }
 
   template< typename T, typename Compare >
@@ -219,20 +219,20 @@ namespace chemodurov
   typename RotatableBinarySearchTree< T, Compare >::iterator
       RotatableBinarySearchTree< T, Compare >::insert(const_iterator pos, P && value)
   {
-    return data.insert(pos, value);
+    return data_.insert(pos, value);
   }
 
   template< typename T, typename Compare >
   template< typename InputIt >
   void RotatableBinarySearchTree< T, Compare >::insert(InputIt first, InputIt last)
   {
-    data.insert(first, last);
+    data_.insert(first, last);
   }
 
   template< typename T, typename Compare >
   void RotatableBinarySearchTree< T, Compare >::insert(std::initializer_list< value_type > init)
   {
-    data.insert(init);
+    data_.insert(init);
   }
 
   template< typename T, typename Compare >
@@ -242,7 +242,7 @@ namespace chemodurov
       bool
   > RotatableBinarySearchTree< T, Compare >::emplace(Args && ... args)
   {
-    return data.emplace(std::forward< Args >(args)...);
+    return data_.emplace(std::forward< Args >(args)...);
   }
 
   template< typename T, typename Compare >
@@ -250,89 +250,89 @@ namespace chemodurov
   typename RotatableBinarySearchTree< T, Compare >::iterator
       RotatableBinarySearchTree< T, Compare >::emplace_hint(const_iterator hint, Args && ... args)
   {
-    return data.emplace_hint(hint, std::forward< Args >(args)...);
+    return data_.emplace_hint(hint, std::forward< Args >(args)...);
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::reference
       RotatableBinarySearchTree< T, Compare >::at(const_reference value)
   {
-    return data.at(value);
+    return data_.at(value);
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::const_reference
       RotatableBinarySearchTree< T, Compare >::at(const_reference value) const
   {
-    return data.at(value);
+    return data_.at(value);
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::reference
       RotatableBinarySearchTree< T, Compare >::operator[](const_reference value)
   {
-    return data[value];
+    return data_[value];
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::reference
       RotatableBinarySearchTree< T, Compare >::operator[](value_type && value)
   {
-    return data[std::move(value)];
+    return data_[std::move(value)];
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::iterator
       RotatableBinarySearchTree< T, Compare >::erase(iterator pos)
   {
-    return data.erase(pos);
+    return data_.erase(pos);
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::iterator
       RotatableBinarySearchTree< T, Compare >::erase(const_iterator pos)
   {
-    return data.erase(pos);
+    return data_.erase(pos);
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::iterator
       RotatableBinarySearchTree< T, Compare >::erase(const_iterator first, const_iterator last)
   {
-    return data.erase(first, last);
+    return data_.erase(first, last);
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::size_type
       RotatableBinarySearchTree< T, Compare >::erase(const_reference value)
   {
-    return data.erase(value);
+    return data_.erase(value);
   }
 
   template< typename T, typename Compare >
   void RotatableBinarySearchTree< T, Compare >::swap(this_t & other)
   {
-    data.swap(other.data);
+    data_.swap(other.data);
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::size_type
       RotatableBinarySearchTree< T, Compare >::count(const_reference value) const
   {
-    return data.count(value);
+    return data_.count(value);
   }
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::iterator
       RotatableBinarySearchTree< T, Compare >::find(const_reference value)
   {
-    return data.find(value);
+    return data_.find(value);
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::const_iterator
       RotatableBinarySearchTree< T, Compare >::find(const_reference value) const
   {
-    return data.find(value);
+    return data_.find(value);
   }
 
   template< typename T, typename Compare >
@@ -341,7 +341,7 @@ namespace chemodurov
       typename RotatableBinarySearchTree< T, Compare >::iterator
   > RotatableBinarySearchTree< T, Compare >::equal_range(const_reference value)
   {
-    return data.equal_range(value);
+    return data_.equal_range(value);
   }
 
   template< typename T, typename Compare >
@@ -350,42 +350,42 @@ namespace chemodurov
       typename RotatableBinarySearchTree< T, Compare >::const_iterator
   > RotatableBinarySearchTree< T, Compare >::equal_range(const_reference value) const
   {
-    return data.equal_range(value);
+    return data_.equal_range(value);
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::iterator
       RotatableBinarySearchTree< T, Compare >::lower_bound(const_reference value)
   {
-    return data.lower_bound(value);
+    return data_.lower_bound(value);
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::const_iterator
       RotatableBinarySearchTree< T, Compare >::lower_bound(const_reference value) const
   {
-    return data.lower_bound(value);
+    return data_.lower_bound(value);
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::iterator
       RotatableBinarySearchTree< T, Compare >::upper_bound(const_reference value)
   {
-    return data.upper_bound(value);
+    return data_.upper_bound(value);
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::const_iterator
       RotatableBinarySearchTree< T, Compare >::upper_bound(const_reference value) const
   {
-    return data.upper_bound(value);
+    return data_.upper_bound(value);
   }
 
   template< typename T, typename Compare >
   typename RotatableBinarySearchTree< T, Compare >::value_compare
       RotatableBinarySearchTree< T, Compare >::value_comp() const
   {
-    return data.value_comp();
+    return data_.value_comp();
   }
 
   template< typename T, typename Compare >

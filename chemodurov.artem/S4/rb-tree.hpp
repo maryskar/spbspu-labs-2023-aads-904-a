@@ -70,108 +70,110 @@ namespace chemodurov
     const_iterator upper_bound(const_reference value) const;
     value_compare value_comp() const;
    private:
-    RotatableBinarySearchTree< std::pair< T, char >, Compare > data;
+    RotatableBinarySearchTree< std::pair< T, char >, Compare > data_;
   };
 
   template< typename T, typename Compare >
   RBTree< T, Compare >::RBTree():
-    data()
-  {}
+   data_()
+  {
+    data_.data_.fake_->data_.second = 'b';
+  }
 
   template< typename T, typename Compare >
   RBTree< T, Compare >::RBTree(this_t && other) noexcept:
-    data(std::move(other.data))
+   data_(std::move(other.data))
   {}
 
   template< typename T, typename Compare >
   RBTree< T, Compare >::RBTree(const value_compare & comp):
-    data(comp)
+   data_(comp)
   {}
 
   template< typename T, typename Compare >
   template< typename InputIt >
   RBTree< T, Compare >::RBTree(InputIt first, InputIt last, const value_compare & comp):
-    data(first, last, comp)
+   data_(first, last, comp)
   {}
 
   template< typename T, typename Compare >
   RBTree< T, Compare >::RBTree(std::initializer_list< value_type > init, const value_compare & comp):
-    data(init, comp)
+   data_(init, comp)
   {}
 
   template< typename T, typename Compare >
   RBTree< T, Compare > & RBTree< T, Compare >::operator=(const this_t & other)
   {
-    data = other.data;
+    data_ = other.data;
     return *this;
   }
 
   template< typename T, typename Compare >
   RBTree< T, Compare > & RBTree< T, Compare >::operator=(this_t && other) noexcept
   {
-    data = std::move(other.data);
+    data_ = std::move(other.data);
     return *this;
   }
 
   template< typename T, typename Compare >
   RBTree< T, Compare > & RBTree< T, Compare >::operator=(std::initializer_list< value_type > init)
   {
-    data = init;
+    data_ = init;
     return *this;
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::begin() noexcept
   {
-    return data.begin();
+    return data_.begin();
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::const_iterator RBTree< T, Compare >::begin() const noexcept
   {
-    return data.begin();
+    return data_.begin();
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::const_iterator RBTree< T, Compare >::cbegin() const noexcept
   {
-    return data.cbegin();
+    return data_.cbegin();
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::end() noexcept
   {
-    return data.end();
+    return data_.end();
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::const_iterator RBTree< T, Compare >::end() const noexcept
   {
-    return data.end();
+    return data_.end();
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::const_iterator RBTree< T, Compare >::cend() const noexcept
   {
-    return data.cend();
+    return data_.cend();
   }
 
   template< typename T, typename Compare >
   bool RBTree< T, Compare >::empty() const noexcept
   {
-    return data.empty();
+    return data_.empty();
   }
 
   template< typename T, typename Compare >
   size_t RBTree< T, Compare >::size() const noexcept
   {
-    return data.size();
+    return data_.size();
   }
 
   template< typename T, typename Compare >
   void RBTree< T, Compare >::clear() noexcept
   {
-    data.clear();
+    data_.clear();
   }
 
   template< typename T, typename Compare >
@@ -180,7 +182,7 @@ namespace chemodurov
       bool
   > RBTree< T, Compare >::insert(const_reference value)
   {
-    return data.insert(value);
+    return data_.insert(value);
   }
 
   template< typename T, typename Compare >
@@ -190,33 +192,33 @@ namespace chemodurov
       bool
   > RBTree< T, Compare >::insert(P && value)
   {
-    return data.insert(value);
+    return data_.insert(value);
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::insert(const_iterator pos, const_reference value)
   {
-    return data.insert(pos, value);
+    return data_.insert(pos, value);
   }
 
   template< typename T, typename Compare >
   template< typename P >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::insert(const_iterator pos, P && value)
   {
-    return data.insert(pos, value);
+    return data_.insert(pos, value);
   }
 
   template< typename T, typename Compare >
   template< typename InputIt >
   void RBTree< T, Compare >::insert(InputIt first, InputIt last)
   {
-    data.insert(first, last);
+    data_.insert(first, last);
   }
 
   template< typename T, typename Compare >
   void RBTree< T, Compare >::insert(std::initializer_list< value_type > init)
   {
-    data.insert(init);
+    data_.insert(init);
   }
 
   template< typename T, typename Compare >
@@ -226,85 +228,85 @@ namespace chemodurov
       bool
   > RBTree< T, Compare >::emplace(Args && ... args)
   {
-    return data.emplace(std::forward< Args >(args)...);
+    return data_.emplace(std::forward< Args >(args)...);
   }
 
   template< typename T, typename Compare >
   template< typename... Args >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::emplace_hint(const_iterator hint, Args && ... args)
   {
-    return data.emplace_hint(hint, std::forward< Args >(args)...);
+    return data_.emplace_hint(hint, std::forward< Args >(args)...);
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::reference RBTree< T, Compare >::at(const_reference value)
   {
-    return data.at(value);
+    return data_.at(value);
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::const_reference RBTree< T, Compare >::at(const_reference value) const
   {
-    return data.at(value);
+    return data_.at(value);
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::reference RBTree< T, Compare >::operator[](const_reference value)
   {
-    return data[value];
+    return data_[value];
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::reference RBTree< T, Compare >::operator[](value_type && value)
   {
-    return data[std::move(value)];
+    return data_[std::move(value)];
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::erase(iterator pos)
   {
-    return data.erase(pos);
+    return data_.erase(pos);
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::erase(const_iterator pos)
   {
-    return data.erase(pos);
+    return data_.erase(pos);
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::erase(const_iterator first, const_iterator last)
   {
-    return data.erase(first, last);
+    return data_.erase(first, last);
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::size_type RBTree< T, Compare >::erase(const_reference value)
   {
-    return data.erase(value);
+    return data_.erase(value);
   }
 
   template< typename T, typename Compare >
   void RBTree< T, Compare >::swap(this_t & other)
   {
-    data.swap(other.data);
+    data_.swap(other.data);
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::size_type RBTree< T, Compare >::count(const_reference value) const
   {
-    return data.count(value);
+    return data_.count(value);
   }
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::find(const_reference value)
   {
-    return data.find(value);
+    return data_.find(value);
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::const_iterator RBTree< T, Compare >::find(const_reference value) const
   {
-    return data.find(value);
+    return data_.find(value);
   }
 
   template< typename T, typename Compare >
@@ -313,7 +315,7 @@ namespace chemodurov
     typename RBTree< T, Compare >::iterator
   > RBTree< T, Compare >::equal_range(const_reference value)
   {
-    return data.equal_range(value);
+    return data_.equal_range(value);
   }
 
   template< typename T, typename Compare >
@@ -322,37 +324,37 @@ namespace chemodurov
     typename RBTree< T, Compare >::const_iterator
   > RBTree< T, Compare >::equal_range(const_reference value) const
   {
-    return data.equal_range(value);
+    return data_.equal_range(value);
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::lower_bound(const_reference value)
   {
-    return data.lower_bound(value);
+    return data_.lower_bound(value);
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::const_iterator RBTree< T, Compare >::lower_bound(const_reference value) const
   {
-    return data.lower_bound(value);
+    return data_.lower_bound(value);
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::upper_bound(const_reference value)
   {
-    return data.upper_bound(value);
+    return data_.upper_bound(value);
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::const_iterator RBTree< T, Compare >::upper_bound(const_reference value) const
   {
-    return data.upper_bound(value);
+    return data_.upper_bound(value);
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::value_compare RBTree< T, Compare >::value_comp() const
   {
-    return data.value_comp();
+    return data_.value_comp();
   }
 }
 

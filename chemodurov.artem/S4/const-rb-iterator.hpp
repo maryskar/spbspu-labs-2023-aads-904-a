@@ -6,7 +6,7 @@
 namespace chemodurov
 {
   template< typename T, typename Compare >
-  class ConstRBIterator
+  class ConstRBIterator: public std::iterator< std::bidirectional_iterator_tag, std::pair< T, char > >
   {
     using this_t = ConstRBIterator< T, Compare >;
     ConstRBIterator();
