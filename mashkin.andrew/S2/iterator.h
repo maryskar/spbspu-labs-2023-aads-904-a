@@ -3,6 +3,7 @@
 #include <cassert>
 #include <memory>
 #include "nodeList.h"
+#include "constIterator.h"
 
 namespace mashkin
 {
@@ -24,7 +25,12 @@ namespace mashkin
 
     bool operator!=(const Iterator< T >& rhs) const;
     bool operator==(const Iterator< T >& rhs) const;
+
   private:
+    template< typename U >
+    friend class ForwardList;
+    template< typename R >
+    friend class ConstIterator;
     NodeList< T >* node;
   };
 }
