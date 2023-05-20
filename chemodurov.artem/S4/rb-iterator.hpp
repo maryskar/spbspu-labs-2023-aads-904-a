@@ -5,8 +5,12 @@
 namespace chemodurov
 {
   template< typename T, typename Compare >
+  class ConstRBIterator;
+
+  template< typename T, typename Compare >
   class RBIterator
   {
+    friend class ConstRBIterator< T, Compare >;
    public:
     using this_t = RBIterator< T, Compare >;
     RBIterator();
@@ -78,6 +82,11 @@ namespace chemodurov
   {
     return std::addressof((iter.operator->())->first);
   }
+
+  template< typename T, typename Compare >
+  RBIterator< T, Compare >::RBIterator():
+   iter()
+  {}
 }
 
 #endif
