@@ -228,6 +228,24 @@ namespace chemodurov
   {
     data.insert(init);
   }
+
+  template< typename T, typename Compare >
+  template< typename... Args >
+  std::pair<
+      typename RotatableBinarySearchTree< T, Compare >::iterator,
+      bool
+  > RotatableBinarySearchTree< T, Compare >::emplace(Args && ... args)
+  {
+    return data.emplace(std::forward< Args >(args)...);
+  }
+
+  template< typename T, typename Compare >
+  template< typename... Args >
+  typename RotatableBinarySearchTree< T, Compare >::iterator
+      RotatableBinarySearchTree< T, Compare >::emplace_hint(const_iterator hint, Args && ... args)
+  {
+    return data.emplace_hint(hint, std::forward< Args >(args)...);
+  }
 }
 
 #endif
