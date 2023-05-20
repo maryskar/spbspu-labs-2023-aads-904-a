@@ -309,7 +309,7 @@ namespace chemodurov
       bool
   > UnbalancedBinarySearchTree< T, Compare >::insert(P && value)
   {
-    static_assert(std::is_constructible< value_type, P&& >::value, "Value type isn't constructible from type you try to insert");
+    static_assert(std::is_constructible< value_type, P&& >::value, "Value type doesn't constructible from type you try to insert");
     value_type val(std::forward< P >(value));
     return insert(val);
   }

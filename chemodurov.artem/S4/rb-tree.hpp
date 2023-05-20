@@ -190,8 +190,10 @@ namespace chemodurov
     auto res = data_.insert(value);
     if (res.second)
     {
-      res.first->second = 'r';
+      res.first.node_->color_ = 'r';
+      balanceTreeAfterInsert(res.first.node_);
     }
+    return res;
   }
 
   template< typename T, typename Compare >
@@ -201,33 +203,53 @@ namespace chemodurov
       bool
   > RBTree< T, Compare >::insert(P && value)
   {
-    return data_.insert(value);
+    static_assert(std::is_constructible< value_type, P&& >::value, "Value type doesn't constructible from type you try to insert");
+    value_type val(value);
+    return insert(val);
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::insert(const_iterator pos, const_reference value)
   {
-    return data_.insert(pos, value);
+    bool was_inserted = false;
+    auto moved_pos = pos;
+    --moved_pos;
+    if (*moved_pos == value)
+    {
+      was_inserted = true;
+    }
+    iterator res = data_.insert(pos, value);
+    if (was_inserted)
+    {
+      res.node_->color_ = 'r';
+      balanceTreeAfterInsert(res.node_);
+    }
+    return res;
   }
 
   template< typename T, typename Compare >
   template< typename P >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::insert(const_iterator pos, P && value)
   {
-    return data_.insert(pos, value);
+    static_assert(std::is_constructible< value_type, P&& >::value, "Value type doesn't constructible from type you try to insert");
+    value_type val(value);
+    return insert(pos, val);
   }
 
   template< typename T, typename Compare >
   template< typename InputIt >
   void RBTree< T, Compare >::insert(InputIt first, InputIt last)
   {
-    data_.insert(first, last);
+    while (first != last)
+    {
+      first = insert(*first);
+    }
   }
 
   template< typename T, typename Compare >
   void RBTree< T, Compare >::insert(std::initializer_list< value_type > init)
   {
-    data_.insert(init);
+    insert(init.begin(), init.end());
   }
 
   template< typename T, typename Compare >
@@ -237,14 +259,16 @@ namespace chemodurov
       bool
   > RBTree< T, Compare >::emplace(Args && ... args)
   {
-    return data_.emplace(std::forward< Args >(args)...);
+    value_type val(std::forward< Args >(args)...);
+    return insert(val);
   }
 
   template< typename T, typename Compare >
   template< typename... Args >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::emplace_hint(const_iterator hint, Args && ... args)
   {
-    return data_.emplace_hint(hint, std::forward< Args >(args)...);
+    value_type val(std::forward< Args >(args)...);
+    return insert(hint, val);
   }
 
   template< typename T, typename Compare >
@@ -262,13 +286,19 @@ namespace chemodurov
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::reference RBTree< T, Compare >::operator[](const_reference value)
   {
-    return data_[value];
+    try
+    {
+      return at(value);
+    }
+    catch (const std::out_of_range & e)
+    {}
+    return *(emplace(value).first);
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::reference RBTree< T, Compare >::operator[](value_type && value)
   {
-    return data_[std::move(value)];
+    return (*this)[value];
   }
 
   template< typename T, typename Compare >
