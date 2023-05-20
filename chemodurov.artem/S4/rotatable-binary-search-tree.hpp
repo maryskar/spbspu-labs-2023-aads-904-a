@@ -18,15 +18,15 @@ namespace chemodurov
     using const_iterator = typename UnbalancedBinarySearchTree< value_type, value_compare >::const_iterator;
     using this_t = RotatableBinarySearchTree< value_type, value_compare >;
     RotatableBinarySearchTree();
-    RotatableBinarySearchTree(const this_t & other);
-    RotatableBinarySearchTree(this_t && other);
+    RotatableBinarySearchTree(const this_t & other) = default;
+    RotatableBinarySearchTree(this_t && other) noexcept;
     explicit RotatableBinarySearchTree(const value_compare & comp);
     template< typename InputIt >
     RotatableBinarySearchTree(InputIt first, InputIt last, const value_compare & comp = value_compare());
     RotatableBinarySearchTree(std::initializer_list< value_type > init, const value_compare & comp = value_compare());
-    ~RotatableBinarySearchTree();
+    ~RotatableBinarySearchTree() = default;
     this_t & operator=(const this_t & other);
-    this_t & operator=(this_t && other);
+    this_t & operator=(this_t && other) noexcept;
     this_t & operator=(std::initializer_list< value_type > init);
     iterator begin() noexcept;
     const_iterator begin() const noexcept;
@@ -72,6 +72,33 @@ namespace chemodurov
    private:
     UnbalancedBinarySearchTree< T, Compare > data;
   };
+
+  template< typename T, typename Compare >
+  RotatableBinarySearchTree< T, Compare >::RotatableBinarySearchTree():
+   data()
+  {}
+
+  template< typename T, typename Compare >
+  RotatableBinarySearchTree< T, Compare >::RotatableBinarySearchTree(this_t && other) noexcept:
+   data(std::move(other.data))
+  {}
+
+  template< typename T, typename Compare >
+  RotatableBinarySearchTree< T, Compare >::RotatableBinarySearchTree(const value_compare & comp):
+   data(comp)
+  {}
+
+  template< typename T, typename Compare >
+  template< typename InputIt >
+  RotatableBinarySearchTree< T, Compare >::RotatableBinarySearchTree(InputIt first, InputIt last, const value_compare & comp):
+   data(first, last, comp)
+  {}
+
+  template< typename T, typename Compare >
+  RotatableBinarySearchTree< T, Compare >::RotatableBinarySearchTree(std::initializer_list< value_type > init,
+      const value_compare & comp):
+   data(init, comp)
+  {}
 }
 
 #endif

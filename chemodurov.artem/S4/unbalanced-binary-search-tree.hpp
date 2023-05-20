@@ -22,14 +22,14 @@ namespace chemodurov
     using this_t = UnbalancedBinarySearchTree< value_type, value_compare >;
     UnbalancedBinarySearchTree();
     UnbalancedBinarySearchTree(const this_t & other);
-    UnbalancedBinarySearchTree(this_t && other);
+     UnbalancedBinarySearchTree(this_t && other) noexcept;
     explicit UnbalancedBinarySearchTree(const value_compare & comp);
     template< typename InputIt >
     UnbalancedBinarySearchTree(InputIt first, InputIt last, const value_compare & comp = value_compare());
     UnbalancedBinarySearchTree(std::initializer_list< value_type > init, const value_compare & comp = value_compare());
     ~UnbalancedBinarySearchTree();
     this_t & operator=(const this_t & other);
-    this_t & operator=(this_t && other);
+    this_t & operator=(this_t && other) noexcept;
     this_t & operator=(std::initializer_list< value_type > init);
     iterator begin() noexcept;
     const_iterator begin() const noexcept;
@@ -479,7 +479,7 @@ namespace chemodurov
   {}
 
   template< typename T, typename Compare >
-  UnbalancedBinarySearchTree< T, Compare >::UnbalancedBinarySearchTree(this_t && other):
+  UnbalancedBinarySearchTree< T, Compare >::UnbalancedBinarySearchTree(this_t && other) noexcept:
    UnbalancedBinarySearchTree()
   {
     swap(other);
@@ -505,7 +505,7 @@ namespace chemodurov
   }
 
   template< typename T, typename Compare >
-  UnbalancedBinarySearchTree< T, Compare > & UnbalancedBinarySearchTree< T, Compare >::operator=(this_t && other)
+  UnbalancedBinarySearchTree< T, Compare > & UnbalancedBinarySearchTree< T, Compare >::operator=(this_t && other) noexcept
   {
     if (this == std::addressof(other))
     {
