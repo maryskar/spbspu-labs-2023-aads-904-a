@@ -84,6 +84,7 @@ namespace chemodurov
     Tree< T, Compare > * fake_;
     Compare comp_;
     std::size_t size_;
+    Tree< T, Compare > * findMaxLeft(const_iterator cit);
   };
 
   template< typename T, typename Compare >
@@ -417,27 +418,7 @@ namespace chemodurov
   typename UnbalancedBinarySearchTree< T, Compare >::iterator
       UnbalancedBinarySearchTree< T, Compare >::erase(const_iterator pos)
   {
-    Tree< T, Compare > * todel = pos.node_;
-    ++pos;
-    Tree< T, Compare > * swapped = todel;
-    if (todel->left_ == fake_)
-    {
-      todel->parent_->left_ == todel ? todel->parent_->left_ = todel->right_ : todel->parent_->right_ = todel->right_;
-      if (todel->right_ != fake_)
-      {
-        todel->right_->parent_ = todel->parent_;
-      }
-    }
-    else
-    {
-      todel = todel->left_;
-      while (todel->right_ != fake_)
-      {
-        todel = todel->right_;
-      }
-      std::swap(swapped->data_, todel->data_);
-      todel->parent_->right_ == todel ? todel->parent_->right_ = fake_ : todel->parent_->left_ = fake_;
-    }
+    Tree< T, Compare > * todel = findMaxLeft(pos);
     delete todel;
     return pos;
   }
@@ -532,6 +513,33 @@ namespace chemodurov
     clear();
     swap(temp);
     return *this;
+  }
+
+  template< typename T, typename Compare >
+  Tree< T, Compare > * UnbalancedBinarySearchTree< T, Compare >::findMaxLeft(const_iterator cit)
+  {
+    Tree< T, Compare > * todel = cit.node_;
+    ++cit;
+    Tree< T, Compare > * swapped = todel;
+    if (todel->left_ == fake_)
+    {
+      todel->parent_->left_ == todel ? todel->parent_->left_ = todel->right_ : todel->parent_->right_ = todel->right_;
+      if (todel->right_ != fake_)
+      {
+        todel->right_->parent_ = todel->parent_;
+      }
+    }
+    else
+    {
+      todel = todel->left_;
+      while (todel->right_ != fake_)
+      {
+        todel = todel->right_;
+      }
+      std::swap(swapped->data_, todel->data_);
+      todel->parent_->right_ == todel ? todel->parent_->right_ = fake_ : todel->parent_->left_ = fake_;
+    }
+    return todel;
   }
 }
 

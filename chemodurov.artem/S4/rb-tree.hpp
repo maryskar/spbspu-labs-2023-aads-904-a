@@ -73,6 +73,7 @@ namespace chemodurov
    private:
     RotatableBinarySearchTree< std::pair< T, char >, Compare > data_;
     void balanceTreeAfterInsert(Tree< T, Compare > * inserted);
+    void balanceTreeErase(Tree< T, Compare > * todel);
   };
 
   template< typename T, typename Compare >
@@ -304,25 +305,38 @@ namespace chemodurov
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::erase(iterator pos)
   {
-    return data_.erase(pos);
+    auto todel = data_.data_.findMaxLeft(pos);
+    iterator del(todel, data_.data_.fake_);
+    balanceTreeErase(todel);
+    return data_.erase(del);
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::erase(const_iterator pos)
   {
-    return data_.erase(pos);
+    return erase(pos);
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::erase(const_iterator first, const_iterator last)
   {
-    return data_.erase(first, last);
+    while (first != last)
+    {
+      first = erase(first);
+    }
+    return first;
   }
 
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::size_type RBTree< T, Compare >::erase(const_reference value)
   {
-    return data_.erase(value);
+    const_iterator cit = find(value);
+    if (cit != cend())
+    {
+      erase(cit);
+      return 1ull;
+    }
+    return 0ull;
   }
 
   template< typename T, typename Compare >
@@ -429,6 +443,57 @@ namespace chemodurov
         {
           data_.rotateLeftLeft(inserted);
           data_.rotateRightRight(inserted);
+        }
+      }
+    }
+  }
+
+  template< typename T, typename Compare >
+  void RBTree< T, Compare >::balanceTreeErase(Tree< T, Compare > * todel)
+  {
+    if (todel->color_ == 'r')
+    {
+      return;
+    }
+    else
+    {
+      if (todel->left_->color_ == 'r')
+      {
+        todel->left_->color_ = 'b';
+      }
+      auto par = todel->parent_;
+      auto sibling = par->left_;
+      auto out_nep = sibling->left_;
+      auto in_nep = sibling->right_;
+      if (out_nep->color_ == 'r')
+      {
+        data_.rotateLeftLeft(sibling);
+        out_nep->color_ = 'b';
+      }
+      else if (in_nep->color_ == 'r')
+      {
+        data_.rotateRightRight(in_nep);
+        in_nep->color_ = 'b';
+        sibling->color_ = 'r';
+      }
+      else
+      {
+        if (par->color_ == 'r')
+        {
+          par->color_ = 'b';
+          sibling->color_ = 'r';
+        }
+        else if (sibling->color_ == 'r')
+        {
+          data_.rotateLeftLeft(sibling);
+          sibling->color_ = 'b';
+          par->color_ = 'r';
+          balanceTreeErase(todel);
+        }
+        else
+        {
+          sibling->color_ = 'r';
+          balanceTreeAfterInsert(par);
         }
       }
     }
