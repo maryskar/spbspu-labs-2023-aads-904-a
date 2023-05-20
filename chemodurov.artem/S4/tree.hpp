@@ -11,6 +11,7 @@ namespace chemodurov
     Tree< T, Compare > * left_;
     Tree< T, Compare > * right_;
     Tree< T, Compare > * parent_;
+    char color_;
   };
 }
 

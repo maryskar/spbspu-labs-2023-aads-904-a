@@ -15,8 +15,8 @@ namespace chemodurov
     using value_compare = Compare;
     using reference = value_type &;
     using const_reference = const value_type &;
-    using iterator = RBIterator< value_type, value_compare >;
-    using const_iterator = ConstRBIterator< value_type, value_compare >;
+    using iterator = typename RotatableBinarySearchTree< value_type, value_compare >::iterator;
+    using const_iterator = typename RotatableBinarySearchTree< value_type, value_compare >::const_iterator;
     using this_t = RBTree< value_type, value_compare >;
     RBTree();
     RBTree(const this_t & other) = default;
@@ -72,6 +72,7 @@ namespace chemodurov
     value_compare value_comp() const;
    private:
     RotatableBinarySearchTree< std::pair< T, char >, Compare > data_;
+    void balanceTreeAfterInsert(Tree< T, Compare > * inserted);
   };
 
   template< typename T, typename Compare >
@@ -186,7 +187,11 @@ namespace chemodurov
       bool
   > RBTree< T, Compare >::insert(const_reference value)
   {
-    return data_.insert(value);
+    auto res = data_.insert(value);
+    if (res.second)
+    {
+      res.first->second = 'r';
+    }
   }
 
   template< typename T, typename Compare >
@@ -359,6 +364,44 @@ namespace chemodurov
   typename RBTree< T, Compare >::value_compare RBTree< T, Compare >::value_comp() const
   {
     return data_.value_comp();
+  }
+
+  template< typename T, typename Compare >
+  void RBTree< T, Compare >::balanceTreeAfterInsert(Tree< T, Compare > * inserted)
+  {
+    Tree< T, Compare > * par = inserted->parent_;
+    if (par->color_ == 'b')
+    {
+      return;
+    }
+    else
+    {
+      if (data_.data_.fake_->left_ == par)
+      {
+        par->color_ = 'b';
+        return;
+      }
+      Tree< T, Compare > * grandpa = par->parent_;
+      Tree< T, Compare > * uncle = (grandpa->left_ == par) ? grandpa->right_ : grandpa->left_;
+      if (uncle->color_ == 'r')
+      {
+        par->color_ = uncle->color_ = 'b';
+        grandpa->color_ = 'r';
+        balanceTreeAfterInsert(grandpa);
+      }
+      else
+      {
+        if (par->left_ == inserted)
+        {
+          data_.rotateRightRight(par);
+        }
+        else
+        {
+          data_.rotateLeftLeft(inserted);
+          data_.rotateRightRight(inserted);
+        }
+      }
+    }
   }
 }
 

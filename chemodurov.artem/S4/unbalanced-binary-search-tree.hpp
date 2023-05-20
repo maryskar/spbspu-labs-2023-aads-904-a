@@ -9,11 +9,15 @@ namespace chemodurov
   template< typename T, typename Compare >
   class RotatableBinarySearchTree;
 
+  template< typename T, typename Compare >
+  class RBTree;
+
   template< typename T, typename Compare = std::less<> >
   class UnbalancedBinarySearchTree
   {
     friend class BidirectionalIterator< T, Compare >;
     friend class RotatableBinarySearchTree< T, Compare >;
+    friend class RBTree< T, Compare >;
    public:
     using value_type = T;
     using size_type = std::size_t;
