@@ -46,6 +46,8 @@ namespace mashkin
     Iterator< T > erase_after(citer pos);
     Iterator< T > erase_after(citer pos, citer last);
 
+    void clear() noexcept;
+
     void swap(ForwardList< T >& list);
 
     bool empty() const noexcept;
@@ -66,9 +68,9 @@ mashkin::ForwardList< T >::ForwardList():
 
 template< class T >
 mashkin::ForwardList< T >::ForwardList(const ForwardList< T >& lhs):
-  fake_(lhs.fake_),
-  tail_(lhs.tail)
+  ForwardList()
 {
+  insert_after(before_begin(), lhs.begin(), lhs.end);
 }
 
 template< class T >
@@ -76,6 +78,20 @@ mashkin::ForwardList< T >::ForwardList(ForwardList< T >&& rhs) noexcept:
   fake_(rhs.fake_),
   tail_(rhs.tail)
 {
+}
+
+template< class T >
+mashkin::ForwardList< T >& mashkin::ForwardList< T >::operator=(ForwardList< T >&& rhs)
+{
+  insert_after(before_begin(), rhs.begin(), rhs.end());
+  return *this;
+}
+
+template< class T>
+mashkin::ForwardList< T >& mashkin::ForwardList< T >::operator=(const ForwardList< T >& rhs)
+{
+  *this = std::move(rhs);
+  return *this;
 }
 
 template< class T >
@@ -179,7 +195,7 @@ T& mashkin::ForwardList< T >::front()
 template< class T >
 void mashkin::ForwardList< T >::pop_front()
 {
-  if (empty())
+  if (fake_->next == tail_)
   {
     throw std::out_of_range("You got the end of list");
   }
@@ -212,11 +228,26 @@ mashkin::Iterator< T > mashkin::ForwardList< T >::erase_after(citer pos, citer l
 }
 
 template< class T >
+void mashkin::ForwardList< T >::clear() noexcept
+{
+  while (empty())
+  {
+    pop_front();
+    if (!fake_->next)
+    {
+      fake_->next = fake_;
+    }
+  }
+}
+
+template< class T >
 void mashkin::ForwardList< T >::swap(ForwardList< T >& list)
 {
   ForwardList< T > var;
   var.insert_after(var.before_begin(), list.begin(), list.end());
+  list.clear();
   list.insert_after(list.before_begin(), begin(), end());
-  *this.isert_after(before_begin(), var.begin(), var.end());
+  clear();
+  isert_after(before_begin(), var.begin(), var.end());
 }
 #endif
