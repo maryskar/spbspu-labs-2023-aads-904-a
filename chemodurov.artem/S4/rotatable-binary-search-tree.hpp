@@ -274,6 +274,60 @@ namespace chemodurov
   {
     return data[std::move(value)];
   }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::iterator
+      RotatableBinarySearchTree< T, Compare >::erase(iterator pos)
+  {
+    return data.erase(pos);
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::iterator
+      RotatableBinarySearchTree< T, Compare >::erase(const_iterator pos)
+  {
+    return data.erase(pos);
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::iterator
+      RotatableBinarySearchTree< T, Compare >::erase(const_iterator first, const_iterator last)
+  {
+    return data.erase(first, last);
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::size_type
+      RotatableBinarySearchTree< T, Compare >::erase(const_reference value)
+  {
+    return data.erase(value);
+  }
+
+  template< typename T, typename Compare >
+  void RotatableBinarySearchTree< T, Compare >::swap(this_t & other)
+  {
+    data.swap(other.data);
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::size_type
+      RotatableBinarySearchTree< T, Compare >::count(const_reference value) const
+  {
+    return data.count(value);
+  }
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::iterator
+      RotatableBinarySearchTree< T, Compare >::find(const_reference value)
+  {
+    return data.find(value);
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::const_iterator
+      RotatableBinarySearchTree< T, Compare >::find(const_reference value) const
+  {
+    return data.find(value);
+  }
 }
 
 #endif
