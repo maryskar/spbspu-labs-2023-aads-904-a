@@ -121,6 +121,27 @@ namespace chemodurov
     data = init;
     return *this;
   }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::iterator
+      RotatableBinarySearchTree< T, Compare >::begin() noexcept
+  {
+    return data.begin();
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::const_iterator
+      RotatableBinarySearchTree< T, Compare >::begin() const noexcept
+  {
+    return data.begin();
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::const_iterator
+      RotatableBinarySearchTree< T, Compare >::cbegin() const noexcept
+  {
+    return data.cbegin();
+  }
 }
 
 #endif
