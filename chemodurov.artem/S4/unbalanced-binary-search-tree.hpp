@@ -181,6 +181,10 @@ namespace chemodurov
       UnbalancedBinarySearchTree< T, Compare >::lower_bound(const_reference value) const
   {
     const_iterator cit = const_iterator(fake_->left_, fake_);
+    if (cit.node_ != fake_ && *cit == value)
+    {
+      return cit;
+    }
     const_iterator moved_cit = cit;
     ++moved_cit;
     value_compare comp = value_comp();
@@ -296,11 +300,11 @@ namespace chemodurov
     {
       if (empty())
       {
-        fake_->left_ = new Tree< T, Compare >{value, fake_, fake_, fake_, 'r'};
+        fake_->left_ = new Tree< T, Compare >{value, fake_, fake_, fake_, '0'};
       }
       else
       {
-        (--end()).node_->right_ = new Tree< T, Compare >{value, fake_, fake_, (--end()).node_, 'r'};
+        (--end()).node_->right_ = new Tree< T, Compare >{value, fake_, fake_, (--end()).node_, '0'};
       }
       checkAfterInsert((--end()).node_);
       ++size_;
@@ -310,7 +314,7 @@ namespace chemodurov
     {
       return {it, false};
     }
-    Tree< T, Compare> * inserted = new Tree< T, Compare >{value, it.node_->left_, fake_, it.node_, 'r'};
+    Tree< T, Compare> * inserted = new Tree< T, Compare >{value, it.node_->left_, fake_, it.node_, '0'};
     it.node_->left_ = inserted;
     checkAfterInsert(inserted);
     ++size_;

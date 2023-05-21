@@ -86,24 +86,28 @@ namespace chemodurov
   template< typename T, typename Compare >
   RBTree< T, Compare >::RBTree(this_t && other) noexcept:
    data_(std::move(other.data))
-  {}
+  {
+    data_.data_.fake_->color_ = 'b';
+  }
 
   template< typename T, typename Compare >
   RBTree< T, Compare >::RBTree(const value_compare & comp):
    data_(comp)
-  {}
+  {
+    data_.data_.fake_->color_ = 'b';
+  }
 
   template< typename T, typename Compare >
   template< typename InputIt >
   RBTree< T, Compare >::RBTree(InputIt first, InputIt last, const value_compare & comp):
-   data_(comp)
+   RBTree(comp)
   {
-    data_.insert(first, last);
+    insert(first, last);
   }
 
   template< typename T, typename Compare >
   RBTree< T, Compare >::RBTree(std::initializer_list< value_type > init, const value_compare & comp):
-   data_(init.begin(), init.end(), comp)
+   RBTree(init.begin(), init.end(), comp)
   {}
 
   template< typename T, typename Compare >
@@ -243,7 +247,7 @@ namespace chemodurov
   {
     while (first != last)
     {
-      first = insert(*first);
+      insert(*first++);
     }
   }
 
