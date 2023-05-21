@@ -76,6 +76,19 @@ namespace chemodurov
   ConstBidirectionalIterator< T, Compare > & ConstBidirectionalIterator< T, Compare >::operator--()
   {
     assert(node_ != nullptr);
+    if (node_ == fake_)
+    {
+      if (node_->left_ == fake_)
+      {
+        return *this;
+      }
+      node_ = node_->left_;
+      while (node_->right_ != fake_)
+      {
+        node_ = node_->right_;
+      }
+      return *this;
+    }
     if (node_->left_ != fake_)
     {
       node_ = node_->left_;

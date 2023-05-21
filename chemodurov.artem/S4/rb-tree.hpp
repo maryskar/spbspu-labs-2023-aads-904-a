@@ -103,7 +103,7 @@ namespace chemodurov
 
   template< typename T, typename Compare >
   RBTree< T, Compare >::RBTree(std::initializer_list< value_type > init, const value_compare & comp):
-   data_(init.begin(), init.end()   , comp)
+   data_(init.begin(), init.end(), comp)
   {}
 
   template< typename T, typename Compare >
