@@ -11,6 +11,7 @@ int main()
     std::cout << a << ' ';
   }
   std::cout << '\n';
+  tree.erase(49);
   for (auto i = tree.cbegin(); i != tree.cend(); ++i)
   {
     std::cout << *i << ' ';

@@ -288,7 +288,7 @@ namespace chemodurov
   typename UnbalancedBinarySearchTree< T, Compare >::iterator
       UnbalancedBinarySearchTree< T, Compare >::find(const_reference value)
   {
-    const_iterator cit = find(value);
+    const_iterator cit = static_cast< const this_t & >(*this).find(value);
     return iterator(cit.node_, cit.fake_);
   }
 
@@ -401,6 +401,7 @@ namespace chemodurov
     value_type val(std::forward< Args >(args)...);
     return insert(std::move(val));
   }
+
   template< typename T, typename Compare >
   template< typename... Args >
   typename UnbalancedBinarySearchTree< T, Compare >::iterator
@@ -457,9 +458,17 @@ namespace chemodurov
       UnbalancedBinarySearchTree< T, Compare >::erase(const_iterator pos)
   {
     Tree< T, Compare > * todel = findMaxLeft(pos);
+    if (fake_->parent_ == todel)
+    {
+      fake_->parent_ = (++iterator(todel, fake_)).node_;
+    }
+    if (fake_->right_ == todel)
+    {
+      fake_->right_ = (--iterator(todel, fake_)).node_;
+    }
     delete todel;
     --size_;
-    return pos;
+    return iterator(pos.node_, fake_);
   }
 
   template< typename T, typename Compare >
@@ -470,7 +479,7 @@ namespace chemodurov
     {
       first = erase(first);
     }
-    return first;
+    return iterator(first.node_, fake_);
   }
 
   template< typename T, typename Compare >
@@ -576,7 +585,11 @@ namespace chemodurov
         todel = todel->right_;
       }
       std::swap(swapped->data_, todel->data_);
-      todel->parent_->right_ == todel ? todel->parent_->right_ = fake_ : todel->parent_->left_ = fake_;
+      todel->parent_->right_ == todel ? todel->parent_->right_ = todel->left_ : todel->parent_->left_ = todel->left_;
+      if (todel->left_ != fake_)
+      {
+        todel->left_->parent_ = todel->parent_;
+      }
     }
     return todel;
   }

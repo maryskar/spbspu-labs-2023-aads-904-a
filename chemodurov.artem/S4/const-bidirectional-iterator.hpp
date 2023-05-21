@@ -96,6 +96,10 @@ namespace chemodurov
     if (node_->left_ != fake_)
     {
       node_ = node_->left_;
+      while (node_->right_ != fake_)
+      {
+        node_ = node_->right_;
+      }
       return *this;
     }
     Tree< T > * previous = node_;
