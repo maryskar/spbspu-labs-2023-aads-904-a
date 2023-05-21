@@ -5,7 +5,7 @@
 
 namespace chemodurov
 {
-  template< typename T, typename Compare >
+  template< typename T, typename Compare = std::less< > >
   class RBTree
   {
    public:
@@ -71,7 +71,7 @@ namespace chemodurov
     const_iterator upper_bound(const_reference value) const;
     value_compare value_comp() const;
    private:
-    RotatableBinarySearchTree< std::pair< T, char >, Compare > data_;
+    RotatableBinarySearchTree< T, Compare > data_;
     void balanceTreeAfterInsert(Tree< T, Compare > * inserted);
     void balanceTreeErase(Tree< T, Compare > * todel);
   };
@@ -80,7 +80,7 @@ namespace chemodurov
   RBTree< T, Compare >::RBTree():
    data_()
   {
-    data_.data_.fake_->data_.second = 'b';
+    data_.data_.fake_->color_ = 'b';
   }
 
   template< typename T, typename Compare >
@@ -350,6 +350,7 @@ namespace chemodurov
   {
     return data_.count(value);
   }
+
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::find(const_reference value)
   {

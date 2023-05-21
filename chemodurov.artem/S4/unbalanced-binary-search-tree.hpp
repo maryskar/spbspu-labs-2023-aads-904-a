@@ -89,11 +89,11 @@ namespace chemodurov
 
   template< typename T, typename Compare >
   UnbalancedBinarySearchTree< T, Compare >::UnbalancedBinarySearchTree():
-   fake_(::operator new(sizeof(Tree< T, Compare >))),
+   fake_(static_cast< Tree< T, Compare > * >(::operator new(sizeof(Tree< T, Compare >)))),
    comp_(),
    size_(0)
   {
-    fake_->left_ = nullptr;
+    fake_->left_ = fake_;
     fake_->right_ = fake_;
     fake_->parent_ = fake_;
   }
@@ -291,14 +291,14 @@ namespace chemodurov
     iterator it = lower_bound(value);
     if (it == end())
     {
-      (--end()).node_->right_ = new Tree< T, Compare >(value, fake_, fake_, (--end()).node_);
+      (--end()).node_->right_ = new Tree< T, Compare >{value, fake_, fake_, (--end()).node_, 'r'};
       return {--end(), true};
     }
     if (!value_comp()(*it, value) && !value_comp()(value, *it))
     {
       return {it, false};
     }
-    Tree< T, Compare> * inserted = new Tree< T, Compare >(value, it.node_->left_, fake_, it.node_);
+    Tree< T, Compare> * inserted = new Tree< T, Compare >{value, it.node_->left_, fake_, it.node_, 'r'};
     it.node_->left_ = inserted;
     return {iterator(inserted, fake_), true};
   }
@@ -321,7 +321,7 @@ namespace chemodurov
   {
     if (value_comp()(value, *pos) && value_comp()(*(--pos), value))
     {
-      pos.node_->left_ = new Tree< T, Compare >(value, pos.node_->left_, fake_, pos.node_);
+      pos.node_->left_ = new Tree< T, Compare >{value, pos.node_->left_, fake_, pos.node_, 'r'};
       return iterator(pos.node_->left_, fake_);
     }
     return insert(value);
