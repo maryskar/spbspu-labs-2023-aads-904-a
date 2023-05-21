@@ -85,6 +85,7 @@ namespace chemodurov
     Compare comp_;
     std::size_t size_;
     Tree< T, Compare > * findMaxLeft(const_iterator cit);
+    void checkAfterInsert(Tree< T, Compare > * inserted);
   };
 
   template< typename T, typename Compare >
@@ -179,16 +180,16 @@ namespace chemodurov
   typename UnbalancedBinarySearchTree< T, Compare >::const_iterator
       UnbalancedBinarySearchTree< T, Compare >::lower_bound(const_reference value) const
   {
-    const_iterator cit = const_iterator(fake_->left_);
+    const_iterator cit = const_iterator(fake_->left_, fake_);
     const_iterator moved_cit = cit;
     value_compare comp = value_comp();
     while (!comp(*cit, value) || comp(value, *(++moved_cit)))
     {
-      if (!comp(*cit, value) && cit.node_->left != cit.node_->fake_)
+      if (!comp(*cit, value) && cit.node_->left_ != cit.fake_)
       {
         cit.node_ = cit.node_->left_;
       }
-      else if (comp(value, *moved_cit) && cit.node_->left != cit.node_->fake_)
+      else if (comp(value, *moved_cit) && cit.node_->left_ != cit.fake_)
       {
         cit.node_ = cit.node_->right_;
       }
@@ -311,7 +312,7 @@ namespace chemodurov
   > UnbalancedBinarySearchTree< T, Compare >::insert(P && value)
   {
     static_assert(std::is_constructible< value_type, P&& >::value, "Value type doesn't constructible from type you try to insert");
-    value_type val(std::forward< P >(value));
+    const value_type val(std::forward< P >(value));
     return insert(val);
   }
 
@@ -333,7 +334,7 @@ namespace chemodurov
       UnbalancedBinarySearchTree< T, Compare >::insert(const_iterator pos, P && value)
   {
     static_assert(std::is_constructible< value_type, P&& >::value, "Value type isn't constructible from type you try to insert");
-    value_type val(std::forward< P >(value));
+    const value_type val(std::forward< P >(value));
     return insert(pos, val);
   }
 
@@ -459,7 +460,7 @@ namespace chemodurov
   UnbalancedBinarySearchTree< T, Compare >::UnbalancedBinarySearchTree(InputIt first, InputIt last, const value_compare & comp):
    UnbalancedBinarySearchTree(comp)
   {
-    insert(first, last);
+    insert< InputIt >(first, last);
   }
 
   template< typename T, typename Compare >
@@ -540,6 +541,20 @@ namespace chemodurov
       todel->parent_->right_ == todel ? todel->parent_->right_ = fake_ : todel->parent_->left_ = fake_;
     }
     return todel;
+  }
+
+  template< typename T, typename Compare >
+  void UnbalancedBinarySearchTree< T, Compare >::checkAfterInsert(Tree< T, Compare > * inserted)
+  {
+    if (fake_->parent_ == fake_ || --begin() != fake_)
+    {
+      fake_->parent_ = inserted;
+      return;
+    }
+    if (fake_->right_ == fake_ || ++end() != end())
+    {
+      fake_->right_ = inserted;
+    }
   }
 }
 

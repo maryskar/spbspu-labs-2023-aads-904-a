@@ -205,7 +205,7 @@ namespace chemodurov
   > RBTree< T, Compare >::insert(P && value)
   {
     static_assert(std::is_constructible< value_type, P&& >::value, "Value type doesn't constructible from type you try to insert");
-    value_type val(value);
+    const value_type val(value);
     return insert(val);
   }
 
@@ -233,7 +233,7 @@ namespace chemodurov
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::insert(const_iterator pos, P && value)
   {
     static_assert(std::is_constructible< value_type, P&& >::value, "Value type doesn't constructible from type you try to insert");
-    value_type val(value);
+    const value_type val(value);
     return insert(pos, val);
   }
 

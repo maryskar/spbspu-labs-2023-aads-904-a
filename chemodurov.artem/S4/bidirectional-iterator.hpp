@@ -88,7 +88,7 @@ namespace chemodurov
   const T & BidirectionalIterator< T, Compare >::operator*() const
   {
     assert(node_ != nullptr);
-    return node_->data;
+    return node_->data_;
   }
 
   template< typename T, typename Compare >
@@ -101,7 +101,7 @@ namespace chemodurov
   const T * BidirectionalIterator< T, Compare >::operator->() const
   {
     assert(node_ != nullptr);
-    return std::addressof(node_->data);
+    return std::addressof(node_->data_);
   }
 
   template< typename T, typename Compare >
@@ -128,4 +128,5 @@ namespace chemodurov
     return !(lhs == rhs);
   }
 }
+
 #endif

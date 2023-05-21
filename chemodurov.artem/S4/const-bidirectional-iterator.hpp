@@ -42,17 +42,17 @@ namespace chemodurov
   ConstBidirectionalIterator< T, Compare > & ConstBidirectionalIterator< T, Compare >::operator++()
   {
     assert(node_ != nullptr);
-    if (node_->right != fake_)
+    if (node_->right_ != fake_)
     {
-      node_= node_->right;
+      node_= node_->right_;
       return *this;
     }
     Tree< T > * previous = node_;
-    node_ = node_->parent;
-    while (node_ != fake_ && node_->right == previous)
+    node_ = node_->parent_;
+    while (node_ != fake_ && node_->right_ == previous)
     {
       previous = node_;
-      node_ = node_->parent;
+      node_ = node_->parent_;
     }
     return *this;
   }
@@ -76,17 +76,17 @@ namespace chemodurov
   ConstBidirectionalIterator< T, Compare > & ConstBidirectionalIterator< T, Compare >::operator--()
   {
     assert(node_ != nullptr);
-    if (node_->left != fake_)
+    if (node_->left_ != fake_)
     {
-      node_ = node_->left;
+      node_ = node_->left_;
       return *this;
     }
     Tree< T > * previous = node_;
-    node_ = node_->parent;
-    while (node_ != fake_ && node_->left == previous)
+    node_ = node_->parent_;
+    while (node_ != fake_ && node_->left_ == previous)
     {
       previous = node_;
-      node_ = node_->parent;
+      node_ = node_->parent_;
     }
     return *this;
   }
@@ -104,14 +104,14 @@ namespace chemodurov
   const T & ConstBidirectionalIterator< T, Compare >::operator*() const
   {
     assert(node_ != nullptr);
-    return node_->data;
+    return node_->data_;
   }
 
   template< typename T, typename Compare >
   const T * ConstBidirectionalIterator< T, Compare >::operator->() const
   {
     assert(node_ != nullptr);
-    return std::addressof(node_->data);
+    return std::addressof(node_->data_);
   }
 
   template< typename T, typename Compare >

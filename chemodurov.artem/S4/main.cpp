@@ -2,6 +2,7 @@
 
 int main()
 {
-  chemodurov::RBTree< int > tree = {6, 8, 10, 4, 1, 0, -3, 4, 5};
+  chemodurov::RBTree< int > tree;
+  tree.insert(5);
   return 0;
 }
