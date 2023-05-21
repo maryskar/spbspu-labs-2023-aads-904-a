@@ -5,6 +5,10 @@
 template< typename T >
 long long countPostfix(Queue< T >& postfix_queue)
 {
+  Stack< long long > elem;
+  while (!postfix_queue.isEmpty())
+  {
 
+  }
 }
 #endif

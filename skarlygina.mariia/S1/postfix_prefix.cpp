@@ -66,7 +66,3 @@ Queue<std::string> infixToPostfix(Queue<std::string>& infix_queue)
 
   return postfix_queue;
 }
-
-
-Queue< std::string > operation::makePrefix(Queue< std::string >& infix_queue);
-

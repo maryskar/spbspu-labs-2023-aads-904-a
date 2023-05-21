@@ -6,6 +6,5 @@ namespace operation
 {
   Queue< std::string > makeInfix(std::string string);
   Queue< std::string > makePostfix(Queue< std::string >& infix_queue);
-  Queue< std::string > makePrefix(Queue< std::string >& infix_queue);
 }
 #endif
