@@ -27,8 +27,8 @@ namespace mashkin
     Iterator< T > before_begin() noexcept;
     ConstIterator< T > cbefore_begin() noexcept;
 
-    Iterator< T > begin() noexcept;
-    Iterator< T > end() noexcept;
+    Iterator< T > begin() const noexcept;
+    Iterator< T > end() const noexcept;
 
     Iterator< T > insert_after(ConstIterator< T > position, const T& val);
     Iterator< T > insert_after(ConstIterator< T > position, T&& val);
@@ -36,8 +36,8 @@ namespace mashkin
     template< class InputIterator >
     Iterator< T > insert_after(ConstIterator< T > position, InputIterator first, InputIterator last);
 
-    ConstIterator< T > cbegin() noexcept;
-    ConstIterator< T > cend() noexcept;
+    ConstIterator< T > cbegin() const noexcept;
+    ConstIterator< T > cend() const noexcept;
 
     T& front();
     void push_front(const T& value);
@@ -70,7 +70,8 @@ template< class T >
 mashkin::ForwardList< T >::ForwardList(const ForwardList< T >& lhs):
   ForwardList()
 {
-  insert_after(before_begin(), lhs.begin(), lhs.end);
+  fake_->next = tail_;
+  insert_after(before_begin(), lhs.cbegin(), lhs.cend());
 }
 
 template< class T >
@@ -128,37 +129,37 @@ mashkin::ConstIterator< T > mashkin::ForwardList< T >::cbefore_begin() noexcept
 }
 
 template< class T >
-mashkin::Iterator< T > mashkin::ForwardList< T >::begin() noexcept
+mashkin::Iterator< T > mashkin::ForwardList< T >::begin() const noexcept
 {
   return iter(fake_->next);
 }
 
 template< class T >
-mashkin::Iterator< T > mashkin::ForwardList< T >::end() noexcept
+mashkin::Iterator< T > mashkin::ForwardList< T >::end() const noexcept
 {
   return iter(tail_);
 }
 
 template< class T >
-mashkin::ConstIterator< T > mashkin::ForwardList< T >::cbegin() noexcept
+mashkin::ConstIterator< T > mashkin::ForwardList< T >::cbegin() const noexcept
 {
   return begin();
 }
 
 template< class T >
-mashkin::ConstIterator< T > mashkin::ForwardList< T >::cend() noexcept
+mashkin::ConstIterator< T > mashkin::ForwardList< T >::cend() const noexcept
 {
   return end();
 }
 
 template< class T >
-mashkin::Iterator< T > mashkin::ForwardList< T >::insert_after(citer position, const T& val)
+mashkin::Iterator< T > mashkin::ForwardList< T >::insert_after(citer position, T&& val)
 {
   return insert_after(position, std::move(val));
 }
 
 template< class T >
-mashkin::Iterator< T > mashkin::ForwardList< T >::insert_after(citer position, T&& val)
+mashkin::Iterator< T > mashkin::ForwardList< T >::insert_after(citer position, const T& val)
 {
   position.node->next = new NodeList< T >{val, position.node->next};
   ++position;
@@ -179,10 +180,11 @@ template< class T >
 template< class InpIter >
 mashkin::Iterator< T > mashkin::ForwardList< T >::insert_after(citer position, InpIter first, InpIter last)
 {
-  iter var(position.node);
+  Iterator< T > var = position.node;
   while (first != last)
   {
-    insert_after(var, first.node->data);
+    var = insert_after(var, *first);
+    first++;
   }
 }
 
