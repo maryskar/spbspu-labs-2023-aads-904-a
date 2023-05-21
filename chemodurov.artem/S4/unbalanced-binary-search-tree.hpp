@@ -85,7 +85,6 @@ namespace chemodurov
     Compare comp_;
     std::size_t size_;
     Tree< T, Compare > * findMaxLeft(const_iterator cit);
-    void checkAfterInsert(Tree< T, Compare > * inserted);
   };
 
   template< typename T, typename Compare >
@@ -180,32 +179,43 @@ namespace chemodurov
   typename UnbalancedBinarySearchTree< T, Compare >::const_iterator
       UnbalancedBinarySearchTree< T, Compare >::lower_bound(const_reference value) const
   {
-    const_iterator cit = const_iterator(fake_->left_, fake_);
-    if (cit.node_ != fake_ && *cit == value)
-    {
-      return cit;
-    }
-    const_iterator moved_cit = cit;
-    ++moved_cit;
+    Tree< T, Compare > * temp = fake_->left_;
+    Tree< T, Compare > * prev = temp;
+    bool isLess = false;
     value_compare comp = value_comp();
-    while (cit.node_ != fake_ && moved_cit.node_ != fake_ && (!comp(*cit, value) || comp(value, *moved_cit)))
+    while (temp != fake_)
     {
-      if (!comp(*cit, value) && cit.node_->left_ != cit.fake_)
+      if (comp(value, temp->data_))
       {
-        cit.node_ = cit.node_->left_;
+        if (temp->left_ != fake_)
+        {
+          prev = temp;
+          temp = temp->left_;
+          isLess = true;
+        }
+        else
+        {
+          return const_iterator(temp, fake_);
+        }
       }
-      else if (comp(value, *moved_cit) && cit.node_->left_ != cit.fake_)
+      else if (!comp(value, temp->data_) && !comp(temp->data_, value))
       {
-        cit.node_ = cit.node_->right_;
+        return const_iterator(temp, fake_);
       }
       else
       {
-        return moved_cit;
+        if (temp->right_ != fake_)
+        {
+          prev = temp;
+          temp = temp->right_;
+        }
+        else
+        {
+          return isLess ? const_iterator(prev, fake_) : cend();
+        }
       }
-      moved_cit = cit;
-      ++moved_cit;
     }
-    return moved_cit;
+    return cend();
   }
 
   template< typename T, typename Compare >
@@ -301,14 +311,16 @@ namespace chemodurov
       if (empty())
       {
         fake_->left_ = new Tree< T, Compare >{value, fake_, fake_, fake_, '0'};
+        fake_->right_ = fake_->left_;
+        fake_->parent_ = fake_->left_;
       }
       else
       {
-        (--end()).node_->right_ = new Tree< T, Compare >{value, fake_, fake_, (--end()).node_, '0'};
+        fake_->right_->right_ = new Tree< T, Compare >{value, fake_, fake_, fake_->right_, '0'};
+        fake_->right_ = fake_->right_->right_;
       }
-      checkAfterInsert((--end()).node_);
       ++size_;
-      return {--end(), true};
+      return {iterator(fake_->right_, fake_), true};
     }
     if (!value_comp()(*it, value) && !value_comp()(value, *it))
     {
@@ -316,7 +328,14 @@ namespace chemodurov
     }
     Tree< T, Compare> * inserted = new Tree< T, Compare >{value, it.node_->left_, fake_, it.node_, '0'};
     it.node_->left_ = inserted;
-    checkAfterInsert(inserted);
+    if (it.node_->left_->left_ != fake_)
+    {
+      it.node_->left_->left_->parent_ = inserted;
+    }
+    if (it == begin())
+    {
+      fake_->parent_ = inserted;
+    }
     ++size_;
     return {iterator(inserted, fake_), true};
   }
@@ -560,23 +579,6 @@ namespace chemodurov
       todel->parent_->right_ == todel ? todel->parent_->right_ = fake_ : todel->parent_->left_ = fake_;
     }
     return todel;
-  }
-
-  template< typename T, typename Compare >
-  void UnbalancedBinarySearchTree< T, Compare >::checkAfterInsert(Tree< T, Compare > * inserted)
-  {
-    if (fake_->parent_ == fake_ || (--begin()).node_ != fake_)
-    {
-      fake_->parent_ = inserted;
-    }
-    if (fake_->left_ == fake_)
-    {
-      fake_->left_ = inserted;
-    }
-    if (fake_->right_ == fake_ || ++end() != end())
-    {
-      fake_->right_ = inserted;
-    }
   }
 }
 
