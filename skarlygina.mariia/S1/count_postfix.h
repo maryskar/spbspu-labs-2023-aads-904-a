@@ -8,7 +8,8 @@ long long countPostfix(Queue< T >& postfix_queue)
   Stack< long long > elem;
   while (!postfix_queue.isEmpty())
   {
-
+    std::string token = postfix_queue.get();
+    postfix_queue.pop();
   }
 }
 #endif
