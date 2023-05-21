@@ -312,7 +312,7 @@ namespace chemodurov
   template< typename T, typename Compare >
   void RotatableBinarySearchTree< T, Compare >::swap(this_t & other)
   {
-    data_.swap(other.data);
+    data_.swap(other.data_);
   }
 
   template< typename T, typename Compare >

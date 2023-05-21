@@ -128,7 +128,7 @@ namespace chemodurov
   RBTree< T, Compare > & RBTree< T, Compare >::operator=(std::initializer_list< value_type > init)
   {
     RBTree< T, Compare > temp(init);
-    data_.swap(temp);
+    swap(temp);
     return *this;
   }
 
@@ -346,7 +346,7 @@ namespace chemodurov
   template< typename T, typename Compare >
   void RBTree< T, Compare >::swap(this_t & other)
   {
-    data_.swap(other.data);
+    data_.swap(other.data_);
   }
 
   template< typename T, typename Compare >

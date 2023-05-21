@@ -166,6 +166,9 @@ namespace chemodurov
   void UnbalancedBinarySearchTree< T, Compare >::clear() noexcept
   {
     clearTree(fake_->left_, fake_);
+    fake_->left_ = fake_;
+    fake_->right_ = fake_;
+    fake_->parent_ = fake_;
   }
 
   template< typename T, typename Compare >

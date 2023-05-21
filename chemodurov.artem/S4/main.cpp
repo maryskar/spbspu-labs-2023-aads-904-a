@@ -3,7 +3,7 @@
 
 int main()
 {
-  chemodurov::UnbalancedBinarySearchTree< int > tree;
+  chemodurov::RBTree< int > tree;
   for (int i = 0; i < 10; ++i)
   {
     int a = std::rand() % 100;
@@ -11,7 +11,6 @@ int main()
     std::cout << a << ' ';
   }
   std::cout << '\n';
-  tree.erase(49);
   for (auto i = tree.cbegin(); i != tree.cend(); ++i)
   {
     std::cout << *i << ' ';
