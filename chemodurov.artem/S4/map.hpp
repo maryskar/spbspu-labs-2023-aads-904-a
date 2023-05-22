@@ -141,6 +141,42 @@ namespace chemodurov
     data_ = init;
     return *this;
   }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::iterator Map< Key, Value, Compare >::begin() noexcept
+  {
+    return data_.begin();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::const_iterator Map< Key, Value, Compare >::begin() const noexcept
+  {
+    return cbegin();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::const_iterator Map< Key, Value, Compare >::cbegin() const noexcept
+  {
+    return data_.cbegin();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::iterator Map< Key, Value, Compare >::end() noexcept
+  {
+    return data_.end();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::const_iterator Map< Key, Value, Compare >::end() const noexcept
+  {
+    return cend();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::const_iterator Map< Key, Value, Compare >::cend() const noexcept
+  {
+    return data_.cend();
+  }
 }
 
 #endif
