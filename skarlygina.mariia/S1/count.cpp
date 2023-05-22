@@ -1,6 +1,6 @@
 #include "count.h"
 #include "calculator.h"
-long long SwitchSymbol(char operation, long long a, long long b)
+long long switchSymbol(char operation, long long a, long long b)
 {
   switch (operation)
   {
