@@ -17,9 +17,9 @@ namespace chemodurov
     using key_compare = Compare;
     using reference = value_type &;
     using const_reference = const value_type &;
-    using iterator = typename RBTree< value_type, key_compare >::iterator;
-    using const_iterator = typename RBTree< value_type, key_compare >::const_iterator;
-    using this_t = Map< key_type, value_type, key_compare >;
+    using iterator = typename RBTree< value_type, value_compare >::iterator;
+    using const_iterator = typename RBTree< value_type, value_compare >::const_iterator;
+    using this_t = Map< key_type, mapped_type , key_compare >;
     Map();
     Map(const this_t & other) = default;
     Map(this_t && other) noexcept;
@@ -75,9 +75,40 @@ namespace chemodurov
     value_compare value_comp() const;
     bool isEqual(const this_t & rhs);
    private:
-    RBTree< value_type, key_compare > data_;
+    RBTree< value_type, value_compare > data_;
     key_compare comp_;
   };
+
+  template< typename Key, typename Value, typename Compare >
+  Map< Key, Value, Compare >::Map():
+   data_(),
+   comp_()
+  {}
+
+  template< typename Key, typename Value, typename Compare >
+  Map< Key, Value, Compare >::Map(this_t && other) noexcept:
+   data_(std::move(other.data_)),
+   comp_(std::move(other.comp_))
+  {}
+
+  template< typename Key, typename Value, typename Compare >
+  Map< Key, Value, Compare >::Map(const key_compare & comp):
+   data_(value_compare(comp)),
+   comp_(comp)
+  {}
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename InputIt >
+  Map< Key, Value, Compare >::Map(InputIt first, InputIt last, const key_compare & comp):
+   data_(first, last, value_compare(comp)),
+   comp_(comp)
+  {}
+
+  template< typename Key, typename Value, typename Compare >
+  Map< Key, Value, Compare >::Map(std::initializer_list< value_type > init, const key_compare & comp):
+   data_(init, value_compare(comp)),
+   comp_(comp)
+  {}
 }
 
 #endif
