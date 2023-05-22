@@ -612,6 +612,29 @@ namespace chemodurov
     }
     return todel;
   }
+
+  template< typename T, typename Compare >
+  bool operator==(const UnbalancedBinarySearchTree< T, Compare > & lhs, const UnbalancedBinarySearchTree< T, Compare > & rhs)
+  {
+    if (lhs.size() != rhs.size())
+    {
+      return false;
+    }
+    for (auto i = lhs.cbegin(), j = rhs.cbegin(); i != lhs.cend(); ++i, ++j)
+    {
+      if (*i != *j)
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  template< typename T, typename Compare >
+  bool operator!=(const UnbalancedBinarySearchTree< T, Compare > & lhs, const UnbalancedBinarySearchTree< T, Compare > & rhs)
+  {
+    return !(lhs == rhs);
+  }
 }
 
 #endif
