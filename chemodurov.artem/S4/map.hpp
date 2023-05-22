@@ -109,6 +109,38 @@ namespace chemodurov
    data_(init, value_compare(comp)),
    comp_(comp)
   {}
+
+  template< typename Key, typename Value, typename Compare >
+  Map< Key, Value, Compare > & Map< Key, Value, Compare >::operator=(const this_t & other)
+  {
+    if (this == std::addressof(other))
+    {
+      return *this;
+    }
+    key_compare temp(other.comp_);
+    data_ = other.data_;
+    comp_ = std::move(temp);
+    return *this;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Map< Key, Value, Compare > & Map< Key, Value, Compare >::operator=(this_t && other) noexcept
+  {
+    if (this == std::addressof(other))
+    {
+      return *this;
+    }
+    data_ = std::move(other.data_);
+    comp_ = std::move(other.comp_);
+    return *this;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Map< Key, Value, Compare > & Map< Key, Value, Compare >::operator=(std::initializer_list< value_type > init)
+  {
+    data_ = init;
+    return *this;
+  }
 }
 
 #endif
