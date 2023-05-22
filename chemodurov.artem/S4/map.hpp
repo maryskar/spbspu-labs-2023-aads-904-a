@@ -316,6 +316,66 @@ namespace chemodurov
     std::swap(comp_, other.comp_);
     data_.swap(other.data_);
   }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::size_type Map< Key, Value, Compare >::count(const key_type & key) const
+  {
+    return data_.count({key, mapped_type{}});
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::iterator Map< Key, Value, Compare >::find(const key_type & key)
+  {
+    return data_.find({key, mapped_type{}});
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::const_iterator Map< Key, Value, Compare >::find(const key_type & key) const
+  {
+    return data_.find({key, mapped_type{}});
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  std::pair<
+    typename Map< Key, Value, Compare >::iterator,
+    typename Map< Key, Value, Compare >::iterator
+  > Map< Key, Value, Compare >::equal_range(const key_type & key)
+  {
+    return data_.equal_range({key, mapped_type{}});
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  std::pair<
+      typename Map< Key, Value, Compare >::const_iterator,
+      typename Map< Key, Value, Compare >::const_iterator
+  > Map< Key, Value, Compare >::equal_range(const key_type & key) const
+  {
+    return data_.equal_range({key, mapped_type{}});
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::iterator Map< Key, Value, Compare >::lower_bound(const key_type & key)
+  {
+    return data_.lower_bound({key, mapped_type{}});
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::const_iterator Map< Key, Value, Compare >::lower_bound(const key_type & key) const
+  {
+    return data_.lower_bound({key, mapped_type{}});
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::iterator Map< Key, Value, Compare >::upper_bound(const key_type & key)
+  {
+    return data_.upper_bound({key, mapped_type{}});
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::const_iterator Map< Key, Value, Compare >::upper_bound(const key_type & key) const
+  {
+    return data_.upper_bound({key, mapped_type{}});
+  }
 }
 
 #endif
