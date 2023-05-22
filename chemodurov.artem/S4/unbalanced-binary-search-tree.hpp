@@ -84,7 +84,8 @@ namespace chemodurov
     Tree< T, Compare > * fake_;
     Compare comp_;
     std::size_t size_;
-    Tree< T, Compare > * findMaxLeft(const_iterator cit);
+    Tree< T, Compare > * swapBeforeErase(const_iterator cit);
+    iterator deleteMaxLeft(Tree< T, Compare > * todel);
   };
 
   template< typename T, typename Compare >
@@ -464,42 +465,8 @@ namespace chemodurov
   typename UnbalancedBinarySearchTree< T, Compare >::iterator
       UnbalancedBinarySearchTree< T, Compare >::erase(const_iterator pos)
   {
-    Tree< T, Compare > * todel = pos.node_;
-    ++pos;
-    Tree< T, Compare > * swapped = todel;
-    if (todel->left_ == fake_)
-    {
-      todel->parent_->left_ == todel ? todel->parent_->left_ = todel->right_ : todel->parent_->right_ = todel->right_;
-      if (todel->right_ != fake_)
-      {
-        todel->right_->parent_ = todel->parent_;
-      }
-    }
-    else
-    {
-      todel = todel->left_;
-      while (todel->right_ != fake_)
-      {
-        todel = todel->right_;
-      }
-      std::swap(swapped->data_, todel->data_);
-      todel->parent_->right_ == todel ? todel->parent_->right_ = todel->left_ : todel->parent_->left_ = todel->left_;
-      if (todel->left_ != fake_)
-      {
-        todel->left_->parent_ = todel->parent_;
-      }
-    }
-    if (fake_->parent_ == todel)
-    {
-      fake_->parent_ = (++iterator(todel, fake_)).node_;
-    }
-    if (fake_->right_ == todel)
-    {
-      fake_->right_ = (--iterator(todel, fake_)).node_;
-    }
-    delete todel;
-    --size_;
-    return iterator(pos.node_, fake_);
+    Tree< T, Compare > * todel = swapBeforeErase(pos);
+    return deleteMaxLeft(todel);
   }
 
   template< typename T, typename Compare >
@@ -592,6 +559,58 @@ namespace chemodurov
     clear();
     swap(temp);
     return *this;
+  }
+
+  template< typename T, typename Compare >
+  typename UnbalancedBinarySearchTree< T, Compare >::iterator
+      UnbalancedBinarySearchTree< T, Compare >::deleteMaxLeft(Tree< T, Compare > * todel)
+  {
+    iterator pos(todel, fake_);
+    ++pos;
+    if (todel->left_ == fake_)
+    {
+      todel->parent_->left_ == todel ? todel->parent_->left_ = todel->right_ : todel->parent_->right_ = todel->right_;
+      if (todel->right_ != fake_)
+      {
+        todel->right_->parent_ = todel->parent_;
+      }
+    }
+    else
+    {
+      todel->parent_->right_ == todel ? todel->parent_->right_ = todel->left_ : todel->parent_->left_ = todel->left_;
+      if (todel->left_ != fake_)
+      {
+        todel->left_->parent_ = todel->parent_;
+      }
+    }
+    if (fake_->parent_ == todel)
+    {
+      fake_->parent_ = (++iterator(todel, fake_)).node_;
+    }
+    if (fake_->right_ == todel)
+    {
+      fake_->right_ = (--iterator(todel, fake_)).node_;
+    }
+    delete todel;
+    --size_;
+    return pos;
+  }
+
+  template< typename T, typename Compare >
+  Tree< T, Compare > * UnbalancedBinarySearchTree< T, Compare >::swapBeforeErase(const_iterator cit)
+  {
+    Tree< T, Compare > * todel = cit.node_;
+    Tree< T, Compare > * swapped = todel;
+    if (todel->left_ != fake_)
+    {
+      todel = todel->left_;
+      while (todel->right_ != fake_)
+      {
+        todel = todel->right_;
+      }
+      std::swap(swapped->data_, todel->data_);
+    }
+    return todel;
   }
 }
 

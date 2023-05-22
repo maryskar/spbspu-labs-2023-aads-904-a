@@ -323,44 +323,9 @@ namespace chemodurov
   template< typename T, typename Compare >
   typename RBTree< T, Compare >::iterator RBTree< T, Compare >::erase(const_iterator pos)
   {
-    Tree< T, Compare > * todel = pos.node_;
-    ++pos;
-    Tree< T, Compare > * swapped = todel;
-    if (todel->left_ == data_.data_.fake_)
-    {
-      balanceTreeErase(todel);
-      todel->parent_->left_ == todel ? todel->parent_->left_ = todel->right_ : todel->parent_->right_ = todel->right_;
-      if (todel->right_ != data_.data_.fake_)
-      {
-        todel->right_->parent_ = todel->parent_;
-      }
-    }
-    else
-    {
-      todel = todel->left_;
-      while (todel->right_ != data_.data_.fake_)
-      {
-        todel = todel->right_;
-      }
-      std::swap(swapped->data_, todel->data_);
-      balanceTreeErase(todel);
-      todel->parent_->right_ == todel ? todel->parent_->right_ = todel->left_ : todel->parent_->left_ = todel->left_;
-      if (todel->left_ != data_.data_.fake_)
-      {
-        todel->left_->parent_ = todel->parent_;
-      }
-    }
-    if (data_.data_.fake_->parent_ == todel)
-    {
-      data_.data_.fake_->parent_ = (++iterator(todel, data_.data_.fake_)).node_;
-    }
-    if (data_.data_.fake_->right_ == todel)
-    {
-      data_.data_.fake_->right_ = (--iterator(todel, data_.data_.fake_)).node_;
-    }
-    delete todel;
-    --data_.data_.size_;
-    return iterator(pos.node_, data_.data_.fake_);
+    Tree< T, Compare > * todel = data_.data_.swapBeforeErase(pos);
+    balanceTreeErase(todel);
+    return data_.data_.deleteMaxLeft(todel);
   }
 
   template< typename T, typename Compare >
@@ -368,9 +333,9 @@ namespace chemodurov
   {
     while (first != last)
     {
-      first = erase(first);
+      erase(first++);
     }
-    return first;
+    return iterator(first.node_, data_.data_.fake_);
   }
 
   template< typename T, typename Compare >
