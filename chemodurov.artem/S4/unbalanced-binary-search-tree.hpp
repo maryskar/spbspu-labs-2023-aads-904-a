@@ -214,7 +214,7 @@ namespace chemodurov
         }
         else
         {
-          return isLess ? const_iterator(prev, fake_) : cend();
+          return (isLess && prev->left_ == temp) ? const_iterator(prev, fake_) : (isLess ? const_iterator(temp, fake_) : cend());
         }
       }
     }
@@ -344,7 +344,7 @@ namespace chemodurov
       it.node_->right_ = new Tree< T, Compare >{value, fake_, fake_, it.node_, '0'};
       it.node_ = it.node_->right_;
     }
-    if (it.node_->parent_ == begin().node_)
+    if (it.node_->parent_ == begin().node_ && it.node_->parent_->left_ == it.node_)
     {
       fake_->parent_ = it.node_;
     }
