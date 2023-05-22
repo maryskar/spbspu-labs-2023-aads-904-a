@@ -392,20 +392,42 @@ namespace chemodurov
   void RotatableBinarySearchTree< T, Compare >::rotateLeftLeft(Tree< T, Compare > * to_rotate)
   {
     to_rotate->parent_->right_ = to_rotate->left_;
+    if (to_rotate->left_ != data_.fake_)
+    {
+      to_rotate->left_->parent_ = to_rotate->parent_;
+    }
     to_rotate->left_ = to_rotate->parent_;
     to_rotate->parent_ = to_rotate->parent_->parent_;
     to_rotate->left_->parent_ = to_rotate;
-    to_rotate->parent_->left_ == to_rotate->left_ ? to_rotate->parent_->left_ = to_rotate : to_rotate->parent_->right_ = to_rotate;
+    if (to_rotate->parent_ == data_.fake_)
+    {
+      to_rotate->parent_->left_ = to_rotate;
+    }
+    else
+    {
+      to_rotate->parent_->left_ == to_rotate->left_ ? to_rotate->parent_->left_ = to_rotate : to_rotate->parent_->right_ = to_rotate;
+    }
   }
 
   template< typename T, typename Compare >
   void RotatableBinarySearchTree< T, Compare >::rotateRightRight(Tree< T, Compare > * to_rotate)
   {
     to_rotate->parent_->left_ = to_rotate->right_;
+    if (to_rotate->right_ != data_.fake_)
+    {
+      to_rotate->right_->parent_ = to_rotate->parent_;
+    }
     to_rotate->right_ = to_rotate->parent_;
-    to_rotate->parent_ = to_rotate->parent_->parent_;
+    to_rotate->parent_ = to_rotate->right_->parent_;
     to_rotate->right_->parent_ = to_rotate;
-    to_rotate->parent_->left_ == to_rotate->right_ ? to_rotate->parent_->left_ = to_rotate : to_rotate->parent_->right_ = to_rotate;
+    if (to_rotate->parent_ == data_.fake_)
+    {
+      to_rotate->parent_->left_ = to_rotate;
+    }
+    else
+    {
+      to_rotate->parent_->left_ == to_rotate->right_ ? to_rotate->parent_->left_ = to_rotate : to_rotate->parent_->right_ = to_rotate;
+    }
   }
 }
 

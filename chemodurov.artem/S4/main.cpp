@@ -4,9 +4,9 @@
 int main()
 {
   chemodurov::RBTree< int > tree;
-  for (int i = 0; i < 20; ++i)
+  for (int i = 0; i < 40; ++i)
   {
-    int a = std::rand() % 100;
+    int a = std::rand() % 1000;
     tree.insert(a);
     std::cout << a << ' ';
   }

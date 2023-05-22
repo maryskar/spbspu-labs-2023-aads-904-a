@@ -183,8 +183,6 @@ namespace chemodurov
       UnbalancedBinarySearchTree< T, Compare >::lower_bound(const_reference value) const
   {
     Tree< T, Compare > * temp = fake_->left_;
-    Tree< T, Compare > * prev = temp;
-    bool isLess = false;
     value_compare comp = value_comp();
     while (temp != fake_)
     {
@@ -192,9 +190,7 @@ namespace chemodurov
       {
         if (temp->left_ != fake_)
         {
-          prev = temp;
           temp = temp->left_;
-          isLess = true;
         }
         else
         {
@@ -209,12 +205,11 @@ namespace chemodurov
       {
         if (temp->right_ != fake_)
         {
-          prev = temp;
           temp = temp->right_;
         }
         else
         {
-          return (isLess && prev->left_ == temp) ? const_iterator(prev, fake_) : (isLess ? const_iterator(temp, fake_) : cend());
+          return ++const_iterator(temp, fake_);
         }
       }
     }
