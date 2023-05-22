@@ -195,6 +195,71 @@ namespace chemodurov
   {
     data_.clear();
   }
+
+  template< typename Key, typename Value, typename Compare >
+  std::pair<
+      typename Map< Key, Value, Compare >::iterator,
+      bool
+  > Map< Key, Value, Compare >::insert(const value_type & value)
+  {
+    return data_.insert(value);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename P >
+  std::pair<
+      typename Map< Key, Value, Compare >::iterator,
+      bool
+  > Map< Key, Value, Compare >::insert(P && value)
+  {
+    return data_.insert(value);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::iterator
+      Map< Key, Value, Compare >::insert(const_iterator pos, const_reference value)
+  {
+    return data_.insert(pos, value);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename P >
+  typename Map< Key, Value, Compare >::iterator
+      Map< Key, Value, Compare >::insert(const_iterator pos, P && value)
+  {
+    return data_.insert(pos, value);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename InputIt >
+  void Map< Key, Value, Compare >::insert(InputIt first, InputIt last)
+  {
+    data_.insert(first, last);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  void Map< Key, Value, Compare >::insert(std::initializer_list< value_type > init)
+  {
+    data_.insert(init);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename... Args >
+  std::pair<
+      typename Map< Key, Value, Compare >::iterator,
+      bool
+  > Map< Key, Value, Compare >::emplace(Args && ... args)
+  {
+    return data_.emplace(std::forward< Args >(args)...);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename... Args >
+  typename Map< Key, Value, Compare >::iterator
+      Map< Key, Value, Compare >::emplace_hint(const_iterator hint, Args && ... args)
+  {
+    return data_.emplace_hint(hint, std::forward< Args >(args)...);
+  }
 }
 
 #endif
