@@ -396,6 +396,22 @@ namespace chemodurov
   }
 
   template< typename Key, typename Value, typename Compare >
+  class Map< Key, Value, Compare >::value_compare
+  {
+   public:
+    using result_type = bool;
+    using first_argument_type = value_type;
+    using second_argument_type = value_type;
+    bool operator()(const value_type & lhs, const value_type & rhs) const
+    {
+      return comp(lhs.first, rhs.first);
+    };
+   protected:
+    Compare comp;
+    explicit value_compare(Compare c): comp(c) {};
+  };
+
+  template< typename Key, typename Value, typename Compare >
   bool operator==(const Map< Key, Value, Compare > & lhs, const Map< Key, Value, Compare > & rhs)
   {
     return lhs.isEqual(rhs);
