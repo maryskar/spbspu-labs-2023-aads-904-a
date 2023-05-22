@@ -82,6 +82,10 @@ namespace chemodurov
     key_compare comp_;
   };
 
+  void print(std::ostream & out, const std::pair< int, std::string > & pair);
+  void print(std::ostream & out, const Map< int, std::string > & dict);
+  void print(std::ostream & out, const std::pair< std::string, Map< int, std::string > > & pair);
+
   template< typename Key, typename Value, typename Compare >
   Map< Key, Value, Compare >::Map():
    data_(value_compare{}),
