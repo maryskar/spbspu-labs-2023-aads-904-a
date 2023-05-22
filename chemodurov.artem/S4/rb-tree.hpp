@@ -197,6 +197,14 @@ namespace chemodurov
     {
       res.first.node_->color_ = 'r';
       balanceTreeAfterInsert(res.first.node_);
+      if (data_.data_.fake_->parent_->left_ != data_.data_.fake_)
+      {
+        data_.data_.fake_->parent_ = data_.data_.fake_->parent_->left_;
+      }
+      if (data_.data_.fake_->right_->right_ != data_.data_.fake_)
+      {
+        data_.data_.fake_->right_ = data_.data_.fake_->right_->right_;
+      }
     }
     return res;
   }
@@ -438,16 +446,27 @@ namespace chemodurov
     }
     else
     {
-      if (par->left_ == inserted)
+      if (grandpa->left_ == par && par->left_ == inserted)
       {
         par->color_ = 'b';
         grandpa->color_ = 'r';
         data_.rotateRightRight(par);
       }
-      else
+      else if (grandpa->right_ == par && par->right_ == inserted)
+      {
+        par->color_ = 'b';
+        grandpa->color_ = 'r';
+        data_.rotateLeftLeft(par);
+      }
+      else if (par->right_ == inserted)
       {
         data_.rotateLeftLeft(inserted);
         balanceTreeAfterInsert(inserted->left_);
+      }
+      else
+      {
+        data_.rotateRightRight(inserted);
+        balanceTreeAfterInsert(inserted->right_);
       }
     }
   }
