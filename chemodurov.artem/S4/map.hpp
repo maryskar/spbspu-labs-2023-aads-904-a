@@ -376,6 +376,36 @@ namespace chemodurov
   {
     return data_.upper_bound({key, mapped_type{}});
   }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::key_compare Map< Key, Value, Compare >::key_comp() const
+  {
+    return comp_;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::value_compare Map< Key, Value, Compare >::value_comp() const
+  {
+    return value_compare();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  bool Map< Key, Value, Compare >::isEqual(const this_t & rhs)
+  {
+    return data_ == rhs.data_;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  bool operator==(const Map< Key, Value, Compare > & lhs, const Map< Key, Value, Compare > & rhs)
+  {
+    return lhs.isEqual(rhs);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  bool operator!=(const Map< Key, Value, Compare > & lhs, const Map< Key, Value, Compare > & rhs)
+  {
+    return !(lhs == rhs);
+  }
 }
 
 #endif
