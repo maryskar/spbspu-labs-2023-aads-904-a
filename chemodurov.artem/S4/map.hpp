@@ -284,6 +284,38 @@ namespace chemodurov
   {
     return (*this)[key];
   }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::iterator Map< Key, Value, Compare >::erase(iterator pos)
+  {
+    return data_.erase(pos);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::iterator Map< Key, Value, Compare >::erase(const_iterator pos)
+  {
+    return data_.erase(pos);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::iterator
+      Map< Key, Value, Compare >::erase(const_iterator first, const_iterator last)
+  {
+    return data_.erase(first, last);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::size_type Map< Key, Value, Compare >::erase(const key_type & key)
+  {
+    return data_.erase({key, mapped_type{}});
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  void Map< Key, Value, Compare >::swap(this_t & other)
+  {
+    std::swap(comp_, other.comp_);
+    data_.swap(other.data_);
+  }
 }
 
 #endif
