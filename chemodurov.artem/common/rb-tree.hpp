@@ -31,6 +31,9 @@ namespace chemodurov
     iterator begin() noexcept;
     const_iterator begin() const noexcept;
     const_iterator cbegin() const noexcept;
+    iterator last() noexcept;
+    const_iterator last() const noexcept;
+    const_iterator clast() const noexcept;
     iterator end() noexcept;
     const_iterator end() const noexcept;
     const_iterator cend() const noexcept;
@@ -113,14 +116,14 @@ namespace chemodurov
   template< typename T, typename Compare >
   RBTree< T, Compare > & RBTree< T, Compare >::operator=(const this_t & other)
   {
-    data_ = other.data;
+    data_ = other.data_;
     return *this;
   }
 
   template< typename T, typename Compare >
   RBTree< T, Compare > & RBTree< T, Compare >::operator=(this_t && other) noexcept
   {
-    data_ = std::move(other.data);
+    data_ = std::move(other.data_);
     return *this;
   }
 
@@ -148,6 +151,24 @@ namespace chemodurov
   typename RBTree< T, Compare >::const_iterator RBTree< T, Compare >::cbegin() const noexcept
   {
     return data_.cbegin();
+  }
+
+  template< typename T, typename Compare >
+  typename RBTree< T, Compare >::iterator RBTree< T, Compare >::last() noexcept
+  {
+    return data_.last();
+  }
+
+  template< typename T, typename Compare >
+  typename RBTree< T, Compare >::const_iterator RBTree< T, Compare >::last() const noexcept
+  {
+    return data_.last();
+  }
+
+  template< typename T, typename Compare >
+  typename RBTree< T, Compare >::const_iterator RBTree< T, Compare >::clast() const noexcept
+  {
+    return data_.clast();
   }
 
   template< typename T, typename Compare >

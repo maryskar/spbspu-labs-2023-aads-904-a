@@ -34,6 +34,9 @@ namespace chemodurov
     iterator begin() noexcept;
     const_iterator begin() const noexcept;
     const_iterator cbegin() const noexcept;
+    iterator last() noexcept;
+    const_iterator last() const noexcept;
+    const_iterator clast() const noexcept;
     iterator end() noexcept;
     const_iterator end() const noexcept;
     const_iterator cend() const noexcept;
@@ -158,6 +161,24 @@ namespace chemodurov
   typename Map< Key, Value, Compare >::const_iterator Map< Key, Value, Compare >::cbegin() const noexcept
   {
     return data_.cbegin();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::iterator Map< Key, Value, Compare >::last() noexcept
+  {
+    return data_.last();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::const_iterator Map< Key, Value, Compare >::last() const noexcept
+  {
+    return clast();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::const_iterator Map< Key, Value, Compare >::clast() const noexcept
+  {
+    return data_.clast();
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -399,6 +420,7 @@ namespace chemodurov
   class Map< Key, Value, Compare >::value_compare
   {
     friend class Map< Key, Value, Compare >;
+    friend class UnbalancedBinarySearchTree< value_type, value_compare >;
    public:
     using result_type = bool;
     using first_argument_type = value_type;

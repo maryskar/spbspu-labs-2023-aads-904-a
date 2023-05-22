@@ -35,6 +35,9 @@ namespace chemodurov
     iterator begin() noexcept;
     const_iterator begin() const noexcept;
     const_iterator cbegin() const noexcept;
+    iterator last() noexcept;
+    const_iterator last() const noexcept;
+    const_iterator clast() const noexcept;
     iterator end() noexcept;
     const_iterator end() const noexcept;
     const_iterator cend() const noexcept;
@@ -148,6 +151,27 @@ namespace chemodurov
       RotatableBinarySearchTree< T, Compare >::cbegin() const noexcept
   {
     return data_.cbegin();
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::iterator
+      RotatableBinarySearchTree< T, Compare >::last() noexcept
+  {
+    return data_.last();
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::const_iterator
+      RotatableBinarySearchTree< T, Compare >::last() const noexcept
+  {
+    return data_.last();
+  }
+
+  template< typename T, typename Compare >
+  typename RotatableBinarySearchTree< T, Compare >::const_iterator
+      RotatableBinarySearchTree< T, Compare >::clast() const noexcept
+  {
+    return data_.clast();
   }
 
   template< typename T, typename Compare >

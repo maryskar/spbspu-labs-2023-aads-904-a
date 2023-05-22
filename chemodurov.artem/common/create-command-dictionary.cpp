@@ -54,7 +54,7 @@ namespace chemodurov
       if (p(snd_dic.find(i->first), snd_dic.last()))
       {
         res.erase(i->first);
-        i = res.before_begin();
+        i = res.begin();
       }
     }
     data.insert({name_res, res});
