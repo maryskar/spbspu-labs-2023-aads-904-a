@@ -88,6 +88,7 @@ namespace chemodurov
     Tree< T, Compare > * fake_;
     Compare comp_;
     std::size_t size_;
+    void swapPointers(Tree< T, Compare > * lhs, Tree< T, Compare > * rhs);
     Tree< T, Compare > * swapBeforeErase(const_iterator cit);
     iterator deleteMaxLeft(Tree< T, Compare > * todel);
   };
@@ -621,6 +622,50 @@ namespace chemodurov
   }
 
   template< typename T, typename Compare >
+  void UnbalancedBinarySearchTree< T, Compare >::swapPointers(Tree< T, Compare > * lhs, Tree< T, Compare > * rhs)
+  {
+    if (lhs == fake_ || rhs == fake_)
+    {
+      return;
+    }
+    if (lhs->parent_ != fake_)
+    {
+      lhs->parent_->left_ == lhs ? lhs->parent_->left_ = rhs : lhs->parent_->right_ = rhs;
+    }
+    else
+    {
+      lhs->parent_->left_ = rhs;
+    }
+    if (rhs->parent_ != fake_)
+    {
+      rhs->parent_->left_ == rhs ? rhs->parent_->left_ = lhs : rhs->parent_->right_ = lhs;
+    }
+    else
+    {
+      rhs->parent_->left_ = lhs;
+    }
+    if (lhs->left_ != fake_)
+    {
+      lhs->left_->parent_ = rhs;
+    }
+    if (lhs->right_ != fake_)
+    {
+      lhs->right_->parent_ = rhs;
+    }
+    if (rhs->left_ != fake_)
+    {
+      rhs->left_->parent_ = lhs;
+    }
+    if (rhs->right_ != fake_)
+    {
+      rhs->right_->parent_ = lhs;
+    }
+    std::swap(lhs->parent_, rhs->parent_);
+    std::swap(lhs->right_, rhs->right_);
+    std::swap(lhs->left_, rhs->left_);
+  }
+
+  template< typename T, typename Compare >
   Tree< T, Compare > * UnbalancedBinarySearchTree< T, Compare >::swapBeforeErase(const_iterator cit)
   {
     Tree< T, Compare > * todel = cit.node_;
@@ -632,7 +677,7 @@ namespace chemodurov
       {
         todel = todel->right_;
       }
-      std::swap(swapped->data_, todel->data_);
+      swapPointers(todel, swapped);
     }
     return todel;
   }
