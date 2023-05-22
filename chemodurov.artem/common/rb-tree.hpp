@@ -1,7 +1,6 @@
 #ifndef S4_RB_TREE_HPP
 #define S4_RB_TREE_HPP
 #include "rotatable-binary-search-tree.hpp"
-#include "const-rb-iterator.hpp"
 
 namespace chemodurov
 {
