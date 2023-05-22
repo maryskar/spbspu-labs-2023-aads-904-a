@@ -177,6 +177,24 @@ namespace chemodurov
   {
     return data_.cend();
   }
+
+  template< typename Key, typename Value, typename Compare >
+  bool Map< Key, Value, Compare >::empty() const noexcept
+  {
+    return data_.empty();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  size_t Map< Key, Value, Compare >::size() const noexcept
+  {
+    return data_.size();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  void Map< Key, Value, Compare >::clear() noexcept
+  {
+    data_.clear();
+  }
 }
 
 #endif
