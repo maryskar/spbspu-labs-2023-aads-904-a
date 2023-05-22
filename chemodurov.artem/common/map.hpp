@@ -76,7 +76,7 @@ namespace chemodurov
     const_iterator upper_bound(const key_type & key) const;
     key_compare key_comp() const;
     value_compare value_comp() const;
-    bool isEqual(const this_t & rhs);
+    bool isEqual(const this_t & rhs) const;
    private:
     RBTree< value_type, value_compare > data_;
     key_compare comp_;
@@ -415,7 +415,7 @@ namespace chemodurov
   }
 
   template< typename Key, typename Value, typename Compare >
-  bool Map< Key, Value, Compare >::isEqual(const this_t & rhs)
+  bool Map< Key, Value, Compare >::isEqual(const this_t & rhs) const
   {
     return data_ == rhs.data_;
   }

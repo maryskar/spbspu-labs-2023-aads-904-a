@@ -51,7 +51,7 @@ namespace chemodurov
       }
       return *this;
     }
-    Tree< T > * previous = node_;
+    Tree< T, Compare > * previous = node_;
     node_ = node_->parent_;
     while (node_ != fake_ && node_->right_ == previous)
     {
@@ -102,7 +102,7 @@ namespace chemodurov
       }
       return *this;
     }
-    Tree< T > * previous = node_;
+    Tree< T, Compare > * previous = node_;
     node_ = node_->parent_;
     while (node_ != fake_ && node_->left_ == previous)
     {
