@@ -260,6 +260,30 @@ namespace chemodurov
   {
     return data_.emplace_hint(hint, std::forward< Args >(args)...);
   }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::mapped_type & Map< Key, Value, Compare >::at(const key_type & key)
+  {
+    return const_cast< mapped_type & >((static_cast< const this_t & >(*this)).at(key));
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  const typename Map< Key, Value, Compare >::mapped_type & Map< Key, Value, Compare >::at(const key_type & key) const
+  {
+    return (data_.at({key, mapped_type{}})).second;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::mapped_type & Map< Key, Value, Compare >::operator[](const key_type & key)
+  {
+    return data_[{key, mapped_type{}}];
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::mapped_type & Map< Key, Value, Compare >::operator[](key_type && key)
+  {
+    return (*this)[key];
+  }
 }
 
 #endif
