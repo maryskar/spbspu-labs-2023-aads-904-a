@@ -7,7 +7,7 @@ namespace chemodurov
   std::string readCommand(std::istream & in);
   void doCommand(const std::string & name_command,
       const std::pair< Map< std::string, union_t >, Map< std::string, print_t > > & commands,
-      Map< std::string, dic_t > & data,
+        Map< std::string, dic_t > & data,
       std::istream & in,
       std::ostream & out);
 }

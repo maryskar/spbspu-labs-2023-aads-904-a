@@ -1,5 +1,6 @@
 #ifndef S2_CREATE_COMMAND_DICTIONARY_HPP
 #define S2_CREATE_COMMAND_DICTIONARY_HPP
+#include <string>
 #include "map.hpp"
 
 namespace chemodurov
