@@ -87,7 +87,7 @@ namespace chemodurov
 
   template< typename T, typename Compare >
   RotatableBinarySearchTree< T, Compare >::RotatableBinarySearchTree(this_t && other) noexcept:
-   data_(std::move(other.data))
+   data_(std::move(other.data_))
   {}
 
   template< typename T, typename Compare >

@@ -85,7 +85,7 @@ namespace chemodurov
 
   template< typename T, typename Compare >
   RBTree< T, Compare >::RBTree(this_t && other) noexcept:
-   data_(std::move(other.data))
+   data_(std::move(other.data_))
   {
     data_.data_.fake_->color_ = 'b';
   }

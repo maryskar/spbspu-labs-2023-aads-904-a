@@ -1,4 +1,5 @@
 #include "create-command-dictionary.hpp"
+#include <iostream>
 
 namespace chemodurov
 {

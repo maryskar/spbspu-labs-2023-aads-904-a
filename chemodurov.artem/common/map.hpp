@@ -81,7 +81,7 @@ namespace chemodurov
 
   template< typename Key, typename Value, typename Compare >
   Map< Key, Value, Compare >::Map():
-   data_(),
+   data_(value_compare{}),
    comp_()
   {}
 
@@ -398,6 +398,7 @@ namespace chemodurov
   template< typename Key, typename Value, typename Compare >
   class Map< Key, Value, Compare >::value_compare
   {
+    friend class Map< Key, Value, Compare >;
    public:
     using result_type = bool;
     using first_argument_type = value_type;
@@ -408,7 +409,12 @@ namespace chemodurov
     };
    protected:
     Compare comp;
-    explicit value_compare(Compare c): comp(c) {};
+    value_compare():
+     comp()
+    {}
+    explicit value_compare(Compare c):
+     comp(c)
+    {}
   };
 
   template< typename Key, typename Value, typename Compare >
