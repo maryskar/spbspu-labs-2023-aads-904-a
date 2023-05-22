@@ -395,6 +395,7 @@ namespace chemodurov
     to_rotate->left_ = to_rotate->parent_;
     to_rotate->parent_ = to_rotate->parent_->parent_;
     to_rotate->left_->parent_ = to_rotate;
+    to_rotate->parent_->left_ == to_rotate->left_ ? to_rotate->parent_->left_ = to_rotate : to_rotate->parent_->right_ = to_rotate;
   }
 
   template< typename T, typename Compare >
@@ -404,6 +405,7 @@ namespace chemodurov
     to_rotate->right_ = to_rotate->parent_;
     to_rotate->parent_ = to_rotate->parent_->parent_;
     to_rotate->right_->parent_ = to_rotate;
+    to_rotate->parent_->left_ == to_rotate->right_ ? to_rotate->parent_->left_ = to_rotate : to_rotate->parent_->right_ = to_rotate;
   }
 }
 

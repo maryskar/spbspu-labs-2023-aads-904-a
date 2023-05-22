@@ -329,18 +329,27 @@ namespace chemodurov
     {
       return {it, false};
     }
-    Tree< T, Compare> * inserted = new Tree< T, Compare >{value, it.node_->left_, fake_, it.node_, '0'};
-    it.node_->left_ = inserted;
-    if (it.node_->left_->left_ != fake_)
+    if (it.node_->left_ == fake_)
     {
-      it.node_->left_->left_->parent_ = inserted;
+      it.node_->left_ = new Tree< T, Compare >{value, fake_, fake_, it.node_, '0'};
+      it.node_ = it.node_->left_;
     }
-    if (it == begin())
+    else
     {
-      fake_->parent_ = inserted;
+      it.node_ = it.node_->left_;
+      while (it.node_->right_ != fake_)
+      {
+        it.node_ = it.node_->right_;
+      }
+      it.node_->right_ = new Tree< T, Compare >{value, fake_, fake_, it.node_, '0'};
+      it.node_ = it.node_->right_;
+    }
+    if (it.node_->parent_ == begin().node_)
+    {
+      fake_->parent_ = it.node_;
     }
     ++size_;
-    return {iterator(inserted, fake_), true};
+    return {iterator(it.node_, fake_), true};
   }
 
   template< typename T, typename Compare >
