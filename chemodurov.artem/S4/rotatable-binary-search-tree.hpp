@@ -73,6 +73,7 @@ namespace chemodurov
     iterator upper_bound(const_reference value);
     const_iterator upper_bound(const_reference value) const;
     value_compare value_comp() const;
+    bool isEqual(const this_t & rhs);
    private:
     UnbalancedBinarySearchTree< T, Compare > data_;
     void rotateLeftLeft(Tree< T, Compare > * to_rotate);
@@ -428,6 +429,24 @@ namespace chemodurov
     {
       to_rotate->parent_->left_ == to_rotate->right_ ? to_rotate->parent_->left_ = to_rotate : to_rotate->parent_->right_ = to_rotate;
     }
+  }
+
+  template< typename T, typename Compare >
+  bool RotatableBinarySearchTree< T, Compare >::isEqual(const this_t & rhs)
+  {
+    return data_ == rhs.data_;
+  }
+
+  template< typename T, typename Compare >
+  bool operator==(const RotatableBinarySearchTree< T, Compare > & lhs, const RotatableBinarySearchTree< T, Compare > & rhs)
+  {
+    return lhs.isEqual(rhs);
+  }
+
+  template< typename T, typename Compare >
+  bool operator!=(const RotatableBinarySearchTree< T, Compare > & lhs, const RotatableBinarySearchTree< T, Compare > & rhs)
+  {
+    return !(lhs == rhs);
   }
 }
 
