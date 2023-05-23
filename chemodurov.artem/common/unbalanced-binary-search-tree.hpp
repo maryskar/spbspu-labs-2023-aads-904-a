@@ -305,7 +305,7 @@ namespace chemodurov
       UnbalancedBinarySearchTree< T, Compare >::find(const_reference value) const
   {
     const_iterator cit = lower_bound(value);
-    return (*cit == value) ? cit : cend();
+    return (!value_comp()(*cit, value) && !value_comp()(value, *cit)) ? cit : cend();
   }
 
   template< typename T, typename Compare >
@@ -624,45 +624,97 @@ namespace chemodurov
   template< typename T, typename Compare >
   void UnbalancedBinarySearchTree< T, Compare >::swapPointers(Tree< T, Compare > * lhs, Tree< T, Compare > * rhs)
   {
-    if (lhs == fake_ || rhs == fake_)
+    if (lhs == fake_ || rhs == fake_ || lhs == rhs)
     {
       return;
     }
-    if (lhs->parent_ != fake_)
+    Tree< T, Compare > * temp = nullptr;
+    if (lhs->parent_ != rhs)
     {
-      lhs->parent_->left_ == lhs ? lhs->parent_->left_ = rhs : lhs->parent_->right_ = rhs;
+      if (lhs->parent_ != fake_)
+      {
+        lhs->parent_->left_ == lhs ? lhs->parent_->left_ = rhs : lhs->parent_->right_ = rhs;
+      }
+      else
+      {
+        lhs->parent_->left_ = rhs;
+      }
     }
-    else
+    if (rhs->parent_ != lhs)
     {
-      lhs->parent_->left_ = rhs;
+      if (rhs->parent_ != fake_)
+      {
+        rhs->parent_->left_ == rhs ? rhs->parent_->left_ = lhs : rhs->parent_->right_ = lhs;
+      }
+      else
+      {
+        rhs->parent_->left_ = lhs;
+      }
     }
-    if (rhs->parent_ != fake_)
-    {
-      rhs->parent_->left_ == rhs ? rhs->parent_->left_ = lhs : rhs->parent_->right_ = lhs;
-    }
-    else
-    {
-      rhs->parent_->left_ = lhs;
-    }
-    if (lhs->left_ != fake_)
+    if (lhs->left_ != fake_ && lhs->left_ != rhs)
     {
       lhs->left_->parent_ = rhs;
     }
-    if (lhs->right_ != fake_)
+    if (lhs->right_ != fake_ && lhs->right_ != rhs)
     {
       lhs->right_->parent_ = rhs;
     }
-    if (rhs->left_ != fake_)
+    if (rhs->left_ != fake_ && rhs->left_ != lhs)
     {
       rhs->left_->parent_ = lhs;
     }
-    if (rhs->right_ != fake_)
+    if (rhs->right_ != fake_ && rhs->right_ != lhs)
     {
       rhs->right_->parent_ = lhs;
     }
-    std::swap(lhs->parent_, rhs->parent_);
-    std::swap(lhs->right_, rhs->right_);
-    std::swap(lhs->left_, rhs->left_);
+    if (rhs->parent_ != lhs && lhs->parent_ != rhs)
+    {
+      std::swap(lhs->parent_, rhs->parent_);
+    }
+    else if (lhs->parent_ == rhs)
+    {
+      temp = rhs->parent_;
+      rhs->parent_ = lhs;
+      lhs->parent_ = temp;
+    }
+    else
+    {
+      temp = lhs->parent_;
+      lhs->parent_ = rhs;
+      rhs->parent_ = temp;
+    }
+    if (lhs->right_ != rhs && rhs->right_ != lhs)
+    {
+      std::swap(lhs->right_, rhs->right_);
+    }
+    else if (lhs->right_ == rhs)
+    {
+      temp = rhs->right_;
+      rhs->right_ = lhs;
+      lhs->right_ = temp;
+    }
+    else
+    {
+      temp = lhs->right_;
+      lhs->right_ = rhs;
+      rhs->right_ = temp;
+    }
+    if (lhs->left_ != rhs && rhs->left_ != lhs)
+    {
+      std::swap(lhs->left_, rhs->left_);
+    }
+    else if (lhs->left_ == rhs)
+    {
+      temp = rhs->left_;
+      rhs->left_ = lhs;
+      lhs->left_ = temp;
+    }
+    else
+    {
+      temp = lhs->left_;
+      lhs->left_ = rhs;
+      rhs->left_ = temp;
+    }
   }
 
   template< typename T, typename Compare >
@@ -679,7 +731,7 @@ namespace chemodurov
       }
       swapPointers(todel, swapped);
     }
-    return todel;
+    return swapped;
   }
 
   template< typename T, typename Compare >

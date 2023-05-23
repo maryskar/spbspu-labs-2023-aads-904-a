@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <read-dictionary-of-dictionary.hpp>
 #include <read-and-do-command.hpp>
+#include <map>
 
 int main(int argc, char ** argv)
 {

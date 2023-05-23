@@ -509,6 +509,10 @@ namespace chemodurov
       auto sibling = (par->left_ == todel ? par->right_ : par->left_);
       auto out_nep = (par->left_ == sibling ? sibling->left_ : sibling->right_);
       auto in_nep = (par->left_ == sibling ? sibling->right_ : sibling->left_);
+      if (sibling == data_.data_.fake_)
+      {
+        out_nep = in_nep = sibling;
+      }
       if (out_nep->color_ == 'r')
       {
         if (par->right_ == sibling)

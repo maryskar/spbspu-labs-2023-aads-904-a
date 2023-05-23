@@ -57,6 +57,10 @@ namespace chemodurov
         i = res.begin();
       }
     }
+    if (p(snd_dic.find(res.begin()->first), snd_dic.last()))
+    {
+      res.erase(res.begin()->first);
+    }
     data.insert({name_res, res});
   }
 
