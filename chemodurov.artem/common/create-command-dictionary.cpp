@@ -51,13 +51,13 @@ namespace chemodurov
     res = fst_dic;
     for (auto i = res.begin(); i != res.end(); ++i)
     {
-      if (p(snd_dic.find(i->first), snd_dic.last()))
+      if (p(snd_dic.find(i->first), snd_dic.end()))
       {
         res.erase(i->first);
         i = res.begin();
       }
     }
-    if (p(snd_dic.find(res.begin()->first), snd_dic.last()))
+    if (p(snd_dic.find(res.begin()->first), snd_dic.end()))
     {
       res.erase(res.begin()->first);
     }

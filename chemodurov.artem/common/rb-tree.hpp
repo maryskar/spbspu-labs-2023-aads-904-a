@@ -18,7 +18,7 @@ namespace chemodurov
     using const_iterator = typename RotatableBinarySearchTree< value_type, value_compare >::const_iterator;
     using this_t = RBTree< value_type, value_compare >;
     RBTree();
-    RBTree(const this_t & other) = default;
+    RBTree(const this_t & other);
     RBTree(this_t && other) noexcept;
     explicit RBTree(const value_compare & comp);
     template< typename InputIt >
@@ -87,6 +87,13 @@ namespace chemodurov
   }
 
   template< typename T, typename Compare >
+  RBTree< T, Compare >::RBTree(const this_t & other):
+   data_(other.begin(), other.end(), other.value_comp())
+  {
+    data_.data_.fake_->color_ = 'b';
+  }
+
+  template< typename T, typename Compare >
   RBTree< T, Compare >::RBTree(this_t && other) noexcept:
    data_(std::move(other.data_))
   {
@@ -116,14 +123,26 @@ namespace chemodurov
   template< typename T, typename Compare >
   RBTree< T, Compare > & RBTree< T, Compare >::operator=(const this_t & other)
   {
-    data_ = other.data_;
+    if (this == std::addressof(other))
+    {
+      return *this;
+    }
+    this_t temp(other);
+    clear();
+    swap(temp);
     return *this;
   }
 
   template< typename T, typename Compare >
   RBTree< T, Compare > & RBTree< T, Compare >::operator=(this_t && other) noexcept
   {
-    data_ = std::move(other.data_);
+    if (this == std::addressof(other))
+    {
+      return *this;
+    }
+    clear();
+    this_t temp(std::move(other));
+    swap(temp);
     return *this;
   }
 

@@ -277,8 +277,8 @@ namespace chemodurov
   template< typename T, typename Compare >
   void UnbalancedBinarySearchTree< T, Compare >::swap(this_t & other)
   {
-    std::swap(fake_, other.fake_);
     std::swap(comp_, other.comp_);
+    std::swap(fake_, other.fake_);
     std::swap(size_, other.size_);
   }
 
@@ -305,7 +305,7 @@ namespace chemodurov
       UnbalancedBinarySearchTree< T, Compare >::find(const_reference value) const
   {
     const_iterator cit = lower_bound(value);
-    return (!value_comp()(*cit, value) && !value_comp()(value, *cit)) ? cit : cend();
+    return cit == cend() ? cit : ((!value_comp()(*cit, value) && !value_comp()(value, *cit)) ? cit : cend());
   }
 
   template< typename T, typename Compare >
