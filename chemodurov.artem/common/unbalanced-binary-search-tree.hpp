@@ -391,7 +391,7 @@ namespace chemodurov
   {
     if (value_comp()(value, *pos) && value_comp()(*(--pos), value))
     {
-      pos.node_->left_ = new Tree< T, Compare >{value, pos.node_->left_, fake_, pos.node_, 'r'};
+      pos.node_->left_ = new Tree< T, Compare >{value, pos.node_->left_, fake_, pos.node_, '0'};
       ++size_;
       return iterator(pos.node_->left_, fake_);
     }

@@ -227,7 +227,12 @@ namespace chemodurov
       bool
   > Map< Key, Value, Compare >::insert(const value_type & value)
   {
-    return data_.insert(value);
+    auto res = data_.insert(value);
+    if (!res.second)
+    {
+      res.first->second = value.second;
+    }
+    return res;
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -237,45 +242,64 @@ namespace chemodurov
       bool
   > Map< Key, Value, Compare >::insert(P && value)
   {
-    return data_.insert(value);
+    static_assert(std::is_constructible< value_type, P&& >::value, "Value type doesn't constructible from type you try to insert");
+    const value_type val(std::forward< P >(value));
+    return insert(val);
   }
 
   template< typename Key, typename Value, typename Compare >
   typename Map< Key, Value, Compare >::iterator
       Map< Key, Value, Compare >::insert(const_iterator pos, const_reference value)
   {
-    return data_.insert(pos, value);
+    bool was_inserted = false;
+    auto moved_pos = pos;
+    --moved_pos;
+    if (*moved_pos == value)
+    {
+      was_inserted = true;
+    }
+    iterator res = data_.insert(pos, value);
+    if (!was_inserted)
+    {
+      res = (insert(value)).first;
+    }
+    return res;
   }
 
   template< typename Key, typename Value, typename Compare >
   template< typename P >
-  typename Map< Key, Value, Compare >::iterator
-      Map< Key, Value, Compare >::insert(const_iterator pos, P && value)
+  typename Map< Key, Value, Compare >::iterator Map< Key, Value, Compare >::insert(const_iterator pos, P && value)
   {
-    return data_.insert(pos, value);
+    static_assert(std::is_constructible< value_type, P&& >::value, "Value type isn't constructible from type you try to insert");
+    const value_type val(std::forward< P >(value));
+    return insert(pos, val);
   }
 
   template< typename Key, typename Value, typename Compare >
   template< typename InputIt >
   void Map< Key, Value, Compare >::insert(InputIt first, InputIt last)
   {
-    data_.insert(first, last);
+    while (first != last)
+    {
+      insert(*first++);
+    }
   }
 
   template< typename Key, typename Value, typename Compare >
   void Map< Key, Value, Compare >::insert(std::initializer_list< value_type > init)
   {
-    data_.insert(init);
+    insert(init.begin(), init.end());
   }
 
   template< typename Key, typename Value, typename Compare >
   template< typename... Args >
   std::pair<
-      typename Map< Key, Value, Compare >::iterator,
-      bool
+    typename Map< Key, Value, Compare >::iterator,
+    bool
   > Map< Key, Value, Compare >::emplace(Args && ... args)
   {
-    return data_.emplace(std::forward< Args >(args)...);
+    value_type val(std::forward< Args >(args)...);
+    return insert(std::move(val));
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -283,7 +307,8 @@ namespace chemodurov
   typename Map< Key, Value, Compare >::iterator
       Map< Key, Value, Compare >::emplace_hint(const_iterator hint, Args && ... args)
   {
-    return data_.emplace_hint(hint, std::forward< Args >(args)...);
+    value_type val(std::forward< Args >(args)...);
+    return insert(hint, std::move(val));
   }
 
   template< typename Key, typename Value, typename Compare >
