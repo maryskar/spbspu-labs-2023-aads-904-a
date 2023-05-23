@@ -19,6 +19,8 @@ namespace chemodurov
     using const_reference = const value_type &;
     using iterator = typename RBTree< value_type, value_compare >::iterator;
     using const_iterator = typename RBTree< value_type, value_compare >::const_iterator;
+    using reverse_iterator = std::reverse_iterator< iterator >;
+    using const_reverse_iterator = std::reverse_iterator< const_iterator >;
     using this_t = Map< key_type, mapped_type , key_compare >;
     Map();
     Map(const this_t & other) = default;
@@ -40,6 +42,12 @@ namespace chemodurov
     iterator end() noexcept;
     const_iterator end() const noexcept;
     const_iterator cend() const noexcept;
+    reverse_iterator rbegin() noexcept;
+    const_reverse_iterator rbegin() const noexcept;
+    const_reverse_iterator crbegin() const noexcept;
+    reverse_iterator rend() noexcept;
+    const_reverse_iterator rend() const noexcept;
+    const_reverse_iterator crend() const noexcept;
     bool empty() const noexcept;
     size_t size() const noexcept;
     void clear() noexcept;
@@ -201,6 +209,42 @@ namespace chemodurov
   typename Map< Key, Value, Compare >::const_iterator Map< Key, Value, Compare >::cend() const noexcept
   {
     return data_.cend();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::reverse_iterator Map< Key, Value, Compare >::rbegin() noexcept
+  {
+    return reverse_iterator(data_.end());
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::const_reverse_iterator Map< Key, Value, Compare >::rbegin() const noexcept
+  {
+    return crbegin();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::const_reverse_iterator Map< Key, Value, Compare >::crbegin() const noexcept
+  {
+    return const_reverse_iterator(data_.cend());
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::reverse_iterator Map< Key, Value, Compare >::rend() noexcept
+  {
+    return reverse_iterator(data_.begin());
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::const_reverse_iterator Map< Key, Value, Compare >::rend() const noexcept
+  {
+    return crend();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::const_reverse_iterator Map< Key, Value, Compare >::crend() const noexcept
+  {
+    return const_reverse_iterator(data_.cend());
   }
 
   template< typename Key, typename Value, typename Compare >
