@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include "bidirectional-iterator.hpp"
 #include "const-bidirectional-iterator.hpp"
+#include "stack.hpp"
 
 namespace chemodurov
 {
@@ -84,6 +85,12 @@ namespace chemodurov
     iterator upper_bound(const_reference value);
     const_iterator upper_bound(const_reference value) const;
     value_compare value_comp() const;
+    template< typename F >
+    F traverse_lnr(F f) const;
+    template< typename F >
+    F traverse_rnl(F f) const;
+    template< typename F >
+    F traverse_breadth(F f) const;
    private:
     Tree< T, Compare > * fake_;
     Compare comp_;
@@ -584,6 +591,44 @@ namespace chemodurov
     clear();
     swap(temp);
     return *this;
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F UnbalancedBinarySearchTree< T, Compare >::traverse_lnr(F f) const
+  {
+    Stack< Tree< T, Compare > * > stack;
+    Tree< T, Compare > * node = fake_->left_;
+    while (!stack.empty() || node != fake_)
+    {
+      if (node != fake_)
+      {
+        stack.push(node);
+        node = node->left_;
+      }
+      else
+      {
+        node = stack.getFromStack();
+        stack.pop();
+        f(node->data_);
+        node = node->right_;
+      }
+    }
+    return f;
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F UnbalancedBinarySearchTree< T, Compare >::traverse_rnl(F f) const
+  {
+    //
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F UnbalancedBinarySearchTree< T, Compare >::traverse_breadth(F f) const
+  {
+    //
   }
 
   template< typename T, typename Compare >
