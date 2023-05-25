@@ -217,7 +217,7 @@ namespace dimkashelk
       {
         insert(p->first, k, v);
       }
-      else if (((p->size == 1) || ((p->size == 2) && compare_(k, p->data[1].first))) && details::isNotEqual< Key, Compare >(p->data[1].first, k))
+      else if (((p->size == 1) || ((p->size == 2) && compare_(k, p->data[1].first))))
       {
         insert(p->second, k, v);
       }
@@ -233,8 +233,10 @@ namespace dimkashelk
       {
         return item;
       }
-      auto *x = new node_type(item->data[0].first, item->data[0].second, item->first, item->second, nullptr, nullptr, item->parent);
-      auto *y = new node_type(item->data[2].first, item->data[2].second, item->third, item->fourth, nullptr, nullptr, item->parent);
+      auto *x = new node_type(
+        item->data[0].first, item->data[0].second, item->first, item->second, nullptr, nullptr, item->parent);
+      auto *y = new node_type(
+        item->data[2].first, item->data[2].second, item->third, item->fourth, nullptr, nullptr, item->parent);
       if (x->first)
       {
         x->first->parent = x;
