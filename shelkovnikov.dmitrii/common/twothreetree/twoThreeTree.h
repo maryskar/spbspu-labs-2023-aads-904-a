@@ -27,30 +27,25 @@ namespace dimkashelk
       fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
       root_(nullptr),
       compare_(Compare()),
-      size_(0)
-    {
-      fakeNode_->first = nullptr;
-    }
+      size_(0),
+      was_updated_while_insert_(false)
+    {}
     TwoThreeTree(const two_three_tree_type &tree):
       fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
       root_(nullptr),
       compare_(Compare()),
-      size_(0)
+      size_(0),
+      was_updated_while_insert_(false)
     {
-      fakeNode_->first = nullptr;
       copy(tree);
     }
     TwoThreeTree(two_three_tree_type &&tree):
       fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
       root_(tree.root_),
       compare_(Compare()),
-      size_(tree.size_)
+      size_(tree.size_),
+      was_updated_while_insert_(false)
     {
-      fakeNode_->first = root_;
-      if (root_)
-      {
-        root_->parent = fakeNode_;
-      }
       tree.root_ = nullptr;
     }
     two_three_tree_type &operator=(const two_three_tree_type &tree)
@@ -142,7 +137,14 @@ namespace dimkashelk
     void insert(const Key &k, const Value &v)
     {
       root_ = insert(root_, k, v);
-      size_++;
+      if (was_updated_while_insert_)
+      {
+        was_updated_while_insert_ = false;
+      }
+      else
+      {
+        size_++;
+      }
     }
     iterator eraseAfter(const_iterator pos)
     {
@@ -188,6 +190,7 @@ namespace dimkashelk
     node_type *root_;
     Compare compare_;
     size_t size_;
+    bool was_updated_while_insert_;
     node_type *insert(node_type *p, const Key &k, const Value &v) {
       if (!p)
       {
@@ -203,6 +206,7 @@ namespace dimkashelk
         {
           p->data[1].second = v;
         }
+        was_updated_while_insert_ = true;
         return split(p);
       }
       if (p->isList())
@@ -345,8 +349,6 @@ namespace dimkashelk
       {
         insert(iter->first, iter->second);
       }
-      fakeNode_->first = root_;
-      root_->parent = fakeNode_;
     }
     node_type *remove(node_type *p, Key k)
     {

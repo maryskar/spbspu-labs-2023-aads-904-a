@@ -90,7 +90,7 @@ namespace dimkashelk
         }
         else
         {
-          if (node_->data[ind_].first == node_->data[1].first)
+          if (ind_ == 1)
           {
             prev_ = goUp(node_);
             node_ = prev_->parent;
@@ -127,6 +127,63 @@ namespace dimkashelk
         ind_ = 0;
       }
     }
+    void updateNodeUpBack()
+    {
+      node_type *new_node = goUpBack(node_);
+      if (new_node->parent == nullptr)
+      {
+        node_ = nullptr;
+        return;
+      }
+      node_ = new_node->parent;
+      prev_ = new_node;
+      if (prev_ == node_->first)
+      {
+        ind_ = 1;
+      }
+      else
+      {
+        ind_ = 0;
+      }
+    }
+    void updateNodeDownBack(node_type *node)
+    {
+      node_ = goDownBack(node);
+      prev_ = node_->parent;
+      if (node_->size == 2)
+      {
+        ind_ = 1;
+      }
+      else
+      {
+        ind_ = 0;
+      }
+    }
+    void prev()
+    {
+      if (ind_ == 1)
+      {
+        if (node_->getLastChildren() == nullptr)
+        {
+          ind_ = 0;
+        }
+        else
+        {
+          updateNodeDownBack(node_->second);
+        }
+      }
+      else
+      {
+        if (node_->getLastChildren() == nullptr)
+        {
+          updateNodeUpBack();
+        }
+        else
+        {
+          updateNodeDownBack(node_->first);
+        }
+      }
+    }
     node_type *goUp(node_type *node)
     {
       node_type *parent = node->parent;
@@ -137,7 +194,7 @@ namespace dimkashelk
       }
       return node;
     }
-    static node_type *goDown(node_type *node)
+    static details::NodeOfTwoThreeTree< Key, Value, Compare > *goDown(node_type *node)
     {
       if (node == nullptr)
       {
@@ -146,6 +203,28 @@ namespace dimkashelk
       while (node->first)
       {
         node = node->first;
+      }
+      return node;
+    }
+    node_type *goUpBack(node_type *node)
+    {
+      node_type *parent = node->parent;
+      while (parent && ((parent->first == node && parent->size == 1) || (parent->second == node && parent->size == 2)))
+      {
+        node = parent;
+        parent = parent->parent;
+      }
+      return node;
+    }
+    node_type *goDownBack(node_type *node)
+    {
+      if (node == nullptr)
+      {
+        return nullptr;
+      }
+      while (node->getLastChildren())
+      {
+        node = node->getLastChildren();
       }
       return node;
     }

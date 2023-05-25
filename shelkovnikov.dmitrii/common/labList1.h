@@ -170,7 +170,7 @@ namespace dimkashelk
           }
           else
           {
-            //out << dataset_name << " " << d << "\n";
+            out << dataset_name << " " << d << "\n";
           }
         }
         else
