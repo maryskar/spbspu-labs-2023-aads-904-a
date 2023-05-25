@@ -6,6 +6,7 @@
 #include "nodeOfTwoThreeTree.h"
 #include "twoThreeTreeIterator.h"
 #include "twoThreeTreeIteratorConst.h"
+#include "twoThreeTreeReverseIterator.h"
 #include "math_functions.h"
 namespace dimkashelk
 {
@@ -21,6 +22,7 @@ namespace dimkashelk
   public:
     using iterator = dimkashelk::TwoThreeTreeIterator< Key, Value, Compare >;
     using const_iterator = dimkashelk::TwoThreeTreeIteratorConst< Key, Value, Compare >;
+    using reverse_iterator = dimkashelk::TwoThreeTreeReverseIterator< Key, Value, Compare >;
     using key_type = Key;
     using compare_type = Compare;
     TwoThreeTree():
@@ -111,6 +113,10 @@ namespace dimkashelk
     {
       return const_iterator(iterator::goDown(root_), this);
     }
+    reverse_iterator rbegin() const
+    {
+      return reverse_iterator(iterator::goDownBack(root_), this);
+    }
     iterator end()
     {
       return iterator(nullptr, this);
@@ -118,6 +124,10 @@ namespace dimkashelk
     const_iterator cend() const
     {
       return const_iterator(nullptr, this);
+    }
+    reverse_iterator rend()
+    {
+      return reverse_iterator(nullptr, this);
     }
     bool empty() const
     {
