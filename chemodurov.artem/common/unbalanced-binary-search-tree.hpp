@@ -621,7 +621,24 @@ namespace chemodurov
   template< typename F >
   F UnbalancedBinarySearchTree< T, Compare >::traverse_rnl(F f) const
   {
-    //
+    Stack< Tree< T, Compare > * > stack;
+    Tree< T, Compare > * node = fake_->left_;
+    while (!stack.empty() || node != fake_)
+    {
+      if (node != fake_)
+      {
+        stack.push(node);
+        node = node->right_;
+      }
+      else
+      {
+        node = stack.getFromStack();
+        stack.pop();
+        f(node->data_);
+        node = node->left_;
+      }
+    }
+    return f;
   }
 
   template< typename T, typename Compare >
