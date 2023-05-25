@@ -12,7 +12,7 @@ namespace dimkashelk
   public:
     using iterator_category = std::bidirectional_iterator_tag;
     using difference_type = std::ptrdiff_t;
-    using value_type = std::pair< Key, Value >;
+    using value_type = const std::pair< Key, Value >;
     using pointer = const std::pair< Key, Value >*;
     using reference = const std::pair< Key, Value >&;
     TwoThreeTreeIteratorConst(const TwoThreeTreeIterator< Key, Value, Compare > &it):
