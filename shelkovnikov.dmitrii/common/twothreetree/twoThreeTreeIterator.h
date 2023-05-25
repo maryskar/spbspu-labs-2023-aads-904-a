@@ -152,38 +152,42 @@ namespace dimkashelk
         ind_ = 0;
       }
     }
+    void updateNodeDownBack(node_type *node)
+    {
+      node_ = goDownBack(node);
+      prev_ = node_->parent;
+      if (node_->size == 2)
+      {
+        ind_ = 1;
+      }
+      else
+      {
+        ind_ = 0;
+      }
+    }
     void prev()
     {
-      if (node_->getLastChildren() == nullptr)
+      if (ind_ == 1)
       {
-        if (node_->size == 1)
+        if (node_->getLastChildren() == nullptr)
+        {
+          ind_ = 0;
+        }
+        else
+        {
+          updateNodeDownBack(node_->second);
+        }
+      }
+      else
+      {
+        if (node_->getLastChildren() == nullptr)
         {
           updateNodeUpBack();
         }
         else
         {
-          if (ind_ == 0)
-          {
-            updateNodeUpBack();
-          }
-          else
-          {
-            ind_ = 1;
-          }
+          updateNodeDownBack(node_->first);
         }
-      }
-      else
-      {
-        if (node_->getLastChildren() == prev_)
-        {
-          node_ = goDownBack(node_->second);
-        }
-        else if (node_->second == prev_ && node_->size == 2)
-        {
-          node_ = goDownBack(node_->first);
-        }
-        prev_ = node_->parent;
-        ind_ = 1;
       }
     }
     node_type *goUp(node_type *node)
