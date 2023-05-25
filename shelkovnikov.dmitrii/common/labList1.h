@@ -89,6 +89,22 @@ namespace dimkashelk
     }
     return new_dict;
   }
+  template< typename K, typename V, typename C >
+  std::ostream &operator<<(std::ostream &out, tree< K, V, C > &dict)
+  {
+    if (dict.empty())
+    {
+      return out << "<EMPTY>";
+    }
+    auto it = dict.begin();
+    auto end = dict.end();
+    out << it->first << " " << it->second;
+    it++;
+    for (; it != end; it++) {
+      out << " " << it->first << " " << it->second;
+    }
+    return out;
+  }
   void labList1(std::istream &in, std::ostream &out, int argc, char *argv[])
   {
     using dict_type = dimkashelk::TwoThreeTree< int, std::string, std::less< > >;
