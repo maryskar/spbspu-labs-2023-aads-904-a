@@ -59,4 +59,14 @@ int main(int argc, char* argv[])
       return 2;
     }
   }
+  if (!stack.isEmpty())
+  {
+    std::cout << stack.get();
+    stack.pop();
+  }
+  while (!stack.isEmpty())
+  {
+    std::cout << " " << stack.get();
+    stack.pop();
+  }
 }
