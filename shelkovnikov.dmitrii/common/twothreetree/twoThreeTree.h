@@ -80,6 +80,18 @@ namespace dimkashelk
       clear();
       ::operator delete(fakeNode_);
     }
+    Value &operator[](const Key &k)
+    {
+      try
+      {
+        return get(k);
+      }
+      catch (...)
+      {
+        insert(k, Value());
+        return get(k);
+      }
+    }
     reference front()
     {
       return iterator(iterator::goDown(root_)).value_;
