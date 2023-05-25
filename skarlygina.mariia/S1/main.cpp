@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <fstream>
+#include <string>
 #include "queue.h"
 #include "stack.h"
 #include "count.h"
@@ -9,17 +10,42 @@
 
 int main(int argc, char* argv[])
 {
-  if (argc > 2)
-  {
-    std::cerr << "Error. The number of argc";
-  }
-  if (argc == 2)
+  if (argc > 1)
   {
     std::ifstream fin(argv[1]);
     if (!fin.is_open())
     {
       std::cerr << "Reading File could not be opened\n";
       return 1;
+    }
+  }
+
+  std::istream* input = nullptr;
+  if (argc > 1)
+  {
+    try
+    {
+      input = new std::ifstream(argv[1]);
+    }
+    catch (const std::bad_alloc& e)
+    {
+      e.what();
+      delete input;
+      return 1;
+    }
+  }
+  else
+  {
+    input = &std::cin;
+  }
+
+  Stack< long long > stack;
+  std::string line = "";
+  while (std::getline(*input, line))
+  {
+    if (line.find_first_not_of(" \n\t") == std::string::npos)
+    {
+      continue;
     }
   }
 }
