@@ -15,6 +15,8 @@ namespace dimkashelk
   using two_three_tree_type = TwoThreeTree< Key, Value, Compare >;
   using reference = std::pair< Key, Value >&;
   using const_reference = const std::pair< Key, Value >&;
+  friend class TwoThreeTreeIterator< Key, Value, Compare >;
+  friend class TwoThreeTreeIteratorConst< Key, Value, Compare >;
   public:
     using iterator = dimkashelk::TwoThreeTreeIterator< Key, Value, Compare >;
     using const_iterator = dimkashelk::TwoThreeTreeIteratorConst< Key, Value, Compare >;
