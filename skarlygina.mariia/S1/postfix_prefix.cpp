@@ -14,13 +14,13 @@ Queue< std::string > operation::makeInfix(std::string string)
       token += string[i];
       i++;
     }
-    i++
+    i++;
   }
   return infix_queue;
 }
 
 
-Queue<std::string> infixToPostfix(Queue<std::string>& infix_queue) 
+Queue< std::string > infixToPostfix(Queue<std::string>& infix_queue)
 {
   Queue<std::string> postfix_queue;
   Stack<std::string> operator_stack;
