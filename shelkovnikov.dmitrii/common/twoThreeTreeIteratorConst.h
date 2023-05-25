@@ -90,7 +90,7 @@ namespace dimkashelk
         }
         else
         {
-          if (node_->data[ind_].second == node_->data[1].first)
+          if (node_->data[ind_].first == node_->data[1].first)
           {
             prev_ = goUp(node_);
             node_ = prev_->parent;
