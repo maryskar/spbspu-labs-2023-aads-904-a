@@ -6,6 +6,7 @@
 #include "nodeOfTwoThreeTree.h"
 #include "twoThreeTreeIterator.h"
 #include "twoThreeTreeIteratorConst.h"
+#include "math_functions.h"
 namespace dimkashelk
 {
   template< typename Key, typename Value, typename Compare >
@@ -149,11 +150,11 @@ namespace dimkashelk
       node_type *node = search(root_, k);
       if (node)
       {
-        if (k == node->data[0].first)
+        if (details::isEqual< Key, Compare >(k, node->data[0].first))
         {
           return node->data[0].second;
         }
-        else if (node->size == 2 && k == node->data[1].first)
+        else if (node->size == 2 && details::isEqual< Key, Compare >(k, node->data[1].first))
         {
           return node->data[1].second;
         }
@@ -163,7 +164,9 @@ namespace dimkashelk
     bool contains(const Key &k) const
     {
       node_type *node = search(root_, k);
-      return node && (k == node->data[0].first || (node->size == 2 && k == node->data[1].first));
+      bool isEqualFirst = details::isEqual< Key, Compare >(k, node->data[0].first);
+      bool isEqualSecond = (node->size == 2 && k == details::isEqual< Key, Compare >(k, node->data[1].first));
+      return node && (isEqualFirst || isEqualSecond);
     }
   private:
     node_type *fakeNode_;
@@ -177,11 +180,11 @@ namespace dimkashelk
       }
       if (p->contains(k))
       {
-        if (p->data[0].first == k)
+        if (details::isEqual< Key, Compare >(p->data[0].first, k))
         {
           p->data[0].second = v;
         }
-        else if (p->data[1].first == k)
+        else if (details::isEqual< Key, Compare >(p->data[1].first, k))
         {
           p->data[1].second = v;
         }
@@ -191,15 +194,15 @@ namespace dimkashelk
       {
         p->insert(k, v);
       }
-      else if (compare_(k, p->data[0].first) && k != p->data[0].first)
+      else if (compare_(k, p->data[0].first) && details::isNotEqual< Key, Compare >(p->data[0].first, k))
       {
         insert(p->first, k, v);
       }
-      else if (((p->size == 1) || ((p->size == 2) && compare_(k, p->data[1].first))) && k != p->data[1].first)
+      else if (((p->size == 1) || ((p->size == 2) && compare_(k, p->data[1].first))) && details::isNotEqual< Key, Compare >(p->data[1].first, k))
       {
         insert(p->second, k, v);
       }
-      else if (k != p->data[2].first)
+      else if (details::isNotEqual< Key, Compare >(p->data[2].first, k))
       {
         insert(p->third, k, v);
       }
@@ -338,7 +341,7 @@ namespace dimkashelk
         return p;
       }
       node_type *min = nullptr;
-      if (item->data[0].first == k)
+      if (details::isEqual< Key, Compare >(item->data[0].first, k))
       {
         min = iterator::goDown(item->second);
       }
