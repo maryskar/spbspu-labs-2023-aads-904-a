@@ -200,7 +200,7 @@ namespace dimkashelk
       }
       return node;
     }
-    static details::NodeOfTwoThreeTree< Key, Value, Compare > *goDown(node_type *node)
+    static node_type *goDown(node_type *node)
     {
       if (node == nullptr)
       {
@@ -222,7 +222,7 @@ namespace dimkashelk
       }
       return node;
     }
-    node_type *goDownBack(node_type *node)
+    static node_type *goDownBack(node_type *node)
     {
       if (node == nullptr)
       {
