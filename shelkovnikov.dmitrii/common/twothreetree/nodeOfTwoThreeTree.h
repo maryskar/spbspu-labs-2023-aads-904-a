@@ -1,6 +1,7 @@
 #ifndef SPBSPU_LABS_2023_AADS_904_A_NODEOFTWOTHREETREE_H
 #define SPBSPU_LABS_2023_AADS_904_A_NODEOFTWOTHREETREE_H
 #include <algorithm>
+#include "math_functions.h"
 namespace dimkashelk
 {
   namespace details
@@ -75,7 +76,7 @@ namespace dimkashelk
       {
         for (unsigned int i = 0; i < size; ++i)
         {
-          if (data[i].first == k)
+          if (details::isEqual< Key, Compare >(data[i].first, k))
           {
             return true;
           }
@@ -84,13 +85,13 @@ namespace dimkashelk
       }
       void removeFromNode(Key k)
       {
-        if (size >= 1 && data[0].first == k)
+        if (size >= 1 && details::isEqual< Key, Compare >(data[0].first, k))
         {
           data[0] = data[1];
           data[1] = data[2];
           size--;
         }
-        else if (size == 2 && data[1].first == k)
+        else if (size == 2 && details::isEqual< Key, Compare >(data[1].first, k))
         {
           data[1] = data[2];
           size--;
