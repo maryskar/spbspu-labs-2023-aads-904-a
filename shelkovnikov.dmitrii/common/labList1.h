@@ -2,7 +2,7 @@
 #define SPBSPU_LABS_2023_AADS_904_A_LABLIST1_H
 #include <iostream>
 #include <fstream>
-#include "twoThreeTree.h"
+#include "twothreetree/twoThreeTree.h"
 namespace dimkashelk
 {
   std::ostream &outCustomErrorMessage(std::ostream &out)
