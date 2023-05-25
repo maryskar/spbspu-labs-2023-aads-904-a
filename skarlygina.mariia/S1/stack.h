@@ -9,6 +9,7 @@ class Stack
 public:
   Stack();
   Stack(const Stack< T >& other);
+  Stack(const Stack< T >&& other);
   void push(const T& rhs);
   T& get() const;
   void pop();
@@ -27,20 +28,15 @@ Stack< T >::Stack() :
 
 template< typename T >
 Stack< T >::Stack(const Stack< T >& other):
-  head_(nullptr),
-  tail_(nullptr)
-{
-  if (other.head_ == nullptr)
-  {
-    return;
-  }
-  List< T >* head_temp = other.head_;
-  while (head_temp != nullptr)
-  {
-    push(head_temp->data);
-    head_temp = head_temp->next;
-  }
-}
+  head_(other.head_),
+  tail_(other.tail_)
+{}
+
+template< typename T >
+Stack< T >::Stack(const Stack< T >&& other) :
+  head_(std::move(other.head_)),
+  tail_(std::move (other.tail_))
+{}
 
 template< typename T>
 void Stack< T >::push(const T& rhs)

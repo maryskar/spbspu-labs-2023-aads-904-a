@@ -4,7 +4,6 @@
 #include <string>
 #include "queue.h"
 #include "stack.h"
-#include "count.h"
 #include "postfix_prefix.h"
 #include "count_postfix.h"
 
@@ -43,9 +42,21 @@ int main(int argc, char* argv[])
   std::string line = "";
   while (std::getline(*input, line))
   {
-    if (line.find_first_not_of(" \n\t") == std::string::npos)
+    if (line.find_first_not_of("\n\t") == std::string::npos)
     {
       continue;
+    }
+    try
+    {
+      Queue< std::string > queue_inf = operation::makeInfix(line);
+      Queue< std::string > queue_postfix = operation::makePostfix(queue_inf);
+      long long res = countPostfix(queue_postfix);
+      stack.push(res);
+    }
+    catch (const std::exception& e)
+    {
+      std::cout << e.what() << "\n";
+      return 2;
     }
   }
 }

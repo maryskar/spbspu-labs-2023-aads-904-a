@@ -10,6 +10,7 @@ class Queue
 public:
   Queue();
   Queue(const Queue< T >& other);
+  Queue(const Queue< T >&& other);
   void push(const T& rhs);
   T& get() const;
   void pop();
@@ -28,20 +29,15 @@ Queue< T >::Queue():
 
 template< typename T >
 Queue< T >::Queue(const Queue< T >& other):
-    head_(nullptr),
-    tail_(nullptr)
-{
-  if (other.head_ == nullptr)
-  {
-    return;
-  }
-  List< T >* other_temp = other.head_;
-  while (other_temp != nullptr)
-  {
-    push(other->data);
-    other_temp = other_temp->next;
-  }
-}
+    head_(other.head_),
+    tail_(other.tail_),
+{}
+
+template< typename T >
+Queue< T >::Queue(const Queue< T >&& other) :
+  head_(std::move(other.head_)),
+  tail_(std::move(other.tail_)),
+{}
 
 template< typename T >
 void Queue< T >::push(const T& rhs)
