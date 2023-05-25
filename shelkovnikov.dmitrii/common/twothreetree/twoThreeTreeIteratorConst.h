@@ -6,11 +6,11 @@ namespace dimkashelk
   template< typename Key, typename Value, typename Compare >
   class TwoThreeTree;
   template< typename Key, typename Value, typename Compare >
-  class TwoThreeTreeIteratorConst: public std::iterator< std::forward_iterator_tag, const std::pair< Key, Value > >
+  class TwoThreeTreeIteratorConst: public std::iterator< std::bidirectional_iterator_tag, const std::pair< Key, Value > >
   {
   friend class TwoThreeTree< Key, Value, Compare >;
   public:
-    using iterator_category = std::forward_iterator_tag;
+    using iterator_category = std::bidirectional_iterator_tag;
     using difference_type = std::ptrdiff_t;
     using value_type = std::pair< Key, Value >;
     using pointer = const std::pair< Key, Value >*;
