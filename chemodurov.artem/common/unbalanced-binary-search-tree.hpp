@@ -5,6 +5,7 @@
 #include "bidirectional-iterator.hpp"
 #include "const-bidirectional-iterator.hpp"
 #include "stack.hpp"
+#include "queue.hpp"
 
 namespace chemodurov
 {
@@ -645,7 +646,24 @@ namespace chemodurov
   template< typename F >
   F UnbalancedBinarySearchTree< T, Compare >::traverse_breadth(F f) const
   {
-    //
+    Queue< Tree< T, Compare > * > queue;
+    Tree< T, Compare > * node = fake_->left_;
+    queue.push(node);
+    while (!queue.empty())
+    {
+      node = queue.getFromQueue();
+      queue.pop();
+      f(node->data_);
+      if (node->left_ != fake_)
+      {
+        queue.push(node->left_);
+      }
+      if (node->right_ != fake_)
+      {
+        queue.push(node->right_);
+      }
+    }
+    return f;
   }
 
   template< typename T, typename Compare >
