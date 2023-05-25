@@ -18,6 +18,8 @@ namespace dimkashelk
   public:
     using iterator = dimkashelk::TwoThreeTreeIterator< Key, Value, Compare >;
     using const_iterator = dimkashelk::TwoThreeTreeIteratorConst< Key, Value, Compare >;
+    using key_type = Key;
+    using compare_type = Compare;
     TwoThreeTree():
       fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
       root_(nullptr),
@@ -94,7 +96,7 @@ namespace dimkashelk
     }
     const_iterator cbegin() const
     {
-      return const_iterator(iterator::goDown(root_));
+      return const_iterator(iterator::goDown(root_), this);
     }
     iterator end()
     {
@@ -102,7 +104,7 @@ namespace dimkashelk
     }
     const_iterator cend() const
     {
-      return const_iterator(nullptr);
+      return const_iterator(nullptr, this);
     }
     bool empty() const
     {
@@ -145,13 +147,13 @@ namespace dimkashelk
       node_type *node = search(root_, k);
       if (node)
       {
-        if (k == node->key[0])
+        if (k == node->data[0].first)
         {
-          return node->value[0];
+          return node->data[0].second;
         }
-        else if (node->size == 2 && k == node->key[1])
+        else if (node->size == 2 && k == node->data[1].first)
         {
-          return node->value[1];
+          return node->data[1].second;
         }
       }
       throw std::logic_error("No element");
@@ -159,7 +161,7 @@ namespace dimkashelk
     bool contains(const Key &k) const
     {
       node_type *node = search(root_, k);
-      return node && (k == node->key[0] || (node->size == 2 && k == node->key[1]));
+      return node && (k == node->data[0].first || (node->size == 2 && k == node->data[1].first));
     }
   private:
     node_type *fakeNode_;
@@ -195,7 +197,7 @@ namespace dimkashelk
       {
         insert(p->second, k, v);
       }
-      else if (k != p->key[2])
+      else if (k != p->data[2].first)
       {
         insert(p->third, k, v);
       }
@@ -319,9 +321,9 @@ namespace dimkashelk
     }
     void copy(const two_three_tree_type &tree)
     {
-      for (auto iter = tree.begin(); iter != tree.end(); iter++)
+      for (auto iter = tree.cbegin(); iter != tree.cend(); iter++)
       {
-        insert(iter.first, iter.second);
+        insert(iter->first, iter->second);
       }
       fakeNode_->first = root_;
       root_->parent = fakeNode_;

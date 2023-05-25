@@ -11,7 +11,6 @@ namespace dimkashelk
   {
   friend class TwoThreeTree< Key, Value, Compare >;
   using node_type = details::NodeOfTwoThreeTree< Key, Value, Compare >;
-  using tree_type = TwoThreeTree< Key, Value, Compare >;
   public:
     using iterator_category = std::forward_iterator_tag;
     using difference_type = std::ptrdiff_t;
@@ -60,8 +59,8 @@ namespace dimkashelk
     size_t ind_;
     node_type *node_;
     node_type *prev_;
-    tree_type *parent_;
-    explicit TwoThreeTreeIterator(node_type *node, tree_type *parent):
+    const dimkashelk::TwoThreeTree< Key, Value, Compare > *parent_;
+    TwoThreeTreeIterator(node_type *node, const dimkashelk::TwoThreeTree< Key, Value, Compare > *parent):
       ind_(0),
       node_(node),
       prev_(nullptr),
@@ -197,7 +196,7 @@ namespace dimkashelk
       }
       return node;
     }
-    static node_type *goDown(node_type *node)
+    static details::NodeOfTwoThreeTree< Key, Value, Compare > *goDown(node_type *node)
     {
       if (node == nullptr)
       {
@@ -219,18 +218,18 @@ namespace dimkashelk
       }
       return node;
     }
-  node_type *goDownBack(node_type *node)
-  {
-    if (node == nullptr)
+    node_type *goDownBack(node_type *node)
     {
-      return nullptr;
+      if (node == nullptr)
+      {
+        return nullptr;
+      }
+      while (node->getLastChildren())
+      {
+        node = node->getLastChildren();
+      }
+      return node;
     }
-    while (node->getLastChildren())
-    {
-      node = node->getLastChildren();
-    }
-    return node;
-  }
   };
 }
 #endif

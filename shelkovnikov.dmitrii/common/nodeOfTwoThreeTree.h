@@ -9,7 +9,7 @@ namespace dimkashelk
     struct NodeOfTwoThreeTree
     {
     public:
-      using node_type = NodeOfTwoThreeTree<Key, Value, Compare>;
+      using node_type = NodeOfTwoThreeTree< Key, Value, Compare >;
       std::pair< Key, Value > data[3];
       unsigned size;
       node_type *first;
@@ -28,7 +28,7 @@ namespace dimkashelk
         compare_(Compare())
       {}
       NodeOfTwoThreeTree(const Key &k, const Value &v):
-        data({k, v}),
+        data{{k, v}, {Key(), Value()}, {Key(), Value()}},
         size(1),
         first(nullptr),
         second(nullptr),
@@ -38,7 +38,7 @@ namespace dimkashelk
         compare_(Compare())
       {}
       NodeOfTwoThreeTree(const Key &k, const Value &v, node_type *fi, node_type *s, node_type *t, node_type *fo, node_type *p):
-        data({k, v}),
+        data{{k, v}, {Key(), Value()}, {Key(), Value()}},
         size(1),
         first(fi),
         second(s),
@@ -47,7 +47,6 @@ namespace dimkashelk
         parent(p),
         compare_(Compare())
       {}
-      ~NodeOfTwoThreeTree() = default;
       bool isList() const
       {
         return (first == nullptr) && (second == nullptr) && (third == nullptr);
