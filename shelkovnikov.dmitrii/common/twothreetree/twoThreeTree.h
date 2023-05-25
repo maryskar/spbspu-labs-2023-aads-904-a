@@ -47,7 +47,10 @@ namespace dimkashelk
       size_(tree.size_)
     {
       fakeNode_->first = root_;
-      root_->parent = fakeNode_;
+      if (root_)
+      {
+        root_->parent = fakeNode_;
+      }
       tree.root_ = nullptr;
     }
     two_three_tree_type &operator=(const two_three_tree_type &tree)
