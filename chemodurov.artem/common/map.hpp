@@ -499,7 +499,21 @@ namespace chemodurov
   template< typename F >
   F Map< Key, Value, Compare >::traverse_lnr(F f) const
   {
-    //
+    return data_.template traverse_lnr(f);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F Map< Key, Value, Compare >::traverse_rnl(F f) const
+  {
+    return data_.template traverse_rnl(f);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F Map< Key, Value, Compare >::traverse_breadth(F f) const
+  {
+    return data_.template traverse_breadth(f);
   }
 
   template< typename Key, typename Value, typename Compare >
