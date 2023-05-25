@@ -9,6 +9,86 @@ namespace dimkashelk
   {
     return out << "<INVALID COMMAND>";
   }
+  template< typename K, typename V, typename C >
+  using tree = dimkashelk::TwoThreeTree< K, V, C >;
+  template< typename K, typename V, typename C >
+  tree< K, V, C > getIntersection(const tree< K, V, C > &first, const tree< K, V, C > &second)
+  {
+    tree< K, V, C > result;
+    for (auto it_first = second.cbegin(); it_first != second.cend(); it_first++)
+    {
+      auto res = second.cend();
+      for (auto i = first.cbegin(); i != first.cend(); i++)
+      {
+        if (details::isEqual< K, C >(it_first->first, i->first))
+        {
+          res = i;
+          break;
+        }
+      }
+      if (res != second.cend())
+      {
+        result[res->first] = res->second;
+      }
+    }
+    return result;
+  }
+  template< typename K, typename V, typename C >
+  tree< K, V, C > getComplement(const tree< K, V, C > &first, const tree< K, V, C > &second)
+  {
+    tree< K, V, C > new_dict;
+    if (std::addressof(first) == std::addressof(second))
+    {
+      return new_dict;
+    }
+    auto iter_first = first.cbegin();
+    auto iter_first_end = first.cend();
+    auto iter_second = second.cbegin();
+    auto iter_second_end = second.cend();
+    C comp = C{};
+    while (iter_first != iter_first_end && iter_second != iter_second_end)
+    {
+      while (iter_second != iter_second_end && comp((*iter_second).first, (*iter_first).first))
+      {
+        iter_second++;
+      }
+      if (iter_second == iter_second_end)
+      {
+        break;
+      }
+      if (details::isNotEqual< K, C >(iter_first->first, iter_second->first))
+      {
+        new_dict[iter_first->first] = iter_first->second;
+      }
+      iter_first++;
+    }
+    while (iter_first != iter_first_end)
+    {
+      new_dict[iter_first->first] = iter_first->second;
+      iter_first++;
+    }
+    return new_dict;
+  }
+  template< typename K, typename V, typename C >
+  tree< K, V, C > getUnion(const tree< K, V, C > &first, const tree< K, V, C > &second)
+  {
+    tree< K, V, C > new_dict;
+    auto iter_second = second.cbegin();
+    auto iter_second_end = second.cend();
+    while (iter_second != iter_second_end)
+    {
+      new_dict[iter_second->first] = iter_second->second;
+      iter_second++;
+    }
+    auto iter_first = first.cbegin();
+    auto iter_first_end = first.cend();
+    while (iter_first != iter_first_end)
+    {
+      new_dict[iter_first->first] = iter_first->second;
+      iter_first++;
+    }
+    return new_dict;
+  }
   void labList1(std::istream &in, std::ostream &out, int argc, char *argv[])
   {
     using dict_type = dimkashelk::TwoThreeTree< int, std::string, std::less< > >;
@@ -50,9 +130,9 @@ namespace dimkashelk
       dict.insert(dict_name, data);
     }
     dimkashelk::TwoThreeTree< std::string, dict_type(*)(const dict_type &, const dict_type &), std::greater< > > commands;
-    //commands.insert("complement", getComplement);
-    //commands.insert("intersect", getIntersection);
-    //commands.insert("union", getUnion);
+    commands.insert("complement", getComplement);
+    commands.insert("intersect", getIntersection);
+    commands.insert("union", getUnion);
     while (in)
     {
       std::string command;
