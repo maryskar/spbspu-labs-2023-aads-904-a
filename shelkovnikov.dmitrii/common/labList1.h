@@ -96,8 +96,8 @@ namespace dimkashelk
     {
       return out << "<EMPTY>";
     }
-    auto it = dict.begin();
-    auto end = dict.end();
+    auto it = dict.cbegin();
+    auto end = dict.cend();
     out << it->first << " " << it->second;
     it++;
     for (; it != end; it++) {
