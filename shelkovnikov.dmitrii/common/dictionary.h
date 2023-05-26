@@ -6,6 +6,19 @@
 #include "forwardlist.h"
 namespace dimkashelk
 {
+  namespace details
+  {
+    template< typename K, typename Comp >
+    bool isEqual(K key1, K key2)
+    {
+      return !Comp{}(key1, key2) && !Comp{}(key2, key1);
+    }
+    template< typename K, typename Comp >
+    bool isNotEqual(K key1, K key2)
+    {
+      return !isEqual< K, Comp >(key1, key2);
+    }
+  }
   template< typename Key, typename Value, typename Compare >
   class Dictionary
   {
@@ -51,7 +64,7 @@ namespace dimkashelk
     }
     Value &at(const Key &k)
     {
-      auto res = search(list_.beforeBegin(), k, isEqual);
+      auto res = search(list_.beforeBegin(), k, details::isEqual< Key, Compare >);
       if (res.second == end())
       {
         throw std::out_of_range("Out of range");
@@ -64,7 +77,7 @@ namespace dimkashelk
     }
     Value &operator[](const Key &key)
     {
-      auto res = search(list_.beforeBegin(), key, isEqual);
+      auto res = search(list_.beforeBegin(), key, details::isEqual< Key, Compare >);
       if (res.second == end())
       {
         value_type value_to_insert = {key, Value()};
@@ -128,7 +141,7 @@ namespace dimkashelk
     }
     size_t erase(const Key &k)
     {
-      auto res = search(list_.beforeBegin(), k, isEqual);
+      auto res = search(list_.beforeBegin(), k, details::isEqual< Key, Compare >);
       if (res.second == end())
       {
         return 0;
@@ -145,7 +158,7 @@ namespace dimkashelk
       size_t count = 0;
       for (auto i: *this)
       {
-        if (isEqual(i.first, x, compare_))
+        if (details::isEqual(i.first, x, compare_))
         {
           count++;
         }
@@ -154,7 +167,7 @@ namespace dimkashelk
     }
     iterator_t find(const Key &x)
     {
-      auto res = search(list_.beforeBegin(), x, isEqual);
+      auto res = search(list_.beforeBegin(), x, details::isEqual< Key, Compare >);
       return res.second;
     }
     std::pair< iterator_t, iterator_t > equal_range(const Key &x)
@@ -177,7 +190,7 @@ namespace dimkashelk
     iterator_t upper_bound(const Key &x)
     {
       auto res = lower_bound(x);
-      if (isEqual(res->first, x, compare_))
+      if (details::isEqual(res->first, x, compare_))
       {
         res++;
       }
@@ -193,7 +206,7 @@ namespace dimkashelk
       auto second_it = second.cbegin();
       for (; first_it != cend() && second_it != second.cend(); first_it++, second_it++)
       {
-        if (isNotEqual(first_it->first, second_it->first))
+        if (details::isNotEqual(first_it->first, second_it->first))
         {
           return false;
         }
@@ -219,7 +232,7 @@ namespace dimkashelk
         }
         prev = it;
       }
-      if (prev != list_.beforeBegin() && isEqual(prev->first, value.first))
+      if (prev != list_.beforeBegin() && details::isEqual< Key, Compare >(prev->first, value.first))
       {
         (*prev).second = value.second;
       }
@@ -229,7 +242,7 @@ namespace dimkashelk
       }
       return iterator_t(prev);
     }
-    std::pair< iterator_t, iterator_t > search(iterator_t start, const Key &key, std::function< bool(const Key &, const Key &) > func)
+    std::pair< iterator_t, iterator_t > search(iterator_t start, const Key &key, std::function< bool(Key, Key) > func)
     {
       auto prev = start;
       start++;
@@ -242,14 +255,6 @@ namespace dimkashelk
         }
       }
       return {prev, cur};
-    }
-    static bool isEqual(const Key &key1, const Key &key2)
-    {
-      return !Compare{}(key1, key2) && !Compare{}(key2, key1);
-    }
-    static bool isNotEqual(const Key &key1, const Key &key2)
-    {
-      return !isEqual(key1, key2);
     }
   };
   template< class Key, class T, class Compare >
@@ -266,7 +271,7 @@ namespace dimkashelk
       auto res = second.cend();
       for (auto i = first.cbegin(); i != first.cend(); i++)
       {
-        if (isEqual(it_first->first, i->first))
+        if (details::isEqual< K, C >(it_first->first, i->first))
         {
           res = i;
           break;
@@ -302,7 +307,7 @@ namespace dimkashelk
       {
         break;
       }
-      if (isNotEqual(iter_first->first, iter_second->first))
+      if (details::isNotEqual< K, C >(iter_first->first, iter_second->first))
       {
         new_dict[iter_first->first] = iter_first->second;
       }
