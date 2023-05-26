@@ -1,7 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <create-command-dictionary.hpp>
 #include "read-map-of-int-string.hpp"
+#include "printer.hpp"
 
 bool checkArg(const char * arg)
 {
@@ -28,6 +30,23 @@ int main(int argc, char ** argv)
     return 1;
   }
   chemodurov::Map< int, std::string > data = chemodurov::readMapOfIntString(input);
-
+  chemodurov::Printer pr(std::cout);
+  if (data.empty())
+  {
+    chemodurov::outEmpty(std::cout);
+  }
+  else if (!std::strcmp(argv[1], "ascending"))
+  {
+    data.traverse_lnr(pr);
+  }
+  else if (!std::strcmp(argv[1], "descending"))
+  {
+    data.traverse_rnl(pr);
+  }
+  else
+  {
+    data.traverse_breadth(pr);
+  }
+  std::cout << '\n';
   return 0;
 }
