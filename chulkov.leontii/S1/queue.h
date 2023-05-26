@@ -2,21 +2,12 @@
 #define QUEUE_H
 #include <stdexcept>
 
-template < typename T >
-class Queue {
+#include "list.h"
+
+template < typename T > class Queue {
 private:
-  struct Node {
-    T value;
-    Node* next;
-
-    Node(const T& val, Node* nxt = nullptr):
-      value(val),
-      next(nxt)
-    {}
-  };
-
-  Node* front_;
-  Node* back_;
+  List< T >* front_;
+  List< T >* back_;
   size_t size_;
 
 public:
@@ -26,19 +17,66 @@ public:
     size_(0)
   {}
 
-  ~Queue()
+  Queue(const Queue< T >& other):
+    front_(nullptr),
+    back_(nullptr),
+    size_(0)
   {
-    while (!empty()) {
-      pop();
+    if (!other.empty()) {
+      List< T >* tp = other.front_;
+      while (tp != nullptr) {
+        push(tp->data);
+        tp = tp->next;
+      }
     }
   }
 
-  void push(T&& rhs)
+  Queue(Queue< T >&& other):
+    front_(other.front_),
+    back_(other.back_)
   {
-    Node* node = new Node(std::move(rhs));
+    other.front_ = nullptr;
+    other.back_ = nullptr;
+  }
+
+  Queue& operator=(const Queue< T >& other)
+  {
+    if (this != &other) {
+      Queue temp(other);
+      std::swap(front_, temp.front_);
+      std::swap(back_, temp.back_);
+    }
+    return *this;
+  }
+
+  Queue& operator=(Queue< T >&& other)
+  {
+    if (this != &other) {
+      clear();
+      front_ = other.front_;
+      back_ = other.back_;
+      other.front_ = nullptr;
+      other.back_ = nullptr;
+    }
+    return *this;
+  }
+
+  ~Queue()
+  {
+    while (!empty()) {
+      clear();
+    }
+  }
+
+  void push(const T& rhs)
+  {
+    List< T >* node = new List< T >{rhs, nullptr};
     if (empty()) {
       front_ = back_ = node;
     } else {
+      if (back_ == nullptr) {
+        throw std::runtime_error("pointer is null");
+      }
       back_->next = node;
       back_ = node;
     }
@@ -50,8 +88,8 @@ public:
     if (empty()) {
       throw std::out_of_range("Queue is empty");
     }
-    T value = front_->value;
-    Node* node = front_;
+    T value = front_->data;
+    List< T >* node = front_;
     front_ = front_->next;
     if (front_ == nullptr) {
       back_ = nullptr;
@@ -66,7 +104,7 @@ public:
     if (empty()) {
       throw std::out_of_range("Queue is empty");
     }
-    return front_->value;
+    return front_->data;
   }
 
   bool empty() const
@@ -74,14 +112,16 @@ public:
     return size_ == 0;
   }
 
-  void pop()
-  {
-    drop();
-  }
-
   size_t size() const
   {
     return size_;
+  }
+
+  void clear()
+  {
+    while (!empty()) {
+      drop();
+    }
   }
 };
 
