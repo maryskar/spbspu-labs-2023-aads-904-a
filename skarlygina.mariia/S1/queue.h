@@ -90,7 +90,7 @@ T& Queue< T >::get() const
 template< typename T >
 bool Queue< T >::isEmpty() const
 {
-  return head_.isEmpty();
+  return head_ == nullptr;
 }
 
 template< typename T >

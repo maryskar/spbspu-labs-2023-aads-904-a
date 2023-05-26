@@ -91,7 +91,7 @@ void Stack< T >::pop()
 template< typename T >
 bool Stack< T >::isEmpty() const
 {
-  return head_.isEmpty();
+  return head_ == nullptr;
 }
 
 template< typename T>
