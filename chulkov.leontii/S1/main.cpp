@@ -31,10 +31,13 @@ int main(int argc, char* argv[]) {
       result.push(calculatePostfix(post));
     }
     while (!result.empty()) {
-      std::cout << result.drop() << ' ';
+      std::cout << result.drop();
+      if (!result.empty()) {
+        std::cout << " ";
+      }
     }
   } catch (const std::exception& e) {
-    std::cerr << e.what() << '\n';
+    std::cerr << e.what() << "\n";
     return 1;
   }
   return 0;
