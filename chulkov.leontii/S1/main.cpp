@@ -24,16 +24,13 @@ int main(int argc, char* argv[]) {
   try {
     Stack< long long > result;
     while (std::getline(in, str)) {
-      if (!in) {
-        break;
-      }
       if (str.empty()) {
         continue;
       }
       Queue< std::string > post = infixToPostfix(str);
       result.push(calculatePostfix(post));
       if (!result.empty()) {
-        std::cout << result.drop() << '\n';
+        std::cout << result.drop() << ' ';
       }
     }
   } catch (const std::exception& e) {
