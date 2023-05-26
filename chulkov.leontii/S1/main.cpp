@@ -29,9 +29,9 @@ int main(int argc, char* argv[]) {
       }
       Queue< std::string > post = infixToPostfix(str);
       result.push(calculatePostfix(post));
-      if (!result.empty()) {
-        std::cout << result.drop() << ' ';
-      }
+    }
+    while (!result.empty()) {
+      std::cout << result.drop() << ' ';
     }
   } catch (const std::exception& e) {
     std::cerr << e.what() << '\n';
