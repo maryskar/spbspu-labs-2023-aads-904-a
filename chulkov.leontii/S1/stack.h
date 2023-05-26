@@ -2,48 +2,83 @@
 #define STACK_H
 #include <stdexcept>
 
-template < typename T >
-class Stack {
-private:
-  struct Node {
-    T val;
-    Node* next;
-  };
+#include "list.h"
 
-  Node* top_;
+template < typename T > class Stack {
+private:
+  List< T >* top_;
 
 public:
   Stack():
     top_(nullptr)
   {}
 
-  ~Stack()
+  T top() const
   {
-    Node* tp = nullptr;
-    while (top_ != nullptr) {
-      tp = top_;
-      top_ = top_->next;
-      delete tp;
+    if (empty()) {
+      throw std::runtime_error("Stack is empty.");
+    }
+    return top_->data;
+  }
+
+  Stack(const Stack< T >& other):
+    top_(nullptr)
+  {
+    if (!other.empty()) {
+      List< T >* tp = other.top_;
+      while (tp != nullptr) {
+        push(tp->data);
+        tp = tp->next;
+      }
     }
   }
 
-  void push(T rhs)
+  Stack& operator=(const Stack< T >& other)
   {
-    Node* node = new Node(rhs);
-    node->next = top_;
-    top_ = node;
+    if (this != &other) {
+      Stack tp(other);
+      std::swap(top_, tp.top_);
+    }
+    return *this;
   }
 
-  void pop()
+  Stack& operator=(Stack< T >&& other) noexcept
+  {
+    if (this != &other) {
+      clear();
+      top_ = other.top_;
+      other.top_ = nullptr;
+    }
+    return *this;
+  }
+
+  Stack(Stack< T >&& other):
+    top_(other.top_)
+  {
+    other.top_ = nullptr;
+  }
+
+  ~Stack()
+  {
+    clear();
+  }
+
+  void push(const T& rhs)
+  {
+    List< T >* newNode = new List< T >{rhs, top_};
+    top_ = newNode;
+  }
+
+  T drop()
   {
     if (top_ == nullptr) {
       throw std::out_of_range("Stack is empty");
     }
-    Node* top = top_;
+    T value = top_->data;
+    List< T >* top = top_;
     top_ = top_->next;
-    T val = top->val;
     delete top;
-    return val;
+    return value;
   }
 
   bool empty() const
@@ -53,13 +88,21 @@ public:
 
   size_t size() const
   {
-    Node* node = top_;
+    List< T >* node = top_;
     size_t count = 0;
     while (node != nullptr) {
       node = node->next;
       count++;
     }
     return count;
+  }
+
+  void clear()
+  {
+    while (!empty()) {
+      drop();
+    }
+    top_ = nullptr;
   }
 };
 
