@@ -32,10 +32,11 @@ int main(int argc, char* argv[]) {
       }
       Queue< std::string > post = infixToPostfix(str);
       result.push(calculatePostfix(post));
+      if (!result.empty()) {
+        std::cout << result.drop() << '\n';
+      }
     }
-    if (!result.empty()) {
-      std::cout << result.drop() << '\n';
-    }
+
   } catch (const std::runtime_error& e) {
     std::cerr << e.what() << '\n';
     return 1;
