@@ -7,21 +7,11 @@
 
 long long calculatePostfix(Queue< std::string > postfix) {
   Stack< long long > op;
-  long long max = std::numeric_limits<long long>::max();
-  long long min = std::numeric_limits<long long>::min();
 
   while (!postfix.empty()) {
     std::string c = postfix.drop();
     if (std::isdigit(c[0])) {
-      try {
-        long long val = std::stoll(c);
-        if (val > max || val < min) {
-          throw std::out_of_range("Overflow");
-        }
-        op.push(val);
-      } catch (std::out_of_range& e) {
-        throw std::out_of_range("Overflow");
-      }
+      op.push(std::stoll(c));
     } else if (isOperator(c)) {
       if (op.empty()) {
         throw std::runtime_error("Error in expression");

@@ -36,8 +36,7 @@ int main(int argc, char* argv[]) {
         std::cout << result.drop() << '\n';
       }
     }
-
-  } catch (const std::runtime_error& e) {
+  } catch (const std::exception& e) {
     std::cerr << e.what() << '\n';
     return 1;
   }
