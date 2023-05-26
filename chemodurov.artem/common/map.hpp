@@ -87,9 +87,15 @@ namespace chemodurov
     template< typename F >
     F traverse_lnr(F f) const;
     template< typename F >
+    F traverse_lnr(F f);
+    template< typename F >
     F traverse_rnl(F f) const;
     template< typename F >
+    F traverse_rnl(F f);
+    template< typename F >
     F traverse_breadth(F f) const;
+    template< typename F >
+    F traverse_breadth(F f);
     bool isEqual(const this_t & rhs) const;
    private:
     RBTree< value_type, value_compare > data_;
@@ -512,6 +518,27 @@ namespace chemodurov
   template< typename Key, typename Value, typename Compare >
   template< typename F >
   F Map< Key, Value, Compare >::traverse_breadth(F f) const
+  {
+    return data_.template traverse_breadth(f);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F Map< Key, Value, Compare >::traverse_lnr(F f)
+  {
+    return data_.template traverse_lnr(f);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F Map< Key, Value, Compare >::traverse_rnl(F f)
+  {
+    return data_.template traverse_rnl(f);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F Map< Key, Value, Compare >::traverse_breadth(F f)
   {
     return data_.template traverse_breadth(f);
   }
