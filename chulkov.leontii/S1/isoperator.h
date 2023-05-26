@@ -2,6 +2,8 @@
 #define ISOPERATOR_H
 #include <string>
 
-bool isOperator(std::string c);
+namespace chulkov {
+  bool isOperator(std::string c);
+}
 
 #endif

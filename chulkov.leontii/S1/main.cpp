@@ -22,12 +22,12 @@ int main(int argc, char* argv[]) {
   std::istream& in = (argc == 2) ? input : std::cin;
   std::string str;
   try {
-    Stack< long long > result;
+    chulkov::Stack< long long > result;
     while (std::getline(in, str)) {
       if (str.empty()) {
         continue;
       }
-      Queue< std::string > post = infixToPostfix(str);
+      chulkov::Queue< std::string > post = chulkov::infixToPostfix(str);
       result.push(calculatePostfix(post));
     }
     while (!result.empty()) {

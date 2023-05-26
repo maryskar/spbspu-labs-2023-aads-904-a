@@ -3,6 +3,8 @@
 #include <string>
 #include "queue.h"
 
-long long calculatePostfix(Queue< std::string > postfix);
+namespace chulkov {
+  long long calculatePostfix(chulkov::Queue< std::string > postfix);
+}
 
 #endif

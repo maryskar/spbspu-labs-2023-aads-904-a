@@ -3,6 +3,8 @@
 #include <string>
 #include "queue.h"
 
-Queue< std::string > infixToPostfix(std::string& infix);
+namespace chulkov {
+  chulkov::Queue< std::string > infixToPostfix(std::string& infix);
+}
 
 #endif
