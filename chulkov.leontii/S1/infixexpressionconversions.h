@@ -1,7 +1,8 @@
 #ifndef INFIXEXPRESSIONCONVERSIONS_H
 #define INFIXEXPRESSIONCONVERSIONS_H
 #include <string>
+#include "queue.h"
 
-std::string infixToPostfix(const std::string& infix);
+Queue< std::string > infixToPostfix(std::string& infix);
 
 #endif
