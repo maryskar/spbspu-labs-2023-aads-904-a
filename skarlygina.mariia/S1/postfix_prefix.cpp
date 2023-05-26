@@ -30,7 +30,7 @@ Queue< std::string > infixToPostfix(Queue<std::string>& infix_queue)
     std::string token = infix_queue.get();
     infix_queue.pop();
 
-    if (isOperator(token))
+    if (calculator::isOperation(token))
     {
       while (!operator_stack.isEmpty() && hasHigherPrecedence(operator_stack.get(), token))
       {
