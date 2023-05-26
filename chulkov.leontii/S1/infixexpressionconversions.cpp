@@ -35,6 +35,10 @@ Queue< std::string > infixToPostfix(std::string& infix) {
       }
       oper.push(std::string(1, c));
     } else if (c == '(') {
+      if (!str.empty()) {
+        post.push(str);
+        str.clear();
+      }
       oper.push(std::string(1, c));
     } else if (c == ')') {
       if (!str.empty()) {
@@ -52,10 +56,10 @@ Queue< std::string > infixToPostfix(std::string& infix) {
     } else {
       throw std::runtime_error("yo, Error in expression");
     }
-    if (!str.empty()) {
-      post.push(str);
-      str.clear();
-    }
+  }
+  if (!str.empty()) {
+    post.push(str);
+    str.clear();
   }
   while (!oper.empty()) {
     if (oper.top() == "(") {
