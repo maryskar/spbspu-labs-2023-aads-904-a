@@ -4,7 +4,8 @@
 
 #include "list.h"
 
-template < typename T > class Queue {
+template < typename T >
+class Queue {
 private:
   List< T >* front_;
   List< T >* back_;
@@ -39,8 +40,7 @@ public:
     other.back_ = nullptr;
   }
 
-  Queue& operator=(const Queue< T >& other)
-  {
+  Queue& operator=(const Queue< T >& other) {
     if (this != &other) {
       Queue temp(other);
       std::swap(front_, temp.front_);
@@ -49,8 +49,7 @@ public:
     return *this;
   }
 
-  Queue& operator=(Queue< T >&& other)
-  {
+  Queue& operator=(Queue< T >&& other) {
     if (this != &other) {
       clear();
       front_ = other.front_;
@@ -61,15 +60,13 @@ public:
     return *this;
   }
 
-  ~Queue()
-  {
+  ~Queue() {
     while (!empty()) {
       clear();
     }
   }
 
-  void push(const T& rhs)
-  {
+  void push(const T& rhs) {
     List< T >* node = new List< T >{rhs, nullptr};
     if (empty()) {
       front_ = back_ = node;
@@ -83,8 +80,7 @@ public:
     ++size_;
   }
 
-  T drop()
-  {
+  T drop() {
     if (empty()) {
       throw std::out_of_range("Queue is empty");
     }
@@ -99,26 +95,22 @@ public:
     return value;
   }
 
-  const T& drop() const
-  {
+  const T& drop() const {
     if (empty()) {
       throw std::out_of_range("Queue is empty");
     }
     return front_->data;
   }
 
-  bool empty() const
-  {
+  bool empty() const {
     return size_ == 0;
   }
 
-  size_t size() const
-  {
+  size_t size() const {
     return size_;
   }
 
-  void clear()
-  {
+  void clear() {
     while (!empty()) {
       drop();
     }

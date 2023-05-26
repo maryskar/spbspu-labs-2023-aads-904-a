@@ -3,8 +3,7 @@
 #include "isoperator.h"
 #include "stack.h"
 
-long long calculatePostfix(Queue< std::string > postfix)
-{
+long long calculatePostfix(Queue< std::string > postfix) {
   Stack< long long > op;
 
   while (!postfix.empty()) {

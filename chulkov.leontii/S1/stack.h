@@ -4,7 +4,8 @@
 
 #include "list.h"
 
-template < typename T > class Stack {
+template < typename T >
+class Stack {
 private:
   List< T >* top_;
 
@@ -13,8 +14,7 @@ public:
     top_(nullptr)
   {}
 
-  T top() const
-  {
+  T top() const {
     if (empty()) {
       throw std::runtime_error("Stack is empty.");
     }
@@ -33,8 +33,7 @@ public:
     }
   }
 
-  Stack& operator=(const Stack< T >& other)
-  {
+  Stack& operator=(const Stack< T >& other) {
     if (this != &other) {
       Stack tp(other);
       std::swap(top_, tp.top_);
@@ -42,8 +41,7 @@ public:
     return *this;
   }
 
-  Stack& operator=(Stack< T >&& other) noexcept
-  {
+  Stack& operator=(Stack< T >&& other) {
     if (this != &other) {
       clear();
       top_ = other.top_;
@@ -58,19 +56,16 @@ public:
     other.top_ = nullptr;
   }
 
-  ~Stack()
-  {
+  ~Stack() {
     clear();
   }
 
-  void push(const T& rhs)
-  {
+  void push(const T& rhs) {
     List< T >* newNode = new List< T >{rhs, top_};
     top_ = newNode;
   }
 
-  T drop()
-  {
+  T drop() {
     if (top_ == nullptr) {
       throw std::out_of_range("Stack is empty");
     }
@@ -81,13 +76,11 @@ public:
     return value;
   }
 
-  bool empty() const
-  {
+  bool empty() const {
     return top_ == nullptr;
   }
 
-  size_t size() const
-  {
+  size_t size() const {
     List< T >* node = top_;
     size_t count = 0;
     while (node != nullptr) {
@@ -97,8 +90,7 @@ public:
     return count;
   }
 
-  void clear()
-  {
+  void clear() {
     while (!empty()) {
       drop();
     }
