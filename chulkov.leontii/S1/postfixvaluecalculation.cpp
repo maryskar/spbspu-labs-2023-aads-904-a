@@ -4,37 +4,24 @@
 #include "isoperator.h"
 #include "stack.h"
 
-bool isOverflow(long long a, long long b, char op) {
-  long long max = std::numeric_limits<long long>::max();
-  long long min = std::numeric_limits<long long>::min();
-  if (op == '+' || op == '-') {
-    if ((b > 0 && a > max - b) || (b < 0 && a < min - b)) {
-      return true;
-    }
-  } else if (op == '*') {
-    if (a > 0 && b > 0 && a > max / b) {
-      return true;
-    }
-    if (a < 0 && b < 0 && a < max / b) {
-      return true;
-    }
-    if (a < 0 && b > 0 && a < min / b) {
-      return true;
-    }
-    if (a > 0 && b < 0 && b < min / a) {
-      return true;
-    }
-  }
-  return false;
-}
 
 long long calculatePostfix(Queue< std::string > postfix) {
   Stack< long long > op;
+  long long max = std::numeric_limits<long long>::max();
+  long long min = std::numeric_limits<long long>::min();
 
   while (!postfix.empty()) {
     std::string c = postfix.drop();
     if (std::isdigit(c[0])) {
-      op.push(std::stoll(c));
+      try {
+        long long val = std::stoll(c);
+        if (val > max || val < min) {
+          throw std::out_of_range("Overflow");
+        }
+        op.push(val);
+      } catch (std::out_of_range& e) {
+        throw std::out_of_range("Overflow");
+      }
     } else if (isOperator(c)) {
       if (op.empty()) {
         throw std::runtime_error("Error in expression");
@@ -47,21 +34,12 @@ long long calculatePostfix(Queue< std::string > postfix) {
       long long result;
       switch (c[0]) {
       case '+':
-        if (isOverflow(operand1, operand2, '+')) {
-          throw std::runtime_error("Overflow occurred");
-        }
         result = operand1 + operand2;
         break;
       case '-':
-        if (isOverflow(operand1, operand2, '-')) {
-          throw std::runtime_error("Overflow");
-        }
         result = operand1 - operand2;
         break;
       case '*':
-        if (isOverflow(operand1, operand2, '*')) {
-          throw std::runtime_error("Overflow");
-        }
         result = operand1 * operand2;
         break;
       case '/':
