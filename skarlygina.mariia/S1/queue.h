@@ -30,13 +30,13 @@ Queue< T >::Queue():
 template< typename T >
 Queue< T >::Queue(const Queue< T >& other):
     head_(other.head_),
-    tail_(other.tail_),
+    tail_(other.tail_)
 {}
 
 template< typename T >
 Queue< T >::Queue(const Queue< T >&& other) :
   head_(other.head_),
-  tail_(other.tail_),
+  tail_(other.tail_)
 {
   other.head_ = nullptr;
   other.tail_ = nullptr;
