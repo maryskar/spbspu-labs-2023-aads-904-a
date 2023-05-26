@@ -89,9 +89,15 @@ namespace chemodurov
     template< typename F >
     F traverse_lnr(F f) const;
     template< typename F >
+    F traverse_lnr(F f);
+    template< typename F >
     F traverse_rnl(F f) const;
     template< typename F >
+    F traverse_rnl(F f);
+    template< typename F >
     F traverse_breadth(F f) const;
+    template< typename F >
+    F traverse_breadth(F f);
    private:
     Tree< T, Compare > * fake_;
     Compare comp_;
@@ -620,6 +626,14 @@ namespace chemodurov
 
   template< typename T, typename Compare >
   template< typename F >
+  F UnbalancedBinarySearchTree< T, Compare >::traverse_lnr(F f)
+  {
+    auto func = std::bind(f, const_cast< T & >(std::placeholders::_1));
+    return (static_cast< const this_t & >(*this)).template traverse_lnr(func);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
   F UnbalancedBinarySearchTree< T, Compare >::traverse_rnl(F f) const
   {
     Stack< Tree< T, Compare > * > stack;
@@ -644,6 +658,14 @@ namespace chemodurov
 
   template< typename T, typename Compare >
   template< typename F >
+  F UnbalancedBinarySearchTree< T, Compare >::traverse_rnl(F f)
+  {
+    auto func = std::bind(f, const_cast< T & >(std::placeholders::_1));
+    return (static_cast< const this_t & >(*this)).template traverse_rnl(func);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
   F UnbalancedBinarySearchTree< T, Compare >::traverse_breadth(F f) const
   {
     Queue< Tree< T, Compare > * > queue;
@@ -664,6 +686,14 @@ namespace chemodurov
       }
     }
     return f;
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F UnbalancedBinarySearchTree< T, Compare >::traverse_breadth(F f)
+  {
+    auto func = std::bind(f, const_cast< T & >(std::placeholders::_1));
+    return (static_cast< const this_t & >(*this)).template traverse_breadth(func);
   }
 
   template< typename T, typename Compare >
