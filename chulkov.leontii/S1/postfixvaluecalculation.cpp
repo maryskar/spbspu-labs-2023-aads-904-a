@@ -1,7 +1,32 @@
 #include "postfixvaluecalculation.h"
 #include <cmath>
+#include <limits>
 #include "isoperator.h"
 #include "stack.h"
+
+bool isOverflow(long long a, long long b, char op) {
+  long long max = std::numeric_limits<long long>::max();
+  long long min = std::numeric_limits<long long>::min();
+  if (op == '+' || op == '-') {
+    if ((b > 0 && a > max - b) || (b < 0 && a < min - b)) {
+      return true;
+    }
+  } else if (op == '*') {
+    if (a > 0 && b > 0 && a > max / b) {
+      return true;
+    }
+    if (a < 0 && b < 0 && a < max / b) {
+      return true;
+    }
+    if (a < 0 && b > 0 && a < min / b) {
+      return true;
+    }
+    if (a > 0 && b < 0 && b < min / a) {
+      return true;
+    }
+  }
+  return false;
+}
 
 long long calculatePostfix(Queue< std::string > postfix) {
   Stack< long long > op;
@@ -22,18 +47,33 @@ long long calculatePostfix(Queue< std::string > postfix) {
       long long result;
       switch (c[0]) {
       case '+':
+        if (isOverflow(operand1, operand2, '+')) {
+          throw std::runtime_error("Overflow occurred");
+        }
         result = operand1 + operand2;
         break;
       case '-':
+        if (isOverflow(operand1, operand2, '-')) {
+          throw std::runtime_error("Overflow");
+        }
         result = operand1 - operand2;
         break;
       case '*':
+        if (isOverflow(operand1, operand2, '*')) {
+          throw std::runtime_error("Overflow");
+        }
         result = operand1 * operand2;
         break;
       case '/':
+        if (operand2 == 0) {
+          throw std::runtime_error("zero");
+        }
         result = operand1 / operand2;
         break;
       case '%':
+        if (operand2 == 0) {
+          throw std::runtime_error("zero");
+        }
         result = std::fmod(operand1, operand2);
         break;
       }
