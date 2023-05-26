@@ -96,4 +96,3 @@ namespace chulkov {
     return finalResult;
   }
 }
-
