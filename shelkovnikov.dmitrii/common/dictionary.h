@@ -9,12 +9,12 @@ namespace dimkashelk
   namespace details
   {
     template< typename K, typename Comp >
-    bool isEqual(K key1, K key2)
+    bool isEqual(const K &key1, const K &key2)
     {
       return !Comp{}(key1, key2) && !Comp{}(key2, key1);
     }
     template< typename K, typename Comp >
-    bool isNotEqual(K key1, K key2)
+    bool isNotEqual(const K &key1, const K &key2)
     {
       return !isEqual< K, Comp >(key1, key2);
     }
