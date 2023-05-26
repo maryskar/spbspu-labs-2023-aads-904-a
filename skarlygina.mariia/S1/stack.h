@@ -34,9 +34,12 @@ Stack< T >::Stack(const Stack< T >& other):
 
 template< typename T >
 Stack< T >::Stack(const Stack< T >&& other) :
-  head_(std::move(other.head_)),
-  tail_(std::move (other.tail_))
-{}
+  head_(other.head_),
+  tail_(other.tail_)
+{
+  other.head_ = nullptr;
+  other.tail_ = nullptr;
+}
 
 template< typename T>
 void Stack< T >::push(const T& rhs)

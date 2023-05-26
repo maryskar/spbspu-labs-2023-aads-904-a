@@ -35,9 +35,12 @@ Queue< T >::Queue(const Queue< T >& other):
 
 template< typename T >
 Queue< T >::Queue(const Queue< T >&& other) :
-  head_(std::move(other.head_)),
-  tail_(std::move(other.tail_)),
-{}
+  head_(other.head_),
+  tail_(other.tail_),
+{
+  other.head_ = nullptr;
+  other.tail_ = nullptr;
+}
 
 template< typename T >
 void Queue< T >::push(const T& rhs)
