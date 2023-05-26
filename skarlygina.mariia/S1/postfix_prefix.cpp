@@ -10,8 +10,8 @@ Queue< std::string > operation::makeInfix(std::string string)
     std::string token = "";
     while (string.size() < infix_size && !std::isspace(string[infix_size]))
     {
-      infix_queue.push(string[i]);
-      token += string[i];
+      infix_queue.push(string[infix_size]);
+      token += string[infix_size];
       infix_size++;
     }
     infix_size++;
