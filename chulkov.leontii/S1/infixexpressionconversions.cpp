@@ -1,50 +1,67 @@
 #include "infixexpressionconversions.h"
 #include <string>
+#include "isoperator.h"
 #include "queue.h"
 #include "stack.h"
 
-bool isOperator(char c)
-{
-  return (c == '+' || c == '-' || c == '*' || c == '/' || c == '%');
-}
-
-int getPriority(char c)
-{
-  if (c == '+' || c == '-') {
+int getPriority(std::string c) {
+  if (c == "+" || c == "-") {
     return 1;
-  } else if (c == '*' || c == '/' || c == '%') {
+  } else if (c == "*" || c == "/" || c == "%") {
     return 2;
   }
   return 0;
 }
 
-template < typename T >
-std::string infixToPostfix(const std::string& infix)
-{
-  std::string post;
-  Queue< T > out;
-  Stack< T > op;
+Queue< std::string > infixToPostfix(std::string& infix) {
+  Queue< std::string > post;
+  Stack< std::string > oper;
+  std::string str;
 
-  for (T c : infix) {
+  for (char c : infix) {
     if (c == ' ') {
       continue;
     }
     if (std::isdigit(c)) {
-      post += c;
-    } else if (c == '(')  {
-      op.push(c);
-    } else if (c == ')') {
-      while (!op.empty() && op.top_ != '(') {
-        out.push(op.top_());
-        op.pop();
+      str.push_back(c);
+      continue;
+    } else if (isOperator(std::string(1, c))) {
+      if (!str.empty()) {
+        post.push(str);
+        str.clear();
       }
-      if (!op.empty() && op.top_() == '(') {
-        op.pop();
+      while (!oper.empty() && oper.top() != "(" && getPriority(oper.top()) >= getPriority(std::string(1, c))) {
+        post.push(oper.drop());
+      }
+      oper.push(std::string(1, c));
+    } else if (c == '(') {
+      oper.push(std::string(1, c));
+    } else if (c == ')') {
+      if (!str.empty()) {
+        post.push(str);
+        str.clear();
+      }
+      while (!oper.empty() && oper.top() != "(") {
+        post.push(oper.drop());
+      }
+      if (!oper.empty() && oper.top() == "(") {
+        oper.drop();
       } else {
-        throw std::runtime_error("Leee, you have extra brackets");
+        throw std::runtime_error("bruh, Error in expression");
       }
     } else {
-      throw std::runtime_error("FuF, invalid character in expression");
+      throw std::runtime_error("yo, Error in expression");
+    }
+    if (!str.empty()) {
+      post.push(str);
+      str.clear();
     }
   }
+  while (!oper.empty()) {
+    if (oper.top() == "(") {
+      throw std::runtime_error("Error in expression.");
+    }
+    post.push(oper.drop());
+  }
+  return post;
 }
