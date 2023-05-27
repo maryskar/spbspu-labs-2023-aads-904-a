@@ -26,12 +26,8 @@ namespace dimkashelk
       fakeNode_->next = nullptr;
     }
     ForwardList(const ForwardList< T > &forwardList):
-      fakeNode_(static_cast< details::NodeOneWayList< T >* >(::operator new (sizeof(details::NodeOneWayList< T >)))),
-      begin_(nullptr),
-      end_(nullptr),
-      size_(0)
+      ForwardList()
     {
-      fakeNode_->next = nullptr;
       copy(forwardList);
     }
     ForwardList(ForwardList< T > &&forwardList):
