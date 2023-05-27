@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <cstring>
 #include <create-command-dictionary.hpp>
 #include "read-map-of-long-string.hpp"
 #include "create-args-map.hpp"
