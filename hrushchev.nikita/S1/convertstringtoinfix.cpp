@@ -5,7 +5,7 @@
 hrushchev::Queue<std::string> hrushchev::convertStringToInfix(std::string str)
 {
   namespace hrn = hrushchev;
-  hrn::Queue<std::string> infix_queue;
+  hrn::Queue< std::string > infix_queue;
 
   std::string delimiter = " ";
   size_t pos = 0;
