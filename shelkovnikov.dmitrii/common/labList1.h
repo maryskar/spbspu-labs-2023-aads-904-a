@@ -86,6 +86,7 @@ namespace dimkashelk
             {
               out << " " << it->first << " " << it->second;
             }
+            out << "\n";
           }
         }
         else
