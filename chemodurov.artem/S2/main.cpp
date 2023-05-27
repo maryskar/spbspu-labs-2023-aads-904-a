@@ -22,6 +22,7 @@ int main(int argc, char ** argv)
   using namespace std::placeholders;
   auto read = std::bind(chemodurov::readCommand, std::ref(std::cin));
   auto doComm = std::bind(chemodurov::doCommand, read, command_dics, _1, std::ref(std::cin), std::ref(std::cout));
+  constexpr auto max_size = std::numeric_limits< std::streamsize >::max();
   do
   {
     try
@@ -32,8 +33,7 @@ int main(int argc, char ** argv)
     {
       chemodurov::outInvalidCommand(std::cout);
       std::cout << '\n';
-      std::string line;
-      std::getline(std::cin, line);
+      std::cin.ignore(max_size, '\n');
       continue;
     }
     catch (const std::runtime_error & e)

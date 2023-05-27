@@ -1,6 +1,5 @@
 #ifndef S2_DICTIONARY_HPP
 #define S2_DICTIONARY_HPP
-#include <iostream>
 #include <type_traits>
 #include "forward-list.hpp"
 
