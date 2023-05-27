@@ -5,8 +5,9 @@
 
 namespace chemodurov
 {
-  using ptr_t = Printer (Map< int, std::string >::*)(Printer pr);
-  using args_dic_t = Map< std::string, ptr_t >;
+  template< typename F >
+  using ptr_t = F (Map< int, std::string >::*)(F f);
+  using args_dic_t = Map< std::string, ptr_t< Printer > >;
   args_dic_t createArgsMap();
 }
 
