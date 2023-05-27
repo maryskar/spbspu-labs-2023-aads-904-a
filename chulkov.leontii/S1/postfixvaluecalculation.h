@@ -4,7 +4,7 @@
 #include "queue.h"
 
 namespace chulkov {
-  long long calculatePostfix(chulkov::Queue< std::string > postfix);
+  long long calculatePostfix(Queue< std::string > postfix);
 }
 
 #endif

@@ -29,8 +29,8 @@ namespace chulkov {
     return false;
   }
 
-  long long calculatePostfix(chulkov::Queue< std::string > postfix) {
-    chulkov::Stack< long long > op;
+  long long calculatePostfix(Queue< std::string > postfix) {
+    Stack< long long > op;
 
     while (!postfix.empty()) {
       std::string c = postfix.drop();

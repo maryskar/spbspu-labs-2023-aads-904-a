@@ -15,8 +15,8 @@ namespace chulkov {
   }
 
   chulkov::Queue< std::string > infixToPostfix(std::string& infix) {
-    chulkov::Queue< std::string > post;
-    chulkov::Stack< std::string > oper;
+    Queue< std::string > post;
+    Stack< std::string > oper;
     std::string str;
 
     for (char c : infix) {

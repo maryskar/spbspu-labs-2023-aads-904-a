@@ -7,7 +7,7 @@ namespace chulkov {
   template < typename T >
   class Stack {
   private:
-    chulkov::List< T >* top_;
+    List< T >* top_;
 
   public:
     Stack():
@@ -25,7 +25,7 @@ namespace chulkov {
       top_(nullptr)
     {
       if (!other.empty()) {
-        chulkov::List< T >* tp = other.top_;
+        List< T >* tp = other.top_;
         while (tp != nullptr) {
           push(tp->data);
           tp = tp->next;
@@ -61,7 +61,7 @@ namespace chulkov {
     }
 
     void push(const T& rhs) {
-      chulkov::List< T >* newNode = new chulkov::List< T >{rhs, top_};
+      List< T >* newNode = new List< T >{rhs, top_};
       top_ = newNode;
     }
 
@@ -70,7 +70,7 @@ namespace chulkov {
         throw std::out_of_range("Stack is empty");
       }
       T value = top_->data;
-      chulkov::List< T >* top = top_;
+      List< T >* top = top_;
       top_ = top_->next;
       delete top;
       return value;
@@ -81,7 +81,7 @@ namespace chulkov {
     }
 
     size_t size() const {
-      chulkov::List< T >* node = top_;
+      List< T >* node = top_;
       size_t count = 0;
       while (node != nullptr) {
         node = node->next;

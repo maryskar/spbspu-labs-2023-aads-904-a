@@ -8,8 +8,8 @@ namespace chulkov {
   template < typename T >
   class Queue {
   private:
-    chulkov::List< T >* front_;
-    chulkov::List< T >* back_;
+    List< T >* front_;
+    List< T >* back_;
     size_t size_;
 
   public:
@@ -25,7 +25,7 @@ namespace chulkov {
       size_(0)
     {
       if (!other.empty()) {
-        chulkov::List< T >* tp = other.front_;
+        List< T >* tp = other.front_;
         while (tp != nullptr) {
           push(tp->data);
           tp = tp->next;
@@ -68,7 +68,7 @@ namespace chulkov {
     }
 
     void push(const T& rhs) {
-      chulkov::List< T >* node = new List< T >{rhs, nullptr};
+      List< T >* node = new List< T >{rhs, nullptr};
       if (empty()) {
         front_ = back_ = node;
       } else {
@@ -86,7 +86,7 @@ namespace chulkov {
         throw std::out_of_range("Queue is empty");
       }
       T value = front_->data;
-      chulkov::List< T >* node = front_;
+      List< T >* node = front_;
       front_ = front_->next;
       if (front_ == nullptr) {
         back_ = nullptr;

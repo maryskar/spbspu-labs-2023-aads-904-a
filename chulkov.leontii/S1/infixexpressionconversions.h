@@ -4,7 +4,7 @@
 #include "queue.h"
 
 namespace chulkov {
-  chulkov::Queue< std::string > infixToPostfix(std::string& infix);
+  Queue< std::string > infixToPostfix(std::string& infix);
 }
 
 #endif
