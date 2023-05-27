@@ -3,7 +3,7 @@
 #include "owerflowlongcheck.h"
 char romanovich::as_char(romanovich::operations_t operation)
 {
-  return static_cast<char>(operation);
+  return static_cast< char >(operation);
 }
 long long romanovich::doOperation(long long b, long long a, const romanovich::operations_t &oper)
 {
