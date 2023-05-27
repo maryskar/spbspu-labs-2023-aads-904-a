@@ -2,7 +2,7 @@
 #include <fstream>
 #include <cstring>
 #include <create-command-dictionary.hpp>
-#include "read-map-of-int-string.hpp"
+#include "read-map-of-long-string.hpp"
 #include "create-args-map.hpp"
 #include "key-summator.hpp"
 
@@ -20,7 +20,7 @@ int main(int argc, char ** argv)
     std::cerr << "The file doesn't opened\n";
     return 1;
   }
-  chemodurov::Map< int, std::string > data = chemodurov::readMapOfIntString(input);
+  chemodurov::Map< long, std::string > data = chemodurov::readMapOfIntString(input);
   auto args = chemodurov::createArgsMap();
   if (data.empty())
   {

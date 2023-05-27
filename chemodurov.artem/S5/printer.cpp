@@ -8,7 +8,7 @@ namespace chemodurov
    was_printed_(false)
   {}
 
-  void Printer::operator()(const std::pair< int, std::string > & pair)
+  void Printer::operator()(const std::pair< const long, std::string > & pair)
   {
     if (was_printed_)
     {

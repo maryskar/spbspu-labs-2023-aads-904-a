@@ -9,7 +9,7 @@ namespace chemodurov
   {
    public:
     explicit Printer(std::ostream & out);
-    void operator()(const std::pair< int, std::string > & pair);
+    void operator()(const std::pair< const long, std::string > & pair);
    private:
     std::ostream & out_;
     bool was_printed_;

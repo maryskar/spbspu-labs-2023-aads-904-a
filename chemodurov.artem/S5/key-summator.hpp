@@ -9,13 +9,11 @@ namespace chemodurov
   {
    public:
     KeySummator();
-    void operator()(const std::pair< const int, std::string > & pair);
-    int getSum() const;
+    void operator()(const std::pair< const long, std::string > & pair);
+    long getSum() const;
    private:
-    int sum_;
+    long sum_;
   };
-
-  int calcSum(int lhs, int rhs);
 }
 
 #endif

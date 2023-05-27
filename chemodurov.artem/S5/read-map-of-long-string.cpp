@@ -1,11 +1,11 @@
-#include "read-map-of-int-string.hpp"
+#include "read-map-of-long-string.hpp"
 #include <iostream>
 
 namespace chemodurov
 {
-  std::pair< int, std::string > readPair(std::istream & in)
+  std::pair< long, std::string > readPair(std::istream & in)
   {
-    int a = 0;
+    long a = 0;
     in >> a;
     std::string str;
     in >> str;
@@ -16,9 +16,9 @@ namespace chemodurov
     return {a, str};
   }
 
-  Map< int, std::string > readMapOfIntString(std::istream & in)
+  Map< long, std::string > readMapOfIntString(std::istream & in)
   {
-    Map< int, std::string > res;
+    Map< long, std::string > res;
     try
     {
       while (in)
