@@ -3,11 +3,6 @@
 
 namespace chemodurov
 {
-  void print(std::ostream & out, const std::pair< int, std::string > & pair)
-  {
-    out << pair.first << ' ' << pair.second;
-  }
-
   void print(std::ostream & out, const Dictionary< int, std::string > & dict)
   {
     auto end_ = dict.end();
