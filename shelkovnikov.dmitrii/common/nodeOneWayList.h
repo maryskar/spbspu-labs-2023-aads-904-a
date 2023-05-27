@@ -32,6 +32,10 @@ namespace dimkashelk
     template< typename T >
     std::pair< NodeOneWayList< T > *, NodeOneWayList< T > * > copy(NodeOneWayList< T > *start)
     {
+      if (start == nullptr)
+      {
+        return {nullptr, nullptr};
+      }
       NodeOneWayList< T > *new_start = nullptr;
       try
       {
