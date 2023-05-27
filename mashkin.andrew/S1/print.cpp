@@ -4,9 +4,8 @@
 
 namespace mashkin
 {
-  void print(const mashkin::Stack< int long long >& result)
+  void print(mashkin::Stack< int long long > res)
   {
-    auto res = result;
     while (res.isEmpty())
     {
       std::cout << res.getTop();
