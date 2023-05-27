@@ -44,107 +44,107 @@ namespace dmitriev
 
   };
 }
-  template< typename T >
-  dmitriev::Stack< T >::Stack():
-    m_top(nullptr)
-  {}
+template< typename T >
+dmitriev::Stack< T >::Stack():
+  m_top(nullptr)
+{}
 
-  template< typename T >
-  dmitriev::Stack< T >::~Stack()
+template< typename T >
+dmitriev::Stack< T >::~Stack()
+{
+  clear(m_top);
+}
+
+template< typename T >
+dmitriev::Stack< T >::Stack(const Stack< T >& otherStack):
+  m_top(copyStack(otherStack.m_top))
+{}
+
+template< typename T >
+dmitriev::Stack< T >::Stack(Stack< T >&& otherStack) noexcept:
+  m_top(otherStack.m_top)
+{
+  otherStack.m_top = nullptr;
+}
+
+template< typename T >
+dmitriev::Stack< T >& dmitriev::Stack< T >::operator=(const Stack& otherStack)
+{
+  if (this == std::addressof(otherStack))
   {
-    clear(m_top);
-  }
-
-  template< typename T >
-  dmitriev::Stack< T >::Stack(const Stack< T >& otherStack):
-    m_top(copyStack(otherStack.m_top))
-  {}
-
-  template< typename T >
-  dmitriev::Stack< T >::Stack(Stack< T >&& otherStack) noexcept:
-    m_top(otherStack.m_top)
-  {
-    otherStack.m_top = nullptr;
-  }
-
-  template< typename T >
-  dmitriev::Stack< T >& dmitriev::Stack< T >::operator=(const Stack& otherStack)
-  {
-    if (this == std::addressof(otherStack))
-    {
-      return *this;
-    }
-    Stack< T > newStack(otherStack);
-    *this = std::move(newStack);
-
     return *this;
   }
+  Stack< T > newStack(otherStack);
+  *this = std::move(newStack);
 
-  template< typename T >
-  dmitriev::Stack< T >& dmitriev::Stack< T >::operator=(Stack< T >&& otherStack) noexcept
+  return *this;
+}
+
+template< typename T >
+dmitriev::Stack< T >& dmitriev::Stack< T >::operator=(Stack< T >&& otherStack) noexcept
+{
+  if (this == std::addressof(otherStack))
   {
-    if (this == std::addressof(otherStack))
-    {
-      return *this;
-    }
-    clear(m_top);
-    m_top = otherStack.m_top;
-    otherStack.m_top = nullptr;
-
     return *this;
   }
+  clear(m_top);
+  m_top = otherStack.m_top;
+  otherStack.m_top = nullptr;
 
-  template< typename T >
-  void dmitriev::Stack< T >::push(const T& data)
+  return *this;
+}
+
+template< typename T >
+void dmitriev::Stack< T >::push(const T& data)
+{
+  List< T >* newTop = new List< T >{data, m_top};
+  m_top = newTop;
+}
+
+template< typename T >
+void dmitriev::Stack< T >::push(T&& data)
+{
+  List< T >* newTop = new List< T >{std::move(data), m_top};
+  m_top = newTop;
+}
+
+template< typename T >
+void dmitriev::Stack< T >::popBack()
+{
+  if (isEmpty())
   {
-    List< T >* newTop = new List< T >{data, m_top};
-    m_top = newTop;
+    throw std::runtime_error("runtime_error");
   }
+  List< T >* currentList = m_top;
+  m_top = m_top->otherList;
 
-  template< typename T >
-  void dmitriev::Stack< T >::push(T&& data)
+  delete currentList;
+}
+
+template< typename T >
+T& dmitriev::Stack< T >::getTopData()
+{
+  if (isEmpty())
   {
-    List< T >* newTop = new List< T >{std::move(data), m_top};
-    m_top = newTop;
+    throw std::runtime_error("runtime_error");
   }
+  return m_top->data;
+}
 
-  template< typename T >
-  void dmitriev::Stack< T >::popBack()
+template< typename T >
+const T& dmitriev::Stack< T >::getConstTopData() const
+{
+  if (isEmpty())
   {
-    if (isEmpty())
-    {
-      throw std::runtime_error("runtime_error");
-    }
-    List< T >* currentList = m_top;
-    m_top = m_top->otherList;
-
-    delete currentList;
+    throw std::runtime_error("runtime_error");
   }
+  return m_top->data;
+}
 
-  template< typename T >
-  T& dmitriev::Stack< T >::getTopData()
-  {
-    if (isEmpty())
-    {
-      throw std::runtime_error("runtime_error");
-    }
-    return m_top->data;
-  }
-
-  template< typename T >
-  const T& dmitriev::Stack< T >::getConstTopData() const
-  {
-    if (isEmpty())
-    {
-      throw std::runtime_error("runtime_error");
-    }
-    return m_top->data;
-  }
-
-  template< typename T >
-  bool dmitriev::Stack< T >::isEmpty() const
-  {
-    return m_top == nullptr;
-  }
+template< typename T >
+bool dmitriev::Stack< T >::isEmpty() const
+{
+  return m_top == nullptr;
+}
 
 #endif
