@@ -5,11 +5,11 @@ char romanovich::as_char(romanovich::operations_t operation)
 {
   return static_cast< char >(operation);
 }
-long long romanovich::doOperation(long long b, long long a, const romanovich::operations_t &oper)
+long long romanovich::doOperation(long long b, long long a, const operations_t &oper)
 {
-  if (oper == romanovich::operations_t::plus)
+  if (oper == operations_t::plus)
   {
-    if (!romanovich::overflowAdd(a, b))
+    if (!overflowAdd(a, b))
     {
       return a + b;
     }
@@ -18,9 +18,9 @@ long long romanovich::doOperation(long long b, long long a, const romanovich::op
       throw std::overflow_error("Overflow.");
     }
   }
-  if (oper == romanovich::operations_t::minus)
+  if (oper == operations_t::minus)
   {
-    if (!romanovich::overflowSubt(a, b))
+    if (!overflowSubt(a, b))
     {
       return a - b;
     }
@@ -29,9 +29,9 @@ long long romanovich::doOperation(long long b, long long a, const romanovich::op
       throw std::overflow_error("Overflow.");
     }
   }
-  if (oper == romanovich::operations_t::multiplication)
+  if (oper == operations_t::multiplication)
   {
-    if (!romanovich::overflowMult(a, b))
+    if (!overflowMult(a, b))
     {
       return a * b;
     }
@@ -40,7 +40,7 @@ long long romanovich::doOperation(long long b, long long a, const romanovich::op
       throw std::overflow_error("Overflow.");
     }
   }
-  if (oper == romanovich::operations_t::division)
+  if (oper == operations_t::division)
   {
     if (b != 0)
     {
