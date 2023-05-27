@@ -1,7 +1,7 @@
 #ifndef STACK_HPP
 #define STACK_HPP
-#include "list.hpp"
 #include <stdexcept>
+#include "list.hpp"
 
 namespace hrushchev
 {
@@ -59,9 +59,9 @@ namespace hrushchev
     {
       throw std::logic_error("Empty stack");
     }
-    details::List< T >* temp =top_->next;
+    details::List< T >* temp = top_->next;
     delete top_;
-   top_ = temp;
+    top_ = temp;
   }
 
   template< typename T >
