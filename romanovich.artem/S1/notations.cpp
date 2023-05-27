@@ -53,21 +53,21 @@ void romanovich::getPostfixFromInfix(exp_q &queue, exp_s &stack, exp_q &postfixQ
   {
     if (!queue.isEmpty())
     {
-      romanovich::ExpPart qEl = queue.get();
+      ExpPart qEl = queue.get();
       queue.pop();
       if (qEl.isParenthesis())
       {
-        if (qEl.getParenthesis() == romanovich::parenthesis_t::left)
+        if (qEl.getParenthesis() == parenthesis_t::left)
         {
           stack.push(qEl);
         }
-        if (qEl.getParenthesis() == romanovich::parenthesis_t::right)
+        if (qEl.getParenthesis() == parenthesis_t::right)
         {
           while (!stack.get().isParenthesis())
           {
             if (stack.get().isParenthesis())
             {
-              if (stack.get().getParenthesis() == romanovich::parenthesis_t::left)
+              if (stack.get().getParenthesis() == parenthesis_t::left)
               {
                 break;
               }
@@ -91,14 +91,14 @@ void romanovich::getPostfixFromInfix(exp_q &queue, exp_s &stack, exp_q &postfixQ
         if (!stack.isEmpty())
         {
           bool canPop = false;
-          const romanovich::ExpPart q = qEl;
-          const romanovich::ExpPart s = stack.get();
+          const ExpPart q = qEl;
+          const ExpPart s = stack.get();
           try
           {
             if (q.isOperation() && s.isOperation())
             {
-              romanovich::Priority priorQ(q.getOperation());
-              romanovich::Priority priorS(s.getOperation());
+              Priority priorQ(q.getOperation());
+              Priority priorS(s.getOperation());
               canPop = (!(priorQ < priorS));
             }
           }
@@ -127,7 +127,7 @@ void romanovich::getPostfixFromInfix(exp_q &queue, exp_s &stack, exp_q &postfixQ
 }
 romanovich::Queue< romanovich::ExpPart > romanovich::splitLine(const std::string &string)
 {
-  romanovich::Queue< romanovich::ExpPart > queue;
+  Queue< ExpPart > queue;
   size_t intBegin = 0;
   size_t intEnd = string.find(' ');
   while (intEnd != std::string::npos)
@@ -149,7 +149,7 @@ void romanovich::calcPostfixExpression(exp_q &postfixQueue, exp_s &answer, exp_s
     {
       break;
     }
-    romanovich::ExpPart expPart(postfixQueue.get());
+    ExpPart expPart(postfixQueue.get());
     postfixQueue.pop();
     if (expPart.isOperand())
     {
@@ -163,7 +163,7 @@ void romanovich::calcPostfixExpression(exp_q &postfixQueue, exp_s &answer, exp_s
         stack.pop();
         long long y = std::stoll(std::to_string(stack.get().getOperand()), nullptr, 10);
         stack.pop();
-        stack.push(romanovich::ExpPart(doOperation(x, y, expPart.getOperation())));
+        stack.push(ExpPart(doOperation(x, y, expPart.getOperation())));
       }
       catch (...)
       {
