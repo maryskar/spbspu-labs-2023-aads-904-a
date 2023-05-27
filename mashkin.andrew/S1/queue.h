@@ -17,6 +17,7 @@ namespace mashkin
 
     void enqueue(const T& rhs);
     void dequeue();
+
     bool isEmpty() const noexcept;
     T& getHead() const;
 
