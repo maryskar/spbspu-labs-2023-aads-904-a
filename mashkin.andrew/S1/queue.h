@@ -59,7 +59,7 @@ mashkin::Queue< T >::Queue(Queue< T >&& rhs) noexcept:
 template< typename T >
 mashkin::Queue< T >::~Queue()
 {
-  while(isEmpty())
+  while (isEmpty())
   {
     this->dequeue();
   }
