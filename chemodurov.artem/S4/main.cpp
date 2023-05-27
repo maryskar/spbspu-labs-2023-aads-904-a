@@ -1,9 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include <map/read-dictionary-of-dictionary.hpp>
-#include <map/read-and-do-command.hpp>
-#include <map/map.hpp>
+#include <read-dictionary-of-dictionary.hpp>
+#include <read-and-do-command.hpp>
 
 int main(int argc, char ** argv)
 {
