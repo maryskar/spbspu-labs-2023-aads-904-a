@@ -4,7 +4,7 @@
 
 namespace chemodurov
 {
-  template< typename T, typename Compare = std::less<> >
+  template< typename T, typename Compare = std::less< > >
   struct Tree
   {
     T data_;

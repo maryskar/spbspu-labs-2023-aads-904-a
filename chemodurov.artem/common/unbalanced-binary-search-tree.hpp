@@ -604,8 +604,8 @@ namespace chemodurov
   template< typename F >
   F UnbalancedBinarySearchTree< T, Compare >::traverse_lnr(F f) const
   {
-    Stack< Tree< T, Compare > * > stack;
-    Tree< T, Compare > * node = fake_->left_;
+    Stack< const Tree< T, Compare > * > stack;
+    const Tree< T, Compare > * node = fake_->left_;
     while (!stack.empty() || node != fake_)
     {
       if (node != fake_)
@@ -624,20 +624,28 @@ namespace chemodurov
     return f;
   }
 
+  namespace detail
+  {
+    template< typename T >
+    T & returnT(const T & t)
+    {
+      return const_cast< T & >(t);
+    }
+  }
+
   template< typename T, typename Compare >
   template< typename F >
   F UnbalancedBinarySearchTree< T, Compare >::traverse_lnr(F f)
   {
-    auto func = std::bind(f, const_cast< T & >(std::placeholders::_1));
-    return (static_cast< const this_t & >(*this)).template traverse_lnr(func);
+    return (static_cast< const this_t & >(*this)).template traverse_lnr(f);
   }
 
   template< typename T, typename Compare >
   template< typename F >
   F UnbalancedBinarySearchTree< T, Compare >::traverse_rnl(F f) const
   {
-    Stack< Tree< T, Compare > * > stack;
-    Tree< T, Compare > * node = fake_->left_;
+    Stack< const Tree< T, Compare > * > stack;
+    const Tree< T, Compare > * node = fake_->left_;
     while (!stack.empty() || node != fake_)
     {
       if (node != fake_)
@@ -660,16 +668,15 @@ namespace chemodurov
   template< typename F >
   F UnbalancedBinarySearchTree< T, Compare >::traverse_rnl(F f)
   {
-    auto func = std::bind(f, const_cast< T & >(std::placeholders::_1));
-    return (static_cast< const this_t & >(*this)).template traverse_rnl(func);
+    return (static_cast< const this_t & >(*this)).template traverse_rnl(f);
   }
 
   template< typename T, typename Compare >
   template< typename F >
   F UnbalancedBinarySearchTree< T, Compare >::traverse_breadth(F f) const
   {
-    Queue< Tree< T, Compare > * > queue;
-    Tree< T, Compare > * node = fake_->left_;
+    Queue< const Tree< T, Compare > * > queue;
+    const Tree< T, Compare > * node = fake_->left_;
     queue.push(node);
     while (!queue.empty())
     {
@@ -692,8 +699,7 @@ namespace chemodurov
   template< typename F >
   F UnbalancedBinarySearchTree< T, Compare >::traverse_breadth(F f)
   {
-    auto func = std::bind(f, const_cast< T & >(std::placeholders::_1));
-    return (static_cast< const this_t & >(*this)).template traverse_breadth(func);
+    return (static_cast< const this_t & >(*this)).template traverse_breadth(f);
   }
 
   template< typename T, typename Compare >
