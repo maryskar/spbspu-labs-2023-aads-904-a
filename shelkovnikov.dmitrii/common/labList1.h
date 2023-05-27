@@ -70,11 +70,18 @@ namespace dimkashelk
           dict_type d = dict.at(dataset_name);
           if (d.empty())
           {
-            out << "<EMPTY>\n";
+            out << "<EMPTY>";
           }
           else
           {
-            out << dataset_name << " " << d << "\n";
+            auto it = d.begin();
+            auto end = d.end();
+            out << it->first << " " << it->second;
+            it++;
+            for (; it != end; it++)
+            {
+              out << " " << it->first << " " << it->second;
+            }
           }
         }
         else
