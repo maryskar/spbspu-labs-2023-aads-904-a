@@ -9,6 +9,10 @@ namespace dimkashelk
   {
     return out << "<INVALID COMMAND>";
   }
+  std::ostream &outEmptyDictionaryMessage(std::ostream &out)
+  {
+    return out << "<EMPTY>";
+  }
   void labList1(std::istream &in, std::ostream &out, int argc, char *argv[])
   {
     using dict_type = dimkashelk::Dictionary< int, std::string, std::less< > >;
@@ -70,7 +74,7 @@ namespace dimkashelk
           dict_type d = dict.at(dataset_name);
           if (d.empty())
           {
-            out << "<EMPTY>";
+            outEmptyDictionaryMessage(out);
           }
           else
           {
