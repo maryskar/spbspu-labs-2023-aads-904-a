@@ -2,7 +2,6 @@
 #define S4_UNBALANCED_BINARY_SEARCH_TREE_HPP
 #include <functional>
 #include <stdexcept>
-#include "bidirectional-iterator.hpp"
 #include "const-bidirectional-iterator.hpp"
 #include "stack.hpp"
 #include "queue.hpp"
