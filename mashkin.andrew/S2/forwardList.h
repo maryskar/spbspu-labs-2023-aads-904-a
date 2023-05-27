@@ -45,10 +45,10 @@ namespace mashkin
 
     Iterator< T > erase_after(citer pos);
     Iterator< T > erase_after(citer pos, citer last);
-
     void clear() noexcept;
 
     void swap(ForwardList< T >& list);
+    void reverse() noexcept;
 
     bool empty() const noexcept;
 
@@ -88,7 +88,7 @@ mashkin::ForwardList< T >& mashkin::ForwardList< T >::operator=(ForwardList< T >
   return *this;
 }
 
-template< class T>
+template< class T >
 mashkin::ForwardList< T >& mashkin::ForwardList< T >::operator=(const ForwardList< T >& rhs)
 {
   *this = std::move(rhs);
@@ -251,5 +251,40 @@ void mashkin::ForwardList< T >::swap(ForwardList< T >& list)
   list.insert_after(list.before_begin(), begin(), end());
   clear();
   isert_after(before_begin(), var.begin(), var.end());
+}
+
+template< class T >
+void mashkin::ForwardList< T >::reverse() noexcept
+{
+  auto var1 = fake_->next;
+  if (var1)
+  {
+    auto var2 = var1->next;
+    if (var2)
+    {
+      if (var2->next)
+      {
+        var1->next = nullptr;
+        auto var3 = var2->next;
+        do
+        {
+          var2->next = var1;
+          var1 = var2;
+          var2 = var3;
+          var3 = var3->next;
+        }
+        while (var3 != nullptr);
+        var2->next = var1;
+        var1 = var2;
+        var2 = var3;
+        fake_->next = var1;
+      }
+      else
+      {
+        fake_->next = var2;
+        var2->next = var1;
+      }
+    }
+  }
 }
 #endif
