@@ -10,12 +10,12 @@ namespace chemodurov
    public:
     KeySummator();
     void operator()(const std::pair< const int, std::string > & pair);
-    int getSumm() const;
+    int getSum() const;
    private:
-    int summ_;
+    int sum_;
   };
 
-  int calcSumm(int lhs, int rhs);
+  int calcSum(int lhs, int rhs);
 }
 
 #endif
