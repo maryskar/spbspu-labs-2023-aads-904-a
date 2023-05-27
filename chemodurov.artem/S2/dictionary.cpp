@@ -1,4 +1,5 @@
 #include "dictionary.hpp"
+#include <iostream>
 
 namespace chemodurov
 {

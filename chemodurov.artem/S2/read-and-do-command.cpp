@@ -1,4 +1,5 @@
 #include "read-and-do-command.hpp"
+#include <iostream>
 
 namespace chemodurov
 {
