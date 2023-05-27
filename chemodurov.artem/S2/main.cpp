@@ -1,9 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include <read-dictionary-of-dictionary.hpp>
-#include <read-and-do-command.hpp>
-#include <create-command-dictionary.hpp>
+#include <map/read-dictionary-of-dictionary.hpp>
+#include <map/read-and-do-command.hpp>
+#include <map/create-command-dictionary.hpp>
 
 int main(int argc, char ** argv)
 {

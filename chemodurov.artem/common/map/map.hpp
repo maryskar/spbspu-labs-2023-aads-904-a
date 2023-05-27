@@ -1,6 +1,6 @@
 #ifndef S4_MAP_HPP
 #define S4_MAP_HPP
-#include "rb-tree.hpp"
+#include <trees/rb-tree.hpp>
 
 namespace chemodurov
 {
