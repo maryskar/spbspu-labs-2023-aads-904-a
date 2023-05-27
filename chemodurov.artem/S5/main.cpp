@@ -4,6 +4,7 @@
 #include <create-command-dictionary.hpp>
 #include "read-map-of-int-string.hpp"
 #include "create-args-map.hpp"
+#include "key-summator.hpp"
 
 int main(int argc, char ** argv)
 {
@@ -20,7 +21,6 @@ int main(int argc, char ** argv)
     return 1;
   }
   chemodurov::Map< int, std::string > data = chemodurov::readMapOfIntString(input);
-  chemodurov::Printer pr(std::cout);
   auto args = chemodurov::createArgsMap();
   if (data.empty())
   {
@@ -30,11 +30,20 @@ int main(int argc, char ** argv)
   {
     try
     {
+      chemodurov::KeySummator summator{};
+      summator = data.traverse_lnr(summator);
+      std::cout << summator.getSum() << ' ';
+      chemodurov::Printer pr(std::cout);
       (data.*args.at(argv[1]))(pr);
     }
     catch (const std::out_of_range & e)
     {
       std::cerr << "Unexpected argument\n";
+      return 1;
+    }
+    catch (const std::runtime_error & e)
+    {
+      std::cout << "Underflow or overflow in key sum\n";
       return 1;
     }
   }

@@ -32,7 +32,7 @@ int chemodurov::calcSum(int lhs, int rhs)
   }
   if (isSameSign(lhs, rhs) && lhs < 0 && min_long - lhs > rhs)
   {
-    throw std::overflow_error("Underflow in sum");
+    throw std::underflow_error("Underflow in sum");
   }
   return lhs + rhs;
 }
