@@ -74,7 +74,7 @@ namespace dimkashelk
           dict_type d = dict.at(dataset_name);
           if (d.empty())
           {
-            outEmptyDictionaryMessage(out);
+            outEmptyDictionaryMessage(out) << "\n";
           }
           else
           {
