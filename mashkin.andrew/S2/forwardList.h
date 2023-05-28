@@ -8,10 +8,10 @@
 
 namespace mashkin
 {
-  template< class T >
+  template< typename T >
   class ConstIterator;
 
-  template< class T >
+  template< typename T >
   class ForwardList
   {
   public:
