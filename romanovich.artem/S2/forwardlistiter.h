@@ -16,33 +16,45 @@ public:
   ForwardListIterator(const ForwardListIterator< T > &rhs) = default;
   ~ForwardListIterator() = default;
   ForwardListIterator();
+  ForwardListIterator< T > begin();
+  ForwardListIterator< T > end();
 private:
-  details::ListNode< T > *node_;
+  details::ListNode< T > *head_;
   void checkForNullNode();
 };
 template< typename T >
+ForwardListIterator< T > ForwardListIterator< T >::end()
+{
+  return ForwardListIterator< T >(nullptr);
+}
+template< typename T >
+ForwardListIterator< T > ForwardListIterator< T >::begin()
+{
+  return ForwardListIterator< T >(head_);
+}
+template< typename T >
 void ForwardListIterator< T >::checkForNullNode()
 {
-  if (!node_)
+  if (!head_)
   {
-    throw std::runtime_error("node_ id null in operator++");
+    throw std::runtime_error("head_ id null in operator++");
   }
 }
 template< typename T >
 bool ForwardListIterator< T >::operator==(const ForwardListIterator< T > &rhs) const
 {
-  return node_ = rhs.node_;
+  return head_ = rhs.head_;
 }
 template< typename T >
 bool ForwardListIterator< T >::operator!=(const ForwardListIterator< T > &rhs) const
 {
-  return !(node_ == rhs.node_);
+  return !(head_ == rhs.head_);
 }
 template< typename T >
 const T *ForwardListIterator< T >::operator->() const
 {
   checkForNullNode();
-  return std::addressof(node_->data_);
+  return std::addressof(head_->data_);
 }
 template< typename T >
 T *ForwardListIterator< T >::operator->()
@@ -54,19 +66,19 @@ template< typename T >
 const T &ForwardListIterator< T >::operator*() const
 {
   checkForNullNode();
-  return node_->data;
+  return head_->data;
 }
 template< typename T >
 T &ForwardListIterator< T >::operator*()
 {
   checkForNullNode();
-  return const_cast<T &>(node_->data);
+  return const_cast<T &>(head_->data_);
 }
 template< typename T >
 ForwardListIterator< T > &ForwardListIterator< T >::operator++()
 {
   checkForNullNode();
-  node_ = node_->next_;
+  head_ = head_->next_;
   return *this;
 }
 template< typename T >
@@ -79,7 +91,7 @@ ForwardListIterator< T > ForwardListIterator< T >::operator++(int)
 }
 template< typename T >
 ForwardListIterator< T >::ForwardListIterator():
-  node_(nullptr)
+  head_(nullptr)
 {
 }
 #endif

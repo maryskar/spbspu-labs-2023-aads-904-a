@@ -40,7 +40,7 @@ public:
   iterator erase_after(const_iterator position);
   iterator erase_after(const_iterator first, const_iterator last);
   void push_front(const T &value);
-  ForwardListIterator< std::pair< const int, std::basic_string< char>> > push_front(T &&value);
+  void push_front(T &&value);
   void emplace_front(T &&value);
   void pop_front();
   void resize(size_t newSize);
@@ -440,7 +440,7 @@ void ForwardList< T >::push_front(const T &value)
   head_ = new details::ListNode< T >{value, head_};
 }
 template< typename T >
-ForwardListIterator< std::pair< const int, std::basic_string< char>> > ForwardList< T >::push_front(T &&value)
+void ForwardList< T >::push_front(T &&value)
 {
   head_ = new details::ListNode< T >{std::move(value), head_};
 }

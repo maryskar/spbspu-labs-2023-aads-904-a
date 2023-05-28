@@ -97,9 +97,9 @@ Dictionary< Key, Value, Compare >::erase_after(Dictionary::const_iterator first,
   {
     iterator eraseEnd = it;
     ++eraseEnd;
-    details::ListNode< valueT > *current = eraseStart.node_->next;
-    details::ListNode< valueT > *end = eraseEnd.node_->next;
-    eraseStart.node_->next = end;
+    details::ListNode< valueT > *current = eraseStart.head_->next;
+    details::ListNode< valueT > *end = eraseEnd.head_->next;
+    eraseStart.head_->next = end;
     while (current != end)
     {
       details::ListNode< valueT > *next = current->next;
@@ -107,7 +107,7 @@ Dictionary< Key, Value, Compare >::erase_after(Dictionary::const_iterator first,
       current = next;
     }
   }
-  return iterator(it.node_);
+  return iterator(it.head_);
 }
 template< typename Key, typename Value, typename Compare >
 void Dictionary< Key, Value, Compare >::swap(Dictionary< Key, Value, Compare > &other)

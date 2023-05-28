@@ -1,9 +1,13 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <limits>
 #include <vector>
-#include "dict.h"
+//
+#include <iostream>
+#include <forward_list>
+#include "forwardlist.h"
+//
+void doTest();
 std::vector< std::string > splitString(const std::string &line, char del)
 {
   std::vector< std::string > elems;
@@ -23,7 +27,8 @@ std::vector< std::string > splitString(const std::string &line, char del)
 }
 int main(int argc, char *argv[])
 {
-  if (argc != 2)
+  doTest();
+  /*if (argc != 2)
   {
     std::cerr << "No file provided.\n";
     return 1;
@@ -45,13 +50,25 @@ int main(int argc, char *argv[])
       std::string val = lineWords[i + 1];
       std::cout << key << " " << val << "\n";
     }
-    /*Dictionary< int, std::string > dictionary{};
+    *//*Dictionary< int, std::string > dictionary{};
     for (size_t i = 2; i < argc; i += 2)
     {
       int key = std::stoi(argv[i]);
       std::string value = argv[i + 1];
       //dictionary.insert(key, value);
       std::cout << key << " " << value << "\n";
-    }*/
+    }*//*
+  }*/
+}
+void doTest()
+{
+  std::forward_list< int > myList1;
+  ForwardList< int > myList;
+  myList.push_front(3);
+  myList.push_front(2);
+  myList.push_front(1);
+  for (const auto &item: myList)
+  {
+    std::cout << item << " ";
   }
 }
