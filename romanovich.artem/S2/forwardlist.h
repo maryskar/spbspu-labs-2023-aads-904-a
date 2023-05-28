@@ -42,7 +42,8 @@ public:
   iterator erase_after(const_iterator first, const_iterator last);
   void push_front(const T &value);
   void push_front(T &&value);
-  void emplace_front(T &&value);
+  template< class ... Args >
+  void emplace_front(Args &&... args);
   void pop_front();
   void resize(size_t newSize);
   void resize(size_t newSize, const T &value);
@@ -127,7 +128,7 @@ template< typename T >
 void
 ForwardList< T >::splice_after(const_iterator position, ForwardList &source, const_iterator first, const_iterator last)
 {
-  source.splice_after(position, std::move(source), first, last);
+  splice_after(position, std::move(source), first, last);
 }
 template< typename T >
 void
@@ -137,22 +138,22 @@ ForwardList< T >::splice_after(const_iterator position, ForwardList &&source, co
   {
     return;
   }
-  details::ListNode< T > *posNode = position.node;
-  details::ListNode< T > *afterPosNode = posNode->next;
-  details::ListNode< T > *sourceFirstNode = first.node;
-  details::ListNode< T > *sourceLastNode = last.node;
-  details::ListNode< T > *sourceLastNodeNext = sourceLastNode;
-  while (sourceLastNodeNext->next != nullptr && sourceLastNodeNext->next != sourceLastNode)
+  auto posNode = position.ptr_;
+  auto afterPosNode = posNode->next;
+  auto sourceFirstNode = first.ptr_;
+  auto sourceLastNode = last.ptr_;
+  auto sourceLastNodeNext = sourceLastNode;
+  while (sourceLastNodeNext->next && sourceLastNodeNext->next != sourceLastNode)
   {
     sourceLastNodeNext = sourceLastNodeNext->next;
   }
-  sourceLastNodeNext->next = afterPosNode;
+  sourceLastNodeNext->next = nullptr;
   sourceFirstNode->next = sourceLastNode->next;
   posNode->next = sourceFirstNode;
-  sourceLastNode->next = nullptr;
-  if (source.head == sourceLastNode)
+  sourceLastNode->next = afterPosNode;
+  if (source.begin_ == sourceLastNode)
   {
-    source.head = nullptr;
+    source.begin_ = nullptr;
   }
 }
 template< typename T >
@@ -257,17 +258,13 @@ typename ForwardList< T >::const_iterator ForwardList< T >::cend() const
 template< typename T >
 void ForwardList< T >::pop_front()
 {
-  if (begin_ != nullptr)
-  {
-    details::ListNode< T > *toRemove = begin_;
-    begin_ = begin_->next_;
-    delete toRemove;
-  }
+  erase_after(before_begin());
 }
 template< typename T >
-void ForwardList< T >::emplace_front(T &&value)
+template< class ... Args >
+void ForwardList< T >::emplace_front(Args &&... args)
 {
-  begin_ = new details::ListNode< T >{std::forward< T >(value), begin_};
+  pushFront(std::forward< T >(T(args...)));
 }
 template< typename T >
 typename ForwardList< T >::iterator
@@ -495,6 +492,9 @@ template< typename T >
 void ForwardList< T >::swap(ForwardList &rhs)
 {
   std::swap(begin_, rhs.begin_);
+  std::swap(end_, rhs.end_);
+  std::swap(fakeNode_, rhs.fakeNode_);
+  size_ = rhs.size_;
 }
 template< typename T >
 ForwardList< T >::ForwardList():
