@@ -31,7 +31,7 @@ public:
   const_iterator cend() const;
   bool empty() const;
   void clear();
-  iterator insert_after(const_iterator position, const T &value);
+  iterator insert_after(iterator position, const T &value);
   void insert_after(const_iterator position, size_t count, const T &value);
   void insert_after(iterator position, std::initializer_list< T > initializerList);
   iterator insert_after(const_iterator position, T &&value);
@@ -339,7 +339,7 @@ ForwardListIterator< T > ForwardList< T >::insert_after(ConstForwardListIterator
   return insert_after(position, std::move(value));
 }
 template< typename T >
-void ForwardList< T >::insert_after(const ForwardListIterator< T > position, std::initializer_list< T > initializerList)
+void ForwardList< T >::insert_after(ForwardListIterator< T > position, std::initializer_list< T > initializerList)
 {
   for (const T &value: initializerList)
   {
@@ -358,12 +358,12 @@ void ForwardList< T >::insert_after(ConstForwardListIterator< T > position, size
 }
 template< typename T >
 ForwardListIterator< T >
-ForwardList< T >::insert_after(ConstForwardListIterator< T > position, const T &value)
+ForwardList< T >::insert_after(ForwardListIterator< T > position, const T &value)
 {
-  details::ListNode< T > *node = new details::ListNode< T >(value);
-  node->next = position.current_->next;
-  position.current_->next = node;
-  if (end_ == position.current_)
+  details::ListNode< T > *node = new details::ListNode< T >{value, begin_};
+  node->next_ = position.head_->next_;
+  position.head_->next_ = node;
+  if (end_ == position.head_)
   {
     end_ = node;
   }

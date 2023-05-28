@@ -2,9 +2,20 @@
 #define CONSTFORWARDLISTITER_H
 #include "common/listnode.h"
 template< typename T >
+class ForwardList;
+template< typename T >
+class ForwardListIterator;
+template< typename T >
 class ConstForwardListIterator
 {
 public:
+  friend class ForwardList< T >;
+  friend class ForwardListIterator< T >;
+  using iterator_category = std::forward_iterator_tag;
+  using value_type = T;
+  using difference_type = std::ptrdiff_t;
+  using pointer = T *;
+  using reference = T &;
   T &operator*();
   const T &operator*() const;
   T *operator->();
