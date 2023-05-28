@@ -242,26 +242,17 @@ void ForwardList< T >::resize(size_t newSize)
 template< typename T >
 typename ForwardList< T >::const_iterator ForwardList< T >::cbegin() const
 {
-  return const_iterator(begin_);
+  return ConstForwardListIterator< T >(begin_);
 }
 template< typename T >
 typename ForwardList< T >::const_iterator ForwardList< T >::cbefore_begin() const
 {
-  return const_iterator(const_cast<details::ListNode< T > *>(begin_));
+  return ConstForwardListIterator< T >(fakeNode_);
 }
 template< typename T >
 typename ForwardList< T >::const_iterator ForwardList< T >::cend() const
 {
-  if (begin_ == nullptr)
-  {
-    return nullptr;
-  }
-  details::ListNode< T > *node = begin_;
-  while (node->next_ != nullptr)
-  {
-    node = node->next_;
-  }
-  return node->next_;
+  return ConstForwardListIterator< T >(nullptr);
 }
 template< typename T >
 void ForwardList< T >::pop_front()
@@ -367,12 +358,12 @@ typename ForwardList< T >::iterator ForwardList< T >::insert_after(ForwardList::
 template< typename T >
 typename ForwardList< T >::iterator ForwardList< T >::end()
 {
-  return ForwardList< T >::end();
+  return ForwardList< T >(nullptr);
 }
 template< typename T >
 typename ForwardList< T >::const_iterator ForwardList< T >::end() const
 {
-  return ForwardList< T >::cend();
+  return ForwardList< T >(nullptr);
 }
 template< typename T >
 typename ForwardList< T >::iterator ForwardList< T >::begin()
@@ -382,25 +373,26 @@ typename ForwardList< T >::iterator ForwardList< T >::begin()
 template< typename T >
 typename ForwardList< T >::const_iterator ForwardList< T >::begin() const
 {
-  return ForwardList< T >::cbegin();
+  return ForwardListIterator< T >(begin_);
 }
 template< typename T >
 typename ForwardList< T >::iterator ForwardList< T >::before_begin()
 {
-  return ForwardList< T >::before_begin();
+  return ForwardListIterator< T >(fakeNode_);
 }
 template< typename T >
 typename ForwardList< T >::const_iterator ForwardList< T >::before_begin() const
 {
-  return ForwardList< T >::cbefore_begin();
+  return ForwardListIterator< T >(fakeNode_);
 }
 template< typename T >
 const T &ForwardList< T >::front() const
 {
-  if (begin_ == nullptr)
-  {
-    throw std::out_of_range("List is empty.");
-  }
+  return begin_->data_;
+}
+template< typename T >
+T ForwardList< T >::front()
+{
   return begin_->data_;
 }
 template< typename T >
@@ -408,11 +400,6 @@ ForwardList< T >::~ForwardList()
 {
   clear();
   ::operator delete(fakeNode_);
-}
-template< typename T >
-T ForwardList< T >::front()
-{
-  return begin_->data_;
 }
 template< typename T >
 ForwardList< T > &ForwardList< T >::operator=(const ForwardList &rhs)
