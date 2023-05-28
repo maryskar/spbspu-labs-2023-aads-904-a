@@ -57,8 +57,17 @@ public:
   void remove_if(Predicate pred);
   void reverse();
 private:
-  details::ListNode< T > *head_;
-  //details::ListNode< T > *tail_;
+  details::ListNode< T > *begin_;
+  details::ListNode< T > *end_;
+  details::ListNode< T > *fakeNode_;
+  size_t size_;
+  details::ListNode< T > *initFake()
+  {
+    void *nodeMemory = ::operator new(sizeof(details::ListNode< T >));
+    details::ListNode< T > *newNode = static_cast< details::ListNode< T > * >(nodeMemory);
+    newNode->next_ = nullptr;
+    return *newNode;
+  }
 };
 template< typename T >
 void ForwardList< T >::splice_after(const_iterator position, ForwardList &source)
@@ -134,7 +143,7 @@ template< typename T >
 template< class Predicate >
 void ForwardList< T >::remove_if(Predicate pred)
 {
-  details::ListNode< T > *current = head_;
+  details::ListNode< T > *current = begin_;
   details::ListNode< T > *previous = nullptr;
   while (current != nullptr)
   {
@@ -148,9 +157,9 @@ void ForwardList< T >::remove_if(Predicate pred)
       }
       else
       {
-        head_ = current->next_;
+        begin_ = current->next_;
         delete current;
-        current = head_;
+        current = begin_;
       }
     }
     else
@@ -199,21 +208,21 @@ void ForwardList< T >::resize(size_t newSize)
 template< typename T >
 typename ForwardList< T >::const_iterator ForwardList< T >::cbegin() const
 {
-  return const_iterator(head_);
+  return const_iterator(begin_);
 }
 template< typename T >
 typename ForwardList< T >::const_iterator ForwardList< T >::cbefore_begin() const
 {
-  return const_iterator(const_cast<details::ListNode< T > *>(head_));
+  return const_iterator(const_cast<details::ListNode< T > *>(begin_));
 }
 template< typename T >
 typename ForwardList< T >::const_iterator ForwardList< T >::cend() const
 {
-  if (head_ == nullptr)
+  if (begin_ == nullptr)
   {
     return nullptr;
   }
-  details::ListNode< T > *node = head_;
+  details::ListNode< T > *node = begin_;
   while (node->next_ != nullptr)
   {
     node = node->next_;
@@ -223,17 +232,17 @@ typename ForwardList< T >::const_iterator ForwardList< T >::cend() const
 template< typename T >
 void ForwardList< T >::pop_front()
 {
-  if (head_ != nullptr)
+  if (begin_ != nullptr)
   {
-    details::ListNode< T > *toRemove = head_;
-    head_ = head_->next_;
+    details::ListNode< T > *toRemove = begin_;
+    begin_ = begin_->next_;
     delete toRemove;
   }
 }
 template< typename T >
 void ForwardList< T >::emplace_front(T &&value)
 {
-  head_ = new details::ListNode< T >{std::forward< T >(value), head_};
+  begin_ = new details::ListNode< T >{std::forward< T >(value), begin_};
 }
 template< typename T >
 typename ForwardList< T >::iterator
@@ -252,7 +261,7 @@ ForwardList< T >::erase_after(ForwardList::const_iterator first, ForwardList::co
     }
     return it;
   }
-  auto pos = head_;
+  auto pos = begin_;
   while (pos->next_ != nullptr && pos->next_ != first)
   {
     pos = pos->next_;
@@ -334,7 +343,7 @@ typename ForwardList< T >::const_iterator ForwardList< T >::end() const
 template< typename T >
 typename ForwardList< T >::iterator ForwardList< T >::begin()
 {
-  return ForwardListIterator< T >(head_);
+  return ForwardListIterator< T >(begin_);
 }
 template< typename T >
 typename ForwardList< T >::const_iterator ForwardList< T >::begin() const
@@ -354,11 +363,11 @@ typename ForwardList< T >::const_iterator ForwardList< T >::before_begin() const
 template< typename T >
 const T &ForwardList< T >::front() const
 {
-  if (head_ == nullptr)
+  if (begin_ == nullptr)
   {
     throw std::out_of_range("List is empty.");
   }
-  return head_->data_;
+  return begin_->data_;
 }
 template< typename T >
 ForwardList< T >::~ForwardList()
@@ -368,11 +377,11 @@ ForwardList< T >::~ForwardList()
 template< typename T >
 T ForwardList< T >::front()
 {
-  if (head_ == nullptr)
+  if (begin_ == nullptr)
   {
     throw std::out_of_range("List is empty.");
   }
-  return head_->data_;
+  return begin_->data_;
 }
 template< typename T >
 ForwardList< T > &ForwardList< T >::operator=(const ForwardList &rhs)
@@ -391,9 +400,9 @@ noexcept
   if (this != &rhs)
   {
     clear();
-    head_ = rhs.head_;
+    begin_ = rhs.begin_;
     rhs.
-      head_ = nullptr;
+      begin_ = nullptr;
   }
   return *this;
 }
@@ -407,10 +416,10 @@ ForwardList< T > &ForwardList< T >::operator=(std::initializer_list< T > initial
 template< typename T >
 void ForwardList< T >::reverse()
 {
-  if (head_ != nullptr)
+  if (begin_ != nullptr)
   {
     details::ListNode< T > *previous = nullptr;
-    details::ListNode< T > *current = head_;
+    details::ListNode< T > *current = begin_;
     details::ListNode< T > *next = nullptr;
     while (current != nullptr)
     {
@@ -419,38 +428,41 @@ void ForwardList< T >::reverse()
       previous = current;
       current = next;
     }
-    head_ = previous;
+    begin_ = previous;
   }
 }
 template< typename T >
 void ForwardList< T >::clear()
 {
-  details::clear(head_);
-  head_ = nullptr;
+  details::clear(begin_);
+  begin_ = nullptr;
 }
 template< typename T >
 bool ForwardList< T >::empty() const
 {
-  return head_ == nullptr;
+  return begin_ == nullptr;
 }
 template< typename T >
 void ForwardList< T >::push_front(const T &value)
 {
-  head_ = new details::ListNode< T >{value, head_};
+  begin_ = new details::ListNode< T >{value, begin_};
 }
 template< typename T >
 void ForwardList< T >::push_front(T &&value)
 {
-  head_ = new details::ListNode< T >{std::move(value), head_};
+  begin_ = new details::ListNode< T >{std::move(value), begin_};
 }
 template< typename T >
 void ForwardList< T >::swap(ForwardList &rhs)
 {
-  std::swap(head_, rhs.head_);
+  std::swap(begin_, rhs.begin_);
 }
 template< typename T >
 ForwardList< T >::ForwardList():
-  head_(nullptr)
+  begin_(nullptr),
+  end_(nullptr),
+  fakeNode_(initFake()),
+  size_(0)
 {
 }
 template< typename T >
@@ -465,10 +477,10 @@ ForwardList< T >::ForwardList(const ForwardList &rhs):
 template< typename T >
 ForwardList< T >::ForwardList(ForwardList &&rhs)
 noexcept:
-  head_(rhs.head_)
+  begin_(rhs.begin_)
 {
   rhs.
-    head_ = nullptr;
+    begin_ = nullptr;
 }
 template< typename T >
 ForwardList< T >::ForwardList(std::initializer_list< T > initializerList):

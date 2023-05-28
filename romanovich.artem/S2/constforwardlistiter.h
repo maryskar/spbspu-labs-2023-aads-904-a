@@ -48,7 +48,7 @@ void ConstForwardListIterator< T >::checkForNullNode()
 {
   if (!node_)
   {
-    throw std::runtime_error("head_ is null in operator++");
+    throw std::runtime_error("begin_ is null in operator++");
   }
 }
 template< typename T >

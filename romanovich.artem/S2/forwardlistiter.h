@@ -42,7 +42,7 @@ void ForwardListIterator< T >::checkForNullNode()
 {
   if (!head_)
   {
-    throw std::runtime_error("head_ id null in operator++");
+    throw std::runtime_error("begin_ id null in operator++");
   }
 }
 template< typename T >
