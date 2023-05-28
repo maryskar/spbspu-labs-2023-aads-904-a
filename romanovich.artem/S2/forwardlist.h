@@ -271,11 +271,11 @@ void ForwardList< T >::emplace_front(T &&value)
 }
 template< typename T >
 typename ForwardList< T >::iterator
-ForwardList< T >::erase_after(ForwardList::const_iterator first, ForwardList::const_iterator last)
+ForwardList< T >::erase_after(ConstForwardListIterator< T > first, ConstForwardListIterator< T > last)
 {
-  if (first == last || first == end())
+  if (first == last || first == end() || empty())
   {
-    return iterator{};
+    return ForwardListIterator< T >();
   }
   if (first == before_begin())
   {
@@ -290,6 +290,10 @@ ForwardList< T >::erase_after(ForwardList::const_iterator first, ForwardList::co
   while (pos->next_ != nullptr && pos->next_ != first)
   {
     pos = pos->next_;
+  }
+  if (pos->next_ == nullptr)
+  {
+    return end();
   }
   auto it = iterator{pos->next_};
   while (it != end() && it != last)
@@ -307,16 +311,23 @@ typename ForwardList< T >::iterator ForwardList< T >::erase_after(ForwardList< T
     position.current_->next_ = nextIt->next_;
     delete nextIt;
   }
-  return ForwardList< T >::iterator(position.current_->next_);
+  if (position.current_->next_)
+  {
+    return ForwardList< T >::iterator(position.current_->next_);
+  }
+  else
+  {
+    return end();
+  }
 }
 template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::emplace_after(ForwardList::const_iterator position, T &&value)
+typename ForwardList< T >::iterator ForwardList< T >::emplace_after(ConstForwardListIterator< T > position, T &&value)
 {
   return insert_after(position, std::forward< T >(value));
 }
 template< typename T >
 template< class InputIterator >
-void ForwardList< T >::insert_after(ForwardList::const_iterator position, InputIterator first, InputIterator last)
+void ForwardList< T >::insert_after(ConstForwardListIterator< T > position, InputIterator first, InputIterator last)
 {
   while (first != last)
   {
@@ -326,7 +337,7 @@ void ForwardList< T >::insert_after(ForwardList::const_iterator position, InputI
   }
 }
 template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::insert_after(ForwardList::const_iterator position, T &&value)
+typename ForwardList< T >::iterator ForwardList< T >::insert_after(ConstForwardListIterator< T > position, T &&value)
 {
   return insert_after(position, std::move(value));
 }
@@ -340,7 +351,7 @@ void ForwardList< T >::insert_after(const ForwardList::iterator position, std::i
   }
 }
 template< typename T >
-void ForwardList< T >::insert_after(ForwardList::const_iterator position, size_t count, const T &value)
+void ForwardList< T >::insert_after(ConstForwardListIterator< T > position, size_t count, const T &value)
 {
   for (size_t i = 0; i < count; ++i)
   {
