@@ -20,6 +20,7 @@ namespace mashkin
     ForwardList();
     ForwardList(const ForwardList< T >& lhs);
     ForwardList(ForwardList< T >&& rhs) noexcept;
+    ~ForwardList();
 
     ForwardList< T >& operator=(const ForwardList< T >& rhs);
     ForwardList< T >& operator=(ForwardList< T >&& rhs);
@@ -73,6 +74,13 @@ mashkin::ForwardList< T >::ForwardList():
   tail_(nullptr)
 {
   fake_->next = fake_;
+}
+
+template< class T >
+mashkin::ForwardList< T >::~ForwardList()
+{
+  clear();
+  ::operator delete(fake_);
 }
 
 template< class T >
