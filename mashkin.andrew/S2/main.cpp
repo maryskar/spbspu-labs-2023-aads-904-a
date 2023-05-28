@@ -15,6 +15,7 @@ int main(int argc, char** argv)
   }
   else
   {
+    std::cout << argv[1];
   }
   std::forward_list< size_t > realf;
   mashkin::ForwardList< size_t > test;
