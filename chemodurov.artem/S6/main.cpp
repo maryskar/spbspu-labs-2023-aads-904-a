@@ -1,6 +1,7 @@
 #include <iostream>
 #include <forward-list.hpp>
 #include "merge-sort.hpp"
+#include "shell-sort.hpp"
 
 int main()
 {
@@ -9,7 +10,7 @@ int main()
   {
     list.push_front(std::rand() % 100);
   }
-  chemodurov::mergeSort(list.begin(), 20);
+  chemodurov::shellSort(list.begin(), 20);
   for (auto i = list.cbegin(); i != list.cend(); ++i)
   {
     std::cout << *i << ' ';
