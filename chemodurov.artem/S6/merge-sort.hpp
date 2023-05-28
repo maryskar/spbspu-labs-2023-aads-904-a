@@ -72,7 +72,15 @@ namespace chemodurov
   template< typename ForwardIt, typename Compare = std::less< > >
   void mergeSort(ForwardIt begin, size_t size, Compare comp = Compare{})
   {
-    //
+    for (size_t curr_size = 1; curr_size <= size - 1; curr_size = 2 * curr_size)
+    {
+      for (size_t left_start = 0; left_start < size - 1; left_start += 2 * curr_size)
+      {
+        size_t mid = std::min(left_start + curr_size - 1, size - 1);
+        size_t right_end = std::min(left_start + 2 * curr_size - 1, size - 1);
+        merge(begin, left_start, mid, right_end, comp);
+      }
+    }
   }
 }
 
