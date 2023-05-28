@@ -9,13 +9,13 @@
 
 int main(int argc, char** argv)
 {
-  /*if (argc != 2)
+  if (argc != 2)
   {
     return 1;
   }
   else
   {
-  }*/
+  }
   std::forward_list< size_t > realf;
   mashkin::ForwardList< size_t > test;
   mashkin::ForwardList< size_t > test2;
@@ -45,10 +45,10 @@ int main(int argc, char** argv)
   //test.insert_after(test.cbegin(), 8);
   //test.splice_after(test.before_begin(), test2);
   //test.splice_after(test.before_begin(), test2, test2.cbegin(), ++test2.cbegin());
-  realf.push_front(1);
-  realf.remove(1);
-  test.push_front(1);
-  test.remove(1);
+  //realf.push_front(1);
+  //realf.remove(1);
+  //test.push_front(1);
+  //test.remove(1);
   for (auto it = realf.begin(); it != realf.end();)
   {
     std::cout << realf.front() << " ";

@@ -217,6 +217,10 @@ namespace mashkin
   {
     if (fake_->next == tail_)
     {
+      fake_->next = fake_;
+    }
+    if (fake_->next == fake_)
+    {
       throw std::out_of_range("You got the end of list");
     }
     auto toDel = fake_->next;
@@ -250,7 +254,7 @@ namespace mashkin
   template< class T >
   void ForwardList< T >::clear() noexcept
   {
-    while (!empty())
+    while (empty())
     {
       pop_front();
       if (!fake_->next)
