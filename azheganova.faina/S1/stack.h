@@ -54,7 +54,7 @@ namespace azheganova
       }
       catch (const std::exception & e)
       {
-        while (top_ != nullptr)
+        while (!isEmpty())
         {
           pop();
         }

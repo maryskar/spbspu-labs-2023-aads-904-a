@@ -2,7 +2,7 @@
 
 azheganova::Queue< std::string > azheganova::convertToInfix(const std::string & string)
 {
-  azheganova::Queue< std::string > infix;
+  Queue< std::string > infix;
   size_t begin = 0;
   size_t end = string.find(' ');
   while (end + 1 > 0)

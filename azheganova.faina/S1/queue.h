@@ -45,7 +45,7 @@ namespace azheganova
       }
       catch (const std::exception & e)
       {
-        while (top_ != nullptr)
+        while (!isEmpty())
         {
           pop();
         }
@@ -81,7 +81,7 @@ namespace azheganova
       std::swap(top_, rhs.top_);
       std::swap(last_, rhs.top_);
     }
-    return * this;
+    return *this;
   }
 
   template< typename T >
@@ -113,7 +113,7 @@ namespace azheganova
   {
     if (isEmpty())
     {
-      throw;
+      throw std::logic_error("empty queue");
     }
     details::ListNode< T > * tmp = top_->next_;
     delete top_;
@@ -137,7 +137,7 @@ namespace azheganova
   }
 
   template< typename T >
-  void Queue<T>::deleteQueue()
+  void Queue< T >::deleteQueue()
   {
     while (top_)
     {

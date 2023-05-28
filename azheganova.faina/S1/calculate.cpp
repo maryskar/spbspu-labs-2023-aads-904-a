@@ -97,9 +97,9 @@ long long azheganova::calculateRemainder(long long secondnum, long long firstnum
   return firstnum % secondnum;
 }
 
-long long azheganova::calculatePostfix(azheganova::Queue< std::string > & postfix)
+long long azheganova::calculatePostfix(Queue< std::string > & postfix)
 {
-  azheganova::Stack < long long > stack;
+  Stack < long long > stack;
   while (!postfix.isEmpty())
   {
     std::string element;
