@@ -7,18 +7,22 @@ namespace
   {
     std::cout << "<INVALID COMMAND>\n";
   }
+  bool isThisCommand(const std::string &command, const std::string &procCommand)
+  {
+    return (command.substr(0, procCommand.size() - 1) == procCommand);
+  }
   void tryCalcWithArg(const std::string &command, const std::vector< std::string > &polygons)
   {
     romanovich::CommandProcessor comProc;
-    if (command.substr(0, comProc.complementCall.size() - 1) == comProc.complementCall)
+    if (isThisCommand(command, comProc.complementCall))
     {
       //
     }
-    else if (command.substr(0, comProc.intersectCall.size() - 1) == comProc.intersectCall)
+    else if (isThisCommand(command, comProc.intersectCall))
     {
       //
     }
-    else if (command.substr(0, comProc.unionCall.size() - 1) == comProc.unionCall)
+    else if (isThisCommand(command, comProc.unionCall))
     {
       //
     }
@@ -41,5 +45,17 @@ namespace romanovich
     {
       tryCalcWithArg(command, polygons);
     }
+  }
+  void CommandProcessor::printCommand(const std::vector< std::string > &)
+  {
+  }
+  void CommandProcessor::intersectCommand(const std::vector< std::string > &, const std::string &)
+  {
+  }
+  void CommandProcessor::complementCommand(const std::vector< std::string > &, const std::string &)
+  {
+  }
+  void CommandProcessor::unionCommand(const std::vector< std::string > &, const std::string &)
+  {
   }
 }
