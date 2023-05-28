@@ -65,7 +65,7 @@ void doTest()
   std::forward_list< int > myList1;
   ForwardList< int > myList;
   myList.push_front(3);
-  myList.push_front(2);
+  myList.pop_front();
   myList.push_front(1);
   for (const auto &item: myList)
   {

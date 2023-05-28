@@ -102,7 +102,7 @@ details::ListNode< T > *ForwardList< T >::initFake()
   void *nodeMemory = ::operator new(sizeof(details::ListNode< T >));
   details::ListNode< T > *newNode = static_cast< details::ListNode< T > * >(nodeMemory);
   newNode->next_ = nullptr;
-  return *newNode;
+  return newNode;
 }
 template< typename T >
 void ForwardList< T >::splice_after(const_iterator position, ForwardList &source)
@@ -241,17 +241,17 @@ void ForwardList< T >::resize(size_t newSize)
   resize(newSize, T());
 }
 template< typename T >
-typename ForwardList< T >::const_iterator ForwardList< T >::cbegin() const
+ConstForwardListIterator< T > ForwardList< T >::cbegin() const
 {
   return ConstForwardListIterator< T >(begin_);
 }
 template< typename T >
-typename ForwardList< T >::const_iterator ForwardList< T >::cbefore_begin() const
+ConstForwardListIterator< T > ForwardList< T >::cbefore_begin() const
 {
   return ConstForwardListIterator< T >(fakeNode_);
 }
 template< typename T >
-typename ForwardList< T >::const_iterator ForwardList< T >::cend() const
+ConstForwardListIterator< T > ForwardList< T >::cend() const
 {
   return ConstForwardListIterator< T >(nullptr);
 }
@@ -267,7 +267,25 @@ void ForwardList< T >::emplace_front(Args &&... args)
   pushFront(std::forward< T >(T(args...)));
 }
 template< typename T >
-typename ForwardList< T >::iterator
+ForwardListIterator< T > ForwardList< T >::erase_after(ConstForwardListIterator< T > position)
+{
+  auto nextIt = position.current_->next_;
+  if (nextIt)
+  {
+    position.current_->next_ = nextIt->next_;
+    delete nextIt;
+  }
+  if (position.current_->next_)
+  {
+    return ForwardListIterator< T >(position.current_->next_);
+  }
+  else
+  {
+    return end();
+  }
+}
+template< typename T >
+ForwardListIterator< T >
 ForwardList< T >::erase_after(ConstForwardListIterator< T > first, ConstForwardListIterator< T > last)
 {
   if (first == last || first == end() || empty())
@@ -292,7 +310,7 @@ ForwardList< T >::erase_after(ConstForwardListIterator< T > first, ConstForwardL
   {
     return end();
   }
-  auto it = iterator{pos->next_};
+  auto it = ForwardListIterator< T >{pos->next_};
   while (it != end() && it != last)
   {
     it = erase_after(pos);
@@ -300,25 +318,7 @@ ForwardList< T >::erase_after(ConstForwardListIterator< T > first, ConstForwardL
   return it;
 }
 template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::erase_after(ForwardList< T >::const_iterator position)
-{
-  auto nextIt = position.current_->next_;
-  if (nextIt)
-  {
-    position.current_->next_ = nextIt->next_;
-    delete nextIt;
-  }
-  if (position.current_->next_)
-  {
-    return ForwardList< T >::iterator(position.current_->next_);
-  }
-  else
-  {
-    return end();
-  }
-}
-template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::emplace_after(ConstForwardListIterator< T > position, T &&value)
+ForwardListIterator< T > ForwardList< T >::emplace_after(ConstForwardListIterator< T > position, T &&value)
 {
   return insert_after(position, std::forward< T >(value));
 }
@@ -334,12 +334,12 @@ void ForwardList< T >::insert_after(ConstForwardListIterator< T > position, Inpu
   }
 }
 template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::insert_after(ConstForwardListIterator< T > position, T &&value)
+ForwardListIterator< T > ForwardList< T >::insert_after(ConstForwardListIterator< T > position, T &&value)
 {
   return insert_after(position, std::move(value));
 }
 template< typename T >
-void ForwardList< T >::insert_after(const ForwardList::iterator position, std::initializer_list< T > initializerList)
+void ForwardList< T >::insert_after(const ForwardListIterator< T > position, std::initializer_list< T > initializerList)
 {
   for (const T &value: initializerList)
   {
@@ -357,7 +357,7 @@ void ForwardList< T >::insert_after(ConstForwardListIterator< T > position, size
   }
 }
 template< typename T >
-typename ForwardList< T >::iterator
+ForwardListIterator< T >
 ForwardList< T >::insert_after(ConstForwardListIterator< T > position, const T &value)
 {
   details::ListNode< T > *node = new details::ListNode< T >(value);
@@ -368,35 +368,35 @@ ForwardList< T >::insert_after(ConstForwardListIterator< T > position, const T &
     end_ = node;
   }
   ++size_;
-  return iterator(node);
+  return ForwardListIterator< T >(node);
 }
 template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::end()
+ForwardListIterator< T > ForwardList< T >::end()
 {
-  return ForwardList< T >(nullptr);
+  return ForwardListIterator< T >(nullptr);
 }
 template< typename T >
-typename ForwardList< T >::const_iterator ForwardList< T >::end() const
+ConstForwardListIterator< T > ForwardList< T >::end() const
 {
-  return ForwardList< T >(nullptr);
+  return ForwardListIterator< T >(nullptr);
 }
 template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::begin()
-{
-  return ForwardListIterator< T >(begin_);
-}
-template< typename T >
-typename ForwardList< T >::const_iterator ForwardList< T >::begin() const
+ForwardListIterator< T > ForwardList< T >::begin()
 {
   return ForwardListIterator< T >(begin_);
 }
 template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::before_begin()
+ConstForwardListIterator< T > ForwardList< T >::begin() const
+{
+  return ForwardListIterator< T >(begin_);
+}
+template< typename T >
+ForwardListIterator< T > ForwardList< T >::before_begin()
 {
   return ForwardListIterator< T >(fakeNode_);
 }
 template< typename T >
-typename ForwardList< T >::const_iterator ForwardList< T >::before_begin() const
+ConstForwardListIterator< T > ForwardList< T >::before_begin() const
 {
   return ForwardListIterator< T >(fakeNode_);
 }

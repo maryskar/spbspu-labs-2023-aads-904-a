@@ -1,5 +1,6 @@
 #ifndef FORWARDLISTITER_H
 #define FORWARDLISTITER_H
+#include "common/listnode.h"
 template< typename T >
 class ForwardListIterator
 {
@@ -13,7 +14,7 @@ public:
   ForwardListIterator< T > &operator=(const ForwardListIterator< T > &rhs) = default;
   ForwardListIterator< T > &operator++();
   ForwardListIterator< T > operator++(int);
-  ForwardListIterator(const ForwardListIterator< T > &rhs);
+  ForwardListIterator(details::ListNode< T > *head);
   ~ForwardListIterator() = default;
   ForwardListIterator();
   ForwardListIterator< T > begin();
@@ -23,8 +24,8 @@ private:
   void checkForNullNode();
 };
 template< typename T >
-ForwardListIterator< T >::ForwardListIterator(const ForwardListIterator< T > &rhs):
-  head_(rhs.head_)
+ForwardListIterator< T >::ForwardListIterator(details::ListNode< T > *head):
+  head_(head)
 {
 }
 template< typename T >
@@ -42,7 +43,7 @@ void ForwardListIterator< T >::checkForNullNode()
 {
   if (!head_)
   {
-    throw std::runtime_error("begin_ id null in operator++");
+    throw std::runtime_error("head_ is null in operator++");
   }
 }
 template< typename T >
