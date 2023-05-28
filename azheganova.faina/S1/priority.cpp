@@ -3,33 +3,41 @@
 
 bool azheganova::getPriority(std::string oper)
 {
-  if (oper == "+")
+  if (oper == ")")
   {
     return 0;
-  }
-  else if (oper == "-")
-  {
-    return 0;
-  }
-  else if (oper == "*")
-  {
-    return 1;
-  }
-  else if (oper == "/")
-  {
-    return 1;
-  }
-  else if (oper == "%")
-  {
-    return 1;
-  }
-  else if (oper == ")")
-  {
-    return 2;
   }
   else if (oper == "(")
   {
+    return 0;
+  }
+  else if (oper == "+")
+  {
+    return 1;
+  }
+  else if (oper == "-")
+  {
+    return 1;
+  }
+  else if (oper == "*")
+  {
     return 2;
+  }
+  else if (oper == "/")
+  {
+    return 2;
+  }
+  else if (oper == "%")
+  {
+    return 2;
+  }
+  else if (oper == ")")
+  {
+    return 0;
+  }
+  else if (oper == "(")
+  {
+    return 0;
   }
   else
   {
@@ -39,5 +47,5 @@ bool azheganova::getPriority(std::string oper)
 
 bool azheganova::isPriority(std::string oper1, std::string oper2)
 {
-  return getPriority(oper1) <= getPriority(oper2);
+  return getPriority(oper1) >= getPriority(oper2);
 }
