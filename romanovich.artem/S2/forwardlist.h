@@ -1,5 +1,6 @@
 #ifndef FORWARDLIST_H
 #define FORWARDLIST_H
+#include <tuple>
 #include "common/listnode.h"
 #include "forwardlistiter.h"
 #include "constforwardlistiter.h"
@@ -61,14 +62,25 @@ private:
   details::ListNode< T > *end_;
   details::ListNode< T > *fakeNode_;
   size_t size_;
-  details::ListNode< T > *initFake()
-  {
-    void *nodeMemory = ::operator new(sizeof(details::ListNode< T >));
-    details::ListNode< T > *newNode = static_cast< details::ListNode< T > * >(nodeMemory);
-    newNode->next_ = nullptr;
-    return *newNode;
-  }
+  details::ListNode< T > *initFake();
+  void copy(const ForwardList< T > &rhs);
 };
+template< typename T >
+void ForwardList< T >::copy(const ForwardList< T > &rhs)
+{
+  auto tmp = details::copy(rhs.begin_);
+  begin_ = std::get< 0 >(tmp);
+  end_ = std::get< 1 >(tmp);
+  fakeNode_->next = begin_;
+}
+template< typename T >
+details::ListNode< T > *ForwardList< T >::initFake()
+{
+  void *nodeMemory = ::operator new(sizeof(details::ListNode< T >));
+  details::ListNode< T > *newNode = static_cast< details::ListNode< T > * >(nodeMemory);
+  newNode->next_ = nullptr;
+  return *newNode;
+}
 template< typename T >
 void ForwardList< T >::splice_after(const_iterator position, ForwardList &source)
 {
@@ -469,18 +481,19 @@ template< typename T >
 ForwardList< T >::ForwardList(const ForwardList &rhs):
   ForwardList()
 {
-  for (auto it = rhs.begin(); it != rhs.end(); ++it)
-  {
-    push_front(*it);
-  }
+  copy(rhs);
 }
 template< typename T >
-ForwardList< T >::ForwardList(ForwardList &&rhs)
-noexcept:
-  begin_(rhs.begin_)
+ForwardList< T >::ForwardList(ForwardList &&rhs) noexcept:
+  begin_(rhs.begin_),
+  end_(rhs.end_),
+  fakeNode_(rhs.fakeNode_),
+  size_(rhs.size_)
 {
-  rhs.
-    begin_ = nullptr;
+  rhs.begin_ = nullptr;
+  rhs.end_ = nullptr;
+  rhs.fakeNode_ = nullptr;
+  rhs.size_ = nullptr;
 }
 template< typename T >
 ForwardList< T >::ForwardList(std::initializer_list< T > initializerList):
