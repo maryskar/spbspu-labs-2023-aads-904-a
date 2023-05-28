@@ -67,7 +67,7 @@ namespace azheganova
   {
     std::swap(top_, rhs.top_);
     std::swap(last_, rhs.top_);
-    return * this;
+    return *this;
   }
 
   template< typename T >

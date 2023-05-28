@@ -41,9 +41,7 @@ int main(int argc, char * argv[])
         continue;
       }
       azheganova::Queue< std::string > infixform = azheganova::convertToInfix(string);
-      azheganova::Queue< std::string > postfixform;
-      azheganova::Stack< std::string > stack;
-      azheganova::convertFromInfixToPostfix(infixform, stack, postfixform);
+      azheganova::Queue< std::string > postfixform =azheganova::convertFromInfixToPostfix(infixform);
       result.push(azheganova::calculatePostfix(postfixform));
     }
     catch (...)

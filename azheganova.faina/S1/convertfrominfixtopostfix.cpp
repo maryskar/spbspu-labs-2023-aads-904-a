@@ -7,8 +7,10 @@ bool isOperator(std::string oper)
   return (oper == "+") || (oper == "-") || (oper == "*") || (oper == "/") || (oper == "%");
 }
 
-void azheganova::convertFromInfixToPostfix(queue_str & queue, stack_str & stack, queue_str & postfix)
+azheganova::Queue< std::string > azheganova::convertFromInfixToPostfix(Queue< std::string > & queue)
 {
+  Stack< std::string > stack;
+  Queue< std::string > postfix;
   while (!queue.isEmpty())
   {
     std::string element = queue.get();
@@ -53,4 +55,5 @@ void azheganova::convertFromInfixToPostfix(queue_str & queue, stack_str & stack,
     postfix.push(stack.get());
     stack.pop();
   }
+  return postfix;
 }

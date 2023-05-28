@@ -39,5 +39,5 @@ bool azheganova::getPriority(std::string oper)
 
 bool azheganova::isPriority(std::string oper1, std::string oper2)
 {
-  return getPriority(oper1) < getPriority(oper2);
+  return getPriority(oper1) <= getPriority(oper2);
 }
