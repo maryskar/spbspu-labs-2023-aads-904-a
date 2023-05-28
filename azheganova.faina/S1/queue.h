@@ -78,10 +78,10 @@ namespace azheganova
     if (this != std::addressof(rhs))
     {
       clearQueue();
-      top_ = queue.top_;
-      last_ = queue.last_;
-      queue.top_ = nullptr;
-      queue.last_ = nullptr;
+      top_ = rhs.top_;
+      last_ = rhs.last_;
+      rhs.top_ = nullptr;
+      rhs.last_ = nullptr;
     }
     return *this;
   }

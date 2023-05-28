@@ -89,7 +89,7 @@ namespace azheganova
   {
     if (this != std::addressof(rhs))
     {
-      clear();
+      clearStack();
       top_ = rhs.top_;
       rhs.top_ = nullptr;
     }
