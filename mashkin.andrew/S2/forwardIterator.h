@@ -2,8 +2,8 @@
 #define ITERATOR_H
 #include <cassert>
 #include <memory>
+#include "forwardConstIterator.h"
 #include "nodeList.h"
-#include "constIterator.h"
 
 namespace mashkin
 {

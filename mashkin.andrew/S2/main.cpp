@@ -3,9 +3,9 @@
 #include <fstream>
 #include <iostream>
 #include <iterator>
-#include "constIterator.h"
+#include "forwardConstIterator.h"
+#include "forwardIterator.h"
 #include "forwardList.h"
-#include "iterator.h"
 
 int main(int argc, char** argv)
 {

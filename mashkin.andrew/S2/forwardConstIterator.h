@@ -1,10 +1,10 @@
-#ifndef S2_CONSTITERATOR_H
-#define S2_CONSTITERATOR_H
+#ifndef S2_FORWARDCONSTITERATOR_H
+#define S2_FORWARDCONSTITERATOR_H
 #include <cassert>
 #include <memory>
-#include "iterator.h"
-#include "nodeList.h"
+#include "forwardIterator.h"
 #include "forwardList.h"
+#include "nodeList.h"
 
 namespace mashkin
 {

@@ -2,8 +2,8 @@
 #define FORWARDLIST_H
 #include <stdexcept>
 #include <utility>
-#include "constIterator.h"
-#include "iterator.h"
+#include "forwardConstIterator.h"
+#include "forwardIterator.h"
 #include "nodeList.h"
 
 namespace mashkin
