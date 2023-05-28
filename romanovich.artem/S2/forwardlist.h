@@ -407,6 +407,7 @@ template< typename T >
 ForwardList< T >::~ForwardList()
 {
   clear();
+  ::operator delete(fakeNode_);
 }
 template< typename T >
 T ForwardList< T >::front()
