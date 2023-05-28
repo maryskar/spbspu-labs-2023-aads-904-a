@@ -15,8 +15,8 @@ namespace mashkin
   class ForwardList
   {
   public:
-    using iter = mashkin::Iterator< T >;
-    using citer = mashkin::ConstIterator< T >;
+    using iter = Iterator< T >;
+    using citer = ConstIterator< T >;
     ForwardList();
     ForwardList(const ForwardList< T >& lhs);
     ForwardList(ForwardList< T >&& rhs) noexcept;
@@ -24,32 +24,37 @@ namespace mashkin
     ForwardList< T >& operator=(const ForwardList< T >& rhs);
     ForwardList< T >& operator=(ForwardList< T >&& rhs);
 
-    Iterator< T > before_begin() noexcept;
-    ConstIterator< T > cbefore_begin() noexcept;
+    iter before_begin() noexcept;
+    citer cbefore_begin() noexcept;
+    iter begin() const noexcept;
+    iter end() const noexcept;
+    citer cbegin() const noexcept;
+    citer cend() const noexcept;
 
-    Iterator< T > begin() const noexcept;
-    Iterator< T > end() const noexcept;
-
-    Iterator< T > insert_after(ConstIterator< T > position, const T& val);
-    Iterator< T > insert_after(ConstIterator< T > position, T&& val);
-    Iterator< T > insert_after(ConstIterator< T > position, size_t n, const T& val);
+    iter insert_after(citer position, const T& val);
+    iter insert_after(citer position, T&& val);
+    iter insert_after(citer position, size_t n, const T& val);
     template< class InputIterator >
-    Iterator< T > insert_after(ConstIterator< T > position, InputIterator first, InputIterator last);
+    iter insert_after(citer position, InputIterator first, InputIterator last);
 
-    ConstIterator< T > cbegin() const noexcept;
-    ConstIterator< T > cend() const noexcept;
 
     T& front();
     void push_front(const T& value);
     void pop_front();
 
-    Iterator< T > erase_after(citer pos);
-    Iterator< T > erase_after(citer pos, citer last);
+    iter erase_after(citer pos);
+    iter erase_after(citer pos, citer last);
     void clear() noexcept;
 
     void swap(ForwardList< T >& list);
     void reverse() noexcept;
 
+    void splice_after(citer pos, ForwardList< T >& other);
+    void splice_after(citer pos, ForwardList< T >&& other);
+    void splice_after(citer pos, ForwardList< T >& other, citer it);
+    void splice_after(citer pos, ForwardList< T >&& other, citer it);
+    void splice_after(citer pos, ForwardList< T >& other, citer first, citer last);
+    void splice_after(citer pos, ForwardList< T >&& other, citer first, citer last);
     bool empty() const noexcept;
 
   private:
@@ -272,8 +277,7 @@ void mashkin::ForwardList< T >::reverse() noexcept
           var1 = var2;
           var2 = var3;
           var3 = var3->next;
-        }
-        while (var3 != nullptr);
+        } while (var3 != nullptr);
         var2->next = var1;
         var1 = var2;
         var2 = var3;
