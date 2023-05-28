@@ -57,6 +57,10 @@ namespace mashkin
     void splice_after(citer pos, ForwardList< T >&& other, citer first, citer last);
     bool empty() const noexcept;
 
+    void remove(const T& value);
+    template< class UnaryPredicate >
+    void remove_if(UnaryPredicate p);
+
   private:
     NodeList< T >* fake_;
     NodeList< T >* tail_;
@@ -160,7 +164,7 @@ mashkin::ConstIterator< T > mashkin::ForwardList< T >::cend() const noexcept
 template< class T >
 mashkin::Iterator< T > mashkin::ForwardList< T >::insert_after(citer position, T&& val)
 {
-  return insert_after(position, std::move(val));
+  return insert_after(position, val);
 }
 
 template< class T >
@@ -237,7 +241,7 @@ mashkin::Iterator< T > mashkin::ForwardList< T >::erase_after(citer pos, citer l
 template< class T >
 void mashkin::ForwardList< T >::clear() noexcept
 {
-  while (empty())
+  while (!empty())
   {
     pop_front();
     if (!fake_->next)
@@ -289,6 +293,106 @@ void mashkin::ForwardList< T >::reverse() noexcept
         var2->next = var1;
       }
     }
+  }
+}
+
+template< class T >
+void mashkin::ForwardList< T >::splice_after(citer pos, ForwardList< T >& other)
+{
+  ConstIterator< T > end(pos.node->next);
+  auto first = other.begin();
+  auto last = other.end();
+  pos.node->next = first.node;
+  while (first.node->next != last.node)
+  {
+    first++;
+  }
+  first.node->next = end.node;
+  other.fake_->next = other.fake_;
+}
+
+template< class T >
+void mashkin::ForwardList< T >::splice_after(citer pos, ForwardList< T >&& other)
+{
+  splice_after(pos, other);
+}
+
+template< class T >
+void mashkin::ForwardList< T >::splice_after(citer pos, ForwardList< T >& other, citer it)
+{
+  if (it.node->next == other.fake_->next)
+  {
+    splice_after(pos, other);
+  }
+  else
+  {
+    ConstIterator< T > end(pos.node->next);
+    auto last = other.end();
+    pos.node->next = it.node->next;
+    auto otherEnd = it;
+    it++;
+    otherEnd.node->next = nullptr;
+    while (it.node->next != last.node)
+    {
+      it++;
+    }
+    it.node->next = end.node;
+  }
+}
+
+template< class T >
+void mashkin::ForwardList< T >::splice_after(citer pos, ForwardList< T >&& other, citer it)
+{
+  splice_after(pos, other, it);
+}
+
+template< class T >
+void mashkin::ForwardList< T >::splice_after(citer pos, ForwardList< T >& other, citer first, citer last)
+{
+  ConstIterator< T > end(pos.node->next);
+  pos.node->next = first.node->next;
+  first.node->next = last.node->next;
+  last.node->next = end.node;
+}
+
+template< class T >
+void mashkin::ForwardList< T >::splice_after(citer pos, ForwardList< T >&& other, citer first, citer last)
+{
+  splice_after(pos, other, first, last);
+}
+
+template< class T >
+void mashkin::ForwardList< T >::remove(const T& value)
+{
+  auto first = before_begin();
+  auto last = end();
+  while (first.node->next != last.node)
+  {
+    if (first.node->next->data == value)
+    {
+      auto toDel = first.node->next;
+      first.node->next = first.node->next->next;
+      delete toDel;
+    }
+    ++first;
+  }
+}
+
+template< class T>
+template< class UnaryPredicate >
+void mashkin::ForwardList< T >::remove_if(UnaryPredicate p)
+{
+  auto first = before_begin();
+  auto last = end();
+  while (first.node->next != last.node)
+  {
+    if (p(first.node->next->data))
+    {
+      auto toDel = first.node->next;
+      first.node->next = first.node->next->next;
+      delete toDel;
+    }
+    ++first;
   }
 }
 #endif
