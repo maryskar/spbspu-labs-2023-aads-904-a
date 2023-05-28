@@ -6,16 +6,16 @@ template< typename Key, typename Value, typename Compare = std::less< Key >>
 class Dictionary
 {
 public:
-  using kV = std::pair< const Key, Value >;
-  using iterator = typename ForwardList< kV >::iterator;
-  using const_iterator = typename ForwardList< kV >::const_iterator;
+  using value_type = std::pair< const Key, Value >;
+  using iterator = typename ForwardList< value_type >::iterator;
+  using const_iterator = typename ForwardList< value_type >::const_iterator;
   Dictionary();
   Dictionary(const Dictionary< Key, Value, Compare > &rhs);
   Dictionary(Dictionary< Key, Value, Compare > &&rhs) noexcept;
   ~Dictionary() = default;
   Dictionary< Key, Value, Compare > &operator=(const Dictionary< Key, Value, Compare > &rhs);
   Dictionary< Key, Value, Compare > &operator=(Dictionary< Key, Value, Compare > &&rhs) noexcept;
-  Dictionary< Key, Value, Compare > &operator=(std::initializer_list< kV > initializerList);
+  Dictionary< Key, Value, Compare > &operator=(std::initializer_list< value_type > initializerList);
   Value &operator[](const Key &key);
   Value &operator[](Key &&key);
   Value &at(const Key &key);
@@ -32,19 +32,16 @@ public:
   const_iterator last() const noexcept;
   const_iterator clast() const noexcept;
   bool empty() const noexcept;
-  size_t size() const noexcept;
   void clear() noexcept;
-  //
-  std::pair< iterator, bool > insert(const kV &value);
+  std::pair< iterator, bool > insert(const value_type &value);
   template< typename P >
   std::pair< iterator, bool > insert(P &&value);
-  iterator insert(const_iterator pos, const kV &value);
+  iterator insert(const_iterator pos, const value_type &value);
   template< typename P >
   iterator insert(const_iterator pos, P &&value);
   template< typename InputIt >
   void insert(InputIt first, InputIt last);
-  void insert(std::initializer_list< kV > initializerList);
-//
+  void insert(std::initializer_list< value_type > initializerList);
   template< typename... Args >
   std::pair< iterator, bool > emplace(Args &&... args);
   template< typename... Args >
@@ -64,9 +61,8 @@ public:
   const_iterator upper_bound(const Key &key) const;
   Compare key_comp() const;
 private:
-  ForwardList< kV > data_;
+  ForwardList< value_type > data_;
   Compare comp_;
-  size_t size_;
   Value &insertValue(Key &&key);
   bool areEqualKeys(Key lhs, Key rhs);
 };
@@ -96,12 +92,12 @@ Dictionary< Key, Value, Compare >::erase_after(Dictionary::const_iterator first,
   {
     iterator eraseEnd = it;
     ++eraseEnd;
-    details::ListNode< kV > *current = eraseStart.head_->next;
-    details::ListNode< kV > *end = eraseEnd.head_->next;
+    details::ListNode< value_type > *current = eraseStart.head_->next;
+    details::ListNode< value_type > *end = eraseEnd.head_->next;
     eraseStart.head_->next = end;
     while (current != end)
     {
-      details::ListNode< kV > *next = current->next;
+      details::ListNode< value_type > *next = current->next;
       delete current;
       current = next;
     }
@@ -220,11 +216,11 @@ template< typename... Args >
 std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool >
 Dictionary< Key, Value, Compare >::emplace(Args &&... args)
 {
-  kV value(std::forward< Args >(args)...);
+  value_type value(std::forward< Args >(args)...);
   return insert(std::move(value));
 }
 template< typename Key, typename Value, typename Compare >
-void Dictionary< Key, Value, Compare >::insert(std::initializer_list< kV > initializerList)
+void Dictionary< Key, Value, Compare >::insert(std::initializer_list< value_type > initializerList)
 {
   data_.insert_after(data_.before_begin(), initializerList.begin(), initializerList.end());
 }
@@ -243,7 +239,7 @@ Dictionary< Key, Value, Compare >::insert(Dictionary::const_iterator pos, P &&va
 }
 template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::iterator
-Dictionary< Key, Value, Compare >::insert(Dictionary::const_iterator pos, const Dictionary::kV &value)
+Dictionary< Key, Value, Compare >::insert(Dictionary::const_iterator pos, const Dictionary::value_type &value)
 {
   return data_.insert_after(pos, value);
 }
@@ -252,7 +248,7 @@ template< typename P >
 std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool >
 Dictionary< Key, Value, Compare >::insert(P &&value)
 {
-  kV tmpValue(std::forward< P >(value));
+  value_type tmpValue(std::forward< P >(value));
   iterator it = lower_bound(tmpValue.first);
   if (it != end() && !comp_(tmpValue.first, it->first) && !comp_(it->first, tmpValue.first))
   {
@@ -308,16 +304,15 @@ Compare Dictionary< Key, Value, Compare >::key_comp() const
 }
 template< typename Key, typename Value, typename Compare >
 std::pair< typename ForwardList< std::pair< const Key, Value > >::iterator, bool >
-Dictionary< Key, Value, Compare >::insert(const Dictionary::kV &value)
+Dictionary< Key, Value, Compare >::insert(const Dictionary::value_type &value)
 {
-  kV newValue = value;
+  value_type newValue = value;
   auto it = find(newValue.first);
   if (it != end())
   {
     return {it, false};
   }
   data_.push_back(std::move(newValue));
-  ++size_;
   it = find(newValue.first);
   return {it, true};
 }
@@ -325,17 +320,11 @@ template< typename Key, typename Value, typename Compare >
 void Dictionary< Key, Value, Compare >::clear() noexcept
 {
   data_.clear();
-  size_ = 0;
-}
-template< typename Key, typename Value, typename Compare >
-size_t Dictionary< Key, Value, Compare >::size() const noexcept
-{
-  return size_;
 }
 template< typename Key, typename Value, typename Compare >
 bool Dictionary< Key, Value, Compare >::empty() const noexcept
 {
-  return size_ == 0;
+  return data_.empty();
 }
 template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::clast() const noexcept
@@ -418,7 +407,7 @@ Value &Dictionary< Key, Value, Compare >::insertValue(Key &&key)
   }
   catch (const std::out_of_range &)
   {
-    kV newValue(std::forward< Key >(key), Value{});
+    value_type newValue(std::forward< Key >(key), Value{});
     std::pair< iterator, bool > insertionResult = insert(std::move(newValue));
     return insertionResult.first->second;
   }
@@ -441,14 +430,13 @@ Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(
   {
     data_ = std::move(rhs.data_);
     comp_ = std::move(rhs.comp_);
-    size_ = rhs.size_;
     rhs.size_ = 0;
   }
   return *this;
 }
 template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(
-  std::initializer_list< kV > initializerList)
+  std::initializer_list< value_type > initializerList)
 {
   data_.clear();
   insert(initializerList);
@@ -457,8 +445,7 @@ Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(
 template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare >::Dictionary(Dictionary< Key, Value, Compare > &&rhs) noexcept:
   data_(std::move(rhs.data_)),
-  comp_(std::move(rhs.comp_)),
-  size_(rhs.size_)
+  comp_(std::move(rhs.comp_))
 {
   rhs.size_ = 0;
 }
@@ -471,13 +458,11 @@ Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(
 template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare >::Dictionary():
   data_(),
-  comp_(),
-  size_(0)
+  comp_()
 {
 }
 template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare >::Dictionary(const Dictionary< Key, Value, Compare > &rhs):
-  size_(rhs.size_),
   comp_(rhs.comp_)
 {
   data_.insert(rhs.begin(), rhs.end());
