@@ -9,7 +9,7 @@ using stack_str = azheganova::Stack< std::string >;
 
 namespace azheganova
 {
-  bool getPriority(std::string oper);
+  bool isPriority(std::string oper1, std::string oper2);
   void convertFromInfixToPostfix(queue_str & queue, stack_str & stack, queue_str & postfix);
 }
 

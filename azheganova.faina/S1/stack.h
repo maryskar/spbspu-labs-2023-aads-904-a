@@ -20,6 +20,7 @@ namespace azheganova
     void pop();
     bool isEmpty() const;
     T get() const;
+    void clearStack();
   private:
     details::ListNode< T > * top_;
   };
@@ -32,10 +33,7 @@ namespace azheganova
   template< typename T >
   Stack< T >::~Stack()
   {
-    while (!isEmpty())
-    {
-      pop();
-    }
+    clearStack();
   }
 
   template< typename T >
@@ -54,10 +52,7 @@ namespace azheganova
       }
       catch (const std::exception & e)
       {
-        while (!isEmpty())
-        {
-          pop();
-        }
+        clearStack();
         throw;
       }
       node2 = node2->next_;
@@ -124,6 +119,15 @@ namespace azheganova
       throw std::logic_error("empty stack");
     }
     return top_->data_;
+  }
+
+  template < typename T >
+  void Stack< T >::clearStack()
+  {
+    while (!isEmpty())
+    {
+      pop();
+    }
   }
 }
 
