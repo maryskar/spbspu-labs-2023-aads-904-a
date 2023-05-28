@@ -78,7 +78,8 @@ namespace azheganova
    {
      if (this != std::addressof(rhs))
      {
-       top_ = rhs.top_;
+      Stack< T > newstack(rhs);
+      *this = std::move(newstack);
      }
      return *this;
    }
@@ -88,7 +89,9 @@ namespace azheganova
   {
     if (this != std::addressof(rhs))
     {
-      top_ = std::move(rhs.top_);
+      clear();
+      top_ = rhs.top_;
+      rhs.top_ = nullptr;
     }
     return *this;
   }

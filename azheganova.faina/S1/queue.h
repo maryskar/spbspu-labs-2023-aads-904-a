@@ -23,7 +23,6 @@ namespace azheganova
   private:
     details::ListNode< T > * top_;
     details::ListNode< T > * last_;
-    void deleteQueue();
   };
 
   template< typename T >
@@ -65,8 +64,11 @@ namespace azheganova
   template< typename T>
   Queue< T > & Queue<T>::operator=(const Queue< T > & rhs)
   {
-    std::swap(top_, rhs.top_);
-    std::swap(last_, rhs.top_);
+    if (this != std::addressof(rhs))
+    {
+      Queue< T > newqueue(rhs);
+      *this = std::move(newqueue);
+    }
     return *this;
   }
 
@@ -75,9 +77,11 @@ namespace azheganova
   {
     if (this != std::addressof(rhs))
     {
-      deleteQueue();
-      std::swap(top_, rhs.top_);
-      std::swap(last_, rhs.top_);
+      clearQueue();
+      top_ = queue.top_;
+      last_ = queue.last_;
+      queue.top_ = nullptr;
+      queue.last_ = nullptr;
     }
     return *this;
   }
@@ -129,19 +133,6 @@ namespace azheganova
       throw std::logic_error("empty queue");
     }
     return top_->data_;
-  }
-
-  template< typename T >
-  void Queue< T >::deleteQueue()
-  {
-    while (top_)
-    {
-      details::ListNode< T > * newtop = top_->next_;
-      delete top_;
-      top_ = newtop;
-    }
-    top_ = nullptr;
-    last_ = nullptr;
   }
 
   template < typename T >
