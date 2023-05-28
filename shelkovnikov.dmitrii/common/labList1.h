@@ -105,6 +105,10 @@ namespace dimkashelk
     }
     return out;
   }
+  std::ostream &outEmptyDictionaryMessage(std::ostream &out)
+  {
+    return out << "<EMPTY>";
+  }
   void labList1(std::istream &in, std::ostream &out, int argc, char *argv[])
   {
     using dict_type = dimkashelk::TwoThreeTree< int, std::string, std::less< > >;
@@ -164,11 +168,19 @@ namespace dimkashelk
           dict_type d = dict.get(dataset_name);
           if (d.empty())
           {
-            out << "<EMPTY>\n";
+            outEmptyDictionaryMessage(out) << "\n";
           }
           else
           {
-            out << dataset_name << " " << d << "\n";
+            auto it = d.begin();
+            auto end = d.end();
+            out << dataset_name << " " << it->first << " " << it->second;
+            it++;
+            for (; it != end; it++)
+            {
+              out << " " << it->first << " " << it->second;
+            }
+            out << "\n";
           }
         }
         else

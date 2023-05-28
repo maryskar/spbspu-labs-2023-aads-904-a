@@ -2,7 +2,7 @@
 #define QUEUE_HPP
 #include <cstddef>
 #include <stdexcept>
-#include "list.hpp"
+#include <list.hpp>
 
 namespace chemodurov
 {
@@ -22,8 +22,8 @@ namespace chemodurov
     const T & getFromQueue() const;
     bool empty() const noexcept;
    private:
-    List< T > * head_;
-    List< T > * last_;
+    detail::List< T > * head_;
+    detail::List< T > * last_;
     void copyQueue(const Queue< T > &);
     void deleteQueue() noexcept;
   };
@@ -46,12 +46,12 @@ void chemodurov::Queue< T >::push(const T & rhs)
 {
   if (!empty())
   {
-    last_->next = new List< T >{rhs, nullptr};
+    last_->next = new detail::List< T >{rhs, nullptr};
     last_ = last_->next;
   }
   else
   {
-    last_ = new List< T >{rhs, nullptr};
+    last_ = new detail::List< T >{rhs, nullptr};
     head_ = last_;
   }
 }
@@ -79,7 +79,7 @@ void chemodurov::Queue< T >::pop()
   {
     throw std::logic_error("Empty queue");
   }
-  List< T > * temp = head_->next;
+  detail::List< T > * temp = head_->next;
   delete head_;
   head_ = temp;
 }
@@ -100,7 +100,7 @@ chemodurov::Queue< T >::Queue(const chemodurov::Queue< T > & queue):
 template< typename T >
 void chemodurov::Queue< T >::copyQueue(const Queue< T > & queue)
 {
-  std::pair< List< T > *, List< T > * > temp = copyList(queue.head_);
+  std::pair< detail::List< T > *, detail::List< T > * > temp = copyList(queue.head_);
   head_ = temp.first;
   last_ = temp.second;
 }
@@ -129,7 +129,7 @@ chemodurov::Queue< T > & chemodurov::Queue< T >::operator=(const chemodurov::Que
   {
     return *this;
   }
-  List< T > * temp = head_;
+  detail::List< T > * temp = head_;
   try
   {
     copyQueue(queue);
