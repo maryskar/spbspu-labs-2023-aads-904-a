@@ -21,6 +21,7 @@ namespace chemodurov
       delete [] l_arr;
       throw;
     }
+
     try
     {
       auto left_it = std::next(begin, fst_l);
@@ -36,9 +37,9 @@ namespace chemodurov
       {
         size_t i = 0;
         size_t j = 0;
-        while (i < n1 && j < n2)
+        for (; i < n1 && j < n2; ++copy_left_it)
         {
-          if (l_arr[i] <= r_arr[j])
+          if (!comp(r_arr[j], l_arr[i]))
           {
             *copy_left_it = l_arr[i++];
           }
@@ -46,7 +47,6 @@ namespace chemodurov
           {
             *copy_left_it = r_arr[j++];
           }
-          ++copy_left_it;
         }
 
         while (i < n1)
