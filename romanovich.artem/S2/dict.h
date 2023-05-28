@@ -12,6 +12,7 @@ public:
   Dictionary();
   Dictionary(const Dictionary< Key, Value, Compare > &rhs);
   Dictionary(Dictionary< Key, Value, Compare > &&rhs) noexcept;
+  Dictionary(std::initializer_list< value_type > rhs);
   ~Dictionary() = default;
   Dictionary< Key, Value, Compare > &operator=(const Dictionary< Key, Value, Compare > &rhs);
   Dictionary< Key, Value, Compare > &operator=(Dictionary< Key, Value, Compare > &&rhs) noexcept;
@@ -66,6 +67,12 @@ private:
   Value &insertValue(Key &&key);
   bool areEqualKeys(Key lhs, Key rhs);
 };
+template< typename Key, typename Value, typename Compare >
+Dictionary< Key, Value, Compare >::Dictionary(std::initializer_list< value_type > rhs):
+  data_(rhs),
+  comp_()
+{
+}
 template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::iterator
 Dictionary< Key, Value, Compare >::erase_after(Dictionary::const_iterator first, Dictionary::const_iterator last)
@@ -447,13 +454,16 @@ Dictionary< Key, Value, Compare >::Dictionary(Dictionary< Key, Value, Compare > 
   data_(std::move(rhs.data_)),
   comp_(std::move(rhs.comp_))
 {
-  rhs.size_ = 0;
 }
 template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(
   const Dictionary< Key, Value, Compare > &rhs)
 {
-  details::copy(data_);
+  if (this != std::addressof(rhs))
+  {
+    data_ = rhs.data_;
+  }
+  return *this;
 }
 template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare >::Dictionary():
@@ -463,8 +473,8 @@ Dictionary< Key, Value, Compare >::Dictionary():
 }
 template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare >::Dictionary(const Dictionary< Key, Value, Compare > &rhs):
+  data_(rhs.data_),
   comp_(rhs.comp_)
 {
-  data_.insert(rhs.begin(), rhs.end());
 }
 #endif
