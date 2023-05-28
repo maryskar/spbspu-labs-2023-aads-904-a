@@ -73,16 +73,16 @@ void ForwardList< T >::push_back(const T &value)
   if (!begin_)
   {
     begin_ = node;
-    fakeNode_->next = begin_;
+    fakeNode_->next_ = begin_;
   }
   else if (!end_)
   {
     end_ = node;
-    begin_->next = end_;
+    begin_->next_ = end_;
   }
   else
   {
-    end_->next = node;
+    end_->next_ = node;
     end_ = node;
   }
   ++size_;
@@ -412,19 +412,15 @@ ForwardList< T >::~ForwardList()
 template< typename T >
 T ForwardList< T >::front()
 {
-  if (begin_ == nullptr)
-  {
-    throw std::out_of_range("List is empty.");
-  }
   return begin_->data_;
 }
 template< typename T >
 ForwardList< T > &ForwardList< T >::operator=(const ForwardList &rhs)
 {
-  if (this != &rhs)
+  if (this != std::addressof(rhs))
   {
-    ForwardList temp(rhs);
-    swap(temp);
+    ForwardList tmp(rhs);
+    swap(tmp);
   }
   return *this;
 }
@@ -432,12 +428,15 @@ template< typename T >
 ForwardList< T > &ForwardList< T >::operator=(ForwardList< T > &&rhs)
 noexcept
 {
-  if (this != &rhs)
+  if (this != std::addressof(rhs))
   {
     clear();
     begin_ = rhs.begin_;
-    rhs.
-      begin_ = nullptr;
+    end_ = rhs.end_;
+    fakeNode_->next_ = begin_;
+    size_ = rhs.size_;
+    rhs.begin_ = nullptr;
+    rhs.end_ = nullptr;
   }
   return *this;
 }
