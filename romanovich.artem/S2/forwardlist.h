@@ -64,7 +64,29 @@ private:
   size_t size_;
   details::ListNode< T > *initFake();
   void copy(const ForwardList< T > &rhs);
+  void push_back(const T &value);
 };
+template< typename T >
+void ForwardList< T >::push_back(const T &value)
+{
+  details::ListNode< T > *node = new details::ListNode< T >(value);
+  if (!begin_)
+  {
+    begin_ = node;
+    fakeNode_->next = begin_;
+  }
+  else if (!end_)
+  {
+    end_ = node;
+    begin_->next = end_;
+  }
+  else
+  {
+    end_->next = node;
+    end_ = node;
+  }
+  ++size_;
+}
 template< typename T >
 void ForwardList< T >::copy(const ForwardList< T > &rhs)
 {
@@ -499,13 +521,14 @@ template< typename T >
 ForwardList< T >::ForwardList(std::initializer_list< T > initializerList):
   ForwardList()
 {
+  fakeNode_->next_ = nullptr;
   if (initializerList.size() == 0)
   {
     throw std::runtime_error("Cannot initialize empty list.");
   }
   for (const T &value: initializerList)
   {
-    push_front(value);
+    push_back(value);
   }
 }
 #endif
