@@ -6,11 +6,11 @@
 int main()
 {
   chemodurov::ForwardList< int > list;
-  for (size_t i = 0; i < 20; ++i)
+  for (size_t i = 0; i < 10000; ++i)
   {
-    list.push_front(std::rand() % 100);
+    list.push_front(std::rand());
   }
-  chemodurov::shellSort(list.begin(), 20);
+  chemodurov::shellSort(list.begin(), 10000);
   for (auto i = list.cbegin(); i != list.cend(); ++i)
   {
     std::cout << *i << ' ';

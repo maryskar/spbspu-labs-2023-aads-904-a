@@ -23,8 +23,8 @@ namespace chemodurov
       {
         for (size_t j = cnt; j >= d; j -= d)
         {
-          BidirectionalIt b1 = (--temp.upper_bound(j))->second;
-          BidirectionalIt b2 = (--temp.upper_bound(j - d))->second;
+          BidirectionalIt b1 = (--(temp.upper_bound(j)))->second;
+          BidirectionalIt b2 = (--(temp.upper_bound(j - d)))->second;
           if (comp(*b1, *b2))
           {
             std::swap(*b1, *b2);
@@ -32,7 +32,7 @@ namespace chemodurov
         }
         for (auto j = temp.begin(); j != temp.end(); ++j)
         {
-          if (j->second != end)
+          if (std::next(j->second) != end)
           {
             ++(j->second);
           }
