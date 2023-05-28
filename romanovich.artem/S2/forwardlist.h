@@ -312,10 +312,7 @@ typename ForwardList< T >::iterator ForwardList< T >::erase_after(ForwardList< T
 template< typename T >
 typename ForwardList< T >::iterator ForwardList< T >::emplace_after(ForwardList::const_iterator position, T &&value)
 {
-  auto newNode = new details::ListNode< T >(std::forward< T >(value));
-  newNode->next_ = position.current_->next_;
-  position.current_->next_ = newNode;
-  return ForwardList< T >::iterator(newNode);
+  return insert_after(position, std::forward< T >(value));
 }
 template< typename T >
 template< class InputIterator >
@@ -323,7 +320,7 @@ void ForwardList< T >::insert_after(ForwardList::const_iterator position, InputI
 {
   while (first != last)
   {
-    position = ForwardList< T >::insert_after(position, *first);
+    position = insert_after(position, *first);
     ++first;
     ++position;
   }
@@ -331,14 +328,14 @@ void ForwardList< T >::insert_after(ForwardList::const_iterator position, InputI
 template< typename T >
 typename ForwardList< T >::iterator ForwardList< T >::insert_after(ForwardList::const_iterator position, T &&value)
 {
-  return ForwardList< T >::insert_after(position, std::move(value));
+  return insert_after(position, std::move(value));
 }
 template< typename T >
 void ForwardList< T >::insert_after(const ForwardList::iterator position, std::initializer_list< T > initializerList)
 {
   for (const T &value: initializerList)
   {
-    position = ForwardList< T >::insert_after(position, value);
+    insert_after(position, value);
     ++position;
   }
 }
@@ -347,13 +344,23 @@ void ForwardList< T >::insert_after(ForwardList::const_iterator position, size_t
 {
   for (size_t i = 0; i < count; ++i)
   {
-    position = ForwardList< T >::insert_after(position, value);
+    position = insert_after(position, value);
+    ++position;
   }
 }
 template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::insert_after(ForwardList::const_iterator position, const T &value)
+typename ForwardList< T >::iterator
+ForwardList< T >::insert_after(ConstForwardListIterator< T > position, const T &value)
 {
-  return ForwardList< T >::insert_after(position, value);
+  details::ListNode< T > *node = new details::ListNode< T >(value);
+  node->next = position.current_->next;
+  position.current_->next = node;
+  if (end_ == position.current_)
+  {
+    end_ = node;
+  }
+  ++size_;
+  return iterator(node);
 }
 template< typename T >
 typename ForwardList< T >::iterator ForwardList< T >::end()
