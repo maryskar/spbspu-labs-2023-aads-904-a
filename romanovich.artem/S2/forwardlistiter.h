@@ -13,7 +13,7 @@ public:
   ForwardListIterator< T > &operator=(const ForwardListIterator< T > &rhs) = default;
   ForwardListIterator< T > &operator++();
   ForwardListIterator< T > operator++(int);
-  ForwardListIterator(const ForwardListIterator< T > &rhs) = default;
+  ForwardListIterator(const ForwardListIterator< T > &rhs);
   ~ForwardListIterator() = default;
   ForwardListIterator();
   ForwardListIterator< T > begin();
@@ -22,6 +22,11 @@ private:
   details::ListNode< T > *head_;
   void checkForNullNode();
 };
+template< typename T >
+ForwardListIterator< T >::ForwardListIterator(const ForwardListIterator< T > &rhs):
+  head_(rhs.head_)
+{
+}
 template< typename T >
 ForwardListIterator< T > ForwardListIterator< T >::end()
 {

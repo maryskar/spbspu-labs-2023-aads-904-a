@@ -58,8 +58,7 @@ public:
   void reverse();
 private:
   details::ListNode< T > *head_;
-  details::ListNode< T > *tail_;
-  details::ListNode< T > listNode;
+  //details::ListNode< T > *tail_;
 };
 template< typename T >
 void ForwardList< T >::splice_after(const_iterator position, ForwardList &source)
@@ -85,7 +84,7 @@ template< typename T >
 void
 ForwardList< T >::splice_after(const_iterator position, ForwardList &source, const_iterator first, const_iterator last)
 {
-  splice_after(position, std::move(source), first, last);
+  source.splice_after(position, std::move(source), first, last);
 }
 template< typename T >
 void
@@ -335,7 +334,7 @@ typename ForwardList< T >::const_iterator ForwardList< T >::end() const
 template< typename T >
 typename ForwardList< T >::iterator ForwardList< T >::begin()
 {
-  return ForwardList< T >::begin();
+  return ForwardListIterator< T >(head_);
 }
 template< typename T >
 typename ForwardList< T >::const_iterator ForwardList< T >::begin() const
