@@ -42,7 +42,7 @@ turkin::Queue< T >::Queue(const Queue< T > & rhs):
   value_(nullptr),
   back_(nullptr)
 {
-  auto clone = turkin::pattern::copyList(rhs.value_);
+  auto clone = pattern::copyList(rhs.value_);
   value_ = clone.first;
   back_ = clone.second;
 }

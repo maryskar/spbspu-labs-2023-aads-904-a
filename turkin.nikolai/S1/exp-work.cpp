@@ -111,8 +111,6 @@ turkin::Queue< pfix_t > turkin::inf2Post(turkin::Queue< pinf_t > & input)
       else if (!buffer.isEmpty() && data.type != PINF::LEFT_BRACKET)
       {
         pinf_t opt(buffer.get());
-        buffer.pop();
-        buffer.push(opt);
         if (isLowerPriority(data, opt) || opt.type == PINF::LEFT_BRACKET)
         {
           buffer.push(data);

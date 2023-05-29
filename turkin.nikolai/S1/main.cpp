@@ -39,6 +39,7 @@ int main(int argc, char * argv[])
       }
       dirt += "\n";
       turkin::Queue< turkin::datatype::calc_t< turkin::datatype::PINF > > input = turkin::str2Inf(dirt);
+      turkin::Queue< turkin::datatype::calc_t< turkin::datatype::PINF > > clone(input);
       turkin::Queue< turkin::datatype::calc_t< turkin::datatype::PFIX > > output = turkin::inf2Post(input);
       answers.push(turkin::post2Result(output));
     }

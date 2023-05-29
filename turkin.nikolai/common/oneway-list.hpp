@@ -19,18 +19,20 @@ namespace turkin
     {
       if (!rhs)
       {
-        return nullptr;
+        return std::make_pair(nullptr, nullptr);
       }
       OneWayNode< T > * source = rhs;
       OneWayNode< T > * clone = new OneWayNode< T > {source->data, nullptr};
       OneWayNode< T > * start = clone;
+      //OneWayNode< T > * end = nullptr;
       while (source->next)
       {
         clone->next = new OneWayNode< T > {source->next->data, nullptr};
+        //end = clone;
         clone = clone->next;
         source = source->next;
       }
-      return std::make_pair(start, source);
+      return std::make_pair(start, clone);
     }
   };
 };

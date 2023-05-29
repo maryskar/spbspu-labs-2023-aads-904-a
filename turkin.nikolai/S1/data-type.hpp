@@ -7,7 +7,7 @@ namespace turkin
   {
     enum class PINF
     {
-      LEFT_BRACKET, RIGHT_BRACKET, ADD, SUB, MUL, DIV, MOD, NUM
+      ADD, SUB, MUL, DIV, MOD, NUM, LEFT_BRACKET, RIGHT_BRACKET
     };
 
     enum class PFIX
