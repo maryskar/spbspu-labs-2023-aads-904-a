@@ -3,22 +3,24 @@
 #include <ctime>
 #include <list>
 #include <forward-list.hpp>
+#include <deque>
 #include "merge-sort.hpp"
 #include "shell-sort.hpp"
+#include "timsort.hpp"
 
 int main()
 {
-  constexpr size_t size = 1000;
-  std::list< int > list;
+  constexpr size_t size = 10;
+  std::deque< int > deque;
   for (size_t i = 0; i < size; ++i)
   {
-    list.push_front(std::rand());
+    deque.push_front(std::rand() % 100);
   }
   auto start = std::chrono::system_clock::now();
-  chemodurov::shellSort(list.begin(), size);
+  chemodurov::detail::insertionSort(deque.begin(), size, std::less< >{});
   auto end = std::chrono::system_clock::now();
   std::chrono::duration< double > seconds = end - start;
-  for (auto i = list.cbegin(); i != list.cend(); ++i)
+  for (auto i = deque.cbegin(); i != deque.cend(); ++i)
   {
     std::cout << *i << ' ';
   }
