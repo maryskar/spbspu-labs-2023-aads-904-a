@@ -38,9 +38,9 @@ int main(int argc, char * argv[])
         continue;
       }
       dirt += "\n";
-      turkin::Queue< turkin::datatype::calc_t< turkin::datatype::PINF > > input = str2Inf(dirt);
-      turkin::Queue< turkin::datatype::calc_t< turkin::datatype::PFIX > > output = inf2Post(input);
-      answers.push(post2Result(output));
+      turkin::Queue< turkin::datatype::calc_t< turkin::datatype::PINF > > input = turkin::str2Inf(dirt);
+      turkin::Queue< turkin::datatype::calc_t< turkin::datatype::PFIX > > output = turkin::inf2Post(input);
+      answers.push(turkin::post2Result(output));
     }
   }
   catch (const std::exception & error)

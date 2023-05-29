@@ -3,31 +3,31 @@
 #include <stack.hpp>
 #include "data-type.hpp"
 #include "calc-verify.hpp"
-#include "assimitation.hpp"
+#include "convert.hpp"
 
 using pinf_t = turkin::datatype::calc_t< turkin::datatype::PINF >;
 using pfix_t = turkin::datatype::calc_t< turkin::datatype::PFIX >;
 using PINF = turkin::datatype::PINF;
 using PFIX = turkin::datatype::PFIX;
-namespace asml = turkin::assimilation;
-namespace vrfy = turkin::verify;
-namespace cnvt = turkin::convert;
 
-bool getPriorityLevel(const pinf_t & data)
+namespace
 {
-  return !(asml::same(data, PINF::ADD) || asml::same(data, PINF::SUB));
+  bool getPriorityLevel(const pinf_t & data)
+  {
+    return !(data.type == PINF::ADD || data.type == PINF::SUB);
+  }
+
+  bool isLowerPriority(const pinf_t & lhs, const pinf_t & rhs)
+  {
+    return getPriorityLevel(lhs) < getPriorityLevel(rhs);
+  }
 }
 
-bool isLowerPriority(const pinf_t & lhs, const pinf_t & rhs)
+turkin::Queue< pinf_t > turkin::str2Inf(std::string & dirt)
 {
-  return getPriorityLevel(lhs) < getPriorityLevel(rhs);
-}
-
-turkin::Queue< pinf_t > str2Inf(std::string & dirt)
-{
-  turkin::Queue< pinf_t > input;
+  Queue< pinf_t > input;
   std::string temp;
-  for (auto symbol : dirt)
+  for (auto symbol: dirt)
   {
     if (symbol == ' ' || symbol == '\n')
     {
@@ -39,7 +39,36 @@ turkin::Queue< pinf_t > str2Inf(std::string & dirt)
       catch (...)
       {
         char sign = temp.c_str()[0];
-        pinf_t data(sign, static_cast< PINF >(sign));
+        PINF ins = PINF::ADD;
+        if (sign == '+')
+        {
+          ins = PINF::ADD;
+        }
+        else if (sign == '-')
+        {
+          ins = PINF::SUB;
+        }
+        else if (sign == '*')
+        {
+          ins = PINF::MUL;
+        }
+        else if (sign == '/')
+        {
+          ins = PINF::DIV;
+        }
+        else if (sign == '%')
+        {
+          ins = PINF::MOD;
+        }
+        else if (sign == '(')
+        {
+          ins = PINF::LEFT_BRACKET;
+        }
+        else if (sign == ')')
+        {
+          ins = PINF::RIGHT_BRACKET;
+        }
+        pinf_t data(sign, ins);
         input.push(data);
       }
       temp = "";
@@ -52,54 +81,54 @@ turkin::Queue< pinf_t > str2Inf(std::string & dirt)
   return input;
 }
 
-turkin::Queue< pfix_t > inf2Post(turkin::Queue< pinf_t > & input)
+turkin::Queue< pfix_t > turkin::inf2Post(turkin::Queue< pinf_t > & input)
 {
-  turkin::Stack< pinf_t > buffer;
-  turkin::Queue< pfix_t > output;
+  Stack< pinf_t > buffer;
+  Queue< pfix_t > output;
   while (!input.isEmpty())
   {
     pinf_t data(input.get());
     input.pop();
-    if (asml::same(data, PINF::NUM))
+    if (data.type == PINF::NUM)
     {
-      output.push(cnvt::convertINF2FIX(data));
+      output.push(convert::convertINF2FIX(data));
     }
     else
     {
-      if (asml::same(data, PINF::RIGHT_BRACKET))
+      if (data.type == PINF::RIGHT_BRACKET)
       {
         while (!buffer.isEmpty())
         {
           pinf_t opt = buffer.get();
           buffer.pop();
-          if (asml::same(opt, PINF::LEFT_BRACKET))
+          if (opt.type == PINF::LEFT_BRACKET)
           {
             break;
           }
-          output.push(cnvt::convertINF2FIX(opt));
+          output.push(convert::convertINF2FIX(opt));
         }
       }
-      else if (!buffer.isEmpty() && !asml::same(data, PINF::LEFT_BRACKET))
+      else if (!buffer.isEmpty() && data.type != PINF::LEFT_BRACKET)
       {
         pinf_t opt(buffer.get());
         buffer.pop();
         buffer.push(opt);
-        if (isLowerPriority(data, opt) || asml::same(opt, PINF::LEFT_BRACKET))
+        if (isLowerPriority(data, opt) || opt.type == PINF::LEFT_BRACKET)
         {
           buffer.push(data);
         }
         else
         {
-          opt = buffer.get();
+          pinf_t opt(buffer.get());
           buffer.pop();
           while (!isLowerPriority(data, opt))
           {
-            output.push(cnvt::convertINF2FIX(opt));
+            output.push(convert::convertINF2FIX(opt));
             if (buffer.isEmpty())
             {
               break;
             }
-            opt = buffer.get();
+            pinf_t opt(buffer.get());
             buffer.pop();
           }
           buffer.push(data);
@@ -113,20 +142,20 @@ turkin::Queue< pfix_t > inf2Post(turkin::Queue< pinf_t > & input)
   }
   while (!buffer.isEmpty())
   {
-    output.push(cnvt::convertINF2FIX(buffer.get()));
+    output.push(convert::convertINF2FIX(buffer.get()));
     buffer.pop();
   }
   return output;
 }
 
-long long post2Result(turkin::Queue< pfix_t > & output)
+long long turkin::post2Result(turkin::Queue< pfix_t > & output)
 {
-  turkin::Stack< long long > buffer;
+  Stack< long long > buffer;
   while (!output.isEmpty())
   {
     pfix_t opt(output.get());
     output.pop();
-    if (asml::same(opt, PFIX::NUM))
+    if (opt.type == PFIX::NUM)
     {
       buffer.push(opt.calc.num);
     }
@@ -137,41 +166,41 @@ long long post2Result(turkin::Queue< pfix_t > & output)
       long long a = buffer.get();
       buffer.pop();
       long long c = 0;
-      if (asml::same(opt, PFIX::ADD))
+      if (opt.type == PFIX::ADD)
       {
-        if (vrfy::isADDerror(a, b))
+        if (verify::isADDerror(a, b))
         {
           throw std::overflow_error("ADD error");
         }
         c = a + b;
       }
-      if (asml::same(opt, PFIX::SUB))
+      if (opt.type == PFIX::SUB)
       {
-        if (turkin::verify::isSUBerror(a, b))
+        if (verify::isSUBerror(a, b))
         {
           throw std::overflow_error("SUB error");
         }
         c = a - b;
       }
-      if (asml::same(opt, PFIX::MUL))
+      if (opt.type == PFIX::MUL)
       {
-        if (turkin::verify::isMULerror(a, b))
+        if (verify::isMULerror(a, b))
         {
           throw std::overflow_error("MUL error");
         }
         c = a * b;
       }
-      if (asml::same(opt, PFIX::DIV))
+      if (opt.type == PFIX::DIV)
       {
-        if (turkin::verify::isDIVerror(a, b))
+        if (verify::isDIVerror(a, b))
         {
           throw std::runtime_error("zero division");
         }
         c = a / b;
       }
-      if (asml::same(opt, PFIX::MOD))
+      if (opt.type == PFIX::MOD)
       {
-        if (turkin::verify::isMODerror(a, b))
+        if (verify::isMODerror(a, b))
         {
           throw std::runtime_error("zero division");
         }

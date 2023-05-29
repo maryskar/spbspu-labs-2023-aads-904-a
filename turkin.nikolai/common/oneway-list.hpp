@@ -1,6 +1,8 @@
 #ifndef ONEWAY_LIST_HPP
 #define ONEWAY_LIST_HPP
 
+#include <utility>
+
 namespace turkin
 {
   namespace pattern
@@ -13,7 +15,7 @@ namespace turkin
     };
 
     template< typename T >
-    OneWayNode< T > * copyList(OneWayNode< T > * rhs)
+    std::pair< OneWayNode< T > *, OneWayNode< T > * > copyList(OneWayNode< T > * rhs)
     {
       if (!rhs)
       {
@@ -28,7 +30,7 @@ namespace turkin
         clone = clone->next;
         source = source->next;
       }
-      return start;
+      return std::make_pair(start, source);
     }
   };
 };

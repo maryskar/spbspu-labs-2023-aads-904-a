@@ -3,6 +3,7 @@
 
 #include <cstring>
 #include <stdexcept>
+#include <utility>
 #include "s-q-help.hpp"
 #include "oneway-list.hpp"
 
@@ -21,6 +22,7 @@ namespace turkin
       void swap(Queue< T > & rhs) noexcept;
       void push(const T & rhs);
       T & get();
+      const T & get() const;
       void pop();
       bool isEmpty() const;
     private:
@@ -40,13 +42,9 @@ turkin::Queue< T >::Queue(const Queue< T > & rhs):
   value_(nullptr),
   back_(nullptr)
 {
-  value_ = turkin::pattern::copyList(rhs.value_);
-  pattern::OneWayNode< T > * element = value_;
-  while (element->next)
-  {
-    element = element->next;
-  }
-  back_ = element;
+  auto clone = turkin::pattern::copyList(rhs.value_);
+  value_ = clone.first;
+  back_ = clone.second;
 }
 
 template< typename T >
@@ -69,7 +67,7 @@ turkin::Queue< T > & turkin::Queue< T >::operator=(const turkin::Queue< T > & rh
 template< typename T >
 turkin::Queue< T > & turkin::Queue< T >::operator=(turkin::Queue< T > && rhs)
 {
-  turkin::sqhelp::free(value_);
+  sqhelp::free(value_);
   value_ = nullptr;
   back_ = nullptr;
   swap(rhs);
@@ -79,7 +77,7 @@ turkin::Queue< T > & turkin::Queue< T >::operator=(turkin::Queue< T > && rhs)
 template< typename T >
 turkin::Queue< T >::~Queue()
 {
-  turkin::sqhelp::free(value_);
+  sqhelp::free(value_);
   back_ = nullptr;
 }
 
@@ -109,6 +107,16 @@ void turkin::Queue< T >::push(const T & rhs)
 
 template< typename T >
 T & turkin::Queue< T >::get()
+{
+  if (isEmpty())
+  {
+    throw std::runtime_error("queue is empty");
+  }
+  return value_->data;
+}
+
+template< typename T >
+const T & turkin::Queue< T >::get() const
 {
   if (isEmpty())
   {

@@ -17,16 +17,6 @@ namespace turkin
         delete element;
       }
     }
-
-    template< typename T >
-    T remove(pattern::OneWayNode< T > * rhs)
-    {
-      pattern::OneWayNode< T > * element = rhs;
-      rhs = element->next;
-      T ret = element->data;
-      delete element;
-      return ret;
-    }
   }
 };
 

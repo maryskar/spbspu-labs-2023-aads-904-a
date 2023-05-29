@@ -20,8 +20,8 @@ namespace turkin
       void swap(Stack< T > & rhs) noexcept;
       void push(const T & rhs);
       T & get();
+      const T & get() const;
       void pop();
-      const T & drop() const;
       bool isEmpty() const;
     private:
       pattern::OneWayNode< T > * value_;
@@ -35,7 +35,7 @@ turkin::Stack< T >::Stack():
 
 template< typename T >
 turkin::Stack< T >::Stack(const Stack< T > & rhs):
-  value_(copyList(rhs.value_))
+  value_(pattern::copyList(rhs.value_).first)
 {}
 
 template< typename T >
@@ -66,7 +66,7 @@ turkin::Stack< T > & turkin::Stack< T >::operator=(Stack< T > && rhs)
 template< typename T >
 turkin::Stack< T >::~Stack()
 {
-  turkin::sqhelp::free(value_);
+  sqhelp::free(value_);
 }
 
 template< typename T >
@@ -83,6 +83,16 @@ void turkin::Stack< T >::push(const T & rhs)
 
 template< typename T >
 T & turkin::Stack< T >::get()
+{
+  if (isEmpty())
+  {
+    throw std::runtime_error("stack is empty");
+  }
+  return value_->data;
+}
+
+template< typename T >
+const T & turkin::Stack< T >::get() const
 {
   if (isEmpty())
   {

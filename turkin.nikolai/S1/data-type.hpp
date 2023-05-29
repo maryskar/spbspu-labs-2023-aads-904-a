@@ -1,20 +1,18 @@
 #ifndef DATA_TYPE_HPP
 #define DATA_TYPE_HPP
 
-#include <stdexcept>
-
 namespace turkin
 {
   namespace datatype
   {
     enum class PINF
     {
-      LEFT_BRACKET = 40, RIGHT_BRACKET = 41, ADD = 43, SUB = 45, MUL = 42, DIV = 47, MOD = 37, NUM = 0
+      LEFT_BRACKET, RIGHT_BRACKET, ADD, SUB, MUL, DIV, MOD, NUM
     };
 
     enum class PFIX
     {
-      ADD = 43, SUB = 45, MUL = 42, DIV = 47, MOD = 37, NUM = 0
+      ADD, SUB, MUL, DIV, MOD, NUM
     };
 
     template< typename T >
@@ -23,7 +21,6 @@ namespace turkin
       calc_t(const calc_t< T > & rhs);
       calc_t(long long rhs, T nt);
       calc_t(char rhs, T nt);
-      calc_t< T > & operator=(const calc_t< T > & rhs);
       union
       {
         long long num;
@@ -42,22 +39,14 @@ turkin::datatype::calc_t< T >::calc_t(const calc_t< T > & rhs):
 
 template< typename T >
 turkin::datatype::calc_t< T >::calc_t(long long rhs, T nt):
-  calc({.num=rhs}),
+  calc({ .num=rhs }),
   type(nt)
 {}
 
 template< typename T >
 turkin::datatype::calc_t< T >::calc_t(char rhs, T nt):
-  calc({.sign=rhs}),
+  calc({ .sign=rhs }),
   type(nt)
 {}
-
-template< typename T >
-turkin::datatype::calc_t< T > & turkin::datatype::calc_t< T >::operator=(const calc_t< T > & rhs)
-{
-  calc = rhs.calc;
-  type = rhs.type;
-  return * this;
-}
 
 #endif
