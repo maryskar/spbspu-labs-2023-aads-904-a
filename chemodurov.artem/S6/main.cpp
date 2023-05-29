@@ -1,8 +1,8 @@
 #include <iostream>
 #include <chrono>
 #include <ctime>
-#include <forward-list.hpp>
 #include <list>
+#include <forward-list.hpp>
 #include "merge-sort.hpp"
 #include "shell-sort.hpp"
 
