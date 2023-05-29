@@ -8,38 +8,51 @@ namespace chemodurov
   template< typename BidirectionalIt, typename Compare = std::less< > >
   void shellSort(BidirectionalIt begin, size_t size, Compare comp = Compare{})
   {
-    Map< size_t, BidirectionalIt > iters;
-    iters.insert({0, begin});
-    BidirectionalIt end = std::next(begin, size);
-    for (size_t d = size / 2, cnt = d; d != 0; d /= 2, cnt = d)
+    BidirectionalIt * iters = new BidirectionalIt[size];
+    for (size_t i = 0; i < size; ++i)
     {
-      Map< size_t, BidirectionalIt > temp = iters;
-      for (auto i = iters.begin(); i != iters.end(); ++i)
+      iters[i] = begin++;
+    }
+    for (size_t d = size / 2; d != 0; d /= 2)
+    {
+      for (size_t i = d; i != size; ++i)
       {
-        temp.insert({i->first + d, std::next(i->second, d)});
-      }
-      iters = temp;
-      for (auto i = iters.at(d); cnt != size; ++i, ++cnt)
-      {
-        for (size_t j = cnt; j >= d; j -= d)
+        try
         {
-          BidirectionalIt b1 = (--(temp.upper_bound(j)))->second;
-          BidirectionalIt b2 = (--(temp.upper_bound(j - d)))->second;
-          if (comp(*b1, *b2))
+          for (size_t j = i; j >= d && comp(*(iters[j]), *(iters[j - d])); j -= d)
           {
-            std::swap(*b1, *b2);
+            std::swap(*(iters[j]), *(iters[j - d]));
           }
         }
-        for (auto j = temp.begin(); j != temp.end(); ++j)
+        catch (...)
         {
-          if (std::next(j->second) != end)
-          {
-            ++(j->second);
-          }
+          delete [] iters;
+          throw;
         }
       }
     }
+    delete [] iters;
   }
+
+  //template< typename BidirectionalIt, typename Compare = std::less< > >
+  //void shellSort2(BidirectionalIt begin, size_t size, Compare comp = Compare{})
+  //{
+  //  for (size_t d = size / 2, cnt = d; d != 0; d /= 2, cnt = d)
+  //  {
+  //    for (auto i = std::next(begin, d); cnt != size; ++i, ++cnt)
+  //    {
+  //      for (auto j = i; std::distance(j, begin) >= d;)
+  //      {
+  //        BidirectionalIt b1 = std::prev(j, d);
+  //        if (comp(*j, *b1))
+  //        {
+  //          std::swap(*j, *b1);
+  //        }
+  //        j = b1;
+  //      }
+  //    }
+  //  }
+  //}
 }
 
 #endif
