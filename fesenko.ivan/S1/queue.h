@@ -42,7 +42,7 @@ void fesenko::Queue< T >::push(const T rhs)
     head_ = tail_;
   } else {
     tail_->next = new List< T >{rhs, nullptr};
-    tail_->tail_->next;
+    tail_ = tail_->next;
   }
 }
 
@@ -52,7 +52,7 @@ T &fesenko::Queue< T >::getOutOfQueue()
   if (isEmpty()) {
     throw std::out_of_range("Queue is empty");
   }
-  return *head_.data;
+  return head_->data;
 }
 
 template< typename T >
