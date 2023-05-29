@@ -29,11 +29,7 @@ fesenko::Queue< T >::Queue():
 template< typename T >
 fesenko::Queue< T >::~Queue()
 {
-  while (head_) {
-    List< T > *temp = head_->next;
-    delete head_;
-    head_ = temp;
-  }
+  deleteList(head_);
   head_ = nullptr;
   tail_ = nullptr;
 }

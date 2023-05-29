@@ -27,11 +27,8 @@ fesenko::Stack< T >::Stack():
 template< typename T >
 fesenko::Stack< T >::~Stack()
 {
-  while (head_) {
-    List< T > *temp = head_->next;
-    delete head_;
-    head_ = temp;
-  }
+  deleteList(head_);
+  head_ = nullptr;
 }
 
 template< typename T >
@@ -47,7 +44,7 @@ T &fesenko::Stack< T >::getOutOfStack()
   if (isEmpty()) {
     throw std::out_of_range("Stack is empty");
   }
-  return *head_.data;
+  return head_->data;
 }
 
 template< typename T >
