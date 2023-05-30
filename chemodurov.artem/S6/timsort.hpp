@@ -34,26 +34,26 @@ namespace chemodurov
     }
 
     template< typename RandomIt, typename Compare = std::less< > >
-    size_t * splitIntoSortedArrays(RandomIt begin, size_t size, Compare comp, size_t & num_of_run)
+    std::pair< size_t, size_t > * splitIntoSortedArrays(RandomIt begin, size_t size, Compare comp, size_t & num_of_run)
     {
       size_t min_run = detail::getMinRun(size);
       num_of_run = size / min_run + 1;
-      auto runs_sizes = new size_t[num_of_run];
+      auto runs_inds_sizes = new std::pair< size_t, size_t >[num_of_run];
       try
       {
         for (size_t i = 0, j = 0; i < size - 1; ++i, ++j)
         {
-          runs_sizes[j] = 2;
+          runs_inds_sizes[j].second = 2;
           if (comp(begin[i + 1], begin[i++]))
           {
             while (i < size - 1 && comp(begin[i + 1], begin[i]))
             {
               ++i;
-              ++(runs_sizes[j]);
+              ++(runs_inds_sizes[j].second);
             }
-            if (runs_sizes[j] >= min_run)
+            if (runs_inds_sizes[j].second >= min_run)
             {
-              for (size_t k = i - runs_sizes[j] + 1, l = i; k < l; ++k, --l)//??
+              for (size_t k = i - runs_inds_sizes[j].second + 1, l = i; k < l; ++k, --l)//??
               {
                 std::swap(begin[k], begin[l]);
               }
@@ -64,33 +64,38 @@ namespace chemodurov
             while (i < size - 1 && !comp(begin[i + 1], begin[i]))
             {
               ++i;
-              ++(runs_sizes[j]);
+              ++(runs_inds_sizes[j].second);
             }
           }
-          if (runs_sizes[j] < min_run)
+          if (runs_inds_sizes[j].second < min_run)
           {
-            size_t delta = min_run - runs_sizes[j];
+            size_t delta = min_run - runs_inds_sizes[j].second;
             if (i + delta < size)
             {
-              runs_sizes[j] += delta;
+              runs_inds_sizes[j].second += delta;
               i += delta;
             }
             else
             {
-              runs_sizes[j] += size - i;
+              runs_inds_sizes[j].second += size - i;
               i += size - i;
             }
-            detail::insertionSort(begin + i - runs_sizes[j], runs_sizes[j], comp);
+            detail::insertionSort(begin + i - runs_inds_sizes[j].second, runs_inds_sizes[j].second, comp);
           }
-          num_of_run = j;
+          num_of_run = j + 1;
+        }
+        runs_inds_sizes[0].first = 0;
+        for (size_t i = 1; i < num_of_run; ++i)
+        {
+          runs_inds_sizes[i].first = runs_inds_sizes[i - 1].first + runs_inds_sizes[i - 1].second;
         }
       }
       catch (...)
       {
-        delete [] runs_sizes;
+        delete [] runs_inds_sizes;
         throw;
       }
-      return runs_sizes;
+      return runs_inds_sizes;
     }
   }
 
@@ -102,8 +107,19 @@ namespace chemodurov
       return;
     }
     size_t num_of_runs = 0;
-    auto runs_sizes = detail::splitIntoSortedArrays(begin, size, comp, num_of_runs);
-    //
+    std::pair< size_t, size_t > * runs_sizes = detail::splitIntoSortedArrays(begin, size, comp, num_of_runs);
+    if (num_of_runs == 1)
+    {
+      return;
+    }
+    else if (num_of_runs == 2)
+    {
+      //details::mergeArrays()
+    }
+    else
+    {
+      //
+    }
     delete [] runs_sizes;
   }
 }
