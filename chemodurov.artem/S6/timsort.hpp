@@ -1,6 +1,6 @@
 #ifndef S6_TIMSORT_HPP
 #define S6_TIMSORT_HPP
-#include <functional>
+#include "merge-sort.hpp"
 
 namespace chemodurov
 {
@@ -112,13 +112,13 @@ namespace chemodurov
     {
       return;
     }
-    else if (num_of_runs == 2)
-    {
-      //details::mergeArrays()
-    }
     else
     {
-      //
+      for (size_t i = 1; i < num_of_runs; ++i)
+      {
+        using namespace detail;
+        merge(begin, runs_sizes[i - 1].first, runs_sizes[i].first - 1, runs_sizes[i].first + runs_sizes[i].second - 1);
+      }
     }
     delete [] runs_sizes;
   }

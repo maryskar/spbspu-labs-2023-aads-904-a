@@ -4,7 +4,6 @@
 #include <list>
 #include <forward-list.hpp>
 #include <deque>
-#include "merge-sort.hpp"
 #include "shell-sort.hpp"
 #include "timsort.hpp"
 
