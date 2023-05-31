@@ -9,14 +9,14 @@
 
 int main()
 {
-  constexpr size_t size = 10;
+  constexpr size_t size = 1000000000;
   std::deque< int > deque;
   for (size_t i = 0; i < size; ++i)
   {
-    deque.push_front(std::rand() % 100);
+    deque.push_front(std::rand());
   }
   auto start = std::chrono::system_clock::now();
-  chemodurov::detail::insertionSort(deque.begin(), size, std::less< >{});
+  chemodurov::timSort(deque.begin(), size);
   auto end = std::chrono::system_clock::now();
   std::chrono::duration< double > seconds = end - start;
   for (auto i = deque.cbegin(); i != deque.cend(); ++i)

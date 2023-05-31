@@ -53,7 +53,7 @@ namespace chemodurov
             }
             if (runs_inds_sizes[j].second >= min_run)
             {
-              for (size_t k = i - runs_inds_sizes[j].second + 1, l = i; k < l; ++k, --l)//??
+              for (size_t k = i - runs_inds_sizes[j].second + 1, l = i; k < l; ++k, --l)
               {
                 std::swap(begin[k], begin[l]);
               }
@@ -77,10 +77,10 @@ namespace chemodurov
             }
             else
             {
-              runs_inds_sizes[j].second += size - i;
-              i += size - i;
+              runs_inds_sizes[j].second += size - i - 1;
+              i += size - i - 1;
             }
-            detail::insertionSort(begin + i - runs_inds_sizes[j].second, runs_inds_sizes[j].second, comp);
+            detail::insertionSort(begin + i - runs_inds_sizes[j].second + 1, runs_inds_sizes[j].second, comp);
           }
           num_of_run = j + 1;
         }
@@ -108,17 +108,27 @@ namespace chemodurov
     }
     size_t num_of_runs = 0;
     std::pair< size_t, size_t > * runs_sizes = detail::splitIntoSortedArrays(begin, size, comp, num_of_runs);
-    if (num_of_runs == 1)
+    try
     {
-      return;
-    }
-    else
-    {
-      for (size_t i = 1; i < num_of_runs; ++i)
+      if (num_of_runs == 1)
       {
-        using namespace detail;
-        merge(begin, runs_sizes[i - 1].first, runs_sizes[i].first - 1, runs_sizes[i].first + runs_sizes[i].second - 1);
+        delete [] runs_sizes;
+        return;
       }
+      else
+      {
+        for (size_t i = 1; i < num_of_runs; ++i)
+        {
+          using namespace detail;
+          size_t ind_i = runs_sizes[i].first;
+          merge(begin, runs_sizes[i - 1].first, ind_i - 1, ind_i + runs_sizes[i].second - 1, comp);
+        }
+      }
+    }
+    catch (...)
+    {
+      delete [] runs_sizes;
+      throw;
     }
     delete [] runs_sizes;
   }
