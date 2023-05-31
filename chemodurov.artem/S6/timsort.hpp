@@ -44,8 +44,9 @@ namespace chemodurov
         for (size_t i = 0, j = 0; i < size - 1; ++i, ++j)
         {
           runs_inds_sizes[j].second = 2;
-          if (comp(begin[i + 1], begin[i++]))
+          if (comp(begin[i + 1], begin[i]))
           {
+            ++i;
             while (i < size - 1 && comp(begin[i + 1], begin[i]))
             {
               ++i;
@@ -61,6 +62,7 @@ namespace chemodurov
           }
           else
           {
+            ++i;
             while (i < size - 1 && !comp(begin[i + 1], begin[i]))
             {
               ++i;
