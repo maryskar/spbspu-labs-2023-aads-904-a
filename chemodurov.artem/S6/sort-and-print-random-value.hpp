@@ -32,6 +32,8 @@ namespace chemodurov
     {
       f_list.push_front(distrib(gen));
     }
+    print(f_list.begin(), f_list.end(), out);
+    out << '\n';
     std::list< Value > l_for_merge(f_list.begin(), f_list.end());
     std::list< Value > l_for_shell(f_list.begin(), f_list.end());
     std::deque< Value > d_for_merge(f_list.begin(), f_list.end());
