@@ -34,7 +34,8 @@ namespace tarasenko
         output << outMessageEmpty << "\n";
         return;
       }
-      auto command = commands.printType(name_of_command);
+      std::function< std::ostream&(std::ostream&, const std::string&, const Value&) > command;
+      commands.get(name_of_command, command);
       command(output, name_of_dict, given_dict);
       output << "\n";
     }
@@ -56,7 +57,8 @@ namespace tarasenko
         output << outMessageInvalidCommand << "\n";
         return;
       }
-      auto command = commands.createType(name_of_command);
+      std::function< Value(const Value&, const Value&) > command;
+      commands.get(name_of_command, command);
       auto new_dict = command(dict1, dict2);
       dict_of_dict.push(name_new_dict, new_dict);
     }

@@ -26,31 +26,46 @@ namespace tarasenko
      type_print.push("print", &print< Key, Value, Compare >);
    }
 
-   std::function< std::ostream&(std::ostream&, std::string, const dict_type&) >& printType(const std::string& key)
+   void get(const std::string& key, std::function< std::ostream&(std::ostream&,
+        const std::string&, const dict_type&) >& command)
    {
-     return type_print.at(key);
+     try
+     {
+       command = type_print.at(key);
+     }
+     catch (const std::out_of_range&)
+     {
+       throw std::out_of_range("Not found");
+     }
    }
 
-   std::function< dict_type(const dict_type&, const dict_type&) >& createType(const std::string& key)
+   void get(const std::string& key, std::function< dict_type(const dict_type&, const dict_type&) >& command)
    {
-     return type_create.at(key);
+     try
+     {
+       command = type_create.at(key);
+     }
+     catch (const std::out_of_range&)
+     {
+       throw std::out_of_range("Not found");
+     }
    }
 
-   bool findInTypePrint(std::string name_of_command)
+   bool findInTypePrint(const std::string& key)
    {
-     return type_print.find(name_of_command) != type_print.cend();
+     return type_print.find(key) != type_print.cend();
    }
 
-   bool findInTypeCreate(std::string name_of_command)
+   bool findInTypeCreate(const std::string& key)
    {
-     return type_create.find(name_of_command) != type_create.cend();
+     return type_create.find(key) != type_create.cend();
    }
 
   private:
    Dictionary< std::string,
      std::function< dict_type(const dict_type&, const dict_type&) >, Compare > type_create;
    Dictionary< std::string,
-     std::function< std::ostream&(std::ostream&, std::string, const dict_type&) >, Compare > type_print;
+     std::function< std::ostream&(std::ostream&, const std::string&, const dict_type&) >, Compare > type_print;
   };
 }
 #endif
