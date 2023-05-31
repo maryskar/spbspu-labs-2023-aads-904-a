@@ -4,52 +4,52 @@
 
 namespace chemodurov
 {
-  template< typename T >
-  struct List
+  namespace detail
   {
-    T data;
-    List< T > * next;
-  };
-
-  template< typename T >
-  void deleteList(List< T > * head)
-  {
-    while (head)
+    template< typename T >
+    struct List
     {
-      List< T > * temp = head->next;
-      delete head;
-      head = temp;
-    }
-  }
-
-  template< typename T >
-  std::pair< List< T > *, List< T > * > copyList(const List< T > * head)
-  {
-    if (!head)
+      T data;
+      List< T > * next;
+    };
+    template< typename T >
+    void deleteList(List< T > * head)
     {
-      return {nullptr, nullptr};
-    }
-
-    List< T > * source = head;
-    List< T > * dest = new List< T >{source->data, nullptr};
-    List< T > * temp = dest;
-    List< T > * dest_last = temp;
-    try
-    {
-      while (source->next)
+      while (head)
       {
-        source = source->next;
-        dest_last = temp;
-        temp->next = new List< T >{source->data, nullptr};
-        temp = temp->next;
+        List< T > * temp = head->next;
+        delete head;
+        head = temp;
       }
     }
-    catch (...)
+    template< typename T >
+    std::pair< List< T > *, List< T > * > copyList(const List< T > * head)
     {
-      deleteList(dest);
-      throw;
+      if (!head)
+      {
+        return {nullptr, nullptr};
+      }
+      List< T > * source = head;
+      List< T > * dest = new List< T >{source->data, nullptr};
+      List< T > * temp = dest;
+      List< T > * dest_last = temp;
+      try
+      {
+        while (source->next)
+        {
+          source = source->next;
+          dest_last = temp;
+          temp->next = new List< T >{source->data, nullptr};
+          temp = temp->next;
+        }
+      }
+      catch (...)
+      {
+        deleteList(dest);
+        throw;
+      }
+      return {dest, dest_last};
     }
-    return {dest, dest_last};
   }
 }
 
