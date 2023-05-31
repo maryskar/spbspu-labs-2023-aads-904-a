@@ -24,6 +24,11 @@ int main(int argc, char ** argv)
     std::cerr << "Incorrect third argument\n";
     return 1;
   }
+  if (!num_of_elem)
+  {
+    std::cerr << "Empty sequence\n";
+    return 1;
+  }
   using gen_t = std::default_random_engine;
   gen_t gen;
   if (!std::strcmp(argv[2], "ints"))
