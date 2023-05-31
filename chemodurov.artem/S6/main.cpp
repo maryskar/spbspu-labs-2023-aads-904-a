@@ -1,30 +1,26 @@
 #include <iostream>
-#include <chrono>
-#include <ctime>
 #include <list>
-#include <forward-list.hpp>
 #include <deque>
+#include <algorithm>
+#include <random>
+#include <cstring>
+#include <map.hpp>
+#include <forward-list.hpp>
 #include "shell-sort.hpp"
 #include "timsort.hpp"
 
-int main()
+int main(int argc, char ** argv)
 {
-  constexpr size_t size = 1000000000;
-  std::deque< int > deque;
-  for (size_t i = 0; i < size; ++i)
+  if (argc != 4)
   {
-    deque.push_front(std::rand());
+    std::cerr << "Incorrect amount of CML args\n";
+    return 1;
   }
-  auto start = std::chrono::system_clock::now();
-  chemodurov::timSort(deque.begin(), size);
-  auto end = std::chrono::system_clock::now();
-  std::chrono::duration< double > seconds = end - start;
-  for (auto i = deque.cbegin(); i != deque.cend(); ++i)
+  std::default_random_engine generator;
+  if (!std::strcmp(argv[2], "ints"))
   {
-    std::cout << *i << ' ';
+    std::uniform_int_distribution< > distrib;
+
   }
-  std::cout << '\n';
-  std::cout << seconds.count();
-  std::cout << '\n';
   return 0;
 }
