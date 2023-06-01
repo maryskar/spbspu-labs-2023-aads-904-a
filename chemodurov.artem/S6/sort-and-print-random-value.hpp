@@ -11,8 +11,8 @@
 
 namespace chemodurov
 {
-  template< typename OutputIt >
-  void print(OutputIt begin, OutputIt end, std::ostream & out)
+  template< typename InputIt >
+  void print(InputIt begin, InputIt end, std::ostream & out)
   {
     for (auto i = begin; i != end; ++i)
     {
