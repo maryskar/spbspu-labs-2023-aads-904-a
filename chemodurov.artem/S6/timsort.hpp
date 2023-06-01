@@ -82,7 +82,7 @@ namespace chemodurov
               runs_inds_sizes[j].second += size - i - 1;
               i += size - i - 1;
             }
-            detail::insertionSort(begin + i - runs_inds_sizes[j].second + 1, runs_inds_sizes[j].second, comp);
+            detail::insertionSort(begin + i + 1 - runs_inds_sizes[j].second, runs_inds_sizes[j].second, comp);
           }
           num_of_run = j + 1;
         }
