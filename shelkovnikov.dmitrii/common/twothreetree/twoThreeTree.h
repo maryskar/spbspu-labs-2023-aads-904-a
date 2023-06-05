@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <algorithm>
 #include <iterator>
+#include "nodeToInsert.h"
 #include "nodeOfTwoThreeTree.h"
 #include "twoThreeTreeIterator.h"
 #include "twoThreeTreeIteratorConst.h"
@@ -14,6 +15,7 @@ namespace dimkashelk
   template< typename Key, typename Value, typename Compare >
   class TwoThreeTree
   {
+  using node_to_insert = details::NodeToInsert< Key, Value, Compare >;
   using node_type = details::NodeOfTwoThreeTree< Key, Value, Compare >;
   using two_three_tree_type = TwoThreeTree< Key, Value, Compare >;
   using reference = std::pair< Key, Value >&;
@@ -30,6 +32,7 @@ namespace dimkashelk
     TwoThreeTree():
       fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
       root_(nullptr),
+      to_insert_(nullptr),
       compare_(Compare()),
       size_(0),
       was_updated_while_insert_(false)
@@ -37,6 +40,7 @@ namespace dimkashelk
     TwoThreeTree(const two_three_tree_type &tree):
       fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
       root_(nullptr),
+      to_insert_(nullptr),
       compare_(Compare()),
       size_(0),
       was_updated_while_insert_(false)
@@ -46,11 +50,13 @@ namespace dimkashelk
     TwoThreeTree(two_three_tree_type &&tree):
       fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
       root_(tree.root_),
+      to_insert_(tree.to_insert_),
       compare_(Compare()),
       size_(tree.size_),
       was_updated_while_insert_(false)
     {
       tree.root_ = nullptr;
+      tree.to_insert_ = nullptr;
     }
     two_three_tree_type &operator=(const two_three_tree_type &tree)
     {
@@ -71,6 +77,8 @@ namespace dimkashelk
       clear();
       root_ = tree.root_;
       tree.root_ = nullptr;
+      to_insert_ = tree.to_insert_;
+      tree.to_insert_ = nullptr;
       size_ = tree.size_;
       return *this;
     }
@@ -208,6 +216,7 @@ namespace dimkashelk
   private:
     node_type *fakeNode_;
     node_type *root_;
+    node_to_insert *to_insert_;
     Compare compare_;
     size_t size_;
     bool was_updated_while_insert_;
@@ -227,11 +236,24 @@ namespace dimkashelk
           p->data[1].second = v;
         }
         was_updated_while_insert_ = true;
-        return split(p);
+        return p;
       }
       if (p->isList())
       {
-        p->insert(k, v);
+        if (p->size < 2)
+        {
+          p->insert(k, v);
+          return p;
+        }
+        else
+        {
+          if (to_insert_)
+          {
+            delete to_insert_;
+          }
+          to_insert_ = new node_to_insert(p);
+          to_insert_->insert(k, v);
+        }
       }
       else if (compare_(k, p->data[0].first) && details::isNotEqual< Key, Compare >(p->data[0].first, k))
       {
@@ -249,14 +271,12 @@ namespace dimkashelk
     }
     node_type *split(node_type *item)
     {
-      if (item->size < 3)
+      if (!to_insert_)
       {
         return item;
       }
-      auto *x = new node_type(
-        item->data[0].first, item->data[0].second, item->first, item->second, nullptr, nullptr, item->parent);
-      auto *y = new node_type(
-        item->data[2].first, item->data[2].second, item->third, item->fourth, nullptr, nullptr, item->parent);
+      auto *x = new node_type(to_insert_->data[0].first, to_insert_->data[0].second, to_insert_->first, to_insert_->second, nullptr, nullptr, to_insert_->parent);
+      auto *y = new node_type(to_insert_->data[2].first, to_insert_->data[2].second, to_insert_->third, to_insert_->fourth, nullptr, nullptr, to_insert_->parent);
       if (x->first)
       {
         x->first->parent = x;
@@ -273,50 +293,69 @@ namespace dimkashelk
       {
         y->second->parent = y;
       }
-      if (item->parent)
+      if (to_insert_->parent)
       {
-        item->parent->insert(item->data[1].first, item->data[1].second);
-        if (item->parent->first == item)
+        auto *parent = to_insert_->parent;
+        if (parent->size == 2)
         {
-          item->parent->first = nullptr;
-        }
-        else if (item->parent->second == item)
-        {
-          item->parent->second = nullptr;
-        }
-        else if (item->parent->third == item)
-        {
-          item->parent->third = nullptr;
-        }
-        if (item->parent->first == nullptr)
-        {
-          item->parent->fourth = item->parent->third;
-          item->parent->third = item->parent->second;
-          item->parent->second = y;
-          item->parent->first = x;
-        }
-        else if (item->parent->second == nullptr)
-        {
-          item->parent->fourth = item->parent->third;
-          item->parent->third = y;
-          item->parent->second = x;
+          node_to_insert *new_node = new node_to_insert(parent);
+          new_node->insert(to_insert_->data[1].first, to_insert_->data[1].second);
+          if (details::isEqual< Key, Compare >(new_node->data[0].first, to_insert_->data[1].first))
+          {
+            new_node->first = x;
+            new_node->second = y;
+            new_node->third = item->first;
+            new_node->fourth = item->second;
+          }
+          else if (details::isEqual< Key, Compare >(new_node->data[1].first, to_insert_->data[1].first))
+          {
+            new_node->first = item->first;
+            new_node->second = x;
+            new_node->third = y;
+            new_node->fourth = item->second;
+          }
+          else if (details::isEqual< Key, Compare >(new_node->data[2].first, to_insert_->data[1].first))
+          {
+            new_node->first = item->first;
+            new_node->second = item->second;
+            new_node->third = x;
+            new_node->fourth = y;
+          }
+          delete to_insert_;
+          to_insert_ = new_node;
         }
         else
         {
-          item->parent->fourth = y;
-          item->parent->third = x;
+          parent->insert(to_insert_->data[1].first, to_insert_->data[1].second);
+          if (parent->first == item)
+          {
+            parent->third = item->parent->second;
+            parent->second = y;
+            parent->first = x;
+          }
+          else if (parent->second == item)
+          {
+            item->parent->third = y;
+            item->parent->second = x;
+            delete item;
+          }
+          delete to_insert_;
+          to_insert_ = nullptr;
         }
-        node_type *tmp = item->parent;
-        delete item;
-        return tmp;
       }
       else
       {
-        x->parent = item;
-        y->parent = item;
-        item->becomeNode2(item->data[1].first, item->data[1].second, x, y);
-        return item;
+        node_type *parent = new node_type(to_insert_->data[1].first, to_insert_->data[1].second);
+        parent->first = x;
+        parent->second = y;
+        x->parent = parent;
+        y->parent = parent;
+        delete item;
+        delete to_insert_;
+        to_insert_ = nullptr;
+        return parent;
       }
+      return item;
     }
     node_type *search(node_type *node, const Key &k) const
     {
