@@ -9,3 +9,8 @@ bool isClosedBracket(std::string s)
 {
   return s == ")";
 }
+
+bool isOperation(std::string s)
+{
+  return s == "+" || s == "-" || s == "*" || s == "/" || s == "%";
+}
