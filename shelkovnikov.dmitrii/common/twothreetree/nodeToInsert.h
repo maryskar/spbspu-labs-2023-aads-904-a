@@ -35,45 +35,6 @@ namespace dimkashelk
         size++;
         sort();
       }
-      void becomeNode2(const Key &k, const Value &v, node_type *first_, node_type *second_)
-      {
-        data[0] = {k, v};
-        first = first_;
-        second = second_;
-        third = nullptr;
-        fourth = nullptr;
-        parent = nullptr;
-        size = 1;
-      }
-      node_type *getLastChildren()
-      {
-        return (third)? third: (second)? second: first;
-      }
-      bool contains(const Key &k)
-      {
-        for (unsigned int i = 0; i < size; ++i)
-        {
-          if (details::isEqual< Key, Compare >(data[i].first, k))
-          {
-            return true;
-          }
-        }
-        return false;
-      }
-      void removeFromNode(Key k)
-      {
-        if (size >= 1 && details::isEqual< Key, Compare >(data[0].first, k))
-        {
-          data[0] = data[1];
-          data[1] = data[2];
-          size--;
-        }
-        else if (size == 2 && details::isEqual< Key, Compare >(data[1].first, k))
-        {
-          data[1] = data[2];
-          size--;
-        }
-      }
     private:
       Compare compare_;
       void sort()
@@ -94,7 +55,6 @@ namespace dimkashelk
           }
         }
       }
-
     };
   }
 }
