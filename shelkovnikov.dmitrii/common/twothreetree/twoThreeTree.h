@@ -39,14 +39,12 @@ namespace dimkashelk
     {}
     TwoThreeTree(const two_three_tree_type &tree):
       fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
-      root_(nullptr),
+      root_(copy(tree)),
       to_insert_(nullptr),
       compare_(Compare()),
-      size_(0),
+      size_(tree.size_),
       was_updated_while_insert_(false)
-    {
-      copy(tree);
-    }
+    {}
     TwoThreeTree(two_three_tree_type &&tree):
       fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
       root_(tree.root_),
@@ -420,12 +418,14 @@ namespace dimkashelk
         node->third = nullptr;
       }
     }
-    void copy(const two_three_tree_type &tree)
+    node_type *copy(const two_three_tree_type &tree)
     {
+      root_ = nullptr;
       for (auto iter = tree.cbegin(); iter != tree.cend(); iter++)
       {
         insert(iter->first, iter->second);
       }
+      return root_;
     }
     node_type *remove(node_type *p, Key k)
     {
