@@ -18,7 +18,7 @@ namespace dimkashelk
       node_type *third;
       node_type *parent;
       NodeOfTwoThreeTree():
-        data(),
+        data{{Key(), Value()}, {Key(), Value()}},
         size(0),
         first(nullptr),
         second(nullptr),
