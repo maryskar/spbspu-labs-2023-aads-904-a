@@ -4,4 +4,5 @@
 bool isOpenedBracket(std::string s);
 bool isClosedBracket(std::string s);
 bool isOperation(std::string s);
+bool isNumber(std::string s);
 #endif
