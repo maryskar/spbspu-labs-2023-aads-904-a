@@ -30,28 +30,28 @@ namespace dimkashelk
     using key_type = Key;
     using compare_type = Compare;
     TwoThreeTree():
-      fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
-      root_(nullptr),
-      to_insert_(nullptr),
-      compare_(Compare()),
       size_(0),
-      was_updated_while_insert_(false)
+      was_updated_while_insert_(false),
+      compare_(Compare()),
+      to_insert_(nullptr),
+      fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
+      root_(nullptr)
     {}
     TwoThreeTree(const two_three_tree_type &tree):
-      fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
-      root_(copy(tree)),
-      to_insert_(nullptr),
+      size_(0),
+      was_updated_while_insert_(false),
       compare_(Compare()),
-      size_(tree.size_),
-      was_updated_while_insert_(false)
+      to_insert_(nullptr),
+      fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
+      root_(copy(tree))
     {}
     TwoThreeTree(two_three_tree_type &&tree):
-      fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
-      root_(tree.root_),
-      to_insert_(tree.to_insert_),
-      compare_(Compare()),
       size_(tree.size_),
-      was_updated_while_insert_(false)
+      was_updated_while_insert_(false),
+      compare_(Compare()),
+      to_insert_(tree.to_insert_),
+      fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
+      root_(tree.root_)
     {
       tree.root_ = nullptr;
       tree.to_insert_ = nullptr;
@@ -212,12 +212,12 @@ namespace dimkashelk
       return node && (isEqualFirst || isEqualSecond);
     }
   private:
-    node_type *fakeNode_;
-    node_type *root_;
-    node_to_insert *to_insert_;
-    Compare compare_;
     size_t size_;
     bool was_updated_while_insert_;
+    Compare compare_;
+    node_to_insert *to_insert_;
+    node_type *fakeNode_;
+    node_type *root_;
     node_type *getNewNodeFromLeftChild()
     {
       node_type *new_node = new node_type(to_insert_->data[0].first, to_insert_->data[0].second);
@@ -420,6 +420,7 @@ namespace dimkashelk
     }
     node_type *copy(const two_three_tree_type &tree)
     {
+      size_ = 0;
       root_ = nullptr;
       for (auto iter = tree.cbegin(); iter != tree.cend(); iter++)
       {
