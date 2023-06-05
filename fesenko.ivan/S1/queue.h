@@ -11,7 +11,7 @@ namespace fesenko
     Queue();
     ~Queue();
     void push(const T rhs);
-    T &getOutOfQueue();
+    T &front();
     void pop();
     bool isEmpty();
    private:
@@ -47,7 +47,7 @@ void fesenko::Queue< T >::push(const T rhs)
 }
 
 template< typename T >
-T &fesenko::Queue< T >::getOutOfQueue()
+T &fesenko::Queue< T >::front()
 {
   if (isEmpty()) {
     throw std::out_of_range("Queue is empty");

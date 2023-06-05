@@ -11,7 +11,7 @@ namespace fesenko
     Stack();
     ~Stack();
     void push(const T &rhs);
-    T &getOutOfStack();
+    T &top();
     void pop();
     bool isEmpty();
    private:
@@ -39,7 +39,7 @@ void fesenko::Stack< T >::push(const T &rhs)
 }
 
 template< typename T >
-T &fesenko::Stack< T >::getOutOfStack()
+T &fesenko::Stack< T >::top()
 {
   if (isEmpty()) {
     throw std::out_of_range("Stack is empty");
