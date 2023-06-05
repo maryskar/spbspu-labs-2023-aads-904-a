@@ -220,6 +220,22 @@ namespace dimkashelk
     Compare compare_;
     size_t size_;
     bool was_updated_while_insert_;
+    node_type *getNewNodeFromLeftChild()
+    {
+      node_type *new_node = new node_type(to_insert_->data[0].first, to_insert_->data[0].second);
+      new_node->first = to_insert_->first;
+      new_node->second = to_insert_->second;
+      new_node->parent = to_insert_->parent;
+      return new_node;
+    }
+    node_type *getNewNodeFromRightChild()
+    {
+      node_type *new_node = new node_type(to_insert_->data[2].first, to_insert_->data[2].second);
+      new_node->first = to_insert_->first;
+      new_node->second = to_insert_->third;
+      new_node->parent = to_insert_->fourth;
+      return new_node;
+    }
     node_type *insert(node_type *p, const Key &k, const Value &v) {
       if (!p)
       {
@@ -275,8 +291,8 @@ namespace dimkashelk
       {
         return item;
       }
-      auto *x = new node_type(to_insert_->data[0].first, to_insert_->data[0].second, to_insert_->first, to_insert_->second, nullptr, nullptr, to_insert_->parent);
-      auto *y = new node_type(to_insert_->data[2].first, to_insert_->data[2].second, to_insert_->third, to_insert_->fourth, nullptr, nullptr, to_insert_->parent);
+      auto *x = getNewNodeFromLeftChild();
+      auto *y = getNewNodeFromRightChild();
       if (x->first)
       {
         x->first->parent = x;
