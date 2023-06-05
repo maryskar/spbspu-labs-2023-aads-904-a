@@ -1,26 +1,26 @@
 #include "symbols.h"
 
-bool isOpenedBracket(std::string s)
+bool fesenko::isOpenedBracket(std::string s)
 {
   return s == "(";
 }
 
-bool isClosedBracket(std::string s)
+bool fesenko::isClosedBracket(std::string s)
 {
   return s == ")";
 }
 
-bool isOperation(std::string s)
+bool fesenko::isOperation(std::string s)
 {
   return s == "+" || s == "-" || s == "*" || s == "/" || s == "%";
 }
 
-bool isNumber(std::string s)
+bool fesenko::isNumber(std::string s)
 {
   return !isOpenedBracket(s) && !isClosedBracket(s) && !isOperation(s);
 }
 
-size_t priority(std::string s)
+size_t fesenko::priority(std::string s)
 {
   if (s == "+" || s == "-") {
     return 0;
