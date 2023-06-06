@@ -1,6 +1,7 @@
 #include "convertfrominfixtopostfix.h"
 #include <cctype>
 #include "priority.h"
+#include "stack.h"
 
 bool isOperator(std::string oper)
 {

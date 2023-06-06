@@ -10,6 +10,7 @@
 
 int main(int argc, char * argv[])
 {
+  namespace azh = azheganova;
   if (argc > 2)
   {
     std::cout << "too much parameters";
@@ -27,7 +28,7 @@ int main(int argc, char * argv[])
   }
   std::istream& input = (argc == 2) ? inputfile : std::cin;
   std::string string;
-  azheganova::Stack< long long > result;
+  azh::Stack< long long > result;
   while (std::getline(input, string))
   {
     try
@@ -40,9 +41,9 @@ int main(int argc, char * argv[])
       {
         continue;
       }
-      azheganova::Queue< std::string > infixform = azheganova::convertToInfix(string);
-      azheganova::Queue< std::string > postfixform =azheganova::convertFromInfixToPostfix(infixform);
-      result.push(azheganova::calculatePostfix(postfixform));
+      azh::Queue< std::string > infixform = azh::convertToInfix(string);
+      azh::Queue< std::string > postfixform =azh::convertFromInfixToPostfix(infixform);
+      result.push(azh::calculatePostfix(postfixform));
     }
     catch (...)
     {
