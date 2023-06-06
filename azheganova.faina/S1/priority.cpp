@@ -1,7 +1,7 @@
 #include "priority.h"
 #include <stdexcept>
 
-bool azheganova::getPriority(std::string oper)
+bool getPriority(std::string oper)
 {
   if (oper == ")")
   {

@@ -39,7 +39,7 @@ azheganova::Queue< std::string > azheganova::convertFromInfixToPostfix(Queue< st
     }
     else if (isOperator(element))
     {
-      while (!stack.isEmpty() && (isPriority(stack.get(), element)))
+      while (!stack.isEmpty() && (!isPriority(stack.get(), element)))
       {
         postfix.push(stack.get());
         stack.pop();
