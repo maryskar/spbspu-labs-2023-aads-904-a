@@ -19,10 +19,10 @@ namespace turkin
     public:
       calc_t(const calc_t< T > & rhs);
       calc_t(long long rhs, T nt);
-      T getType();
-      const T getType() const;
-      long long getNum();
-      //const long long getNum() const;
+      T & getType();
+      const T & getType() const;
+      long long & getNum();
+      const long long & getNum() const;
     private:
       long long num;
       T type;
@@ -42,19 +42,25 @@ turkin::calc_t< T >::calc_t(long long rhs, T nt):
 {}
 
 template< typename T >
-T turkin::calc_t< T >::getType()
+T & turkin::calc_t< T >::getType()
 {
   return type;
 }
 
 template< typename T >
-const T turkin::calc_t< T >::getType() const
+const T & turkin::calc_t< T >::getType() const
 {
-  return reinterpret_cast< const T >(type);
+  return type;
 }
 
 template< typename T >
-long long turkin::calc_t< T >::getNum()
+long long & turkin::calc_t< T >::getNum()
+{
+  return num;
+}
+
+template< typename T >
+const long long & turkin::calc_t< T >::getNum() const
 {
   return num;
 }
