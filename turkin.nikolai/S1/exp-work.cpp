@@ -5,22 +5,22 @@
 #include "calc-verify.hpp"
 #include "convert.hpp"
 
-using pinf_t = turkin::datatype::calc_t< turkin::datatype::PINF >;
-using pfix_t = turkin::datatype::calc_t< turkin::datatype::PFIX >;
-using PINF = turkin::datatype::PINF;
-using PFIX = turkin::datatype::PFIX;
+using pinf_t = turkin::calc_t< turkin::PINF >;
+using pfix_t = turkin::calc_t< turkin::PFIX >;
+using PINF = turkin::PINF;
+using PFIX = turkin::PFIX;
 
 namespace
 {
   bool getPriorityLevel(const pinf_t & data)
   {
-    return !(data.type == PINF::ADD || data.type == PINF::SUB);
+    return !(data.getType() == PINF::ADD || data.getType() == PINF::SUB);
   }
+}
 
-  bool isLowerPriority(const pinf_t & lhs, const pinf_t & rhs)
-  {
-    return getPriorityLevel(lhs) < getPriorityLevel(rhs);
-  }
+bool isLowerPriority(const pinf_t & lhs, const pinf_t & rhs)
+{
+  return getPriorityLevel(lhs) < getPriorityLevel(rhs);
 }
 
 turkin::Queue< pinf_t > turkin::str2Inf(std::string & dirt)
@@ -68,7 +68,7 @@ turkin::Queue< pinf_t > turkin::str2Inf(std::string & dirt)
         {
           ins = PINF::RIGHT_BRACKET;
         }
-        pinf_t data(sign, ins);
+        pinf_t data(0ll, ins);
         input.push(data);
       }
       temp = "";
@@ -89,29 +89,29 @@ turkin::Queue< pfix_t > turkin::inf2Post(turkin::Queue< pinf_t > & input)
   {
     pinf_t data(input.get());
     input.pop();
-    if (data.type == PINF::NUM)
+    if (data.getType() == PINF::NUM)
     {
-      output.push(convert::convertINF2FIX(data));
+      output.push(convertINF2FIX(data));
     }
     else
     {
-      if (data.type == PINF::RIGHT_BRACKET)
+      if (data.getType() == PINF::RIGHT_BRACKET)
       {
         while (!buffer.isEmpty())
         {
           pinf_t opt = buffer.get();
           buffer.pop();
-          if (opt.type == PINF::LEFT_BRACKET)
+          if (opt.getType() == PINF::LEFT_BRACKET)
           {
             break;
           }
-          output.push(convert::convertINF2FIX(opt));
+          output.push(convertINF2FIX(opt));
         }
       }
-      else if (!buffer.isEmpty() && data.type != PINF::LEFT_BRACKET)
+      else if (!buffer.isEmpty() && data.getType() != PINF::LEFT_BRACKET)
       {
         pinf_t opt(buffer.get());
-        if (isLowerPriority(data, opt) || opt.type == PINF::LEFT_BRACKET)
+        if (isLowerPriority(data, opt) || opt.getType() == PINF::LEFT_BRACKET)
         {
           buffer.push(data);
         }
@@ -121,7 +121,7 @@ turkin::Queue< pfix_t > turkin::inf2Post(turkin::Queue< pinf_t > & input)
           buffer.pop();
           while (!isLowerPriority(data, opt))
           {
-            output.push(convert::convertINF2FIX(opt));
+            output.push(convertINF2FIX(opt));
             if (buffer.isEmpty())
             {
               break;
@@ -140,7 +140,7 @@ turkin::Queue< pfix_t > turkin::inf2Post(turkin::Queue< pinf_t > & input)
   }
   while (!buffer.isEmpty())
   {
-    output.push(convert::convertINF2FIX(buffer.get()));
+    output.push(convertINF2FIX(buffer.get()));
     buffer.pop();
   }
   return output;
@@ -153,9 +153,9 @@ long long turkin::post2Result(turkin::Queue< pfix_t > & output)
   {
     pfix_t opt(output.get());
     output.pop();
-    if (opt.type == PFIX::NUM)
+    if (opt.getType() == PFIX::NUM)
     {
-      buffer.push(opt.calc.num);
+      buffer.push(opt.getNum());
     }
     else
     {
@@ -164,41 +164,41 @@ long long turkin::post2Result(turkin::Queue< pfix_t > & output)
       long long a = buffer.get();
       buffer.pop();
       long long c = 0;
-      if (opt.type == PFIX::ADD)
+      if (opt.getType() == PFIX::ADD)
       {
-        if (verify::isADDerror(a, b))
+        if (isADDerror(a, b))
         {
           throw std::overflow_error("ADD error");
         }
         c = a + b;
       }
-      if (opt.type == PFIX::SUB)
+      if (opt.getType() == PFIX::SUB)
       {
-        if (verify::isSUBerror(a, b))
+        if (isSUBerror(a, b))
         {
           throw std::overflow_error("SUB error");
         }
         c = a - b;
       }
-      if (opt.type == PFIX::MUL)
+      if (opt.getType() == PFIX::MUL)
       {
-        if (verify::isMULerror(a, b))
+        if (isMULerror(a, b))
         {
           throw std::overflow_error("MUL error");
         }
         c = a * b;
       }
-      if (opt.type == PFIX::DIV)
+      if (opt.getType() == PFIX::DIV)
       {
-        if (verify::isDIVerror(a, b))
+        if (isDIVerror(a, b))
         {
           throw std::runtime_error("zero division");
         }
         c = a / b;
       }
-      if (opt.type == PFIX::MOD)
+      if (opt.getType() == PFIX::MOD)
       {
-        if (verify::isMODerror(a, b))
+        if (isMODerror(a, b))
         {
           throw std::runtime_error("zero division");
         }

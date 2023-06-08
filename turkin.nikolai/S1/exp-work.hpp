@@ -5,8 +5,8 @@
 #include <queue.hpp>
 #include "data-type.hpp"
 
-using pinf_t = turkin::datatype::calc_t< turkin::datatype::PINF >;
-using pfix_t = turkin::datatype::calc_t< turkin::datatype::PFIX >;
+using pinf_t = turkin::calc_t< turkin::PINF >;
+using pfix_t = turkin::calc_t< turkin::PFIX >;
 
 namespace turkin
 {

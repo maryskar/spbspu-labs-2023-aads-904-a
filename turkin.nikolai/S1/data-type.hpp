@@ -3,50 +3,60 @@
 
 namespace turkin
 {
-  namespace datatype
+  enum class PINF
   {
-    enum class PINF
-    {
-      ADD, SUB, MUL, DIV, MOD, NUM, LEFT_BRACKET, RIGHT_BRACKET
-    };
+    ADD, SUB, MUL, DIV, MOD, NUM, LEFT_BRACKET, RIGHT_BRACKET
+  };
 
-    enum class PFIX
-    {
-      ADD, SUB, MUL, DIV, MOD, NUM
-    };
+  enum class PFIX
+  {
+    ADD, SUB, MUL, DIV, MOD, NUM
+  };
 
-    template< typename T >
-    struct calc_t
-    {
+  template< typename T >
+  struct calc_t
+  {
+    public:
       calc_t(const calc_t< T > & rhs);
       calc_t(long long rhs, T nt);
-      calc_t(char rhs, T nt);
-      union
-      {
-        long long num;
-        char sign;
-      } calc;
+      T getType();
+      const T getType() const;
+      long long getNum();
+      //const long long getNum() const;
+    private:
+      long long num;
       T type;
-    };
   };
 };
 
 template< typename T >
-turkin::datatype::calc_t< T >::calc_t(const calc_t< T > & rhs):
-  calc(rhs.calc),
+turkin::calc_t< T >::calc_t(const calc_t< T > & rhs):
+  num(rhs.num),
   type(rhs.type)
 {}
 
 template< typename T >
-turkin::datatype::calc_t< T >::calc_t(long long rhs, T nt):
-  calc({ .num=rhs }),
+turkin::calc_t< T >::calc_t(long long rhs, T nt):
+  num(rhs),
   type(nt)
 {}
 
 template< typename T >
-turkin::datatype::calc_t< T >::calc_t(char rhs, T nt):
-  calc({ .sign=rhs }),
-  type(nt)
-{}
+T turkin::calc_t< T >::getType()
+{
+  return type;
+}
+
+template< typename T >
+const T turkin::calc_t< T >::getType() const
+{
+  return reinterpret_cast< const T >(type);
+}
+
+template< typename T >
+long long turkin::calc_t< T >::getNum()
+{
+  return num;
+}
 
 #endif

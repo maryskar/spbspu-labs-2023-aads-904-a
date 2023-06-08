@@ -5,17 +5,14 @@
 
 namespace turkin
 {
-  namespace sqhelp
+  template< typename T >
+  void free(OneWayNode< T > * rhs)
   {
-    template< typename T >
-    void free(pattern::OneWayNode< T > * rhs)
+    while (rhs)
     {
-      while (rhs)
-      {
-        pattern::OneWayNode< T > * element = rhs;
-        rhs = rhs->next;
-        delete element;
-      }
+      OneWayNode< T > * element = rhs;
+      rhs = rhs->next;
+      delete element;
     }
   }
 };
