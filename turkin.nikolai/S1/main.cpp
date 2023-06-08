@@ -11,6 +11,7 @@
 int main(int argc, char * argv[])
 {
   std::ifstream file;
+
   if (argc == 2)
   {
     file.open(argv[1]);
