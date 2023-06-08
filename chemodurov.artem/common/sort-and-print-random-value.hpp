@@ -6,8 +6,8 @@
 #include <deque>
 #include <cstring>
 #include <forward-list.hpp>
-#include "timsort.hpp"
-#include "shell-sort.hpp"
+#include <sort/timsort.hpp>
+#include <sort/shell-sort.hpp>
 
 namespace chemodurov
 {

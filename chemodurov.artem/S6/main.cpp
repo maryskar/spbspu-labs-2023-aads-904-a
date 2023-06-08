@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstring>
-#include "sort-and-print-random-value.hpp"
+#include <sort-and-print-random-value.hpp>
 
 int main(int argc, char ** argv)
 {
