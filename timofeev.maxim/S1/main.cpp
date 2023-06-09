@@ -10,15 +10,11 @@ void out(timofeev::Stack< long long >& res)
   while (!res.isEmpty())
   {
     std::cout << res.drop();
+    res.pop();
     if (!res.isEmpty())
     {
       std::cout << " ";
     }
-    res.pop();
-  }
-  if (res.isEmpty())
-  {
-    std::cout << "\n";
   }
 }
 int main(int argc, char* argv[])
@@ -88,5 +84,6 @@ int main(int argc, char* argv[])
     }
   }
   out(result);
+  std::cout << "\n";
   return 0;
 }
