@@ -24,3 +24,33 @@ namespace timofeev
   };
 }
 #endif
+template <typename T>
+timofeev::Queue<T>::Queue():
+  tail_(nullptr),
+  head_(nullptr),
+  sizeQ_(0)
+{}
+template <typename T>
+int timofeev::Queue<T>::getSize()
+{
+  return sizeQ_;
+}
+template <typename T>
+timofeev::Queue<T>::~Queue()
+{
+  if (tail_ == head_)
+  {
+    delete tail_;
+    tail_ = head_ = nullptr;
+  }
+  else
+  {
+    while (!isEmpty() && head_->next != nullptr)
+    {
+      List< T >* tempHead = head_;
+      head_ = head_->next;
+      delete tempHead;
+    }
+  }
+  sizeQ_ = 0;
+}
