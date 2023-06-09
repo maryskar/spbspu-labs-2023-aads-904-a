@@ -7,10 +7,6 @@
 #include "getValueOfPostfix.h"
 void out(timofeev::Stack< long long >& res)
 {
-  if (res.isEmpty())
-  {
-    std::cout << "Nothing(";
-  }
   while (!res.isEmpty())
   {
     std::cout << res.drop();
