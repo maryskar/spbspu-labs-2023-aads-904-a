@@ -54,11 +54,13 @@ timofeev::Queue<T>::~Queue()
   }
   sizeQ_ = 0;
 }
+
 template <typename T>
 bool timofeev::Queue<T>::isEmpty() const
 {
   return head_ == nullptr;
 }
+
 template <typename T>
 T& timofeev::Queue<T>::drop()
 {
@@ -67,5 +69,41 @@ T& timofeev::Queue<T>::drop()
     throw std::underflow_error("No value in queue");
   }
   return head_->data;
+}
 
+template <typename T>
+void timofeev::Queue<T>::pop()
+{
+  if (isEmpty())
+  {
+    throw std::underflow_error("No value in queue");
+  }
+
+  else if (tail_ == head_)
+  {
+    delete tail_;
+    tail_ = head_ = nullptr;
+  }
+  else
+  {
+    List<T>* temp = head_->next;
+    delete head_;
+    head_ = temp;
+  }
+  sizeQ_ = 0;
+}
+template <typename T>
+void timofeev::Queue<T>::push(const T& rhs)
+{
+  List<T>* newNode = new List<T>{rhs, nullptr};
+  if (isEmpty())
+  {
+    head_ = tail_ = newNode;
+  }
+  else
+  {
+    tail_->next = newNode;
+    tail_ = newNode;
+  }
+  sizeQ_++;
 }
