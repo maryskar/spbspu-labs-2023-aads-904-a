@@ -6,7 +6,7 @@ namespace timofeev
   class Splitter
   {
   public:
-    Splitter(const std::string& str);
+    explicit Splitter(const std::string& str);
     const std::string& getSplit();
     bool empty() const;
   private:
