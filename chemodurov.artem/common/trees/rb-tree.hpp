@@ -72,6 +72,18 @@ namespace chemodurov
     iterator upper_bound(const_reference value);
     const_iterator upper_bound(const_reference value) const;
     value_compare value_comp() const;
+    template< typename F >
+    F traverse_lnr(F f) const;
+    template< typename F >
+    F traverse_lnr(F f);
+    template< typename F >
+    F traverse_rnl(F f) const;
+    template< typename F >
+    F traverse_rnl(F f);
+    template< typename F >
+    F traverse_breadth(F f) const;
+    template< typename F >
+    F traverse_breadth(F f);
     bool isEqual(const this_t & rhs) const;
    private:
     RotatableBinarySearchTree< T, Compare > data_;
@@ -460,6 +472,48 @@ namespace chemodurov
   typename RBTree< T, Compare >::value_compare RBTree< T, Compare >::value_comp() const
   {
     return data_.value_comp();
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F RBTree< T, Compare >::traverse_lnr(F f) const
+  {
+    return data_.template traverse_lnr(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F RBTree< T, Compare >::traverse_rnl(F f) const
+  {
+    return data_.template traverse_rnl(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F RBTree< T, Compare >::traverse_breadth(F f) const
+  {
+    return data_.template traverse_breadth(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F RBTree< T, Compare >::traverse_lnr(F f)
+  {
+    return data_.template traverse_lnr(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F RBTree< T, Compare >::traverse_rnl(F f)
+  {
+    return data_.template traverse_rnl(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F RBTree< T, Compare >::traverse_breadth(F f)
+  {
+    return data_.template traverse_breadth(f);
   }
 
   template< typename T, typename Compare >
