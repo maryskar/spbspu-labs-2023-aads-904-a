@@ -22,7 +22,6 @@ namespace timofeev
     List< T >* head_;
   };
 }
-#endif
 template <typename T>
 timofeev::Queue<T>::Queue():
   tail_(nullptr),
@@ -98,3 +97,4 @@ const T& timofeev::Queue<T>::drop() const
   }
   return head_->data;
 }
+#endif
