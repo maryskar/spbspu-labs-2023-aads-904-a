@@ -36,6 +36,7 @@ timofeev::Queue<T>::~Queue()
     head_ = head_->next;
     delete tempHead;
   }
+  head_ = tail_ = nullptr;
 }
 
 template <typename T>

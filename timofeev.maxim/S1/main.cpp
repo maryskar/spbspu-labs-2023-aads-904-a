@@ -18,11 +18,16 @@ void out(timofeev::Stack< long long >& res)
   }
   if (res.isEmpty())
   {
-    std::cout << " ";
+    std::cout << "\n";
   }
 }
 int main(int argc, char* argv[])
 {
+  if (argc > 2)
+  {
+    std::cerr << "Error\n";
+    return 1;
+  }
   timofeev::Stack <long long> result;
   std::string str = "";
   if (argc == 1)
