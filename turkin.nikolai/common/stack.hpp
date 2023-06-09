@@ -2,7 +2,6 @@
 #define STACK_HPP
 
 #include <stdexcept>
-#include "s-q-help.hpp"
 #include "oneway-list.hpp"
 
 namespace turkin

@@ -4,7 +4,6 @@
 #include <cstring>
 #include <stdexcept>
 #include <utility>
-#include "s-q-help.hpp"
 #include "oneway-list.hpp"
 
 namespace turkin

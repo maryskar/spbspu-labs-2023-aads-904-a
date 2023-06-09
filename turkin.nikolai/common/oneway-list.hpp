@@ -30,6 +30,17 @@ namespace turkin
     }
     return std::make_pair(start, clone);
   }
+
+  template< typename T >
+  void free(OneWayNode< T > * rhs)
+  {
+    while (rhs)
+    {
+      OneWayNode< T > * element = rhs;
+      rhs = rhs->next;
+      delete element;
+    }
+  }
 }
 
 #endif
