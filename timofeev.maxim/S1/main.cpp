@@ -5,6 +5,18 @@
 #include "stack.h"
 #include "getPostfixForm.h"
 #include "getValueOfPostfix.h"
+void out(timofeev::Stack< long long >& res)
+{
+  if (res.isEmpty())
+  {
+    std::cout << "Nothing(";
+  }
+  while (!res.isEmpty())
+  {
+    std::cout << res.drop();
+    res.pop();
+  }
+}
 int main(int argc, char* argv[])
 {
   timofeev::Stack <long long> result;
@@ -66,4 +78,6 @@ int main(int argc, char* argv[])
       return 1;
     }
   }
+  out(result);
+  return 0;
 }
