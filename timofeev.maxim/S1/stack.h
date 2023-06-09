@@ -29,29 +29,27 @@ bool timofeev::Stack<T>::isEmpty() const
   return top_ == nullptr;
 }
 template <typename T>
-timofeev::Stack<T>::~Stack()
-{
-  while (!isEmpty())
-  {
-    List<T>* temp = top_;
+timofeev::Stack<T>::~Stack() {
+  while (!isEmpty()) {
+    List<T> *temp = top_;
     top_ = top_->next;
     delete temp;
   }
-  template <typename T>
-  void timofeev::Stack<T>::pop()
-  {
-    if (isEmpty())
-    {
-      throw std::runtime_error("Stack is empty1");
-    }
-    else
-    {
-      List<T>* temp = top_;
-      top_ = temp->next;
-      delete temp;
-    }
-  }
-
 }
+template <typename T>
+void timofeev::Stack<T>::pop()
+{
+  if (isEmpty())
+  {
+    throw std::runtime_error("Stack is empty1");
+  }
+  else
+  {
+    List<T>* temp = top_;
+    top_ = temp->next;
+    delete temp;
+  }
+}
+
 
 #endif
