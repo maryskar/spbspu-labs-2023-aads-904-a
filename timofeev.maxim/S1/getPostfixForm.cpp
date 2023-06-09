@@ -1,12 +1,9 @@
 #include "getPostfixForm.h"
 #include <iostream>
 #include <string>
-#include <cstring>
 #include <stdexcept>
-#include <cctype>
 #include "stack.h"
 #include "queue.h"
-#include "List.h"
 #include "Splitter.h"
 int getPriority(char op)
 {
@@ -46,6 +43,7 @@ namespace timofeev
         }
         else if (c == ")")
         {
+
           while (!opStack.isEmpty() && opStack.drop() != '(')
           {
             postfix.push(std::string(1, opStack.drop()));
@@ -55,9 +53,29 @@ namespace timofeev
         }
         else
         {
-
+          if (!opStack.isEmpty())
+          {
+            char p = opStack.drop();
+            while (p != '(' && getPriority(p) >= getPriority(c[0]))
+            {
+              postfix.push(std::string(1, p));
+              opStack.pop();
+              if (opStack.isEmpty())
+              {
+                break;
+              }
+              p = opStack.drop();
+            }
+          }
+          opStack.push(c[0]);
         }
       }
     }
+    while (!opStack.isEmpty())
+    {
+      postfix.push(std::string(1, opStack.drop()));
+      opStack.pop();
+    }
+    return postfix;
   }
 }
