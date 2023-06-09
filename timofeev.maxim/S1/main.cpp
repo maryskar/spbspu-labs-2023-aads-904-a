@@ -32,10 +32,6 @@ int main(int argc, char* argv[])
     {
       while (std::getline(std::cin, str))
       {
-        if (str.empty())
-        {
-          break;
-        }
         if (!std::cin)
         {
           std::cerr << "Error" << "\n";
