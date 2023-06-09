@@ -89,22 +89,6 @@ namespace dimkashelk
     }
     return new_dict;
   }
-  template< typename K, typename V, typename C >
-  std::ostream &operator<<(std::ostream &out, tree< K, V, C > &dict)
-  {
-    if (dict.empty())
-    {
-      return out << "<EMPTY>";
-    }
-    auto it = dict.cbegin();
-    auto end = dict.cend();
-    out << it->first << " " << it->second;
-    it++;
-    for (; it != end; it++) {
-      out << " " << it->first << " " << it->second;
-    }
-    return out;
-  }
   std::ostream &outEmptyDictionaryMessage(std::ostream &out)
   {
     return out << "<EMPTY>";
