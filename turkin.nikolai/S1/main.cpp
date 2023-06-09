@@ -11,6 +11,7 @@
 int main(int argc, char * argv[])
 {
   using namespace turkin;
+
   std::ifstream file;
   if (argc == 2)
   {
