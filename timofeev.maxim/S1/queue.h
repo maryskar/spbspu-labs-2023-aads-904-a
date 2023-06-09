@@ -12,13 +12,11 @@ namespace timofeev
     ~Queue();
 
     T& drop();
-    int getSize();
     void push(const T  & rhs);
     void pop();
     bool isEmpty() const;
 
   private:
-    int sizeQ_;
     List< T >* tail_;
     List< T >* head_;
   };
@@ -27,14 +25,8 @@ namespace timofeev
 template <typename T>
 timofeev::Queue<T>::Queue():
   tail_(nullptr),
-  head_(nullptr),
-  sizeQ_(0)
+  head_(nullptr)
 {}
-template <typename T>
-int timofeev::Queue<T>::getSize()
-{
-  return sizeQ_;
-}
 template <typename T>
 timofeev::Queue<T>::~Queue()
 {
@@ -52,7 +44,6 @@ timofeev::Queue<T>::~Queue()
       delete tempHead;
     }
   }
-  sizeQ_ = 0;
 }
 
 template <typename T>
@@ -90,7 +81,6 @@ void timofeev::Queue<T>::pop()
     delete head_;
     head_ = temp;
   }
-  sizeQ_ = 0;
 }
 template <typename T>
 void timofeev::Queue<T>::push(const T& rhs)
@@ -105,5 +95,4 @@ void timofeev::Queue<T>::push(const T& rhs)
     tail_->next = newNode;
     tail_ = newNode;
   }
-  sizeQ_++;
 }
