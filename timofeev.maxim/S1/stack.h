@@ -58,5 +58,22 @@ void timofeev::Stack<T>::push(const T& rhs)
   newTop->next = top_;
   top_ = newTop;
 }
-
+template <typename T>
+T& timofeev::Stack<T>::drop()
+{
+  if (isEmpty())
+  {
+    throw std::runtime_error("Stack is empty");
+  }
+  return top_->data;
+}
+template <typename T>
+const T& timofeev::Stack<T>::drop() const
+{
+  if (isEmpty())
+  {
+    throw std::runtime_error("Stack is empty");
+  }
+  return top_->data;
+}
 #endif
