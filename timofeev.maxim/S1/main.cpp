@@ -10,6 +10,10 @@ void out(timofeev::Stack< long long >& res)
   while (!res.isEmpty())
   {
     std::cout << res.drop();
+    if (!res.isEmpty())
+    {
+      std::cout << " ";
+    }
     res.pop();
   }
   if (res.isEmpty())
