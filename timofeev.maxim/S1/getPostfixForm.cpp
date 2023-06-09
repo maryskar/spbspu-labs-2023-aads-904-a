@@ -1,5 +1,4 @@
 #include "getPostfixForm.h"
-#include <iostream>
 #include <string>
 #include <stdexcept>
 #include "stack.h"
