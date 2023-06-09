@@ -6,6 +6,6 @@
 namespace timofeev
 {
     long long getValueOfPostfix(Queue< std::string >& postfix);
-    //Stack <std::string> getValueOfPostfix(Queue< std::string >& postfix, Stack< std::string >& result);
+
 }
 #endif
