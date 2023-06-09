@@ -30,7 +30,7 @@ namespace timofeev
         switch (c[0])
         {
           case '+':
-            result.push(std::to_string(second + first)));
+            result.push(std::to_string(second + first));
             break;
           case '-':
             result.push(std::to_string(second - first));
