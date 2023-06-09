@@ -42,7 +42,23 @@ int main(int argc, char* argv[])
   {
     try
     {
-
+      std::ifstream File;
+      File.open(argv[1]);
+      if (!File.is_open())
+      {
+        std::cerr << "Error while open file" << "\n";
+        return 2;
+      }
+      while (File)
+      {
+        std::getline(File, str);
+        if (str.find_first_not_of(" \n") == std::string::npos)
+        {
+          continue;
+        }
+        timofeev::Queue <std::string> postfix = timofeev::getPostfixForm(str);
+        result.push(timofeev::getValueOfPostfix(postfix));
+      }
     }
     catch (const std::exception &e)
     {
