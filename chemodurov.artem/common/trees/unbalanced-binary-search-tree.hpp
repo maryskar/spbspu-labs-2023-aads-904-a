@@ -3,8 +3,8 @@
 #include <functional>
 #include <stdexcept>
 #include "const-bidirectional-iterator.hpp"
-#include "stack.hpp"
-#include "queue.hpp"
+#include <stack.hpp>
+#include <queue.hpp>
 
 namespace chemodurov
 {
