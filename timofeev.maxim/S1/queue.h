@@ -31,19 +31,11 @@ timofeev::Queue<T>::Queue():
 template <typename T>
 timofeev::Queue<T>::~Queue()
 {
-  if (tail_ == head_)
+  while (!isEmpty() && head_->next != nullptr)
   {
-    delete tail_;
-    tail_ = head_ = nullptr;
-  }
-  else
-  {
-    while (!isEmpty() && head_->next != nullptr)
-    {
-      List< T >* tempHead = head_;
-      head_ = head_->next;
-      delete tempHead;
-    }
+    List< T >* tempHead = head_;
+    head_ = head_->next;
+    delete tempHead;
   }
 }
 
