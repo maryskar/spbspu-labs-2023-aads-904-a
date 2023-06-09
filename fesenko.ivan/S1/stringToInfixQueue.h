@@ -4,6 +4,6 @@
 #include "queue.h"
 namespace fesenko
 {
-  Queue < std::string > stringToInfixQueue(std::string s);
+  Queue< std::string > stringToInfixQueue(std::string s);
 }
 #endif
