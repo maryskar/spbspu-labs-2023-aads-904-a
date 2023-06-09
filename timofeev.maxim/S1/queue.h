@@ -12,6 +12,7 @@ namespace timofeev
     ~Queue();
 
     T& drop();
+    const T& drop() const;
     void push(const T  & rhs);
     void pop();
     bool isEmpty() const;
@@ -95,4 +96,13 @@ void timofeev::Queue<T>::push(const T& rhs)
     tail_->next = newNode;
     tail_ = newNode;
   }
+}
+template <typename T>
+const T& timofeev::Queue<T>::drop() const
+{
+  if (isEmpty())
+  {
+    throw std::underflow_error("No value in queue");
+  }
+  return head_->data;
 }
