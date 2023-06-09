@@ -62,9 +62,9 @@ int main(int argc, char* argv[])
         std::cerr << "Error while open file" << "\n";
         return 2;
       }
-      while (File)
+      while (std::getline(File, str))
       {
-        std::getline(File, str);
+       // std::getline(File, str);
         if (str.find_first_not_of(" \n") == std::string::npos)
         {
           continue;
