@@ -54,3 +54,18 @@ timofeev::Queue<T>::~Queue()
   }
   sizeQ_ = 0;
 }
+template <typename T>
+bool timofeev::Queue<T>::isEmpty() const
+{
+  return head_ == nullptr;
+}
+template <typename T>
+T& timofeev::Queue<T>::drop()
+{
+  if (isEmpty())
+  {
+    throw std::underflow_error("No value in queue");
+  }
+  return head_->data;
+
+}
