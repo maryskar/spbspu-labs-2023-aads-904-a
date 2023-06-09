@@ -19,5 +19,24 @@ namespace timofeev
     List< T >* top_;
   };
 }
+template <typename T>
+timofeev::Stack<T>::Stack():
+        top_(nullptr)
+{}
+template <typename T>
+bool timofeev::Stack<T>::isEmpty() const
+{
+  return top_ == nullptr;
+}
+template <typename T>
+timofeev::Stack<T>::~Stack()
+{
+  while (!isEmpty())
+  {
+    List<T>* temp = top_;
+    top_ = top_->next;
+    delete temp;
+  }
+}
 
 #endif
