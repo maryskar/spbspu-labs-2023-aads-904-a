@@ -35,5 +35,20 @@ namespace timofeev
       return one - two;
     }
   }
+  ll getDiv(ll one, ll two)
+  {
+    if (two == 0)
+    {
+      throw std::invalid_argument("div by ZERO");
+    }
+    if (two == -1 && one < Max * two)
+    {
+      throw std::overflow_error("overflow div");
+    }
+    else
+    {
+      return one / two;
+    }
+  }
 
 }

@@ -3,6 +3,7 @@
 #include <string>
 #include "queue.h"
 #include "stack.h"
+#include "getResultOfOperators.h"
 namespace timofeev
 {
   long long getValueOfPostfix(Queue< std::string >& postfix)
