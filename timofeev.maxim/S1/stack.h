@@ -37,6 +37,26 @@ timofeev::Stack<T>::~Stack()
     top_ = top_->next;
     delete temp;
   }
+  template <typename T>
+  void timofeev::Stack<T>::pop()
+  {
+    if (isEmpty())
+    {
+      throw std::runtime_error("Stack is empty1");
+    }
+    else if (!top_->next)
+    {
+      delete top_;
+      top_ = nullptr;
+    }
+    else
+    {
+      List<T>* temp = top_;
+      top_ = temp->next;
+      delete temp;
+    }
+  }
+
 }
 
 #endif
