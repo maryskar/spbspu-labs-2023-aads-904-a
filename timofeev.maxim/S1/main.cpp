@@ -16,6 +16,10 @@ void out(timofeev::Stack< long long >& res)
     std::cout << res.drop();
     res.pop();
   }
+  if (res.isEmpty())
+  {
+    std::cout << " ";
+  }
 }
 int main(int argc, char* argv[])
 {
