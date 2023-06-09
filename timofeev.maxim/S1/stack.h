@@ -44,11 +44,6 @@ timofeev::Stack<T>::~Stack()
     {
       throw std::runtime_error("Stack is empty1");
     }
-    else if (!top_->next)
-    {
-      delete top_;
-      top_ = nullptr;
-    }
     else
     {
       List<T>* temp = top_;
