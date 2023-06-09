@@ -41,7 +41,7 @@ void timofeev::Stack<T>::pop()
 {
   if (isEmpty())
   {
-    throw std::runtime_error("Stack is empty1");
+    throw std::runtime_error("Stack is empty");
   }
   else
   {
@@ -50,6 +50,13 @@ void timofeev::Stack<T>::pop()
     delete temp;
   }
 }
-
+template <typename T>
+void timofeev::Stack<T>::push(const T& rhs)
+{
+  List<T>* newTop = new List<T>;
+  newTop->data = rhs;
+  newTop->next = top_;
+  top_ = newTop;
+}
 
 #endif
