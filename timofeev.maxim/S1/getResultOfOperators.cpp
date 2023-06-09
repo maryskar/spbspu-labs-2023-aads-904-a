@@ -11,7 +11,7 @@ namespace timofeev
     {
       throw std::overflow_error("Overflow sum");
     }
-    else if (one < 0 && two < 0 & one < Min - two)
+    else if (one < 0 && two < 0 && one < Min - two)
     {
       throw std::underflow_error("underflow sum");
     }
