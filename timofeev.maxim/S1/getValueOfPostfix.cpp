@@ -30,19 +30,19 @@ namespace timofeev
         switch (c[0])
         {
           case '+':
-            result.push(std::to_string(second + first));
+            result.push(std::to_string(getSum(second,first)));
             break;
           case '-':
-            result.push(std::to_string(second - first));
+            result.push(std::to_string(getMinus(second, first)));
             break;
           case '*':
-            result.push(std::to_string(second * first));
+            result.push(std::to_string(getMultip(second, first)));
             break;
           case '/':
-            result.push(std::to_string(second / first));
+            result.push(std::to_string(getDiv(second, first)));
             break;
           case '%':
-            result.push(std::to_string(second % first));
+            result.push(std::to_string(getRemander(second, first)));
             break;
           default:
             throw std::runtime_error("unknown operator");
