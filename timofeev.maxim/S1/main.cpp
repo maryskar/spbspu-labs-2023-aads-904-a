@@ -64,7 +64,6 @@ int main(int argc, char* argv[])
       }
       while (std::getline(File, str))
       {
-       // std::getline(File, str);
         if (str.find_first_not_of(" \n") == std::string::npos)
         {
           continue;
