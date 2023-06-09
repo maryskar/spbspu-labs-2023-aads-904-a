@@ -15,6 +15,6 @@ namespace turkin
       delete element;
     }
   }
-};
+}
 
 #endif

@@ -57,7 +57,7 @@ turkin::Queue< T >::Queue(Queue< T > && rhs):
 }
 
 template< typename T >
-turkin::Queue< T > & turkin::Queue< T >::operator=(const turkin::Queue< T > & rhs)
+turkin::Queue< T > & turkin::Queue< T >::operator=(const Queue< T > & rhs)
 {
   Queue< T > temp(rhs);
   swap(temp);
@@ -65,7 +65,7 @@ turkin::Queue< T > & turkin::Queue< T >::operator=(const turkin::Queue< T > & rh
 }
 
 template< typename T >
-turkin::Queue< T > & turkin::Queue< T >::operator=(turkin::Queue< T > && rhs)
+turkin::Queue< T > & turkin::Queue< T >::operator=(Queue< T > && rhs)
 {
   free(value_);
   value_ = nullptr;

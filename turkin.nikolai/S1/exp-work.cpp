@@ -81,7 +81,7 @@ turkin::Queue< pinf_t > turkin::str2Inf(std::string & dirt)
   return input;
 }
 
-turkin::Queue< pfix_t > turkin::inf2Post(turkin::Queue< pinf_t > & input)
+turkin::Queue< pfix_t > turkin::inf2Post(Queue< pinf_t > & input)
 {
   Stack< pinf_t > buffer;
   Queue< pfix_t > output;
@@ -146,7 +146,7 @@ turkin::Queue< pfix_t > turkin::inf2Post(turkin::Queue< pinf_t > & input)
   return output;
 }
 
-long long turkin::post2Result(turkin::Queue< pfix_t > & output)
+long long turkin::post2Result(Queue< pfix_t > & output)
 {
   Stack< long long > buffer;
   while (!output.isEmpty())

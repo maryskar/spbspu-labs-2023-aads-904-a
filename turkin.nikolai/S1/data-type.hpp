@@ -27,7 +27,7 @@ namespace turkin
       long long num;
       T type;
   };
-};
+}
 
 template< typename T >
 turkin::calc_t< T >::calc_t(const calc_t< T > & rhs):

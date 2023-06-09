@@ -13,6 +13,6 @@ namespace turkin
   Queue< pinf_t > str2Inf(std::string & dirt);
   Queue< pfix_t > inf2Post(Queue< pinf_t > & input);
   long long post2Result(Queue< pfix_t > & output);
-};
+}
 
 #endif

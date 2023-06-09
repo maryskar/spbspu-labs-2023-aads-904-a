@@ -19,18 +19,18 @@ namespace
   {
     return static_cast< turkin::PINF >(rhs);
   }
-};
+}
 
 namespace turkin
 {
-  turkin::calc_t< turkin::PINF > convertFIX2INF(const turkin::calc_t < turkin::PFIX > & rhs)
+  calc_t< PINF > convertFIX2INF(const calc_t < PFIX > & rhs)
   {
-    return turkin::calc_t< turkin::PINF >(rhs.getNum(), fix2inf(rhs.getType()));
+    return calc_t< PINF >(rhs.getNum(), fix2inf(rhs.getType()));
   }
 
-  turkin::calc_t< turkin::PFIX > convertINF2FIX(const turkin::calc_t < turkin::PINF > & rhs)
+  calc_t< PFIX > convertINF2FIX(const calc_t < PINF > & rhs)
   {
-    return turkin::calc_t< turkin::PFIX >(rhs.getNum(), inf2fix(rhs.getType()));
+    return calc_t< PFIX >(rhs.getNum(), inf2fix(rhs.getType()));
   }
 };
 
