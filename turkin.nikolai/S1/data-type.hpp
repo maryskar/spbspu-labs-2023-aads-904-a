@@ -24,8 +24,8 @@ namespace turkin
       long long & getNum();
       const long long & getNum() const;
     private:
-      long long num;
       T type;
+      long long num;
   };
 }
 

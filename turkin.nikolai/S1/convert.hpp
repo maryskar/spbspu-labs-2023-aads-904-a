@@ -23,15 +23,15 @@ namespace
 
 namespace turkin
 {
-  calc_t< PINF > convertFIX2INF(const calc_t < PFIX > & rhs)
+  calc_t< PINF > convertFIX2INF(const calc_t< PFIX > & rhs)
   {
     return calc_t< PINF >(rhs.getNum(), fix2inf(rhs.getType()));
   }
 
-  calc_t< PFIX > convertINF2FIX(const calc_t < PINF > & rhs)
+  calc_t< PFIX > convertINF2FIX(const calc_t< PINF > & rhs)
   {
     return calc_t< PFIX >(rhs.getNum(), inf2fix(rhs.getType()));
   }
-};
+}
 
 #endif

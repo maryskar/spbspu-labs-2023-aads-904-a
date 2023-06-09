@@ -30,6 +30,6 @@ namespace turkin
     }
     return std::make_pair(start, clone);
   }
-};
+}
 
 #endif
