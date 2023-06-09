@@ -3,6 +3,8 @@
 #include <string>
 #include "queue.h"
 #include "stack.h"
+#include "getPostfixForm.h"
+#include "getValueOfPostfix.h"
 int main(int argc, char* argv[])
 {
   timofeev::Stack <long long> result;
@@ -11,7 +13,24 @@ int main(int argc, char* argv[])
   {
     try
     {
-
+      while (std::getline(std::cin, str))
+      {
+        if (str.empty())
+        {
+          break;
+        }
+        if (!std::cin)
+        {
+          std::cerr << "Error" << "\n";
+          return 1;
+        }
+        if (str.find_first_not_of(" \n") == std::string::npos)
+        {
+          continue;
+        }
+        timofeev::Queue <std::string> postfix = timofeev::getPostfixForm(str);
+        result.push(timofeev::getValueOfPostfix(postfix));
+      }
     }
     catch (const std::exception &e)
     {
