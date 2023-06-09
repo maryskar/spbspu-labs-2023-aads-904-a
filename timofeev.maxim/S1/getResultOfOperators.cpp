@@ -20,5 +20,20 @@ namespace timofeev
       return one + two;
     }
   }
+  ll getMinus(ll one, ll two)
+  {
+    if (one < 0 && two > 0 && one < Min + two)
+    {
+      throw std::underflow_error("underflow minus");
+    }
+    if (one > 0 && two < 0 && one > Max + two)
+    {
+      throw std::overflow_error("overflow minus");
+    }
+    else
+    {
+      return one - two;
+    }
+  }
 
 }
