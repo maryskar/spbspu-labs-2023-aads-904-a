@@ -30,7 +30,6 @@ template< typename T >
 fesenko::Queue< T >::~Queue()
 {
   deleteList(head_);
-  head_ = nullptr;
   tail_ = nullptr;
 }
 
@@ -52,7 +51,7 @@ T &fesenko::Queue< T >::front()
   if (isEmpty()) {
     throw std::out_of_range("Queue is empty");
   }
-  return head_->data;
+  return (*head_).data;
 }
 
 template< typename T >
@@ -66,7 +65,7 @@ void fesenko::Queue< T >::pop()
   head_ = temp;
 }
 
-template<  typename T >
+template< typename T >
 bool fesenko::Queue< T >::isEmpty()
 {
   return head_ == nullptr;
