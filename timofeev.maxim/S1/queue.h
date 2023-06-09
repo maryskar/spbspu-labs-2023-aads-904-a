@@ -30,15 +30,15 @@ timofeev::Queue<T>::Queue():
 template <typename T>
 timofeev::Queue<T>::~Queue()
 {
-  while (!isEmpty() && head_->next != nullptr)
+  List<T>* current = head_;
+  while (current != nullptr)
   {
-    List< T >* tempHead = head_;
-    head_ = head_->next;
-    delete tempHead;
+    List<T>* next = current->next;
+    delete current;
+    current = next;
   }
   head_ = tail_ = nullptr;
 }
-
 template <typename T>
 bool timofeev::Queue<T>::isEmpty() const
 {
