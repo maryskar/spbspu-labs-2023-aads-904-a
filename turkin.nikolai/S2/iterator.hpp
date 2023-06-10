@@ -1,6 +1,6 @@
 #include <cassert>
 #include <memory>
-#include "forward-list.hpp"
+#include "oneway-list.hpp"
 
 namespace turkin
 {
@@ -21,7 +21,7 @@ namespace turkin
       bool operator==(const FLIterator< T > & rhs) const;
       bool operator!=(const FLIterator< T > & rhs) const;
     private:
-      ForwardList< T > * cur_;
+      OneWayNode< T > * cur_;
   };
 }
 
