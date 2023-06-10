@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <memory>
 #include <initializer_list>
 #include <oneway-list.hpp>
 
@@ -8,11 +9,12 @@ namespace turkin
   class ForwardList
   {
     public:
+      using fl = ForwardList< T, Iterator, ConstIterator >;
       ForwardList();
-      ForwardList(const ForwardList< T, Iterator, ConstIterator > & rhs);
-      ForwardList(ForwardList< T, Iterator, ConstIterator > && rhs);
-      ForwardList & operator=(const ForwardList< T, Iterator, ConstIterator > & rhs);
-      ForwardList & operator=(ForwardList< T, Iterator, ConstIterator > && rhs);
+      ForwardList(const fl & rhs);
+      ForwardList(fl && rhs);
+      ForwardList & operator=(const fl & rhs);
+      ForwardList & operator=(fl && rhs);
       ~ForwardList();
       void assign(size_t count, const T & value);
       T & front();
@@ -47,20 +49,20 @@ namespace turkin
       T & emplace_front(Args &&... args);
       void pop_front();
       void resize(size_t count);
-      void swap(ForwardList< T, Iterator, ConstIterator > & other);
+      void swap(fl & other);
 
-      void merge(ForwardList< T, Iterator, ConstIterator > & other);
-      void merge(ForwardList< T, Iterator, ConstIterator > && other);
+      void merge(fl & other);
+      void merge(fl && other);
       template< class Compare >
-      void merge(ForwardList< T, Iterator, ConstIterator > & other, Compare comp);
+      void merge(fl & other, Compare comp);
       template< class Compare >
-      void merge(ForwardList< T, Iterator, ConstIterator > && other, Compare comp);
-      void splice_after(ConstIterator pos, ForwardList< T, Iterator, ConstIterator > & other);
-      void splice_after(ConstIterator pos, ForwardList< T, Iterator, ConstIterator > && other);
-      void splice_after(ConstIterator pos, ForwardList< T, Iterator, ConstIterator > & other, ConstIterator it);
-      void splice_after(ConstIterator pos, ForwardList< T, Iterator, ConstIterator > && other, ConstIterator it);
-      void splice_after(ConstIterator pos, ForwardList< T, Iterator, ConstIterator > & other, ConstIterator first, ConstIterator last);
-      void splice_after(ConstIterator pos, ForwardList< T, Iterator, ConstIterator > && other, ConstIterator first, ConstIterator last);
+      void merge(fl && other, Compare comp);
+      void splice_after(ConstIterator pos, fl & other);
+      void splice_after(ConstIterator pos, fl && other);
+      void splice_after(ConstIterator pos, fl & other, ConstIterator it);
+      void splice_after(ConstIterator pos, fl && other, ConstIterator it);
+      void splice_after(ConstIterator pos, fl & other, ConstIterator first, ConstIterator last);
+      void splice_after(ConstIterator pos, fl && other, ConstIterator first, ConstIterator last);
       void remove(const T & value);
       template< class UnaryPredicate >
       void remove_if(UnaryPredicate p);
@@ -76,12 +78,88 @@ namespace turkin
       OneWayNode< T > * tail_;
       OneWayNode< T > * dummy_;
       size_t size_;
+      void copy(const fl & rhs);
   };
 }
 
+using namespace turkin;
+template< typename T, class Iterator, class ConstIterator>
+using fl = ForwardList< T, Iterator, ConstIterator>;
+
 template< typename T, class Iterator, class ConstIterator >
-turkin::ForwardList< T, Iterator, ConstIterator >::ForwardList():
+fl< T, Iterator, ConstIterator >::ForwardList():
   head_(nullptr),
   tail_(nullptr),
-  dummy_(nullptr)
-{}
+  dummy_(new OneWayNode< T >),
+  size_(0)
+{
+  dummy_->next = nullptr;
+}
+
+template< typename T, class Iterator, class ConstIterator >
+fl< T, Iterator, ConstIterator >::ForwardList(const fl & rhs):
+  head_(nullptr),
+  tail_(nullptr),
+  dummy_(nullptr),
+  size_(rhs.size_)
+{
+  copy(rhs);
+}
+
+template< typename T, class Iterator, class ConstIterator >
+fl< T, Iterator, ConstIterator >::ForwardList(fl && rhs):
+  head_(rhs.head_),
+  tail_(rhs.tail_),
+  dummy_(rhs.dummy_),
+  size_(rhs.size_)
+{
+  rhs.head_ = nullptr;
+  rhs.tail_ = nullptr;
+  rhs.dummy_ = nullptr;
+  rhs.size_ = 0;
+}
+
+template< typename T, class Iterator, class ConstIterator >
+fl< T, Iterator, ConstIterator> & fl< T, Iterator, ConstIterator >::operator=(const fl & rhs)
+{
+  if (std::addressof(rhs) == this)
+  {
+    return * this;
+  }
+  clear();
+  copy(rhs);
+  return * this;
+}
+
+template< typename T, class Iterator, class ConstIterator >
+fl< T, Iterator, ConstIterator> & fl< T, Iterator, ConstIterator >::operator=(fl && rhs)
+{
+  if (std::addressof(rhs) == this)
+  {
+    return * this;
+  }
+  clear();
+  head_ = rhs.head_;
+  tail_ = rhs.tail_;
+  dummy_ = rhs.dummy_;
+  size_ = rhs.size_;
+  rhs.head_ = nullptr;
+  rhs.tail_ = nullptr;
+  rhs.dummy_ = nullptr;
+  rhs.size_ = nullptr;
+}
+
+template< typename T, class Iterator, class ConstIterator >
+fl< T, Iterator, ConstIterator >::~ForwardList()
+{
+  free(head_);
+}
+
+template< typename T, class Iterator, class ConstIterator >
+void fl< T, Iterator, ConstIterator >::copy(const fl & rhs)
+{
+  auto clone = copyList(rhs.head_);
+  head_ = clone.first;
+  tail_ = clone.second;
+  dummy_->next = head_;
+}
