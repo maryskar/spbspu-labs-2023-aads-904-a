@@ -135,4 +135,5 @@ namespace chemodurov
     delete [] runs_sizes;
   }
 }
+
 #endif
