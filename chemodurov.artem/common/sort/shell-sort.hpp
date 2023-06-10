@@ -1,7 +1,6 @@
 #ifndef S6_SHELL_SORT_HPP
 #define S6_SHELL_SORT_HPP
 #include <functional>
-#include <map.hpp>
 
 namespace chemodurov
 {
