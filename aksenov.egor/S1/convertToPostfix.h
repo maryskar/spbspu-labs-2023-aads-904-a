@@ -4,4 +4,4 @@
 namespace aksenov {
   Queue< std::string > getPostfixQueue(Queue< std::string > &infQueue);
 }
-#endif CONVERTTOPOSTFIX_H
+#endif
