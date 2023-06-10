@@ -7,12 +7,12 @@ namespace aksenov {
   class Stack
   {
     public:
-      Stack();
+      explicit Stack();
       ~Stack();
       void push(const T &val);
       void pop();
       T drop();
-      bool isEmpty();
+      bool isEmpty() const;
     private:
       aksenov::List< T > *top_;
   };
@@ -29,7 +29,7 @@ namespace aksenov {
   }
 
   template< typename T >
-  bool Stack< T >::isEmpty()
+  bool Stack< T >::isEmpty() const
   {
     return (top_ == nullptr);
   }
