@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <memory>
+#include <cassert>
 #include <initializer_list>
 #include <oneway-list.hpp>
 
@@ -32,7 +33,6 @@ namespace turkin
       ConstIterator end() const noexcept;
       ConstIterator cend() const noexcept;
       bool empty() const noexcept;
-      size_t max_size() const noexcept;
       void clear() noexcept;
       Iterator insert_after(ConstIterator pos, const T & value);
       Iterator insert_after(ConstIterator pos, T && value);
@@ -156,6 +156,96 @@ template< typename T, class Iterator, class ConstIterator >
 fl< T, Iterator, ConstIterator >::~ForwardList()
 {
   free(head_);
+}
+
+template< typename T, class Iterator, class ConstIterator >
+T & fl< T, Iterator, ConstIterator >::front()
+{
+  assert(head_ != nullptr);
+  return head_->data;
+}
+
+template< typename T, class Iterator, class ConstIterator >
+const T & fl< T, Iterator, ConstIterator >::front() const
+{
+  assert(head_ != nullptr);
+  return head_->data;
+}
+
+template< typename T, class Iterator, class ConstIterator >
+Iterator fl< T, Iterator, ConstIterator >::before_begin() noexcept
+{
+  return Iterator(dummy_);
+};
+
+template< typename T, class Iterator, class ConstIterator >
+ConstIterator fl< T, Iterator, ConstIterator >::before_begin() const noexcept
+{
+  return ConstIterator(dummy_);
+};
+
+template< typename T, class Iterator, class ConstIterator >
+ConstIterator fl< T, Iterator, ConstIterator >::cbefore_begin() const noexcept
+{
+  return ConstIterator(dummy_);
+};
+
+template< typename T, class Iterator, class ConstIterator >
+Iterator fl< T, Iterator, ConstIterator >::begin() noexcept
+{
+  return Iterator(head_);
+};
+
+template< typename T, class Iterator, class ConstIterator >
+ConstIterator fl< T, Iterator, ConstIterator >::begin() const noexcept
+{
+  return ConstIterator(head_);
+};
+
+template< typename T, class Iterator, class ConstIterator >
+ConstIterator fl< T, Iterator, ConstIterator >::cbegin() const noexcept
+{
+  return ConstIterator(head_);
+};
+
+template< typename T, class Iterator, class ConstIterator >
+Iterator fl< T, Iterator, ConstIterator >::end() noexcept
+{
+  return Iterator(tail_);
+};
+
+template< typename T, class Iterator, class ConstIterator >
+ConstIterator fl< T, Iterator, ConstIterator >::end() const noexcept
+{
+  return ConstIterator(tail_);
+};
+
+template< typename T, class Iterator, class ConstIterator >
+ConstIterator fl< T, Iterator, ConstIterator >::cend() const noexcept
+{
+  return ConstIterator(tail_);
+};
+
+template< typename T, class Iterator, class ConstIterator >
+bool fl< T, Iterator, ConstIterator >::empty() const noexcept
+{
+  return head_ == nullptr;
+};
+
+template< typename T, class Iterator, class ConstIterator >
+void fl< T, Iterator, ConstIterator >::clear() noexcept
+{
+  free(head_);
+  head_ = nullptr;
+  tail_ = nullptr;
+  dummy_ = nullptr;
+  size_ = 0;
+};
+
+template< typename T, class Iterator, class ConstIterator >
+Iterator fl< T, Iterator, ConstIterator >::insert_after(ConstIterator pos, const T & value)
+{
+  
 }
 
 template< typename T, class Iterator, class ConstIterator >
