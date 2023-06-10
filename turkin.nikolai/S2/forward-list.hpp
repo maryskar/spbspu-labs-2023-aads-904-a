@@ -1,3 +1,6 @@
+#ifndef FORWARD_LIST_HPP
+#define FORWARD_LIST_HPP
+
 #include <cstddef>
 #include <memory>
 #include <initializer_list>
@@ -163,3 +166,5 @@ void fl< T, Iterator, ConstIterator >::copy(const fl & rhs)
   tail_ = clone.second;
   dummy_->next = head_;
 }
+
+#endif
