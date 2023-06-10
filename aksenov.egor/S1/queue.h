@@ -9,7 +9,7 @@ namespace aksenov{
     public:
       explicit Queue();
       ~Queue();
-      void pust(const T &val);
+      void push(const T &val);
       void pop();
       T drop();
       bool isEmpty() const;
@@ -17,5 +17,68 @@ namespace aksenov{
       aksenov::List< T > *front_;
       aksenov::List< T > *tail_;
   };
+
+  template< typename T >
+  Queue< T >::Queue():
+  front_(nullptr),
+  tail_(nullptr)
+  {}
+
+  template< typename T >
+  bool Queue< T >::isEmpty() const
+  {
+    return front_ == nullptr;
+  }
+
+  template< typename T>
+  void Queue< T >::push(const T &val)
+  {
+    aksenov::List< T > *newTail = new aksenov::List< T >{val, nullptr};
+    if (isEmpty())
+    {
+      front_ = tail_ = newTail;
+    }
+    else
+    {
+      tail_->next = newTail;
+      tail_ = newTail;
+    }
+  }
+
+  template< typename T >
+  T Queue< T >::drop()
+  {
+    if (isEmpty())
+    {
+      throw std::logic_error("Empty queue");
+    }
+    return front_->data;
+  }
+
+  template< typename T >
+  void Queue< T >::pop()
+  {
+    if (isEmpty())
+    {
+      throw std::logic_error("empty queue");
+    }
+    else if (front_ == tail_){
+      delete tail_;
+      tail_ = front_ = nullptr;
+    }
+    else
+    {
+      auto todel = front_;
+      front_ = front_->next;
+      delete todel;
+    }
+  }
+
+  template< typename T >
+  Queue< T >::~Queue()
+  {
+    deleteList(front_);
+    front_ = tail_ = nullptr;
+  }
 }
 #endif
