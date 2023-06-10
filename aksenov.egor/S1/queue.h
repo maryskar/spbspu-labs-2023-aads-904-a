@@ -2,7 +2,7 @@
 #define QUEUE_H
 #include <stdexcept>
 #include "list.h"
-namespace aksenov{
+namespace aksenov {
   template< typename T >
   class Queue
   {
