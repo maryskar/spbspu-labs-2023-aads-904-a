@@ -3,7 +3,7 @@
 #include "mathOperations.h"
 #include "queue.h"
 #include "stack.h"
-#include "isNumeric.h"
+#include "details.h"
 
 long long aksenov::solvePostfixExpr(aksenov::Queue<std::string>& queue)
 {

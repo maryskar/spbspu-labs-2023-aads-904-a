@@ -1,31 +1,8 @@
 #include "convertToPostfix.h"
 #include "queue.h"
 #include "stack.h"
-bool isOperator(std::string oper)
-{
-  return oper == "+" || oper == "-" || oper == "*" || oper == "/" || oper == "%";
-}
-bool isNumeric(std::string const &str)
-{
-  char* p;
-  strtol(str.c_str(), &p, 10);
-  return *p == 0;
-}
-int getPriority(std::string operation)
-{
-  if (operation == "+" || operation == "-")
-  {
-    return 1;
-  }
-  else if (operation == "*" || operation == "/" || operation == "%")
-  {
-    return 2;
-  }
-  else
-  {
-    return 0;
-  }
-}
+#include "details.h"
+
 aksenov::Queue <std::string> aksenov::getPostfixQueue(aksenov::Queue< std::string > &infQueue)
 {
   aksenov::Queue< std::string > postfixQueue;
