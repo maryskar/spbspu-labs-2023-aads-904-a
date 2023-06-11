@@ -5,7 +5,7 @@ constexpr long long max = std::numeric_limits< long long >::max();
 constexpr long long min = std::numeric_limits< long long >::min();
 long long aksenov::sum(long long lhs, long long rhs)
 {
-  if (rhs < max - lhs)
+  if (lhs >= max - rhs)
   {
     throw std::overflow_error("overflow in sum");
   }
