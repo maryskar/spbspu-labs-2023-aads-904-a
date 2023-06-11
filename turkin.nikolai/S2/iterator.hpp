@@ -1,87 +1,88 @@
 #include <cassert>
 #include <memory>
+#include "forward-list.hpp"
 #include "oneway-list.hpp"
 
 namespace turkin
 {
-  template< typename T >
-  class FLIterator
+  template< typename T, typename List >
+  class Iterator
   {
     public:
-      FLIterator();
-      ~FLIterator() = default;
-      FLIterator(const FLIterator< T > & rhs) = default;
-      FLIterator< T > & operator=(const FLIterator< T > & rhs) = default;
-      FLIterator< T > & operator++();
-      FLIterator< T > operator++(int);
+      Iterator();
+      ~Iterator() = default;
+      Iterator(const Iterator< T, List > & rhs) = default;
+      Iterator< T, List > & operator=(const Iterator< T, List > & rhs) = default;
+      Iterator< T, List > & operator++();
+      Iterator< T, List > operator++(int);
       T & operator*();
       const T & operator*() const;
       T * operator->();
       const T * operator->() const;
-      bool operator==(const FLIterator< T > & rhs) const;
-      bool operator!=(const FLIterator< T > & rhs) const;
+      bool operator==(const Iterator< T, List > & rhs) const;
+      bool operator!=(const Iterator< T, List > & rhs) const;
     private:
-      OneWayNode< T > * cur_;
+      List cur_;
   };
 }
 
-template< typename T >
-turkin::FLIterator< T >::FLIterator():
+template< typename T, typename List >
+turkin::Iterator< T, List >::Iterator():
   cur_(nullptr)
 {}
 
-template< typename T >
-turkin::FLIterator< T > & turkin::FLIterator< T >::operator++()
+template< typename T, typename List >
+turkin::Iterator< T, List > & turkin::Iterator< T, List >::operator++()
 {
   assert(cur_ != nullptr);
   cur_ = cur_->next;
   return * this;
 }
 
-template< typename T >
-turkin::FLIterator< T > turkin::FLIterator< T >::operator++(int)
+template< typename T, typename List >
+turkin::Iterator< T, List > turkin::Iterator< T, List >::operator++(int)
 {
   assert(cur_ != nullptr);
-  FLIterator< T > result(* this);
+  Iterator< T, List > result(* this);
   ++(* this);
   return result;
 }
 
-template< typename T >
-bool turkin::FLIterator< T >::operator==(const FLIterator< T > & rhs) const
+template< typename T, typename List >
+bool turkin::Iterator< T, List >::operator==(const Iterator< T, List > & rhs) const
 {
   return cur_ == rhs.cur_;
 }
 
-template< typename T >
-bool turkin::FLIterator< T >::operator!=(const FLIterator< T > & rhs) const
+template< typename T, typename List >
+bool turkin::Iterator< T, List >::operator!=(const Iterator< T, List > & rhs) const
 {
   return !(rhs == * this);
 }
 
-template< typename T >
-T & turkin::FLIterator< T >::operator*()
+template< typename T, typename List >
+T & turkin::Iterator< T, List >::operator*()
 {
   assert(cur_ != nullptr);
   return cur_->data;
 }
 
-template< typename T >
-const T & turkin::FLIterator< T >::operator*() const
+template< typename T, typename List >
+const T & turkin::Iterator< T, List >::operator*() const
 {
   assert(cur_ != nullptr);
   return cur_->data;
 }
 
-template< typename T >
-T * turkin::FLIterator< T >::operator->()
+template< typename T, typename List >
+T * turkin::Iterator< T, List >::operator->()
 {
   assert(cur_ != nullptr);
   return std::addressof(cur_->data);
 }
 
-template< typename T >
-const T * turkin::FLIterator< T >::operator->() const
+template< typename T, typename List >
+const T * turkin::Iterator< T, List >::operator->() const
 {
   assert(cur_ != nullptr);
   return std::addressof(cur_->data);
