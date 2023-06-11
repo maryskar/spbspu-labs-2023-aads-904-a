@@ -2,7 +2,6 @@
 #define S4_UNBALANCED_BINARY_SEARCH_TREE_HPP
 #include <functional>
 #include <stdexcept>
-#include "bidirectional-iterator.hpp"
 #include "const-bidirectional-iterator.hpp"
 
 namespace chemodurov
@@ -84,6 +83,18 @@ namespace chemodurov
     iterator upper_bound(const_reference value);
     const_iterator upper_bound(const_reference value) const;
     value_compare value_comp() const;
+    template< typename F >
+    F traverse_lnr(F f) const;
+    template< typename F >
+    F traverse_lnr(F f);
+    template< typename F >
+    F traverse_rnl(F f) const;
+    template< typename F >
+    F traverse_rnl(F f);
+    template< typename F >
+    F traverse_breadth(F f) const;
+    template< typename F >
+    F traverse_breadth(F f);
    private:
     Tree< T, Compare > * fake_;
     Compare comp_;
@@ -99,15 +110,15 @@ namespace chemodurov
    comp_(),
    size_(0)
   {
-    fake_->left_ = fake_;
-    fake_->right_ = fake_;
-    fake_->parent_ = fake_;
+    setLeft(fake_, fake_);
+    setRight(fake_, fake_);
+    setParent(fake_, fake_);
   }
 
   template< typename T, typename Compare >
   typename UnbalancedBinarySearchTree< T, Compare >::iterator UnbalancedBinarySearchTree< T, Compare >::begin() noexcept
   {
-    return iterator(fake_->parent_, fake_);
+    return iterator(parent(fake_), fake_);
   }
 
   template< typename T, typename Compare >
@@ -121,13 +132,13 @@ namespace chemodurov
   typename UnbalancedBinarySearchTree< T, Compare >::const_iterator
   UnbalancedBinarySearchTree< T, Compare >::cbegin() const noexcept
   {
-    return const_iterator(fake_->parent_, fake_);
+    return const_iterator(parent(fake_), fake_);
   }
 
   template< typename T, typename Compare >
   typename UnbalancedBinarySearchTree< T, Compare >::iterator UnbalancedBinarySearchTree< T, Compare >::last() noexcept
   {
-    return iterator(fake_->right_, fake_);
+    return iterator(right(fake_), fake_);
   }
 
   template< typename T, typename Compare >
@@ -141,7 +152,7 @@ namespace chemodurov
   typename UnbalancedBinarySearchTree< T, Compare >::const_iterator
   UnbalancedBinarySearchTree< T, Compare >::clast() const noexcept
   {
-    return const_iterator(fake_->right_, fake_);
+    return const_iterator(right(fake_), fake_);
   }
 
   template< typename T, typename Compare >
@@ -183,18 +194,18 @@ namespace chemodurov
     {
       return;
     }
-    clearTree(root->left_, fake);
-    clearTree(root->right_, fake);
+    clearTree(left(root), fake);
+    clearTree(right(root), fake);
     delete root;
   }
 
   template< typename T, typename Compare >
   void UnbalancedBinarySearchTree< T, Compare >::clear() noexcept
   {
-    clearTree(fake_->left_, fake_);
-    fake_->left_ = fake_;
-    fake_->right_ = fake_;
-    fake_->parent_ = fake_;
+    clearTree(left(fake_), fake_);
+    setLeft(fake_, fake_);
+    setRight(fake_, fake_);
+    setParent(fake_, fake_);
   }
 
   template< typename T, typename Compare >
@@ -208,15 +219,15 @@ namespace chemodurov
   typename UnbalancedBinarySearchTree< T, Compare >::const_iterator
       UnbalancedBinarySearchTree< T, Compare >::lower_bound(const_reference value) const
   {
-    Tree< T, Compare > * temp = fake_->left_;
+    Tree< T, Compare > * temp = left(fake_);
     value_compare comp = value_comp();
     while (temp != fake_)
     {
       if (comp(value, temp->data_))
       {
-        if (temp->left_ != fake_)
+        if (left(temp) != fake_)
         {
-          temp = temp->left_;
+          temp = left(temp);
         }
         else
         {
@@ -229,9 +240,9 @@ namespace chemodurov
       }
       else
       {
-        if (temp->right_ != fake_)
+        if (right(temp) != fake_)
         {
-          temp = temp->right_;
+          temp = right(temp);
         }
         else
         {
@@ -334,40 +345,40 @@ namespace chemodurov
     {
       if (empty())
       {
-        fake_->left_ = new Tree< T, Compare >{value, fake_, fake_, fake_, '0'};
-        fake_->right_ = fake_->left_;
-        fake_->parent_ = fake_->left_;
+        setLeft(fake_, new Tree< T, Compare >{value, fake_, fake_, fake_, '0'});
+        setRight(fake_, left(fake_));
+        setParent(fake_, left(fake_));
       }
       else
       {
-        fake_->right_->right_ = new Tree< T, Compare >{value, fake_, fake_, fake_->right_, '0'};
-        fake_->right_ = fake_->right_->right_;
+        setRight(right(fake_), new Tree< T, Compare >{value, fake_, fake_, right(fake_), '0'});
+        setRight(fake_, right(right(fake_)));
       }
       ++size_;
-      return {iterator(fake_->right_, fake_), true};
+      return {iterator(right(fake_), fake_), true};
     }
     if (!value_comp()(*it, value) && !value_comp()(value, *it))
     {
       return {it, false};
     }
-    if (it.node_->left_ == fake_)
+    if (left(it.node_) == fake_)
     {
-      it.node_->left_ = new Tree< T, Compare >{value, fake_, fake_, it.node_, '0'};
-      it.node_ = it.node_->left_;
+      setLeft(it.node_, new Tree< T, Compare >{value, fake_, fake_, it.node_, '0'});
+      it.node_ = left(it.node_);
     }
     else
     {
-      it.node_ = it.node_->left_;
-      while (it.node_->right_ != fake_)
+      it.node_ = left(it.node_);
+      while (right(it.node_) != fake_)
       {
-        it.node_ = it.node_->right_;
+        it.node_ = right(it.node_);
       }
-      it.node_->right_ = new Tree< T, Compare >{value, fake_, fake_, it.node_, '0'};
-      it.node_ = it.node_->right_;
+      setRight(it.node_, new Tree< T, Compare >{value, fake_, fake_, it.node_, '0'});
+      it.node_ = right(it.node_);
     }
-    if (it.node_->parent_ == begin().node_ && it.node_->parent_->left_ == it.node_)
+    if (parent(it.node_) == begin().node_ && left(parent(it.node_)) == it.node_)
     {
-      fake_->parent_ = it.node_;
+      setParent(fake_, it.node_);
     }
     ++size_;
     return {iterator(it.node_, fake_), true};
@@ -391,7 +402,7 @@ namespace chemodurov
   {
     if (value_comp()(value, *pos) && value_comp()(*(--pos), value))
     {
-      pos.node_->left_ = new Tree< T, Compare >{value, pos.node_->left_, fake_, pos.node_, '0'};
+      setLeft(pos.node_, new Tree< T, Compare >{value, left(pos.node_), fake_, pos.node_, '0'});
       ++size_;
       return iterator(pos.node_->left_, fake_);
     }
@@ -592,29 +603,29 @@ namespace chemodurov
   {
     iterator pos(todel, fake_);
     ++pos;
-    if (todel->left_ == fake_)
+    if (left(todel) == fake_)
     {
-      todel->parent_->left_ == todel ? todel->parent_->left_ = todel->right_ : todel->parent_->right_ = todel->right_;
-      if (todel->right_ != fake_)
+      left(parent(todel)) == todel ? setLeft(parent(todel), right(todel)) : setRight(parent(todel), right(todel));
+      if (right(todel) != fake_)
       {
-        todel->right_->parent_ = todel->parent_;
+        setParent(right(todel), parent(todel));
       }
     }
     else
     {
-      todel->parent_->right_ == todel ? todel->parent_->right_ = todel->left_ : todel->parent_->left_ = todel->left_;
-      if (todel->left_ != fake_)
+      right(parent(todel)) == todel ? setRight(parent(todel), left(todel)) : setLeft(parent(todel), left(todel));
+      if (left(todel) != fake_)
       {
-        todel->left_->parent_ = todel->parent_;
+        setParent(left(todel), parent(todel));
       }
     }
-    if (fake_->parent_ == todel)
+    if (parent(fake_) == todel)
     {
-      fake_->parent_ = (++iterator(todel, fake_)).node_;
+      setParent(fake_, (++iterator(todel, fake_)).node_);
     }
-    if (fake_->right_ == todel)
+    if (right(fake_) == todel)
     {
-      fake_->right_ = (--iterator(todel, fake_)).node_;
+      setRight(fake_, (--iterator(todel, fake_)).node_);
     }
     delete todel;
     --size_;
@@ -629,91 +640,91 @@ namespace chemodurov
       return;
     }
     Tree< T, Compare > * temp = nullptr;
-    if (lhs->parent_ != rhs)
+    if (parent(lhs) != rhs)
     {
-      if (lhs->parent_ != fake_)
+      if (parent(lhs) != fake_)
       {
-        lhs->parent_->left_ == lhs ? lhs->parent_->left_ = rhs : lhs->parent_->right_ = rhs;
+        left(parent(lhs)) == lhs ? setLeft(parent(lhs), rhs) : setRight(parent(lhs), rhs);
       }
       else
       {
-        lhs->parent_->left_ = rhs;
+        setLeft(parent(lhs), rhs);
       }
     }
-    if (rhs->parent_ != lhs)
+    if (parent(rhs) != lhs)
     {
-      if (rhs->parent_ != fake_)
+      if (parent(rhs) != fake_)
       {
-        rhs->parent_->left_ == rhs ? rhs->parent_->left_ = lhs : rhs->parent_->right_ = lhs;
+        left(parent(rhs)) == rhs ? setLeft(parent(rhs), lhs) : setRight(parent(rhs), lhs);
       }
       else
       {
-        rhs->parent_->left_ = lhs;
+        setLeft(parent(rhs), lhs);
       }
     }
-    if (lhs->left_ != fake_ && lhs->left_ != rhs)
+    if (left(lhs) != fake_ && left(lhs) != rhs)
     {
-      lhs->left_->parent_ = rhs;
+      setParent(left(lhs), rhs);
     }
-    if (lhs->right_ != fake_ && lhs->right_ != rhs)
+    if (right(lhs) != fake_ && right(lhs) != rhs)
     {
-      lhs->right_->parent_ = rhs;
+      setParent(right(lhs), rhs);
     }
-    if (rhs->left_ != fake_ && rhs->left_ != lhs)
+    if (left(rhs) != fake_ && left(rhs) != lhs)
     {
-      rhs->left_->parent_ = lhs;
+      setParent(left(rhs), lhs);
     }
-    if (rhs->right_ != fake_ && rhs->right_ != lhs)
+    if (right(rhs) != fake_ && right(rhs) != lhs)
     {
-      rhs->right_->parent_ = lhs;
+      setParent(right(rhs), lhs);
     }
-    if (rhs->parent_ != lhs && lhs->parent_ != rhs)
+    if (parent(rhs) != lhs && parent(lhs) != rhs)
     {
       std::swap(lhs->parent_, rhs->parent_);
     }
-    else if (lhs->parent_ == rhs)
+    else if (parent(lhs) == rhs)
     {
-      temp = rhs->parent_;
-      rhs->parent_ = lhs;
-      lhs->parent_ = temp;
+      temp = parent(rhs);
+      setParent(rhs, lhs);
+      setParent(lhs, temp);
     }
     else
     {
-      temp = lhs->parent_;
-      lhs->parent_ = rhs;
-      rhs->parent_ = temp;
+      temp = parent(lhs);
+      setParent(lhs, rhs);
+      setParent(rhs, temp);
     }
-    if (lhs->right_ != rhs && rhs->right_ != lhs)
+    if (right(lhs) != rhs && right(rhs) != lhs)
     {
       std::swap(lhs->right_, rhs->right_);
     }
-    else if (lhs->right_ == rhs)
+    else if (right(lhs) == rhs)
     {
-      temp = rhs->right_;
-      rhs->right_ = lhs;
-      lhs->right_ = temp;
+      temp = right(rhs);
+      setRight(rhs, lhs);
+      setRight(lhs, temp);
     }
     else
     {
-      temp = lhs->right_;
-      lhs->right_ = rhs;
-      rhs->right_ = temp;
+      temp = right(lhs);
+      setRight(lhs, rhs);
+      setRight(rhs, temp);
     }
-    if (lhs->left_ != rhs && rhs->left_ != lhs)
+    if (left(lhs) != rhs && left(rhs) != lhs)
     {
       std::swap(lhs->left_, rhs->left_);
     }
-    else if (lhs->left_ == rhs)
+    else if (left(lhs) == rhs)
     {
-      temp = rhs->left_;
-      rhs->left_ = lhs;
-      lhs->left_ = temp;
+      temp = left(rhs);
+      setLeft(rhs, lhs);
+      setLeft(lhs, temp);
     }
     else
     {
-      temp = lhs->left_;
-      lhs->left_ = rhs;
-      rhs->left_ = temp;
+      temp = left(lhs);
+      setLeft(lhs, rhs);
+      setLeft(rhs, temp);
     }
   }
 
@@ -722,12 +733,12 @@ namespace chemodurov
   {
     Tree< T, Compare > * todel = cit.node_;
     Tree< T, Compare > * swapped = todel;
-    if (todel->left_ != fake_)
+    if (left(todel) != fake_)
     {
-      todel = todel->left_;
-      while (todel->right_ != fake_)
+      todel = left(todel);
+      while (right(todel) != fake_)
       {
-        todel = todel->right_;
+        todel = right(todel);
       }
       swapPointers(todel, swapped);
     }

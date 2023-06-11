@@ -416,42 +416,42 @@ namespace chemodurov
   template< typename T, typename Compare >
   void RotatableBinarySearchTree< T, Compare >::rotateLeftLeft(Tree< T, Compare > * to_rotate)
   {
-    to_rotate->parent_->right_ = to_rotate->left_;
-    if (to_rotate->left_ != data_.fake_)
+    setRight(parent(to_rotate), left(to_rotate));
+    if (left(to_rotate) != data_.fake_)
     {
-      to_rotate->left_->parent_ = to_rotate->parent_;
+      setParent(left(to_rotate), parent(to_rotate));
     }
-    to_rotate->left_ = to_rotate->parent_;
-    to_rotate->parent_ = to_rotate->parent_->parent_;
-    to_rotate->left_->parent_ = to_rotate;
-    if (to_rotate->parent_ == data_.fake_)
+    setLeft(to_rotate, parent(to_rotate));
+    setParent(to_rotate, parent(parent(to_rotate)));
+    setParent(left(to_rotate), to_rotate);
+    if (parent(to_rotate) == data_.fake_)
     {
-      to_rotate->parent_->left_ = to_rotate;
+      setLeft(parent(to_rotate), to_rotate);
     }
     else
     {
-      to_rotate->parent_->left_ == to_rotate->left_ ? to_rotate->parent_->left_ = to_rotate : to_rotate->parent_->right_ = to_rotate;
+      left(parent(to_rotate)) == left(to_rotate) ? setLeft(parent(to_rotate), to_rotate) : setRight(parent(to_rotate), to_rotate);
     }
   }
 
   template< typename T, typename Compare >
   void RotatableBinarySearchTree< T, Compare >::rotateRightRight(Tree< T, Compare > * to_rotate)
   {
-    to_rotate->parent_->left_ = to_rotate->right_;
-    if (to_rotate->right_ != data_.fake_)
+    setLeft(parent(to_rotate), right(to_rotate));
+    if (right(to_rotate) != data_.fake_)
     {
-      to_rotate->right_->parent_ = to_rotate->parent_;
+      setParent(right(to_rotate), parent(to_rotate));
     }
-    to_rotate->right_ = to_rotate->parent_;
-    to_rotate->parent_ = to_rotate->right_->parent_;
-    to_rotate->right_->parent_ = to_rotate;
-    if (to_rotate->parent_ == data_.fake_)
+    setRight(to_rotate, parent(to_rotate));
+    setParent(to_rotate, parent(right(to_rotate)));
+    setParent(right(to_rotate), to_rotate);
+    if (parent(to_rotate) == data_.fake_)
     {
-      to_rotate->parent_->left_ = to_rotate;
+      setLeft(parent(to_rotate), to_rotate);
     }
     else
     {
-      to_rotate->parent_->left_ == to_rotate->right_ ? to_rotate->parent_->left_ = to_rotate : to_rotate->parent_->right_ = to_rotate;
+      left(parent(to_rotate)) == right(to_rotate) ? setLeft(parent(to_rotate), to_rotate) : setRight(parent(to_rotate), to_rotate);
     }
   }
 
