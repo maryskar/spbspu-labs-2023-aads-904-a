@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
           std::cerr << "input Error" << "\n";
           return 1;
         }
-        if (str.find_first_not_of(" \n") == std::string::npos)
+        if (str.find_first_not_of(" \n") == std::string::npos || str.empty())
         {
           continue;
         }
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
       }
       while (std::getline(f, str))
       {
-        if (str.find_first_not_of(" \n") == std::string::npos)
+        if (str.find_first_not_of(" \n") == std::string::npos || str.empty())
         {
           continue;
         }
