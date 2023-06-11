@@ -9,7 +9,8 @@ namespace chemodurov
     size_t getMinRun(size_t size)
     {
       size_t r = 0;
-      while (size >= 64) {
+      while (size >= 64)
+      {
         r |= size & 1;
         size >>= 1;
       }

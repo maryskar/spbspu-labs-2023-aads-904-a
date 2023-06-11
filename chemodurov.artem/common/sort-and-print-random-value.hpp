@@ -60,6 +60,34 @@ namespace chemodurov
     print(d_for_tim.begin(), d_for_tim.end(), out);
     out << '\n';
   }
+
+  void sortAscendingInts(std::ostream & out, size_t num_of_elem)
+  {
+    using gen_t = std::default_random_engine;
+    using distr_t = std::uniform_int_distribution< >;
+    sortAndPrintRandomValue< int, std::less< >, distr_t, gen_t >(std::less< >{}, distr_t{}, gen_t{}, out, num_of_elem);
+  }
+
+  void sortAscendingFloats(std::ostream & out, size_t num_of_elem)
+  {
+    using gen_t = std::default_random_engine;
+    using distr_t = std::uniform_real_distribution< >;
+    sortAndPrintRandomValue< double, std::less< >, distr_t, gen_t >(std::less< >{}, distr_t{}, gen_t{}, out, num_of_elem);
+  }
+
+  void sortDescendingInts(std::ostream & out, size_t num_of_elem)
+  {
+    using gen_t = std::default_random_engine;
+    using distr_t = std::uniform_int_distribution< >;
+    sortAndPrintRandomValue< int, std::greater< >, distr_t, gen_t >(std::greater< >{}, distr_t{}, gen_t{}, out, num_of_elem);
+  }
+
+  void sortDescendingFloats(std::ostream & out, size_t num_of_elem)
+  {
+    using gen_t = std::default_random_engine;
+    using distr_t = std::uniform_real_distribution< >;
+    sortAndPrintRandomValue< double, std::greater< >, distr_t, gen_t >(std::greater< >{}, distr_t{}, gen_t{}, out, num_of_elem);
+  }
 }
 
 #endif
