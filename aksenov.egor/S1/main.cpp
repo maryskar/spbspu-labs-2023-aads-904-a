@@ -20,7 +20,7 @@ void printQueueElements(aksenov::Queue< std::string > &queue)
 
 int main()
 {
-  std::string str = "( 3 + 2 ) / 5 - 1";
+  std::string str = "( 7 + 8 ) * 10 - 3";
   try {
     aksenov::Queue< std::string > queue = aksenov::convertToInfix(str);
     aksenov::Queue< std::string > postfixQ = aksenov::getPostfixQueue(queue);
