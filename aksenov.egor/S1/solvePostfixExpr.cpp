@@ -68,5 +68,3 @@ long long aksenov::solvePostfixExpr(aksenov::Queue<std::string>& queue)
 
   return stack.drop();
 }
-
-
