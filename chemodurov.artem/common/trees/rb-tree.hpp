@@ -579,7 +579,7 @@ namespace chemodurov
         else
         {
           setColor(sibling, 'r');
-          balanceTreeAfterInsert(par);
+          balanceTreeErase(par);
         }
       }
     }
