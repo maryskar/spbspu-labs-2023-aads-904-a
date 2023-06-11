@@ -12,4 +12,5 @@ namespace chemodurov
   std::ostream & outEmpty(std::ostream & out);
   std::ostream & outInvalidCommand(std::ostream & out);
 }
+
 #endif
