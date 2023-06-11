@@ -4,7 +4,7 @@
 
 namespace azheganova
 {
-  bool isPriority(std::string oper1, std::string oper2);
+  bool isLessPriority(std::string oper1, std::string oper2);
 }
 
 #endif

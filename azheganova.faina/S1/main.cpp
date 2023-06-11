@@ -42,7 +42,7 @@ int main(int argc, char * argv[])
         continue;
       }
       azh::Queue< std::string > infixform = azh::convertToInfix(string);
-      azh::Queue< std::string > postfixform =azh::convertFromInfixToPostfix(infixform);
+      azh::Queue< std::string > postfixform = azh::convertFromInfixToPostfix(infixform);
       result.push(azh::calculatePostfix(postfixform));
     }
     catch (...)
