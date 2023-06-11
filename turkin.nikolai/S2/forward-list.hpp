@@ -86,11 +86,11 @@ namespace turkin
 }
 
 using namespace turkin;
-template< typename T, class Iterator, class ConstIterator>
-using fl = ForwardList< T, Iterator, ConstIterator>;
+//template< typename T, class Iterator, class ConstIterator>
+//using fl = turkin::ForwardList< T, Iterator, ConstIterator>;
 
 template< typename T, class Iterator, class ConstIterator >
-fl< T, Iterator, ConstIterator >::ForwardList():
+ForwardList< T, Iterator, ConstIterator >::ForwardList():
   head_(nullptr),
   tail_(nullptr),
   dummy_(new OneWayNode< T >),
@@ -100,7 +100,7 @@ fl< T, Iterator, ConstIterator >::ForwardList():
 }
 
 template< typename T, class Iterator, class ConstIterator >
-fl< T, Iterator, ConstIterator >::ForwardList(const fl & rhs):
+ForwardList< T, Iterator, ConstIterator >::ForwardList(const ForwardList< T, Iterator, ConstIterator > & rhs):
   head_(nullptr),
   tail_(nullptr),
   dummy_(nullptr),
@@ -110,7 +110,7 @@ fl< T, Iterator, ConstIterator >::ForwardList(const fl & rhs):
 }
 
 template< typename T, class Iterator, class ConstIterator >
-fl< T, Iterator, ConstIterator >::ForwardList(fl && rhs):
+ForwardList< T, Iterator, ConstIterator >::ForwardList(ForwardList< T, Iterator, ConstIterator > && rhs):
   head_(rhs.head_),
   tail_(rhs.tail_),
   dummy_(rhs.dummy_),
@@ -123,7 +123,7 @@ fl< T, Iterator, ConstIterator >::ForwardList(fl && rhs):
 }
 
 template< typename T, class Iterator, class ConstIterator >
-fl< T, Iterator, ConstIterator> & fl< T, Iterator, ConstIterator >::operator=(const fl & rhs)
+ForwardList< T, Iterator, ConstIterator> & ForwardList< T, Iterator, ConstIterator >::operator=(const ForwardList< T, Iterator, ConstIterator > & rhs)
 {
   if (std::addressof(rhs) == this)
   {
@@ -135,7 +135,7 @@ fl< T, Iterator, ConstIterator> & fl< T, Iterator, ConstIterator >::operator=(co
 }
 
 template< typename T, class Iterator, class ConstIterator >
-fl< T, Iterator, ConstIterator> & fl< T, Iterator, ConstIterator >::operator=(fl && rhs)
+ForwardList< T, Iterator, ConstIterator> & ForwardList< T, Iterator, ConstIterator >::operator=(ForwardList< T, Iterator, ConstIterator > && rhs)
 {
   if (std::addressof(rhs) == this)
   {
@@ -153,89 +153,90 @@ fl< T, Iterator, ConstIterator> & fl< T, Iterator, ConstIterator >::operator=(fl
 }
 
 template< typename T, class Iterator, class ConstIterator >
-fl< T, Iterator, ConstIterator >::~ForwardList()
+ForwardList< T, Iterator, ConstIterator >::~ForwardList()
 {
-  free(head_);
+  clear();
 }
 
 template< typename T, class Iterator, class ConstIterator >
-T & fl< T, Iterator, ConstIterator >::front()
-{
-  assert(head_ != nullptr);
-  return head_->data;
-}
-
-template< typename T, class Iterator, class ConstIterator >
-const T & fl< T, Iterator, ConstIterator >::front() const
+T & ForwardList< T, Iterator, ConstIterator >::front()
 {
   assert(head_ != nullptr);
   return head_->data;
 }
 
 template< typename T, class Iterator, class ConstIterator >
-Iterator fl< T, Iterator, ConstIterator >::before_begin() noexcept
+const T & ForwardList< T, Iterator, ConstIterator >::front() const
+{
+  assert(head_ != nullptr);
+  return head_->data;
+}
+
+template< typename T, class Iterator, class ConstIterator >
+Iterator ForwardList< T, Iterator, ConstIterator >::before_begin() noexcept
 {
   return Iterator(dummy_);
 };
 
 template< typename T, class Iterator, class ConstIterator >
-ConstIterator fl< T, Iterator, ConstIterator >::before_begin() const noexcept
+ConstIterator ForwardList< T, Iterator, ConstIterator >::before_begin() const noexcept
 {
   return ConstIterator(dummy_);
 };
 
 template< typename T, class Iterator, class ConstIterator >
-ConstIterator fl< T, Iterator, ConstIterator >::cbefore_begin() const noexcept
+ConstIterator ForwardList< T, Iterator, ConstIterator >::cbefore_begin() const noexcept
 {
   return ConstIterator(dummy_);
 };
 
 template< typename T, class Iterator, class ConstIterator >
-Iterator fl< T, Iterator, ConstIterator >::begin() noexcept
+Iterator ForwardList< T, Iterator, ConstIterator >::begin() noexcept
 {
   return Iterator(head_);
 };
 
 template< typename T, class Iterator, class ConstIterator >
-ConstIterator fl< T, Iterator, ConstIterator >::begin() const noexcept
+ConstIterator ForwardList< T, Iterator, ConstIterator >::begin() const noexcept
 {
   return ConstIterator(head_);
 };
 
 template< typename T, class Iterator, class ConstIterator >
-ConstIterator fl< T, Iterator, ConstIterator >::cbegin() const noexcept
+ConstIterator ForwardList< T, Iterator, ConstIterator >::cbegin() const noexcept
 {
   return ConstIterator(head_);
 };
 
 template< typename T, class Iterator, class ConstIterator >
-Iterator fl< T, Iterator, ConstIterator >::end() noexcept
+Iterator ForwardList< T, Iterator, ConstIterator >::end() noexcept
 {
   return Iterator(tail_);
 };
 
 template< typename T, class Iterator, class ConstIterator >
-ConstIterator fl< T, Iterator, ConstIterator >::end() const noexcept
+ConstIterator ForwardList< T, Iterator, ConstIterator >::end() const noexcept
 {
   return ConstIterator(tail_);
 };
 
 template< typename T, class Iterator, class ConstIterator >
-ConstIterator fl< T, Iterator, ConstIterator >::cend() const noexcept
+ConstIterator ForwardList< T, Iterator, ConstIterator >::cend() const noexcept
 {
   return ConstIterator(tail_);
 };
 
 template< typename T, class Iterator, class ConstIterator >
-bool fl< T, Iterator, ConstIterator >::empty() const noexcept
+bool ForwardList< T, Iterator, ConstIterator >::empty() const noexcept
 {
   return head_ == nullptr;
 };
 
 template< typename T, class Iterator, class ConstIterator >
-void fl< T, Iterator, ConstIterator >::clear() noexcept
+void ForwardList< T, Iterator, ConstIterator >::clear() noexcept
 {
   free(head_);
+  delete dummy_;
   head_ = nullptr;
   tail_ = nullptr;
   dummy_ = nullptr;
@@ -243,13 +244,71 @@ void fl< T, Iterator, ConstIterator >::clear() noexcept
 };
 
 template< typename T, class Iterator, class ConstIterator >
-Iterator fl< T, Iterator, ConstIterator >::insert_after(ConstIterator pos, const T & value)
+Iterator ForwardList< T, Iterator, ConstIterator >::insert_after(ConstIterator pos, const T & value)
 {
-  
+  auto * ins = OneWayNode< T > {value, nullptr};
+  ins->next = pos.cur_->next;
+  pos.cur_->next = ins;
+  if (pos.cur_ == dummy_)
+  {
+    if (tail_ == nullptr)
+    {
+      tail_ = head_;
+    }
+    head_ = ins;
+  }
+  else if (ins->next == nullptr)
+  {
+    tail_ = ins;
+  }
+  size_++;
+  return Iterator(pos.cur_->next);
 }
 
 template< typename T, class Iterator, class ConstIterator >
-void fl< T, Iterator, ConstIterator >::copy(const fl & rhs)
+void ForwardList< T, Iterator, ConstIterator >::push_front(const T & value)
+{
+  auto * ins = new OneWayNode< T > {value, nullptr};
+  if (head_)
+  {
+    ins->next = head_;
+    if (!tail_)
+    {
+      tail_ = head_;
+    }
+    head_ = ins;
+  }
+  else
+  {
+    head_ = ins;
+  }
+  dummy_->next = head_;
+  size_++;
+}
+
+template< typename T, class Iterator, class ConstIterator >
+void ForwardList< T, Iterator, ConstIterator >::push_front(T && value)
+{
+  auto * ins = new OneWayNode< T > {value, nullptr};
+  if (head_)
+  {
+    ins->next = head_;
+    if (!tail_)
+    {
+      tail_ = head_;
+    }
+    head_ = ins;
+  }
+  else
+  {
+    head_ = ins;
+  }
+  dummy_->next = head_;
+  size_++;
+}
+
+template< typename T, class Iterator, class ConstIterator >
+void ForwardList< T, Iterator, ConstIterator >::copy(const ForwardList< T, Iterator, ConstIterator > & rhs)
 {
   auto clone = copyList(rhs.head_);
   head_ = clone.first;
