@@ -92,6 +92,9 @@ namespace chemodurov
     Tree< T, Compare > * left(Tree< T, Compare > * node);
     Tree< T, Compare > * right(Tree< T, Compare > * node);
     Tree< T, Compare > * parent(Tree< T, Compare > * node);
+    void setLeft(Tree< T, Compare > * node, Tree< T, Compare > * to_set);
+    void setRight(Tree< T, Compare > * node, Tree< T, Compare > * to_set);
+    void setParent(Tree< T, Compare > * node, Tree< T, Compare > * to_set);
     void setColor(Tree< T, Compare > * node, char color);
   };
 
@@ -255,11 +258,11 @@ namespace chemodurov
       balanceTreeAfterInsert(res.first.node_);
       if (left(parent(data_.data_.fake_)) != data_.data_.fake_)
       {
-        parent(data_.data_.fake_) = left(parent(data_.data_.fake_));
+        setParent(data_.data_.fake_, left(parent(data_.data_.fake_)));
       }
       if (right(right(data_.data_.fake_)) != data_.data_.fake_)
       {
-        right(data_.data_.fake_) = right(right(data_.data_.fake_));
+        setRight(data_.data_.fake_, right(right(data_.data_.fake_)));
       }
     }
     return res;
@@ -661,6 +664,24 @@ namespace chemodurov
   Tree< T, Compare > * RBTree< T, Compare >::parent(Tree< T, Compare > * node)
   {
     return node->parent_;
+  }
+
+  template< typename T, typename Compare >
+  void RBTree< T, Compare >::setLeft(Tree< T, Compare > * node, Tree< T, Compare > * to_set)
+  {
+    node->left_ = to_set;
+  }
+
+  template< typename T, typename Compare >
+  void RBTree< T, Compare >::setRight(Tree< T, Compare > * node, Tree< T, Compare > * to_set)
+  {
+    node->right_ = to_set;
+  }
+
+  template< typename T, typename Compare >
+  void RBTree< T, Compare >::setParent(Tree< T, Compare > * node, Tree< T, Compare > * to_set)
+  {
+    node->parent_ = to_set;
   }
 
   template< typename T, typename Compare >
