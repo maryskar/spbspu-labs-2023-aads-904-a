@@ -89,34 +89,38 @@ namespace chemodurov
     RotatableBinarySearchTree< T, Compare > data_;
     void balanceTreeAfterInsert(Tree< T, Compare > * inserted);
     void balanceTreeErase(Tree< T, Compare > * todel);
+    Tree< T, Compare > * left(Tree< T, Compare > * node);
+    Tree< T, Compare > * right(Tree< T, Compare > * node);
+    Tree< T, Compare > * parent(Tree< T, Compare > * node);
+    void setColor(Tree< T, Compare > * node, char color);
   };
 
   template< typename T, typename Compare >
   RBTree< T, Compare >::RBTree():
    data_()
   {
-    data_.data_.fake_->color_ = 'b';
+    setColor(data_.data_.fake_, 'b');
   }
 
   template< typename T, typename Compare >
   RBTree< T, Compare >::RBTree(const this_t & other):
    data_(other.begin(), other.end(), other.value_comp())
   {
-    data_.data_.fake_->color_ = 'b';
+    setColor(data_.data_.fake_, 'b');
   }
 
   template< typename T, typename Compare >
   RBTree< T, Compare >::RBTree(this_t && other) noexcept:
    data_(std::move(other.data_))
   {
-    data_.data_.fake_->color_ = 'b';
+    setColor(data_.data_.fake_, 'b');
   }
 
   template< typename T, typename Compare >
   RBTree< T, Compare >::RBTree(const value_compare & comp):
    data_(comp)
   {
-    data_.data_.fake_->color_ = 'b';
+    setColor(data_.data_.fake_, 'b');
   }
 
   template< typename T, typename Compare >
@@ -247,15 +251,15 @@ namespace chemodurov
     auto res = data_.insert(value);
     if (res.second)
     {
-      res.first.node_->color_ = 'r';
+      setColor(res.first.node_, 'r');
       balanceTreeAfterInsert(res.first.node_);
-      if (data_.data_.fake_->parent_->left_ != data_.data_.fake_)
+      if (left(parent(data_.data_.fake_)) != data_.data_.fake_)
       {
-        data_.data_.fake_->parent_ = data_.data_.fake_->parent_->left_;
+        parent(data_.data_.fake_) = left(parent(data_.data_.fake_));
       }
-      if (data_.data_.fake_->right_->right_ != data_.data_.fake_)
+      if (right(right(data_.data_.fake_)) != data_.data_.fake_)
       {
-        data_.data_.fake_->right_ = data_.data_.fake_->right_->right_;
+        right(data_.data_.fake_) = right(right(data_.data_.fake_));
       }
     }
     return res;
@@ -286,7 +290,7 @@ namespace chemodurov
     iterator res = data_.insert(pos, value);
     if (was_inserted)
     {
-      res.node_->color_ = 'r';
+      setColor(res.node_, 'r');
       balanceTreeAfterInsert(res.node_);
     }
     return res;
@@ -428,8 +432,8 @@ namespace chemodurov
 
   template< typename T, typename Compare >
   std::pair<
-    typename RBTree< T, Compare >::iterator,
-    typename RBTree< T, Compare >::iterator
+      typename RBTree< T, Compare >::iterator,
+      typename RBTree< T, Compare >::iterator
   > RBTree< T, Compare >::equal_range(const_reference value)
   {
     return data_.equal_range(value);
@@ -437,8 +441,8 @@ namespace chemodurov
 
   template< typename T, typename Compare >
   std::pair<
-    typename RBTree< T, Compare >::const_iterator,
-    typename RBTree< T, Compare >::const_iterator
+      typename RBTree< T, Compare >::const_iterator,
+      typename RBTree< T, Compare >::const_iterator
   > RBTree< T, Compare >::equal_range(const_reference value) const
   {
     return data_.equal_range(value);
@@ -519,47 +523,48 @@ namespace chemodurov
   template< typename T, typename Compare >
   void RBTree< T, Compare >::balanceTreeAfterInsert(Tree< T, Compare > * inserted)
   {
-    Tree< T, Compare > * par = inserted->parent_;
+    Tree< T, Compare > * par = parent(inserted);
     if (par->color_ == 'b')
     {
       return;
     }
-    if (data_.data_.fake_->left_ == par)
+    if (left(data_.data_.fake_) == par)
     {
-      par->color_ = 'b';
+      setColor(par, 'b');
       return;
     }
-    Tree< T, Compare > * grandpa = par->parent_;
-    Tree< T, Compare > * uncle = (grandpa->left_ == par) ? grandpa->right_ : grandpa->left_;
+    Tree< T, Compare > * grandpa = parent(par);
+    Tree< T, Compare > * uncle = (left(grandpa) == par) ? right(grandpa) : left(grandpa);
     if (uncle->color_ == 'r')
     {
-      par->color_ = uncle->color_ = 'b';
-      grandpa->color_ = 'r';
+      setColor(par, 'b');
+      setColor(uncle, 'b');
+      setColor(grandpa, 'r');
       balanceTreeAfterInsert(grandpa);
     }
     else
     {
-      if (grandpa->left_ == par && par->left_ == inserted)
+      if (left(grandpa) == par && left(par) == inserted)
       {
-        par->color_ = 'b';
-        grandpa->color_ = 'r';
+        setColor(par, 'b');
+        setColor(grandpa, 'r');
         data_.rotateRightRight(par);
       }
-      else if (grandpa->right_ == par && par->right_ == inserted)
+      else if (right(grandpa) == par && right(par) == inserted)
       {
-        par->color_ = 'b';
-        grandpa->color_ = 'r';
+        setColor(par, 'b');
+        setColor(grandpa, 'r');
         data_.rotateLeftLeft(par);
       }
-      else if (par->right_ == inserted)
+      else if (right(par) == inserted)
       {
         data_.rotateLeftLeft(inserted);
-        balanceTreeAfterInsert(inserted->left_);
+        balanceTreeAfterInsert(left(inserted));
       }
       else
       {
         data_.rotateRightRight(inserted);
-        balanceTreeAfterInsert(inserted->right_);
+        balanceTreeAfterInsert(right(inserted));
       }
     }
   }
@@ -575,20 +580,20 @@ namespace chemodurov
     {
       if (todel->left_->color_ == 'r')
       {
-        todel->left_->color_ = 'b';
+        setColor(left(todel), 'b');
         return;
       }
-      auto par = todel->parent_;
-      auto sibling = (par->left_ == todel ? par->right_ : par->left_);
-      auto out_nep = (par->left_ == sibling ? sibling->left_ : sibling->right_);
-      auto in_nep = (par->left_ == sibling ? sibling->right_ : sibling->left_);
+      auto par = parent(todel);
+      auto sibling = (left(par) == todel ? right(par) : left(par));
+      auto out_nep = (left(par) == sibling ? left(sibling) : right(sibling));
+      auto in_nep = (left(par) == sibling ? right(sibling) : left(sibling));
       if (sibling == data_.data_.fake_)
       {
         out_nep = in_nep = sibling;
       }
       if (out_nep->color_ == 'r')
       {
-        if (par->right_ == sibling)
+        if (right(par) == sibling)
         {
           data_.rotateLeftLeft(sibling);
         }
@@ -596,11 +601,11 @@ namespace chemodurov
         {
           data_.rotateRightRight(sibling);
         }
-        out_nep->color_ = 'b';
+        setColor(out_nep, 'b');
       }
       else if (in_nep->color_ == 'r')
       {
-        if (sibling->left_ == in_nep)
+        if (left(sibling) == in_nep)
         {
           data_.rotateRightRight(in_nep);
         }
@@ -608,27 +613,27 @@ namespace chemodurov
         {
           data_.rotateLeftLeft(in_nep);
         }
-        in_nep->color_ = 'b';
-        sibling->color_ = 'r';
+        setColor(in_nep, 'b');
+        setColor(sibling, 'r');
       }
       else
       {
         if (par->color_ == 'r')
         {
-          par->color_ = 'b';
-          sibling->color_ = 'r';
+          setColor(par, 'b');
+          setColor(sibling, 'r');
         }
         else if (sibling->color_ == 'r')
         {
           data_.rotateLeftLeft(sibling);
-          sibling->color_ = 'b';
-          par->color_ = 'r';
+          setColor(sibling, 'b');
+          setColor(par, 'r');
           balanceTreeErase(todel);
         }
         else
         {
-          sibling->color_ = 'r';
-          balanceTreeAfterInsert(par);
+          setColor(sibling, 'r');
+          balanceTreeErase(par);
         }
       }
     }
@@ -638,6 +643,30 @@ namespace chemodurov
   bool RBTree< T, Compare >::isEqual(const this_t & rhs) const
   {
     return data_ == rhs.data_;
+  }
+
+  template< typename T, typename Compare >
+  Tree< T, Compare > * RBTree< T, Compare >::left(Tree< T, Compare > * node)
+  {
+    return node->left_;
+  }
+
+  template< typename T, typename Compare >
+  Tree< T, Compare > * RBTree< T, Compare >::right(Tree< T, Compare > * node)
+  {
+    return node->right_;
+  }
+
+  template< typename T, typename Compare >
+  Tree< T, Compare > * RBTree< T, Compare >::parent(Tree< T, Compare > * node)
+  {
+    return node->parent_;
+  }
+
+  template< typename T, typename Compare >
+  void RBTree< T, Compare >::setColor(Tree< T, Compare > * node, char color)
+  {
+    node->color_ = color;
   }
 
   template< typename T, typename Compare >
