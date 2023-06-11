@@ -89,12 +89,6 @@ namespace chemodurov
     RotatableBinarySearchTree< T, Compare > data_;
     void balanceTreeAfterInsert(Tree< T, Compare > * inserted);
     void balanceTreeErase(Tree< T, Compare > * todel);
-    Tree< T, Compare > * left(Tree< T, Compare > * node);
-    Tree< T, Compare > * right(Tree< T, Compare > * node);
-    Tree< T, Compare > * parent(Tree< T, Compare > * node);
-    void setLeft(Tree< T, Compare > * node, Tree< T, Compare > * to_set);
-    void setRight(Tree< T, Compare > * node, Tree< T, Compare > * to_set);
-    void setParent(Tree< T, Compare > * node, Tree< T, Compare > * to_set);
     void setColor(Tree< T, Compare > * node, char color);
   };
 
@@ -646,42 +640,6 @@ namespace chemodurov
   bool RBTree< T, Compare >::isEqual(const this_t & rhs) const
   {
     return data_ == rhs.data_;
-  }
-
-  template< typename T, typename Compare >
-  Tree< T, Compare > * RBTree< T, Compare >::left(Tree< T, Compare > * node)
-  {
-    return node->left_;
-  }
-
-  template< typename T, typename Compare >
-  Tree< T, Compare > * RBTree< T, Compare >::right(Tree< T, Compare > * node)
-  {
-    return node->right_;
-  }
-
-  template< typename T, typename Compare >
-  Tree< T, Compare > * RBTree< T, Compare >::parent(Tree< T, Compare > * node)
-  {
-    return node->parent_;
-  }
-
-  template< typename T, typename Compare >
-  void RBTree< T, Compare >::setLeft(Tree< T, Compare > * node, Tree< T, Compare > * to_set)
-  {
-    node->left_ = to_set;
-  }
-
-  template< typename T, typename Compare >
-  void RBTree< T, Compare >::setRight(Tree< T, Compare > * node, Tree< T, Compare > * to_set)
-  {
-    node->right_ = to_set;
-  }
-
-  template< typename T, typename Compare >
-  void RBTree< T, Compare >::setParent(Tree< T, Compare > * node, Tree< T, Compare > * to_set)
-  {
-    node->parent_ = to_set;
   }
 
   template< typename T, typename Compare >
