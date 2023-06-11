@@ -3,6 +3,7 @@
 #include "queue.h"
 #include "stringToInfix.h"
 #include "convertToPostfix.h"
+#include "solvePostfixExpr.h"
 void printQueueElements(aksenov::Queue< std::string > &queue)
 {
   while (!queue.isEmpty())
@@ -19,11 +20,12 @@ void printQueueElements(aksenov::Queue< std::string > &queue)
 
 int main()
 {
-  std::string str = "( 3 + 2 ) / 5";
+  std::string str = "( 3 + 2 ) / 5 - 1";
   try {
     aksenov::Queue< std::string > queue = aksenov::convertToInfix(str);
     aksenov::Queue< std::string > postfixQ = aksenov::getPostfixQueue(queue);
-    printQueueElements(postfixQ);
+    //printQueueElements(postfixQ);
+    std::cout << aksenov::solvePostfixExpr(postfixQ);
   } catch (const std::invalid_argument& e) {
     std::cout << "Invalid argument: " << e.what() << std::endl;
   }

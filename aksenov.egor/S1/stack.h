@@ -13,13 +13,16 @@ namespace aksenov {
       void pop();
       T drop();
       bool isEmpty() const;
+      size_t size();
     private:
       List< T > *top_;
+      size_t size_;
   };
 
   template< typename T >
   Stack< T >::Stack():
-    top_(nullptr)
+    top_(nullptr),
+    size_(0)
   {}
 
   template< typename T >
@@ -28,6 +31,11 @@ namespace aksenov {
     deleteList(top_);
   }
 
+  template< typename T>
+  size_t Stack< T >::size()
+  {
+    return size_;
+  }
   template< typename T >
   bool Stack< T >::isEmpty() const
   {
@@ -39,6 +47,7 @@ namespace aksenov {
   {
     aksenov::List< T > *newTop = new aksenov::List< T >{val, top_};
     top_ = newTop;
+    size_++;
   }
 
   template< typename T >
@@ -61,6 +70,7 @@ namespace aksenov {
     auto todel = top_;
     top_ = top_->next;
     delete todel;
+    size_--;
   }
 }
 #endif
