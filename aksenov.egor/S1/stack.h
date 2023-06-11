@@ -14,12 +14,12 @@ namespace aksenov {
       T drop();
       bool isEmpty() const;
     private:
-      aksenov::List< T > *top_;
+      List< T > *top_;
   };
 
   template< typename T >
   Stack< T >::Stack():
-  top_(nullptr)
+    top_(nullptr)
   {}
 
   template< typename T >
