@@ -12,12 +12,36 @@ int main(int argc, char *argv[])
     return 1;
   }
   std::string str = "";
+  long long result = 0;
   if (argc == 1)
   {
-
+    try
+    {
+      while (std::getline(std::cin, str))
+      {
+        if (!std::cin)
+        {
+          std::cerr << "input Error" << "\n";
+          return 1;
+        }
+        if (str.find_first_not_of(" \n") == std::string::npos)
+        {
+          continue;
+        }
+        aksenov::Queue< std::string > infixQueue = aksenov::convertToInfix(str);
+        aksenov::Queue< std::string > postfixQueue = aksenov::getPostfixQueue(infixQueue);
+        result = aksenov::solvePostfixExpr(postfixQueue);
+      }
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << e.what() << "\n";
+      return 1;
+    }
   }
   if (argc == 2)
   {
 
   }
+  std::cout << result;
 }
