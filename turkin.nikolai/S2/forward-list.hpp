@@ -14,27 +14,27 @@ namespace turkin
   {
     public:
       using fl = ForwardList< T, Iterator, ConstIterator >;
-      ForwardList();
-      ForwardList(const fl & rhs);
-      ForwardList(fl && rhs);
-      ForwardList & operator=(const fl & rhs);
-      ForwardList & operator=(fl && rhs);
-      ~ForwardList();
+      ForwardList(); //done
+      ForwardList(const fl & rhs); //done
+      ForwardList(fl && rhs); //done
+      ForwardList & operator=(const fl & rhs); //done
+      ForwardList & operator=(fl && rhs); //done
+      ~ForwardList(); //done
       void assign(size_t count, const T & value);
-      T & front();
-      const T & front() const;
-      Iterator before_begin() noexcept;
-      ConstIterator before_begin() const noexcept;
-      ConstIterator cbefore_begin() const noexcept;
-      Iterator begin() noexcept;
-      ConstIterator begin() const noexcept;
-      ConstIterator cbegin() const noexcept;
-      Iterator end() noexcept;
-      ConstIterator end() const noexcept;
-      ConstIterator cend() const noexcept;
-      bool empty() const noexcept;
-      void clear() noexcept;
-      Iterator insert_after(ConstIterator pos, const T & value);
+      T & front(); //done
+      const T & front() const; //done
+      Iterator before_begin() noexcept; //done
+      ConstIterator before_begin() const noexcept; //done
+      ConstIterator cbefore_begin() const noexcept; // done
+      Iterator begin() noexcept; //done
+      ConstIterator begin() const noexcept; //done
+      ConstIterator cbegin() const noexcept; //done
+      Iterator end() noexcept; //done
+      ConstIterator end() const noexcept; //done
+      ConstIterator cend() const noexcept; //done
+      bool empty() const noexcept; //done
+      void clear() noexcept; //done
+      Iterator insert_after(ConstIterator pos, const T & value); //?
       Iterator insert_after(ConstIterator pos, T && value);
       Iterator insert_after(ConstIterator pos, size_t const, const T & value);
       template< class InputIt >
@@ -42,10 +42,10 @@ namespace turkin
       Iterator insert_after(ConstIterator pos, std::initializer_list< T > ilist);
       template< class... Args >
       Iterator emplace_after(ConstIterator pos, Args &&... args);
-      Iterator erase_after(ConstIterator pos);
+      Iterator erase_after(ConstIterator pos); //
       Iterator erase_after(ConstIterator first, ConstIterator last);
-      void push_front(const T & value);
-      void push_front(T && value);
+      void push_front(const T & value); //done
+      void push_front(T && value); //?
       template< class... Args >
       void emplace_front(Args &&... args);
       template< class... Args >
@@ -266,6 +266,49 @@ Iterator ForwardList< T, Iterator, ConstIterator >::insert_after(ConstIterator p
 }
 
 template< typename T, class Iterator, class ConstIterator >
+Iterator ForwardList< T, Iterator, ConstIterator >::erase_after(ConstIterator pos)
+{
+  ConstIterator npos(pos);
+  npos++;
+  auto ins = npos;
+  if (ins)
+  {
+    pos.cur_->next = ins->next;
+  }
+  if (pos.cur_ == dummy_)
+  {
+    head_ = pos.cur_->next;
+  }
+  if (ins)
+  {
+    delete ins;
+  }
+  size_--;
+  if (size_ == 1)
+  {
+    tail_ = nullptr;
+  }
+  else if (size_ == 0)
+  {
+    head_ = nullptr;
+    tail_ = nullptr;
+    dummy_->next = nullptr;
+  }
+  return iterator(pos.cur_->next);
+}
+
+template< typename T, class Iterator, class ConstIterator >
+Iterator ForwardList< T, Iterator, ConstIterator >::erase_after(ConstIterator first, ConstIterator last)
+{
+  auto head = first;
+  while (first != last)
+  {
+    first = erase_after(head);
+  }
+  return Iterator(last);
+}
+
+template< typename T, class Iterator, class ConstIterator >
 void ForwardList< T, Iterator, ConstIterator >::push_front(const T & value)
 {
   auto * ins = new OneWayNode< T > {value, nullptr};
@@ -305,6 +348,12 @@ void ForwardList< T, Iterator, ConstIterator >::push_front(T && value)
   }
   dummy_->next = head_;
   size_++;
+}
+
+template< typename T, class Iterator, class ConstIterator >
+void ForwardList< T, Iterator, ConstIterator >::pop_front()
+{
+  erase_after(before_begin());
 }
 
 template< typename T, class Iterator, class ConstIterator >
