@@ -214,8 +214,8 @@ namespace dimkashelk
     }
     node_type *goUpBack(node_type *node)
     {
-      node_type *parent = node->parent;
-      while (parent && ((parent->first == node && parent->size == 1) || (parent->second == node && parent->size == 2)))
+      node_type *parent = node;
+      while (parent && (parent->first == node || (parent->size == 2 && parent->second == node)))
       {
         node = parent;
         parent = parent->parent;
