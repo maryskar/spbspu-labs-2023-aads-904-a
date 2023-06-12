@@ -1,7 +1,6 @@
 #ifndef SPBSPU_LABS_2023_AADS_904_A_NODETOINSERT_H
 #define SPBSPU_LABS_2023_AADS_904_A_NODETOINSERT_H
 #include <algorithm>
-#include "math_functions.h"
 #include "nodeOfTwoThreeTree.h"
 namespace dimkashelk
 {
