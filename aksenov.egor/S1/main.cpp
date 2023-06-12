@@ -5,6 +5,10 @@
 #include "stringToInfix.h"
 #include "convertToPostfix.h"
 #include "solvePostfixExpr.h"
+bool isWhiteSpaceOrEmpty(const std::string &str)
+{
+  return str.find_first_not_of(" \n") == std::string::npos;
+}
 int main(int argc, char *argv[])
 {
   if (argc > 2)
@@ -25,7 +29,7 @@ int main(int argc, char *argv[])
           std::cerr << "input Error" << "\n";
           return 1;
         }
-        if (str.find_first_not_of(" \n") == std::string::npos || str.empty())
+        if (isWhiteSpaceOrEmpty(str))
         {
           continue;
         }
@@ -44,7 +48,7 @@ int main(int argc, char *argv[])
   {
     try
     {
-      std::ifstream f;
+      std::ifstream f(argv[1]);
       f.open(argv[1]);
       if (!f.is_open())
       {
@@ -53,7 +57,7 @@ int main(int argc, char *argv[])
       }
       while (std::getline(f, str))
       {
-        if (str.find_first_not_of(" \n") == std::string::npos || str.empty())
+        if (isWhiteSpaceOrEmpty(str))
         {
           continue;
         }
