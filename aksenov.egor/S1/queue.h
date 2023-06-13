@@ -8,6 +8,7 @@ namespace aksenov {
   {
     public:
       explicit Queue();
+      Queue(const Queue< T > &otherQ);
       ~Queue();
       void push(const T &val);
       void pop();
@@ -79,6 +80,19 @@ namespace aksenov {
   {
     deleteList(front_);
     front_ = tail_ = nullptr;
+  }
+
+  template< typename T>
+  Queue< T >::Queue(const Queue< T > &otherQ)
+  {
+    tail_ = nullptr;
+    front_ = nullptr;
+    aksenov::List< T > *cur = otherQ.front_;
+    while (cur)
+    {
+      push(cur->data);
+      cur = cur->next;
+    }
   }
 }
 #endif
