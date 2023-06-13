@@ -2,21 +2,11 @@
 #include <fstream>
 #include <string>
 #include "queue.h"
+#include "stack.h"
 #include "stringToInfix.h"
 #include "convertToPostfix.h"
 #include "solvePostfixExpr.h"
-void out(aksenov::Stack< long long > &result)
-{
-  while (!result.isEmpty())
-  {
-    std::cout << result.drop();
-    result.pop();
-    if (!result.isEmpty())
-    {
-      std::cout << " ";
-    }
-  }
-}
+#include "out.h"
 bool isWhiteSpaceOrEmpty(const std::string &str)
 {
   return str.find_first_not_of(" \n") == std::string::npos;
