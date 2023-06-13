@@ -10,6 +10,8 @@ namespace aksenov {
       explicit Queue();
       Queue(const Queue< T > &otherQ);
       Queue(Queue< T > &&otherQ) noexcept;
+      Queue< T > &operator=(const Queue< T > &other);
+      Queue< T > &operator=(Queue< T > &&other) noexcept;
       ~Queue();
       void push(const T &val);
       void pop();
@@ -103,6 +105,34 @@ namespace aksenov {
     tail_ = otherQ.tail_;
     otherQ.front_ = nullptr;
     otherQ.tail_ = nullptr;
+  }
+
+  template< typename T >
+  Queue< T > &Queue< T >::operator=(const Queue< T > &other)
+  {
+    deleteList(front_);
+    front_ = nullptr;
+    tail_ = nullptr;
+    aksenov::List< T > *cur = other.front_;
+    while (cur)
+    {
+      push(cur->data);
+      cur = cur->next;
+    }
+    return *this;
+  }
+
+  template< typename T >
+  Queue< T > &Queue< T >::operator=(Queue< T > &&other) noexcept
+  {
+    deleteList(front_);
+    front_ = nullptr;
+    tail_ = nullptr;
+    front_ = other.front_;
+    tail_ = other.tail_;
+    other.front_ = nullptr;
+    other.tail_ = nullptr;
+    return *this;
   }
 }
 #endif
