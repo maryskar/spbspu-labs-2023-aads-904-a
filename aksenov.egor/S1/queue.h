@@ -9,6 +9,7 @@ namespace aksenov {
     public:
       explicit Queue();
       Queue(const Queue< T > &otherQ);
+      Queue(Queue< T > &&otherQ) noexcept;
       ~Queue();
       void push(const T &val);
       void pop();
@@ -93,6 +94,15 @@ namespace aksenov {
       push(cur->data);
       cur = cur->next;
     }
+  }
+
+  template< typename T >
+  Queue< T >::Queue(Queue< T > &&otherQ) noexcept
+  {
+    front_ = otherQ.front_;
+    tail_ = otherQ.tail_;
+    otherQ.front_ = nullptr;
+    otherQ.tail_ = nullptr;
   }
 }
 #endif
