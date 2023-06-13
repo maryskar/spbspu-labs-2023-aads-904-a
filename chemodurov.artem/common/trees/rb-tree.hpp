@@ -72,11 +72,25 @@ namespace chemodurov
     iterator upper_bound(const_reference value);
     const_iterator upper_bound(const_reference value) const;
     value_compare value_comp() const;
+    template< typename F >
+    F traverse_lnr(F f) const;
+    template< typename F >
+    F traverse_lnr(F f);
+    template< typename F >
+    F traverse_rnl(F f) const;
+    template< typename F >
+    F traverse_rnl(F f);
+    template< typename F >
+    F traverse_breadth(F f) const;
+    template< typename F >
+    F traverse_breadth(F f);
     bool isEqual(const this_t & rhs) const;
    private:
     RotatableBinarySearchTree< T, Compare > data_;
     void balanceTreeAfterInsert(Tree< T, Compare > * inserted);
     void balanceTreeErase(Tree< T, Compare > * todel);
+    bool isRed(const Tree< T, Compare > * node);
+    bool isBlack(const Tree< T, Compare > * node);
     void setColor(Tree< T, Compare > * node, char color);
   };
 
@@ -464,10 +478,52 @@ namespace chemodurov
   }
 
   template< typename T, typename Compare >
+  template< typename F >
+  F RBTree< T, Compare >::traverse_lnr(F f) const
+  {
+    return data_.template traverse_lnr(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F RBTree< T, Compare >::traverse_rnl(F f) const
+  {
+    return data_.template traverse_rnl(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F RBTree< T, Compare >::traverse_breadth(F f) const
+  {
+    return data_.template traverse_breadth(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F RBTree< T, Compare >::traverse_lnr(F f)
+  {
+    return data_.template traverse_lnr(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F RBTree< T, Compare >::traverse_rnl(F f)
+  {
+    return data_.template traverse_rnl(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F RBTree< T, Compare >::traverse_breadth(F f)
+  {
+    return data_.template traverse_breadth(f);
+  }
+
+  template< typename T, typename Compare >
   void RBTree< T, Compare >::balanceTreeAfterInsert(Tree< T, Compare > * inserted)
   {
     Tree< T, Compare > * par = parent(inserted);
-    if (par->color_ == 'b')
+    if (isBlack(par))
     {
       return;
     }
@@ -478,7 +534,7 @@ namespace chemodurov
     }
     Tree< T, Compare > * grandpa = parent(par);
     Tree< T, Compare > * uncle = (left(grandpa) == par) ? right(grandpa) : left(grandpa);
-    if (uncle->color_ == 'r')
+    if (isRed(uncle))
     {
       setColor(par, 'b');
       setColor(uncle, 'b');
@@ -515,13 +571,13 @@ namespace chemodurov
   template< typename T, typename Compare >
   void RBTree< T, Compare >::balanceTreeErase(Tree< T, Compare > * todel)
   {
-    if (todel->color_ == 'r')
+    if (isRed(todel))
     {
       return;
     }
     else
     {
-      if (todel->left_->color_ == 'r')
+      if (isRed(left(todel)))
       {
         setColor(left(todel), 'b');
         return;
@@ -534,7 +590,7 @@ namespace chemodurov
       {
         out_nep = in_nep = sibling;
       }
-      if (out_nep->color_ == 'r')
+      if (isRed(out_nep))
       {
         if (right(par) == sibling)
         {
@@ -546,7 +602,7 @@ namespace chemodurov
         }
         setColor(out_nep, 'b');
       }
-      else if (in_nep->color_ == 'r')
+      else if (isRed(in_nep))
       {
         if (left(sibling) == in_nep)
         {
@@ -561,12 +617,12 @@ namespace chemodurov
       }
       else
       {
-        if (par->color_ == 'r')
+        if (isRed(par))
         {
           setColor(par, 'b');
           setColor(sibling, 'r');
         }
-        else if (sibling->color_ == 'r')
+        else if (isRed(sibling))
         {
           data_.rotateLeftLeft(sibling);
           setColor(sibling, 'b');
@@ -592,6 +648,18 @@ namespace chemodurov
   void RBTree< T, Compare >::setColor(Tree< T, Compare > * node, char color)
   {
     node->color_ = color;
+  }
+
+  template< typename T, typename Compare >
+  bool RBTree< T, Compare >::isRed(const Tree< T, Compare > * node)
+  {
+    return node->color_ == 'r';
+  }
+
+  template< typename T, typename Compare >
+  bool RBTree< T, Compare >::isBlack(const Tree< T, Compare > * node)
+  {
+    return node->color_ == 'b';
   }
 
   template< typename T, typename Compare >

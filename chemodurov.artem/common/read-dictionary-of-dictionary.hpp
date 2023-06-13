@@ -1,7 +1,7 @@
 #ifndef S2_READ_DICTIONARY_OF_DICTIONARY_HPP
 #define S2_READ_DICTIONARY_OF_DICTIONARY_HPP
 #include <string>
-#include <map.hpp>
+#include "map.hpp"
 
 namespace chemodurov
 {

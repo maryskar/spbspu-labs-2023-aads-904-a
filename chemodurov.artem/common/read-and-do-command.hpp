@@ -1,6 +1,6 @@
 #ifndef S2_READ_AND_DO_COMMAND_HPP
 #define S2_READ_AND_DO_COMMAND_HPP
-#include <create-command-dictionary.hpp>
+#include "create-command-dictionary.hpp"
 
 namespace chemodurov
 {

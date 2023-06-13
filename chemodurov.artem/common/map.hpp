@@ -84,6 +84,18 @@ namespace chemodurov
     const_iterator upper_bound(const key_type & key) const;
     key_compare key_comp() const;
     value_compare value_comp() const;
+    template< typename F >
+    F traverse_lnr(F f) const;
+    template< typename F >
+    F traverse_lnr(F f);
+    template< typename F >
+    F traverse_rnl(F f) const;
+    template< typename F >
+    F traverse_rnl(F f);
+    template< typename F >
+    F traverse_breadth(F f) const;
+    template< typename F >
+    F traverse_breadth(F f);
     bool isEqual(const this_t & rhs) const;
    private:
     RBTree< value_type, value_compare > data_;
@@ -487,6 +499,48 @@ namespace chemodurov
   bool Map< Key, Value, Compare >::isEqual(const this_t & rhs) const
   {
     return data_ == rhs.data_;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F Map< Key, Value, Compare >::traverse_lnr(F f) const
+  {
+    return data_.template traverse_lnr(f);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F Map< Key, Value, Compare >::traverse_rnl(F f) const
+  {
+    return data_.template traverse_rnl(f);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F Map< Key, Value, Compare >::traverse_breadth(F f) const
+  {
+    return data_.template traverse_breadth(f);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F Map< Key, Value, Compare >::traverse_lnr(F f)
+  {
+    return data_.template traverse_lnr(f);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F Map< Key, Value, Compare >::traverse_rnl(F f)
+  {
+    return data_.template traverse_rnl(f);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F Map< Key, Value, Compare >::traverse_breadth(F f)
+  {
+    return data_.template traverse_breadth(f);
   }
 
   template< typename Key, typename Value, typename Compare >

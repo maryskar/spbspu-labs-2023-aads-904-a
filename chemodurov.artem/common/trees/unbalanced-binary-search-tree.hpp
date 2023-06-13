@@ -3,6 +3,8 @@
 #include <functional>
 #include <stdexcept>
 #include "const-bidirectional-iterator.hpp"
+#include <stack.hpp>
+#include <queue.hpp>
 
 namespace chemodurov
 {
@@ -595,6 +597,108 @@ namespace chemodurov
     clear();
     swap(temp);
     return *this;
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F UnbalancedBinarySearchTree< T, Compare >::traverse_lnr(F f) const
+  {
+    Stack< const Tree< T, Compare > * > stack;
+    const Tree< T, Compare > * node = fake_->left_;
+    while (!stack.empty() || node != fake_)
+    {
+      if (node != fake_)
+      {
+        stack.push(node);
+        node = node->left_;
+      }
+      else
+      {
+        node = stack.getFromStack();
+        stack.pop();
+        f(node->data_);
+        node = node->right_;
+      }
+    }
+    return f;
+  }
+
+  namespace detail
+  {
+    template< typename T >
+    T & returnT(const T & t)
+    {
+      return const_cast< T & >(t);
+    }
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F UnbalancedBinarySearchTree< T, Compare >::traverse_lnr(F f)
+  {
+    return (static_cast< const this_t & >(*this)).template traverse_lnr(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F UnbalancedBinarySearchTree< T, Compare >::traverse_rnl(F f) const
+  {
+    Stack< const Tree< T, Compare > * > stack;
+    const Tree< T, Compare > * node = fake_->left_;
+    while (!stack.empty() || node != fake_)
+    {
+      if (node != fake_)
+      {
+        stack.push(node);
+        node = node->right_;
+      }
+      else
+      {
+        node = stack.getFromStack();
+        stack.pop();
+        f(node->data_);
+        node = node->left_;
+      }
+    }
+    return f;
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F UnbalancedBinarySearchTree< T, Compare >::traverse_rnl(F f)
+  {
+    return (static_cast< const this_t & >(*this)).template traverse_rnl(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F UnbalancedBinarySearchTree< T, Compare >::traverse_breadth(F f) const
+  {
+    Queue< const Tree< T, Compare > * > queue;
+    const Tree< T, Compare > * node = fake_->left_;
+    queue.push(node);
+    while (!queue.empty())
+    {
+      node = queue.getFromQueue();
+      queue.pop();
+      f(node->data_);
+      if (node->left_ != fake_)
+      {
+        queue.push(node->left_);
+      }
+      if (node->right_ != fake_)
+      {
+        queue.push(node->right_);
+      }
+    }
+    return f;
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F UnbalancedBinarySearchTree< T, Compare >::traverse_breadth(F f)
+  {
+    return (static_cast< const this_t & >(*this)).template traverse_breadth(f);
   }
 
   template< typename T, typename Compare >
