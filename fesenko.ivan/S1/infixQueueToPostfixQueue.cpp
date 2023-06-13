@@ -5,8 +5,8 @@
 
 fesenko::Queue< std::string > fesenko::infixQueueToPostfixQueue(Queue< std::string > &infixQueue)
 {
-  fesenko::Stack< std::string > stack;
-  fesenko::Queue< std::string > postfixQueue;
+  Stack< std::string > stack;
+  Queue< std::string > postfixQueue;
   while (!infixQueue.isEmpty()) {
     std::string element = infixQueue.front();
     infixQueue.pop();
