@@ -8,6 +8,10 @@ namespace aksenov {
   {
     public:
       explicit Stack();
+      Stack(const Stack< T > &other);
+      Stack(Stack< T > &&other) noexcept;
+      Stack< T > &operator=(const Stack< T > &other);
+      Stack< T > &operator=(Stack< T > &&other) noexcept;
       ~Stack();
       void push(const T &val);
       void pop();
