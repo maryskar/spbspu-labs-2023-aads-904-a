@@ -5,6 +5,18 @@
 #include "stringToInfix.h"
 #include "convertToPostfix.h"
 #include "solvePostfixExpr.h"
+void out(aksenov::Stack< long long > &result)
+{
+  while (!result.isEmpty())
+  {
+    std::cout << result.drop();
+    result.pop();
+    if (!result.isEmpty())
+    {
+      std::cout << " ";
+    }
+  }
+}
 bool isWhiteSpaceOrEmpty(const std::string &str)
 {
   return str.find_first_not_of(" \n") == std::string::npos;
@@ -17,7 +29,7 @@ int main(int argc, char *argv[])
     return 1;
   }
   std::string str = "";
-  long long result = 0;
+  aksenov::Stack< long long > result;
   if (argc == 1)
   {
     try
@@ -48,7 +60,7 @@ int main(int argc, char *argv[])
   {
     try
     {
-      std::ifstream f(argv[1]);
+      std::ifstream f;
       f.open(argv[1]);
       if (!f.is_open())
       {
@@ -72,5 +84,6 @@ int main(int argc, char *argv[])
       return 1;
     }
   }
-  std::cout << result << "\n";
+  out(result);
+  std::cout << "\n";
 }
