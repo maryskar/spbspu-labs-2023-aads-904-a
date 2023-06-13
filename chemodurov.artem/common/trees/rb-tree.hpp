@@ -89,6 +89,8 @@ namespace chemodurov
     RotatableBinarySearchTree< T, Compare > data_;
     void balanceTreeAfterInsert(Tree< T, Compare > * inserted);
     void balanceTreeErase(Tree< T, Compare > * todel);
+    bool isRed(const Tree< T, Compare > * node);
+    bool isBlack(const Tree< T, Compare > * node);
     void setColor(Tree< T, Compare > * node, char color);
   };
 
@@ -521,7 +523,7 @@ namespace chemodurov
   void RBTree< T, Compare >::balanceTreeAfterInsert(Tree< T, Compare > * inserted)
   {
     Tree< T, Compare > * par = parent(inserted);
-    if (par->color_ == 'b')
+    if (isBlack(par))
     {
       return;
     }
@@ -532,7 +534,7 @@ namespace chemodurov
     }
     Tree< T, Compare > * grandpa = parent(par);
     Tree< T, Compare > * uncle = (left(grandpa) == par) ? right(grandpa) : left(grandpa);
-    if (uncle->color_ == 'r')
+    if (isRed(uncle))
     {
       setColor(par, 'b');
       setColor(uncle, 'b');
@@ -569,13 +571,13 @@ namespace chemodurov
   template< typename T, typename Compare >
   void RBTree< T, Compare >::balanceTreeErase(Tree< T, Compare > * todel)
   {
-    if (todel->color_ == 'r')
+    if (isRed(todel))
     {
       return;
     }
     else
     {
-      if (todel->left_->color_ == 'r')
+      if (isRed(left(todel)))
       {
         setColor(left(todel), 'b');
         return;
@@ -588,7 +590,7 @@ namespace chemodurov
       {
         out_nep = in_nep = sibling;
       }
-      if (out_nep->color_ == 'r')
+      if (isRed(out_nep))
       {
         if (right(par) == sibling)
         {
@@ -600,7 +602,7 @@ namespace chemodurov
         }
         setColor(out_nep, 'b');
       }
-      else if (in_nep->color_ == 'r')
+      else if (isRed(in_nep))
       {
         if (left(sibling) == in_nep)
         {
@@ -615,12 +617,12 @@ namespace chemodurov
       }
       else
       {
-        if (par->color_ == 'r')
+        if (isRed(par))
         {
           setColor(par, 'b');
           setColor(sibling, 'r');
         }
-        else if (sibling->color_ == 'r')
+        else if (isRed(sibling))
         {
           data_.rotateLeftLeft(sibling);
           setColor(sibling, 'b');
@@ -646,6 +648,18 @@ namespace chemodurov
   void RBTree< T, Compare >::setColor(Tree< T, Compare > * node, char color)
   {
     node->color_ = color;
+  }
+
+  template< typename T, typename Compare >
+  bool RBTree< T, Compare >::isRed(const Tree< T, Compare > * node)
+  {
+    return node->color_ == 'r';
+  }
+
+  template< typename T, typename Compare >
+  bool RBTree< T, Compare >::isBlack(const Tree< T, Compare > * node)
+  {
+    return node->color_ == 'b';
   }
 
   template< typename T, typename Compare >
