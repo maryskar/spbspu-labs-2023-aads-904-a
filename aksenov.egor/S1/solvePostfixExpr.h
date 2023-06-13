@@ -3,6 +3,6 @@
 #include "queue.h"
 #include "stack.h"
 namespace aksenov {
-  Stack< long long > solvePostfixExpr(Queue< std::string > &queue);
+  long long solvePostfixExpr(Queue< std::string > &queue);
 }
 #endif

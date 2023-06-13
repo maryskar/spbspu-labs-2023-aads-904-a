@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
         }
         aksenov::Queue< std::string > infixQueue = aksenov::convertToInfix(str);
         aksenov::Queue< std::string > postfixQueue = aksenov::getPostfixQueue(infixQueue);
-        result = aksenov::solvePostfixExpr(postfixQueue);
+        result.push(aksenov::solvePostfixExpr(postfixQueue));
       }
     }
     catch (const std::exception &e)
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
         }
         aksenov::Queue< std::string > infixQueue = aksenov::convertToInfix(str);
         aksenov::Queue< std::string > postfixQueue = aksenov::getPostfixQueue(infixQueue);
-        result = aksenov::solvePostfixExpr(postfixQueue);
+        result.push(aksenov::solvePostfixExpr(postfixQueue));
       }
     }
     catch (const std::exception &e)

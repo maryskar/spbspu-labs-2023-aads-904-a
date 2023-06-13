@@ -5,7 +5,7 @@
 #include "stack.h"
 #include "details.h"
 
-aksenov::Stack< long long > aksenov::solvePostfixExpr(aksenov::Queue<std::string>& queue)
+long long aksenov::solvePostfixExpr(aksenov::Queue<std::string>& queue)
 {
   aksenov::Stack<long long> stack;
 
@@ -60,11 +60,10 @@ aksenov::Stack< long long > aksenov::solvePostfixExpr(aksenov::Queue<std::string
       throw std::invalid_argument("Invalid input");
     }
   }
-
+  long long outRes = stack.drop();
   if (stack.isEmpty() || stack.size() > 1)
   {
     throw std::invalid_argument("Invalid postfix expression");
   }
-
-  return stack;
+  return outRes;
 }
