@@ -18,7 +18,7 @@ bool getInfixQueue(potapova::Queue< potapova::ArithmExpMember >& dest, std::istr
       member.type = potapova::ArithmExpMember::Type::Num;
       member.num = std::stoll(string_member);
     }
-    else if (isOperation(string_member))
+    else if (isOperation(string_member.front()))
     {
       member.type = potapova::ArithmExpMember::Type::Operation;
       member.operation = std::stoll(string_member);
@@ -31,10 +31,7 @@ bool getInfixQueue(potapova::Queue< potapova::ArithmExpMember >& dest, std::istr
   }
 }
 
-bool isOperation(std::string& sym)
+bool isOperation(char& sym)
 {
-  if (sym.front() == '+' || sym.front() == '-' || sym.front() == '*' || sym.front() == '/' || sym.front() == '%' || sym.front() == '(' || sym.front() == ')')
-  {
-    return true;
-  }
+  return (sym == '+' || sym == '-' || sym == '*' || sym == '/' || sym == '%' || sym == '(' || sym == ')');
 }
