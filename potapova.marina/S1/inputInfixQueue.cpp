@@ -1,4 +1,4 @@
-#include "getInfixQueue.h"
+#include "inputInfixQueue.h"
 #include <cstring>
 #include <iostream>
 #include <cctype>
@@ -7,7 +7,7 @@
 #include "valueType.h"
 #include "queue.h"
 
-bool getInfixQueue(potapova::Queue< potapova::ArithmExpMember >& dest, std::istream& in = std::cin)
+std::istream& potapova::inputInfixQueue(potapova::Queue< potapova::ArithmExpMember >& dest, std::istream& in = std::cin)
 {
   std::string string_member;
   while (in >> string_member)
@@ -29,9 +29,10 @@ bool getInfixQueue(potapova::Queue< potapova::ArithmExpMember >& dest, std::istr
     }
     dest.push(member);
   }
+  return;
 }
 
-bool isOperation(char& sym)
+bool potapova::isOperation(char& sym)
 {
   return (sym == '+' || sym == '-' || sym == '*' || sym == '/' || sym == '%' || sym == '(' || sym == ')');
 }

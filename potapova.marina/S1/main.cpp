@@ -7,7 +7,7 @@ int main()
 {
   potapova::Queue< potapova::ArithmExpMember > dest;
   std::istream& in = std::cin;
-  if (!getInfixQueue(dest, in))
+  if (!inputInfixQueue(dest, in))
   {
     std::cerr << "Input error\n";
     return 1;
