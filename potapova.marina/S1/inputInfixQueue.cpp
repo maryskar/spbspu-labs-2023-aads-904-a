@@ -25,11 +25,11 @@ std::istream& potapova::inputInfixQueue(potapova::Queue< potapova::ArithmExpMemb
     }
     else
     {
-      throw std::logic_error("The parameters of the expression are incorrect");
+      in.setstate(std::ios_base::failbit);
     }
     dest.push(member);
   }
-  return;
+  return in;
 }
 
 bool potapova::isOperation(char& sym)
