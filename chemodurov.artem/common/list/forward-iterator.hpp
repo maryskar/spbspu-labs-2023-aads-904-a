@@ -2,7 +2,7 @@
 #define S2_FORWARD_ITERATOR_HPP
 #include <cassert>
 #include <iterator>
-#include <list.hpp>
+#include "list.hpp"
 
 namespace chemodurov
 {
