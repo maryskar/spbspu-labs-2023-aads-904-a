@@ -28,6 +28,7 @@ namespace potapova
         return;
       }
       end_ptr = end_ptr->next_node_ptr = new Node(elem);
+      ++size;
     }
 
     T& front()
@@ -40,6 +41,17 @@ namespace potapova
       Node* prev_begin_ptr = begin_ptr;
       begin_ptr = begin_ptr->next_node_ptr;
       delete prev_begin_ptr;
+      --size;
+    }
+
+    size_t size() 
+    {
+      return size;
+    }
+
+    bool empty()
+    {
+      return (size == 0);
     }
   private:
     struct Node
@@ -54,6 +66,7 @@ namespace potapova
     };
     Node* begin_ptr;
     Node* end_ptr;
+    size_t size = 0;
   };
 }
 
