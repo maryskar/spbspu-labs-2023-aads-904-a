@@ -29,11 +29,15 @@ void potapova::removeBrackets(expr_stack& operators_stack, expr_queue& postfix_e
     operators_stack.pop();
     potapova::addInPostfixQueue(postfix_expr, member);
   }
+  if (isOpenBracket(operators_stack.back()))
+  {
+    operators_stack.pop();
+  }
 }
 
-void addInPostfixQueue(expr_queue& postfix_expr, potapova::ArithmExpMember member)
+void potapova::addInPostfixQueue(expr_queue& postfix_expr, potapova::ArithmExpMember member)
 {
-  
+  postfix_expr.push(member);
 }
 
 expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
@@ -55,9 +59,16 @@ expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
       }
       else if (isCloseBracket(cur_member.operation))
       {
-        
+        removeBrackets(operators_stack, postfix_expr);
       }
-      operators_stack.push(cur_member);
+      else
+      {
+        while (!operators_stack.empty() && (potapova::checkPriority(cur_member.operation) <= potapova::checkPriority(operators_stack.back())))
+        {
+          postfix_expr.push(cur_member.operation);
+          operators_stack.pop();
+        }
+      }
     }
     infix_expr.pop();
   }
