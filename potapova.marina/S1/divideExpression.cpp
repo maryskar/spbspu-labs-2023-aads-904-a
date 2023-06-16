@@ -11,12 +11,54 @@ size_t potapova::checkPriority(char& operation)
   return 0;
 }
 
-potapova::Queue< potapova::ArithmExpMember >& potapova::composePostfixQueue(potapova::Queue< potapova::ArithmExpMember >& infix_expr)
+bool potapova::isOpenBracket(char value)
 {
-  potapova::Queue< potapova::ArithmExpMember > postfix_expr;
-  potapova::Stack< potapova::ArithmExpMember > operators_stack;
-  for (size_t expr_ptr = 0; expr_ptr < infix_expr.size(); ++expr_ptr)
-  {
+  return (value == '(');
+}
 
+bool potapova::isCloseBracket(char value)
+{
+  return (value == ')');
+}
+
+void potapova::removeBrackets(expr_stack& operators_stack, expr_queue& postfix_expr)
+{
+  while (!operators_stack.empty() && !potapova::isOpenBracket(operators_stack.back()))
+  {
+    potapova::ArithmExpMember member = operators_stack.back();
+    operators_stack.pop();
+    potapova::addInPostfixQueue(postfix_expr, member);
+  }
+}
+
+void addInPostfixQueue(expr_queue& postfix_expr, potapova::ArithmExpMember member)
+{
+  
+}
+
+expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
+{
+  expr_queue postfix_expr;
+  expr_stack operators_stack;
+  while (!infix_expr.empty())
+  {
+    potapova::ArithmExpMember& cur_member = infix_expr.front();
+    if (cur_member.type == potapova::ArithmExpMember::Type::Num)
+    {
+      postfix_expr.push(cur_member);
+    }
+    else if (cur_member.type == potapova::ArithmExpMember::Type::Operation)
+    {
+      if (isOpenBracket(cur_member.operation))
+      {
+        operators_stack.push(cur_member);
+      }
+      else if (isCloseBracket(cur_member.operation))
+      {
+        
+      }
+      operators_stack.push(cur_member);
+    }
+    infix_expr.pop();
   }
 }
