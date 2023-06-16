@@ -2,6 +2,11 @@
 #define VALUETYPE_H
 
 #include <cstdint>
+#include "queue.h"
+#include "stack.h"
+
+using expr_queue = potapova::Queue< potapova::ArithmExpMember >;
+using expr_stack = potapova::Stack< potapova::ArithmExpMember >;
 
 namespace potapova
 {
