@@ -5,11 +5,11 @@
 #include "queue.h"
 #include "stack.h"
 
-using expr_queue = potapova::Queue< potapova::ArithmExpMember >;
-using expr_stack = potapova::Stack< potapova::ArithmExpMember >;
-
 namespace potapova
 {
+  struct ArithmExpMember;
+  using expr_queue = Queue< ArithmExpMember >;
+
   struct ArithmExpMember
   {
     enum class Type
@@ -25,6 +25,10 @@ namespace potapova
     };
 
     Type type;
+
+    ArithmExpMember();
+    ArithmExpMember(std::int64_t num);
+    ArithmExpMember(char operation);
   };
 }
 
