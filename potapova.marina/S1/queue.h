@@ -7,14 +7,17 @@ namespace potapova
   class Queue
   {
   public:
-    Queue(): begin_ptr(nullptr), end_ptr(nullptr)
+    Queue():
+      begin_ptr_(nullptr),
+      end_ptr_(nullptr),
+      size_(0)
     {
 
     }
 
     ~Queue()
     {
-      while (begin_ptr != nullptr)
+      while (!empty())
       {
         pop();
       }
@@ -22,41 +25,45 @@ namespace potapova
 
     void push(const T& elem)
     {
-      if (begin_ptr == nullptr)
+      if (begin_ptr_ == nullptr)
       {
-        begin_ptr = end_ptr = new Node(elem);
-        return;
+        begin_ptr_ = end_ptr_ = new Node(elem);
       }
-      end_ptr = end_ptr->next_node_ptr = new Node(elem);
-      ++size;
+      else
+      {
+        end_ptr_ = end_ptr_->next_node_ptr = new Node(elem);
+      }
+      ++size_;
     }
 
     T& front()
     {
-      return begin_ptr->data;
+      return begin_ptr_->data;
     }
 
     void pop()
     {
-      Node* prev_begin_ptr = begin_ptr;
-      begin_ptr = begin_ptr->next_node_ptr;
+      Node* prev_begin_ptr = begin_ptr_;
+      begin_ptr_ = begin_ptr_->next_node_ptr;
       delete prev_begin_ptr;
-      --size;
+      --size_;
     }
 
     size_t size() 
     {
-      return size;
+      return size_;
     }
 
     bool empty()
     {
-      return (size == 0);
+      return size_ == 0;
     }
   private:
     struct Node
     {
-      Node(const T& data): data(data), next_node_ptr(nullptr)
+      Node(const T& data):
+        data(data),
+        next_node_ptr(nullptr)
       {
 
       }
@@ -64,9 +71,9 @@ namespace potapova
       T data;
       Node* next_node_ptr;
     };
-    Node* begin_ptr;
-    Node* end_ptr;
-    size_t size = 0;
+    Node* begin_ptr_;
+    Node* end_ptr_;
+    size_t size_;
   };
 }
 
