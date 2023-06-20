@@ -3,21 +3,26 @@
 
 #include <cassert>
 #include <memory>
-#include "forward-list.hpp"
+#include <utility>
 #include "oneway-list.hpp"
 
 namespace turkin
 {
   template< typename T >
+  class ForwardList;
+  template< typename T >
   class ConstIterator
   {
     public:
+      friend class ForwardList< T >;
       using List = const OneWayNode< T > *;
       ConstIterator();
-      ConstIterator(List rhs);
-      ~ConstIterator() = default;
-      ConstIterator(const ConstIterator< T > & rhs) = default;
-      ConstIterator< T > & operator=(const ConstIterator< T > & rhs) = default;
+      explicit ConstIterator(List rhs);
+      ConstIterator(const ConstIterator< T > & rhs);
+      ConstIterator(ConstIterator< T > && rhs);
+      ConstIterator< T > & operator=(const ConstIterator< T > & rhs);
+      ConstIterator< T > & operator=(ConstIterator< T > && rhs);
+      ~ConstIterator() = delete;
       ConstIterator< T > & operator++();
       ConstIterator< T > operator++(int);
       const T & operator*() const;
@@ -29,7 +34,6 @@ namespace turkin
   };
 }
 
-
 template< typename T >
 turkin::ConstIterator< T >::ConstIterator():
   cur_(nullptr)
@@ -39,6 +43,43 @@ template< typename T >
 turkin::ConstIterator< T >::ConstIterator(List rhs):
   cur_(rhs)
 {}
+
+template< typename T >
+turkin::ConstIterator< T >::ConstIterator(const ConstIterator< T > & rhs):
+  cur_(new List {rhs.cur_->data, rhs.cur_->next})
+{}
+
+template< typename T >
+turkin::ConstIterator< T >::ConstIterator(ConstIterator< T > && rhs):
+  cur_(rhs.cur_)
+{
+  rhs.cur_ = nullptr;
+}
+
+template< typename T >
+turkin::ConstIterator< T > & turkin::ConstIterator< T >::operator=(const ConstIterator< T > & rhs)
+{
+  if (std::addressof(rhs) == this)
+  {
+    return * this;
+  }
+  delete cur_;
+  cur_ = new List {rhs.cur_->data, rhs.cur_->next};
+  return * this;
+}
+
+template< typename T >
+turkin::ConstIterator< T > & turkin::ConstIterator< T >::operator=(ConstIterator< T > && rhs)
+{
+  if (std::addressof(rhs) == this)
+  {
+    return * this;
+  }
+  delete cur_;
+  cur_ = rhs.cur_;
+  rhs.cur_ = nullptr;
+  return * this;
+}
 
 template< typename T >
 turkin::ConstIterator< T > & turkin::ConstIterator< T >::operator++()
@@ -58,18 +99,6 @@ turkin::ConstIterator< T > turkin::ConstIterator< T >::operator++(int)
 }
 
 template< typename T >
-bool turkin::ConstIterator< T >::operator==(const ConstIterator< T > & rhs) const
-{
-  return cur_ == rhs.cur_;
-}
-
-template< typename T >
-bool turkin::ConstIterator< T >::operator!=(const ConstIterator< T > & rhs) const
-{
-  return !(rhs == * this);
-}
-
-template< typename T >
 const T & turkin::ConstIterator< T >::operator*() const
 {
   assert(cur_ != nullptr);
@@ -81,6 +110,18 @@ const T * turkin::ConstIterator< T >::operator->() const
 {
   assert(cur_ != nullptr);
   return std::addressof(cur_->data);
+}
+
+template< typename T >
+bool turkin::ConstIterator< T >::operator==(const ConstIterator< T > & rhs) const
+{
+  return cur_ == rhs.cur_;
+}
+
+template< typename T >
+bool turkin::ConstIterator< T >::operator!=(const ConstIterator< T > & rhs) const
+{
+  return !(rhs == * this);
 }
 
 #endif
