@@ -1,3 +1,6 @@
+#ifndef DICTIONARY_HPP
+#define DICTIONARY_HPP
+
 namespace turkin
 {
   template< typename Key, typename Value, typename Compare >
@@ -19,3 +22,5 @@ namespace turkin
       //
   };
 }
+
+#endif
