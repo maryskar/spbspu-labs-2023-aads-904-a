@@ -6,14 +6,18 @@
 #include <cassert>
 #include <initializer_list>
 #include <oneway-list.hpp>
+#include "iterator.hpp"
+#include "const-iterator.hpp"
 
 namespace turkin
 {
-  template< typename T, class Iterator, class ConstIterator>
+  template< typename T >
   class ForwardList
   {
     public:
-      using fl = ForwardList< T, Iterator, ConstIterator >;
+      using fl = ForwardList< T >;
+      using it = Iterator< T >;
+      using cit = ConstIterator< T >;
       ForwardList(); //done
       ForwardList(const fl & rhs); //done
       ForwardList(fl && rhs); //done
@@ -23,27 +27,27 @@ namespace turkin
       void assign(size_t count, const T & value);
       T & front(); //done
       const T & front() const; //done
-      Iterator before_begin() noexcept; //done
-      ConstIterator before_begin() const noexcept; //done
-      ConstIterator cbefore_begin() const noexcept; // done
-      Iterator begin() noexcept; //done
-      ConstIterator begin() const noexcept; //done
-      ConstIterator cbegin() const noexcept; //done
-      Iterator end() noexcept; //done
-      ConstIterator end() const noexcept; //done
-      ConstIterator cend() const noexcept; //done
+      it before_begin() noexcept; //done
+      cit before_begin() const noexcept; //done
+      cit cbefore_begin() const noexcept; // done
+      it begin() noexcept; //done
+      cit begin() const noexcept; //done
+      cit cbegin() const noexcept; //done
+      it end() noexcept; //done
+      cit end() const noexcept; //done
+      cit cend() const noexcept; //done
       bool empty() const noexcept; //done
       void clear() noexcept; //done
-      Iterator insert_after(ConstIterator pos, const T & value); //?
-      Iterator insert_after(ConstIterator pos, T && value);
-      Iterator insert_after(ConstIterator pos, size_t const, const T & value);
+      it insert_after(cit pos, const T & value); //?
+      it insert_after(cit pos, T && value);
+      it insert_after(cit pos, size_t const, const T & value);
       template< class InputIt >
-      Iterator insert_after(ConstIterator pos, InputIt firts, InputIt last);
-      Iterator insert_after(ConstIterator pos, std::initializer_list< T > ilist);
+      it insert_after(cit pos, InputIt firts, InputIt last);
+      it insert_after(cit pos, std::initializer_list< T > ilist);
       template< class... Args >
-      Iterator emplace_after(ConstIterator pos, Args &&... args);
-      Iterator erase_after(ConstIterator pos); //
-      Iterator erase_after(ConstIterator first, ConstIterator last);
+      it emplace_after(cit pos, Args &&... args);
+      it erase_after(cit pos); //
+      it erase_after(cit first, cit last);
       void push_front(const T & value); //done
       void push_front(T && value); //?
       template< class... Args >
@@ -60,12 +64,12 @@ namespace turkin
       void merge(fl & other, Compare comp);
       template< class Compare >
       void merge(fl && other, Compare comp);
-      void splice_after(ConstIterator pos, fl & other);
-      void splice_after(ConstIterator pos, fl && other);
-      void splice_after(ConstIterator pos, fl & other, ConstIterator it);
-      void splice_after(ConstIterator pos, fl && other, ConstIterator it);
-      void splice_after(ConstIterator pos, fl & other, ConstIterator first, ConstIterator last);
-      void splice_after(ConstIterator pos, fl && other, ConstIterator first, ConstIterator last);
+      void splice_after(cit pos, fl & other);
+      void splice_after(cit pos, fl && other);
+      void splice_after(cit pos, fl & other, cit it);
+      void splice_after(cit pos, fl && other, cit it);
+      void splice_after(cit pos, fl & other, cit first, cit last);
+      void splice_after(cit pos, fl && other, cit first, cit last);
       void remove(const T & value);
       template< class UnaryPredicate >
       void remove_if(UnaryPredicate p);
@@ -86,11 +90,9 @@ namespace turkin
 }
 
 using namespace turkin;
-//template< typename T, class Iterator, class ConstIterator>
-//using fl = turkin::ForwardList< T, Iterator, ConstIterator>;
 
-template< typename T, class Iterator, class ConstIterator >
-ForwardList< T, Iterator, ConstIterator >::ForwardList():
+template< typename T >
+ForwardList< T >::ForwardList():
   head_(nullptr),
   tail_(nullptr),
   dummy_(new OneWayNode< T >),
@@ -99,8 +101,8 @@ ForwardList< T, Iterator, ConstIterator >::ForwardList():
   dummy_->next = nullptr;
 }
 
-template< typename T, class Iterator, class ConstIterator >
-ForwardList< T, Iterator, ConstIterator >::ForwardList(const ForwardList< T, Iterator, ConstIterator > & rhs):
+template< typename T >
+ForwardList< T >::ForwardList(const fl & rhs):
   head_(nullptr),
   tail_(nullptr),
   dummy_(nullptr),
@@ -109,8 +111,8 @@ ForwardList< T, Iterator, ConstIterator >::ForwardList(const ForwardList< T, Ite
   copy(rhs);
 }
 
-template< typename T, class Iterator, class ConstIterator >
-ForwardList< T, Iterator, ConstIterator >::ForwardList(ForwardList< T, Iterator, ConstIterator > && rhs):
+template< typename T >
+ForwardList< T >::ForwardList(fl && rhs):
   head_(rhs.head_),
   tail_(rhs.tail_),
   dummy_(rhs.dummy_),
@@ -122,8 +124,8 @@ ForwardList< T, Iterator, ConstIterator >::ForwardList(ForwardList< T, Iterator,
   rhs.size_ = 0;
 }
 
-template< typename T, class Iterator, class ConstIterator >
-ForwardList< T, Iterator, ConstIterator> & ForwardList< T, Iterator, ConstIterator >::operator=(const ForwardList< T, Iterator, ConstIterator > & rhs)
+template< typename T >
+ForwardList< T > & ForwardList< T >::operator=(const fl & rhs)
 {
   if (std::addressof(rhs) == this)
   {
@@ -134,8 +136,8 @@ ForwardList< T, Iterator, ConstIterator> & ForwardList< T, Iterator, ConstIterat
   return * this;
 }
 
-template< typename T, class Iterator, class ConstIterator >
-ForwardList< T, Iterator, ConstIterator> & ForwardList< T, Iterator, ConstIterator >::operator=(ForwardList< T, Iterator, ConstIterator > && rhs)
+template< typename T >
+ForwardList< T > & ForwardList< T >::operator=(fl && rhs)
 {
   if (std::addressof(rhs) == this)
   {
@@ -152,88 +154,88 @@ ForwardList< T, Iterator, ConstIterator> & ForwardList< T, Iterator, ConstIterat
   rhs.size_ = nullptr;
 }
 
-template< typename T, class Iterator, class ConstIterator >
-ForwardList< T, Iterator, ConstIterator >::~ForwardList()
+template< typename T >
+ForwardList< T >::~ForwardList()
 {
   clear();
 }
 
-template< typename T, class Iterator, class ConstIterator >
-T & ForwardList< T, Iterator, ConstIterator >::front()
+template< typename T >
+T & ForwardList< T >::front()
 {
   assert(head_ != nullptr);
   return head_->data;
 }
 
-template< typename T, class Iterator, class ConstIterator >
-const T & ForwardList< T, Iterator, ConstIterator >::front() const
+template< typename T >
+const T & ForwardList< T >::front() const
 {
   assert(head_ != nullptr);
   return head_->data;
 }
 
-template< typename T, class Iterator, class ConstIterator >
-Iterator ForwardList< T, Iterator, ConstIterator >::before_begin() noexcept
+template< typename T >
+Iterator< T > ForwardList< T >::before_begin() noexcept
 {
   return Iterator(dummy_);
 };
 
-template< typename T, class Iterator, class ConstIterator >
-ConstIterator ForwardList< T, Iterator, ConstIterator >::before_begin() const noexcept
+template< typename T >
+ConstIterator< T > ForwardList< T >::before_begin() const noexcept
 {
-  return ConstIterator(dummy_);
+  return cit(dummy_);
 };
 
-template< typename T, class Iterator, class ConstIterator >
-ConstIterator ForwardList< T, Iterator, ConstIterator >::cbefore_begin() const noexcept
+template< typename T >
+ConstIterator< T > ForwardList< T >::cbefore_begin() const noexcept
 {
-  return ConstIterator(dummy_);
+  return cit(dummy_);
 };
 
-template< typename T, class Iterator, class ConstIterator >
-Iterator ForwardList< T, Iterator, ConstIterator >::begin() noexcept
+template< typename T >
+Iterator< T > ForwardList< T >::begin() noexcept
 {
-  return Iterator(head_);
+  return it(head_);
 };
 
-template< typename T, class Iterator, class ConstIterator >
-ConstIterator ForwardList< T, Iterator, ConstIterator >::begin() const noexcept
+template< typename T >
+ConstIterator< T > ForwardList< T >::begin() const noexcept
 {
-  return ConstIterator(head_);
+  return cit(head_);
 };
 
-template< typename T, class Iterator, class ConstIterator >
-ConstIterator ForwardList< T, Iterator, ConstIterator >::cbegin() const noexcept
+template< typename T >
+ConstIterator< T > ForwardList< T >::cbegin() const noexcept
 {
-  return ConstIterator(head_);
+  return cit(head_);
 };
 
-template< typename T, class Iterator, class ConstIterator >
-Iterator ForwardList< T, Iterator, ConstIterator >::end() noexcept
+template< typename T >
+Iterator< T > ForwardList< T >::end() noexcept
 {
-  return Iterator(tail_);
+  return it(tail_);
 };
 
-template< typename T, class Iterator, class ConstIterator >
-ConstIterator ForwardList< T, Iterator, ConstIterator >::end() const noexcept
+template< typename T >
+ConstIterator< T > ForwardList< T >::end() const noexcept
 {
-  return ConstIterator(tail_);
+  return cit(tail_);
 };
 
-template< typename T, class Iterator, class ConstIterator >
-ConstIterator ForwardList< T, Iterator, ConstIterator >::cend() const noexcept
+template< typename T >
+ConstIterator< T > ForwardList< T >::cend() const noexcept
 {
-  return ConstIterator(tail_);
+  return cit(tail_);
 };
 
-template< typename T, class Iterator, class ConstIterator >
-bool ForwardList< T, Iterator, ConstIterator >::empty() const noexcept
+template< typename T >
+bool ForwardList< T >::empty() const noexcept
 {
   return head_ == nullptr;
 };
 
-template< typename T, class Iterator, class ConstIterator >
-void ForwardList< T, Iterator, ConstIterator >::clear() noexcept
+template< typename T >
+void ForwardList< T >::clear() noexcept
 {
   free(head_);
   delete dummy_;
@@ -243,8 +245,8 @@ void ForwardList< T, Iterator, ConstIterator >::clear() noexcept
   size_ = 0;
 };
 
-template< typename T, class Iterator, class ConstIterator >
-Iterator ForwardList< T, Iterator, ConstIterator >::insert_after(ConstIterator pos, const T & value)
+template< typename T >
+Iterator< T > ForwardList< T >::insert_after(cit pos, const T & value)
 {
   auto * ins = OneWayNode< T > {value, nullptr};
   ins->next = pos.cur_->next;
@@ -262,11 +264,11 @@ Iterator ForwardList< T, Iterator, ConstIterator >::insert_after(ConstIterator p
     tail_ = ins;
   }
   size_++;
-  return Iterator(pos.cur_->next);
+  return it(pos.cur_->next);
 }
 
-template< typename T, class Iterator, class ConstIterator >
-Iterator ForwardList< T, Iterator, ConstIterator >::erase_after(ConstIterator pos)
+template< typename T >
+Iterator< T > ForwardList< T >::erase_after(cit pos)
 {
   ConstIterator npos(pos);
   npos++;
@@ -294,22 +296,22 @@ Iterator ForwardList< T, Iterator, ConstIterator >::erase_after(ConstIterator po
     tail_ = nullptr;
     dummy_->next = nullptr;
   }
-  return iterator(pos.cur_->next);
+  return it(pos.cur_->next);
 }
 
-template< typename T, class Iterator, class ConstIterator >
-Iterator ForwardList< T, Iterator, ConstIterator >::erase_after(ConstIterator first, ConstIterator last)
+template< typename T >
+Iterator< T > ForwardList< T >::erase_after(cit first, cit last)
 {
   auto head = first;
   while (first != last)
   {
     first = erase_after(head);
   }
-  return Iterator(last);
+  return it(last);
 }
 
-template< typename T, class Iterator, class ConstIterator >
-void ForwardList< T, Iterator, ConstIterator >::push_front(const T & value)
+template< typename T >
+void ForwardList< T >::push_front(const T & value)
 {
   auto * ins = new OneWayNode< T > {value, nullptr};
   if (head_)
@@ -329,8 +331,8 @@ void ForwardList< T, Iterator, ConstIterator >::push_front(const T & value)
   size_++;
 }
 
-template< typename T, class Iterator, class ConstIterator >
-void ForwardList< T, Iterator, ConstIterator >::push_front(T && value)
+template< typename T >
+void ForwardList< T >::push_front(T && value)
 {
   auto * ins = new OneWayNode< T > {value, nullptr};
   if (head_)
@@ -350,14 +352,14 @@ void ForwardList< T, Iterator, ConstIterator >::push_front(T && value)
   size_++;
 }
 
-template< typename T, class Iterator, class ConstIterator >
-void ForwardList< T, Iterator, ConstIterator >::pop_front()
+template< typename T >
+void ForwardList< T >::pop_front()
 {
   erase_after(before_begin());
 }
 
-template< typename T, class Iterator, class ConstIterator >
-void ForwardList< T, Iterator, ConstIterator >::copy(const ForwardList< T, Iterator, ConstIterator > & rhs)
+template< typename T >
+void ForwardList< T >::copy(const fl & rhs)
 {
   auto clone = copyList(rhs.head_);
   head_ = clone.first;
