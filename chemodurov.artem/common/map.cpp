@@ -1,9 +1,14 @@
-#include "dictionary.hpp"
+#include "map.hpp"
 #include <iostream>
 
 namespace chemodurov
 {
-  void print(std::ostream & out, const Dictionary< int, std::string > & dict)
+  void print(std::ostream & out, const std::pair< int, std::string > & pair)
+  {
+    out << pair.first << ' ' << pair.second;
+  }
+
+  void print(std::ostream & out, const Map< int, std::string > & dict)
   {
     auto end_ = dict.end();
     for (auto i = dict.begin(); i != end_; ++i)
@@ -19,7 +24,7 @@ namespace chemodurov
     }
   }
 
-  void print(std::ostream & out, const std::pair< std::string, Dictionary< int, std::string > > & pair)
+  void print(std::ostream & out, const std::pair< std::string, Map< int, std::string > > & pair)
   {
     out << pair.first << ' ';
     print(out, pair.second);
