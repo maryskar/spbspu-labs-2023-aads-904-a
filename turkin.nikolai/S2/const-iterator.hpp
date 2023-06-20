@@ -22,7 +22,7 @@ namespace turkin
       ConstIterator(ConstIterator< T > && rhs);
       ConstIterator< T > & operator=(const ConstIterator< T > & rhs);
       ConstIterator< T > & operator=(ConstIterator< T > && rhs);
-      ~ConstIterator() = delete;
+      ~ConstIterator() = default;
       ConstIterator< T > & operator++();
       ConstIterator< T > operator++(int);
       const T & operator*() const;

@@ -177,7 +177,7 @@ const T & ForwardList< T >::front() const
 template< typename T >
 Iterator< T > ForwardList< T >::before_begin() noexcept
 {
-  return Iterator(dummy_);
+  return it(dummy_);
 };
 
 template< typename T >
@@ -270,32 +270,6 @@ Iterator< T > ForwardList< T >::insert_after(cit pos, const T & value)
 template< typename T >
 Iterator< T > ForwardList< T >::erase_after(cit pos)
 {
-  ConstIterator npos(pos);
-  npos++;
-  auto ins = npos;
-  if (ins)
-  {
-    pos.cur_->next = ins->next;
-  }
-  if (pos.cur_ == dummy_)
-  {
-    head_ = pos.cur_->next;
-  }
-  if (ins)
-  {
-    delete ins;
-  }
-  size_--;
-  if (size_ == 1)
-  {
-    tail_ = nullptr;
-  }
-  else if (size_ == 0)
-  {
-    head_ = nullptr;
-    tail_ = nullptr;
-    dummy_->next = nullptr;
-  }
   return it(pos.cur_->next);
 }
 

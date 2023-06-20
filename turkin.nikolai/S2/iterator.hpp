@@ -22,7 +22,7 @@ namespace turkin
       Iterator(Iterator< T > && rhs);
       Iterator< T > & operator=(const Iterator< T > & rhs);
       Iterator< T > & operator=(Iterator< T > && rhs);
-      ~Iterator() = delete;
+      ~Iterator() = default;
       Iterator< T > & operator++();
       Iterator< T > operator++(int);
       T & operator*();
