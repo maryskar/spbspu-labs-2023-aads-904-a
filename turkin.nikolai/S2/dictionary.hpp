@@ -1,6 +1,8 @@
 #ifndef DICTIONARY_HPP
 #define DICTIONARY_HPP
 
+#include "forward-list.hpp"
+
 namespace turkin
 {
   template< typename Key, typename Value, typename Compare >
@@ -19,7 +21,7 @@ namespace turkin
       Value & drop(Key k);
       const Value & drop(Key k) const;
     private:
-      //
+      ForwardList< Value > fl_;
   };
 }
 
