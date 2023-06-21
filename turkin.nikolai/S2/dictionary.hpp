@@ -9,12 +9,12 @@ namespace turkin
   class Dictionary
   {
     public:
-      Dictionary();
+      Dictionary() = default;
       Dictionary(const Dictionary< Key, Value, Compare > & rhs);
       Dictionary(Dictionary< Key, Value, Compare > && rhs);
       Dictionary & operator=(const Dictionary< Key, Value, Compare > & rhs);
       Dictionary & operator=(Dictionary< Key, Value, Compare > && rhs);
-      ~Dictionary();
+      ~Dictionary() = default;
       void push(Key k, Value v);
       Value & get(Key k);
       const Value & get(Key k) const;
