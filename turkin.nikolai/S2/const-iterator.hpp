@@ -46,7 +46,7 @@ turkin::ConstIterator< T >::ConstIterator(List rhs):
 
 template< typename T >
 turkin::ConstIterator< T >::ConstIterator(const ConstIterator< T > & rhs):
-  cur_(new List {rhs.cur_->data, rhs.cur_->next})
+  cur_(rhs.cur_)
 {}
 
 template< typename T >

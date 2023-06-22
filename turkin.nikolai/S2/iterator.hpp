@@ -46,7 +46,7 @@ turkin::Iterator< T >::Iterator(List rhs):
 
 template< typename T >
 turkin::Iterator< T >::Iterator(const Iterator< T > & rhs):
-  cur_(new List {rhs.cur_->data, rhs.cur_->next})
+  cur_(rhs.cur_)
 {}
 
 template< typename T >

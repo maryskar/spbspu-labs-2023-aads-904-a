@@ -21,16 +21,22 @@ int main(int argc, char * argv[])
     std::cerr << "cannot open file\n";
     return 1;
   }
-
-  turkin::Dictionary< std::size_t, std::string, std::less< > > dict;
-
+  using dict_t = turkin::Dictionary< std::size_t, std::string, std::less< std::size_t > >;
+  dict_t dict;
+  dict.insert(12, "asdsdad");
+  std::cout << dict.count(12) << "\n";
+  std::cout << "asd\n";
+  /*
+  std::string name;
+  std::size_t key;
+  std::string value;
   while (file)
   {
-    std::size_t key;
-    std::string value;
+    file >> name;
+    while
     file >> key >> value;
-    std::cout << line << "\n";
+    std::cout <<  << "\n";
   }
-
+*/
   return 0;
 }

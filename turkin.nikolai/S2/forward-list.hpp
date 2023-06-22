@@ -248,7 +248,7 @@ void ForwardList< T >::clear() noexcept
 template< typename T >
 Iterator< T > ForwardList< T >::insert_after(cit pos, const T & value)
 {
-  auto * ins = OneWayNode< T > {value, nullptr};
+  auto * ins = new OneWayNode< T > {value, nullptr};
   ins->next = pos.cur_->next;
   pos.cur_->next = ins;
   if (pos.cur_ == dummy_)
