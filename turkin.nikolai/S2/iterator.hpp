@@ -11,17 +11,18 @@ namespace turkin
   template< typename T >
   class ForwardList;
   template< typename T >
+  class ConstIterator;
+  template< typename T >
   class Iterator
   {
+    friend class ForwardList< T >;
+    friend class ConstIterator< T >;
     public:
-      friend class ForwardList< T >;
       using List = OneWayNode< T > *;
       Iterator();
       explicit Iterator(List rhs);
-      Iterator(const Iterator< T > & rhs);
-      Iterator(Iterator< T > && rhs);
-      Iterator< T > & operator=(const Iterator< T > & rhs);
-      Iterator< T > & operator=(Iterator< T > && rhs);
+      explicit Iterator(const ConstIterator< T > & rhs);
+      Iterator< T > & operator=(const Iterator< T > & rhs) = default;
       ~Iterator() = default;
       Iterator< T > & operator++();
       Iterator< T > operator++(int);
@@ -45,41 +46,9 @@ turkin::Iterator< T >::Iterator(List rhs):
 {}
 
 template< typename T >
-turkin::Iterator< T >::Iterator(const Iterator< T > & rhs):
+turkin::Iterator< T >::Iterator(const ConstIterator< T > & rhs):
   cur_(rhs.cur_)
 {}
-
-template< typename T >
-turkin::Iterator< T >::Iterator(Iterator< T > && rhs):
-  cur_(rhs.cur_)
-{
-  rhs.cur_ = nullptr;
-}
-
-template< typename T >
-turkin::Iterator< T > & turkin::Iterator< T >::operator=(const Iterator< T > & rhs)
-{
-  if (std::addressof(rhs) == this)
-  {
-    return * this;
-  }
-  delete cur_;
-  cur_ = new List {rhs.cur_->data, rhs.cur_->next};
-  return * this;
-}
-
-template< typename T >
-turkin::Iterator< T > & turkin::Iterator< T >::operator=(Iterator< T > && rhs)
-{
-  if (std::addressof(rhs) == this)
-  {
-    return * this;
-  }
-  delete cur_;
-  cur_ = rhs.cur_;
-  rhs.cur_ = nullptr;
-  return * this;
-}
 
 template< typename T >
 turkin::Iterator< T > & turkin::Iterator< T >::operator++()

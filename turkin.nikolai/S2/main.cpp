@@ -23,8 +23,13 @@ int main(int argc, char * argv[])
   }
   using dict_t = turkin::Dictionary< std::size_t, std::string, std::less< std::size_t > >;
   dict_t dict;
-  dict.insert(12, "asdsdad");
-  std::cout << dict.count(12) << "\n";
+  dict.insert(1, "a");
+  dict.insert(2, "b");
+  dict.insert(3, "c");
+  std::cout << "begin key: " << dict.insert(4, "ghj").second << "\n";
+  std::cout << "begin data: \n";
+  std::cout << dict.count(2) << "\n";
+  std::cout << "size: " << dict.size() << "\n";
   std::cout << "asd\n";
   /*
   std::string name;

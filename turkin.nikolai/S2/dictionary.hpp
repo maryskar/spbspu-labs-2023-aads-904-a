@@ -10,7 +10,7 @@
 
 namespace turkin
 {
-  template< typename Key, typename Value, class Compare >
+  template< typename Key, typename Value, typename Compare >
   class Dictionary
   {
     public:
@@ -24,6 +24,9 @@ namespace turkin
       Dictionary & operator=(const dict & rhs); //done
       Dictionary & operator=(dict && rhs); //done
       ~Dictionary() = default; //done
+      it before_begin() noexcept; //done
+      cit before_begin() const noexcept; //done
+      cit cbefore_begin() const noexcept; //done
       it begin() noexcept; //done
       cit begin() const noexcept; //done
       cit cbegin() const noexcept; //done
@@ -38,7 +41,7 @@ namespace turkin
       cit crend() const noexcept; //done
 
       bool empty() const noexcept; //done
-      //size
+      std::size_t size() const noexcept; //done
       //max_size
 
       void clear() noexcept; //done
@@ -62,27 +65,31 @@ namespace turkin
 
     private:
       ForwardList< dict_t > fl_;
+      Compare cmp_;
   };
 }
 
 using namespace turkin;
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare >::Dictionary():
-  fl_()
+  fl_(),
+  cmp_()
 {}
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare >::Dictionary(const dict & rhs):
-  fl_(rhs.fl_)
+  fl_(rhs.fl_),
+  cmp_(rhs.cmp_)
 {}
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare >::Dictionary(dict && rhs):
-  fl_(rhs.fl_)
+  fl_(rhs.fl_),
+  cmp_(rhs.cmp_)
 {}
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare > & Dictionary< Key, Value, Compare >::operator=(const dict & rhs)
 {
   if (std::addressof(rhs) == this)
@@ -90,10 +97,11 @@ Dictionary< Key, Value, Compare > & Dictionary< Key, Value, Compare >::operator=
     return * this;
   }
   fl_ = rhs.fl_;
+  cmp_ = rhs.cmp_;
   return * this;
 }
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare > & Dictionary< Key, Value, Compare >::operator=(dict && rhs)
 {
   if (std::addressof(rhs) == this)
@@ -101,108 +109,143 @@ Dictionary< Key, Value, Compare > & Dictionary< Key, Value, Compare >::operator=
     return * this;
   }
   fl_ = std::move(rhs.fl_);
+  cmp_ = rhs.cmp_;
   return * this;
 }
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
+Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::before_begin() noexcept
+{
+  return fl_.before_begin();
+}
+
+template< typename Key, typename Value, typename Compare >
+ConstIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::before_begin() const noexcept
+{
+  return fl_.before_begin();
+}
+
+template< typename Key, typename Value, typename Compare >
+ConstIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::cbefore_begin() const noexcept
+{
+  return fl_.cbefore_begin();
+}
+
+template< typename Key, typename Value, typename Compare >
 Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::begin() noexcept
 {
   return fl_.begin();
 }
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 ConstIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::begin() const noexcept
 {
   return fl_.begin();
 }
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 ConstIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::cbegin() const noexcept
 {
   return fl_.cbegin();
 }
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::end() noexcept
 {
   return fl_.end();
 }
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 ConstIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::end() const noexcept
 {
   return fl_.end();
 }
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 ConstIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::cend() const noexcept
 {
   return fl_.cend();
 }
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::rbegin() noexcept
 {
   return fl_.end();
 }
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 ConstIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::rbegin() const noexcept
 {
   return fl_.end();
 }
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 ConstIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::crbegin() const noexcept
 {
   return fl_.cend();
 }
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::rend() noexcept
 {
   return fl_.begin();
 }
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 ConstIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::rend() const noexcept
 {
   return fl_.begin();
 }
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 ConstIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::crend() const noexcept
 {
   return fl_.cbegin();
 }
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 bool Dictionary< Key, Value, Compare >::empty() const noexcept
 {
   return fl_.empty();
 }
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
+std::size_t Dictionary< Key, Value, Compare >::size() const noexcept
+{
+  return fl_.size();
+}
+
+template< typename Key, typename Value, typename Compare >
 void Dictionary< Key, Value, Compare >::clear() noexcept
 {
   fl_.clear();
 }
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 std::pair< Iterator< std::pair< Key, Value > >, bool > Dictionary< Key, Value, Compare >::insert(const Key & k, const Value & v)
 {
   return insert(std::make_pair(k, v));
 }
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 std::pair< Iterator< std::pair< Key, Value > >, bool > Dictionary< Key, Value, Compare >::insert(const std::pair< Key, Value > & value)
 {
-  auto pos = cbegin();
-  auto ins = fl_.insert_after(pos, value);
-  return std::make_pair(ins, true);
+  it ins = lower_bound(value.first);
+  it moved_ins = ins;
+  moved_ins++;
+  if (moved_ins == end())
+    {
+    return std::make_pair(fl_.insert_after(cit(ins), value), true);
+  }
+  if (moved_ins->first == value.first)
+    {
+    moved_ins->second = value.second;
+    return std::make_pair(moved_ins, false);
+  }
+  return std::make_pair(fl_.insert_after(cit(ins), value), true);
 }
 
-template< typename Key, typename Value, class Compare >
+template< typename Key, typename Value, typename Compare >
 std::size_t Dictionary< Key, Value, Compare >::count(const Key & k) const
 {
   std::size_t amount = 0;
@@ -212,9 +255,37 @@ std::size_t Dictionary< Key, Value, Compare >::count(const Key & k) const
     {
       amount++;
     }
-    ins++;
   }
   return amount;
+}
+
+template< typename Key, typename Value, typename Compare >
+Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::lower_bound(const Key & k)
+{
+  auto res = before_begin();
+  for (auto it = begin(); it != end() && cmp_(it->first, k); ++it, ++res);
+  return res;
+}
+
+template< typename Key, typename Value, typename Compare >
+ConstIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::lower_bound(const Key & k) const
+{
+  return cit(lower_bound(k));
+}
+
+template< typename Key, typename Value, typename Compare >
+Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::upper_bound(const Key & k)
+{
+  auto res = before_begin();
+  for (auto it = begin(); it != end() && !cmp_(it->first, k); ++it, ++res);
+  return res;
+
+}
+
+template< typename Key, typename Value, typename Compare >
+ConstIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::upper_bound(const Key & k) const
+{
+  return cit(upper_bound(k));
 }
 
 #endif

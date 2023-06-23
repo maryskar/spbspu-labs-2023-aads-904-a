@@ -24,7 +24,7 @@ namespace turkin
       ForwardList & operator=(const fl & rhs); //done
       ForwardList & operator=(fl && rhs); //done
       ~ForwardList(); //done
-      void assign(size_t count, const T & value);
+      void assign(std::size_t count, const T & value);
       T & front(); //done
       const T & front() const; //done
       it before_begin() noexcept; //done
@@ -38,9 +38,10 @@ namespace turkin
       cit cend() const noexcept; //done
       bool empty() const noexcept; //done
       void clear() noexcept; //done
+      std::size_t size() const noexcept;
       it insert_after(cit pos, const T & value); //?
       it insert_after(cit pos, T && value);
-      it insert_after(cit pos, size_t const, const T & value);
+      it insert_after(cit pos, std::size_t const, const T & value);
       template< class InputIt >
       it insert_after(cit pos, InputIt firts, InputIt last);
       it insert_after(cit pos, std::initializer_list< T > ilist);
@@ -55,7 +56,7 @@ namespace turkin
       template< class... Args >
       T & emplace_front(Args &&... args);
       void pop_front();
-      void resize(size_t count);
+      void resize(std::size_t count);
       void swap(fl & other);
 
       void merge(fl & other);
@@ -81,10 +82,10 @@ namespace turkin
       template< class Compare >
       void sort(Compare comp);
     private:
-      OneWayNode< T > * head_;
-      OneWayNode< T > * tail_;
-      OneWayNode< T > * dummy_;
-      size_t size_;
+      it head_;
+      it tail_;
+      it dummy_;
+      std::size_t size_;
       void copy(const fl & rhs);
   };
 }
@@ -98,7 +99,7 @@ ForwardList< T >::ForwardList():
   dummy_(new OneWayNode< T >),
   size_(0)
 {
-  dummy_->next = nullptr;
+  dummy_.cur_->next = head_.cur_;
 }
 
 template< typename T >
@@ -164,26 +165,26 @@ template< typename T >
 T & ForwardList< T >::front()
 {
   assert(head_ != nullptr);
-  return head_->data;
+  return head_.cur_->data;
 }
 
 template< typename T >
 const T & ForwardList< T >::front() const
 {
   assert(head_ != nullptr);
-  return head_->data;
+  return head_.cur_->data;
 }
 
 template< typename T >
 Iterator< T > ForwardList< T >::before_begin() noexcept
 {
-  return it(dummy_);
+  return dummy_;
 };
 
 template< typename T >
 ConstIterator< T > ForwardList< T >::before_begin() const noexcept
 {
-  return cit(dummy_);
+  return dummy_;
 };
 
 template< typename T >
@@ -195,13 +196,13 @@ ConstIterator< T > ForwardList< T >::cbefore_begin() const noexcept
 template< typename T >
 Iterator< T > ForwardList< T >::begin() noexcept
 {
-  return it(head_);
+  return head_;
 };
 
 template< typename T >
 ConstIterator< T > ForwardList< T >::begin() const noexcept
 {
-  return cit(head_);
+  return head_;
 };
 
 template< typename T >
@@ -213,13 +214,13 @@ ConstIterator< T > ForwardList< T >::cbegin() const noexcept
 template< typename T >
 Iterator< T > ForwardList< T >::end() noexcept
 {
-  return it(tail_);
+  return tail_;
 };
 
 template< typename T >
 ConstIterator< T > ForwardList< T >::end() const noexcept
 {
-  return cit(tail_);
+  return tail_;
 };
 
 template< typename T >
@@ -231,67 +232,51 @@ ConstIterator< T > ForwardList< T >::cend() const noexcept
 template< typename T >
 bool ForwardList< T >::empty() const noexcept
 {
-  return head_ == nullptr;
+  return head_.cur_ == nullptr;
 };
 
 template< typename T >
 void ForwardList< T >::clear() noexcept
 {
-  free(head_);
-  delete dummy_;
-  head_ = nullptr;
-  tail_ = nullptr;
-  dummy_ = nullptr;
+  free(dummy_.cur_);
+  head_.cur_ = nullptr;
+  tail_.cur_ = nullptr;
+  dummy_.cur_ = nullptr;
   size_ = 0;
+};
+
+template< typename T >
+std::size_t ForwardList< T >::size() const noexcept
+{
+  return size_;
 };
 
 template< typename T >
 Iterator< T > ForwardList< T >::insert_after(cit pos, const T & value)
 {
-  auto * ins = new OneWayNode< T > {value, nullptr};
-  ins->next = pos.cur_->next;
-  pos.cur_->next = ins;
-  if (pos.cur_ == dummy_)
+  auto * ins = new OneWayNode< T > {value, pos.cur_->next};
+  if (pos.cur_ == dummy_.cur_)
   {
-    if (tail_ == nullptr)
-    {
-      tail_ = head_;
-    }
-    head_ = ins;
+    pos.cur_->next = ins;
+    tail_ = head_;
   }
-  else if (ins->next == nullptr)
+  else
   {
-    tail_ = ins;
+    pos.cur_->next = ins;
   }
+  pos++;
   size_++;
-  return it(pos.cur_->next);
-}
-
-template< typename T >
-Iterator< T > ForwardList< T >::erase_after(cit pos)
-{
-  return it(pos.cur_->next);
-}
-
-template< typename T >
-Iterator< T > ForwardList< T >::erase_after(cit first, cit last)
-{
-  auto head = first;
-  while (first != last)
-  {
-    first = erase_after(head);
-  }
-  return it(last);
+  return it(pos);
 }
 
 template< typename T >
 void ForwardList< T >::push_front(const T & value)
 {
-  auto * ins = new OneWayNode< T > {value, nullptr};
-  if (head_)
+  auto ins = it(new OneWayNode< T > {value, nullptr});
+  if (head_.cur_)
   {
-    ins->next = head_;
-    if (!tail_)
+    ins.cur_->next = head_.cur_;
+    if (!tail_.cur_)
     {
       tail_ = head_;
     }
@@ -301,18 +286,18 @@ void ForwardList< T >::push_front(const T & value)
   {
     head_ = ins;
   }
-  dummy_->next = head_;
+  dummy_.cur_->next = head_.cur_;
   size_++;
 }
 
 template< typename T >
 void ForwardList< T >::push_front(T && value)
 {
-  auto * ins = new OneWayNode< T > {value, nullptr};
-  if (head_)
+  auto ins = it(new OneWayNode< T > {value, nullptr});
+  if (head_.cur_)
   {
-    ins->next = head_;
-    if (!tail_)
+    ins.cur_->next = head_.cur_;
+    if (!tail_.cur_)
     {
       tail_ = head_;
     }
@@ -322,7 +307,7 @@ void ForwardList< T >::push_front(T && value)
   {
     head_ = ins;
   }
-  dummy_->next = head_;
+  dummy_.cur_->next = head_.cur_;
   size_++;
 }
 
@@ -335,10 +320,10 @@ void ForwardList< T >::pop_front()
 template< typename T >
 void ForwardList< T >::copy(const fl & rhs)
 {
-  auto clone = copyList(rhs.head_);
-  head_ = clone.first;
-  tail_ = clone.second;
-  dummy_->next = head_;
+  auto clone = copyList(rhs.head_.cur_);
+  head_.cur_ = clone.first;
+  tail_.cur_ = clone.second;
+  dummy_.cur_->next = head_.cur_;
 }
 
 #endif
