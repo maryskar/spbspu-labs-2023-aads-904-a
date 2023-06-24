@@ -21,7 +21,6 @@ namespace turkin
       using List = OneWayNode< T > *;
       Iterator();
       explicit Iterator(List rhs);
-      explicit Iterator(const ConstIterator< T > & rhs);
       Iterator< T > & operator=(const Iterator< T > & rhs) = default;
       ~Iterator() = default;
       Iterator< T > & operator++();
@@ -43,11 +42,6 @@ turkin::Iterator< T >::Iterator():
 template< typename T >
 turkin::Iterator< T >::Iterator(List rhs):
   cur_(rhs)
-{}
-
-template< typename T >
-turkin::Iterator< T >::Iterator(const ConstIterator< T > & rhs):
-  cur_(rhs.cur_)
 {}
 
 template< typename T >

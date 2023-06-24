@@ -4,6 +4,7 @@
 #include <cassert>
 #include <memory>
 #include <utility>
+#include "iterator.hpp"
 #include "oneway-list.hpp"
 
 namespace turkin
@@ -11,12 +12,9 @@ namespace turkin
   template< typename T >
   class ForwardList;
   template< typename T >
-  class Iterator;
-  template< typename T >
   class ConstIterator
   {
     friend class ForwardList< T >;
-    friend class Iterator< T >;
     public:
       using List = OneWayNode< T > *;
       ConstIterator();

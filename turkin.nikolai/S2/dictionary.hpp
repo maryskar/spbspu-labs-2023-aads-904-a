@@ -24,9 +24,6 @@ namespace turkin
       Dictionary & operator=(const dict & rhs); //done
       Dictionary & operator=(dict && rhs); //done
       ~Dictionary() = default; //done
-      it before_begin() noexcept; //done
-      cit before_begin() const noexcept; //done
-      cit cbefore_begin() const noexcept; //done
       it begin() noexcept; //done
       cit begin() const noexcept; //done
       cit cbegin() const noexcept; //done
@@ -111,24 +108,6 @@ Dictionary< Key, Value, Compare > & Dictionary< Key, Value, Compare >::operator=
   fl_ = std::move(rhs.fl_);
   cmp_ = rhs.cmp_;
   return * this;
-}
-
-template< typename Key, typename Value, typename Compare >
-Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::before_begin() noexcept
-{
-  return fl_.before_begin();
-}
-
-template< typename Key, typename Value, typename Compare >
-ConstIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::before_begin() const noexcept
-{
-  return fl_.before_begin();
-}
-
-template< typename Key, typename Value, typename Compare >
-ConstIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::cbefore_begin() const noexcept
-{
-  return fl_.cbefore_begin();
 }
 
 template< typename Key, typename Value, typename Compare >
@@ -230,6 +209,7 @@ std::pair< Iterator< std::pair< Key, Value > >, bool > Dictionary< Key, Value, C
 template< typename Key, typename Value, typename Compare >
 std::pair< Iterator< std::pair< Key, Value > >, bool > Dictionary< Key, Value, Compare >::insert(const std::pair< Key, Value > & value)
 {
+  /*
   it ins = lower_bound(value.first);
   it moved_ins = ins;
   moved_ins++;
@@ -243,26 +223,32 @@ std::pair< Iterator< std::pair< Key, Value > >, bool > Dictionary< Key, Value, C
     return std::make_pair(moved_ins, false);
   }
   return std::make_pair(fl_.insert_after(cit(ins), value), true);
+  */
+  fl_.push_front(value);
+  return std::make_pair(begin(), true);
 }
 
 template< typename Key, typename Value, typename Compare >
 std::size_t Dictionary< Key, Value, Compare >::count(const Key & k) const
 {
   std::size_t amount = 0;
-  for (auto ins = cbegin(); ins != cend(); ins++)
+  auto ins = fl_.before_begin();
+  do
   {
+    ins++;
     if (ins->first == k)
     {
       amount++;
     }
   }
+  while (ins != end());
   return amount;
 }
 
 template< typename Key, typename Value, typename Compare >
 Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::lower_bound(const Key & k)
 {
-  auto res = before_begin();
+  auto res = fl_.before_begin();
   for (auto it = begin(); it != end() && cmp_(it->first, k); ++it, ++res);
   return res;
 }
@@ -276,10 +262,9 @@ ConstIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::lowe
 template< typename Key, typename Value, typename Compare >
 Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::upper_bound(const Key & k)
 {
-  auto res = before_begin();
+  auto res = fl_.before_begin();
   for (auto it = begin(); it != end() && !cmp_(it->first, k); ++it, ++res);
   return res;
-
 }
 
 template< typename Key, typename Value, typename Compare >

@@ -38,19 +38,21 @@ namespace turkin
       cit cend() const noexcept; //done
       bool empty() const noexcept; //done
       void clear() noexcept; //done
-      std::size_t size() const noexcept;
+      std::size_t size() const noexcept; //done
+
       it insert_after(cit pos, const T & value); //?
       it insert_after(cit pos, T && value);
       it insert_after(cit pos, std::size_t const, const T & value);
       template< class InputIt >
       it insert_after(cit pos, InputIt firts, InputIt last);
       it insert_after(cit pos, std::initializer_list< T > ilist);
+
       template< class... Args >
       it emplace_after(cit pos, Args &&... args);
       it erase_after(cit pos); //
       it erase_after(cit first, cit last);
+
       void push_front(const T & value); //done
-      void push_front(T && value); //?
       template< class... Args >
       void emplace_front(Args &&... args);
       template< class... Args >
@@ -82,9 +84,8 @@ namespace turkin
       template< class Compare >
       void sort(Compare comp);
     private:
-      it head_;
-      it tail_;
       it dummy_;
+      it tail_;
       std::size_t size_;
       void copy(const fl & rhs);
   };
@@ -94,19 +95,17 @@ using namespace turkin;
 
 template< typename T >
 ForwardList< T >::ForwardList():
-  head_(nullptr),
-  tail_(nullptr),
   dummy_(new OneWayNode< T >),
+  tail_(it(nullptr)),
   size_(0)
 {
-  dummy_.cur_->next = head_.cur_;
+  dummy_.cur_->next = nullptr;
 }
-
+/*
 template< typename T >
 ForwardList< T >::ForwardList(const fl & rhs):
-  head_(nullptr),
-  tail_(nullptr),
-  dummy_(nullptr),
+  tail_(it(nullptr)),
+  dummy_(it(nullptr)),
   size_(rhs.size_)
 {
   copy(rhs);
@@ -114,7 +113,6 @@ ForwardList< T >::ForwardList(const fl & rhs):
 
 template< typename T >
 ForwardList< T >::ForwardList(fl && rhs):
-  head_(rhs.head_),
   tail_(rhs.tail_),
   dummy_(rhs.dummy_),
   size_(rhs.size_)
@@ -145,34 +143,33 @@ ForwardList< T > & ForwardList< T >::operator=(fl && rhs)
     return * this;
   }
   clear();
-  head_ = rhs.head_;
   tail_ = rhs.tail_;
   dummy_ = rhs.dummy_;
   size_ = rhs.size_;
-  rhs.head_ = nullptr;
-  rhs.tail_ = nullptr;
-  rhs.dummy_ = nullptr;
-  rhs.size_ = nullptr;
+  rhs.head_ = it(nullptr);
+  rhs.tail_ = it(nullptr);
+  rhs.dummy_ = it(nullptr);
+  rhs.size_ = 0;
 }
-
+*/
 template< typename T >
 ForwardList< T >::~ForwardList()
 {
-  clear();
+  free(dummy_.cur_);
 }
 
 template< typename T >
 T & ForwardList< T >::front()
 {
-  assert(head_ != nullptr);
-  return head_.cur_->data;
+  assert(dummy_.cur_->next != nullptr);
+  return dummy_.cur_->next->data;
 }
 
 template< typename T >
 const T & ForwardList< T >::front() const
 {
-  assert(head_ != nullptr);
-  return head_.cur_->data;
+  assert(dummy_.cur_->next != nullptr);
+  return dummy_.cur_->next->data;
 }
 
 template< typename T >
@@ -184,7 +181,7 @@ Iterator< T > ForwardList< T >::before_begin() noexcept
 template< typename T >
 ConstIterator< T > ForwardList< T >::before_begin() const noexcept
 {
-  return dummy_;
+  return cbefore_begin();
 };
 
 template< typename T >
@@ -196,19 +193,19 @@ ConstIterator< T > ForwardList< T >::cbefore_begin() const noexcept
 template< typename T >
 Iterator< T > ForwardList< T >::begin() noexcept
 {
-  return head_;
+  return it(dummy_.cur_->next);
 };
 
 template< typename T >
 ConstIterator< T > ForwardList< T >::begin() const noexcept
 {
-  return head_;
+  return cbegin();
 };
 
 template< typename T >
 ConstIterator< T > ForwardList< T >::cbegin() const noexcept
 {
-  return cit(head_);
+  return cit(dummy_.cur_->next);
 };
 
 template< typename T >
@@ -220,7 +217,7 @@ Iterator< T > ForwardList< T >::end() noexcept
 template< typename T >
 ConstIterator< T > ForwardList< T >::end() const noexcept
 {
-  return tail_;
+  return cend();
 };
 
 template< typename T >
@@ -232,16 +229,15 @@ ConstIterator< T > ForwardList< T >::cend() const noexcept
 template< typename T >
 bool ForwardList< T >::empty() const noexcept
 {
-  return head_.cur_ == nullptr;
+  return dummy_.cur_->next == nullptr;
 };
 
 template< typename T >
 void ForwardList< T >::clear() noexcept
 {
   free(dummy_.cur_);
-  head_.cur_ = nullptr;
-  tail_.cur_ = nullptr;
-  dummy_.cur_ = nullptr;
+  dummy_ = it(new OneWayNode< T >);
+  tail_ = it(nullptr);
   size_ = 0;
 };
 
@@ -254,76 +250,42 @@ std::size_t ForwardList< T >::size() const noexcept
 template< typename T >
 Iterator< T > ForwardList< T >::insert_after(cit pos, const T & value)
 {
-  auto * ins = new OneWayNode< T > {value, pos.cur_->next};
-  if (pos.cur_ == dummy_.cur_)
-  {
-    pos.cur_->next = ins;
-    tail_ = head_;
-  }
-  else
-  {
-    pos.cur_->next = ins;
-  }
-  pos++;
+  auto tins = it(new OneWayNode< T > {value, nullptr});
+  tins.cur_->next = pos.cur_->next;
+  pos.cur_->next = tins.cur_;
   size_++;
-  return it(pos);
+  return tins;
 }
 
 template< typename T >
 void ForwardList< T >::push_front(const T & value)
 {
-  auto ins = it(new OneWayNode< T > {value, nullptr});
-  if (head_.cur_)
+  if (dummy_.cur_->next == nullptr)
   {
-    ins.cur_->next = head_.cur_;
-    if (!tail_.cur_)
-    {
-      tail_ = head_;
-    }
-    head_ = ins;
+    dummy_.cur_->next = new OneWayNode< T > {value, nullptr};
+    tail_.cur_ = dummy_.cur_->next;
   }
   else
   {
-    head_ = ins;
+    dummy_.cur_->next = new OneWayNode< T > {value, dummy_.cur_->next};
   }
-  dummy_.cur_->next = head_.cur_;
-  size_++;
-}
-
-template< typename T >
-void ForwardList< T >::push_front(T && value)
-{
-  auto ins = it(new OneWayNode< T > {value, nullptr});
-  if (head_.cur_)
-  {
-    ins.cur_->next = head_.cur_;
-    if (!tail_.cur_)
-    {
-      tail_ = head_;
-    }
-    head_ = ins;
-  }
-  else
-  {
-    head_ = ins;
-  }
-  dummy_.cur_->next = head_.cur_;
   size_++;
 }
 
 template< typename T >
 void ForwardList< T >::pop_front()
 {
-  erase_after(before_begin());
+  auto temp = dummy_.cur_->next;
+  dummy_.cur_->next = temp->next;
+  delete temp;
 }
 
 template< typename T >
 void ForwardList< T >::copy(const fl & rhs)
 {
-  auto clone = copyList(rhs.head_.cur_);
-  head_.cur_ = clone.first;
+  auto clone = copyList(rhs.dummy_.cur_);
+  dummy_.cur_ = clone.first;
   tail_.cur_ = clone.second;
-  dummy_.cur_->next = head_.cur_;
 }
 
 #endif
