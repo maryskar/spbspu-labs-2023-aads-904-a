@@ -3,6 +3,7 @@
 #include <string>
 #include <cstddef>
 #include <functional>
+#include <utility>
 #include "dictionary.hpp"
 #include "forward-list.hpp"
 
@@ -21,19 +22,22 @@ int main(int argc, char * argv[])
     std::cerr << "cannot open file\n";
     return 1;
   }
+
   using dict_t = turkin::Dictionary< std::size_t, std::string, std::less< std::size_t > >;
   dict_t dict;
-  dict.insert(12, "a");
+  //dict.emplace(std::make_pair(12, "one"));
+  //dict.insert(12, "a");
   dict.insert(2, "a");
   dict.insert(32, "b");
   dict.insert(4, "c");
-  dict.insert(8, "a");
+  //dict.insert(8, "a");
+  std::cout << "erase: " << dict.erase(4) << "\n";
   for (auto a = dict.begin(); a != dict.end(); a++)
   {
     std::string as = a->second;
     std::size_t at = a->first;
-    std::cout << "\nkey: " << at << "\n";
-    std::cout << "data: " << as << "\n\n";
+    std::cout << "key: " << at << "\t";
+    std::cout << "data: " << as << "\n";
   }
   std::cout << "count: " << dict.count(2) << "\n";
   std::cout << "size: " << dict.size() << "\n";

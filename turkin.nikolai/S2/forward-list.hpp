@@ -40,7 +40,7 @@ namespace turkin
       void clear() noexcept; //done
       std::size_t size() const noexcept; //done
 
-      it insert_after(cit pos, const T & value); //?
+      it insert_after(cit pos, const T & value); //done
       it insert_after(cit pos, T && value);
       it insert_after(cit pos, std::size_t const, const T & value);
       template< class InputIt >
@@ -101,11 +101,11 @@ ForwardList< T >::ForwardList():
 {
   dummy_.cur_->next = tail_.cur_;
 }
-/*
+
 template< typename T >
 ForwardList< T >::ForwardList(const fl & rhs):
-  tail_(it(nullptr)),
   dummy_(it(nullptr)),
+  tail_(it(nullptr)),
   size_(rhs.size_)
 {
   copy(rhs);
@@ -113,13 +113,12 @@ ForwardList< T >::ForwardList(const fl & rhs):
 
 template< typename T >
 ForwardList< T >::ForwardList(fl && rhs):
-  tail_(rhs.tail_),
   dummy_(rhs.dummy_),
+  tail_(rhs.tail_),
   size_(rhs.size_)
 {
-  rhs.head_ = nullptr;
-  rhs.tail_ = nullptr;
-  rhs.dummy_ = nullptr;
+  rhs.tail_ = it(nullptr);
+  rhs.dummy_ = it(nullptr);
   rhs.size_ = 0;
 }
 
@@ -151,7 +150,7 @@ ForwardList< T > & ForwardList< T >::operator=(fl && rhs)
   rhs.dummy_ = it(nullptr);
   rhs.size_ = 0;
 }
-*/
+
 template< typename T >
 ForwardList< T >::~ForwardList()
 {
@@ -255,6 +254,37 @@ Iterator< T > ForwardList< T >::insert_after(cit pos, const T & value)
   pos.cur_->next = tins.cur_;
   size_++;
   return tins;
+}
+
+template< typename T >
+template< class... Args >
+Iterator< T > ForwardList< T >::emplace_after(cit pos, Args &&... args)
+{
+  return insert_after(pos, std::forward< T >(T(args...)));
+}
+
+template< typename T >
+Iterator< T > ForwardList< T >::erase_after(cit pos)
+{
+  auto * ins = pos.cur_->next;
+  if (ins == nullptr)
+  {
+    return it(pos.cur_);
+  }
+  pos.cur_->next = ins->next;
+  delete ins;
+  size_--;
+  return it(pos.cur_->next);
+}
+
+template< typename T >
+Iterator< T > ForwardList< T >::erase_after(cit first, cit last)
+{
+  for (auto ins = first; ins != last; ins++)
+  {
+    erase_after(ins);
+  }
+  return it(last.cur_->next);
 }
 
 template< typename T >

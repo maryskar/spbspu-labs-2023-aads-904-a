@@ -39,13 +39,15 @@ namespace turkin
 
       bool empty() const noexcept; //done
       std::size_t size() const noexcept; //done
-      //max_size
 
       void clear() noexcept; //done
-      std::pair< it, bool > insert(const Key & k, const Value & v);
-      std::pair< it, bool > insert(const dict_t & value);
-      //emplace
-      //erase
+      std::pair< it, bool > insert(const Key & k, const Value & v); //done
+      std::pair< it, bool > insert(const dict_t & value); //done
+      template< class... Args >
+      std::pair< it, bool > emplace(Args &&... args); //done
+      it erase_after(cit pos); //done
+      it erase_after(cit first, cit last); //done
+      std::size_t erase(const Key & k);
       //swap
       //extract
       //merge
@@ -55,10 +57,10 @@ namespace turkin
       cit find(const Key & k) const;
       std::pair< it, it > equal_range(const Key & k);
       std::pair< cit, cit > equal_range(const Key & k) const;
-      it lower_bound(const Key & k);
-      cit lower_bound(const Key & k) const;
-      it upper_bound(const Key & k);
-      cit upper_bound(const Key & k) const;
+      it lower_bound(const Key & k); //done
+      cit lower_bound(const Key & k) const; //done
+      it upper_bound(const Key & k); //done
+      cit upper_bound(const Key & k) const; //done
 
     private:
       ForwardList< dict_t > fl_;
@@ -206,7 +208,6 @@ std::pair< Iterator< std::pair< Key, Value > >, bool > Dictionary< Key, Value, C
   return insert(std::make_pair(k, v));
 }
 
-#include <iostream>
 template< typename Key, typename Value, typename Compare >
 std::pair< Iterator< std::pair< Key, Value > >, bool > Dictionary< Key, Value, Compare >::insert(const std::pair< Key, Value > & value)
 {
@@ -215,10 +216,44 @@ std::pair< Iterator< std::pair< Key, Value > >, bool > Dictionary< Key, Value, C
 }
 
 template< typename Key, typename Value, typename Compare >
+template< class... Args >
+std::pair< Iterator< std::pair< Key, Value > >, bool > Dictionary< Key, Value, Compare >::emplace(Args &&... args)
+{
+  return insert(dict_t(std::forward< Args >(args)...));
+}
+
+template< typename Key, typename Value, typename Compare >
+Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::erase_after(cit pos)
+{
+  return fl_.erase_after(pos);
+}
+
+template< typename Key, typename Value, typename Compare >
+Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::erase_after(cit first, cit last)
+{
+  return fl_.erase_after(first, last);
+}
+
+template< typename Key, typename Value, typename Compare >
+std::size_t Dictionary< Key, Value, Compare >::erase(const Key & k)
+{
+  std::size_t amount = 0;
+  for (auto ins = cbegin(); ins != cend(); ins++)
+  {
+    if (ins->first == k)
+    {
+      erase(ins);
+      amount++;
+    }
+  }
+  return amount;
+}
+
+template< typename Key, typename Value, typename Compare >
 std::size_t Dictionary< Key, Value, Compare >::count(const Key & k) const
 {
   std::size_t amount = 0;
-  for(auto ins = begin(); ins != end(); ins++)
+  for(auto ins = cbegin(); ins != cend(); ins++)
   {
     if (ins->first == k)
     {
