@@ -206,42 +206,25 @@ std::pair< Iterator< std::pair< Key, Value > >, bool > Dictionary< Key, Value, C
   return insert(std::make_pair(k, v));
 }
 
+#include <iostream>
 template< typename Key, typename Value, typename Compare >
 std::pair< Iterator< std::pair< Key, Value > >, bool > Dictionary< Key, Value, Compare >::insert(const std::pair< Key, Value > & value)
 {
-  /*
   it ins = lower_bound(value.first);
-  it moved_ins = ins;
-  moved_ins++;
-  if (moved_ins == end())
-    {
-    return std::make_pair(fl_.insert_after(cit(ins), value), true);
-  }
-  if (moved_ins->first == value.first)
-    {
-    moved_ins->second = value.second;
-    return std::make_pair(moved_ins, false);
-  }
   return std::make_pair(fl_.insert_after(cit(ins), value), true);
-  */
-  fl_.push_front(value);
-  return std::make_pair(begin(), true);
 }
 
 template< typename Key, typename Value, typename Compare >
 std::size_t Dictionary< Key, Value, Compare >::count(const Key & k) const
 {
   std::size_t amount = 0;
-  auto ins = fl_.before_begin();
-  do
+  for(auto ins = begin(); ins != end(); ins++)
   {
-    ins++;
     if (ins->first == k)
     {
       amount++;
     }
   }
-  while (ins != end());
   return amount;
 }
 

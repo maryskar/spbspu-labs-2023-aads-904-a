@@ -99,7 +99,7 @@ ForwardList< T >::ForwardList():
   tail_(it(nullptr)),
   size_(0)
 {
-  dummy_.cur_->next = nullptr;
+  dummy_.cur_->next = tail_.cur_;
 }
 /*
 template< typename T >
