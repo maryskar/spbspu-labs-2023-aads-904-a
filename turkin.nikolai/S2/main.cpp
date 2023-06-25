@@ -25,13 +25,13 @@ int main(int argc, char * argv[])
 
   using dict_t = turkin::Dictionary< std::size_t, std::string, std::less< std::size_t > >;
   dict_t dict;
-  //dict.emplace(std::make_pair(12, "one"));
-  //dict.insert(12, "a");
-  dict.insert(2, "a");
-  dict.insert(32, "b");
-  dict.insert(4, "c");
+  dict.emplace(2, "a");
+  dict.emplace(4, "c");
   //dict.insert(8, "a");
-  std::cout << "erase: " << dict.erase(4) << "\n";
+  dict_t dict2;
+  dict2.emplace(1, "a");
+  dict.emplace(3, "c");
+  dict.merge(dict2);
   for (auto a = dict.begin(); a != dict.end(); a++)
   {
     std::string as = a->second;
@@ -39,7 +39,6 @@ int main(int argc, char * argv[])
     std::cout << "key: " << at << "\t";
     std::cout << "data: " << as << "\n";
   }
-  std::cout << "count: " << dict.count(2) << "\n";
   std::cout << "size: " << dict.size() << "\n";
   std::cout << "__END__\n";
   /*

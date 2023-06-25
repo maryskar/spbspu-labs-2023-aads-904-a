@@ -24,7 +24,6 @@ namespace turkin
       ForwardList & operator=(const fl & rhs); //done
       ForwardList & operator=(fl && rhs); //done
       ~ForwardList(); //done
-      void assign(std::size_t count, const T & value);
       T & front(); //done
       const T & front() const; //done
       it before_begin() noexcept; //done
@@ -48,9 +47,9 @@ namespace turkin
       it insert_after(cit pos, std::initializer_list< T > ilist);
 
       template< class... Args >
-      it emplace_after(cit pos, Args &&... args);
-      it erase_after(cit pos); //
-      it erase_after(cit first, cit last);
+      it emplace_after(cit pos, Args &&... args); //done
+      it erase_after(cit pos); //done
+      it erase_after(cit first, cit last); //done
 
       void push_front(const T & value); //done
       template< class... Args >
@@ -58,8 +57,7 @@ namespace turkin
       template< class... Args >
       T & emplace_front(Args &&... args);
       void pop_front();
-      void resize(std::size_t count);
-      void swap(fl & other);
+      void swap(fl & other) noexcept; //done
 
       void merge(fl & other);
       void merge(fl && other);
@@ -308,6 +306,14 @@ void ForwardList< T >::pop_front()
   auto temp = dummy_.cur_->next;
   dummy_.cur_->next = temp->next;
   delete temp;
+}
+
+template< typename T >
+void ForwardList< T >::swap(fl & other) noexcept
+{
+  std::swap(dummy_, other.dummy_);
+  std::swap(tail_, other.tail_);
+  std::swap(size_, other.size_);
 }
 
 template< typename T >

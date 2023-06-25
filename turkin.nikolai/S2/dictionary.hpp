@@ -47,16 +47,15 @@ namespace turkin
       std::pair< it, bool > emplace(Args &&... args); //done
       it erase_after(cit pos); //done
       it erase_after(cit first, cit last); //done
-      std::size_t erase(const Key & k);
-      //swap
-      //extract
-      //merge
+      std::size_t erase(const Key & k); //done
+      void swap(dict & rhs) noexcept; //done
+      dict_t extract_after(cit pos); //done
 
       std::size_t count(const Key & k) const; //done
-      it find(const Key & k);
-      cit find(const Key & k) const;
-      std::pair< it, it > equal_range(const Key & k);
-      std::pair< cit, cit > equal_range(const Key & k) const;
+      it find(const Key & k); //done
+      cit find(const Key & k) const; //done
+      std::pair< it, it > equal_range(const Key & k); //done
+      std::pair< cit, cit > equal_range(const Key & k) const; //done
       it lower_bound(const Key & k); //done
       cit lower_bound(const Key & k) const; //done
       it upper_bound(const Key & k); //done
@@ -240,14 +239,64 @@ std::size_t Dictionary< Key, Value, Compare >::erase(const Key & k)
   std::size_t amount = 0;
   for (auto ins = cbegin(); ins != cend(); ins++)
   {
-    if (ins->first == k)
+    auto temp = ins;
+    temp++;
+    if (temp != cend())
     {
-      erase(ins);
-      amount++;
+      if (temp->first == k)
+      {
+        erase_after(ins);
+        amount++;
+      }
     }
   }
   return amount;
 }
+
+template< typename Key, typename Value, typename Compare >
+void Dictionary< Key, Value, Compare >::swap(dict & rhs) noexcept
+{
+  fl_.swap(rhs.fl_);
+  std::swap(cmp_, rhs.cmp_);
+}
+
+template< typename Key, typename Value, typename Compare >
+std::pair< Key, Value > Dictionary< Key, Value, Compare >::extract_after(cit pos)
+{
+  return *erase_after(pos);
+}
+
+template< typename Key, typename Value, typename Compare >
+Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::find(const Key & k)
+{
+  for (auto ins = begin(); ins != end(); ins++)
+  {
+    if(ins->first == k)
+    {
+      return ins;
+    }
+  }
+  return end();
+}
+
+template< typename Key, typename Value, typename Compare >
+ConstIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::find(const Key & k) const
+{
+  return cit(find(k));
+}
+
+template< typename Key, typename Value, typename Compare >
+std::pair< Iterator< std::pair< Key, Value > >, Iterator< std::pair< Key, Value > > > Dictionary< Key, Value, Compare >::equal_range(const Key & k)
+{
+  return std::make_pair(lower_bound(k), upper_bound(k));
+}
+
+template< typename Key, typename Value, typename Compare >
+std::pair< ConstIterator< std::pair< Key, Value > >, ConstIterator< std::pair< Key, Value > > > Dictionary< Key, Value, Compare >::equal_range(const Key & k) const
+{
+  return std::make_pair(lower_bound(k), upper_bound(k));
+}
+
 
 template< typename Key, typename Value, typename Compare >
 std::size_t Dictionary< Key, Value, Compare >::count(const Key & k) const
