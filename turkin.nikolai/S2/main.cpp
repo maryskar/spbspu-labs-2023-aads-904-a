@@ -26,12 +26,8 @@ int main(int argc, char * argv[])
   }
 
   using dict_t = turkin::Dictionary< std::size_t, std::string, std::less< std::size_t > >;
-  using dictArray = turkin::Dictionary< std::string, dict_t, std::less< std::string > >;
-  dictArray da = turkin::genDicts(file);
-  for (auto ins = da.begin(); ins != da.end(); ins++)
-  {
-    turkin::print(*ins, std::cout);
-  }
+  using dict_a = turkin::Dictionary< std::string, dict_t, std::less< std::string > >;
+  dict_a dict = turkin::genDicts(file);
   while (std::cin)
   {
     std::string cmd;
@@ -44,7 +40,7 @@ int main(int argc, char * argv[])
     {
       std::string name;
       std::cin >> name;
-      turkin::print(*da.find(name), std::cout);
+      turkin::print(*dict.find(name), std::cout);
       continue;
     }
     if (cmd == "complement")
@@ -53,8 +49,8 @@ int main(int argc, char * argv[])
       std::string set1;
       std::string set2;
       std::cin >> set0 >> set1 >> set2;
-      dict_t temp = turkin::to_complement(da.find(set1)->second, da.find(set2)->second);
-      da.emplace(std::make_pair(set0, temp));
+      dict_t temp = turkin::to_complement(dict.find(set1)->second, dict.find(set2)->second);
+      dict.emplace(std::make_pair(set0, temp));
       continue;
     }
     if (cmd == "intersect")
@@ -63,8 +59,8 @@ int main(int argc, char * argv[])
       std::string set1;
       std::string set2;
       std::cin >> set0 >> set1 >> set2;
-      dict_t temp = turkin::to_intersect(da.find(set1)->second, da.find(set2)->second);
-      da.emplace(std::make_pair(set0, temp));
+      dict_t temp = turkin::to_intersect(dict.find(set1)->second, dict.find(set2)->second);
+      dict.emplace(std::make_pair(set0, temp));
       continue;
     }
     if (cmd == "union")
@@ -73,8 +69,8 @@ int main(int argc, char * argv[])
       std::string set1;
       std::string set2;
       std::cin >> set0 >> set1 >> set2;
-      dict_t temp = turkin::to_union(da.find(set1)->second, da.find(set2)->second);
-      da.emplace(std::make_pair(set0, temp));
+      dict_t temp = turkin::to_union(dict.find(set1)->second, dict.find(set2)->second);
+      dict.emplace(std::make_pair(set0, temp));
       continue;
     }
     std::cerr << "<INVALID COMMAND>\n";
