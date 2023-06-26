@@ -9,6 +9,7 @@ void turkin::print(const std::pair< std::string, dict > & rhs, std::ostream & ou
   if (ret.size() == 0)
   {
     out << "<EMPTY>\n";
+    return;
   }
   out << name;
   for (auto ins = ret.cbegin(); ins != ret.cend(); ins++)
