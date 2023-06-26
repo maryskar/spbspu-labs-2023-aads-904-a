@@ -18,48 +18,48 @@ namespace turkin
       using dict = Dictionary< Key, Value, Compare >;
       using it = Iterator< dict_t >;
       using cit = ConstIterator< dict_t >;
-      Dictionary(); //done
-      Dictionary(const dict & rhs); //done
-      Dictionary(dict && rhs); //done
-      Dictionary & operator=(const dict & rhs); //done
-      Dictionary & operator=(dict && rhs); //done
-      ~Dictionary() = default; //done
-      it begin() noexcept; //done
-      cit begin() const noexcept; //done
-      cit cbegin() const noexcept; //done
-      it end() noexcept; //done
-      cit end() const noexcept; //done
-      cit cend() const noexcept; //done
-      it rbegin() noexcept; //done
-      cit rbegin() const noexcept; //done
-      cit crbegin() const noexcept; //done
-      it rend() noexcept; //done
-      cit rend() const noexcept; //done
-      cit crend() const noexcept; //done
+      Dictionary();
+      Dictionary(const dict & rhs);
+      Dictionary(dict && rhs);
+      Dictionary & operator=(const dict & rhs);
+      Dictionary & operator=(dict && rhs);
+      ~Dictionary() = default;
+      it begin() noexcept;
+      cit begin() const noexcept;
+      cit cbegin() const noexcept;
+      it end() noexcept;
+      cit end() const noexcept;
+      cit cend() const noexcept;
+      it rbegin() noexcept;
+      cit rbegin() const noexcept;
+      cit crbegin() const noexcept;
+      it rend() noexcept;
+      cit rend() const noexcept;
+      cit crend() const noexcept;
 
-      bool empty() const noexcept; //done
-      std::size_t size() const noexcept; //done
+      bool empty() const noexcept;
+      std::size_t size() const noexcept;
 
-      void clear() noexcept; //done
-      std::pair< it, bool > insert(const Key & k, const Value & v); //done
-      std::pair< it, bool > insert(const dict_t & value); //done
+      void clear() noexcept;
+      std::pair< it, bool > insert(const Key & k, const Value & v);
+      std::pair< it, bool > insert(const dict_t & value);
       template< class... Args >
-      std::pair< it, bool > emplace(Args &&... args); //done
-      it erase_after(cit pos); //done
-      it erase_after(cit first, cit last); //done
-      std::size_t erase(const Key & k); //done
-      void swap(dict & rhs) noexcept; //done
-      dict_t extract_after(cit pos); //done
+      std::pair< it, bool > emplace(Args &&... args);
+      it erase_after(cit pos);
+      it erase_after(cit first, cit last);
+      std::size_t erase(const Key & k);
+      void swap(dict & rhs) noexcept;
+      dict_t extract_after(cit pos);
 
-      std::size_t count(const Key & k) const; //done
-      it find(const Key & k); //done
-      cit find(const Key & k) const; //done
-      std::pair< it, it > equal_range(const Key & k); //done
-      std::pair< cit, cit > equal_range(const Key & k) const; //done
-      it lower_bound(const Key & k); //done
-      cit lower_bound(const Key & k) const; //done
-      it upper_bound(const Key & k); //done
-      cit upper_bound(const Key & k) const; //done
+      std::size_t count(const Key & k) const;
+      it find(const Key & k);
+      cit find(const Key & k) const;
+      std::pair< it, it > equal_range(const Key & k);
+      std::pair< cit, cit > equal_range(const Key & k) const;
+      it lower_bound(const Key & k);
+      cit lower_bound(const Key & k) const;
+      it upper_bound(const Key & k);
+      cit upper_bound(const Key & k) const;
 
     private:
       ForwardList< dict_t > fl_;
