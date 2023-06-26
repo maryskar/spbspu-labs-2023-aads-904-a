@@ -3,20 +3,17 @@
 
 #include <cstddef>
 #include <string>
+#include <fstream>
+#include <functional>
 #include "dictionary.hpp"
-
-//print
-//complement
-//intersect
-//union
 
 namespace turkin
 {
-  using dict = Dictionary< size_t, std::string, int >;
-  void print(const dict & rhs);
-  dict complement(const dict & one, const dict & two);
-  dict intersect(const dict & one, const dict & two);
-  dict toghether(const dict & one, const dict & two);
+  using dict = Dictionary< size_t, std::string, std::less< std::size_t > >;
+  void print(const std::pair< std::string, dict > & rhs, std::ostream & out);
+  dict to_complement(const dict & one, const dict & two);
+  dict to_intersect(const dict & one, const dict & two);
+  dict to_union(const dict & one, const dict & two);
 }
 
 #endif

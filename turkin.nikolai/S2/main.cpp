@@ -5,6 +5,8 @@
 #include <functional>
 #include <utility>
 #include "dictionary.hpp"
+#include "cmd-work.hpp"
+#include "file-work.hpp"
 #include "forward-list.hpp"
 
 int main(int argc, char * argv[])
@@ -24,34 +26,59 @@ int main(int argc, char * argv[])
   }
 
   using dict_t = turkin::Dictionary< std::size_t, std::string, std::less< std::size_t > >;
-  dict_t dict;
-  dict.emplace(2, "a");
-  dict.emplace(4, "c");
-  //dict.insert(8, "a");
-  dict_t dict2;
-  dict2.emplace(1, "a");
-  dict.emplace(3, "c");
-  dict.merge(dict2);
-  for (auto a = dict.begin(); a != dict.end(); a++)
+  using dictArray = turkin::Dictionary< std::string, dict_t, std::less< std::string > >;
+  dictArray da = turkin::genDicts(file);
+  for (auto ins = da.begin(); ins != da.end(); ins++)
   {
-    std::string as = a->second;
-    std::size_t at = a->first;
-    std::cout << "key: " << at << "\t";
-    std::cout << "data: " << as << "\n";
+    turkin::print(*ins, std::cout);
   }
-  std::cout << "size: " << dict.size() << "\n";
-  std::cout << "__END__\n";
-  /*
-  std::string name;
-  std::size_t key;
-  std::string value;
-  while (file)
+  while (std::cin)
   {
-    file >> name;
-    while
-    file >> key >> value;
-    std::cout <<  << "\n";
+    std::string cmd;
+    std::cin >> cmd;
+    if (!std::cin)
+    {
+      break;
+    }
+    if (cmd == "print")
+    {
+      std::string name;
+      std::cin >> name;
+      turkin::print(*da.find(name), std::cout);
+      continue;
+    }
+    if (cmd == "complement")
+    {
+      std::string set0;
+      std::string set1;
+      std::string set2;
+      std::cin >> set0 >> set1 >> set2;
+      dict_t temp = turkin::to_complement(da.find(set1)->second, da.find(set2)->second);
+      da.emplace(std::make_pair(set0, temp));
+      continue;
+    }
+    if (cmd == "intersect")
+    {
+      std::string set0;
+      std::string set1;
+      std::string set2;
+      std::cin >> set0 >> set1 >> set2;
+      dict_t temp = turkin::to_intersect(da.find(set1)->second, da.find(set2)->second);
+      da.emplace(std::make_pair(set0, temp));
+      continue;
+    }
+    if (cmd == "union")
+    {
+      std::string set0;
+      std::string set1;
+      std::string set2;
+      std::cin >> set0 >> set1 >> set2;
+      dict_t temp = turkin::to_union(da.find(set1)->second, da.find(set2)->second);
+      da.emplace(std::make_pair(set0, temp));
+      continue;
+    }
+    std::cerr << "<INVALID COMMAND>\n";
   }
-*/
+
   return 0;
 }
