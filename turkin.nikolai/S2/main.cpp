@@ -43,6 +43,7 @@ int main(int argc, char * argv[])
       if (!std::cin)
       {
         std::cerr << "<INVALID COMMAND>\n";
+        continue;
       }
       turkin::print(*dict.find(name), std::cout);
       continue;
@@ -56,6 +57,7 @@ int main(int argc, char * argv[])
       if (!std::cin)
       {
         std::cerr << "<INVALID COMMAND>\n";
+        continue;
       }
       dict_t temp = turkin::to_complement(dict.find(set1)->second, dict.find(set2)->second);
       dict.emplace(std::make_pair(set0, temp));
@@ -70,6 +72,7 @@ int main(int argc, char * argv[])
       if (!std::cin)
       {
         std::cerr << "<INVALID COMMAND>\n";
+        continue;
       }
       dict_t temp = turkin::to_intersect(dict.find(set1)->second, dict.find(set2)->second);
       dict.emplace(std::make_pair(set0, temp));
@@ -84,6 +87,7 @@ int main(int argc, char * argv[])
       if (!std::cin)
       {
         std::cerr << "<INVALID COMMAND>\n";
+        continue;
       }
       dict_t temp = turkin::to_union(dict.find(set1)->second, dict.find(set2)->second);
       dict.emplace(std::make_pair(set0, temp));
