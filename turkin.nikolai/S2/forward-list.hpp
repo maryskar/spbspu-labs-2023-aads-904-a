@@ -94,10 +94,11 @@ using namespace turkin;
 template< typename T >
 ForwardList< T >::ForwardList():
   dummy_(new OneWayNode< T >),
-  tail_(it(nullptr)),
+  tail_(new OneWayNode< T >),
   size_(0)
 {
   dummy_.cur_->next = tail_.cur_;
+  tail_.cur_->next = nullptr;
 }
 
 template< typename T >

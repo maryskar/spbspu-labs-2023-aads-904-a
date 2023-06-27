@@ -16,7 +16,6 @@ void turkin::print(const std::pair< std::string, dict > & rhs, std::ostream & ou
   {
     out << " " << ins->first << " " << ins->second;
   }
-  out << " " << ret.cend()->first << " " << ret.cend()->second;
   out << "\n";
 }
 
@@ -52,15 +51,19 @@ dict turkin::to_intersect(const dict & one, const dict & two)
   return result;
 }
 
+#include <iostream>
 dict turkin::to_union(const dict & one, const dict & two)
 {
   dict result(one);
-  for (auto ins = two.cbegin(); ins != two.cend(); ins++)
+  auto ins = two.cbefore_begin();
+  do
   {
-    if (result.find(ins->first) == result.end() && ins->first != result.cend()->first)
+    ins++;
+    if (result.find(ins->first)->first != ins->first)
     {
       result.emplace(*ins);
     }
   }
+  while (ins != two.cend());
   return result;
 }

@@ -1,11 +1,11 @@
 #include "file-work.hpp"
 
-using dict = turkin::Dictionary< std::size_t, std::string, std::less< std::size_t > >;
-using dictArray = turkin::Dictionary< std::string, dict, std::less< std::string > >;
+using dict_t = turkin::Dictionary< std::size_t, std::string, std::less< std::size_t > >;
+using dict_a = turkin::Dictionary< std::string, dict_t, std::less< std::string > >;
 
-dictArray turkin::genDicts(std::istream & input)
+dict_a turkin::genDicts(std::istream & input)
 {
-  dictArray result;
+  dict_a result;
   while (input)
   {
     std::string name;
@@ -14,7 +14,7 @@ dictArray turkin::genDicts(std::istream & input)
     {
       break;
     }
-    dict data;
+    dict_t data;
     std::size_t key = 0;
     std::string value;
     while (input)

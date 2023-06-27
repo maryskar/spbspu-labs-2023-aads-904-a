@@ -29,6 +29,7 @@ int main(int argc, char * argv[])
   using dict_t = turkin::Dictionary< std::size_t, std::string, std::less< std::size_t > >;
   using dict_a = turkin::Dictionary< std::string, dict_t, std::less< std::string > >;
   dict_a dict = turkin::genDicts(file);
+
   while (std::cin)
   {
     std::string cmd;

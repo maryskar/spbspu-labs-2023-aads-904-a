@@ -24,6 +24,9 @@ namespace turkin
       Dictionary & operator=(const dict & rhs);
       Dictionary & operator=(dict && rhs);
       ~Dictionary() = default;
+      it before_begin() noexcept;
+      cit before_begin() const noexcept;
+      cit cbefore_begin() const noexcept;
       it begin() noexcept;
       cit begin() const noexcept;
       cit cbegin() const noexcept;
@@ -109,6 +112,24 @@ Dictionary< K, V, C > & Dictionary< K, V, C >::operator=(dict && rhs)
   fl_ = std::move(rhs.fl_);
   cmp_ = rhs.cmp_;
   return * this;
+}
+
+template< typename K, typename V, typename C >
+Iterator< std::pair< K, V > > Dictionary< K, V, C >::before_begin() noexcept
+{
+  return fl_.before_begin();
+}
+
+template< typename K, typename V, typename C >
+ConstIterator< std::pair< K, V > > Dictionary< K, V, C >::before_begin() const noexcept
+{
+  return fl_.before_begin();
+}
+
+template< typename K, typename V, typename C >
+ConstIterator< std::pair< K, V > > Dictionary< K, V, C >::cbefore_begin() const noexcept
+{
+  return fl_.cbefore_begin();
 }
 
 template< typename K, typename V, typename C >
