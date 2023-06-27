@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <functional>
 #include <utility>
+#include <limits>
 #include "dictionary.hpp"
 #include "cmd-work.hpp"
 #include "file-work.hpp"
@@ -94,6 +95,7 @@ int main(int argc, char * argv[])
       continue;
     }
     std::cerr << "<INVALID COMMAND>\n";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   }
   return 0;
 }

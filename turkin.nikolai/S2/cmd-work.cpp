@@ -39,14 +39,14 @@ dict turkin::to_intersect(const dict & one, const dict & two)
     for (auto i = one.cbegin(); i != one.cend(); i++)
     {
       if (it_first->first == i->first)
-        {
+      {
         res = i;
         break;
       }
     }
     if (res != two.cend())
     {
-      result.emplace(std::make_pair(res->first, res->second));
+      result.emplace(*res);
     }
   }
   return result;
@@ -54,20 +54,13 @@ dict turkin::to_intersect(const dict & one, const dict & two)
 
 dict turkin::to_union(const dict & one, const dict & two)
 {
-  dict result;
-  auto iter_second = two.cbegin();
-  auto iter_second_end = two.cend();
-  while (iter_second != iter_second_end)
+  dict result(one);
+  for (auto ins = two.cbegin(); ins != two.cend(); ins++)
   {
-    result.emplace(std::make_pair(iter_second->first, iter_second->second));
-    iter_second++;
-  }
-  auto iter_first = one.cbegin();
-  auto iter_first_end = one.cend();
-  while (iter_first != iter_first_end)
-  {
-    result.emplace(std::make_pair(iter_first->first, iter_first->second));
-    iter_first++;
+    if (result.find(ins->first) == result.end() && ins->first != result.cend()->first)
+    {
+      result.emplace(*ins);
+    }
   }
   return result;
 }
