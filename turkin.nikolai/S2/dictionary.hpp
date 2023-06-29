@@ -4,6 +4,7 @@
 #include <utility>
 #include <cstddef>
 #include <memory>
+#include <stdexcept>
 #include "forward-list.hpp"
 #include "iterator.hpp"
 #include "const-iterator.hpp"
@@ -13,11 +14,11 @@ namespace turkin
   template< typename Key, typename Value, typename Compare >
   class Dictionary
   {
+    using dict_t = std::pair< Key, Value >;
+    using dict = Dictionary< Key, Value, Compare >;
+    using it = Iterator< dict_t >;
+    using cit = ConstIterator< dict_t >;
     public:
-      using dict_t = std::pair< Key, Value >;
-      using dict = Dictionary< Key, Value, Compare >;
-      using it = Iterator< dict_t >;
-      using cit = ConstIterator< dict_t >;
       Dictionary();
       Dictionary(const dict & rhs);
       Dictionary(dict && rhs);
@@ -53,6 +54,8 @@ namespace turkin
       std::size_t erase(const Key & k);
       void swap(dict & rhs) noexcept;
       dict_t extract_after(cit pos);
+      Value at(const Key & k);
+      const Value at(const Key & k) const;
 
       std::size_t count(const Key & k) const;
       it find(const Key & k);
@@ -285,6 +288,23 @@ template< typename K, typename V, typename C >
 std::pair< K, V > Dictionary< K, V, C >::extract_after(cit pos)
 {
   return *erase_after(pos);
+}
+
+template< typename K, typename V, typename C >
+V Dictionary< K, V, C >::at(const K & k)
+{
+  auto ins = *find(k);
+  if (ins.first != k)
+  {
+    throw std::out_of_range("Out of range");
+  }
+  return ins.second;
+}
+
+template< typename K, typename V, typename C >
+const V Dictionary< K, V, C >::at(const K & k) const
+{
+  return at(k);
 }
 
 template< typename K, typename V, typename C >

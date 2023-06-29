@@ -14,73 +14,42 @@ namespace turkin
   template< typename T >
   class ForwardList
   {
+    using fl = ForwardList< T >;
+    using it = Iterator< T >;
+    using cit = ConstIterator< T >;
     public:
-      using fl = ForwardList< T >;
-      using it = Iterator< T >;
-      using cit = ConstIterator< T >;
-      ForwardList(); //done
-      ForwardList(const fl & rhs); //done
-      ForwardList(fl && rhs); //done
-      ForwardList & operator=(const fl & rhs); //done
-      ForwardList & operator=(fl && rhs); //done
-      ~ForwardList(); //done
-      T & front(); //done
-      const T & front() const; //done
-      it before_begin() noexcept; //done
-      cit before_begin() const noexcept; //done
-      cit cbefore_begin() const noexcept; // done
-      it begin() noexcept; //done
-      cit begin() const noexcept; //done
-      cit cbegin() const noexcept; //done
-      it end() noexcept; //done
-      cit end() const noexcept; //done
-      cit cend() const noexcept; //done
-      bool empty() const noexcept; //done
-      void clear() noexcept; //done
-      std::size_t size() const noexcept; //done
+      ForwardList();
+      ForwardList(const fl & rhs);
+      ForwardList(fl && rhs);
+      ForwardList & operator=(const fl & rhs);
+      ForwardList & operator=(fl && rhs);
+      ~ForwardList();
+      T & front();
+      const T & front() const;
+      it before_begin() noexcept;
+      cit before_begin() const noexcept;
+      cit cbefore_begin() const noexcept;
+      it begin() noexcept;
+      cit begin() const noexcept;
+      cit cbegin() const noexcept;
+      it end() noexcept;
+      cit end() const noexcept;
+      cit cend() const noexcept;
+      bool empty() const noexcept;
+      void clear() noexcept;
+      std::size_t size() const noexcept;
 
-      it insert_after(cit pos, const T & value); //done
-      it insert_after(cit pos, T && value);
-      it insert_after(cit pos, std::size_t const, const T & value);
-      template< class InputIt >
-      it insert_after(cit pos, InputIt firts, InputIt last);
-      it insert_after(cit pos, std::initializer_list< T > ilist);
+      it insert_after(cit pos, const T & value);
 
       template< class... Args >
-      it emplace_after(cit pos, Args &&... args); //done
-      it erase_after(cit pos); //done
-      it erase_after(cit first, cit last); //done
+      it emplace_after(cit pos, Args &&... args);
+      it erase_after(cit pos);
+      it erase_after(cit first, cit last);
 
-      void push_front(const T & value); //done
-      template< class... Args >
-      void emplace_front(Args &&... args);
-      template< class... Args >
-      T & emplace_front(Args &&... args);
+      void push_front(const T & value);
       void pop_front();
-      void swap(fl & other) noexcept; //done
+      void swap(fl & other) noexcept;
 
-      void merge(fl & other);
-      void merge(fl && other);
-      template< class Compare >
-      void merge(fl & other, Compare comp);
-      template< class Compare >
-      void merge(fl && other, Compare comp);
-      void splice_after(cit pos, fl & other);
-      void splice_after(cit pos, fl && other);
-      void splice_after(cit pos, fl & other, cit it);
-      void splice_after(cit pos, fl && other, cit it);
-      void splice_after(cit pos, fl & other, cit first, cit last);
-      void splice_after(cit pos, fl && other, cit first, cit last);
-      void remove(const T & value);
-      template< class UnaryPredicate >
-      void remove_if(UnaryPredicate p);
-      void reverse() noexcept;
-      void unique();
-      template< class BinaryPredicate >
-      void unique(BinaryPredicate p);
-      void sort();
-      template< class Compare >
-      void sort(Compare comp);
     private:
       it dummy_;
       it tail_;
@@ -144,10 +113,10 @@ ForwardList< T > & ForwardList< T >::operator=(fl && rhs)
   tail_ = rhs.tail_;
   dummy_ = rhs.dummy_;
   size_ = rhs.size_;
-  rhs.head_ = it(nullptr);
   rhs.tail_ = it(nullptr);
   rhs.dummy_ = it(nullptr);
   rhs.size_ = 0;
+  return * this;
 }
 
 template< typename T >

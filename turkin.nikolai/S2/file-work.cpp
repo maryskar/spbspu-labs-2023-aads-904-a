@@ -24,10 +24,10 @@ dict_a turkin::genDicts(std::istream & input)
       {
         break;
       }
-      data.emplace(std::make_pair(key, value));
+      data.emplace(key, value);
     }
     input.clear();
-    result.emplace(std::make_pair(name, data));
+    result.emplace(name, data);
   }
   return result;
 }
