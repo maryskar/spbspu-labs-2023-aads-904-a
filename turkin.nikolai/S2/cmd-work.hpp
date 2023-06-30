@@ -35,12 +35,31 @@ namespace turkin
     {
       return result;
     }
-    for (auto ins = one.cbegin(); ins != one.cend(); ins++)
+    auto iter_first = one.cbegin();
+    auto iter_first_end = one.cend();
+    auto iter_second = two.cbegin();
+    auto iter_second_end = two.cend();
+    C comp = C{};
+    while (iter_first != iter_first_end && iter_second != iter_second_end)
     {
-      if (ins->first != two.find(ins->first)->first)
+      while (iter_second != iter_second_end && comp(iter_second->first, iter_first->first))
       {
-        result.emplace(*ins);
+        iter_second++;
       }
+      if (iter_second == iter_second_end)
+      {
+        break;
+      }
+      if (iter_first->first != iter_second->first)
+      {
+        result.emplace(*iter_first);
+      }
+      iter_first++;
+    }
+    while (iter_first != iter_first_end)
+    {
+      result.emplace(*iter_first);
+      iter_first++;
     }
     return result;
   }
