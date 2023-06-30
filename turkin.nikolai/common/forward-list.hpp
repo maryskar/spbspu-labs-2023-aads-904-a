@@ -6,8 +6,8 @@
 #include <cassert>
 #include <initializer_list>
 #include <oneway-list.hpp>
-#include "iterator.hpp"
-#include "const-iterator.hpp"
+#include <iterator.hpp>
+#include <const-iterator.hpp>
 
 namespace turkin
 {
@@ -104,7 +104,6 @@ ForwardList< T >::ForwardList(std::initializer_list< T > & list):
     insert_after(cend(), ins);
   }
 }
-
 
 template< typename T >
 ForwardList< T > & ForwardList< T >::operator=(const fl & rhs)

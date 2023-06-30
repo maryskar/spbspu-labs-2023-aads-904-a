@@ -4,10 +4,10 @@
 #include <cstddef>
 #include <functional>
 #include <utility>
-#include "dictionary.hpp"
+#include <dictionary.hpp>
+#include <forward-list.hpp>
 #include "cmd-work.hpp"
 #include "file-work.hpp"
-#include "forward-list.hpp"
 
 int main(int argc, char * argv[])
 {

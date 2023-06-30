@@ -5,7 +5,7 @@
 #include <string>
 #include <fstream>
 #include <functional>
-#include "dictionary.hpp"
+#include <dictionary.hpp>
 
 namespace turkin
 {
