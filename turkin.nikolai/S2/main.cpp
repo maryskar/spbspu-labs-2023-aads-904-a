@@ -6,6 +6,7 @@
 #include <utility>
 #include <dictionary.hpp>
 #include <forward-list.hpp>
+#include <out-msg.hpp>
 #include "cmd-work.hpp"
 #include "file-work.hpp"
 
@@ -67,7 +68,7 @@ int main(int argc, char * argv[])
     }
     catch (...)
     {
-      std::cout << "<INVALID COMMAND>\n";
+      turkin::outInvalidCMD(std::cout);
     }
   }
   return 0;

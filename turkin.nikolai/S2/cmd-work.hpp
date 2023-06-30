@@ -6,6 +6,7 @@
 #include <fstream>
 #include <functional>
 #include <dictionary.hpp>
+#include <out-msg.hpp>
 
 namespace turkin
 {
@@ -16,7 +17,7 @@ namespace turkin
     auto ret = rhs.second;
     if (ret.size() == 0)
     {
-      out << "<EMPTY>\n";
+      outEmptyCMD(out);
       return;
     }
     out << name;
