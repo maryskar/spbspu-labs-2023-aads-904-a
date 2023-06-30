@@ -22,6 +22,7 @@ namespace turkin
       Dictionary();
       Dictionary(const dict & rhs);
       Dictionary(dict && rhs);
+      Dictionary(std::initializer_list< dict_t > init);
       Dictionary & operator=(const dict & rhs);
       Dictionary & operator=(dict && rhs);
       ~Dictionary() = default;
@@ -92,6 +93,13 @@ Dictionary< K, V, C >::Dictionary(dict && rhs):
   fl_(rhs.fl_),
   cmp_(rhs.cmp_)
 {}
+
+template< typename K, typename V, typename C >
+Dictionary< K, V, C >::Dictionary(std::initializer_list< dict_t > init):
+  fl_(init),
+  cmp_()
+{}
+
 
 template< typename K, typename V, typename C >
 Dictionary< K, V, C > & Dictionary< K, V, C >::operator=(const dict & rhs)

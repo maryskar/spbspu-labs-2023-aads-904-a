@@ -21,6 +21,7 @@ namespace turkin
       ForwardList();
       ForwardList(const fl & rhs);
       ForwardList(fl && rhs);
+      ForwardList(std::initializer_list< T > & list);
       ForwardList & operator=(const fl & rhs);
       ForwardList & operator=(fl && rhs);
       ~ForwardList();
@@ -89,6 +90,22 @@ ForwardList< T >::ForwardList(fl && rhs):
   rhs.dummy_ = it(nullptr);
   rhs.size_ = 0;
 }
+
+template< typename T >
+ForwardList< T >::ForwardList(std::initializer_list< T > & list):
+  dummy_(new OneWayNode< T >),
+  tail_(new OneWayNode< T >),
+  size_(0)
+{
+  dummy_.cur_->next = tail_.cur_;
+  tail_.cur_->next = nullptr;
+  for (auto ins: list)
+  {
+
+    insert_after(cend(), ins);
+  }
+}
+
 
 template< typename T >
 ForwardList< T > & ForwardList< T >::operator=(const fl & rhs)
