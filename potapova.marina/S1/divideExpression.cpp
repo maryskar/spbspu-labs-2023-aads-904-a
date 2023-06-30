@@ -1,8 +1,8 @@
 #include "divideExpression.h"
-#include "inputInfixQueue.h"
+#include <stdexcept>
 #include "stack.h"
 
-size_t potapova::checkPriority(char& operation)
+size_t getPriority(const char operation)
 {
   if (operation == '*' || operation == '/')
   {
@@ -11,65 +11,65 @@ size_t potapova::checkPriority(char& operation)
   return 0;
 }
 
-bool potapova::isOpenBracket(char value)
+bool isOpenBracket(const char value)
 {
   return (value == '(');
 }
 
-bool potapova::isCloseBracket(char value)
+bool isCloseBracket(const char value)
 {
-  return (value == ')');
+  return value == ')';
 }
 
-void potapova::removeBrackets(expr_stack& operators_stack, expr_queue& postfix_expr)
+void moveExprInBracketsToPostfix(potapova::Stack< char >& operators_stack,
+                                 potapova::expr_queue& postfix_expr)
 {
-  while (!operators_stack.empty() && !potapova::isOpenBracket(operators_stack.back()))
+  while (!isOpenBracket(operators_stack.back()))
   {
-    potapova::ArithmExpMember member = operators_stack.back();
+    postfix_expr.push(potapova::ArithmExpMember(operators_stack.back()));
     operators_stack.pop();
-    potapova::addInPostfixQueue(postfix_expr, member);
+    if (operators_stack.empty())
+    {
+      throw std::logic_error("Was found close bracket without open bracket");
+    }
   }
-  if (isOpenBracket(operators_stack.back()))
-  {
-    operators_stack.pop();
-  }
+  operators_stack.pop();
 }
 
-void potapova::addInPostfixQueue(expr_queue& postfix_expr, potapova::ArithmExpMember member)
-{
-  postfix_expr.push(member);
-}
-
-expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
+potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
 {
   expr_queue postfix_expr;
-  expr_stack operators_stack;
+  Stack< char > operators_stack;
   while (!infix_expr.empty())
   {
-    potapova::ArithmExpMember& cur_member = infix_expr.front();
-    if (cur_member.type == potapova::ArithmExpMember::Type::Num)
+    ArithmExpMember& cur_member = infix_expr.front();
+    if (cur_member.type == ArithmExpMember::Type::Num)
     {
       postfix_expr.push(cur_member);
     }
-    else if (cur_member.type == potapova::ArithmExpMember::Type::Operation)
+    else if (isOpenBracket(cur_member.operation || operators_stack.empty() || isOpenBracket(operators_stack.back())))
     {
-      if (isOpenBracket(cur_member.operation))
-      {
-        operators_stack.push(cur_member);
-      }
-      else if (isCloseBracket(cur_member.operation))
-      {
-        removeBrackets(operators_stack, postfix_expr);
-      }
-      else
-      {
-        while (!operators_stack.empty() && (potapova::checkPriority(cur_member.operation) <= potapova::checkPriority(operators_stack.back())))
-        {
-          postfix_expr.push(cur_member.operation);
-          operators_stack.pop();
-        }
-      }
+      operators_stack.push(cur_member.operation);
+    }
+    else if (isCloseBracket(cur_member.operation))
+    {
+      moveExprInBracketsToPostfix(operators_stack, postfix_expr);
+    }
+    else if (getPriority(cur_member.operation) < getPriority(operators_stack.back()))
+    {
+      operators_stack.push(cur_member.operation);
+    }
+    else
+    {
+      postfix_expr.push(ArithmExpMember(operators_stack.back()));
+      operators_stack.back() = cur_member.operation;
     }
     infix_expr.pop();
   }
+  while (!operators_stack.empty())
+  {
+    postfix_expr.push(operators_stack.back());
+    operators_stack.pop();
+  }
+  return postfix_expr;
 }
