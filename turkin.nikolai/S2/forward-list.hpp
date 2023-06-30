@@ -101,7 +101,6 @@ ForwardList< T >::ForwardList(std::initializer_list< T > & list):
   tail_.cur_->next = nullptr;
   for (auto ins: list)
   {
-
     insert_after(cend(), ins);
   }
 }
