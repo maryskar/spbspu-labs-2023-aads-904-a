@@ -33,6 +33,16 @@ namespace potapova
       }
     }
 
+    Queue(Queue&& other)
+    {
+      begin_ptr = other.begin_ptr_;
+      end_ptr = other.end_ptr_;
+      size = other.size_;
+      other.begin_ptr_ = nullptr;
+      other.end_ptr_ = nullptr;
+      other.size_ = 0;
+    }
+
     void push(const T& elem)
     {
       if (begin_ptr_ == nullptr)
