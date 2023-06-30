@@ -57,11 +57,10 @@ int main(int argc, char * argv[])
         std::string set0;
         std::string set1;
         std::string set2;
-        std::cin >> set0 >> set1 >> set0;
+        std::cin >> set0 >> set1 >> set2;
         dict_t dict1 = dict.at(set1);
         dict_t dict2 = dict.at(set2);
         auto func = commands.at(cmd);
-        std::cout << func(dict1, dict2).size() << "\n";
         dict_t temp = func(dict1, dict2);
         dict.emplace(set0, temp);
       }
