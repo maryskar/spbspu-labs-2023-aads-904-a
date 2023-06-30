@@ -23,6 +23,16 @@ namespace potapova
       }
     }
 
+    Queue(const Queue& other): Queue()
+    {
+      Node* curr_node_ptr = other.begin_ptr_;
+      while (curr_node_ptr != end_ptr_)
+      {
+        push(curr_node_ptr->data);
+        curr_node_ptr = curr_node_ptr->next_node_ptr;
+      }
+    }
+
     void push(const T& elem)
     {
       if (begin_ptr_ == nullptr)
