@@ -1,10 +1,12 @@
 #ifndef INPUTINFIXQUEUE_H
 #define INPUTINFIXQUEUE_H
 
+#include <iostream>
+#include "valueType.h"
+
 namespace potapova
 {
-  std::istream& inputInfixQueue(potapova::Queue< potapova::ArithmExpMember >& dest, std::istream& in = std::cin);
-  bool isOperation(char& sym);
+  std::istream& inputInfixQueue(expr_queue& dest, std::istream& in = std::cin);
 }
 
 #endif

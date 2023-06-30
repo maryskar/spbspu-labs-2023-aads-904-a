@@ -1,38 +1,48 @@
 #include "inputInfixQueue.h"
 #include <cstring>
-#include <iostream>
 #include <cctype>
-#include <stdexcept>
 #include <string>
-#include "valueType.h"
-#include "queue.h"
 
-std::istream& potapova::inputInfixQueue(potapova::Queue< potapova::ArithmExpMember >& dest, std::istream& in = std::cin)
+bool isOperation(const char& sym)
 {
-  std::string string_member;
-  while (in >> string_member)
+  return (sym == '+' || sym == '-' || sym == '*' || sym == '/' || sym == '%' || sym == '(' || sym == ')');
+}
+
+std::istream& potapova::inputInfixQueue(expr_queue& dest, std::istream& in)
+{
+  std::string expr_as_str;
+  std::getline(in, expr_as_str);
+  const char* cur_sym_ptr(expr_as_str.c_str());
+  while (*cur_sym_ptr != '/0')
   {
-    potapova::ArithmExpMember member;
-    if (isdigit(string_member.front()))
+    ArithmExpMember member;
+    if (isdigit(*cur_sym_ptr))
     {
-      member.type = potapova::ArithmExpMember::Type::Num;
-      member.num = std::stoll(string_member);
+      member.type = ArithmExpMember::Type::Num;
+      char* end_conv_ptr = nullptr;
+      member.num = std::strtoll(cur_sym_ptr, &end_conv_ptr, 10);
+      if (errno == ERANGE)
+      {
+        in.setstate(std::ios_base::failbit);
+        break;
+      }
+      cur_sym_ptr = end_conv_ptr;
     }
-    else if (isOperation(string_member.front()))
+    else if (isOperation(*cur_sym_ptr))
     {
-      member.type = potapova::ArithmExpMember::Type::Operation;
-      member.operation = std::stoll(string_member);
+      member.type = ArithmExpMember::Type::Operation;
+      member.operation = *cur_sym_ptr++;
     }
     else
     {
       in.setstate(std::ios_base::failbit);
+      break;
     }
     dest.push(member);
+    if (isspace(*cur_sym_ptr))
+    {
+      ++cur_sym_ptr;
+    }
   }
   return in;
-}
-
-bool potapova::isOperation(char& sym)
-{
-  return (sym == '+' || sym == '-' || sym == '*' || sym == '/' || sym == '%' || sym == '(' || sym == ')');
 }
