@@ -16,15 +16,12 @@ namespace potapova
 
     ~Stack()
     {
-      while (end_ptr_ != nullptr)
-      {
-        pop();
-      }
+      clear();
     }
 
-    Stack(const Stack& other)
+    Stack(const Stack& other): Stack()
     {
-      Node** cur_node_ptr_ptr = end_ptr_;
+      Node** cur_node_ptr_ptr = end_ptr_ = nullptr;
       Node** cur_other_node_ptr = other.end_ptr_;
       while (cur_other_node_ptr != nullptr)
       {
@@ -35,9 +32,34 @@ namespace potapova
       size_ = other.size_;
     }
 
-    Stack(Stack&& other)
+    Stack(Stack&& other): Stack()
     {
-      std::move(other);
+      *this = std::move(other);
+    }
+
+    Stack& operator=(const Stack& other)
+    {
+      clear();
+      Node** cur_node_ptr_ptr = end_ptr_ = nullptr;
+      Node** cur_other_node_ptr = other.end_ptr_;
+      while (cur_other_node_ptr != nullptr)
+      {
+        *cur_node_ptr_ptr = new Node(cur_other_node_ptr_->data);
+        cur_node_ptr_ptr = &(*cur_node_ptr_ptr)->prev_node_ptr;
+        *cur_other_node_ptr = *cur_other_node_ptr->prev_node_ptr;
+      }
+      size_ = other.size_;
+      return *this;
+    }
+
+    Stack& operator=(Stack&& other)
+    {
+      clear();
+      end_ptr_ = other.end_ptr_;
+      size_ = other.size_;
+      other.end_ptr_ = nullptr;
+      other.size_ = 0;
+      return *this;
     }
 
     void push(const T& elem)
@@ -69,6 +91,14 @@ namespace potapova
     bool empty()
     {
       return (size_ == 0);
+    }
+
+    void clear()
+    {
+      while (!empty())
+      {
+        pop();
+      }
     }
   private:
     struct Node
