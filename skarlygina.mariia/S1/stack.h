@@ -12,6 +12,7 @@ public:
   Stack(const Stack< T >&& other);
   void push(const T& rhs);
   T& get() const;
+  T& top() const;
   void pop();
   bool isEmpty() const;
   ~Stack();
@@ -39,6 +40,16 @@ Stack< T >::Stack(const Stack< T >&& other) :
 {
   other.head_ = nullptr;
   other.tail_ = nullptr;
+}
+
+template <class T>
+T& Stack< T >::top() const
+{
+  if (isEmpty())
+  {
+    throw std::runtime_error("Stack is empty");
+  }
+  return head_->data;
 }
 
 template< typename T>

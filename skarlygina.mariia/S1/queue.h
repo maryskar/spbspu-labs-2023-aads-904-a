@@ -12,6 +12,7 @@ public:
   Queue(const Queue< T >& other);
   Queue(const Queue< T >&& other);
   void push(const T& rhs);
+  T top() const;
   T& get() const;
   void pop();
   bool isEmpty() const;
@@ -83,6 +84,15 @@ T& Queue< T >::get() const
   if (head_ == nullptr)
   {
     throw std::out_of_range("Queue is empty");
+  }
+  return head_->data;
+}
+
+template <class T>
+T Queue< T >::top() const
+{
+  if (isEmpty()) {
+    throw std::runtime_error("Queue is empty");
   }
   return head_->data;
 }
