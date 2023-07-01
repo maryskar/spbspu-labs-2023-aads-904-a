@@ -3,7 +3,6 @@
 
 #include <cstdint>
 #include "queue.h"
-#include "stack.h"
 
 namespace potapova
 {

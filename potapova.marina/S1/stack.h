@@ -20,7 +20,19 @@ namespace potapova
       {
         pop();
       }
-      
+    }
+
+    Stack(const Stack& other)
+    {
+      Node** cur_node_ptr_ptr = end_ptr_;
+      Node** cur_other_node_ptr = other.end_ptr_;
+      while (cur_other_node_ptr != nullptr)
+      {
+        *cur_node_ptr_ptr = new Node(cur_other_node_ptr_->data);
+        cur_node_ptr_ptr = &(*cur_node_ptr_ptr)->prev_node_ptr;
+        *cur_other_node_ptr = *cur_other_node_ptr->prev_node_ptr;
+      }
+      size_ = other.size_;
     }
 
     void push(const T& elem)
