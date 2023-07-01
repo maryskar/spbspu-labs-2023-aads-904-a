@@ -35,6 +35,11 @@ namespace potapova
       size_ = other.size_;
     }
 
+    Stack(Stack&& other)
+    {
+      std::move(other);
+    }
+
     void push(const T& elem)
     {
       Node* new_end_ptr = new Node(elem);
