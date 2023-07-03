@@ -6,7 +6,7 @@
 #include <string>
 
 #include <StringSplitter.hpp>
-#include <outInvalidCommandMsg.hpp>
+#include <outErrorMsg.hpp>
 
 #include "Dictionary.hpp"
 
@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
         split >> dataSetName;
         NumericDictionary dataSet = dataSetDict.at(dataSetName);
         if (dataSet.empty()) {
-          std::cout << "<EMPTY>\n";
+          odintsov::outEmptyContainerMsg(std::cout) << '\n';
         } else {
           std::cout << dataSetName;
           for (NumericDictionary::ConstIter i = dataSet.cbegin(); i != dataSet.cend(); ++i) {
