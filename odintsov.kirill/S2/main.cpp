@@ -151,9 +151,9 @@ int main(int argc, char* argv[])
         }
         dataSetDict[outDataSetName] = std::move(outDataSet);
       } else {
-        outInvalidCommandMsg(std::cout) << '\n';
+        throw std::logic_error("Unknown command");
       }
-    } catch (const std::out_of_range&) {
+    } catch (const std::logic_error&) {
       outInvalidCommandMsg(std::cout) << '\n';
       continue;
     } catch (const std::exception& e) {
