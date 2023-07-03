@@ -6,13 +6,9 @@
 #include <string>
 
 #include <StringSplitter.hpp>
+#include <outInvalidCommandMsg.hpp>
 
 #include "Dictionary.hpp"
-
-std::ostream& outInvalidCommandMsg(std::ostream& out)
-{
-  return out << "<INVALID COMMAND>";
-}
 
 int main(int argc, char* argv[])
 {
@@ -154,7 +150,7 @@ int main(int argc, char* argv[])
         throw std::logic_error("Unknown command");
       }
     } catch (const std::logic_error&) {
-      outInvalidCommandMsg(std::cout) << '\n';
+      odintsov::outInvalidCommandMsg(std::cout) << '\n';
       continue;
     } catch (const std::exception& e) {
       std::cerr << e.what() << '\n';
