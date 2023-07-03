@@ -9,9 +9,10 @@
 #include <stdexcept>
 #include <utility>
 
+#include <Node.hpp>
+
 #include "ForwardIterator.hpp"
 #include "MergeSort.hpp"
-#include "Node.hpp"
 
 namespace odintsov {
   template< typename T >

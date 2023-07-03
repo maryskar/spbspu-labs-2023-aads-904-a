@@ -3,7 +3,7 @@
 
 #include <iterator>
 
-#include "Node.hpp"
+#include <Node.hpp>
 
 namespace odintsov {
   namespace detail {
