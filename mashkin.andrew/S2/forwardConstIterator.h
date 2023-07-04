@@ -9,25 +9,25 @@
 namespace mashkin
 {
   template< class T >
-  class ConstIterator: public std::iterator< std::forward_iterator_tag, T >
+  class forwardConstIterator: public std::iterator< std::forward_iterator_tag, T >
   {
   public:
-    ConstIterator();
-    ~ConstIterator() = default;
-    ConstIterator(const ConstIterator< T >&) = default;
-    ConstIterator(NodeList< T >* rhs);
-    ConstIterator(const Iterator< T >& rhs);
+    forwardConstIterator();
+    ~forwardConstIterator() = default;
+    forwardConstIterator(const forwardConstIterator< T >&) = default;
+    forwardConstIterator(NodeList< T >* rhs);
+    forwardConstIterator(const forwardIterator< T >& rhs);
 
-
-    ConstIterator< T >& operator=(const ConstIterator< T >&) = default;
-    ConstIterator< T >& operator++();
-    ConstIterator< T > operator++(int);
+    forwardConstIterator< T >& operator=(const forwardConstIterator< T >&) = default;
+    forwardConstIterator< T >& operator++();
+    forwardConstIterator< T > operator++(int);
 
     T& operator*() const;
     T* operator->() const;
 
-    bool operator!=(const ConstIterator< T >& rhs) const;
-    bool operator==(const ConstIterator< T >& rhs) const;
+    bool operator!=(const forwardConstIterator< T >& rhs) const;
+    bool operator==(const forwardConstIterator< T >& rhs) const;
+
   private:
     template< typename U >
     friend class ForwardList;
@@ -36,60 +36,60 @@ namespace mashkin
 }
 
 template< class T >
-mashkin::ConstIterator< T >::ConstIterator():
+mashkin::forwardConstIterator< T >::forwardConstIterator():
   node(nullptr)
 {
 }
 
 template< class T >
-mashkin::ConstIterator< T >::ConstIterator(NodeList< T >* lhs)
+mashkin::forwardConstIterator< T >::forwardConstIterator(NodeList< T >* lhs)
 {
   node = lhs;
 }
 
 template< class T >
-mashkin::ConstIterator< T >::ConstIterator(const mashkin::Iterator< T >& rhs):
+mashkin::forwardConstIterator< T >::forwardConstIterator(const mashkin::forwardIterator< T >& rhs):
   node(rhs.node)
 {
 }
 
 template< class T >
-mashkin::ConstIterator< T >& mashkin::ConstIterator< T >::operator++()
+mashkin::forwardConstIterator< T >& mashkin::forwardConstIterator< T >::operator++()
 {
   assert(node != nullptr);
   node = node->next;
 }
 
 template< class T >
-mashkin::ConstIterator< T > mashkin::ConstIterator< T >::operator++(int)
+mashkin::forwardConstIterator< T > mashkin::forwardConstIterator< T >::operator++(int)
 {
   assert(node != nullptr);
-  ConstIterator< T > res(*this);
+  forwardConstIterator< T > res(*this);
   ++(*this);
   return res;
 }
 
 template< class T >
-bool mashkin::ConstIterator< T >::operator==(const ConstIterator< T >& rhs) const
+bool mashkin::forwardConstIterator< T >::operator==(const forwardConstIterator< T >& rhs) const
 {
   return node == rhs.node;
 }
 
 template< class T >
-bool mashkin::ConstIterator< T >::operator!=(const ConstIterator< T >& rhs) const
+bool mashkin::forwardConstIterator< T >::operator!=(const forwardConstIterator< T >& rhs) const
 {
   return !(rhs == *this);
 }
 
 template< class T >
-T& mashkin::ConstIterator< T >::operator*() const
+T& mashkin::forwardConstIterator< T >::operator*() const
 {
   assert(node != nullptr);
   return node->data;
 }
 
 template< class T >
-T* mashkin::ConstIterator< T >::operator->() const
+T* mashkin::forwardConstIterator< T >::operator->() const
 {
   assert(node != nullptr);
   return std::addressof(node->data);

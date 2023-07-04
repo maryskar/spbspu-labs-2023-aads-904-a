@@ -9,16 +9,16 @@
 namespace mashkin
 {
   template< typename T >
-  class ConstIterator;
+  class forwardConstIterator;
   template< typename T >
-  class Iterator;
+  class forwardIterator;
 
   template< typename T >
   class ForwardList
   {
   public:
-    using iter = Iterator< T >;
-    using citer = ConstIterator< T >;
+    using iter = forwardIterator< T >;
+    using citer = forwardConstIterator< T >;
     ForwardList();
     ForwardList(const ForwardList< T >& lhs);
     ForwardList(ForwardList< T >&& rhs) noexcept;
@@ -135,49 +135,49 @@ namespace mashkin
   }
 
   template< class T >
-  Iterator< T > ForwardList< T >::before_begin() noexcept
+  forwardIterator< T > ForwardList< T >::before_begin() noexcept
   {
     return iter(fake_);
   }
 
   template< class T >
-  ConstIterator< T > ForwardList< T >::cbefore_begin() noexcept
+  forwardConstIterator< T > ForwardList< T >::cbefore_begin() noexcept
   {
     return before_begin();
   }
 
   template< class T >
-  Iterator< T > ForwardList< T >::begin() const noexcept
+  forwardIterator< T > ForwardList< T >::begin() const noexcept
   {
     return iter(fake_->next);
   }
 
   template< class T >
-  Iterator< T > ForwardList< T >::end() const noexcept
+  forwardIterator< T > ForwardList< T >::end() const noexcept
   {
     return iter(tail_);
   }
 
   template< class T >
-  ConstIterator< T > ForwardList< T >::cbegin() const noexcept
+  forwardConstIterator< T > ForwardList< T >::cbegin() const noexcept
   {
     return begin();
   }
 
   template< class T >
-  ConstIterator< T > ForwardList< T >::cend() const noexcept
+  forwardConstIterator< T > ForwardList< T >::cend() const noexcept
   {
     return end();
   }
 
   template< class T >
-  Iterator< T > ForwardList< T >::insert_after(citer position, T&& val)
+  forwardIterator< T > ForwardList< T >::insert_after(citer position, T&& val)
   {
     return insert_after(position, val);
   }
 
   template< class T >
-  Iterator< T > ForwardList< T >::insert_after(citer position, const T& val)
+  forwardIterator< T > ForwardList< T >::insert_after(citer position, const T& val)
   {
     position.node->next = new NodeList< T >{val, position.node->next};
     ++position;
@@ -185,9 +185,9 @@ namespace mashkin
   }
 
   template< class T >
-  Iterator< T > ForwardList< T >::insert_after(citer position, size_t n, const T& val)
+  forwardIterator< T > ForwardList< T >::insert_after(citer position, size_t n, const T& val)
   {
-    Iterator< T > res = position.node;
+    forwardIterator< T > res = position.node;
     for (auto i = 0; i < n; i++)
     {
       res = insert_after(res, val);
@@ -196,9 +196,9 @@ namespace mashkin
 
   template< class T >
   template< class InpIter >
-  Iterator< T > ForwardList< T >::insert_after(citer position, InpIter first, InpIter last)
+  forwardIterator< T > ForwardList< T >::insert_after(citer position, InpIter first, InpIter last)
   {
-    Iterator< T > var = position.node;
+    forwardIterator< T > var = position.node;
     while (first != last)
     {
       var = insert_after(var, *first);
@@ -229,7 +229,7 @@ namespace mashkin
   }
 
   template< class T >
-  Iterator< T > ForwardList< T >::erase_after(citer pos)
+  forwardIterator< T > ForwardList< T >::erase_after(citer pos)
   {
     if (pos == cend())
     {
@@ -242,7 +242,7 @@ namespace mashkin
   }
 
   template< class T >
-  Iterator< T > ForwardList< T >::erase_after(citer pos, citer last)
+  forwardIterator< T > ForwardList< T >::erase_after(citer pos, citer last)
   {
     while (pos.node->next != last.node)
     {
@@ -312,7 +312,7 @@ namespace mashkin
   template< class T >
   void ForwardList< T >::splice_after(citer pos, ForwardList< T >& other)
   {
-    ConstIterator< T > end(pos.node->next);
+    forwardConstIterator< T > end(pos.node->next);
     auto first = other.begin();
     auto last = other.end();
     pos.node->next = first.node;
@@ -339,7 +339,7 @@ namespace mashkin
     }
     else
     {
-      ConstIterator< T > end(pos.node->next);
+      forwardConstIterator< T > end(pos.node->next);
       auto last = other.end();
       pos.node->next = it.node->next;
       auto otherEnd = it;
@@ -362,7 +362,7 @@ namespace mashkin
   template< class T >
   void ForwardList< T >::splice_after(citer pos, ForwardList< T >& other, citer first, citer last)
   {
-    ConstIterator< T > end(pos.node->next);
+    forwardConstIterator< T > end(pos.node->next);
     pos.node->next = first.node->next;
     first.node->next = last.node->next;
     last.node->next = end.node;
