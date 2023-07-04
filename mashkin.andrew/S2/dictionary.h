@@ -38,14 +38,31 @@ namespace mashkin
     iter end();
     const_iter cend();
 
+    bool empty() const noexcept;
+    size_t size() const noexcept;
+
+    void clear();
+
     /*void push(Key k, Value v);
-    Value get(Key k);
     void drop(Key k);*/
 
   private:
     ForwardList< value_type > pair_;
     Compare comp_;
+    size_t size_;
   };
+
+  template< class Key, class Value, class Compare >
+  size_t Dictionary< Key, Value, Compare >::size() const noexcept
+  {
+    return size_;
+  }
+
+  template< class Key, class Value, class Compare >
+  bool Dictionary< Key, Value, Compare >::empty() const noexcept
+  {
+    return pair_.empty();
+  }
 
   template< class Key, class Value, class Compare >
   Dictionary< Key, Value, Compare >::iter Dictionary< Key, Value, Compare >::begin()
@@ -67,34 +84,39 @@ namespace mashkin
   {
     pair_(this->pair_.insert_after(this->pair_.before_begin(), rhs.pair_.cbegin), rhs.pair_.cend());
     comp_ = rhs.comp_;
+    size_ = rhs.size_;
     return *this;
   }
 
   template< class Key, class Value, class Compare >
   Dictionary< Key, Value, Compare >::Dictionary():
     pair_(),
-    comp_()
+    comp_(),
+    size_(0)
   {
   }
 
   template< class Key, class Value, class Compare >
   Dictionary< Key, Value, Compare >::Dictionary(const Compare& comp):
     pair_(),
-    comp_(comp)
+    comp_(comp),
+    size_(0)
   {
   }
 
   template< class Key, class Value, class Compare >
   Dictionary< Key, Value, Compare >::Dictionary(const Dictionary& other):
     pair_(other.pair_),
-    comp_(other.comp_)
+    comp_(other.comp_),
+    size_(other.size_)
   {
   }
 
   template< class Key, class Value, class Compare >
   Dictionary< Key, Value, Compare >::Dictionary(Dictionary&& other) noexcept:
     pair_(std::move(other.pair_)),
-    comp_(other.comp_)
+    comp_(other.comp_),
+    size_(other.size_)
   {
   }
 
