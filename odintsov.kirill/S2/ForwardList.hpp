@@ -16,17 +16,12 @@
 namespace odintsov {
   template< typename T >
   class ForwardList {
+    using Node = ::detail::Node< T >;
+
    public:
     struct Iter: public std::iterator< std::forward_iterator_tag, T > {
-      using Node = detail::Node< T >;
-      Node* nodePtr;
-
       Iter():
         nodePtr(nullptr)
-      {}
-
-      Iter(Node* ptr):
-        nodePtr(ptr)
       {}
 
       Iter& operator++()
@@ -65,18 +60,19 @@ namespace odintsov {
       {
         return nodePtr != rhs.nodePtr;
       }
+
+     private:
+      Node* nodePtr;
+
+      Iter(Node* ptr):
+        nodePtr(ptr)
+      {}
     };
 
     struct ConstIter: public std::iterator< std::forward_iterator_tag, T > {
-      using Node = detail::Node< T >;
-      const Node* nodePtr;
 
       ConstIter():
         nodePtr(nullptr)
-      {}
-
-      ConstIter(const Node* ptr):
-        nodePtr(ptr)
       {}
 
       ConstIter(const ForwardList< T >::Iter& fi):
@@ -123,9 +119,14 @@ namespace odintsov {
       {
         return nodePtr != rhs.nodePtr;
       }
-    };
 
-    using Node = detail::Node< T >;
+     private:
+      const Node* nodePtr;
+
+      ConstIter(const Node* ptr):
+        nodePtr(ptr)
+      {}
+    };
 
     ForwardList():
       ForwardList(nullptr)
