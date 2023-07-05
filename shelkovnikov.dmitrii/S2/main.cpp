@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../common/labList1.h"
+#include <labList1.h>
 int main(int argc, char *argv[])
 {
   try
