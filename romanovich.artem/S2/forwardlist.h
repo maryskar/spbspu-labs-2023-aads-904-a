@@ -20,14 +20,14 @@ public:
   ForwardList &operator=(std::initializer_list< T > initializerList);
   T front();
   const T &front() const;
-  const_iterator before_begin() const;
+  iterator before_begin() const;
   iterator before_begin();
   const_iterator cbefore_begin() const;
-  const_iterator begin() const;
+  iterator begin() const;
   iterator begin();
-  const_iterator cbegin() const;
-  const_iterator end() const;
   iterator end();
+  const_iterator cbegin() const;
+  iterator end() const;
   const_iterator cend() const;
   bool empty() const;
   void clear();
@@ -376,17 +376,12 @@ ForwardListIterator< T > ForwardList< T >::end()
   return ForwardListIterator< T >(nullptr);
 }
 template< typename T >
-ConstForwardListIterator< T > ForwardList< T >::end() const
+ForwardListIterator< T > ForwardList< T >::end() const
 {
   return ForwardListIterator< T >(nullptr);
 }
 template< typename T >
-ForwardListIterator< T > ForwardList< T >::begin()
-{
-  return ForwardListIterator< T >(begin_);
-}
-template< typename T >
-ConstForwardListIterator< T > ForwardList< T >::begin() const
+ForwardListIterator< T > ForwardList< T >::begin() const
 {
   return ForwardListIterator< T >(begin_);
 }
@@ -396,7 +391,7 @@ ForwardListIterator< T > ForwardList< T >::before_begin()
   return ForwardListIterator< T >(fakeNode_);
 }
 template< typename T >
-ConstForwardListIterator< T > ForwardList< T >::before_begin() const
+ForwardListIterator< T > ForwardList< T >::before_begin() const
 {
   return ForwardListIterator< T >(fakeNode_);
 }

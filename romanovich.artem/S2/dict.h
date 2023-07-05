@@ -21,16 +21,16 @@ public:
   Value &operator[](Key &&key);
   Value &at(const Key &key);
   iterator before_begin() noexcept;
-  const_iterator before_begin() const noexcept;
+  iterator before_begin() const noexcept;
   const_iterator cbefore_begin() const noexcept;
   iterator begin() noexcept;
-  const_iterator begin() const noexcept;
+  iterator begin() const noexcept;
   const_iterator cbegin() const noexcept;
   iterator end() noexcept;
-  const_iterator end() const noexcept;
+  iterator end() const noexcept;
   const_iterator cend() const noexcept;
   iterator last() noexcept;
-  const_iterator last() const noexcept;
+  iterator last() const noexcept;
   const_iterator clast() const noexcept;
   bool empty() const noexcept;
   void clear() noexcept;
@@ -272,7 +272,8 @@ Dictionary< Key, Value, Compare >::insert(P &&value)
   {
     return std::make_pair(it, false);
   }
-  iterator insertedIt = data_.insert_after(it, std::move(tmpValue));
+  data_.push_front(std::move(tmpValue)); //правильный ли порядок???
+  iterator insertedIt = begin();
   return std::make_pair(insertedIt, true);
 }
 template< typename Key, typename Value, typename Compare >
@@ -350,14 +351,14 @@ typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Valu
   return last();
 }
 template< typename Key, typename Value, typename Compare >
-typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::last() const noexcept
+typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::last() const noexcept
 {
-  return data_.clast(); //TODO
+  return data_.last();
 }
 template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::last() noexcept
 {
-  return data_.last(); //TODO
+  return data_.last();
 }
 template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::cend() const noexcept
@@ -365,9 +366,9 @@ typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Valu
   return end();
 }
 template< typename Key, typename Value, typename Compare >
-typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::end() const noexcept
+typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::end() const noexcept
 {
-  return data_.cend();
+  return data_.end();
 }
 template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::end() noexcept
@@ -380,9 +381,9 @@ typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Valu
   return data_.cbegin();
 }
 template< typename Key, typename Value, typename Compare >
-typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::begin() const noexcept
+typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::begin() const noexcept
 {
-  return data_.cbegin();
+  return data_.begin();
 }
 template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::begin() noexcept
@@ -396,10 +397,10 @@ Dictionary< Key, Value, Compare >::cbefore_begin() const noexcept
   return data_.cbefore_begin();
 }
 template< typename Key, typename Value, typename Compare >
-typename Dictionary< Key, Value, Compare >::const_iterator
+typename Dictionary< Key, Value, Compare >::iterator
 Dictionary< Key, Value, Compare >::before_begin() const noexcept
 {
-  return data_.cbefore_begin();
+  return data_.before_begin();
 }
 template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::before_begin() noexcept

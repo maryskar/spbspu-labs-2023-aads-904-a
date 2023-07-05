@@ -26,9 +26,9 @@ public:
   ConstForwardListIterator< T > &operator++();
   ConstForwardListIterator< T > operator++(int);
   ConstForwardListIterator(const ConstForwardListIterator< T > &rhs) = default;
+  ~ConstForwardListIterator() = default;
 private:
   ConstForwardListIterator();
-  ~ConstForwardListIterator() = default;
   details::ListNode< T > *node_;
   void checkForNullNode();
 };

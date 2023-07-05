@@ -34,9 +34,9 @@ int main(int argc, char *argv[])
     std::cerr << "Cannot open file.\n";
     return 1;
   }
-  using dict_type = Dictionary< int, std::string >;
+  using dict_type = Dictionary< int, std::string, std::less< int > >;
   using dict_value_type = std::pair< int, std::string >;
-  using container_type = Dictionary< std::string, dict_type >;
+  using container_type = Dictionary< std::string, dict_type, std::less< std::string > >;
   using container_value_type = std::pair< std::string, dict_type >;
   container_type dictionary;
   std::string line;
@@ -53,5 +53,15 @@ int main(int argc, char *argv[])
       dictData.emplace(dict_value_type(key, val));
     }
     dictionary.emplace(container_value_type(dictName, dictData));
+  }
+  for (const auto &entry: dictionary)
+  {
+    std::cout << "Dictionary name: " << entry.first << "\n";
+    const auto &dict = entry.second;
+    for (auto &&item: dict)
+    {
+      std::cout << "Key: " << item.first << ", Value: " << item.second << "\n";
+    }
+    std::cout << "\n";
   }
 }
