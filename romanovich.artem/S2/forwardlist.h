@@ -416,7 +416,7 @@ ForwardList< T >::~ForwardList()
   clear();
   ::operator delete(fakeNode_);
 }
-template< typename T >
+template< typename T  >
 ForwardList< T > &ForwardList< T >::operator=(const ForwardList &rhs)
 {
   if (this != std::addressof(rhs))
