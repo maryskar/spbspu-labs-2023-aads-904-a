@@ -68,13 +68,13 @@ bool ForwardListIterator< T >::operator!=(const ForwardListIterator< T > &rhs) c
   return !(head_ == rhs.head_);
 }
 template< typename T >
-const T *ForwardListIterator< T >::operator->() const
+T *ForwardListIterator< T >::operator->()
 {
   checkForNullNode();
   return std::addressof(head_->data_);
 }
 template< typename T >
-T *ForwardListIterator< T >::operator->()
+const T *ForwardListIterator< T >::operator->() const
 {
   checkForNullNode();
   return const_cast< T & >(static_cast< const ForwardListIterator< T >>(*this).operator*());

@@ -22,21 +22,20 @@ namespace details
   template< typename T >
   std::tuple< ListNode< T > *, ListNode< T > * > copy(const ListNode< T > *listNode)
   {
-    if (listNode == nullptr)
+    if (!listNode)
     {
       return {nullptr, nullptr};
     }
-    ListNode< T > *node = listNode;
-    ListNode< T > *begin = new ListNode< T >{node->data, nullptr};
+    const ListNode< T > *node = listNode;
+    ListNode< T > *begin = new ListNode< T >{node->data_, nullptr};
     ListNode< T > *end = nullptr;
     try
     {
-      while (node != nullptr)
+      while (!node->next_)
       {
-        node = node->data;
-        begin->next_ = new details::ListNode< T >{node->data, nullptr};
-        end = begin;
-        begin = begin->next_;
+        node = node->next_;
+        end->next_ = new details::ListNode< T >{node->data_, nullptr};
+        end = end->next_;
       }
     }
     catch (...)

@@ -4,7 +4,6 @@
 #include <vector>
 #include "forwardlist.h"
 #include "dict.h"
-void doTest();
 std::vector< std::string > splitString(const std::string &line, char del)
 {
   std::vector< std::string > elems;
@@ -24,7 +23,6 @@ std::vector< std::string > splitString(const std::string &line, char del)
 }
 int main(int argc, char *argv[])
 {
-  doTest();
   if (argc != 2)
   {
     std::cerr << "No file provided.\n";
@@ -36,24 +34,24 @@ int main(int argc, char *argv[])
     std::cerr << "Cannot open file.\n";
     return 1;
   }
+  using dict_type = Dictionary< int, std::string >;
+  using dict_value_type = std::pair< int, std::string >;
+  using container_type = Dictionary< std::string, dict_type >;
+  using container_value_type = std::pair< std::string, dict_type >;
+  container_type dictionary;
   std::string line;
   while (std::getline(input, line))
   {
     std::vector< std::string > lineWords = splitString(line, ' ');
     std::string dictName = lineWords[0];
+    dict_type dictData;
     for (size_t i = 1; i < lineWords.size(); i += 2)
     {
       int key = std::stoi(lineWords[i]);
       std::string val = lineWords[i + 1];
       std::cout << key << " " << val << "\n";
+      dictData.emplace(dict_value_type(key, val));
     }
-    Dictionary< int, std::string > dictionary{};
-    //for (size_t i = 2; i < argc; i += 2)
-    //{
-    //  int key = std::stoi(argv[i]);
-    //  std::string value = argv[i + 1];
-    //  dictionary.insert(key, value);
-    //  std::cout << key << " " << value << "\n";
-    //}
+    dictionary.emplace(container_value_type(dictName, dictData));
   }
 }

@@ -68,6 +68,17 @@ private:
   bool areEqualKeys(Key lhs, Key rhs);
 };
 template< typename Key, typename Value, typename Compare >
+Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(
+  Dictionary< Key, Value, Compare > &&rhs) noexcept
+{
+  if (this != &rhs)
+  {
+    data_ = std::move(rhs.data_);
+    comp_ = std::move(rhs.comp_);
+  }
+  return *this;
+}
+template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare >::Dictionary(std::initializer_list< value_type > rhs):
   data_(rhs),
   comp_()
@@ -428,18 +439,6 @@ template< typename Key, typename Value, typename Compare >
 Value &Dictionary< Key, Value, Compare >::operator[](Key &&key)
 {
   return insertValue(std::move(key));
-}
-template< typename Key, typename Value, typename Compare >
-Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(
-  Dictionary< Key, Value, Compare > &&rhs) noexcept
-{
-  if (this != &rhs)
-  {
-    data_ = std::move(rhs.data_);
-    comp_ = std::move(rhs.comp_);
-    rhs.size_ = 0;
-  }
-  return *this;
 }
 template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(

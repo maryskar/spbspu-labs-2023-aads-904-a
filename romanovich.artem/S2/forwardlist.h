@@ -94,7 +94,7 @@ void ForwardList< T >::copy(const ForwardList< T > &rhs)
   auto tmp = details::copy(rhs.begin_);
   begin_ = std::get< 0 >(tmp);
   end_ = std::get< 1 >(tmp);
-  fakeNode_->next = begin_;
+  fakeNode_->next_ = begin_;
 }
 template< typename T >
 details::ListNode< T > *ForwardList< T >::initFake()
@@ -416,7 +416,7 @@ ForwardList< T >::~ForwardList()
   clear();
   ::operator delete(fakeNode_);
 }
-template< typename T  >
+template< typename T >
 ForwardList< T > &ForwardList< T >::operator=(const ForwardList &rhs)
 {
   if (this != std::addressof(rhs))
@@ -512,15 +512,15 @@ ForwardList< T >::ForwardList(const ForwardList &rhs):
 }
 template< typename T >
 ForwardList< T >::ForwardList(ForwardList &&rhs) noexcept:
-  begin_(rhs.begin_),
-  end_(rhs.end_),
-  fakeNode_(rhs.fakeNode_),
+  begin_(std::move(rhs.begin_)),
+  end_(std::move(rhs.end_)),
+  fakeNode_(std::move(rhs.fakeNode_)),
   size_(rhs.size_)
 {
   rhs.begin_ = nullptr;
   rhs.end_ = nullptr;
   rhs.fakeNode_ = nullptr;
-  rhs.size_ = nullptr;
+  rhs.size_ = 0;
 }
 template< typename T >
 ForwardList< T >::ForwardList(std::initializer_list< T > initializerList):
