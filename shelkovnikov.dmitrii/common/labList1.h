@@ -48,7 +48,6 @@ namespace dimkashelk
         {
           break;
         }
-        std::cout << key << " " << value << "\n";
         data.emplace(dict_value_type(key, value));
       }
       file_in.clear();
