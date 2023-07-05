@@ -26,7 +26,7 @@ namespace tarasenko
     Tree< T, Compare >* insert(const T& data, Tree< T, Compare >* ptree)
     {
       auto comp = ptree->compare_;
-      if (ptree == nullptr)
+      if (!ptree)
       {
         ptree = new Tree< T, Compare >;
         ptree->data_ = data;
@@ -49,17 +49,13 @@ namespace tarasenko
     template< typename T, typename Compare >
     void deleteTree(Tree< T, Compare >* ptree)
     {
-      if (ptree != nullptr)
+      if (ptree)
       {
         deleteTree(ptree->left_);
         deleteTree(ptree->right_);
         delete ptree;
       }
     }
-
-    //leftRotation
-    //rightRotation
-
   }
 }
 #endif
