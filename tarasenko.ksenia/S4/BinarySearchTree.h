@@ -26,6 +26,7 @@ namespace tarasenko
    void insert(const data_t& data);
    void leftRotation();
    void rightRotation();
+   void remove(const data_t& data);
 
   private:
    root_t* root_;
@@ -109,6 +110,12 @@ namespace tarasenko
   void BinarySearchTree< Key, Value, Compare >::rightRotation()
   {
     rightRotation(root_);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  void BinarySearchTree< Key, Value, Compare >::remove(const data_t& data)
+  {
+    details::remove(data, root_);
   }
 }
 

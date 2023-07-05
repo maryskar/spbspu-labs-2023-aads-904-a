@@ -56,6 +56,75 @@ namespace tarasenko
         delete ptree;
       }
     }
+
+    template< typename T, typename Compare >
+    Tree< T, Compare >* find(const T& data, Tree< T, Compare >* ptree)
+    {
+      auto comp = ptree->compare_;
+      if (!ptree || ptree->data_ == data)
+      {
+        return ptree;
+      }
+      if (comp(data, ptree->data_))
+      {
+        return find(data, ptree->left_);
+      }
+      return find(data, ptree->right_);
+    }
+
+    template< typename T, typename Compare >
+    Tree< T, Compare >* findMin(Tree< T, Compare >* ptree)
+    {
+      if (!ptree)
+      {
+        return nullptr;
+      }
+      else if (!ptree->left_)
+      {
+        return ptree;
+      }
+      else
+      {
+        return findMin(ptree->left_);
+      }
+    }
+
+    template< typename T, typename Compare >
+    void remove(const T& data, Tree< T, Compare >* ptree)
+    {
+      auto toDelete = find(data, ptree);
+      if (!toDelete)
+      {
+        return;
+      }
+      else if (toDelete->left_ && toDelete->right_)
+      {
+        auto replaceNode = findMin(toDelete->right_);
+        toDelete->data_ = replaceNode->data_;
+        remove(replaceNode->data_, replaceNode);
+        return;
+      }
+      else
+      {
+        auto child = toDelete->left_ ? toDelete->left_ : toDelete->right_;
+        if (toDelete->parent_)
+        {
+          if (toDelete->parent_->left_ == toDelete)
+          {
+            toDelete->parent_->left_ = child;
+          }
+          else
+          {
+            toDelete->parent_->right_ = child;
+          }
+          if (toDelete->left_ || toDelete->right_)
+          {
+            child->parent_ = toDelete->parent_;
+          }
+        }
+        delete toDelete;
+      }
+    }
   }
 }
 #endif
