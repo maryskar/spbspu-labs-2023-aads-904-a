@@ -2,31 +2,28 @@
 #define BINARYSEARCHTREE_H
 
 #include <utility>
+#include <iostream>
+#include "Tree.h"
 
-template< typename Key, typename Value, typename Compare >
-class BinarySearchTree
+namespace tarasenko
 {
- using BSTree = BinarySearchTree< Key, Value, Compare >;
-public:
- BinarySearchTree():
-   data_(),
-   left_(nullptr),
-   right_(nullptr),
-   parent_(nullptr),
-   compare_()
- {};
- ~BinarySearchTree()
- {};
- //insert(const std::pair< Key, Value >& data)
- //clear(BSTree** ptree)
- //leftRotation
- //rightRotation
-private:
- std::pair< Key, Value > data_;
- BSTree* left_;
- BSTree* right_;
- BSTree* parent_;
- Compare compare_;
-};
+  template< typename Key, typename Value, typename Compare >
+  class BinarySearchTree
+  {
+   using BSTree = BinarySearchTree< Key, Value, Compare >;
+   using data_t = std::pair< Key, Value >;
+  public:
+   BinarySearchTree():
+     root_(nullptr)
+   {};
+   ~BinarySearchTree()
+   {
+    //...
+   }
+  private:
+   details::Tree< data_t, Compare >* root_;
+  };
+
+}
 
 #endif
