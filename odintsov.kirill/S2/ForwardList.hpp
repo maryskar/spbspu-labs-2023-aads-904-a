@@ -11,15 +11,120 @@
 
 #include <Node.hpp>
 
-#include "ForwardIterator.hpp"
 #include "MergeSort.hpp"
 
 namespace odintsov {
   template< typename T >
   class ForwardList {
    public:
-    using Iter = detail::ForwardIterator< T >;
-    using ConstIter = detail::ConstForwardIterator< T >;
+    struct Iter: public std::iterator< std::forward_iterator_tag, T > {
+      using Node = detail::Node< T >;
+      Node* nodePtr;
+
+      Iter():
+        nodePtr(nullptr)
+      {}
+
+      Iter(Node* ptr):
+        nodePtr(ptr)
+      {}
+
+      Iter& operator++()
+      {
+        if (nodePtr) {
+          nodePtr = nodePtr->next;
+        }
+        return *this;
+      }
+
+      Iter operator++(int)
+      {
+        Iter copy(*this);
+        if (nodePtr) {
+          nodePtr = nodePtr->next;
+        }
+        return copy;
+      }
+
+      T& operator*() const
+      {
+        return nodePtr->val;
+      }
+
+      T* operator->() const
+      {
+        return std::addressof(nodePtr->val);
+      }
+
+      bool operator==(const Iter& rhs) const
+      {
+        return nodePtr == rhs.nodePtr;
+      }
+
+      bool operator!=(const Iter& rhs) const
+      {
+        return nodePtr != rhs.nodePtr;
+      }
+    };
+
+    struct ConstIter: public std::iterator< std::forward_iterator_tag, T > {
+      using Node = detail::Node< T >;
+      const Node* nodePtr;
+
+      ConstIter():
+        nodePtr(nullptr)
+      {}
+
+      ConstIter(const Node* ptr):
+        nodePtr(ptr)
+      {}
+
+      ConstIter(const ForwardList< T >::Iter& fi):
+        nodePtr(fi.nodePtr)
+      {}
+
+      ConstIter(ForwardList< T >::Iter&& fi):
+        nodePtr(fi.nodePtr)
+      {}
+
+      ConstIter& operator++()
+      {
+        if (nodePtr) {
+          nodePtr = nodePtr->next;
+        }
+        return *this;
+      }
+
+      ConstIter operator++(int)
+      {
+        ConstIter copy(*this);
+        if (nodePtr) {
+          nodePtr = nodePtr->next;
+        }
+        return copy;
+      }
+
+      const T& operator*() const
+      {
+        return nodePtr->val;
+      }
+
+      const T* operator->() const
+      {
+        return std::addressof(nodePtr->val);
+      }
+
+      bool operator==(const ConstIter& rhs) const
+      {
+        return nodePtr == rhs.nodePtr;
+      }
+
+      bool operator!=(const ConstIter& rhs) const
+      {
+        return nodePtr != rhs.nodePtr;
+      }
+    };
+
     using Node = detail::Node< T >;
 
     ForwardList():
