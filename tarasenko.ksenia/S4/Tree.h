@@ -22,8 +22,41 @@ namespace tarasenko
       Compare compare_;
     };
 
-    //insert
-    //delete
+    template< typename T, typename Compare >
+    Tree< T, Compare >* insert(const T& data, Tree< T, Compare >* ptree)
+    {
+      auto comp = ptree->compare_;
+      if (ptree == nullptr)
+      {
+        ptree = new Tree< T, Compare >;
+        ptree->data_ = data;
+      }
+      else if (comp(data.first, ptree->data_.first))
+      {
+        Tree< T, Compare >* leftChild = insert(data, ptree->left_);
+        ptree->left_ = leftChild;
+        leftChild->parent_ = ptree;
+      }
+      else
+      {
+        Tree< T, Compare >* rightChild = insert(data, ptree->right_);
+        ptree->right_ = rightChild;
+        rightChild->parent_ = ptree;
+      }
+      return ptree;
+    }
+
+    template< typename T, typename Compare >
+    void deleteTree(Tree< T, Compare >* ptree)
+    {
+      if (ptree != nullptr)
+      {
+        deleteTree(ptree->left_);
+        deleteTree(ptree->right_);
+        delete ptree;
+      }
+    }
+
     //leftRotation
     //rightRotation
 
