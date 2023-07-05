@@ -75,7 +75,7 @@ namespace mashkin
   using dict = Dictionary< Key, Value, Compare >;
 
   template< class K, class V, class C >
-  size_t dict< K, V, C >::erase(const key_type& key)
+  size_t Dictionary< K, V, C >::erase(const key_type& key)
   {
     auto var = find(key);
     if (var != end())
