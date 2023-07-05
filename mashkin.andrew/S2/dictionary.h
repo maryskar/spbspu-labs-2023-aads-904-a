@@ -21,8 +21,8 @@ namespace mashkin
 
     Dictionary();
     explicit Dictionary(const Compare& comp);
-    /*template< class InputIt >
-    Dictionary(InputIt first, InputIt last, const Compare& comp);*/
+    template< class InputIt >
+    Dictionary(InputIt first, InputIt last, const Compare& comp);
     Dictionary(const Dictionary& other);
     Dictionary(Dictionary&& other) noexcept;
 
@@ -46,14 +46,24 @@ namespace mashkin
 
     void clear();
 
-    std::pair< iter, bool > insert(const value_type& value);
-    std::pair< iter, bool > insert(value_type&& value);
+    iter insert(const value_type& value);
+    iter insert(value_type&& value);
     template< class InputIt >
     void insert(InputIt first, InputIt last);
 
+    iter erase(iter pos);
+    iter erase(const_iter pos);
+    iter erase(const_iter first, const_iter last);
+    size_t erase(const key_type& key);
 
-    /*void push(Key k, Value v);
-    void drop(Key k);*/
+    void swap(Dictionary& other) noexcept;
+
+    size_t count(const key_type& key) const;
+
+    iter find(const key_type& key);
+    const_iter find(const key_type& key) const;
+
+    bool contains(const key_type& key) const;
 
   private:
     ForwardList< value_type > pair_;
@@ -65,19 +75,186 @@ namespace mashkin
   using dict = Dictionary< Key, Value, Compare >;
 
   template< class K, class V, class C >
-  dict< K, V, C >::iter dict< K, V, C >::end() const noexcept
+  size_t dict< K, V, C >::erase(const key_type& key)
+  {
+    auto var = find(key);
+    if (var != end())
+    {
+      erase(var);
+      return 1;
+    }
+    return 0;
+  }
+
+  template< class K, class V, class C >
+  typename dict< K, V, C >::iter dict< K, V, C >::erase(const_iter first, const_iter last)
+  {
+    auto var = pair_.erase_after(first, last);
+    if (var != end())
+    {
+      size_--;
+    }
+    return var;
+  }
+
+  template< class K, class V, class C >
+  typename dict< K, V, C >::iter dict< K, V, C >::erase(iter pos)
+  {
+    return erase(pos);
+  }
+
+  template< class K, class V, class C >
+  typename dict< K, V, C >::iter dict< K, V, C >::erase(const_iter pos)
+  {
+    auto var = pair_.erase_after(pos);
+    if (var != end())
+    {
+      size_--;
+    }
+    return var;
+  }
+
+  template< class K, class V, class C >
+  typename dict< K, V, C >::val& dict< K, V, C >::operator[](const key_type& k)
+  {
+    auto i = cbegin();
+    for (; i < cend(); i++)
+    {
+      if (i->first == k)
+      {
+        return i->second;
+      }
+    }
+    if (i == cend())
+    {
+      insert(std::pair< K, V >(k, V()));
+    }
+  }
+
+  template< class K, class V, class C >
+  typename dict< K, V, C >::iter dict< K, V, C >::find(const key_type& key)
+  {
+    const_iter var = find(key);
+    return iter(*var);
+  }
+
+  template< class K, class V, class C >
+  typename dict< K, V, C >::const_iter dict< K, V, C >::find(const key_type& key) const
+  {
+    for (auto i = cbegin(); i < cend(); i++)
+    {
+      if (i->first == key)
+      {
+        return i;
+      }
+    }
+    return cend();
+  }
+
+  template< class K, class V, class C >
+  size_t dict< K, V, C >::count(const key_type& key) const
+  {
+    return contains(key) ? 1 : 0;
+  }
+
+  template< class K, class V, class C >
+  bool dict< K, V, C >::contains(const key_type& key) const
+  {
+    auto res = find(key);
+    return res != end();
+  }
+
+  template< class K, class V, class C >
+  void dict< K, V, C >::swap(Dictionary& other) noexcept
+  {
+    auto var = other;
+    other = *this;
+    *this = var;
+  }
+
+  template< class K, class V, class C >
+  void dict< K, V, C >::clear()
+  {
+    pair_.clear();
+    size_ = 0;
+  }
+
+  template< class Key, class Value, class Compare >
+  Dictionary< Key, Value, Compare >::Dictionary(Dictionary&& other) noexcept:
+    pair_(std::move(other.pair_)),
+    comp_(other.comp_),
+    size_(other.size_)
+  {
+  }
+
+  template< class Key, class Value, class Compare >
+  template< class InputIt >
+  Dictionary< Key, Value, Compare >::Dictionary(InputIt first, InputIt last, const Compare& comp):
+    pair_(),
+    comp_(comp),
+    size_(0)
+  {
+    insert(first, last);
+  }
+
+  template< class K, class V, class C >
+  template< class InputIt >
+  void dict< K, V, C >::insert(InputIt first, InputIt last)
+  {
+    for (auto value = first; value < last; value++)
+    {
+      insert(*value);
+    }
+  }
+
+  template< class K, class V, class C >
+  typename dict< K, V, C >::iter dict< K, V, C >::insert(const Dictionary::value_type& value)
+  {
+    auto next = begin();
+    if (!comp_(value.first, next->first))
+    {
+      pair_.insert_after(pair_.before_begin(), value);
+      size_++;
+    }
+    next++;
+    for (auto i = begin(); i < end(); i++)
+    {
+      if (!comp_(value.first, next->first))
+      {
+        pair_.insert_after(i, value);
+        size_++;
+      }
+      if (next == end())
+      {
+        pair_.push_front(value);
+        size_++;
+        break;
+      }
+      next++;
+    }
+    return next;
+  }
+
+  template< class K, class V, class C >
+  typename dict< K, V, C >::iter dict< K, V, C >::insert(Dictionary::value_type&& value)
+  {
+    return insert(std::move(value));
+  }
+
+  template< class K, class V, class C >
+  typename dict< K, V, C >::iter dict< K, V, C >::end() const noexcept
   {
     return pair_.end();
   }
 
   template< class K, class V, class C >
-  dict< K, V, C >::val& dict< K, V, C >::at(const key_type& k)
+  typename dict< K, V, C >::val& dict< K, V, C >::at(const key_type& k)
   {
     return at(k);
   }
 
   template< class K, class V, class C >
-  const dict< K, V, C >::val& dict< K, V, C >::at(const key_type& k) const
+  const typename dict< K, V, C >::val& dict< K, V, C >::at(const key_type& k) const
   {
     auto i = cbegin();
     for (; i < cend(); i++)
@@ -94,13 +271,13 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  dict< K, V, C >::const_iter dict< K, V, C >::cend() const noexcept
+  typename dict< K, V, C >::const_iter dict< K, V, C >::cend() const noexcept
   {
     return pair_.cend();
   }
 
   template< class K, class V, class C >
-  dict< K, V, C >::const_iter dict< K, V, C >::cbegin() const noexcept
+  typename dict< K, V, C >::const_iter dict< K, V, C >::cbegin() const noexcept
   {
     return pair_.cbegin();
   }
@@ -118,7 +295,7 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  dict< K, V, C >::iter dict< K, V, C >::begin() const noexcept
+  typename dict< K, V, C >::iter dict< K, V, C >::begin() const noexcept
   {
     return pair_.begin();
   }
@@ -162,27 +339,5 @@ namespace mashkin
     size_(other.size_)
   {
   }
-
-  template< class K, class V, class C >
-  dict< K, V, C >::Dictionary(Dictionary&& other) noexcept:
-    pair_(std::move(other.pair_)),
-    comp_(other.comp_),
-    size_(other.size_)
-  {
-  }
-
-  /*template< class Key, class Value, class Compare >
-  template< class InputIt >
-  Dictionary< Key, Value, Compare >::Dictionary(InputIt first, InputIt last, const Compare& comp)
-  {
-  }*/
-
-  /*template< class Key, class Value, class Compare >
-  void Dictionary< Key, Value, Compare >::push(Key k, Value v)
-  {
-    std::pair< Key, Value > pair{k, v};
-    pair_.push_front(pair);
-  }*/
-
 }
 #endif
