@@ -1,4 +1,5 @@
 #include "mathOperations.h"
+#include <stdexcept>
 #include <limits>
 long long fesenko::summarize(long long a, long long b)
 {
@@ -22,10 +23,10 @@ long long fesenko::multiply(long long a, long long b)
     return 0;
   }
   if (((a > 0 && b > 0) || (a < 0 && b < 0)) && a > std::numeric_limits< long long >::max() / b) {
-    return std::overflow_error("Overflow");
+    throw std::overflow_error("Overflow");
   }
   if (((a > 0 && b < 0) || (a < 0 && b > 0)) && a > std::numeric_limits< long long >::min() / b) {
-    return std::overflow_error("Overflow");
+    throw std::overflow_error("Overflow");
   }
   return a * b;
 }
