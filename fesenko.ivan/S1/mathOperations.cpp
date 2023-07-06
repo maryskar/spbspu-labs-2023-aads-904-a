@@ -11,3 +11,8 @@ long long fesenko::summarize(long long a, long long b)
   return a + b;
 }
 
+long long fesenko::subtract(long long a, long long b)
+{
+  return summarize(a, -b);
+}
+
