@@ -37,3 +37,11 @@ long long fesenko::divide(long long a, long long b)
   }
   return a / b;
 }
+
+long long fesenko::mod(long long a, long long b)
+{
+  if (b == 0) {
+    throw std::logic_error("Divide by zero");
+  }
+  return a % b;
+}
