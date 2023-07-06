@@ -16,3 +16,17 @@ long long fesenko::subtract(long long a, long long b)
   return summarize(a, -b);
 }
 
+long long fesenko::multiply(long long a, long long b)
+{
+  if (a == 0 || b == 0) {
+    return 0;
+  }
+  if (((a > 0 && b > 0) || (a < 0 && b < 0)) && a > std::numeric_limits< long long >::max() / b) {
+    return std::overflow_error("Overflow");
+  }
+  if (((a > 0 && b < 0) || (a < 0 && b > 0)) && a > std::numeric_limits< long long >::min() / b) {
+    return std::overflow_error("Overflow");
+  }
+  return a * b;
+}
+
