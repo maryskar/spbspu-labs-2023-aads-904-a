@@ -14,7 +14,7 @@ namespace turkin
     friend class RBtree< K, V, C >;
     using dcit = DirectIterator< K, V, C >;
     using tree_t = std::pair< K, V >;
-    using Node = TreeNode< tree_t > *;
+    using Node = TreeNode< tree_t, C > *;
     public:
       DirectIterator();
       explicit DirectIterator(Node rhs);

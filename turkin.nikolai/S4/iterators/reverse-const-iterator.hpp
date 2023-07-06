@@ -14,7 +14,7 @@ namespace turkin
     friend class RBtree< K, V, C >;
     using dcit = ReverseConstIterator< K, V, C >;
     using tree_t = std::pair< K, V >;
-    using Node = TreeNode< tree_t > *;
+    using Node = TreeNode< tree_t, C > *;
     public:
       ReverseConstIterator();
       explicit ReverseConstIterator(Node rhs);

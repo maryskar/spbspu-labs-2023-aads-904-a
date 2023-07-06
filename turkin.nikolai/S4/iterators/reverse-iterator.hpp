@@ -9,17 +9,17 @@ namespace turkin
   template< typename K, typename V, typename C >
   class RBtree;
   template< typename K, typename V, typename C >
-  class ReverseConstIterator
+  class ReverseIterator
   {
     friend class RBtree< K, V, C >;
-    using dcit = ReverseConstIterator< K, V, C >;
+    using dcit = ReverseIterator< K, V, C >;
     using tree_t = std::pair< K, V >;
-    using Node = TreeNode< tree_t > *;
+    using Node = TreeNode< tree_t, C > *;
     public:
-      ReverseConstIterator();
-      explicit ReverseConstIterator(Node rhs);
+      ReverseIterator();
+      explicit ReverseIterator(Node rhs);
       dcit & operator=(const dcit & rhs) = default;
-      ~ReverseConstIterator() = default;
+      ~ReverseIterator() = default;
       dcit & operator++();
       dcit operator++(int);
       dcit & operator--();
