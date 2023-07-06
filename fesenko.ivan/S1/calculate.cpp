@@ -16,7 +16,7 @@ long long fesenko::calculate(long long a, long long b, std::string s)
     result = divide(a, b);
   }
   if (s == "%") {
-    result == mod(a, b);
+    result = mod(a, b);
   }
-  retutn result;
+  return result;
 }
