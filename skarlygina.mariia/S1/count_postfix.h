@@ -11,9 +11,10 @@ long long countPostfix(Queue< T >& postfix_queue)
   {
     std::string token = postfix_queue.get();
     postfix_queue.pop();
-    if (isdigit(token))
+    if (isdigit(token[0]))
     {
-      stack.push(token - '0');
+      long long num = stoll(token);
+      stack.push(num);
     }
     else
     {
