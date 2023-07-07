@@ -38,10 +38,11 @@ int main(int argc, char *argv[])
   while (!results.isEmpty()) {
     result = results.top();
     results.pop();
+    std::cout << result;
     if (results.isEmpty()) {
-      std::cout << result << "\n";
+      std::cout << "\n";
     } else {
-      std::cout << result << " ";
+      std::cout << " ";
     }
   }
 }
