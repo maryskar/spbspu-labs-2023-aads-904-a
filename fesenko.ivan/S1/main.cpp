@@ -6,9 +6,9 @@
 #include "infixQueueToPostfixQueue.h"
 #include "calculateInPostfixQueue.h"
 
-int main(/*int argc, char *argv[]*/)
+int main(int argc, char *argv[])
 {
-  /*if (argc != 1 && argc != 2) {
+  if (argc != 1 && argc != 2) {
     std::cerr << "Invalid number of arguments\n";
     return 1;
   }
@@ -16,12 +16,12 @@ int main(/*int argc, char *argv[]*/)
   if (argc == 2) {
     input.open(argv[1]);
   }
-  std::istream &in = (argc == 2) ? input : std::cin;*/
+  std::istream &in = (argc == 2) ? input : std::cin;
   std::string expression = "";
   long long result = 0;
   fesenko::Stack< long long > results;
-  while (std::cin) {
-    std::getline(std::cin, expression);
+  while (in) {
+    std::getline(in, expression);
     if (expression.empty()) {
       continue;
     }
