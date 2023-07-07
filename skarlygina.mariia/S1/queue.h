@@ -9,8 +9,8 @@ class Queue
 {
 public:
   Queue();
-  Queue(const Queue< T >& other);
-  Queue(const Queue< T >&& other);
+  Queue(Queue< T >& other);
+  Queue(Queue< T >&& other);
   void push(const T& rhs);
   T top() const;
   T& get() const;
@@ -29,13 +29,13 @@ Queue< T >::Queue():
 {}
 
 template< typename T >
-Queue< T >::Queue(const Queue< T >& other):
+Queue< T >::Queue(Queue< T >& other):
     head_(other.head_),
     tail_(other.tail_)
 {}
 
 template< typename T >
-Queue< T >::Queue(const Queue< T >&& other) :
+Queue< T >::Queue(Queue< T >&& other) :
   head_(other.head_),
   tail_(other.tail_)
 {
