@@ -19,7 +19,12 @@ namespace odintsov {
     using Node = ::detail::Node< T >;
 
    public:
+    struct ConstIter;
+
     struct Iter: public std::iterator< std::forward_iterator_tag, T > {
+      friend ForwardList< T >;
+      friend typename ForwardList< T >::ConstIter;
+
       Iter():
         nodePtr(nullptr)
       {}
@@ -70,6 +75,7 @@ namespace odintsov {
     };
 
     struct ConstIter: public std::iterator< std::forward_iterator_tag, T > {
+      friend ForwardList< T >;
 
       ConstIter():
         nodePtr(nullptr)
