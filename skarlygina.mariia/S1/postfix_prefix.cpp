@@ -2,9 +2,9 @@
 #include "calculator.h"
 #include "has_higher_precedence.h"
 
-Queue< std::string > operation::makeInfix(std::string string)
+Queue< char > operation::makeInfix(std::string string)
 {
-  Queue< std::string > infix_queue;
+  Queue< char > infix_queue;
   size_t infix_size = 0;
   while (string.size() != infix_size)
   {
