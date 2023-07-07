@@ -1,5 +1,6 @@
 #include "postfix_prefix.h"
 #include "calculator.h"
+#include "has_higher_precedence.h"
 
 Queue< std::string > operation::makeInfix(std::string string)
 {
