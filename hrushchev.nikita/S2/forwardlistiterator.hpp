@@ -8,10 +8,11 @@ class ForwardListIterator
 {
   public:
     ForwardListIterator();
-    ~ForwardListIterator();
+    ~ForwardListIterator() = default;
     ForwardListIterator(List< T >* rhs);
     ForwardListIterator< T >& operator++();
-    ForwardListIterator< T >& operator++(int);
+    ForwardListIterator< T > operator++(int);
+    T& operator*();
   private:
     List< T >* ptr_;
 };
@@ -33,9 +34,25 @@ ForwardListIterator< T >& ForwardListIterator< T >::operator++()
 {
   if (ptr_)
   {
-    ptr_ = ptr_.next;
+    ptr_ = ptr_->next_;
   }
   return *this;
 }
 
+template< typename T >
+ForwardListIterator< T > ForwardListIterator< T >::operator++(int)
+{
+  ForwardListIterator< T > temp(*this);
+  if (ptr_)
+  {
+    ptr_ = ptr_->next_;
+  }
+  return temp;
+}
+
+template< typename T >
+T& ForwardListIterator< T >::operator*()
+{
+  return ptr_->data_;
+}
 #endif
