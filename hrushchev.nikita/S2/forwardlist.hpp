@@ -9,6 +9,7 @@ class ForwardList
 {
   public:
     void pushFront(const T& value);
+    void clear();
     List< T >* head_;
 };
 
@@ -20,4 +21,17 @@ void ForwardList< T >::pushFront(const T& value)
   temp->next_ = head_;
   head_ = temp;
 }
+
+template <typename T>
+void ForwardList< T >::clear()
+{
+  while(head_->next_ != nullptr)
+  {
+    List< T >* temp = head_->next_;
+    delete head_;
+    head_ = temp;
+  }
+}
+
+
 #endif
