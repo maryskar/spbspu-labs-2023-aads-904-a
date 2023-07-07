@@ -234,8 +234,7 @@ template< typename... Args >
 std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool >
 Dictionary< Key, Value, Compare >::emplace(Args &&... args)
 {
-  value_type value(std::forward< Args >(args)...);
-  return insert(std::move(value));
+  return insert(value_type(std::forward< Args >(args)...));
 }
 template< typename Key, typename Value, typename Compare >
 void Dictionary< Key, Value, Compare >::insert(std::initializer_list< value_type > initializerList)
@@ -268,18 +267,17 @@ Dictionary< Key, Value, Compare >::insert(P &&value)
 {
   value_type tmpValue(std::forward< P >(value));
   iterator it = lower_bound(tmpValue.first);
-  if (it != end() && !comp_(tmpValue.first, it->first) && !comp_(it->first, tmpValue.first))
+  if (it != end() && areEqualKeys(tmpValue.first, it->first))
   {
     return std::make_pair(it, false);
   }
-  data_.push_front(std::move(tmpValue)); //правильный ли порядок???
-  iterator insertedIt = begin();
+  iterator insertedIt = data_.emplace_front(std::move(tmpValue));
   return std::make_pair(insertedIt, true);
 }
 template< typename Key, typename Value, typename Compare >
 bool Dictionary< Key, Value, Compare >::areEqualKeys(Key lhs, Key rhs)
 {
-  return (comp_(lhs, rhs) || comp_(rhs, lhs));
+  return !comp_(lhs, rhs) && !comp_(rhs, lhs);
 }
 template< typename Key, typename Value, typename Compare >
 size_t Dictionary< Key, Value, Compare >::erase(const Key &key)

@@ -24,7 +24,6 @@ public:
   iterator before_begin();
   const_iterator cbefore_begin() const;
   iterator begin() const;
-  iterator begin();
   iterator end();
   const_iterator cbegin() const;
   iterator end() const;
@@ -43,7 +42,7 @@ public:
   void push_front(const T &value);
   void push_front(T &&value);
   template< class ... Args >
-  void emplace_front(Args &&... args);
+  iterator emplace_front(Args &&... args);
   void pop_front();
   void resize(size_t newSize);
   void resize(size_t newSize, const T &value);
@@ -262,9 +261,10 @@ void ForwardList< T >::pop_front()
 }
 template< typename T >
 template< class ... Args >
-void ForwardList< T >::emplace_front(Args &&... args)
+ForwardListIterator< T > ForwardList< T >::emplace_front(Args &&... args)
 {
-  pushFront(std::forward< T >(T(args...)));
+  push_front(T(std::forward< Args >(args)...));
+  return begin();
 }
 template< typename T >
 ForwardListIterator< T > ForwardList< T >::erase_after(ConstForwardListIterator< T > position)
