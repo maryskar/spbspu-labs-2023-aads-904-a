@@ -22,7 +22,7 @@ long long countPostfix(Queue< T >& postfix_queue)
       stack.pop();
       long long operand_first = stack.get();
       stack.pop();
-      switchSymbol(token, operand_first, operand_second);
+      switchSymbol(token[0], operand_first, operand_second);
     }
   }
   return stack.get();
