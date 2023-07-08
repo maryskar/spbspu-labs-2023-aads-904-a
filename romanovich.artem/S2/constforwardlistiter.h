@@ -26,7 +26,7 @@ public:
   ConstForwardListIterator< T > &operator=(const ForwardListIterator< T > &other);
   ConstForwardListIterator< T > &operator++();
   ConstForwardListIterator< T > operator++(int);
-  explicit ConstForwardListIterator(details::ListNode< T > *otherHead);
+  explicit ConstForwardListIterator(details::ListNode< T > *head);
   explicit ConstForwardListIterator(const ForwardListIterator< T > &other);
   ~ConstForwardListIterator() = default;
   ConstForwardListIterator< T > begin();
@@ -58,8 +58,8 @@ ConstForwardListIterator< T >::ConstForwardListIterator(const ForwardListIterato
 {
 }
 template< typename T >
-ConstForwardListIterator< T >::ConstForwardListIterator(details::ListNode< T > *otherHead):
-  head_(otherHead)
+ConstForwardListIterator< T >::ConstForwardListIterator(details::ListNode< T > *head):
+  head_(head_)
 {
 }
 template< typename T >

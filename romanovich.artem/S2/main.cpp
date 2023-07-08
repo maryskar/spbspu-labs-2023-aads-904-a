@@ -142,6 +142,7 @@ int main()
 
 
   // Resize the list
+  std::cout << myList.size_ << "\n";
   myList.resize(5, 8); // Increase the size of the list to 5 and fill the new elements with zeros
 
   // Print the list after resizing
@@ -165,9 +166,10 @@ int main()
   std::cout << std::endl;
 
   // Insert an element after a specified position using emplace_after()
-  ForwardList< int >::const_iterator it1 = myList.cbegin();
+  ForwardList< int >::iterator it1 = myList.begin();
   ++it1; // Move to the second element
-  myList.emplace_after(it1, 10); // Insert 10 after the second element using emplace_after()
+  myList.emplace_after(
+    ConstForwardListIterator< int >(it1), 10); // Insert 10 after the second element using emplace_after()
 
   // Print the list after insertion
   std::cout << "List after insertion: ";

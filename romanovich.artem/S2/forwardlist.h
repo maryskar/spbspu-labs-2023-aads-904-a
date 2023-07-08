@@ -3,7 +3,6 @@
 #include <tuple>
 #include "common/listnode.h"
 #include "forwardlistiter.h"
-#include <iostream>
 #include "constforwardlistiter.h"
 template< typename T >
 class ForwardList
@@ -210,18 +209,21 @@ void ForwardList< T >::resize(size_t newSize, const T &value)
 {
   if (newSize < size_)
   {
-    const_iterator it = cbefore_begin();
+    iterator it = before_begin();
+    std::cout << it.head_->data_ << "!\n";
     for (size_t i = 0; i < newSize; ++i)
     {
+      std::cout << it.head_->next_->data_ << "%\n";
       ++it;
     }
-    erase_after(it, cend());
+    erase_after(ConstForwardListIterator< T >(it), cend());
   }
   if (newSize > size_)
   {
     while (newSize > size_)
     {
       push_back(value);
+      std::cout << size_ << "\n";
     }
   }
 }
@@ -260,7 +262,7 @@ ForwardListIterator< T > ForwardList< T >::emplace_front(Args &&... args)
 template< typename T >
 ForwardListIterator< T > ForwardList< T >::erase_after(ConstForwardListIterator< T > position)
 {
-  auto nextIt = position.head_->next_;
+  /*auto nextIt = position.head_->next_;
   if (nextIt)
   {
     position.head_->next_ = nextIt->next_;
@@ -284,7 +286,27 @@ ForwardListIterator< T > ForwardList< T >::erase_after(ConstForwardListIterator<
   else
   {
     return end();
+  }*/
+  if (empty())
+  {
+    return end();
   }
+  if (position == cend())
+  {
+    erase_after(ConstForwardListIterator< T >(fakeNode_));
+  }
+  details::ListNode< T > *temp = position.head_->next_->next_;
+  if (position.head_->next_ == end_)
+  {
+    end_ = iterator(position.head_).head_;
+  }
+  delete position.head_->next_;
+  position.head_->next_ = temp;
+  if (empty())
+  {
+    position.head_ = nullptr;
+  }
+  return iterator(temp);
 }
 template< typename T >
 ForwardListIterator< T >
@@ -484,7 +506,6 @@ void ForwardList< T >::reverse()
     }
     begin_ = previous;
     end_ = tmpBegin_;
-    fakeNode_->next_ = begin_;
   }
 }
 template< typename T >
