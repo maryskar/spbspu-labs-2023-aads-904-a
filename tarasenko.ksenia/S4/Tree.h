@@ -16,11 +16,11 @@ namespace tarasenko
         compare_()
       {};
 
-      Tree(const T& data, Tree< T, Compare >* l, Tree< T, Compare >* r, Tree< T, Compare >* p):
+      Tree(const T& data, Tree< T, Compare >* left, Tree< T, Compare >* right, Tree< T, Compare >* parent):
         data_(data),
-        left_(l),
-        right_(r),
-        parent_(p),
+        left_(left),
+        right_(right),
+        parent_(parent),
         color_('r'),
         compare_()
       {};
@@ -32,110 +32,6 @@ namespace tarasenko
       char color_;
       Compare compare_;
     };
-
-    template< typename T, typename Compare >
-    Tree< T, Compare >* insert(const T& data, Tree< T, Compare >* ptree)
-    {
-      auto comp = ptree->compare_;
-      if (!ptree)
-      {
-        ptree = new Tree< T, Compare >;
-        ptree->data_ = data;
-      }
-      else if (comp(data, ptree->data_))
-      {
-        Tree< T, Compare >* leftChild = insert(data, ptree->left_);
-        ptree->left_ = leftChild;
-        leftChild->parent_ = ptree;
-      }
-      else
-      {
-        Tree< T, Compare >* rightChild = insert(data, ptree->right_);
-        ptree->right_ = rightChild;
-        rightChild->parent_ = ptree;
-      }
-      return ptree;
-    }
-
-    template< typename T, typename Compare >
-    void deleteTree(Tree< T, Compare >* ptree)
-    {
-      if (ptree)
-      {
-        deleteTree(ptree->left_);
-        deleteTree(ptree->right_);
-        delete ptree;
-      }
-    }
-
-    template< typename T, typename Compare >
-    Tree< T, Compare >* find(const T& data, Tree< T, Compare >* ptree)
-    {
-      auto comp = ptree->compare_;
-      if (!ptree || ptree->data_ == data)
-      {
-        return ptree;
-      }
-      if (comp(data, ptree->data_))
-      {
-        return find(data, ptree->left_);
-      }
-      return find(data, ptree->right_);
-    }
-
-    template< typename T, typename Compare >
-    Tree< T, Compare >* findMin(Tree< T, Compare >* ptree)
-    {
-      if (!ptree)
-      {
-        return nullptr;
-      }
-      else if (!ptree->left_)
-      {
-        return ptree;
-      }
-      else
-      {
-        return findMin(ptree->left_);
-      }
-    }
-
-    template< typename T, typename Compare >
-    void remove(const T& data, Tree< T, Compare >* ptree)
-    {
-      auto toDelete = find(data, ptree);
-      if (!toDelete)
-      {
-        return;
-      }
-      else if (toDelete->left_ && toDelete->right_)
-      {
-        auto replaceNode = findMin(toDelete->right_);
-        toDelete->data_ = replaceNode->data_;
-        remove(replaceNode->data_, replaceNode);
-        return;
-      }
-      else
-      {
-        auto child = toDelete->left_ ? toDelete->left_ : toDelete->right_;
-        if (toDelete->parent_)
-        {
-          if (toDelete->parent_->left_ == toDelete)
-          {
-            toDelete->parent_->left_ = child;
-          }
-          else
-          {
-            toDelete->parent_->right_ = child;
-          }
-          if (toDelete->left_ || toDelete->right_)
-          {
-            child->parent_ = toDelete->parent_;
-          }
-        }
-        delete toDelete;
-      }
-    }
   }
 }
 #endif
