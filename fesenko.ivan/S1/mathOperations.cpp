@@ -54,5 +54,9 @@ long long fesenko::mod(long long a, long long b)
   if (b == 0) {
     throw std::logic_error("Divide by zero");
   }
-  return a % b;
+  long long result = a % b;
+  if (result < 0) {
+    result += std::abs(b);
+  }
+  return result;
 }
