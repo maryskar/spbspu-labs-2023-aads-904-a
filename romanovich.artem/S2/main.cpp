@@ -153,16 +153,6 @@ int main()
   }
   std::cout << std::endl;
 
-  // Resize the list and fill the new elements with a custom value
-  myList.resize(3, 100); // Decrease the size of the list to 3 and fill the new elements with the value 100
-
-  // Print the list after resizing and filling with a custom value
-  std::cout << "List after resizing and filling with a custom value: ";
-  for (const auto &value: myList)
-  {
-    std::cout << value << " ";
-  }
-  std::cout << std::endl;
 
   // Reverse the order of elements in the list
   myList.reverse();
@@ -175,16 +165,11 @@ int main()
   }
   std::cout << std::endl;
 
-  // Clear all elements from the list
-  myList.clear();
-
-  // Check if the list is empty after clearing
-  std::cout << "List is empty: " << std::boolalpha << myList.empty() << std::endl;
-
   // Insert an element after a specified position using emplace_after()
-  ForwardList< int >::const_iterator it1 = myList.cbegin();
+  ForwardList< int >::iterator it1 = myList.begin();
   ++it1; // Move to the second element
-  myList.emplace_after(it1, 10); // Insert 10 after the second element using emplace_after()
+  myList.emplace_after(
+    ConstForwardListIterator< int >(it1), 10); // Insert 10 after the second element using emplace_after()
 
   // Print the list after insertion
   std::cout << "List after insertion: ";
@@ -204,5 +189,11 @@ int main()
     std::cout << value << " ";
   }
   std::cout << std::endl;
+
+  // Clear all elements from the list
+  myList.clear();
+
+  // Check if the list is empty after clearing
+  std::cout << "List is empty: " << std::boolalpha << myList.empty() << std::endl;
   return 0;
 }

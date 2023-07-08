@@ -29,11 +29,23 @@ public:
   explicit ConstForwardListIterator(details::ListNode< T > *head);
   explicit ConstForwardListIterator(const ForwardListIterator< T > &other);
   ~ConstForwardListIterator() = default;
+  ConstForwardListIterator< T > begin();
+  ConstForwardListIterator< T > end();
 private:
   ConstForwardListIterator();
   details::ListNode< T > *head_;
   void checkForNullNode();
 };
+template< typename T >
+ConstForwardListIterator< T > ConstForwardListIterator< T >::begin()
+{
+  return ConstForwardListIterator< T >(head_);
+}
+template< typename T >
+ConstForwardListIterator< T > ConstForwardListIterator< T >::end()
+{
+  return ConstForwardListIterator< T >(nullptr);
+}
 template< typename T >
 ConstForwardListIterator< T > &ConstForwardListIterator< T >::operator=(const ForwardListIterator< T > &other)
 {
@@ -70,7 +82,7 @@ template< typename T >
 T *ConstForwardListIterator< T >::operator->()
 {
   checkForNullNode();
-  return const_cast<T *>(std::addressof(head_->data_));
+  return const_cast< T * >(std::addressof(head_->data_));
 }
 template< typename T >
 void ConstForwardListIterator< T >::checkForNullNode()

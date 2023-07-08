@@ -59,9 +59,9 @@ public:
   void reverse();
   details::ListNode< T > *begin_;
   size_t size_;
+  details::ListNode< T > *fakeNode_;
 private:
   details::ListNode< T > *end_;
-  details::ListNode< T > *fakeNode_;
   details::ListNode< T > *initFake();
   void copy(const ForwardList< T > &other);
   void push_back(const T &value);
@@ -209,12 +209,14 @@ void ForwardList< T >::resize(size_t newSize, const T &value)
 {
   if (newSize < size_)
   {
-    const_iterator it = cbefore_begin();
+    iterator it = before_begin();
+    std::cout << it.head_->data_ << "!\n";
     for (size_t i = 0; i < newSize; ++i)
     {
+      std::cout << it.head_->next_->data_ << "%\n";
       ++it;
     }
-    erase_after(it, cend());
+    erase_after(ConstForwardListIterator< T >(it), cend());
   }
   if (newSize > size_)
   {
@@ -260,12 +262,22 @@ ForwardListIterator< T > ForwardList< T >::emplace_front(Args &&... args)
 template< typename T >
 ForwardListIterator< T > ForwardList< T >::erase_after(ConstForwardListIterator< T > position)
 {
-  auto nextIt = position.head_->next_;
+  /*auto nextIt = position.head_->next_;
   if (nextIt)
   {
     position.head_->next_ = nextIt->next_;
     delete nextIt;
     --size_;
+  }
+  if (size_ == 1)
+  {
+    end_ = nullptr;
+  }
+  else if (size_ == 0)
+  {
+    begin_ = nullptr;
+    end_ = nullptr;
+    fakeNode_->next_ = nullptr;
   }
   if (position.head_->next_)
   {
@@ -274,7 +286,27 @@ ForwardListIterator< T > ForwardList< T >::erase_after(ConstForwardListIterator<
   else
   {
     return end();
+  }*/
+  if (empty())
+  {
+    return end();
   }
+  if (position == cend())
+  {
+    erase_after(ConstForwardListIterator< T >(fakeNode_));
+  }
+  details::ListNode< T > *temp = position.head_->next_->next_;
+  if (position.head_->next_ == end_)
+  {
+    end_ = iterator(position.head_).head_;
+  }
+  delete position.head_->next_;
+  position.head_->next_ = temp;
+  if (empty())
+  {
+    position.head_ = nullptr;
+  }
+  return iterator(temp);
 }
 template< typename T >
 ForwardListIterator< T >
@@ -459,6 +491,7 @@ ForwardList< T > &ForwardList< T >::operator=(std::initializer_list< T > initial
 template< typename T >
 void ForwardList< T >::reverse()
 {
+  details::ListNode< T > *tmpBegin_ = begin_;
   if (begin_ != nullptr)
   {
     details::ListNode< T > *previous = nullptr;
@@ -472,6 +505,7 @@ void ForwardList< T >::reverse()
       current = next;
     }
     begin_ = previous;
+    end_ = tmpBegin_;
   }
 }
 template< typename T >
@@ -488,14 +522,24 @@ bool ForwardList< T >::empty() const
 template< typename T >
 void ForwardList< T >::push_front(const T &value)
 {
-  size_++;
   begin_ = new details::ListNode< T >(value, begin_);
+  if (!end_)
+  {
+    end_ = begin_;
+  }
+  fakeNode_->next_ = begin_;
+  ++size_;
 }
 template< typename T >
 void ForwardList< T >::push_front(T &&value)
 {
-  size_++;
   begin_ = new details::ListNode< T >(std::move(value), begin_);
+  if (!end_)
+  {
+    end_ = begin_;
+  }
+  fakeNode_->next_ = begin_;
+  ++size_;
 }
 template< typename T >
 void ForwardList< T >::swap(ForwardList &other)
