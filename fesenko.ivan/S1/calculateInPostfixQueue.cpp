@@ -24,5 +24,8 @@ long long fesenko::calculateInPostfixQueue(Queue< std::string > &postfixQueue)
   }
   result = stack.top();
   stack.pop();
+  if (!stack.isEmpty()) {
+    throw std::logic_error("Incorect expression");
+  }
   return result;
 }
