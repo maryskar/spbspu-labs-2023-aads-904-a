@@ -46,12 +46,12 @@ namespace odintsov {
 
       T& operator*() const
       {
-        return nodePtr->val;
+        return nodePtr->data;
       }
 
       T* operator->() const
       {
-        return std::addressof(nodePtr->val);
+        return std::addressof(nodePtr->data);
       }
 
       bool operator==(const Iter& rhs) const
@@ -106,12 +106,12 @@ namespace odintsov {
 
       const T& operator*() const
       {
-        return nodePtr->val;
+        return nodePtr->data;
       }
 
       const T* operator->() const
       {
-        return std::addressof(nodePtr->val);
+        return std::addressof(nodePtr->data);
       }
 
       bool operator==(const ConstIter& rhs) const
@@ -215,12 +215,12 @@ namespace odintsov {
 
     T& unsafeFront()
     {
-      return (*head())->val;
+      return (*head())->data;
     }
 
     const T& unsafeFront() const
     {
-      return (*head())->val;
+      return (*head())->data;
     }
 
     Iter beforeBegin()
@@ -472,7 +472,7 @@ namespace odintsov {
     void removeIf(UnaryPredicate check)
     {
       for (ConstIter iter = cbeforeBegin(); iter.nodePtr->next;) {
-        if (check(iter.nodePtr->next->val)) {
+        if (check(iter.nodePtr->next->data)) {
           eraseAfter(iter);
         } else {
           ++iter;
@@ -561,7 +561,7 @@ namespace odintsov {
       bSplit.nodePtr->next = endPtr;
       Iter i = bBegin;
       for (; i.nodePtr->next != endPtr; ++i) {
-        if (comp(other->val, i.nodePtr->next->val)) {
+        if (comp(other->data, i.nodePtr->next->data)) {
           std::swap(other, i.nodePtr->next);
         }
       }
