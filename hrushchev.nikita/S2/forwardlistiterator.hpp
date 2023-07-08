@@ -1,6 +1,7 @@
 #ifndef FORWARDLISTITERATOR
 #define FORWARDLISTITERATOR
 
+#include <memory>
 #include "list.hpp"
 
 template< typename T >
@@ -12,8 +13,8 @@ class ForwardListIterator
     ForwardListIterator(List< T >* rhs);
     ForwardListIterator< T >& operator++();
     ForwardListIterator< T > operator++(int);
-    T& operator*() const;
-    T* operator->() const;
+    T& operator*();
+    T* operator->();
     bool operator==(const ForwardListIterator< T >& rhs) const;
     bool operator!=(const ForwardListIterator< T >& rhs) const;
   private:
@@ -54,13 +55,13 @@ ForwardListIterator< T > ForwardListIterator< T >::operator++(int)
 }
 
 template< typename T >
-T& ForwardListIterator< T >::operator*() const
+T& ForwardListIterator< T >::operator*()
 {
   return ptr_->data_;
 }
 
 template< typename T >
-T* ForwardListIterator< T >::operator->() const
+T* ForwardListIterator< T >::operator->()
 {
   return std::addressof(ptr_.data_);
 }
