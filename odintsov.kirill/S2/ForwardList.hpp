@@ -282,7 +282,7 @@ namespace odintsov {
 
     Iter unsafeInsertAfter(ConstIter pos, const T& val)
     {
-      return unsafeInsertAfter(pos, new Node{nullptr, val});
+      return unsafeInsertAfter(pos, new Node{val, nullptr});
     }
 
     Iter insertAfter(ConstIter pos, T&& val)
@@ -293,7 +293,7 @@ namespace odintsov {
 
     Iter unsafeInsertAfter(ConstIter pos, T&& val)
     {
-      return unsafeInsertAfter(pos, new Node{nullptr, std::move(val)});
+      return unsafeInsertAfter(pos, new Node{std::move(val), nullptr});
     }
 
     template< typename InputIter >
@@ -328,13 +328,13 @@ namespace odintsov {
     Iter emplaceAfter(ConstIter pos, Args&&... args)
     {
       throwOutsideIter(pos);
-      return unsafeInsertAfter(pos, new Node{nullptr, T(std::forward< Args >(args)...)});
+      return unsafeInsertAfter(pos, new Node{T(std::forward< Args >(args)...), nullptr});
     }
 
     template< typename... Args >
     Iter unsafeEmplaceAfter(ConstIter pos, Args&&... args)
     {
-      return unsafeInsertAfter(pos, new Node{nullptr, T(std::forward< Args >(args)...)});
+      return unsafeInsertAfter(pos, new Node{T(std::forward< Args >(args)...), nullptr});
     }
 
     Iter eraseAfter(ConstIter pos)
@@ -370,17 +370,17 @@ namespace odintsov {
     template< typename... Args >
     T& emplaceFront(Args&&... args)
     {
-      pushFront(new Node{nullptr, T(std::forward< Args >(args)...)});
+      pushFront(new Node{T(std::forward< Args >(args)...), nullptr});
     }
 
     void pushFront(const T& val)
     {
-      pushFront(new Node{nullptr, val});
+      pushFront(new Node{val, nullptr});
     }
 
     void pushFront(T&& val)
     {
-      pushFront(new Node{nullptr, std::move(val)});
+      pushFront(new Node{std::move(val), nullptr});
     }
 
     void popFront()
