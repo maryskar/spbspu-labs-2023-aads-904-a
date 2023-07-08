@@ -149,7 +149,9 @@ int main(int argc, char* argv[])
       } else {
         throw std::logic_error("Unknown command");
       }
-    } catch (const std::logic_error&) {
+      // clang-format off
+    } catch (const std::logic_error& ) {
+      // clang-format on
       odintsov::outInvalidCommandMsg(std::cout) << '\n';
       continue;
     } catch (const std::exception& e) {
