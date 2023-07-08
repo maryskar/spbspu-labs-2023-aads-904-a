@@ -70,10 +70,9 @@ namespace odintsov {
      private:
       typename ForwardList< kvPair >::Iter flIter;
 
-      Iter(const typename ForwardList< kvPair >::Iter& fi)
-      {
-        flIter(fi);
-      }
+      Iter(const typename ForwardList< kvPair >::Iter& fi):
+        flIter(fi)
+      {}
     };
 
     struct ConstIter: public std::iterator< std::forward_iterator_tag, kvPair > {
@@ -125,10 +124,9 @@ namespace odintsov {
      private:
       typename ForwardList< kvPair >::Iter flIter;
 
-      ConstIter(const typename ForwardList< kvPair >::Iter& fi)
-      {
-        flIter(fi);
-      }
+      ConstIter(const typename ForwardList< kvPair >::Iter& fi):
+        flIter(fi)
+      {}
     };
 
     Dictionary():
