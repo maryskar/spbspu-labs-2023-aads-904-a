@@ -192,32 +192,32 @@ namespace odintsov {
 
     Iter beforeBegin()
     {
-      return pairs_.beforeBegin();
+      return Iter(pairs_.beforeBegin());
     }
 
     ConstIter cbeforeBegin() const
     {
-      return pairs_.cbeforeBegin();
+      return ConstIter(pairs_.beforeBegin());
     }
 
     Iter begin()
     {
-      return pairs_.begin();
+      return Iter(pairs_.begin());
     }
 
     ConstIter cbegin() const
     {
-      return pairs_.cbegin();
+      return ConstIter(pairs_.begin());
     }
 
     Iter end()
     {
-      return pairs_.end();
+      return Iter(pairs_.end());
     }
 
     ConstIter cend() const
     {
-      return pairs_.cend();
+      return ConstIter(pairs_.end());
     }
 
     bool empty() const
