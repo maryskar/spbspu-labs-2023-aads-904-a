@@ -20,65 +20,83 @@ public:
   const T &operator*() const;
   T *operator->();
   const T *operator->() const;
-  bool operator!=(const ConstForwardListIterator< T > &rhs) const;
-  bool operator==(const ConstForwardListIterator< T > &rhs) const;
-  ConstForwardListIterator< T > &operator=(const ConstForwardListIterator< T > &rhs) = default;
+  bool operator!=(const ConstForwardListIterator< T > &other) const;
+  bool operator==(const ConstForwardListIterator< T > &other) const;
+  ConstForwardListIterator< T > &operator=(const ConstForwardListIterator< T > &other) = default;
+  ConstForwardListIterator< T > &operator=(const ForwardListIterator< T > &other);
   ConstForwardListIterator< T > &operator++();
   ConstForwardListIterator< T > operator++(int);
-  ConstForwardListIterator(const ConstForwardListIterator< T > &rhs) = default;
+  explicit ConstForwardListIterator(details::ListNode< T > *head);
+  explicit ConstForwardListIterator(const ForwardListIterator< T > &other);
   ~ConstForwardListIterator() = default;
 private:
   ConstForwardListIterator();
-  details::ListNode< T > *node_;
+  details::ListNode< T > *head_;
   void checkForNullNode();
 };
 template< typename T >
-bool ConstForwardListIterator< T >::operator==(const ConstForwardListIterator< T > &rhs) const
+ConstForwardListIterator< T > &ConstForwardListIterator< T >::operator=(const ForwardListIterator< T > &other)
 {
-  return node_ == rhs.node_;
+  head_ = other.head_;
+  return *this;
 }
 template< typename T >
-bool ConstForwardListIterator< T >::operator!=(const ConstForwardListIterator< T > &rhs) const
+ConstForwardListIterator< T >::ConstForwardListIterator(const ForwardListIterator< T > &other):
+  head_(other.head_)
 {
-  return !(node_ == rhs.node_);
+}
+template< typename T >
+ConstForwardListIterator< T >::ConstForwardListIterator(details::ListNode< T > *head):
+  head_(head_)
+{
+}
+template< typename T >
+bool ConstForwardListIterator< T >::operator==(const ConstForwardListIterator< T > &other) const
+{
+  return head_ == other.head_;
+}
+template< typename T >
+bool ConstForwardListIterator< T >::operator!=(const ConstForwardListIterator< T > &other) const
+{
+  return head_ != other.head_;
 }
 template< typename T >
 const T *ConstForwardListIterator< T >::operator->() const
 {
   checkForNullNode();
-  return std::addressof(node_->data_);
+  return std::addressof(head_->data_);
 }
 template< typename T >
 T *ConstForwardListIterator< T >::operator->()
 {
   checkForNullNode();
-  return const_cast<T *>(std::addressof(node_->data_));
+  return const_cast<T *>(std::addressof(head_->data_));
 }
 template< typename T >
 void ConstForwardListIterator< T >::checkForNullNode()
 {
-  if (!node_)
+  if (!head_)
   {
-    throw std::runtime_error("begin_ is null in operator++");
+    throw std::runtime_error("head_ is null");
   }
 }
 template< typename T >
 const T &ConstForwardListIterator< T >::operator*() const
 {
   checkForNullNode();
-  return node_->data;
+  return head_->data;
 }
 template< typename T >
 T &ConstForwardListIterator< T >::operator*()
 {
   checkForNullNode();
-  return const_cast<T &>(node_->data);
+  return const_cast<T &>(head_->data);
 }
 template< typename T >
 ConstForwardListIterator< T > &ConstForwardListIterator< T >::operator++()
 {
   checkForNullNode();
-  node_ = node_->next_;
+  head_ = head_->next_;
   return *this;
 }
 template< typename T >
@@ -91,7 +109,7 @@ ConstForwardListIterator< T > ConstForwardListIterator< T >::operator++(int)
 }
 template< typename T >
 ConstForwardListIterator< T >::ConstForwardListIterator():
-  node_(nullptr)
+  head_(nullptr)
 {
 }
 #endif

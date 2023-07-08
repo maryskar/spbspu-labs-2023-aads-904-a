@@ -12,21 +12,20 @@ public:
   friend class ForwardList< T >;
   friend class ConstForwardListIterator< T >;
   using iterator_category = std::forward_iterator_tag;
-  using value_type = T;
   using difference_type = std::ptrdiff_t;
-  using pointer = T *;
-  using reference = T &;
   T &operator*();
   const T &operator*() const;
   T *operator->();
   const T *operator->() const;
-  bool operator!=(const ForwardListIterator< T > &rhs) const;
-  bool operator==(const ForwardListIterator< T > &rhs) const;
-  ForwardListIterator< T > &operator=(const ForwardListIterator< T > &rhs) = default;
+  bool operator!=(const ForwardListIterator< T > &other) const;
+  bool operator==(const ForwardListIterator< T > &other) const;
+  ForwardListIterator< T > &operator=(const ForwardListIterator< T > &other) = default;
+  ForwardListIterator< T > &operator=(const ConstForwardListIterator< T > &other);
   ForwardListIterator< T > &operator++();
   ForwardListIterator< T > operator++(int);
-  ForwardListIterator(details::ListNode< T > *head);
   ~ForwardListIterator() = default;
+  explicit ForwardListIterator(details::ListNode< T > *head);
+  explicit ForwardListIterator(const ConstForwardListIterator< T > &other);
   ForwardListIterator();
   ForwardListIterator< T > begin();
   ForwardListIterator< T > end();
@@ -34,6 +33,17 @@ private:
   details::ListNode< T > *head_;
   void checkForNullNode();
 };
+template< typename T >
+ForwardListIterator< T > &ForwardListIterator< T >::operator=(const ConstForwardListIterator< T > &other)
+{
+  head_ = other.head_;
+  return *this;
+}
+template< typename T >
+ForwardListIterator< T >::ForwardListIterator(const ConstForwardListIterator< T > &other):
+  head_(other.head_)
+{
+}
 template< typename T >
 ForwardListIterator< T >::ForwardListIterator(details::ListNode< T > *head):
   head_(head)
@@ -54,18 +64,18 @@ void ForwardListIterator< T >::checkForNullNode()
 {
   if (!head_)
   {
-    throw std::runtime_error("head_ is null in operator++");
+    throw std::runtime_error("head_ is null");
   }
 }
 template< typename T >
-bool ForwardListIterator< T >::operator==(const ForwardListIterator< T > &rhs) const
+bool ForwardListIterator< T >::operator==(const ForwardListIterator< T > &other) const
 {
-  return head_ = rhs.head_;
+  return head_ == other.head_;
 }
 template< typename T >
-bool ForwardListIterator< T >::operator!=(const ForwardListIterator< T > &rhs) const
+bool ForwardListIterator< T >::operator!=(const ForwardListIterator< T > &other) const
 {
-  return !(head_ == rhs.head_);
+  return head_ != other.head_;
 }
 template< typename T >
 T *ForwardListIterator< T >::operator->()

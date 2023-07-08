@@ -8,6 +8,16 @@ namespace details
   {
     T data_;
     ListNode< T > *next_;
+    ListNode(const T &value, ListNode *next):
+      data_(value),
+      next_(next)
+    {
+    }
+    ListNode(T &&value, ListNode *next):
+      data_(std::move(value)),
+      next_(next)
+    {
+    }
   };
   template< typename T >
   void clear(ListNode< T > *node)

@@ -11,12 +11,12 @@ public:
   using const_iterator = ConstForwardListIterator< T >;
   using iterator = ForwardListIterator< T >;
   ForwardList();
-  ForwardList(const ForwardList &rhs);
-  ForwardList(ForwardList &&rhs) noexcept;
+  ForwardList(const ForwardList &other);
+  ForwardList(ForwardList &&other) noexcept;
   ForwardList(std::initializer_list< T > initializerList);
   ~ForwardList();
-  ForwardList &operator=(const ForwardList &rhs);
-  ForwardList &operator=(ForwardList &&rhs) noexcept;
+  ForwardList &operator=(const ForwardList &other);
+  ForwardList &operator=(ForwardList &&other) noexcept;
   ForwardList &operator=(std::initializer_list< T > initializerList);
   T front();
   const T &front() const;
@@ -46,7 +46,7 @@ public:
   void pop_front();
   void resize(size_t newSize);
   void resize(size_t newSize, const T &value);
-  void swap(ForwardList &rhs);
+  void swap(ForwardList &other);
   void splice_after(const_iterator position, ForwardList &source);
   void splice_after(const_iterator position, ForwardList &&source);
   void splice_after(const_iterator position, ForwardList &source, const_iterator iterator);
@@ -57,18 +57,19 @@ public:
   template< class Predicate >
   void remove_if(Predicate pred);
   void reverse();
-private:
   details::ListNode< T > *begin_;
+private:
   details::ListNode< T > *end_;
   details::ListNode< T > *fakeNode_;
   size_t size_;
   details::ListNode< T > *initFake();
-  void copy(const ForwardList< T > &rhs);
+  void copy(const ForwardList< T > &other);
   void push_back(const T &value);
 };
 template< typename T >
 void ForwardList< T >::push_back(const T &value)
 {
+  std::cout << "!\n";
   details::ListNode< T > *node = new details::ListNode< T >(value);
   if (!begin_)
   {
@@ -88,9 +89,9 @@ void ForwardList< T >::push_back(const T &value)
   ++size_;
 }
 template< typename T >
-void ForwardList< T >::copy(const ForwardList< T > &rhs)
+void ForwardList< T >::copy(const ForwardList< T > &other)
 {
-  auto tmp = details::copy(rhs.begin_);
+  auto tmp = details::copy(other.begin_);
   begin_ = std::get< 0 >(tmp);
   end_ = std::get< 1 >(tmp);
   fakeNode_->next_ = begin_;
@@ -213,7 +214,7 @@ void ForwardList< T >::resize(size_t newSize, const T &value)
   }
   size_t currentSize = 0;
   auto it = begin();
-  auto prev = before_begin();
+  auto prev = cbefore_begin();
   while (currentSize < newSize && it != end())
   {
     ++currentSize;
@@ -222,13 +223,13 @@ void ForwardList< T >::resize(size_t newSize, const T &value)
   }
   if (currentSize == newSize)
   {
-    erase_after(prev, end());
+    erase_after(prev, cend());
   }
   else if (currentSize < newSize)
   {
     while (currentSize < newSize)
     {
-      emplace_after(prev, value);
+      emplace_after(prev, T(value));
       ++currentSize;
       ++prev;
     }
@@ -257,7 +258,7 @@ ConstForwardListIterator< T > ForwardList< T >::cend() const
 template< typename T >
 void ForwardList< T >::pop_front()
 {
-  erase_after(before_begin());
+  erase_after(cbefore_begin());
 }
 template< typename T >
 template< class ... Args >
@@ -269,15 +270,15 @@ ForwardListIterator< T > ForwardList< T >::emplace_front(Args &&... args)
 template< typename T >
 ForwardListIterator< T > ForwardList< T >::erase_after(ConstForwardListIterator< T > position)
 {
-  auto nextIt = position.current_->next_;
+  auto nextIt = position.head_->next_;
   if (nextIt)
   {
-    position.current_->next_ = nextIt->next_;
+    position.head_->next_ = nextIt->next_;
     delete nextIt;
   }
-  if (position.current_->next_)
+  if (position.head_->next_)
   {
-    return ForwardListIterator< T >(position.current_->next_);
+    return ForwardListIterator< T >(position.head_->next_);
   }
   else
   {
@@ -288,21 +289,21 @@ template< typename T >
 ForwardListIterator< T >
 ForwardList< T >::erase_after(ConstForwardListIterator< T > first, ConstForwardListIterator< T > last)
 {
-  if (first == last || first == end() || empty())
+  if (first == last || first == cend() || empty())
   {
     return ForwardListIterator< T >();
   }
-  if (first == before_begin())
+  if (first == cbefore_begin())
   {
     auto it = begin();
-    while (it != end() && it != last)
+    while (it != end() && it != ForwardListIterator< T >(last))
     {
-      it = erase_after(before_begin());
+      it = erase_after(cbefore_begin());
     }
     return it;
   }
   auto pos = begin_;
-  while (pos->next_ != nullptr && pos->next_ != first)
+  while (pos->next_ != nullptr && pos->next_ != first.head_)
   {
     pos = pos->next_;
   }
@@ -311,9 +312,9 @@ ForwardList< T >::erase_after(ConstForwardListIterator< T > first, ConstForwardL
     return end();
   }
   auto it = ForwardListIterator< T >{pos->next_};
-  while (it != end() && it != last)
+  while (it != end() && it != ForwardListIterator< T >(last))
   {
-    it = erase_after(pos);
+    it = erase_after(ConstForwardListIterator< T >(pos));
   }
   return it;
 }
@@ -412,28 +413,28 @@ ForwardList< T >::~ForwardList()
   ::operator delete(fakeNode_);
 }
 template< typename T >
-ForwardList< T > &ForwardList< T >::operator=(const ForwardList &rhs)
+ForwardList< T > &ForwardList< T >::operator=(const ForwardList &other)
 {
-  if (this != std::addressof(rhs))
+  if (this != std::addressof(other))
   {
-    ForwardList tmp(rhs);
+    ForwardList tmp(other);
     swap(tmp);
   }
   return *this;
 }
 template< typename T >
-ForwardList< T > &ForwardList< T >::operator=(ForwardList< T > &&rhs)
+ForwardList< T > &ForwardList< T >::operator=(ForwardList< T > &&other)
 noexcept
 {
-  if (this != std::addressof(rhs))
+  if (this != std::addressof(other))
   {
     clear();
-    begin_ = rhs.begin_;
-    end_ = rhs.end_;
+    begin_ = other.begin_;
+    end_ = other.end_;
     fakeNode_->next_ = begin_;
-    size_ = rhs.size_;
-    rhs.begin_ = nullptr;
-    rhs.end_ = nullptr;
+    size_ = other.size_;
+    other.begin_ = nullptr;
+    other.end_ = nullptr;
   }
   return *this;
 }
@@ -454,8 +455,8 @@ void ForwardList< T >::reverse()
     details::ListNode< T > *next = nullptr;
     while (current != nullptr)
     {
-      next = current->next;
-      current->next = previous;
+      next = current->next_;
+      current->next_ = previous;
       previous = current;
       current = next;
     }
@@ -476,20 +477,20 @@ bool ForwardList< T >::empty() const
 template< typename T >
 void ForwardList< T >::push_front(const T &value)
 {
-  begin_ = new details::ListNode< T >{value, begin_};
+  begin_ = new details::ListNode< T >(value, begin_);
 }
 template< typename T >
 void ForwardList< T >::push_front(T &&value)
 {
-  begin_ = new details::ListNode< T >{std::move(value), begin_};
+  begin_ = new details::ListNode< T >(std::move(value), begin_);
 }
 template< typename T >
-void ForwardList< T >::swap(ForwardList &rhs)
+void ForwardList< T >::swap(ForwardList &other)
 {
-  std::swap(begin_, rhs.begin_);
-  std::swap(end_, rhs.end_);
-  std::swap(fakeNode_, rhs.fakeNode_);
-  size_ = rhs.size_;
+  std::swap(begin_, other.begin_);
+  std::swap(end_, other.end_);
+  std::swap(fakeNode_, other.fakeNode_);
+  size_ = other.size_;
 }
 template< typename T >
 ForwardList< T >::ForwardList():
@@ -500,22 +501,22 @@ ForwardList< T >::ForwardList():
 {
 }
 template< typename T >
-ForwardList< T >::ForwardList(const ForwardList &rhs):
+ForwardList< T >::ForwardList(const ForwardList &other):
   ForwardList()
 {
-  copy(rhs);
+  copy(other);
 }
 template< typename T >
-ForwardList< T >::ForwardList(ForwardList &&rhs) noexcept:
-  begin_(std::move(rhs.begin_)),
-  end_(std::move(rhs.end_)),
-  fakeNode_(std::move(rhs.fakeNode_)),
-  size_(rhs.size_)
+ForwardList< T >::ForwardList(ForwardList &&other) noexcept:
+  begin_(std::move(other.begin_)),
+  end_(std::move(other.end_)),
+  fakeNode_(std::move(other.fakeNode_)),
+  size_(other.size_)
 {
-  rhs.begin_ = nullptr;
-  rhs.end_ = nullptr;
-  rhs.fakeNode_ = nullptr;
-  rhs.size_ = 0;
+  other.begin_ = nullptr;
+  other.end_ = nullptr;
+  other.fakeNode_ = nullptr;
+  other.size_ = 0;
 }
 template< typename T >
 ForwardList< T >::ForwardList(std::initializer_list< T > initializerList):
