@@ -5,12 +5,16 @@
 #include "list.hpp"
 
 template< typename T >
+class ForwardList;
+
+template< typename T >
 class ForwardListIterator
 {
+  friend class ForwardList< T >;
   public:
     ForwardListIterator();
     ~ForwardListIterator() = default;
-    ForwardListIterator(List< T >* rhs);
+    explicit ForwardListIterator(List< T >* rhs);
     ForwardListIterator< T >& operator++();
     ForwardListIterator< T > operator++(int);
     T& operator*();

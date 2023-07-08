@@ -5,16 +5,20 @@
 #include <list.hpp>
 
 template< typename T >
+class ForwardList;
+
+template< typename T >
 class ForwardListConstIterator
 {
+  friend class ForwardList< T >;
   public:
     ForwardListConstIterator();
     ~ForwardListConstIterator() = default;
-    ForwardListConstIterator(const List< T >* rhs);
+    explicit ForwardListConstIterator(const List< T >* rhs);
     ForwardListConstIterator< T >& operator++();
     ForwardListConstIterator< T > operator++(int);
-    T& operator*();
-    T* operator->();
+    const T& operator*();
+    const T* operator->();
     bool operator==(const ForwardListConstIterator< T >& rhs) const;
     bool operator!=(const ForwardListConstIterator< T >& rhs) const;
   private:
@@ -55,15 +59,15 @@ ForwardListConstIterator< T > ForwardListConstIterator< T >::operator++(int)
 }
 
 template< typename T >
-T& ForwardListConstIterator< T >::operator*()
+const T& ForwardListConstIterator< T >::operator*()
 {
   return ptr_->data_;
 }
 
 template< typename T >
-T* ForwardListConstIterator< T >::operator->()
+const T* ForwardListConstIterator< T >::operator->()
 {
-  return std::addressof(ptr_.data_);
+  return std::addressof(ptr_->data_);
 }
 
 template< typename T >
