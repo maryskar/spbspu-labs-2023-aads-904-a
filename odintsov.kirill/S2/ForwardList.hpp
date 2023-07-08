@@ -22,7 +22,7 @@ namespace odintsov {
     struct ConstIter;
 
     struct Iter: public std::iterator< std::forward_iterator_tag, T > {
-      friend ForwardList< T >;
+      friend ForwardList;
       friend ConstIter;
 
       Iter():
@@ -75,17 +75,17 @@ namespace odintsov {
     };
 
     struct ConstIter: public std::iterator< std::forward_iterator_tag, T > {
-      friend ForwardList< T >;
+      friend ForwardList;
 
       ConstIter():
         nodePtr(nullptr)
       {}
 
-      ConstIter(const ForwardList< T >::Iter& fi):
+      ConstIter(const Iter& fi):
         nodePtr(fi.nodePtr)
       {}
 
-      ConstIter(ForwardList< T >::Iter&& fi):
+      ConstIter(Iter&& fi):
         nodePtr(fi.nodePtr)
       {}
 
