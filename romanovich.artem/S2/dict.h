@@ -34,10 +34,10 @@ public:
   const_iterator clast() const noexcept;
   bool empty() const noexcept;
   void clear() noexcept;
-  std::pair< iterator, bool > insert(const value_type &value);
   template< typename P >
   std::pair< iterator, bool > insert(P &&value);
   iterator insert(const_iterator pos, const value_type &value);
+  std::pair< iterator, bool > insert(const value_type &value);
   template< typename P >
   iterator insert(const_iterator pos, P &&value);
   template< typename InputIt >
@@ -65,7 +65,7 @@ public:
 private:
   Compare comp_;
   Value &insertValue(Key &&key);
-  bool areEqualKeys(Key lhs, Key other);
+  bool areEqualKeys(const Key &lhs, const Key& rhs);
 };
 template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(
@@ -265,39 +265,19 @@ template< typename P >
 std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool >
 Dictionary< Key, Value, Compare >::insert(P &&value)
 {
-  /*auto it = data_.begin();
-  auto prev = data_.before_begin();
-  for (; it != data_.end(); it++)
-  {
-    if (comp_(value.first, (*it).first))
-    {
-      break;
-    }
-    prev = it;
-  }
-  if (prev != data_.before_begin() && areEqualKeys(prev->first, value.first))
-  {
-    (*prev).second = value.second;
-  }
-  else
-  {
-    data_.insert_after(prev, value);
-  }
-  return std::make_pair(iterator(prev), false);*/
   value_type tmpValue(std::forward< P >(value));
   iterator it = lower_bound(tmpValue.first);
   if (it != end() && areEqualKeys(tmpValue.first, it->first))
   {
-    /////
     return std::make_pair(it, false);
   }
   iterator insertedIt = data_.emplace_front(std::move(tmpValue));
   return std::make_pair(insertedIt, true);
 }
 template< typename Key, typename Value, typename Compare >
-bool Dictionary< Key, Value, Compare >::areEqualKeys(Key lhs, Key other)
+bool Dictionary< Key, Value, Compare >::areEqualKeys(const Key &lhs, const Key &rhs)
 {
-  return !comp_(lhs, other) && !comp_(other, lhs);
+  return !comp_(lhs, rhs) && !comp_(rhs, lhs);
 }
 template< typename Key, typename Value, typename Compare >
 size_t Dictionary< Key, Value, Compare >::erase(const Key &key)

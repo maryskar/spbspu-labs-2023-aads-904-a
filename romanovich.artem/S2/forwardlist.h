@@ -101,7 +101,7 @@ details::ListNode< T > *ForwardList< T >::initFake()
   void *nodeMemory = ::operator new(sizeof(details::ListNode< T >));
   details::ListNode< T > *newNode = static_cast< details::ListNode< T > * >(nodeMemory);
   newNode->next_ = nullptr;
-  newNode->data_ = 0;
+  //newNode->data_ = T();
   return newNode;
 }
 template< typename T >
@@ -209,21 +209,18 @@ void ForwardList< T >::resize(size_t newSize, const T &value)
 {
   if (newSize < size_)
   {
-    iterator it = before_begin();
-    std::cout << it.head_->data_ << "!\n";
+    const_iterator it = cbefore_begin();
     for (size_t i = 0; i < newSize; ++i)
     {
-      std::cout << it.head_->next_->data_ << "%\n";
       ++it;
     }
-    erase_after(ConstForwardListIterator< T >(it), cend());
+    erase_after(it, cend());
   }
   if (newSize > size_)
   {
     while (newSize > size_)
     {
       push_back(value);
-      std::cout << size_ << "\n";
     }
   }
 }
@@ -262,7 +259,17 @@ ForwardListIterator< T > ForwardList< T >::emplace_front(Args &&... args)
 template< typename T >
 ForwardListIterator< T > ForwardList< T >::erase_after(ConstForwardListIterator< T > position)
 {
-  /*auto nextIt = position.head_->next_;
+  try
+  {
+    auto t = begin_->data_;
+    if (t == 8)
+    {
+      std::cout << cbefore_begin().head_->next_->data_ << "@\n";
+    }
+  } catch (...)
+  {
+  }
+  auto nextIt = position.head_->next_;
   if (nextIt)
   {
     position.head_->next_ = nextIt->next_;
@@ -286,27 +293,7 @@ ForwardListIterator< T > ForwardList< T >::erase_after(ConstForwardListIterator<
   else
   {
     return end();
-  }*/
-  if (empty())
-  {
-    return end();
   }
-  if (position == cend())
-  {
-    erase_after(ConstForwardListIterator< T >(fakeNode_));
-  }
-  details::ListNode< T > *temp = position.head_->next_->next_;
-  if (position.head_->next_ == end_)
-  {
-    end_ = iterator(position.head_).head_;
-  }
-  delete position.head_->next_;
-  position.head_->next_ = temp;
-  if (empty())
-  {
-    position.head_ = nullptr;
-  }
-  return iterator(temp);
 }
 template< typename T >
 ForwardListIterator< T >
@@ -506,6 +493,7 @@ void ForwardList< T >::reverse()
     }
     begin_ = previous;
     end_ = tmpBegin_;
+    fakeNode_->next_ = begin_;
   }
 }
 template< typename T >
@@ -522,6 +510,7 @@ bool ForwardList< T >::empty() const
 template< typename T >
 void ForwardList< T >::push_front(const T &value)
 {
+  std::cout << value << " " << value << "\n";
   begin_ = new details::ListNode< T >(value, begin_);
   if (!end_)
   {
