@@ -399,7 +399,7 @@ namespace odintsov {
     bool erase(const Key& k)
     {
       ConstIter prev = preLowerBound();
-      if (prev != cbeforeBegin() && prev.nodePtr->next->val.first == k) {
+      if (prev != cbeforeBegin() && std::next(prev)->first == k) {
         pairs_.unsafeEraseAfter(prev);
         return true;
       }
@@ -411,24 +411,26 @@ namespace odintsov {
       std::swap(pairs_, d.pairs_);
     }
 
+    void merge(Dictionary& src)
+    {
+      Iter pos = beforeBegin();
+      for (Iter i = src.beforeBegin(), next = std::next(i); next != src.end(); i = next++) {
+        pos = preUpperBound(pos, next->first);
+        pairs_.unsafeInsertAfter(pos, *next);
+        src.pairs_.unsafeEraseAfter(i);
+      }
+    }
+
+    void merge(Dictionary&& src)
+    {
+      merge(src);
+    }
+
     template< typename C >
     void merge(Dictionary< Key, Value, C >& src)
     {
-      Iter pos = beforeBegin();
-      for (Iter i = src.beforeBegin(); i.nodePtr->next;) {
-        if (kvComp_(*(i.nodePtr->next), *(pos.nodePtr->next))) {
-          pos = beforeBegin();
-        }
-        pos = preUpperBound(pos, i.nodePtr->next->first);
-        if (pos != beforeBegin() && pos->first == i.nodePtr->next->first) {
-          ++i;
-          continue;
-        }
-        ListNode* after = pos.nodePtr->next;
-        pos.nodePtr->next = i.nodePtr->next;
-        i.nodePtr->next = i.nodePtr->next->next;
-        (++pos).nodePtr->next = after;
-      }
+      pairs_.merge(src.pairs_);
+      pairs_.sort(kvComp());
     }
 
     template< typename C >
@@ -548,8 +550,11 @@ namespace odintsov {
       if (pos == cend()) {
         return pos;
       }
-      while (pos.nodePtr->next && kvComp_.keyComp(pos.nodePtr->next->val.first, k)) {
+      Compare keyComp = keyComp();
+      ConstIter next = std::next(pos);
+      while (next != cend() && keyComp(next->first, k)) {
         ++pos;
+        ++next;
       }
       return pos;
     }
@@ -574,8 +579,11 @@ namespace odintsov {
       if (pos == cend()) {
         return pos;
       }
-      while (pos.nodePtr->next && !kvComp_.keyComp(k, pos.nodePtr->next->val.first)) {
+      Compare keyComp = keyComp();
+      ConstIter next = std::next(pos);
+      while (next != cend() && !keyComp(k, next->first)) {
         ++pos;
+        ++next;
       }
       return pos;
     }
@@ -606,12 +614,14 @@ namespace odintsov {
   size_t eraseIf(Dictionary< Key, Value, Compare >& d, UnaryPredicate check)
   {
     size_t count = 0;
-    for (typename Dictionary< Key, Value, Compare >::Iter i = d.beforeBegin(); i.nodePtr->next;) {
-      if (check(i.nodePtr->next->val)) {
+    for (typename Dictionary< Key, Value, Compare >::Iter i = d.beforeBegin(), next = std::next(i); next != d.end();) {
+      if (check(*next)) {
         d.eraseAfter(i);
+        next = std::next(i);
         count++;
       } else {
         ++i;
+        ++next;
       }
     }
     return count;
