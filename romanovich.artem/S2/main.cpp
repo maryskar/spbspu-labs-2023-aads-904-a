@@ -95,104 +95,114 @@ int main(int argc, char *argv[])
 //----------------------------------------
 #include <iostream>
 #include "forwardlist.h"
+int main()
+{
+  ForwardList< int > myList;
 
-int main() {
-  ForwardList<int> myList;
-
-  // Добавление элементов в начало списка
+  // Add elements to the beginning of the list
   myList.push_front(1);
   myList.push_front(2);
   myList.push_front(3);
 
-  // Перебор элементов с помощью итераторов
-  std::cout << "Список: ";
-  for (const auto& value : myList) {
+  // Iterate over the elements using iterators
+  std::cout << "List: ";
+  for (const auto &value: myList)
+  {
     std::cout << value << " ";
   }
   std::cout << std::endl;
 
-  // Проверка на пустоту списка
-  std::cout << "Список пуст: " << std::boolalpha << myList.empty() << std::endl;
+  // Check if the list is empty
+  std::cout << "List is empty: " << std::boolalpha << myList.empty() << std::endl;
 
-  // Вставка элемента после указанной позиции
-  ForwardList<int>::const_iterator it = myList.cbegin();
-  ++it; // Переходим ко второму элементу
-  myList.insert_after(it, 10); // Вставляем число 10 после второго элемента
+  // Insert an element after a specified position
+  ForwardList< int >::iterator it = myList.begin();
+  ++it; // Move to the second element
+  myList.insert_after(it, 10); // Insert 10 after the second element
 
-  // Вывод списка после вставки элемента
-  std::cout << "Список после вставки: ";
-  for (const auto& value : myList) {
+  // Print the list after insertion
+  std::cout << "List after insertion: ";
+  for (const auto &value: myList)
+  {
     std::cout << value << " ";
   }
   std::cout << std::endl;
 
-  // Удаление элемента после указанной позиции
-  myList.erase_after(it);
 
-  // Вывод списка после удаления элемента
-  std::cout << "Список после удаления: ";
-  for (const auto& value : myList) {
+  // Erase an element after a specified position
+  myList.erase_after(ConstForwardListIterator< int >(it));
+
+  // Print the list after erasing an element
+  std::cout << "List after erasing: ";
+  for (const auto &value: myList)
+  {
     std::cout << value << " ";
   }
   std::cout << std::endl;
 
-  // Изменение размера списка
-  myList.resize(5, 0); // Увеличиваем размер списка до 5 и заполняем новые элементы нулями
 
-  // Вывод списка после изменения размера
-  std::cout << "Список после изменения размера: ";
-  for (const auto& value : myList) {
+  // Resize the list
+  std::cout << myList.size_ << "\n";
+  myList.resize(5, 8); // Increase the size of the list to 5 and fill the new elements with zeros
+
+  // Print the list after resizing
+  std::cout << "List after resizing: ";
+  for (const auto &value: myList)
+  {
     std::cout << value << " ";
   }
   std::cout << std::endl;
 
-  // Изменение размера списка и заполнение новых элементов пользовательским значением
-  myList.resize(3, 100); // Уменьшаем размер списка до 3 и заполняем новые элементы значением 100
+  // Resize the list and fill the new elements with a custom value
+  myList.resize(3, 100); // Decrease the size of the list to 3 and fill the new elements with the value 100
 
-  // Вывод списка после изменения размера
-  std::cout << "Список после изменения размера и заполнения пользовательским значением: ";
-  for (const auto& value : myList) {
+  // Print the list after resizing and filling with a custom value
+  std::cout << "List after resizing and filling with a custom value: ";
+  for (const auto &value: myList)
+  {
     std::cout << value << " ";
   }
   std::cout << std::endl;
 
-  // Перестановка элементов списка в обратном порядке
+  // Reverse the order of elements in the list
   myList.reverse();
 
-  // Вывод списка после перестановки элементов
-  std::cout << "Список после перестановки в обратном порядке: ";
-  for (const auto& value : myList) {
+  // Print the list after reversing the order
+  std::cout << "List after reversing the order: ";
+  for (const auto &value: myList)
+  {
     std::cout << value << " ";
   }
   std::cout << std::endl;
 
-  // Удаление всех элементов списка
+  // Clear all elements from the list
   myList.clear();
 
-  // Проверка на пустоту списка после удаления
-  std::cout << "Список пуст: " << std::boolalpha << myList.empty() << std::endl;
+  // Check if the list is empty after clearing
+  std::cout << "List is empty: " << std::boolalpha << myList.empty() << std::endl;
 
-  // Вставка элемента после указанной позиции с помощью emplace_after()
-  ForwardList<int>::const_iterator it1 = myList.cbegin();
-  ++it1; // Переходим ко второму элементу
-  myList.emplace_after(it1, 10); // Вставляем число 10 после второго элемента с помощью emplace_after()
+  // Insert an element after a specified position using emplace_after()
+  ForwardList< int >::const_iterator it1 = myList.cbegin();
+  ++it1; // Move to the second element
+  myList.emplace_after(it1, 10); // Insert 10 after the second element using emplace_after()
 
-  // Вывод списка после вставки элемента
-  std::cout << "Список после вставки: ";
-  for (const auto& value : myList) {
+  // Print the list after insertion
+  std::cout << "List after insertion: ";
+  for (const auto &value: myList)
+  {
     std::cout << value << " ";
   }
   std::cout << std::endl;
 
-  // Удаление первого элемента списка с помощью pop_front()
+  // Remove the first element from the list using pop_front()
   myList.pop_front();
 
-  // Вывод списка после удаления элемента
-  std::cout << "Список после удаления: ";
-  for (const auto& value : myList) {
+  // Print the list after removing an element
+  std::cout << "List after removal: ";
+  for (const auto &value: myList)
+  {
     std::cout << value << " ";
   }
   std::cout << std::endl;
-
   return 0;
 }

@@ -212,9 +212,7 @@ template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::lower_bound(const Key &key)
 {
   iterator it = data_.begin();
-  std::cout << '[' << (bool) (it != data_.end())
-            /*<< ' ' << (bool) (comp_(it->first, key))*/ << "]: ";
-  while (it != data_.end() /*&& comp_(it->first, key)*/)
+  while (it != data_.end() && comp_(it->first, key))
   {
     ++it;
   }
