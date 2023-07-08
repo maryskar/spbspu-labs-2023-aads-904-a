@@ -439,7 +439,7 @@ namespace odintsov {
 
     Iter find(const Key& k)
     {
-      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->find(k).nodePtr));
+      return Iter(const_cast< const Dictionary* >(this)->find(k).flIter);
     }
 
     ConstIter find(const Key& k) const
@@ -458,12 +458,12 @@ namespace odintsov {
 
     Iter lowerBound(const Key& k)
     {
-      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->lowerBound(k).nodePtr));
+      return Iter(const_cast< const Dictionary* >(this)->lowerBound(k).flIter);
     }
 
     Iter lowerBound(ConstIter pos, const Key& k)
     {
-      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->lowerBound(pos, k).nodePtr));
+      return Iter(const_cast< const Dictionary* >(this)->lowerBound(pos, k).flIter);
     }
 
     ConstIter lowerBound(const Key& k) const
@@ -481,12 +481,12 @@ namespace odintsov {
 
     Iter upperBound(const Key& k)
     {
-      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->upperBound(k).nodePtr));
+      return Iter(const_cast< const Dictionary* >(this)->upperBound(k).flIter);
     }
 
     Iter upperBound(ConstIter pos, const Key& k)
     {
-      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->upperBound(pos, k).nodePtr));
+      return Iter(const_cast< const Dictionary* >(this)->upperBound(pos, k).flIter);
     }
 
     ConstIter upperBound(const Key& k) const
@@ -530,12 +530,12 @@ namespace odintsov {
 
     Iter preLowerBound(const Key& k)
     {
-      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preLowerBound(k).nodePtr));
+      return Iter(const_cast< const Dictionary* >(this)->preLowerBound(k).flIter);
     }
 
     Iter preLowerBound(ConstIter pos, const Key& k)
     {
-      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preLowerBound(pos, k).nodePtr));
+      return Iter(const_cast< const Dictionary* >(this)->preLowerBound(pos, k).flIter);
     }
 
     ConstIter preLowerBound(const Key& k) const
@@ -556,12 +556,12 @@ namespace odintsov {
 
     Iter preUpperBound(const Key& k)
     {
-      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preUpperBound(k).nodePtr));
+      return Iter(const_cast< const Dictionary* >(this)->preUpperBound(k).flIter);
     }
 
     Iter preUpperBound(ConstIter pos, const Key& k)
     {
-      return Iter(const_cast< ListNode* >(const_cast< const Dictionary* >(this)->preUpperBound(pos, k).nodePtr));
+      return Iter(const_cast< const Dictionary* >(this)->preUpperBound(pos, k).flIter);
     }
 
     ConstIter preUpperBound(const Key& k) const
