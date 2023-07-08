@@ -29,6 +29,7 @@ namespace odintsov {
     struct ConstIter;
 
     struct Iter: public std::iterator< std::forward_iterator_tag, kvPair > {
+      friend Dictionary;
       friend ConstIter;
 
       Iter():
@@ -75,7 +76,60 @@ namespace odintsov {
       }
     };
 
-    struct ConstIter: public std::iterator< std::forward_iterator_tag, kvPair > {};
+    struct ConstIter: public std::iterator< std::forward_iterator_tag, kvPair > {
+      friend Dictionary;
+
+      ConstIter():
+        flIter()
+      {}
+
+      ConstIter(const Iter& di):
+        flIter(di.flIter)
+      {}
+
+      ConstIter(Iter&& di):
+        flIter(std::move(di.flIter))
+      {}
+
+      ConstIter& operator++()
+      {
+        flIter++;
+        return *this;
+      }
+
+      ConstIter operator++(int)
+      {
+        return Iter(++flIter);
+      }
+
+      const kvPair& operator*() const
+      {
+        return *flIter;
+      }
+
+      const kvPair* operator->() const
+      {
+        return flIter.operator->();
+      }
+
+      bool operator==(const ConstIter& rhs) const
+      {
+        return flIter == rhs.flIter;
+      }
+
+      bool operator!=(const ConstIter& rhs) const
+      {
+        return flIter != rhs.flIter;
+      }
+
+     private:
+      typename ForwardList< kvPair >::Iter flIter;
+
+      ConstIter(const typename ForwardList< kvPair >::Iter& fi)
+      {
+        flIter(fi);
+      }
+    };
 
     Dictionary():
       kvComp_{Compare()}
