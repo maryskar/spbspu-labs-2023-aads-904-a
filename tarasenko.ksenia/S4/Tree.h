@@ -12,6 +12,16 @@ namespace tarasenko
         left_(nullptr),
         right_(nullptr),
         parent_(nullptr),
+        color_('r'),
+        compare_()
+      {};
+
+      Tree(const T& data, Tree< T, Compare >* l, Tree< T, Compare >* r, Tree< T, Compare >* p):
+        data_(data),
+        left_(l),
+        right_(r),
+        parent_(p),
+        color_('r'),
         compare_()
       {};
 
@@ -19,6 +29,7 @@ namespace tarasenko
       Tree< T, Compare >* left_;
       Tree< T, Compare >* right_;
       Tree< T, Compare >* parent_;
+      char color_;
       Compare compare_;
     };
 
@@ -31,7 +42,7 @@ namespace tarasenko
         ptree = new Tree< T, Compare >;
         ptree->data_ = data;
       }
-      else if (comp(data.first, ptree->data_.first))
+      else if (comp(data, ptree->data_))
       {
         Tree< T, Compare >* leftChild = insert(data, ptree->left_);
         ptree->left_ = leftChild;
