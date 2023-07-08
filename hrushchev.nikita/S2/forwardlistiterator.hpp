@@ -14,6 +14,7 @@ class ForwardListIterator
     ForwardListIterator< T > operator++(int);
     T& operator*();
     bool operator==(const ForwardListIterator< T >& rhs) const;
+    bool operator!=(const ForwardListIterator< T >& rhs) const;
   private:
     List< T >* ptr_;
 };
@@ -61,6 +62,12 @@ template < typename T >
 bool ForwardListIterator< T >::operator==(const ForwardListIterator< T >& rhs) const
 {
   return ptr_ == rhs.ptr_;
+}
+
+template< typename T >
+bool ForwardListIterator< T >::operator!=(const ForwardListIterator< T >& rhs) const
+{
+  return ptr_ != rhs.ptr_;
 }
 
 #endif
