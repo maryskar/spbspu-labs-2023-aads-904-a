@@ -195,7 +195,7 @@ namespace odintsov {
 
     ConstIter cbeforeBegin() const
     {
-      return ConstIter(pairs_.beforeBegin());
+      return ConstIter(const_cast< Dictionary* >(this)->pairs_.beforeBegin());
     }
 
     Iter begin()
@@ -205,7 +205,7 @@ namespace odintsov {
 
     ConstIter cbegin() const
     {
-      return ConstIter(pairs_.begin());
+      return ConstIter(const_cast< Dictionary* >(this)->pairs_.begin());
     }
 
     Iter end()
@@ -215,7 +215,7 @@ namespace odintsov {
 
     ConstIter cend() const
     {
-      return ConstIter(pairs_.end());
+      return ConstIter(const_cast< Dictionary* >(this)->pairs_.end());
     }
 
     bool empty() const
