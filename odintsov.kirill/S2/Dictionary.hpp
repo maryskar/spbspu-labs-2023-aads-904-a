@@ -178,7 +178,7 @@ namespace odintsov {
       if (plb != beforeBegin() && plb->first == k) {
         return plb->second;
       }
-      return pairs_.unsafeInsertAfter(plb, std::make_pair(k, Value()))->second;
+      return pairs_.unsafeInsertAfter(plb.flIter, std::make_pair(k, Value()))->second;
     }
 
     Value& operator[](Key&& k)
@@ -187,7 +187,7 @@ namespace odintsov {
       if (plb != beforeBegin() && plb->first == k) {
         return plb->second;
       }
-      return pairs_.unsafeInsertAfter(plb, std::make_pair(std::move(k), Value()))->second;
+      return pairs_.unsafeInsertAfter(plb.flIter, std::make_pair(std::move(k), Value()))->second;
     }
 
     Iter beforeBegin()
@@ -266,22 +266,22 @@ namespace odintsov {
 
     std::pair< Iter, bool > insert(ConstIter pos, const kvPair& kv)
     {
-      Iter plb = preUpperBound(pos, kv.first);
-      bool insert = plb == beforeBegin() || plb->first != kv.first;
+      Iter pub = preUpperBound(pos, kv.first);
+      bool insert = pub == beforeBegin() || pub->first != kv.first;
       if (insert) {
-        plb = pairs_.unsafeInsertAfter(plb, kv);
+        pub = pairs_.unsafeInsertAfter(pub.flIter, kv);
       }
-      return std::make_pair(plb, insert);
+      return std::make_pair(pub, insert);
     }
 
     std::pair< Iter, bool > insert(ConstIter pos, kvPair&& kv)
     {
-      Iter plb = preUpperBound(pos, kv.first);
-      bool insert = plb == beforeBegin() || plb->first != kv.first;
+      Iter pub = preUpperBound(pos, kv.first);
+      bool insert = pub == beforeBegin() || pub->first != kv.first;
       if (insert) {
-        plb = pairs_.unsafeInsertAfter(plb, std::move(kv));
+        pub = pairs_.unsafeInsertAfter(pub.flIter, std::move(kv));
       }
-      return std::make_pair(plb, insert);
+      return std::make_pair(pub, insert);
     }
 
     template< class InputIter >
