@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <list.hpp>
+#include "forwardlistiterator.hpp"
 
 template <typename T>
 class ForwardList
@@ -32,6 +33,5 @@ void ForwardList< T >::clear()
     head_ = temp;
   }
 }
-
 
 #endif
