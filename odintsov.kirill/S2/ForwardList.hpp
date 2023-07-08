@@ -11,8 +11,6 @@
 
 #include <Node.hpp>
 
-#include "MergeSort.hpp"
-
 namespace odintsov {
   template< typename T >
   class ForwardList {
@@ -490,7 +488,19 @@ namespace odintsov {
     template< typename Compare >
     void sort(Compare comp)
     {
-      mergeSort(beforeBegin(), comp);
+      for (size_t w = 1; w < size(); w *= 2) {
+        for (Iter i = beforeBegin(); i.nodePtr->next;) {
+          Iter beforeSplit = std::next(i, w);
+          if (!beforeSplit.nodePtr || !beforeSplit.nodePtr->next) {
+            break;
+          }
+          Iter beforeEnd = beforeSplit;
+          for (size_t subW = w; subW != 0 && beforeEnd.nodePtr->next; --subW) {
+            ++beforeEnd;
+          }
+          i = mergeSorted(i, beforeSplit, beforeEnd, comp);
+        }
+      }
     }
 
     void reverse()
@@ -542,6 +552,25 @@ namespace odintsov {
       n->next = (*head())->next;
       (*head())->next = n;
     };
+
+    template< typename Compare >
+    Iter mergeSorted(const Iter& bBegin, const Iter& bSplit, const Iter& bEnd, Compare& comp)
+    {
+      Node* other = bSplit.nodePtr->next;
+      Node* endPtr = bEnd.nodePtr->next;
+      bSplit.nodePtr->next = endPtr;
+      Iter i = bBegin;
+      for (; i.nodePtr->next != endPtr; ++i) {
+        if (comp(other->val, i.nodePtr->next->val)) {
+          std::swap(other, i.nodePtr->next);
+        }
+      }
+      i.nodePtr->next = other;
+      while (i.nodePtr->next != endPtr) {
+        ++i;
+      }
+      return i;
+    }
   };
 
   template< typename T >
