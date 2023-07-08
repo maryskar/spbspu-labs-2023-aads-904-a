@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <initializer_list>
+#include <iterator>
 #include <memory>
 #include <stdexcept>
 #include <utility>
@@ -14,9 +15,6 @@ namespace odintsov {
   class Dictionary {
    public:
     using kvPair = std::pair< const Key, Value >;
-    using Iter = typename ForwardList< kvPair >::Iter;
-    using ConstIter = typename ForwardList< kvPair >::ConstIter;
-    using ListNode = typename ForwardList< kvPair >::Node;
     using KeyComp = Compare;
 
     struct KVComp {
@@ -27,6 +25,57 @@ namespace odintsov {
         return keyComp(lhs.first, rhs.first);
       }
     };
+
+    struct ConstIter;
+
+    struct Iter: public std::iterator< std::forward_iterator_tag, kvPair > {
+      friend ConstIter;
+
+      Iter():
+        flIter()
+      {}
+
+      Iter& operator++()
+      {
+        flIter++;
+        return *this;
+      }
+
+      Iter operator++(int)
+      {
+        return Iter(++flIter);
+      }
+
+      kvPair& operator*() const
+      {
+        return *flIter;
+      }
+
+      kvPair* operator->() const
+      {
+        return flIter.operator->();
+      }
+
+      bool operator==(const Iter& rhs) const
+      {
+        return flIter == rhs.flIter;
+      }
+
+      bool operator!=(const Iter& rhs) const
+      {
+        return flIter != rhs.flIter;
+      }
+
+     private:
+      typename ForwardList< kvPair >::Iter flIter;
+
+      Iter(const typename ForwardList< kvPair >::Iter& fi)
+      {
+        flIter(fi);
+      }
+    };
+
+    struct ConstIter: public std::iterator< std::forward_iterator_tag, kvPair > {};
 
     Dictionary():
       kvComp_{Compare()}
