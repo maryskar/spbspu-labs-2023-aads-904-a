@@ -10,11 +10,15 @@ int main(int argc, char *argv[])
 {
   if (argc != 1 && argc != 2) {
     std::cerr << "Invalid number of arguments\n";
-    return 1;
+    return 2;
   }
   std::ifstream input;
   if (argc == 2) {
     input.open(argv[1]);
+    if (!input.is_open()) {
+      std::cerr << "Can`t open the file";
+      return 2;
+    }
   }
   std::istream &in = (argc == 2) ? input : std::cin;
   std::string expression = "";
