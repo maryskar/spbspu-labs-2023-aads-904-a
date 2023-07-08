@@ -548,9 +548,8 @@ namespace odintsov {
       if (pos == cend()) {
         return pos;
       }
-      Compare keyComp = keyComp();
       ConstIter next = std::next(pos);
-      while (next != cend() && keyComp(next->first, k)) {
+      while (next != cend() && kvComp_.keyComp(next->first, k)) {
         ++pos;
         ++next;
       }
@@ -577,9 +576,8 @@ namespace odintsov {
       if (pos == cend()) {
         return pos;
       }
-      Compare keyComp = keyComp();
       ConstIter next = std::next(pos);
-      while (next != cend() && !keyComp(k, next->first)) {
+      while (next != cend() && !kvComp_.keyComp(k, next->first)) {
         ++pos;
         ++next;
       }
