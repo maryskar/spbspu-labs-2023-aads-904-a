@@ -16,13 +16,12 @@ int main(int argc, char *argv[])
   if (argc == 2) {
     input.open(argv[1]);
     if (!input.is_open()) {
-      std::cerr << "Can`t open the file";
+      std::cerr << "Can`t open the file\n";
       return 2;
     }
   }
   std::istream &in = (argc == 2) ? input : std::cin;
   std::string expression = "";
-  long long result = 0;
   fesenko::Stack< long long > results;
   while (in) {
     std::getline(in, expression);
@@ -32,17 +31,15 @@ int main(int argc, char *argv[])
     try {
       fesenko::Queue< std::string > infixQueue = fesenko::stringToInfixQueue(expression);
       fesenko::Queue< std::string > postfixQueue = fesenko::infixQueueToPostfixQueue(infixQueue);
-      result = fesenko::calculateInPostfixQueue(postfixQueue);
-      results.push(result);
+      results.push(fesenko::calculateInPostfixQueue(postfixQueue));
     } catch (const std::exception &e) {
       std::cerr << e.what() << "\n";
       return 2;
     }
   }
   while (!results.isEmpty()) {
-    result = results.top();
+    std::cout << results.top();
     results.pop();
-    std::cout << result;
     if (results.isEmpty()) {
       std::cout << "\n";
     } else {
