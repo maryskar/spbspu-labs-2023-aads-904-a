@@ -15,6 +15,7 @@ class ForwardList
     void pushFront(const T& value);
     void clear();
     iterator insert_after(const_iterator pos, const T& value);
+    iterator insert_after( const_iterator pos, T&& value );
     List< T >* head_;
 
 };
@@ -44,10 +45,16 @@ typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterato
 {
   List< T >* temp = new List< T >();
   temp->data_ = value;
-  List< T >* cur = const_cast<List< T >*>(pos.ptr_);
+  List< T >* cur = const_cast< List< T >* >(pos.ptr_);
   temp->next_ = cur->next_;
   cur->next_ = temp;
   return iterator(temp);
+}
+
+template< typename T >
+typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, T&& value)
+{
+  return insert_after(pos, value);
 }
 
 #endif
