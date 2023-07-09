@@ -2,7 +2,6 @@
 #define BINARYSEARCHTREE_H
 
 #include <utility>
-#include <iostream>
 #include "Tree.h"
 #include "RedBlackTree.h"
 
@@ -32,7 +31,7 @@ namespace tarasenko
      ::operator delete(fake_);
    }
 
-   void insert(const T& data);
+   std::pair< root_t*, bool > insert(const T& data);
    void remove(const T& data);
    void leftRotation();
    void rightRotation();
@@ -44,7 +43,7 @@ namespace tarasenko
   private:
    root_t* fake_;
    root_t* root_;
-   root_t* insert(const T& data, root_t* ptree);
+   std::pair< root_t*, root_t* > insert(const T& data, root_t* ptree);
    root_t* findMin(root_t* ptree);
    root_t* find(const T& data, root_t* ptree);
    void remove(const T& data, root_t* ptree);
@@ -54,48 +53,56 @@ namespace tarasenko
   };
 
   template< typename T, typename Compare >
-  details::Tree< T, Compare >* BinarySearchTree< T, Compare >::insert(const T& data, root_t* ptree)
+  std::pair< details::Tree< T, Compare >*, details::Tree< T, Compare >* >
+     BinarySearchTree< T, Compare >::insert(const T& data, root_t* ptree)
   {
+    root_t* inserted = fake_;
     auto comp = ptree->compare_;
     if (comp(data, ptree->data_))
     {
       if (ptree->left_ == fake_)
       {
         ptree->left_ = new root_t(data, fake_, fake_, ptree);
+        inserted = ptree->left_;
       }
       else
       {
-        root_t* leftChild = insert(data, ptree->left_);
-        ptree->left_ = leftChild;
-        leftChild->parent_ = ptree;
+        auto leftChild = insert(data, ptree->left_);
+        ptree->left_ = leftChild.first;
+        leftChild.first->parent_ = ptree;
+        inserted = leftChild.second;
       }
     }
-    else
+    else if (comp(ptree->data_, data))
     {
       if (ptree->right_ == fake_)
       {
         ptree->right_ = new root_t(data, fake_, fake_, ptree);
+        inserted = ptree->right_;
       }
       else
       {
-        root_t* rightChild = insert(data, ptree->right_);
-        ptree->right_ = rightChild;
-        rightChild->parent_ = ptree;
+        auto rightChild = insert(data, ptree->right_);
+        ptree->right_ = rightChild.first;
+        rightChild.first->parent_ = ptree;
+        inserted = rightChild.second;
       }
     }
-    return ptree;
+    return std::make_pair(ptree, inserted);
   }
 
   template< typename T, typename Compare >
-  void BinarySearchTree< T, Compare >::insert(const T& data)
+  std::pair< details::Tree< T, Compare >*, bool > BinarySearchTree< T, Compare >::insert(const T& data)
   {
     if (!root_)
     {
       root_ = new root_t(data, fake_, fake_, fake_);
+      return std::make_pair(root_, true);
     }
     else
     {
-      insert(data, root_);
+      auto inserted = insert(data, root_).second;
+      return inserted != fake_ ? std::make_pair(inserted, true) : std::make_pair(inserted, false);
     }
   }
 
@@ -198,7 +205,7 @@ namespace tarasenko
   template< typename T, typename Compare >
   details::Tree< T, Compare >* BinarySearchTree< T, Compare >::find(const T& data)
   {
-    find(data, root_);
+    return find(data, root_);
   }
 
   template< typename T, typename Compare >
