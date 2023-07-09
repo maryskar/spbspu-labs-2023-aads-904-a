@@ -22,8 +22,8 @@ int main(int argc, char** argv)
       std::cerr << "Can't open file\n";
       return 1;
     }
-    using dict = mashkin::Dictionary< int, std::string >;
-    using dicts = mashkin::Dictionary< std::string, dict >;
+    /*using dict = mashkin::Dictionary< int, std::string >;
+    using dicts = mashkin::Dictionary< std::string, dict >;*/
 
   }
   return 0;
