@@ -20,6 +20,7 @@ public:
   Value &operator[](const Key &key);
   Value &operator[](Key &&key);
   Value &at(const Key &key);
+  Value &at(const Key &key) const;
   iterator before_begin() noexcept;
   iterator before_begin() const noexcept;
   const_iterator cbefore_begin() const noexcept;
@@ -34,6 +35,7 @@ public:
   const_iterator clast() const noexcept;
   bool empty() const noexcept;
   void clear() noexcept;
+  size_t size() const noexcept;
   template< typename P >
   std::pair< iterator, bool > insert(P &&value);
   iterator insert(const_iterator pos, const value_type &value);
@@ -65,18 +67,12 @@ public:
 private:
   Compare comp_;
   Value &insertValue(Key &&key);
-  bool areEqualKeys(const Key &lhs, const Key& rhs);
+  bool areEqualKeys(const Key &lhs, const Key &rhs);
 };
 template< typename Key, typename Value, typename Compare >
-Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(
-  Dictionary< Key, Value, Compare > &&other) noexcept
+size_t Dictionary< Key, Value, Compare >::size() const noexcept
 {
-  if (this != &other)
-  {
-    data_ = std::move(other.data_);
-    comp_ = std::move(other.comp_);
-  }
-  return *this;
+  return data_.size_;
 }
 template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare >::Dictionary(std::initializer_list< value_type > other):
@@ -415,6 +411,11 @@ Value &Dictionary< Key, Value, Compare >::at(const Key &key)
   return it->second;
 }
 template< typename Key, typename Value, typename Compare >
+Value &Dictionary< Key, Value, Compare >::at(const Key &key) const
+{
+  return at(key);
+}
+template< typename Key, typename Value, typename Compare >
 Value &Dictionary< Key, Value, Compare >::insertValue(Key &&key)
 {
   try
@@ -423,8 +424,9 @@ Value &Dictionary< Key, Value, Compare >::insertValue(Key &&key)
   }
   catch (const std::out_of_range &)
   {
-    value_type newValue(std::forward< Key >(key), Value{});
-    std::pair< iterator, bool > insertionResult = insert(std::move(newValue));
+    value_type newValue(std::forward< Key >(key), Value());
+    std::pair< iterator, bool > insertionResult =
+      data_.insert_after(data_.beforeBegin(), std::move(newValue));
     return insertionResult.first->second;
   }
 }
@@ -447,10 +449,15 @@ Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(
   return *this;
 }
 template< typename Key, typename Value, typename Compare >
-Dictionary< Key, Value, Compare >::Dictionary(Dictionary< Key, Value, Compare > &&other) noexcept:
-  data_(std::move(other.data_)),
-  comp_(std::move(other.comp_))
+Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(
+  Dictionary< Key, Value, Compare > &&other) noexcept
 {
+  if (this != &other)
+  {
+    data_ = std::move(other.data_);
+    comp_ = std::move(other.comp_);
+  }
+  return *this;
 }
 template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(
@@ -472,6 +479,12 @@ template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare >::Dictionary(const Dictionary< Key, Value, Compare > &other):
   data_(other.data_),
   comp_(other.comp_)
+{
+}
+template< typename Key, typename Value, typename Compare >
+Dictionary< Key, Value, Compare >::Dictionary(Dictionary< Key, Value, Compare > &&other) noexcept:
+  data_(std::move(other.data_)),
+  comp_(std::move(other.comp_))
 {
 }
 #endif
