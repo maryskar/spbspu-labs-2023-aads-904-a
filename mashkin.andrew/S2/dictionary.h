@@ -12,6 +12,8 @@ namespace mashkin
   class forwardConstIterator;
   template< typename T >
   class forwardIterator;
+  template< typename T >
+  class ForwardList;
 
   template< class Key, class Value, class Compare = std::less< Key > >
   class Dictionary
