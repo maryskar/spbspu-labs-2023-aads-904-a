@@ -1,5 +1,6 @@
 #ifndef DICT_H
 #define DICT_H
+#include <functional>
 #include "common/listnode.h"
 #include "forwardlist.h"
 template< typename Key, typename Value, typename Compare = std::less< Key >>
@@ -68,7 +69,55 @@ private:
   Compare comp_;
   Value &insertValue(const Key &key);
   bool areEqualKeys(const Key &lhs, const Key &rhs);
+  std::pair< iterator, iterator > search(iterator start, const Key &key, std::function< bool(Key, Key) > function);
+  iterator push(const value_type &value);
 };
+template< typename Key, typename Value, typename Compare >
+typename Dictionary< Key, Value, Compare >::iterator
+Dictionary< Key, Value, Compare >::push(const Dictionary::value_type &value)
+{
+  auto it = data_.begin();
+  auto prev = data_.before_begin();
+  for (; it != data_.end(); it++)
+  {
+    if (comp_(value.first, (*it).first))
+    {
+      break;
+    }
+    prev = it;
+  }
+  if (prev != data_.before_begin() && areEqualKeys(prev->first, value.first))
+  {
+    (*prev).second = value.second;
+  }
+  else
+  {
+    data_.insert_after(prev, value);
+  }
+  return iterator(prev);
+}
+template< typename Key, typename Value, typename Compare >
+std::pair<
+  typename ForwardList< std::pair< const Key, Value > >::iterator,
+  typename ForwardList< std::pair< const Key, Value > >::iterator
+>
+Dictionary< Key, Value, Compare >::search(Dictionary::iterator start, const Key &key,
+                                          std::function< bool(Key, Key) > function)
+{
+  {
+    auto prev = start;
+    start++;
+    auto cur = start;
+    for (; cur != end(); prev = cur, cur++)
+    {
+      if (function(cur->first, key))
+      {
+        return {prev, cur};
+      }
+    }
+    return {prev, cur};
+  }
+}
 template< typename Key, typename Value, typename Compare >
 size_t Dictionary< Key, Value, Compare >::size() const noexcept
 {
@@ -85,39 +134,6 @@ typename Dictionary< Key, Value, Compare >::iterator
 Dictionary< Key, Value, Compare >::erase_after(Dictionary::const_iterator first, Dictionary::const_iterator last)
 {
   return data_.erase_after(first, last);
-  /*if (first == last || first == data_.cend())
-  {
-    return iterator(data_.end());
-  }
-  iterator it = data_.begin();
-  while (it != data_.end() && it != first)
-  {
-    ++it;
-  }
-  if (it == data_.end())
-  {
-    return iterator(data_.end());
-  }
-  iterator eraseStart = ++it;
-  while (it != data_.end() && it != last)
-  {
-    ++it;
-  }
-  if (eraseStart != it)
-  {
-    iterator eraseEnd = it;
-    ++eraseEnd;
-    details::ListNode< value_type > *current = eraseStart.head_->next;
-    details::ListNode< value_type > *end = eraseEnd.head_->next;
-    eraseStart.head_->next = end;
-    while (current != end)
-    {
-      details::ListNode< value_type > *next = current->next;
-      delete current;
-      current = next;
-    }
-  }
-  return iterator(it.head_);*/
 }
 template< typename Key, typename Value, typename Compare >
 void Dictionary< Key, Value, Compare >::swap(Dictionary< Key, Value, Compare > &other)
@@ -146,14 +162,6 @@ typename Dictionary< Key, Value, Compare >::iterator
 Dictionary< Key, Value, Compare >::erase_after(Dictionary::const_iterator pos)
 {
   return data_.erase_after(pos);
-  /*if (pos == cend() || ++pos == cend())
-  {
-    return end();
-  }
-  const_iterator eraseIt = pos;
-  const_iterator nextIt = ++pos;
-  data_.erase_after(eraseIt.getIterator());
-  return iterator(nextIt.getIterator());*/
 }
 template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::find(const Key &key)
@@ -209,30 +217,29 @@ Dictionary< Key, Value, Compare >::emplace(Dictionary::const_iterator pos, Args 
 template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::lower_bound(const Key &key)
 {
-  iterator it = data_.begin();
-  while (it != data_.end() && comp_(it->first, key))
-  {
-    ++it;
-  }
-  return it;
+  auto res = search(data_.before_begin(), key, !comp_);
+  return res.second;
 }
 template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::const_iterator
 Dictionary< Key, Value, Compare >::lower_bound(const Key &key) const
 {
-  const_iterator it = data_.cbegin();
-  while (it != data_.cend() && comp_(it->first, key))
-  {
-    ++it;
-  }
-  return it;
+  return lower_bound(key);
 }
 template< typename Key, typename Value, typename Compare >
 template< typename... Args >
 std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool >
 Dictionary< Key, Value, Compare >::emplace(Args &&... args)
 {
-  return insert(value_type(std::forward< Args >(args)...));
+  try
+  {
+    auto iter = push(value_type(std::forward<Args>(args)...));
+    return {iter, true};
+  }
+  catch (...)
+  {
+    return {begin(), false};
+  }
 }
 template< typename Key, typename Value, typename Compare >
 void Dictionary< Key, Value, Compare >::insert(std::initializer_list< value_type > initializerList)
@@ -310,7 +317,7 @@ template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::const_iterator
 Dictionary< Key, Value, Compare >::upper_bound(const Key &key) const
 {
-  return const_cast<Dictionary *>(this)->upper_bound(key);
+  return upper_bound(key);
 }
 template< typename Key, typename Value, typename Compare >
 Compare Dictionary< Key, Value, Compare >::key_comp() const
@@ -358,7 +365,7 @@ typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Com
 template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::cend() const noexcept
 {
-  return end();
+  return data_.cend();
 }
 template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::end() const noexcept
