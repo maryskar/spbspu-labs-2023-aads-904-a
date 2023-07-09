@@ -66,7 +66,7 @@ public:
   ForwardList< value_type > data_;
 private:
   Compare comp_;
-  Value &insertValue(Key &&key);
+  Value &insertValue(const Key &key);
   bool areEqualKeys(const Key &lhs, const Key &rhs);
 };
 template< typename Key, typename Value, typename Compare >
@@ -84,7 +84,8 @@ template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::iterator
 Dictionary< Key, Value, Compare >::erase_after(Dictionary::const_iterator first, Dictionary::const_iterator last)
 {
-  if (first == last || first == data_.cend())
+  return data_.erase_after(first, last);
+  /*if (first == last || first == data_.cend())
   {
     return iterator(data_.end());
   }
@@ -116,7 +117,7 @@ Dictionary< Key, Value, Compare >::erase_after(Dictionary::const_iterator first,
       current = next;
     }
   }
-  return iterator(it.head_);
+  return iterator(it.head_);*/
 }
 template< typename Key, typename Value, typename Compare >
 void Dictionary< Key, Value, Compare >::swap(Dictionary< Key, Value, Compare > &other)
@@ -132,7 +133,7 @@ size_t Dictionary< Key, Value, Compare >::count(const Key &key) const
   const_iterator endIt = data_.cend();
   while (it != endIt)
   {
-    if (!comp_(key, it->first) && !comp_(it->first, key))
+    if (areEqualKeys(key, it->first()))
     {
       ++count;
     }
@@ -144,14 +145,15 @@ template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::iterator
 Dictionary< Key, Value, Compare >::erase_after(Dictionary::const_iterator pos)
 {
-  if (pos == cend() || ++pos == cend())
+  return data_.erase_after(pos);
+  /*if (pos == cend() || ++pos == cend())
   {
     return end();
   }
   const_iterator eraseIt = pos;
   const_iterator nextIt = ++pos;
   data_.erase_after(eraseIt.getIterator());
-  return iterator(nextIt.getIterator());
+  return iterator(nextIt.getIterator());*/
 }
 template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::find(const Key &key)
@@ -416,7 +418,7 @@ Value &Dictionary< Key, Value, Compare >::at(const Key &key) const
   return at(key);
 }
 template< typename Key, typename Value, typename Compare >
-Value &Dictionary< Key, Value, Compare >::insertValue(Key &&key)
+Value &Dictionary< Key, Value, Compare >::insertValue(const Key &key)
 {
   try
   {
@@ -424,10 +426,9 @@ Value &Dictionary< Key, Value, Compare >::insertValue(Key &&key)
   }
   catch (const std::out_of_range &)
   {
-    value_type newValue(std::forward< Key >(key), Value());
-    std::pair< iterator, bool > insertionResult =
-      data_.insert_after(data_.beforeBegin(), std::move(newValue));
-    return insertionResult.first->second;
+    value_type newValue(key, Value());
+    auto insertionResult = data_.emplace_after(data_.cbefore_begin(), std::move(newValue));
+    return insertionResult->second;
   }
 }
 template< typename Key, typename Value, typename Compare >
@@ -438,7 +439,7 @@ Value &Dictionary< Key, Value, Compare >::operator[](const Key &key)
 template< typename Key, typename Value, typename Compare >
 Value &Dictionary< Key, Value, Compare >::operator[](Key &&key)
 {
-  return insertValue(std::move(key));
+  return insertValue(std::forward< Key >(key));
 }
 template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(
