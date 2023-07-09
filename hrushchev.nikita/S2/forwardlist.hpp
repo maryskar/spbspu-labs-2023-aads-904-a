@@ -105,4 +105,15 @@ typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterato
   return temp;
 }
 
+template< typename T >
+template< typename... Args >
+typename ForwardList< T >::iterator ForwardList< T >::emplace_after(const_iterator pos, Args&&... args)
+{
+  List< T >* temp = new List< T >(std::forward< Args >(args)...);
+  List< T >* cur = const_cast< List< T >* >(pos.ptr_);
+  temp->next_ = cur->next_;
+  cur->next_ = temp;
+  return iterator(temp);
+}
+
 #endif
