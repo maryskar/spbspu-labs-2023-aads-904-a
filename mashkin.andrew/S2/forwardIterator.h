@@ -2,6 +2,7 @@
 #define ITERATOR_H
 #include <cassert>
 #include <memory>
+#include "dictionary.h"
 #include "forwardConstIterator.h"
 #include "nodeList.h"
 
@@ -31,6 +32,8 @@ namespace mashkin
     friend class ForwardList;
     template< typename R >
     friend class forwardConstIterator;
+    template< typename K, typename V, typename C >
+    friend class Dictionary;
     NodeList< T >* node;
   };
 }

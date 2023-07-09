@@ -74,7 +74,7 @@ namespace mashkin
     fake_(static_cast< NodeList< T >* >(::operator new(sizeof(NodeList< T >)))),
     tail_(nullptr)
   {
-    fake_->next = fake_;
+    fake_->next = tail_;
   }
 
   template< class T >
@@ -88,7 +88,6 @@ namespace mashkin
   ForwardList< T >::ForwardList(const ForwardList< T >& lhs):
     ForwardList()
   {
-    fake_->next = tail_;
     insert_after(before_begin(), lhs.cbegin(), lhs.cend());
   }
 
@@ -131,7 +130,7 @@ namespace mashkin
   template< class T >
   bool ForwardList< T >::empty() const noexcept
   {
-    return fake_->next == fake_;
+    return fake_->next == tail_;
   }
 
   template< class T >
@@ -217,10 +216,6 @@ namespace mashkin
   {
     if (fake_->next == tail_)
     {
-      fake_->next = fake_;
-    }
-    if (fake_->next == fake_)
-    {
       throw std::out_of_range("You got the end of list");
     }
     auto toDel = fake_->next;
@@ -254,13 +249,9 @@ namespace mashkin
   template< class T >
   void ForwardList< T >::clear() noexcept
   {
-    while (empty())
+    while (!empty())
     {
       pop_front();
-      if (!fake_->next)
-      {
-        fake_->next = fake_;
-      }
     }
   }
 

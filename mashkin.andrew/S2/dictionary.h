@@ -8,6 +8,11 @@
 
 namespace mashkin
 {
+  template< typename T >
+  class forwardConstIterator;
+  template< typename T >
+  class forwardIterator;
+
   template< class Key, class Value, class Compare = std::less< Key > >
   class Dictionary
   {
@@ -86,36 +91,43 @@ namespace mashkin
   template< class K, class V, class C >
   typename Dictionary< K, V, C >::iter Dictionary< K, V, C >::erase(const_iter first, const_iter last)
   {
-    auto var = pair_.erase_after(first, last);
-    if (var != end())
+    while (first != last)
     {
-      size_--;
+      erase(first++);
     }
-    return var;
+    return iter(last.node);
   }
 
   template< class K, class V, class C >
   typename Dictionary< K, V, C >::iter Dictionary< K, V, C >::erase(iter pos)
   {
-    return erase(pos);
+    return erase(const_iter(pos));
   }
 
   template< class K, class V, class C >
   typename Dictionary< K, V, C >::iter Dictionary< K, V, C >::erase(const_iter pos)
   {
-    auto var = pair_.erase_after(pos);
-    if (var != end())
+    if (find(pos->first) == end())
     {
-      size_--;
+      return end();
     }
-    return var;
+    auto toDel = cbegin();
+    for (auto i = pair_.before_begin(); i != end(); i++)
+    {
+      if (toDel == pos)
+      {
+        --size_;
+        return pair_.erase_after(i);
+      }
+      toDel++;
+    }
   }
 
   template< class K, class V, class C >
   typename Dictionary< K, V, C >::val& Dictionary< K, V, C >::operator[](const key_type& k)
   {
     auto i = cbegin();
-    for (; i < cend(); i++)
+    for (; i != cend(); i++)
     {
       if (i->first == k)
       {
@@ -124,21 +136,16 @@ namespace mashkin
     }
     if (i == cend())
     {
-      insert(std::pair< K, V >(k, V()));
+      auto newPair = std::pair< K, V >(k, V());
+      insert(newPair);
+      return find(newPair.first)->second;
     }
-  }
-
-  template< class K, class V, class C >
-  typename Dictionary< K, V, C >::iter Dictionary< K, V, C >::find(const key_type& key)
-  {
-    const_iter var = find(key);
-    return iter(*var);
   }
 
   template< class K, class V, class C >
   typename Dictionary< K, V, C >::const_iter Dictionary< K, V, C >::find(const key_type& key) const
   {
-    for (auto i = cbegin(); i < cend(); i++)
+    for (auto i = cbegin(); i != cend(); i++)
     {
       if (i->first == key)
       {
@@ -146,6 +153,13 @@ namespace mashkin
       }
     }
     return cend();
+  }
+
+  template< class K, class V, class C >
+  typename Dictionary< K, V, C >::iter Dictionary< K, V, C >::find(const key_type& key)
+  {
+    auto var = static_cast< const dict& >(*this).find(key);
+    return iter(var.node);
   }
 
   template< class K, class V, class C >
@@ -198,44 +212,47 @@ namespace mashkin
   template< class InputIt >
   void Dictionary< K, V, C >::insert(InputIt first, InputIt last)
   {
-    for (auto value = first; value < last; value++)
+    for (auto value = first; value != last; value++)
     {
       insert(*value);
     }
   }
 
   template< class K, class V, class C >
-  typename Dictionary< K, V, C >::iter Dictionary< K, V, C >::insert(const Dictionary::value_type& value)
+  typename Dictionary< K, V, C >::iter Dictionary< K, V, C >::insert(const value_type& value)
   {
-    auto next = begin();
-    if (!comp_(value.first, next->first))
+    if (begin() == end())
     {
-      pair_.insert_after(pair_.before_begin(), value);
+      pair_.push_front(value);
       size_++;
+      return begin();
     }
-    next++;
-    for (auto i = begin(); i < end(); i++)
+    auto next = begin();
     {
-      if (!comp_(value.first, next->first))
+      for (auto i = pair_.before_begin(); i != end(); i++)
       {
-        pair_.insert_after(i, value);
-        size_++;
+        if (next == end())
+        {
+          pair_.insert_after(i, value);
+          size_++;
+          break;
+        }
+        if (comp_(value.first, next->first))
+        {
+          pair_.insert_after(i, value);
+          size_++;
+          break;
+        }
+        next++;
       }
-      if (next == end())
-      {
-        pair_.push_front(value);
-        size_++;
-        break;
-      }
-      next++;
+      return next;
     }
-    return next;
   }
 
   template< class K, class V, class C >
-  typename Dictionary< K, V, C >::iter Dictionary< K, V, C >::insert(Dictionary::value_type&& value)
+  typename Dictionary< K, V, C >::iter Dictionary< K, V, C >::insert(value_type&& value)
   {
-    return insert(std::move(value));
+    return insert(value);
   }
 
   template< class K, class V, class C >
@@ -247,14 +264,14 @@ namespace mashkin
   template< class K, class V, class C >
   typename Dictionary< K, V, C >::val& Dictionary< K, V, C >::at(const key_type& k)
   {
-    return at(k);
+    return const_cast< val& >((static_cast< const dict& >(*this)).at(k));
   }
 
   template< class K, class V, class C >
   const typename Dictionary< K, V, C >::val& Dictionary< K, V, C >::at(const key_type& k) const
   {
     auto i = cbegin();
-    for (; i < cend(); i++)
+    for (; i != cend(); i++)
     {
       if (i->first == k)
       {
@@ -300,14 +317,15 @@ namespace mashkin
   template< class K, class V, class C >
   Dictionary< K, V, C >& Dictionary< K, V, C >::operator=(dict&& rhs) noexcept
   {
-    *this = std::move(rhs);
+    *this = rhs;
     return *this;
   }
 
   template< class K, class V, class C >
   Dictionary< K, V, C >& Dictionary< K, V, C >::operator=(const dict& rhs)
   {
-    pair_(this->pair_.insert_after(this->pair_.before_begin(), rhs.pair_.cbegin), rhs.pair_.cend());
+    clear();
+    pair_.insert_after(this->pair_.before_begin(), rhs.pair_.cbegin(), rhs.pair_.cend());
     comp_ = rhs.comp_;
     size_ = rhs.size_;
     return *this;

@@ -2,6 +2,7 @@
 #define S2_FORWARDCONSTITERATOR_H
 #include <cassert>
 #include <memory>
+#include "dictionary.h"
 #include "forwardIterator.h"
 #include "forwardList.h"
 #include "nodeList.h"
@@ -31,6 +32,8 @@ namespace mashkin
   private:
     template< typename U >
     friend class ForwardList;
+    template< typename K, typename V, typename C >
+    friend class Dictionary;
     NodeList< T >* node;
   };
 }
