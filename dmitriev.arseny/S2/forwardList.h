@@ -19,53 +19,55 @@ public:
   void pop_front();
 
 private:
-  Node< T >* head;
+  Node< T >* fakeNode;
+//  size_t size;
 
 };
 
 template< typename T >
 ForwardList< T >::ForwardList():
-  head(nullptr)
+  fakeNode(new Node< T >{T(), nullptr})
 {}
 
 template< typename T >
 ForwardList< T >::~ForwardList()
 {
-  clear(head);
+  clear(fakeNode->next);
 }
 
 template< typename T >
 void ForwardList< T >::push_front(const T& data)
 {
-  Node< T >* newHead = new Node< T >{data, head};
-  head = newHead;
+  Node< T >* newHead = new Node< T >{data, fakeNode->next};
+  fakeNode->next = newHead;
 }
 
 template< typename T >
 void ForwardList< T >::push_front(T&& data)
 {
-  Node< T >* newHead = new Node< T >{std::move(data), head};
-  head = newHead;
+  Node< T >* newHead = new Node< T >{std::move(data), fakeNode->next};
+  fakeNode->next = newHead;
 }
 
 template< typename T >
 const T& ForwardList< T >::front() const
 {
-  return head->data;
+  return fakeNode->next->data;
 }
 
 template< typename T >
 T& ForwardList< T >::front()
 {
-  return head->data;
+  return fakeNode->next->data;
 }
 
 template< typename T >
 void ForwardList< T >::pop_front()
 {
-  Node< T >* newHead = head->next;
-  delete head;
-  head = newHead;
+  Node< T >* newHead = fakeNode->next->next;
+  delete fakeNode->next;
+
+  fakeNode->next = newHead;
 }
 
 #endif
