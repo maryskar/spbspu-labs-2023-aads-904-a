@@ -61,6 +61,7 @@ mashkin::forwardConstIterator< T >& mashkin::forwardConstIterator< T >::operator
 {
   assert(node != nullptr);
   node = node->next;
+  return *this;
 }
 
 template< class T >

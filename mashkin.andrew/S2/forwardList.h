@@ -203,6 +203,7 @@ namespace mashkin
       var = insert_after(var, *first);
       first++;
     }
+    return var;
   }
 
   template< class T >
