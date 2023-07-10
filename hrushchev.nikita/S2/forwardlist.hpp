@@ -15,6 +15,8 @@ class ForwardList
     using iterator = ForwardListIterator< T >;
     using const_iterator = ForwardListConstIterator< T >;
     iterator begin() noexcept;
+    const_iterator begin() const noexcept;
+    const_iterator cbegin() const noexcept;
     bool empty();
     size_t max_size() const noexcept;
     void pushFront(const T& value);
@@ -29,19 +31,31 @@ class ForwardList
     List< T >* head_;
 };
 
-template < typename T >
+template< typename T >
 typename ForwardList< T >::iterator ForwardList< T >::begin() noexcept
 {
   return iterator(head_);
 }
 
-template < typename T >
+template< typename T >
+typename ForwardList< T >::const_iterator ForwardList< T >::begin() const noexcept
+{
+  return const_iterator(head_);
+}
+
+template< typename T >
+typename ForwardList< T >::const_iterator ForwardList< T >::cbegin() const noexcept
+{
+  return const_iterator(head_);
+}
+
+template< typename T >
 bool ForwardList< T >::empty()
 {
   return head_ == nullptr;
 }
 
-template < typename T >
+template< typename T >
 size_t ForwardList< T >::max_size() const noexcept
 {
   size_t size = 0;
