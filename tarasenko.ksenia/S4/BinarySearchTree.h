@@ -3,6 +3,8 @@
 
 #include <utility>
 #include "Tree.h"
+#include "bidirect_iter.h"
+#include "const_bidirect_iter.h"
 #include "RedBlackTree.h"
 
 namespace tarasenko
@@ -12,12 +14,16 @@ namespace tarasenko
   {
    using BSTree = BinarySearchTree< T, Compare >;
    using root_t = details::Tree< T, Compare >;
+   using iterator = BidirectionalIterator< T, Compare >;
+   using const_iterator = ConstBidirectionalIterator< T, Compare >;
   public:
    friend class RedBlackTree< T, Compare >;
 
    BinarySearchTree():
      fake_(static_cast< root_t* >(::operator new(sizeof(root_t)))),
-     root_(nullptr)
+     root_(nullptr),
+     begin_(nullptr),
+     end_(nullptr)
    {
      fake_->left_ = fake_;
      fake_->right_ = fake_;
@@ -40,9 +46,40 @@ namespace tarasenko
    std::string SubTreeAsString();               //
    std::string SubTreeAsString(root_t* ptree); //
 
+   friend class BidirectionalIterator< T, Compare >;
+   friend class ConstBidirectionalIterator< T, Compare >;
+
+   iterator beforeBegin() const
+   {
+     return iterator(fake_, begin_->left_);
+   }
+   iterator begin() const
+   {
+     return iterator(fake_, begin_);
+   }
+   iterator end() const
+   {
+     return iterator(fake_, end_->right_);
+   }
+
+   const_iterator cbeforeBegin() const
+   {
+     return iterator(fake_, begin_->left_);
+   }
+   const_iterator cbegin() const
+   {
+     return iterator(fake_, begin_);
+   }
+   const_iterator cend() const
+   {
+     return iterator(fake_, end_->right_);
+   }
+
   private:
    root_t* fake_;
    root_t* root_;
+   root_t* begin_;
+   root_t* end_;
    std::pair< root_t*, root_t* > insert(const T& data, root_t* ptree);
    root_t* findMin(root_t* ptree);
    root_t* find(const T& data, root_t* ptree);
@@ -97,11 +134,27 @@ namespace tarasenko
     if (!root_)
     {
       root_ = new root_t(data, fake_, fake_, fake_);
+      root_->parent_->right_ = root_;
+      root_->parent_->left_ = root_;
+
+      begin_ = root_;
+      end_ = root_;
       return std::make_pair(root_, true);
     }
     else
     {
       auto inserted = insert(data, root_).second;
+      if (inserted != fake_)
+      {
+        if (data < begin_->data_)
+        {
+          begin_ = inserted;
+        }
+        if (end_->data_ < data)
+        {
+          end_ = inserted;
+        }
+      }
       return inserted != fake_ ? std::make_pair(inserted, true) : std::make_pair(inserted, false);
     }
   }
