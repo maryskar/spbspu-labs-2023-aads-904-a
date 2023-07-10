@@ -2,6 +2,8 @@
 #define FORWARDLIST_HPP
 
 #include <cstddef>
+#include <utility>
+
 #include <list.hpp>
 #include "forwardlistiterator.hpp"
 #include "forwardlistconstiterator.hpp"
@@ -12,6 +14,8 @@ class ForwardList
   public:
     using iterator = ForwardListIterator< T >;
     using const_iterator = ForwardListConstIterator< T >;
+    iterator begin() noexcept;
+    bool empty();
     size_t max_size() const noexcept;
     void pushFront(const T& value);
     void pushFront(T&& value);
@@ -24,6 +28,12 @@ class ForwardList
     iterator emplace_after(const_iterator pos, Args&&... args);
     List< T >* head_;
 };
+
+template < typename T >
+bool ForwardList< T >::empty()
+{
+  return head_ == nullptr;
+}
 
 template < typename T >
 size_t ForwardList< T >::max_size() const noexcept
@@ -109,7 +119,7 @@ template< typename T >
 template< typename... Args >
 typename ForwardList< T >::iterator ForwardList< T >::emplace_after(const_iterator pos, Args&&... args)
 {
-  List< T >* temp = new List< T >(std::forward< Args >(args)...);
+  List< T >* temp = new List< T >(std::forward<Args>(args)...);
   List< T >* cur = const_cast< List< T >* >(pos.ptr_);
   temp->next_ = cur->next_;
   cur->next_ = temp;
