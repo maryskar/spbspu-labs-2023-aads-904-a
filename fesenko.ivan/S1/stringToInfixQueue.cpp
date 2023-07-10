@@ -10,8 +10,10 @@ fesenko::Queue< std::string > fesenko::stringToInfixQueue(std::string s)
       element += s[i];
       i++;
     }
-    queue.push(element);
-    element = "";
+    if (!element.empty()) {
+      queue.push(element);
+      element = "";
+    }
     i++;
   }
   return queue;
