@@ -30,6 +30,12 @@ class ForwardList
 };
 
 template < typename T >
+typename ForwardList< T >::iterator ForwardList< T >::begin() noexcept
+{
+  return iterator(head_);
+}
+
+template < typename T >
 bool ForwardList< T >::empty()
 {
   return head_ == nullptr;
