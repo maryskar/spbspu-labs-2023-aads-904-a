@@ -2,7 +2,7 @@
 #include <iostream>
 #include <iterator>
 #include <string>
-#include <dictionary.h>
+#include "dictionary.h"
 
 namespace mashkin
 {
