@@ -51,7 +51,7 @@ T &fesenko::Queue< T >::front()
   if (isEmpty()) {
     throw std::out_of_range("Queue is empty");
   }
-  return (*head_).data;
+  return head_->data;
 }
 
 template< typename T >

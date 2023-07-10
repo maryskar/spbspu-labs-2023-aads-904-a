@@ -43,7 +43,7 @@ T &fesenko::Stack< T >::top()
   if (isEmpty()) {
     throw std::out_of_range("Stack is empty");
   }
-  return (*head_).data;
+  return head_->data;
 }
 
 template< typename T >
