@@ -17,6 +17,9 @@ class ForwardList
     iterator begin() noexcept;
     const_iterator begin() const noexcept;
     const_iterator cbegin() const noexcept;
+    iterator end() noexcept;
+    const_iterator end() const noexcept;
+    const_iterator cend() const noexcept;
     bool empty();
     size_t max_size() const noexcept;
     void pushFront(const T& value);
@@ -40,13 +43,30 @@ typename ForwardList< T >::iterator ForwardList< T >::begin() noexcept
 template< typename T >
 typename ForwardList< T >::const_iterator ForwardList< T >::begin() const noexcept
 {
-  return const_iterator(head_);
+  return cbegin();
 }
 
 template< typename T >
 typename ForwardList< T >::const_iterator ForwardList< T >::cbegin() const noexcept
 {
   return const_iterator(head_);
+}
+template< typename T >
+typename ForwardList< T >::iterator ForwardList< T >::end() noexcept
+{
+  return iterator(nullptr);
+}
+
+template< typename T >
+typename ForwardList< T >::const_iterator ForwardList< T >::end() const noexcept
+{
+  return cend();
+}
+
+template< typename T >
+typename ForwardList< T >::const_iterator ForwardList< T >::cend() const noexcept
+{
+  return const_iterator(nullptr); 
 }
 
 template< typename T >
@@ -124,7 +144,7 @@ typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterato
 }
 
 template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, iterator first, iterator last )
+typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, iterator first, iterator last)
 {
   iterator temp;
   while (first != last)
