@@ -31,6 +31,8 @@ class ForwardList
     iterator insert_after(const_iterator pos, iterator first, iterator last );
     template< typename... Args >
     iterator emplace_after(const_iterator pos, Args&&... args);
+    iterator erase_after(const_iterator pos);
+    iterator erase_after(const_iterator first, const_iterator last);
     List< T >* head_;
 };
 
@@ -164,6 +166,32 @@ typename ForwardList< T >::iterator ForwardList< T >::emplace_after(const_iterat
   temp->next_ = cur->next_;
   cur->next_ = temp;
   return iterator(temp);
+}
+
+template< typename T >
+typename ForwardList< T >::iterator ForwardList< T >::erase_after(const_iterator pos)
+{
+  if (!(pos.ptr_ || pos.ptr_->next_))
+  {
+    return end();
+  }
+
+  List< T >* cur = const_cast< List< T >* >(pos.ptr_);
+  List< T >* temp = cur;
+  temp = temp->next_->next_;
+  delete cur->next_;
+  cur->next_ = temp;
+  return iterator(cur);
+}
+
+template< typename T >
+typename ForwardList< T >::iterator ForwardList< T >::erase_after(const_iterator first, const_iterator last)
+{
+  while ((first.ptr_->next_ != last.ptr_) && first.ptr_->next_)
+  {
+    erase_after(first);
+  }
+  return iterator(const_cast< List< T >* >(last.ptr_));
 }
 
 #endif
