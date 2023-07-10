@@ -33,16 +33,17 @@ namespace tarasenko
 
    ~BinarySearchTree()
    {
-     deleteTree(root_);
+     clear();
      ::operator delete(fake_);
    }
 
-   std::pair< root_t*, bool > insert(const T& data);
+   std::pair< iterator, bool > insert(const T& data);
    void remove(const T& data);
+   const_iterator find(const T& data);
+   void clear();
    void leftRotation();
    void rightRotation();
 
-   root_t* find(const T& data);
    std::string SubTreeAsString();               //
    std::string SubTreeAsString(root_t* ptree); //
 
@@ -51,7 +52,7 @@ namespace tarasenko
 
    iterator beforeBegin() const
    {
-     return iterator(fake_, begin_->left_);
+     return begin_ ? iterator(fake_, begin_->left_) : iterator(fake_, begin_);
    }
    iterator begin() const
    {
@@ -59,12 +60,12 @@ namespace tarasenko
    }
    iterator end() const
    {
-     return iterator(fake_, end_->right_);
+     return end_ ? iterator(fake_, end_->right_) : iterator(fake_, end_);
    }
 
    const_iterator cbeforeBegin() const
    {
-     return iterator(fake_, begin_->left_);
+     return begin_ ? iterator(fake_, begin_->left_) : iterator(fake_, begin_);
    }
    const_iterator cbegin() const
    {
@@ -72,7 +73,7 @@ namespace tarasenko
    }
    const_iterator cend() const
    {
-     return iterator(fake_, end_->right_);
+     return end_ ? iterator(fake_, end_->right_) : iterator(fake_, end_);
    }
 
   private:
@@ -80,70 +81,70 @@ namespace tarasenko
    root_t* root_;
    root_t* begin_;
    root_t* end_;
-   std::pair< root_t*, root_t* > insert(const T& data, root_t* ptree);
-   root_t* findMin(root_t* ptree);
-   root_t* find(const T& data, root_t* ptree);
-   void remove(const T& data, root_t* ptree);
+   std::pair< iterator, iterator > insert(const T& data, iterator ptree);
+   const_iterator findMin(const_iterator ptree);
+   const_iterator find(const T& data, const_iterator ptree);
+   void remove(const T& data, iterator ptree);
    void deleteTree(root_t* ptree);
    void leftRotation(root_t* ptree);
    void rightRotation(root_t* ptree);
   };
 
   template< typename T, typename Compare >
-  std::pair< details::Tree< T, Compare >*, details::Tree< T, Compare >* >
-     BinarySearchTree< T, Compare >::insert(const T& data, root_t* ptree)
+  std::pair< BidirectionalIterator< T, Compare >, BidirectionalIterator< T, Compare > >
+     BinarySearchTree< T, Compare >::insert(const T& data, iterator it)
   {
-    root_t* inserted = fake_;
-    auto comp = ptree->compare_;
-    if (comp(data, ptree->data_))
+    auto inserted = end();
+    auto node = it.node_;
+    auto comp = node->compare_;
+    if (comp(data, *it))
     {
-      if (ptree->left_ == fake_)
+      if (node->left_ == fake_)
       {
-        ptree->left_ = new root_t(data, fake_, fake_, ptree);
-        inserted = ptree->left_;
+        node->left_ = new root_t(data, fake_, fake_, node);
+        inserted = iterator(fake_, node->left_);
       }
       else
       {
-        auto leftChild = insert(data, ptree->left_);
-        ptree->left_ = leftChild.first;
-        leftChild.first->parent_ = ptree;
-        inserted = leftChild.second;
+        auto res = insert(data, iterator(fake_, node->left_));
+        node->left_ = res.first.node_;
+        res.first.node_->parent_ = node;
+        inserted = res.second;
       }
     }
-    else if (comp(ptree->data_, data))
+    else if (comp(*it, data))
     {
-      if (ptree->right_ == fake_)
+      if (node->right_ == fake_)
       {
-        ptree->right_ = new root_t(data, fake_, fake_, ptree);
-        inserted = ptree->right_;
+        node->right_ = new root_t(data, fake_, fake_, node);
+        inserted = iterator(fake_, node->right_);
       }
       else
       {
-        auto rightChild = insert(data, ptree->right_);
-        ptree->right_ = rightChild.first;
-        rightChild.first->parent_ = ptree;
-        inserted = rightChild.second;
+        auto res = insert(data, iterator(fake_, node->right_));
+        node->right_ = res.first.node_;
+        res.first.node_->parent_ = node;
+        inserted = res.second;
       }
     }
-    return std::make_pair(ptree, inserted);
+    return std::make_pair(it, inserted);
   }
 
   template< typename T, typename Compare >
-  std::pair< details::Tree< T, Compare >*, bool > BinarySearchTree< T, Compare >::insert(const T& data)
+  std::pair< BidirectionalIterator< T, Compare >, bool > BinarySearchTree< T, Compare >::insert(const T& data)
   {
     if (!root_)
     {
       root_ = new root_t(data, fake_, fake_, fake_);
       root_->parent_->right_ = root_;
       root_->parent_->left_ = root_;
-
       begin_ = root_;
       end_ = root_;
-      return std::make_pair(root_, true);
+      return std::make_pair(iterator(fake_, root_), true);
     }
     else
     {
-      auto inserted = insert(data, root_).second;
+      auto inserted = insert(data, iterator(fake_, root_)).second.node_;
       if (inserted != fake_)
       {
         if (data < begin_->data_)
@@ -154,8 +155,9 @@ namespace tarasenko
         {
           end_ = inserted;
         }
+        return std::make_pair(iterator(fake_, inserted), true);
       }
-      return inserted != fake_ ? std::make_pair(inserted, true) : std::make_pair(inserted, false);
+      return std::make_pair(end(), false);
     }
   }
 
@@ -214,19 +216,19 @@ namespace tarasenko
   template< typename T, typename Compare >
   void BinarySearchTree< T, Compare >::leftRotation()
   {
-    leftRotation(root_);
+    if (root_)
+    {
+      leftRotation(root_);
+    }
   }
 
   template< typename T, typename Compare >
   void BinarySearchTree< T, Compare >::rightRotation()
   {
-    rightRotation(root_);
-  }
-
-  template< typename T, typename Compare >
-  void BinarySearchTree< T, Compare >::remove(const T& data)
-  {
-    remove(data, root_);
+    if (root_)
+    {
+      rightRotation(root_);
+    }
   }
 
   template< typename T, typename Compare >
@@ -241,80 +243,117 @@ namespace tarasenko
   }
 
   template< typename T, typename Compare >
-  details::Tree< T, Compare >* BinarySearchTree< T, Compare >::find(const T& data, root_t* ptree)
+  void BinarySearchTree< T, Compare >::clear()
   {
-    auto comp = ptree->compare_;
-    if (ptree == fake_ || ptree->data_ == data)
+    if (root_)
     {
-      return ptree;
+      deleteTree(root_);
+      root_ = nullptr;
+      begin_ = nullptr;
+      end_ = nullptr;
     }
-    if (comp(data, ptree->data_))
-    {
-      return find(data, ptree->left_);
-    }
-    return find(data, ptree->right_);
   }
 
   template< typename T, typename Compare >
-  details::Tree< T, Compare >* BinarySearchTree< T, Compare >::find(const T& data)
+  ConstBidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::find(const T& data, const_iterator it)
   {
-    return find(data, root_);
+    auto comp = it.node_->compare_;
+    if (it.node_ == fake_)
+    {
+      return cend();
+    }
+    if (*it == data)
+    {
+      return it;
+    }
+    if (comp(data, *it))
+    {
+      return find(data, const_iterator(fake_, it.node_->left_));
+    }
+    return find(data, const_iterator(fake_, it.node_->right_));
   }
 
   template< typename T, typename Compare >
-  details::Tree< T, Compare >* BinarySearchTree< T, Compare >::findMin(root_t* ptree)
+  ConstBidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::find(const T& data)
   {
-    if (ptree == fake_)
+    auto c_it = const_iterator(fake_, root_);
+    return root_ ? find(data, c_it) : cend();
+  }
+
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::findMin(const_iterator it)
+  {
+    if (it.node_ == fake_)
     {
-      return fake_;
+      return cend();
     }
-    else if (ptree->left_ == fake_)
+    else if (it.node_->left_ == fake_)
     {
-      return ptree;
+      return it;
     }
     else
     {
-      return findMin(ptree->left_);
+      return findMin(const_iterator(fake_, it.node_->left_));
     }
   }
 
   template< typename T, typename Compare >
-  void BinarySearchTree< T, Compare >::remove(const T& data, root_t* ptree)
+  void BinarySearchTree< T, Compare >::remove(const T& data, iterator it)
   {
-    auto toDelete = find(data, ptree);
-    if (toDelete == fake_)
+    auto toDelIt = find(data, it);
+
+    auto nodeToDel = toDelIt.node_;
+    auto left = nodeToDel->left_;
+    auto right = nodeToDel->right_;
+    auto parent = nodeToDel->parent_;
+
+    if (toDelIt == cend())
     {
       return;
     }
-    else if (toDelete->left_ != fake_ && toDelete->right_ != fake_)
+    else if (left != fake_ && right != fake_)
     {
-      auto replaceNode = findMin(toDelete->right_);
-      toDelete->data_ = replaceNode->data_;
-      remove(replaceNode->data_, replaceNode);
+      auto replaceNodeIt = findMin(const_iterator(fake_, right));
+      nodeToDel->data_ = *replaceNodeIt;
+      remove(*replaceNodeIt, iterator(fake_, replaceNodeIt.node_));
       return;
     }
     else
     {
-      auto child = toDelete->left_ != fake_ ? toDelete->left_ : toDelete->right_;
-      if (toDelete->parent_ != fake_)
+      auto child = left != fake_ ? left : right;
+      if (parent != fake_)
       {
-        if (toDelete->parent_->left_ == toDelete)
+        if (parent->left_ == nodeToDel)
         {
-          toDelete->parent_->left_ = child;
+          parent->left_ = child;
         }
         else
         {
-          toDelete->parent_->right_ = child;
+          parent->right_ = child;
         }
-        if (toDelete->left_ != fake_ || toDelete->right_ != fake_)
+        if (left != fake_ || right != fake_)
         {
-          child->parent_ = toDelete->parent_;
+          child->parent_ = parent;
         }
       }
-      delete toDelete;
+      if (nodeToDel == end_)
+      {
+        end_ = left != fake_ ? left : parent;
+      }
+      else if (nodeToDel == begin_)
+      {
+        begin_ = right != fake_ ? right : parent;
+      }
+      delete nodeToDel;
     }
   }
 
+  template< typename T, typename Compare >
+  void BinarySearchTree< T, Compare >::remove(const T& data)
+  {
+    auto it = iterator(fake_, root_);
+    remove(data, it);
+  }
 
   //==============================================
 
@@ -330,10 +369,13 @@ namespace tarasenko
   template< typename T, typename Compare >
   std::string BinarySearchTree< T, Compare >::SubTreeAsString()
   {
+    if (!root_)
+    {
+      return " ";
+    }
     std::string left = (root_->left_ == fake_) ? "{}" : SubTreeAsString(root_->left_);
     std::string right = (root_->right_ == fake_) ? "{}" : SubTreeAsString(root_->right_);
-    std::string res = "{" + std::to_string(root_->data_) + ", " + left + ", " + right + "}";
-    return res;
+    return "{" + std::to_string(root_->data_) + ", " + left + ", " + right + "}";
   }
 }
 
