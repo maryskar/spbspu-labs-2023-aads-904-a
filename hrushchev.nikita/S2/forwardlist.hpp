@@ -41,7 +41,7 @@ class ForwardList
     void resize(size_t count, const T& value);
     List< T >* head_;
 };
-{
+
 template< typename T >
 typename ForwardList< T >::iterator ForwardList< T >::begin() noexcept
 {
@@ -224,16 +224,36 @@ void ForwardList< T >::pop_front()
 template< typename T >
 void ForwardList< T >::resize(size_t count, const T& value)
 {
-  size_t cur_size = max_size()
+  size_t cur_size = max_size();
   if (count == cur_size)
   {
     return;
   }
 
-  else if ()
+  else if (count < cur_size)
+  {
+    auto iter_to_erase = cbegin();
+    for (size_t i = 1; i < count; i++)
+    {
+      iter_to_erase++;
+    }
+    erase_after(iter_to_erase, cend());
+  }
 
+  else
+  {
+    auto iter_to_insert = cbegin();
+    for (size_t i = 1; i < cur_size; i++)
+    {
+      iter_to_insert++;
+    }
+    insert_after(iter_to_insert, count - cur_size, value);
+  }
 }
 
+template< typename T >
+void ForwardList< T >::resize(size_t count)
+{
+  resize(count, T());
 }
-
 #endif
