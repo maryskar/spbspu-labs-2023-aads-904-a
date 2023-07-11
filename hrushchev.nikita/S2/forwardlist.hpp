@@ -293,4 +293,10 @@ bool operator==(const ForwardList< T >& lhs, const ForwardList< T >& rhs)
   return true;
 }
 
+template < typename T >
+bool operator!=(const ForwardList< T >& lhs, const ForwardList< T >& rhs)
+{
+  return !(lhs == rhs);
+}
+
 #endif
