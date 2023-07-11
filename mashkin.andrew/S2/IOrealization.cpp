@@ -18,14 +18,12 @@ namespace mashkin
     inp >> key;
     if (inp.peek() == '\n')
     {
-      std::cout << "<INVALID COMMAND>\n";
       inp.setstate(std::ios::failbit);
       return inp;
     }
     inp >> value;
     if (!inp)
     {
-      std::cout << "<INVALID COMMAND>\n";
       return inp;
     }
     if (inp.peek() == '\n')
@@ -47,7 +45,6 @@ namespace mashkin
     inp >> key;
     if (!inp)
     {
-      std::cout << "<INVALID COMMAND>\n";
       return inp;
     }
     dictionary value;
