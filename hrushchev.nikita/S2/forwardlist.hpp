@@ -75,7 +75,7 @@ typename ForwardList< T >::const_iterator ForwardList< T >::end() const noexcept
 template< typename T >
 typename ForwardList< T >::const_iterator ForwardList< T >::cend() const noexcept
 {
-  return const_iterator(nullptr); 
+  return const_iterator(nullptr);
 }
 
 template< typename T >
