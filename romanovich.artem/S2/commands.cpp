@@ -48,6 +48,7 @@ namespace romanovich
   }
   void complementCommand(std::istream &in, std::ostream &out, container_type &dictionary)
   {
+    if (out){}
     std::string newDictName, dictName1, dictName2;
     in >> newDictName >> dictName1 >> dictName2;
     if (!in)
@@ -72,8 +73,14 @@ namespace romanovich
   }
   void intersectCommand(std::istream &in, std::ostream &out, container_type &dictionary)
   {
+    if (out){}
+    if (in){}
+    if (dictionary.empty()){}
   }
   void unionCommand(std::istream &in, std::ostream &out, container_type &dictionary)
   {
+    if (out){}
+    if (in){}
+    if (dictionary.empty()){}
   }
 }

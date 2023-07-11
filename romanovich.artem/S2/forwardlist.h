@@ -57,11 +57,11 @@ public:
   template< class Predicate >
   void remove_if(Predicate pred);
   void reverse();
-  details::ListNode< T > *begin_;
-  size_t size_;
-  details::ListNode< T > *fakeNode_;
 private:
+  details::ListNode< T > *begin_;
   details::ListNode< T > *end_;
+  details::ListNode< T > *fakeNode_;
+  size_t size_;
   details::ListNode< T > *initFake();
   void copy(const ForwardList< T > &other);
   void push_back(const T &value);
