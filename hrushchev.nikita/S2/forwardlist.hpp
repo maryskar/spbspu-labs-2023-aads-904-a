@@ -21,7 +21,7 @@ class ForwardList
     iterator end() noexcept;
     const_iterator end() const noexcept;
     const_iterator cend() const noexcept;
-    bool empty();
+    bool empty() const;
     size_t max_size() const noexcept;
     void clear();
     iterator insert_after(const_iterator pos, const T& value);
@@ -39,6 +39,7 @@ class ForwardList
     void pop_front();
     void resize(size_t count);
     void resize(size_t count, const T& value);
+    void swap(ForwardList< T >& other);
     List< T >* head_;
 };
 
@@ -78,7 +79,7 @@ typename ForwardList< T >::const_iterator ForwardList< T >::cend() const noexcep
 }
 
 template< typename T >
-bool ForwardList< T >::empty()
+bool ForwardList< T >::empty() const
 {
   return head_ == nullptr;
 }
@@ -255,6 +256,41 @@ template< typename T >
 void ForwardList< T >::resize(size_t count)
 {
   resize(count, T());
+}
+
+template< typename T >
+void ForwardList< T >::swap(ForwardList< T >& other)
+{
+  std::swap(head_, other.head_);
+}
+
+template< typename T >
+bool operator==(const ForwardList< T >& lhs, const ForwardList< T >& rhs)
+{
+  if (lhs.empty() && rhs.empty())
+  {
+    return true;
+  }
+
+  else if (lhs.empty() || rhs.empty())
+  {
+    return false;
+  }
+
+  auto lhs_begin = lhs.cbegin();
+  auto lhs_end = lhs.cend();
+  auto rhs_begin = rhs.cbegin();
+  auto rhs_end = rhs.cend();
+  while ((lhs_begin != lhs_end) && (rhs_begin != rhs_end))
+  {
+    if (*lhs_begin != *rhs_end)
+    {
+      return false;
+    }
+    lhs_begin++;
+    rhs_begin++;
+  }
+  return true;
 }
 
 #endif
