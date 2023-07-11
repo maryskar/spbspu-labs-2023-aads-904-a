@@ -4,64 +4,100 @@
 #include "queue.hpp"
 #include "stack.hpp"
 
-bool isOperator(std::string op)
+namespace hrushchev
 {
-  return (op == "+") || (op == "-") || (op == "*") || (op == "/") || (op == "%");
+  int getOperatorPriority(std::string op)
+  {
+    if (op == "*" || op == "/" || op == "%")
+    {
+      return 2;
+    }
+    else if (op == "+" || op == "-")
+    {
+      return 1;
+    }
+    else if (op == "(" || op == ")")
+    {
+      return 0;
+    }
+    else
+    {
+      throw std::logic_error("Invalid operator");
+    }
+  }
+
+  bool isHigherPriority(std::string op1, std::string op2)
+  {
+    return getOperatorPriority(op1) >= getOperatorPriority(op2);
+  }
+
+  bool isOperator(std::string op)
+  {
+    return op == "*" || op == "/" || op == "+" || op == "-" || op == "(" || op == ")" || op == "%";
+  }
 }
 
-Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue)
+hrushchev::Queue< std::string > hrushchev::convertInfixToPostfix(hrushchev::Queue< std::string >& infixQueue)
 {
-  Queue< std::string > postfixQueue;
-  Stack< std::string > stack;
+  namespace hrn = hrushchev;
+  hrn::Queue< std::string > postfixQueue;
+  hrn::Stack< std::string > stack;
+
   while (!infixQueue.isEmpty())
   {
     std::string token = infixQueue.get();
     infixQueue.pop();
+
     if (std::isdigit(token[0]))
     {
       postfixQueue.push(token);
     }
-    else if (token == "+" || token == "-")
+    else if (hrn::isOperator(token))
     {
-      while (!stack.isEmpty() && isOperator(stack.get()))
+      if (token == ")")
       {
-        postfixQueue.push(stack.get());
+        while (!stack.isEmpty() && (stack.get() != "("))
+        {
+          postfixQueue.push(stack.get());
+          stack.pop();
+        }
+        if (stack.isEmpty())
+        {
+          throw std::logic_error("Mismatched parentheses");
+        }
         stack.pop();
       }
-      stack.push(token);
-    }
-    else if (token == "*" || token == "/" || token == "%")
-    {
-      while (!stack.isEmpty() && ((stack.get() == "*" || stack.get() == "/" || stack.get() == "%")))
+      else if (token == "(")
       {
-        postfixQueue.push(stack.get());
-        stack.pop();
+        stack.push(token);
       }
-      stack.push(token);
-    }
-    else if (token == "(")
-    {
-      stack.push(token);
-    }
-    else if (token == ")")
-    {
-      while (!stack.isEmpty() && stack.get() != "(")
+      else
       {
-        postfixQueue.push(stack.get());
-        stack.pop();
+        while (!stack.isEmpty() && (hrn::isHigherPriority(stack.get(),token)))
+        {
+          postfixQueue.push(stack.get());
+          stack.pop();
+        }
+        stack.push(token);
       }
-      stack.pop();
     }
     else
     {
       throw std::logic_error("Invalid token");
     }
   }
+
   while (!stack.isEmpty())
   {
-    postfixQueue.push(stack.get());
+    std::string op = stack.get();
     stack.pop();
+    if (op == "(")
+    {
+      throw std::logic_error("Mismatched parentheses");
+    }
+    postfixQueue.push(op);
   }
+
   return postfixQueue;
 }
 

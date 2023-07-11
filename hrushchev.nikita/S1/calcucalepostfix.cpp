@@ -4,14 +4,16 @@
 #include "stack.hpp"
 #include "arithmetic.hpp"
 
-long long calculatePostfix(Queue<std::string>& postfixQueue)
+long long hrushchev::calculatePostfix(hrushchev::Queue< std::string >& postfixQueue)
 {
-  Stack< long long > stack;
+  namespace hrn = hrushchev;
+
+  hrn::Stack< long long > stack;
   while (!postfixQueue.isEmpty())
   {
     std::string token = postfixQueue.get();
     postfixQueue.pop();
-    if (isdigit(token[0]))
+    if (std::isdigit(token[0]))
     {
       stack.push(std::stoll(token));
     }
@@ -24,23 +26,23 @@ long long calculatePostfix(Queue<std::string>& postfixQueue)
       long long result;
       if (token == "+")
       {
-        result = sum(operand1, operand2);
+        result = hrn::sum(operand1, operand2);
       }
       else if (token == "-")
       {
-        result = subtract(operand1, operand2);
+        result = hrn::subtract(operand1, operand2);
       }
       else if (token == "*")
       {
-        result = multiply(operand1, operand2);
+        result = hrn::multiply(operand1, operand2);
       }
       else if (token == "/")
       {
-        result = division(operand1, operand2);
+        result = hrn::division(operand1, operand2);
       }
       else if (token == "%")
       {
-        result = remaind(operand1, operand2);
+        result = hrn::remaind(operand1, operand2);
       }
       stack.push(result);
     }

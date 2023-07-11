@@ -3,7 +3,10 @@
 #include <string>
 #include "queue.hpp"
 
-Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue);
+namespace hrushchev
+{
+  Queue< std::string > convertInfixToPostfix(Queue< std::string >& infixQueue);
+}
 
 #endif
 
