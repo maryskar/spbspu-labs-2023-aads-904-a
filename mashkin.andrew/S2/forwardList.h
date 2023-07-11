@@ -94,7 +94,7 @@ namespace mashkin
   template< class T >
   ForwardList< T >::ForwardList(ForwardList< T >&& rhs) noexcept:
     fake_(rhs.fake_),
-    tail_(rhs.tail)
+    tail_(rhs.tail_)
   {
   }
 
