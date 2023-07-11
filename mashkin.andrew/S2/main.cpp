@@ -44,6 +44,10 @@ int main(int argc, char** argv)
     while (!std::cin.eof())
     {
       std::cin >> command;
+      if (std::cin.eof())
+      {
+        break;
+      }
       if (commands.contains(command))
       {
         commands[command](std::cin, dicts);
