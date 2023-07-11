@@ -89,7 +89,7 @@ void ConstForwardListIterator< T >::checkForNullNode()
 {
   if (!head_)
   {
-    throw std::runtime_error("head is null");
+    //throw std::runtime_error("head is null");
   }
 }
 template< typename T >

@@ -19,10 +19,10 @@ namespace romanovich
   void printCommand(std::istream &in, std::ostream &out, container_type &dictionary)
   {
     std::string dictName;
-    std::cin >> dictName;
-    if (!std::cin)
+    in >> dictName;
+    if (!in)
     {
-      throw std::runtime_error("Error while printing dictionary.");
+      throw std::runtime_error("Error while reading command arguments.");
     }
     if (dictionary.count(dictName) > 0)
     {
@@ -33,12 +33,12 @@ namespace romanovich
       }
       else
       {
-        std::cout << dictName;
+        out << dictName;
         for (const auto &item: dictData)
         {
-          std::cout << " " << item.first << " " << item.second;
+          out << " " << item.first << " " << item.second;
         }
-        std::cout << "\n";
+        out << "\n";
       }
     }
     else
@@ -48,6 +48,27 @@ namespace romanovich
   }
   void complementCommand(std::istream &in, std::ostream &out, container_type &dictionary)
   {
+    std::string newDictName, dictName1, dictName2;
+    in >> newDictName >> dictName1 >> dictName2;
+    if (!in)
+    {
+      throw std::runtime_error("Error while reading command arguments.");
+    }
+    if (dictionary.count(dictName1) == 0 || dictionary.count(dictName2) == 0)
+    {
+      throw std::runtime_error("Error: dictionary not found.");
+    }
+    const auto &dict1 = dictionary[dictName1];
+    const auto &dict2 = dictionary[dictName2];
+    dict_type newDict;
+    for (const auto &entry: dict1)
+    {
+      if (dict2.count(entry.first) == 0)
+      {
+        newDict[entry.first] = entry.second;
+      }
+    }
+    dictionary[newDictName] = newDict;
   }
   void intersectCommand(std::istream &in, std::ostream &out, container_type &dictionary)
   {

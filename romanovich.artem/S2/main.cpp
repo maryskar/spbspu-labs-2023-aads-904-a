@@ -48,7 +48,6 @@ int main(int argc, char *argv[])
       int key = std::stoi(lineWords[i]);
       std::string val = lineWords[i + 1];
       dictData.emplace(dict_value_type(key, val));
-      dictData.emplace(dict_value_type(key, val));
     }
     dictionary.emplace(container_value_type(dictName, dictData));
   }
@@ -57,13 +56,13 @@ int main(int argc, char *argv[])
   {
     std::string command;
     std::cin >> command;
-    try
-    {
+    //try
+    //{
       commandDictionary[command](std::cin, std::cout, dictionary);
-    }
-    catch (...)
-    {
-      printError(std::cout) << '\n';
-    }
+    //}
+    //catch (...)
+    //{
+    //  printError(std::cout) << '\n';
+    //}
   }
 }
