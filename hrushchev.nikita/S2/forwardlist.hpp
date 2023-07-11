@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <utility>
+#include <stdexcept>
 
 #include <list.hpp>
 #include "forwardlistiterator.hpp"
@@ -22,8 +23,6 @@ class ForwardList
     const_iterator cend() const noexcept;
     bool empty();
     size_t max_size() const noexcept;
-    void pushFront(const T& value);
-    void pushFront(T&& value);
     void clear();
     iterator insert_after(const_iterator pos, const T& value);
     iterator insert_after(const_iterator pos, T&& value );
@@ -33,9 +32,16 @@ class ForwardList
     iterator emplace_after(const_iterator pos, Args&&... args);
     iterator erase_after(const_iterator pos);
     iterator erase_after(const_iterator first, const_iterator last);
+    void push_front(const T& value);
+    void push_front(T&& value);
+    template< typename... Args >
+    void emplace_front(Args && ... args);
+    void pop_front();
+    void resize(size_t count);
+    void resize(size_t count, const T& value);
     List< T >* head_;
 };
-
+{
 template< typename T >
 typename ForwardList< T >::iterator ForwardList< T >::begin() noexcept
 {
@@ -88,21 +94,6 @@ size_t ForwardList< T >::max_size() const noexcept
     size++;
   }
   return size;
-}
-
-template< typename T >
-void ForwardList< T >::pushFront(const T& value)
-{
-  List< T >* temp = new List< T >();
-  temp->data_ = value;
-  temp->next_ = head_;
-  head_ = temp;
-}
-
-template< typename T >
-void ForwardList< T >::pushFront(T&& value)
-{
-  pushFront(value);
 }
 
 template< typename T >
@@ -192,6 +183,57 @@ typename ForwardList< T >::iterator ForwardList< T >::erase_after(const_iterator
     erase_after(first);
   }
   return iterator(const_cast< List< T >* >(last.ptr_));
+}
+
+template< typename T >
+void ForwardList< T >::push_front(const T& value)
+{
+  List< T >* temp = new List< T >();
+  temp->data_ = value;
+  temp->next_ = head_;
+  head_ = temp;
+}
+
+template< typename T >
+void ForwardList< T >::push_front(T&& value)
+{
+  push_front(value);
+}
+
+template< typename T >
+template< typename... Args >
+void ForwardList< T >::emplace_front(Args && ... args)
+{
+  List< T >* temp = new List< T >(std::forward<Args>(args)...);
+  temp->next_ = head_;
+  head_ = temp;
+}
+
+template< typename T >
+void ForwardList< T >::pop_front()
+{
+  if (empty())
+  {
+    throw std::logic_error("empty list");
+  }
+  List< T >* temp = head_;
+  head_ = head_->next_;
+  delete temp;
+}
+
+template< typename T >
+void ForwardList< T >::resize(size_t count, const T& value)
+{
+  size_t cur_size = max_size()
+  if (count == cur_size)
+  {
+    return;
+  }
+
+  else if ()
+
+}
+
 }
 
 #endif
