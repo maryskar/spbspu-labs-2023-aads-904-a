@@ -2,17 +2,17 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include "dict.h"
+#include "commands.h"
 void
 printDictionary(const Dictionary< std::string, Dictionary< int, std::string > > &dictionary)
 {
   for (const auto &entry: dictionary)
   {
-    std::cout << "Dictionary name: " << entry.first << "\n";
+    std::cout << entry.first;
     const auto &dictData = entry.second;
     for (const auto &item: dictData)
     {
-      std::cout << "Key: " << item.first << ", Value: " << item.second << "\n";
+      std::cout << " " << item.first << " " << item.second;
     }
     std::cout << "\n";
   }
@@ -45,10 +45,6 @@ int main(int argc, char *argv[])
     std::cerr << "Cannot open file.\n";
     return 1;
   }
-  using dict_type = Dictionary< int, std::string >;
-  using dict_value_type = std::pair< int, std::string >;
-  using container_type = Dictionary< std::string, dict_type >;
-  using container_value_type = std::pair< std::string, dict_type >;
   container_type dictionary;
   std::string line;
   while (std::getline(input, line))
@@ -66,5 +62,12 @@ int main(int argc, char *argv[])
     }
     dictionary.emplace(container_value_type(dictName, dictData));
   }
-  printDictionary(dictionary);
+  auto commandDictionary = romanovich::createCommandDictionary(dictionary);
+  while (std::cin)
+  {
+    std::string command;
+    std::cin >> command;
+    std::cout << command << ": ";
+    commandDictionary[command];
+  }
 }

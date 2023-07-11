@@ -259,16 +259,6 @@ ForwardListIterator< T > ForwardList< T >::emplace_front(Args &&... args)
 template< typename T >
 ForwardListIterator< T > ForwardList< T >::erase_after(ConstForwardListIterator< T > position)
 {
-  try
-  {
-    auto t = begin_->data_;
-    if (t == 8)
-    {
-      std::cout << cbefore_begin().head_->next_->data_ << "@\n";
-    }
-  } catch (...)
-  {
-  }
   auto nextIt = position.head_->next_;
   if (nextIt)
   {
@@ -510,7 +500,6 @@ bool ForwardList< T >::empty() const
 template< typename T >
 void ForwardList< T >::push_front(const T &value)
 {
-  std::cout << value << " " << value << "\n";
   begin_ = new details::ListNode< T >(value, begin_);
   if (!end_)
   {

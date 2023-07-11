@@ -1,56 +1,64 @@
 #include "commands.h"
 #include <iostream>
+using namespace std::placeholders;
 namespace
 {
-  void printError()
+  std::ostream &printError(std::ostream &out)
   {
-    std::cout << "<INVALID COMMAND>\n";
+    return out << "<INVALID COMMAND>";
   }
-  bool isThisCommand(const std::string &command, const std::string &procCommand)
+  /*bool isThisCommand(const std::string &command, const std::string &procCommand)
   {
     return (command.substr(0, procCommand.size() - 1) == procCommand);
-  }
+  }*/
 }
 namespace romanovich
 {
-  void CommandProcessor::operator()(const std::string &command)
+  std::unordered_map< std::string, CommandHandler > createCommandDictionary(container_type &dictionary)
   {
-    auto it = commands.find(command);
-    if (it != commands.end())
+    std::string printCall = "print";
+    std::string complementCall = "complement";
+    std::string intersectCall = "intersect";
+    std::string unionCall = "union";
+    std::unordered_map< std::string, CommandHandler > commands;
+    commands[printCall] = std::bind(printCommand, _1, _2, std::ref(dictionary));
+    commands[complementCall] = std::bind(complementCommand, _1, _2, std::ref(dictionary));
+    commands[intersectCall] = std::bind(intersectCommand, _1, _2, std::ref(dictionary));
+    commands[unionCall] = std::bind(unionCommand, _1, _2, std::ref(dictionary));
+    return commands;
+  }
+  void printCommand(std::istream &in, std::ostream &out, container_type &dictionary)
+  {
+    std::string dictName;
+    std::cin >> dictName;
+    std::cout << "!" << '\n';
+    if (!std::cin)
     {
-      //
+      throw std::runtime_error("Error while printing dictionary.");
+    }
+    //if (dictionary.count(dictName) > 0)
+    //{
+    const auto &dictData = dictionary[dictName];
+    if (dictData.empty())
+    {
+      throw std::runtime_error("Error: empty dictionary.");
     }
     else
     {
-      romanovich::CommandProcessor comProc;
-      if (isThisCommand(command, comProc.complementCall))
+      for (const auto &item: dictData)
       {
-        //
+        std::cout << " " << item.first << " " << item.second;
       }
-      else if (isThisCommand(command, comProc.intersectCall))
-      {
-        //
-      }
-      else if (isThisCommand(command, comProc.unionCall))
-      {
-        //
-      }
-      else
-      {
-        printError();
-      }
+      std::cout << "\n";
     }
+    //}
+    //else
+    //{
+    //  throw std::runtime_error("Error: dictionary not found.");
+    //}
+    //out << '\n';
   }
-  void CommandProcessor::printCommand(const std::vector< std::string > &)
-  {
-  }
-  void CommandProcessor::intersectCommand(const std::vector< std::string > &)
-  {
-  }
-  void CommandProcessor::complementCommand(const std::vector< std::string > &)
-  {
-  }
-  void CommandProcessor::unionCommand(const std::vector< std::string > &)
-  {
-  }
+  void complementCommand(std::istream &in, std::ostream &out, container_type &dictionary){}
+  void intersectCommand(std::istream &in, std::ostream &out, container_type &dictionary){}
+  void unionCommand(std::istream &in, std::ostream &out, container_type &dictionary){}
 }
