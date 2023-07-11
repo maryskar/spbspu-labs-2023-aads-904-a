@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
+#include "DictWithCommands.h"
 #include "dictionary.h"
 #include "forwardConstIterator.h"
 #include "forwardIterator.h"
@@ -35,6 +36,27 @@ int main(int argc, char** argv)
       {
         input.clear();
         input.ignore(maxSize, '\n');
+      }
+    }
+    mashkin::Dictionary< std::string, void (*)(std::istream&, dictionaries&) > commands;
+    mashkin::createDictWithCommnads(commands);
+    std::string command;
+    while (!std::cin.eof())
+    {
+      std::cin >> command;
+      if (commands.contains(command))
+      {
+        commands[command](std::cin, dicts);
+      }
+      else
+      {
+        std::cout << "<INVALID COMMAND>\n";
+        std::cin.setstate(std::ios::failbit);
+      }
+      if (std::cin.fail())
+      {
+        std::cin.clear();
+        std::cin.ignore(maxSize, '\n');
       }
     }
   }
