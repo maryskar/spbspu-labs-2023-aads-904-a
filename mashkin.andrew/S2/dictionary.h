@@ -114,15 +114,17 @@ namespace mashkin
       return end();
     }
     auto toDel = cbegin();
-    for (auto i = pair_.before_begin(); i != end(); i++)
+    auto i = pair_.before_begin();
+    for (; i != end(); i++)
     {
       if (toDel == pos)
       {
         --size_;
-        return pair_.erase_after(i);
+        break;
       }
       toDel++;
     }
+    return pair_.erase_after(i);
   }
 
   template< class K, class V, class C >

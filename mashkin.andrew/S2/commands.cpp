@@ -28,7 +28,12 @@ namespace mashkin
     inp >> first;
     std::string second;
     inp >> second;
-    if (!dicts.contains(second) || first == second || !dicts.contains(first) || dicts.contains(newDict))
+    if (first == second)
+    {
+      std::cout << "<EMPTY>\n";
+      return;
+    }
+    if (!dicts.contains(second) || !dicts.contains(first))
     {
       std::cout << "<INVALID COMMAND>\n";
       inp.setstate(std::ios::failbit);
@@ -55,6 +60,21 @@ namespace mashkin
         newDictionary.insert(*i);
       }
     }
-    dicts.insert({newDict, newDictionary});
+    if (first == newDict)
+    {
+      dicts.find(first)->second.erase(firstBegin, firstEnd);
+      dicts.find(first)->second.insert(newDictionary.begin(), newDictionary.end());
+      return;
+    }
+    else if (second == newDict)
+    {
+      dicts.find(second)->second.erase(secondBegin, secondEnd);
+      dicts.find(second)->second.insert(newDictionary.begin(), newDictionary.end());
+      return;
+    }
+    else
+    {
+      dicts.insert({newDict, newDictionary});
+    }
   }
 }
