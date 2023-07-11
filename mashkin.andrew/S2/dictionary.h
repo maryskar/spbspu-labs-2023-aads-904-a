@@ -133,7 +133,7 @@ namespace mashkin
     {
       if (i->first == k)
       {
-        return i->second;
+        break;
       }
     }
     if (i == cend())
@@ -142,6 +142,7 @@ namespace mashkin
       insert(newPair);
       return find(newPair.first)->second;
     }
+    return i->second;
   }
 
   template< class K, class V, class C >
