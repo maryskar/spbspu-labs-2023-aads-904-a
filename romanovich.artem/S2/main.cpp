@@ -61,30 +61,10 @@ int main(int argc, char *argv[])
     {
       int key = std::stoi(lineWords[i]);
       std::string val = lineWords[i + 1];
-      //std::cout << key << " " << val << "\n";
       dictData.emplace(dict_value_type(key, val));
-      /*auto ptr = dictData.data_.begin_;
-      while (ptr)
-      {
-        std::cout << ptr->data_.first << ' '
-                  << ptr->data_.second << ' ';
-        ptr = ptr->next_;
-      }
-      std::cout << '\n';*/
+      dictData.emplace(dict_value_type(key, val));
     }
     dictionary.emplace(container_value_type(dictName, dictData));
-    //printDictionary(dictionary);
-    //std::cout << "\n";
   }
   printDictionary(dictionary);
-/*std::cout << "@";
-  std::cout << sizeof dictionary.data_.begin_->data_;
-  std::cout << "@";
-  auto ptr = pt.second.data_.begin_;
- while (ptr)
- {
-   std::cout << ptr->data_.second << ' ';
-   std::cout << ptr->data_.first;
-   ptr = ptr->next_;
- }*/
 }

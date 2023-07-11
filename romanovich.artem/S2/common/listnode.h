@@ -43,10 +43,10 @@ namespace details
     }
     const ListNode< T > *node = listNode;
     ListNode< T > *begin = new ListNode< T >{node->data_, nullptr};
-    ListNode< T > *end = nullptr;
+    ListNode< T > *end = begin;
     try
     {
-      while (!node->next_)
+      while (node->next_)
       {
         node = node->next_;
         end->next_ = new details::ListNode< T >{node->data_, nullptr};

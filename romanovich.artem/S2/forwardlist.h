@@ -139,18 +139,18 @@ ForwardList< T >::splice_after(const_iterator position, ForwardList &&source, co
     return;
   }
   auto posNode = position.ptr_;
-  auto afterPosNode = posNode->next;
+  auto afterPosNode = posNode->next_;
   auto sourceFirstNode = first.ptr_;
   auto sourceLastNode = last.ptr_;
   auto sourceLastNodeNext = sourceLastNode;
-  while (sourceLastNodeNext->next && sourceLastNodeNext->next != sourceLastNode)
+  while (sourceLastNodeNext->next_ && sourceLastNodeNext->next_ != sourceLastNode)
   {
-    sourceLastNodeNext = sourceLastNodeNext->next;
+    sourceLastNodeNext = sourceLastNodeNext->next_;
   }
-  sourceLastNodeNext->next = nullptr;
-  sourceFirstNode->next = sourceLastNode->next;
-  posNode->next = sourceFirstNode;
-  sourceLastNode->next = afterPosNode;
+  sourceLastNodeNext->next_ = nullptr;
+  sourceFirstNode->next_ = sourceLastNode->next_;
+  posNode->next_ = sourceFirstNode;
+  sourceLastNode->next_ = afterPosNode;
   if (source.begin_ == sourceLastNode)
   {
     source.begin_ = nullptr;

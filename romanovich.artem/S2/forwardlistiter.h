@@ -93,7 +93,7 @@ template< typename T >
 const T &ForwardListIterator< T >::operator*() const
 {
   checkForNullNode();
-  return head_->data;
+  return head_->data_;
 }
 template< typename T >
 T &ForwardListIterator< T >::operator*()

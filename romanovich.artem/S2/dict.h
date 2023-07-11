@@ -233,7 +233,7 @@ Dictionary< Key, Value, Compare >::emplace(Args &&... args)
 {
   try
   {
-    auto iter = push(value_type(std::forward<Args>(args)...));
+    auto iter = push(value_type(std::forward< Args >(args)...));
     return {iter, true};
   }
   catch (...)
@@ -244,7 +244,7 @@ Dictionary< Key, Value, Compare >::emplace(Args &&... args)
 template< typename Key, typename Value, typename Compare >
 void Dictionary< Key, Value, Compare >::insert(std::initializer_list< value_type > initializerList)
 {
-  data_.insert_after(data_.before_begin(), initializerList.begin(), initializerList.end());
+  data_.insert_after(data_.cbefore_begin(), initializerList.begin(), initializerList.end());
 }
 template< typename Key, typename Value, typename Compare >
 template< typename InputIt >
