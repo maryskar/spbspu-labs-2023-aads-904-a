@@ -256,4 +256,5 @@ void ForwardList< T >::resize(size_t count)
 {
   resize(count, T());
 }
+
 #endif
