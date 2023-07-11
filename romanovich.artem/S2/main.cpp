@@ -3,19 +3,9 @@
 #include <string>
 #include <vector>
 #include "commands.h"
-void
-printDictionary(const Dictionary< std::string, Dictionary< int, std::string > > &dictionary)
+std::ostream &printError(std::ostream &out)
 {
-  for (const auto &entry: dictionary)
-  {
-    std::cout << entry.first;
-    const auto &dictData = entry.second;
-    for (const auto &item: dictData)
-    {
-      std::cout << " " << item.first << " " << item.second;
-    }
-    std::cout << "\n";
-  }
+  return out << "<INVALID COMMAND>";
 }
 void splitString(std::vector< std::string > &elems, const std::string &line, char del)
 {
@@ -67,7 +57,13 @@ int main(int argc, char *argv[])
   {
     std::string command;
     std::cin >> command;
-    std::cout << command << ": ";
-    commandDictionary[command];
+    try
+    {
+      commandDictionary[command](std::cin, std::cout, dictionary);
+    }
+    catch (...)
+    {
+      printError(std::cout) << '\n';
+    }
   }
 }

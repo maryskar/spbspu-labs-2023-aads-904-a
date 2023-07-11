@@ -1,17 +1,6 @@
 #include "commands.h"
 #include <iostream>
 using namespace std::placeholders;
-namespace
-{
-  std::ostream &printError(std::ostream &out)
-  {
-    return out << "<INVALID COMMAND>";
-  }
-  /*bool isThisCommand(const std::string &command, const std::string &procCommand)
-  {
-    return (command.substr(0, procCommand.size() - 1) == procCommand);
-  }*/
-}
 namespace romanovich
 {
   std::unordered_map< std::string, CommandHandler > createCommandDictionary(container_type &dictionary)
@@ -31,34 +20,39 @@ namespace romanovich
   {
     std::string dictName;
     std::cin >> dictName;
-    std::cout << "!" << '\n';
     if (!std::cin)
     {
       throw std::runtime_error("Error while printing dictionary.");
     }
-    //if (dictionary.count(dictName) > 0)
-    //{
-    const auto &dictData = dictionary[dictName];
-    if (dictData.empty())
+    if (dictionary.count(dictName) > 0)
     {
-      throw std::runtime_error("Error: empty dictionary.");
+      const auto &dictData = dictionary[dictName];
+      if (dictData.empty())
+      {
+        throw std::runtime_error("Error: empty dictionary.");
+      }
+      else
+      {
+        std::cout << dictName;
+        for (const auto &item: dictData)
+        {
+          std::cout << " " << item.first << " " << item.second;
+        }
+        std::cout << "\n";
+      }
     }
     else
     {
-      for (const auto &item: dictData)
-      {
-        std::cout << " " << item.first << " " << item.second;
-      }
-      std::cout << "\n";
+      throw std::runtime_error("Error: dictionary not found.");
     }
-    //}
-    //else
-    //{
-    //  throw std::runtime_error("Error: dictionary not found.");
-    //}
-    //out << '\n';
   }
-  void complementCommand(std::istream &in, std::ostream &out, container_type &dictionary){}
-  void intersectCommand(std::istream &in, std::ostream &out, container_type &dictionary){}
-  void unionCommand(std::istream &in, std::ostream &out, container_type &dictionary){}
+  void complementCommand(std::istream &in, std::ostream &out, container_type &dictionary)
+  {
+  }
+  void intersectCommand(std::istream &in, std::ostream &out, container_type &dictionary)
+  {
+  }
+  void unionCommand(std::istream &in, std::ostream &out, container_type &dictionary)
+  {
+  }
 }

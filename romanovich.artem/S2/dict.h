@@ -68,7 +68,7 @@ public:
 private:
   Compare comp_;
   Value &insertValue(const Key &key);
-  bool areEqualKeys(const Key &lhs, const Key &rhs);
+  bool areEqualKeys(const Key &lhs, const Key &rhs) const;
   std::pair< iterator, iterator > search(iterator start, const Key &key, std::function< bool(Key, Key) > function);
   iterator push(const value_type &value);
 };
@@ -273,7 +273,7 @@ Dictionary< Key, Value, Compare >::insert(P &&value)
   return std::make_pair(insertedIt, true);
 }
 template< typename Key, typename Value, typename Compare >
-bool Dictionary< Key, Value, Compare >::areEqualKeys(const Key &lhs, const Key &rhs)
+bool Dictionary< Key, Value, Compare >::areEqualKeys(const Key &lhs, const Key &rhs) const
 {
   return !comp_(lhs, rhs) && !comp_(rhs, lhs);
 }
