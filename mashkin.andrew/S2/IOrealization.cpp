@@ -57,6 +57,10 @@ namespace mashkin
     {
       ++i;
     }
+    if (inp.eof())
+    {
+      inp.clear();
+    }
     value.insert(i->begin(), i->end());
     dicts.insert({key, value});
     return inp;
