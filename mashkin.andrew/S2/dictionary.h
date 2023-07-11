@@ -138,9 +138,8 @@ namespace mashkin
     }
     if (i == cend())
     {
-      auto newPair = std::pair< K, V >(k, V());
-      insert(newPair);
-      return find(newPair.first)->second;
+      insert(std::pair< K, V >(k, V()));
+      return find(k)->second;
     }
     return i->second;
   }
@@ -336,7 +335,7 @@ namespace mashkin
 
   template< class K, class V, class C >
   Dictionary< K, V, C >::Dictionary():
-    pair_(),
+    pair_(ForwardList< value_type >()),
     comp_(),
     size_(0)
   {
