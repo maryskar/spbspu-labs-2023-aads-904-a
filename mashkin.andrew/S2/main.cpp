@@ -35,7 +35,6 @@ int main(int argc, char** argv)
       {
         input.clear();
         input.ignore(maxSize, '\n');
-        std::cout << "<INVALID COMMAND>\n";
       }
     }
   }

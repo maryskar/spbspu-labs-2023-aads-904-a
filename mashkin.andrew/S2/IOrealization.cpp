@@ -18,13 +18,19 @@ namespace mashkin
     inp >> key;
     if (inp.peek() == '\n')
     {
+      std::cout << "<INVALID COMMAND>\n";
       inp.setstate(std::ios::failbit);
       return inp;
     }
     inp >> value;
     if (!inp)
     {
+      std::cout << "<INVALID COMMAND>\n";
       return inp;
+    }
+    if (inp.peek() == '\n')
+    {
+      inp.setstate(std::ios::eofbit);
     }
     dict.insert({key, value});
     return inp;
@@ -39,19 +45,17 @@ namespace mashkin
     }
     std::string key;
     inp >> key;
+    if (!inp)
+    {
+      std::cout << "<INVALID COMMAND>\n";
+      return inp;
+    }
     dictionary value;
     using inpIter = std::istream_iterator< dictionary >;
     auto i = inpIter(inp);
-    for (; i != inpIter(); i++)
+    while (!inp.eof() && i != inpIter())
     {
-      if (!inp)
-      {
-        return inp;
-      }
-    }
-    if (inp.fail())
-    {
-      inp.clear();
+      ++i;
     }
     value.insert(i->begin(), i->end());
     dicts.insert({key, value});
