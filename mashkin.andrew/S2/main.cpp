@@ -50,7 +50,15 @@ int main(int argc, char** argv)
       }
       if (commands.contains(command))
       {
-        commands[command](std::cin, dicts);
+        try
+        {
+          commands[command](std::cin, dicts);
+        }
+        catch (const std::exception& ex)
+        {
+          std::cout << ex.what() << "\n";
+          break;
+        }
       }
       else
       {

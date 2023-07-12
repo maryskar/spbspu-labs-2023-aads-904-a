@@ -1,5 +1,6 @@
 #include "commands.h"
 #include <iostream>
+#include <stdexcept>
 #include "IOrealization.h"
 
 namespace mashkin
@@ -15,8 +16,7 @@ namespace mashkin
     }
     else
     {
-      std::cout << "<INVALID COMMAND>\n";
-      inp.setstate(std::ios::failbit);
+      throw std::length_error("<EMPTY>");
     }
   }
 
@@ -30,8 +30,7 @@ namespace mashkin
     inp >> second;
     if (first == second)
     {
-      std::cout << "<EMPTY>\n";
-      return;
+      throw std::length_error("<EMPTY>");
     }
     if (!dicts.contains(second) || !dicts.contains(first))
     {
