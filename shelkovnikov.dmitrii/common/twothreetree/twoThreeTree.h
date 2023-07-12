@@ -614,7 +614,18 @@ namespace dimkashelk
       }
       return root_;
     }
-    node_type *remove(node_type *p, Key k)
+    void removeFromNode(node_type *node, const Key &k)
+    {
+      if (details::isEqual< Key, Compare >(node->getData(0).first, k))
+      {
+        node->removeFirst();
+      }
+      else if (node->getSize() == 2 && details::isEqual< Key, Compare >(node->getData(1).first, k))
+      {
+        node->removeSecond();
+      }
+    }
+    node_type *remove(node_type *p, const Key &k)
     {
       node_type *item = search(p, k);
       if (!item)
@@ -622,21 +633,21 @@ namespace dimkashelk
         return p;
       }
       node_type *min = nullptr;
-      if (details::isEqual< Key, Compare >(item->data[0].first, k))
+      if (details::isEqual< Key, Compare >(item->getData(0).first, k))
       {
-        min = iterator::goDown(item->second);
+        min = iterator::goDown(item->getSecondChild());
       }
       else
       {
-        min = iterator::goDown(item->third);
+        min = iterator::goDown(item->getThirdChild());
       }
       if (min)
       {
-        std::pair< Key, Value > &z = (k == item->data[0].first? item->data[0]: item->data[1]);
-        std::swap(z, min->data[0]);
+        reference z = (details::isEqual< Key, Compare >(k, item->getData(0).first)? item->getData(0): item->getData(1));
+        std::swap(z, min->getData(0));
         item = min;
       }
-      item->removeFromNode(k);
+      removeFromNode(item, k);
       return fix(item);
     }
     node_type *fix(node_type *leaf)
