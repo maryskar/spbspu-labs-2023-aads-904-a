@@ -1,10 +1,11 @@
 #ifndef S4_AVL_H
 #define S4_AVL_H
+#include <functional>
 #include "tree.h"
 
 namespace mashkin
 {
-  template< class T, class Comporator >
+  template< class T, class Comporator = std::less< T > >
   class AVL
   {
   public:
@@ -13,8 +14,8 @@ namespace mashkin
     AVL(AVL&& rhs);
     ~AVL();
 
-
     void clear();
+
   private:
     Tree< T, Comporator > root_;
     Comporator comp_;

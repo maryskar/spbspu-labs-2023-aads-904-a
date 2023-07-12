@@ -1,14 +1,15 @@
 #ifndef S4_TREE_H
 #define S4_TREE_H
+#include <functional>
 
 namespace mashkin
 {
-  template< class T, class Comporator >
+  template< class T, class Comporator = std::less< T > >
   struct Tree
   {
     T data;
-    Tree< T, Comporator >* left;
-    Tree< T, Comporator >* right;
+    Tree< T >* left;
+    Tree< T >* right;
     Comporator comp;
   };
 }
