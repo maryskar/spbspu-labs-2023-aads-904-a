@@ -125,4 +125,51 @@ namespace mashkin
       dicts.insert({newDict, newDictionary});
     }
   }
+
+  void unionDicts(std::istream& inp, dictionaries& dicts)
+  {
+    std::string newDict;
+    inp >> newDict;
+    std::string first;
+    inp >> first;
+    std::string second;
+    inp >> second;
+    if (!dicts.contains(second) || !dicts.contains(first))
+    {
+      std::cout << "<INVALID COMMAND>\n";
+      inp.setstate(std::ios::failbit);
+      return;
+    }
+    dict newDictionary = dicts.find(first)->second;
+    auto secondDict = dicts.find(second);
+    auto secondBegin = secondDict->second.begin();
+    auto secondEnd = secondDict->second.end();
+    for (auto i = secondBegin; i != secondEnd; i++)
+    {
+      if (!newDictionary.contains(i->first))
+      {
+        newDictionary.insert(*i);
+      }
+    }
+
+    if (first == newDict)
+    {
+      auto firstDict = dicts.find(first);
+      auto firstBegin = firstDict->second.begin();
+      auto firstEnd = firstDict->second.end();
+      dicts.find(first)->second.erase(firstBegin, firstEnd);
+      dicts.find(first)->second.insert(newDictionary.begin(), newDictionary.end());
+      return;
+    }
+    else if (second == newDict)
+    {
+      dicts.find(second)->second.erase(secondBegin, secondEnd);
+      dicts.find(second)->second.insert(newDictionary.begin(), newDictionary.end());
+      return;
+    }
+    else
+    {
+      dicts.insert({newDict, newDictionary});
+    }
+  }
 }

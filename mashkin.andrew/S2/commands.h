@@ -11,5 +11,6 @@ namespace mashkin
   void print(std::istream& inp, dictionaries& dicts);
   void complement(std::istream& inp, dictionaries& dicts);
   void intersect(std::istream& inp, dictionaries& dicts);
+  void unionDicts(std::istream& inp, dictionaries& dicts);
 }
 #endif
