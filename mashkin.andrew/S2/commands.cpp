@@ -88,6 +88,12 @@ namespace mashkin
     inp >> first;
     std::string second;
     inp >> second;
+    if (dicts.contains(newDict) && newDict != first && newDict != second)
+    {
+      auto begin = dicts.find(newDict)->second.begin();
+      auto end = dicts.find(newDict)->second.end();
+      dicts.find(newDict)->second.erase(begin, end);
+    }
     if (!dicts.contains(second) || !dicts.contains(first))
     {
       std::cout << "<INVALID COMMAND>\n";
