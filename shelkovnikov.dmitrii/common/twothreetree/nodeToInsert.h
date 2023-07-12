@@ -19,8 +19,8 @@ namespace dimkashelk
       node_type *third;
       node_type *fourth;
       node_type *parent;
-      NodeToInsert(node_type *node):
-        data{node->getData(0), node->getData(1)},
+      NodeToInsert(node_type *node, const Key &k, const Value &v):
+        data{node->getData(0), node->getData(1), k, v},
         size(node->getSize()),
         first(node->getFirstChild()),
         second(node->getSecondChild()),
