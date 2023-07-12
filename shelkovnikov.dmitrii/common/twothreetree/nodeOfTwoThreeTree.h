@@ -201,6 +201,7 @@ namespace dimkashelk
         one_->second = two_->second;
         one_->parent = two_->parent;
         delete two_;
+        two_ = nullptr;
         size_ = 1;
       }
       NodeOfTwoThreeTreeOne< Key, Value > *getOneNode()
