@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <limits>
 #include "commands.h"
 std::ostream &printError(std::ostream &out)
 {
@@ -24,6 +25,7 @@ void splitString(std::vector< std::string > &elems, const std::string &line, cha
 }
 int main(int argc, char *argv[])
 {
+  constexpr auto maxLLSize = std::numeric_limits< std::streamsize >::max();
   if (argc != 2)
   {
     std::cerr << "No file provided.\n";
@@ -63,6 +65,7 @@ int main(int argc, char *argv[])
     catch (...)
     {
       printError(std::cout) << '\n';
+      std::cin.ignore(maxLLSize, '\n');
     }
   }
 }
