@@ -12,7 +12,7 @@ namespace tarasenko
         left_(nullptr),
         right_(nullptr),
         parent_(nullptr),
-        color_('r'),
+        color_(' '),
         compare_()
       {};
 
@@ -21,7 +21,7 @@ namespace tarasenko
         left_(left),
         right_(right),
         parent_(parent),
-        color_('r'),
+        color_(' '),
         compare_()
       {};
 

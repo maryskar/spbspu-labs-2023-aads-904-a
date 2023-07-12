@@ -28,7 +28,6 @@ namespace tarasenko
      fake_->left_ = fake_;
      fake_->right_ = fake_;
      fake_->parent_ = fake_;
-     fake_->color_ = 'b';
    };
 
    ~BinarySearchTree()
@@ -44,8 +43,9 @@ namespace tarasenko
    void leftRotation();
    void rightRotation();
 
-   std::string SubTreeAsString();               //
-   std::string SubTreeAsString(root_t* ptree); //
+   std::string printAsString();               //
+   std::string printAsString(root_t* ptree); //
+   std::string printColorAsString(root_t* ptree);
 
    friend class BidirectionalIterator< T, Compare >;
    friend class ConstBidirectionalIterator< T, Compare >;
@@ -358,24 +358,38 @@ namespace tarasenko
   //==============================================
 
   template< typename T, typename Compare >
-  std::string BinarySearchTree< T, Compare >::SubTreeAsString(root_t* ptree)
+  std::string BinarySearchTree< T, Compare >::printAsString(root_t* ptree)
   {
-    std::string left = (ptree->left_ == fake_) ? "{}" : SubTreeAsString(ptree->left_);
-    std::string right = (ptree->right_ == fake_) ? "{}" : SubTreeAsString(ptree->right_);
+    std::string left = (ptree->left_ == fake_) ? "{ }" : printAsString(ptree->left_);
+    std::string right = (ptree->right_ == fake_) ? "{ }" : printAsString(ptree->right_);
     std::string res = "{" + std::to_string(ptree->data_) + ", " + left + ", " + right + "}";
     return res;
   }
 
   template< typename T, typename Compare >
-  std::string BinarySearchTree< T, Compare >::SubTreeAsString()
+  std::string BinarySearchTree< T, Compare >::printAsString()
   {
     if (!root_)
     {
       return " ";
     }
-    std::string left = (root_->left_ == fake_) ? "{}" : SubTreeAsString(root_->left_);
-    std::string right = (root_->right_ == fake_) ? "{}" : SubTreeAsString(root_->right_);
+    std::string left = (root_->left_ == fake_) ? "{ }" : printAsString(root_->left_);
+    std::string right = (root_->right_ == fake_) ? "{ }" : printAsString(root_->right_);
     return "{" + std::to_string(root_->data_) + ", " + left + ", " + right + "}";
+  }
+
+  template< typename T, typename Compare >
+  std::string BinarySearchTree< T, Compare >::printColorAsString(root_t* ptree)
+  {
+    std::string fake_c = "";
+    fake_c += fake_->color_;
+
+    std::string root_c = "";
+    root_c += ptree->color_;
+
+    std::string left = (ptree->left_ == fake_) ? "{" + fake_c + "}" : printColorAsString(ptree->left_);
+    std::string right = (ptree->right_ == fake_) ? "{" + fake_c + "}" : printColorAsString(ptree->right_);
+    return "{" + root_c + ", " + left + ", " + right + "}";
   }
 }
 
