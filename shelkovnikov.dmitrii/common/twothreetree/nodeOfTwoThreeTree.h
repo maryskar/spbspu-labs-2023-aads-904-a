@@ -170,6 +170,23 @@ namespace dimkashelk
       {
         return getFirstChild() == nullptr && getSecondChild() == nullptr && getThirdChild() == nullptr;
       }
+      void removeFirst()
+      {
+        if (size_ == 1)
+        {
+          size_ = 0;
+        }
+        else
+        {
+          size_--;
+          auto *new_node = NodeOfTwoThreeTreeTwo< Key, Value >(two_->data[1].first, two_->data[1].second, Key(), Value());
+          new_node->first = two_->first;
+          new_node->second = two_->second;
+          new_node->third = two_->third;
+          new_node->parent = two_->parent;
+          two_ = new_node;
+        }
+      }
       NodeOfTwoThreeTreeOne< Key, Value > *getOneNode()
       {
         return one_;
