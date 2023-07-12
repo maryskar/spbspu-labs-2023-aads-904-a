@@ -61,7 +61,7 @@ namespace dimkashelk
           return two_->first;
         }
       }
-      void setFirstChild(node_type node)
+      void setFirstChild(node_type *node)
       {
         if (size_ == 1)
         {
@@ -81,6 +81,17 @@ namespace dimkashelk
         else
         {
           return two_->second;
+        }
+      }
+      void setSecondChild(node_type *node)
+      {
+        if (size_ == 1)
+        {
+          one_->second = node;
+        }
+        else
+        {
+          two_->second = node;
         }
       }
       NodeOfTwoThreeTree< Key, Value > *getThirdChild()
