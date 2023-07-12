@@ -93,6 +93,10 @@ namespace romanovich
       const auto &dict2 = dictionary[dictName2];
       dict_type newDict;
       operation(newDict, dict1, dict2);
+      if (newDict.empty())
+      {
+        printEmptyDict(out) << "\n";
+      }
       dictionary[newDictName] = newDict;
     }
   }
