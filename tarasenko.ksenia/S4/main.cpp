@@ -10,50 +10,51 @@ std::ostream& operator<<(std::ostream& out, const std::pair< Key, Value >& data)
 
 int main()
 {
-  using tree_t = tarasenko::BinarySearchTree< int, std::less<> >;
+//  auto it_b = tree.begin();
+//  auto it_e = tree.end();
+//  auto it_bb = tree.beforeBegin();
+//  auto it = tree.begin();
+//  ++it_bb;
+//  --it_e;
+//  std::cout << *it_bb  << " ";
+//  std::cout << *it_b << " ";
+//  std::cout << *it_e << "\n";
 
-  tree_t tree = tree_t();
+//======================================================================================
 
-  auto b = tree.insert(85);
-  tree.insert(80);
-  auto a = tree.insert(90);
-  tree.insert(78);
-  tree.insert(92);
-  tree.insert(89);
-  tree.insert(91);
-  tree.insert(60);
-  tree.insert(65);
-  auto c = tree.insert(92);
+  tarasenko::RedBlackTree< int, std::less<> > rb;
+  rb.insert(80);
+  rb.insert(85);
+  rb.insert(67);
+  rb.insert(50);
+  rb.insert(40);
+  rb.insert(60);
+  rb.insert(35);
+  rb.insert(67);
+  rb.insert(55);
+  rb.insert(53);
 
+
+//  rb.insert(1);
+//  rb.insert(2);
+//  rb.insert(3);
+//  rb.insert(4);
+//  rb.insert(5);
+//  rb.insert(6);
+//  rb.insert(7);
+//  rb.insert(8);
+//  rb.insert(9);
+//  rb.insert(10);
 
 //  tree.remove(92);
-//  tree.leftRotation();
-//  tree.rightRotation();
-//  auto t = tree.searchNode(d6);
 
-//  std::cout << tree.find(d8)->data_ << "\n";
-//  tree.leftRotation(tree.find(d8));
-//  tree.rightRotation(tree.find(d3));
-//  auto f = tree.find(92);
-  auto it_b = tree.begin();
-  auto it_e = tree.end();
-  auto it_bb = tree.beforeBegin();
-  auto it = tree.begin();
-  ++it_bb;
-  --it_e;
-  while (it != tree.end())
+  auto it = rb.begin();
+  while (it != rb.end())
   {
     std::cout << *(it++) << " ";
   }
   std::cout << "\n";
-  std::cout << *it_bb  << " ";
-  std::cout << *it_b << " ";
-  std::cout << *it_e << "\n";
 
-//  std::cout << (f != tree.cend() ? *f : false) << "\n";
-
-  std::cout << tree.SubTreeAsString();
-  std::cout << "\n";
-
-  tarasenko::RedBlackTree< int, std::less<> > rb;
+  std::cout << rb.printAsString() << "\n";
+  std::cout << rb.printColorAsString();
 }

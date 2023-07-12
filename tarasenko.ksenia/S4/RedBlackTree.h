@@ -86,21 +86,21 @@ namespace tarasenko
   {
     auto root = root_.root_;
     auto parent = node->parent_;
-    if (parent->color_ == 'b') // случай 1
+    if (parent->color_ == 'b')
     {
       return;
     }
-    else if (parent == root) // случай 2.0
+    else if (parent == root)
     {
       parent->color_ = 'b';
     }
     else
     {
       auto grandpa = node->parent_->parent_;
-      if (parent == grandpa->left_) // родитель слева от G
+      if (parent == grandpa->left_)
       {
         auto uncle = node->parent_->parent_->right_;
-        if (uncle->color_ == 'r') // случай 2.1
+        if (uncle->color_ == 'r')
         {
           parent->color_ = 'b';
           uncle->color_ = 'b';
@@ -109,23 +109,23 @@ namespace tarasenko
         }
         else
         {
-          if (node == parent->left_) // случай 2.2.1 // потомок внешний
+          if (node == parent->left_)
           {
             parent->color_ = 'b';
             grandpa->color_ = 'r';
             root_.rightRotation(grandpa);
           }
-          else // случай 2.2.2 // потомок внутренний
+          else
           {
             root_.leftRotation(parent);
             fixInsert(parent);
           }
         }
       }
-      else // родитель справа от G
+      else
       {
         auto uncle = node->parent_->parent_->left_;
-        if (uncle->color_ == 'r') // случай 2.1
+        if (uncle->color_ == 'r')
         {
           parent->color_ = 'b';
           uncle->color_ = 'b';
@@ -134,13 +134,13 @@ namespace tarasenko
         }
         else
         {
-          if (node == parent->right_) // случай 2.2.1 // потомок внешний
+          if (node == parent->right_)
           {
             parent->color_ = 'b';
             grandpa->color_ = 'r';
             root_.leftRotation(grandpa);
           }
-          else // случай 2.2.2 // потомок внутренний
+          else
           {
             root_.rightRotation(parent);
             fixInsert(parent);
