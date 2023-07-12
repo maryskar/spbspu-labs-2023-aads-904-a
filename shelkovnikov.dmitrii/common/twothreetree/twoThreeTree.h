@@ -385,7 +385,7 @@ namespace dimkashelk
     }
     std::pair< unsigned, node_type * > getPairTraverseRnl(node_type *node) const
     {
-      if (node->size == 2)
+      if (node->getSize() == 2)
       {
         return {1, node};
       }
