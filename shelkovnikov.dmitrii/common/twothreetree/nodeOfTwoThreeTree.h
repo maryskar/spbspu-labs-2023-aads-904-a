@@ -105,6 +105,17 @@ namespace dimkashelk
           return two_->third;
         }
       }
+      void setThirdChild(node_type *node)
+      {
+        if (size_ == 1)
+        {
+          throw std::logic_error("No child!");
+        }
+        else
+        {
+          two_->third = node;
+        }
+      }
       std::pair< const Key, Value > &getData(unsigned ind_)
       {
         if (size_ == 1)
