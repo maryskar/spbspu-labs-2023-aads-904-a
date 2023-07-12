@@ -1,6 +1,51 @@
 #include "commands.h"
 #include <iostream>
 using namespace std::placeholders;
+namespace
+{
+  using dict_ref = romanovich::dict_type &;
+  using const_dict_ref = const romanovich::dict_type &;
+  struct ComplementOperation
+  {
+    void operator()(dict_ref newDict, const_dict_ref firstDict, const_dict_ref secondDict) const
+    {
+      for (const auto &entry: firstDict)
+      {
+        if (secondDict.count(entry.first) == 0)
+        {
+          newDict[entry.first] = entry.second;
+        }
+      }
+    }
+  };
+  struct IntersectOperation
+  {
+    void operator()(dict_ref newDict, const_dict_ref firstDict, const_dict_ref secondDict) const
+    {
+      for (const auto &entry: firstDict)
+      {
+        if (secondDict.count(entry.first) > 0)
+        {
+          newDict[entry.first] = entry.second;
+        }
+      }
+    }
+  };
+  struct UnionOperation
+  {
+    void operator()(dict_ref newDict, const_dict_ref firstDict, const_dict_ref secondDict) const
+    {
+      newDict = firstDict;
+      for (const auto &entry: secondDict)
+      {
+        if (newDict.count(entry.first) == 0)
+        {
+          newDict[entry.first] = entry.second;
+        }
+      }
+    }
+  };
+}
 namespace romanovich
 {
   std::unordered_map< std::string, CommandHandler > createCommandDictionary(container_type &dictionary)
@@ -11,10 +56,34 @@ namespace romanovich
     std::string unionCall = "union";
     std::unordered_map< std::string, CommandHandler > commands;
     commands[printCall] = std::bind(printCommand, _1, _2, std::ref(dictionary));
-    commands[complementCall] = std::bind(complementCommand, _1, _2, std::ref(dictionary));
-    commands[intersectCall] = std::bind(intersectCommand, _1, _2, std::ref(dictionary));
-    commands[unionCall] = std::bind(unionCommand, _1, _2, std::ref(dictionary));
+    commands[complementCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), ComplementOperation());
+    commands[intersectCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), IntersectOperation());
+    commands[unionCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), UnionOperation());
     return commands;
+  }
+  void performCommand(std::istream &in, std::ostream &out, container_type &dictionary,
+                      const std::function< void(dict_type &, const dict_type &, const dict_type &) > &operation)
+  {
+    std::string newDictName, dictName1, dictName2;
+    in >> newDictName >> dictName1 >> dictName2;
+    if (!in)
+    {
+      throw std::runtime_error("Error while reading command arguments.");
+    }
+    if (dictionary.count(dictName1) == 0 && dictionary.count(dictName2) == 0)
+    {
+      throw std::runtime_error("Error: both dictionaries not found.");
+    }
+    if (dictionary.count(dictName1) == 0 || dictionary.count(dictName2) == 0)
+    {
+      std::string errDictName = dictionary.count(dictName1) == 0 ? dictName1 : dictName2;
+      throw std::runtime_error("Error: dictionary \"" + errDictName + "\" not found.");
+    }
+    const auto &dict1 = dictionary[dictName1];
+    const auto &dict2 = dictionary[dictName2];
+    dict_type newDict;
+    operation(newDict, dict1, dict2);
+    dictionary[newDictName] = newDict;
   }
   void printCommand(std::istream &in, std::ostream &out, container_type &dictionary)
   {
@@ -44,62 +113,6 @@ namespace romanovich
     else
     {
       throw std::runtime_error("Error: dictionary not found.");
-    }
-  }
-  void complementCommand(std::istream &in, std::ostream &out, container_type &dictionary)
-  {
-    if (out)
-    {
-    }
-    std::string newDictName, dictName1, dictName2;
-    in >> newDictName >> dictName1 >> dictName2;
-    if (!in)
-    {
-      throw std::runtime_error("Error while reading command arguments.");
-    }
-    if (dictionary.count(dictName1) == 0 && dictionary.count(dictName2) == 0)
-    {
-      throw std::runtime_error("Error: both dictionaries not found.");
-    }
-    if (dictionary.count(dictName1) == 0 || dictionary.count(dictName2) == 0)
-    {
-      std::string errDictName = dictionary.count(dictName1) == 0 ? dictName1 : dictName2;
-      throw std::runtime_error("Error: dictionary \"" + errDictName + "\" not found.");
-    }
-    const auto &dict1 = dictionary[dictName1];
-    const auto &dict2 = dictionary[dictName2];
-    dict_type newDict;
-    for (const auto &entry: dict1)
-    {
-      if (dict2.count(entry.first) == 0)
-      {
-        newDict[entry.first] = entry.second;
-      }
-    }
-    dictionary[newDictName] = newDict;
-  }
-  void intersectCommand(std::istream &in, std::ostream &out, container_type &dictionary)
-  {
-    if (out)
-    {
-    }
-    if (in)
-    {
-    }
-    if (dictionary.empty())
-    {
-    }
-  }
-  void unionCommand(std::istream &in, std::ostream &out, container_type &dictionary)
-  {
-    if (out)
-    {
-    }
-    if (in)
-    {
-    }
-    if (dictionary.empty())
-    {
     }
   }
 }

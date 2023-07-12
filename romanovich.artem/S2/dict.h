@@ -262,7 +262,11 @@ namespace romanovich
   template< typename InputIt >
   void Dictionary< Key, Value, Compare >::insert(InputIt first, InputIt last)
   {
-    data_.insert_after(data_.before_begin(), first, last);
+    while (first != last)
+    {
+      insert(*first);
+      ++first;
+    }
   }
   template< typename Key, typename Value, typename Compare >
   template< typename P >
