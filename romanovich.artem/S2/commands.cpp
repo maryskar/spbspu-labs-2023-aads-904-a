@@ -48,16 +48,23 @@ namespace romanovich
   }
   void complementCommand(std::istream &in, std::ostream &out, container_type &dictionary)
   {
-    if (out){}
+    if (out)
+    {
+    }
     std::string newDictName, dictName1, dictName2;
     in >> newDictName >> dictName1 >> dictName2;
     if (!in)
     {
       throw std::runtime_error("Error while reading command arguments.");
     }
+    if (dictionary.count(dictName1) == 0 && dictionary.count(dictName2) == 0)
+    {
+      throw std::runtime_error("Error: both dictionaries not found.");
+    }
     if (dictionary.count(dictName1) == 0 || dictionary.count(dictName2) == 0)
     {
-      throw std::runtime_error("Error: dictionary not found.");
+      std::string errDictName = dictionary.count(dictName1) == 0 ? dictName1 : dictName2;
+      throw std::runtime_error("Error: dictionary \"" + errDictName + "\" not found.");
     }
     const auto &dict1 = dictionary[dictName1];
     const auto &dict2 = dictionary[dictName2];
@@ -73,14 +80,26 @@ namespace romanovich
   }
   void intersectCommand(std::istream &in, std::ostream &out, container_type &dictionary)
   {
-    if (out){}
-    if (in){}
-    if (dictionary.empty()){}
+    if (out)
+    {
+    }
+    if (in)
+    {
+    }
+    if (dictionary.empty())
+    {
+    }
   }
   void unionCommand(std::istream &in, std::ostream &out, container_type &dictionary)
   {
-    if (out){}
-    if (in){}
-    if (dictionary.empty()){}
+    if (out)
+    {
+    }
+    if (in)
+    {
+    }
+    if (dictionary.empty())
+    {
+    }
   }
 }

@@ -1,8 +1,17 @@
 #ifndef DICT_H
 #define DICT_H
 #include <functional>
+#include <iostream>
 #include "common/listnode.h"
 #include "forwardlist.h"
+namespace
+{
+  template< typename Key, typename Compare >
+  bool areEqualKeys(const Key &lhs, const Key &rhs)
+  {
+    return !Compare{}(lhs, rhs) && !Compare{}(rhs, lhs);
+  }
+}
 template< typename Key, typename Value, typename Compare = std::less< Key >>
 class Dictionary
 {
@@ -68,7 +77,6 @@ public:
 private:
   Compare comp_;
   Value &insertValue(const Key &key);
-  bool areEqualKeys(const Key &lhs, const Key &rhs) const;
   std::pair< iterator, iterator > search(iterator start, const Key &key, std::function< bool(Key, Key) > function);
   iterator push(const value_type &value);
 };
@@ -86,9 +94,9 @@ Dictionary< Key, Value, Compare >::push(const Dictionary::value_type &value)
     }
     prev = it;
   }
-  if (prev != data_.before_begin() && areEqualKeys(prev->first, value.first))
+  if (prev != data_.before_begin() && areEqualKeys< Key, Compare >(prev->first, value.first))
   {
-    (*prev).second = value.second;
+    prev->second = value.second;
   }
   else
   {
@@ -149,7 +157,7 @@ size_t Dictionary< Key, Value, Compare >::count(const Key &key) const
   const_iterator endIt = data_.cend();
   while (it != endIt)
   {
-    if (areEqualKeys(key, it->first))
+    if (areEqualKeys< Key, Compare >(key, it->first))
     {
       ++count;
     }
@@ -169,7 +177,7 @@ typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Com
   iterator it = data_.begin();
   while (it != data_.end())
   {
-    if (!comp_(it->first, key) && !comp_(key, it->first))
+    if (areEqualKeys< Key, Compare >(it->first, key))
     {
       return it;
     }
@@ -231,8 +239,16 @@ template< typename... Args >
 std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool >
 Dictionary< Key, Value, Compare >::emplace(Args &&... args)
 {
-  auto it = push(value_type(std::forward< Args >(args)...));
-  return std::make_pair(it, true);
+  // return data_.emplace_front(value_type(std::forward< Args >(args)...));
+  try
+  {
+    auto it = push(std::forward< value_type >(value_type(args...)));
+    return {it, true};
+  }
+  catch (...)
+  {
+    return {begin(), false};
+  }
 }
 template< typename Key, typename Value, typename Compare >
 void Dictionary< Key, Value, Compare >::insert(std::initializer_list< value_type > initializerList)
@@ -265,17 +281,12 @@ Dictionary< Key, Value, Compare >::insert(P &&value)
 {
   value_type tmpValue(std::forward< P >(value));
   iterator it = lower_bound(tmpValue.first);
-  if (it != end() && areEqualKeys(tmpValue.first, it->first))
+  if (it != end() && areEqualKeys< Key, Compare >(tmpValue.first, it->first))
   {
     return std::make_pair(it, false);
   }
   iterator insertedIt = data_.emplace_front(std::move(tmpValue));
   return std::make_pair(insertedIt, true);
-}
-template< typename Key, typename Value, typename Compare >
-bool Dictionary< Key, Value, Compare >::areEqualKeys(const Key &lhs, const Key &rhs) const
-{
-  return !comp_(lhs, rhs) && !comp_(rhs, lhs);
 }
 template< typename Key, typename Value, typename Compare >
 size_t Dictionary< Key, Value, Compare >::erase(const Key &key)
@@ -284,7 +295,7 @@ size_t Dictionary< Key, Value, Compare >::erase(const Key &key)
   iterator it = data_.begin();
   while (it != data_.end())
   {
-    if (!areEqualKeys(it->first, key))
+    if (!areEqualKeys< Key, Compare >(it->first, key))
     {
       ++it;
     }
@@ -427,19 +438,28 @@ Value &Dictionary< Key, Value, Compare >::insertValue(const Key &key)
   catch (const std::out_of_range &)
   {
     value_type newValue(key, Value());
-    auto insertionResult = data_.emplace_after(data_.cbefore_begin(), std::move(newValue));
+    auto insertionResult = data_.emplace_after(data_.cbefore_begin(), {key, Value()});
     return insertionResult->second;
   }
 }
 template< typename Key, typename Value, typename Compare >
 Value &Dictionary< Key, Value, Compare >::operator[](const Key &key)
 {
-  return insertValue(key);
+  auto res = search(data_.before_begin(), key, areEqualKeys< Key, Compare >);
+  if (res.second == end())
+  {
+    value_type value_to_insert = {key, Value()};
+    auto insert_res = data_.insert_after(res.first, value_to_insert);
+    return insert_res->second;
+  }
+  return res.second->second;
+  //return insertValue(key);
 }
 template< typename Key, typename Value, typename Compare >
 Value &Dictionary< Key, Value, Compare >::operator[](Key &&key)
 {
-  return insertValue(std::forward< Key >(key));
+  return operator[](key);
+  //return insertValue(std::forward< Key >(key));
 }
 template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(
