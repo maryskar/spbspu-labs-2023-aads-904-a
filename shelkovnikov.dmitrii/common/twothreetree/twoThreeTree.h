@@ -463,7 +463,6 @@ namespace dimkashelk
       }
       return split(p);
     }
-    // TODO
     node_type *split(node_type *item)
     {
       if (!to_insert_)
@@ -472,47 +471,46 @@ namespace dimkashelk
       }
       auto *x = getNewNodeFromLeftChild();
       auto *y = getNewNodeFromRightChild();
-      if (x->first)
+      if (x->getFirstChild())
       {
-        x->first->parent = x;
+        x->getFirstChild()->setParent(x);
       }
-      if (x->second)
+      if (x->getSecondChild())
       {
-        x->second->parent = x;
+        x->getSecondChild()->setParent(x);
       }
-      if (y->first)
+      if (y->getFirstChild())
       {
-        y->first->parent = y;
+        y->getFirstChild()->setParent(y);
       }
-      if (y->second)
+      if (y->getSecondChild())
       {
-        y->second->parent = y;
+        y->getSecondChild()->setParent(y);
       }
       if (to_insert_->parent)
       {
         auto *parent = to_insert_->parent;
-        if (parent->size == 2)
+        if (parent->getSize() == 2)
         {
-          node_to_insert *new_node = new node_to_insert(parent);
-          new_node->insert(to_insert_->data[1].first, to_insert_->data[1].second);
+          node_to_insert *new_node = new node_to_insert(parent, to_insert_->data[1].first, to_insert_->data[1].second);
           if (details::isEqual< Key, Compare >(new_node->data[0].first, to_insert_->data[1].first))
           {
             new_node->first = x;
             new_node->second = y;
-            new_node->third = item->first;
-            new_node->fourth = item->second;
+            new_node->third = item->getFirstChild();
+            new_node->fourth = item->getSecondChild();
           }
           else if (details::isEqual< Key, Compare >(new_node->data[1].first, to_insert_->data[1].first))
           {
-            new_node->first = item->first;
+            new_node->first = item->getFirstChild();
             new_node->second = x;
             new_node->third = y;
-            new_node->fourth = item->second;
+            new_node->fourth = item->getSecondChild();
           }
           else if (details::isEqual< Key, Compare >(new_node->data[2].first, to_insert_->data[1].first))
           {
-            new_node->first = item->first;
-            new_node->second = item->second;
+            new_node->first = item->getFirstChild();
+            new_node->second = item->getSecondChild();
             new_node->third = x;
             new_node->fourth = y;
           }
@@ -521,17 +519,24 @@ namespace dimkashelk
         }
         else
         {
-          parent->insert(to_insert_->data[1].first, to_insert_->data[1].second);
-          if (parent->first == item)
+          if (compare_(parent->getData(0), to_insert_->data[1].first))
           {
-            parent->third = item->parent->second;
-            parent->second = y;
-            parent->first = x;
+            parent->insert(to_insert_->data[1].first, to_insert_->data[1].second);
           }
-          else if (parent->second == item)
+          else
           {
-            item->parent->third = y;
-            item->parent->second = x;
+            parent->insertFront(to_insert_->data[1].first, to_insert_->data[1].second);
+          }
+          if (parent->getFirstChild() == item)
+          {
+            parent->setThirdChild(item->getParent()->getSecondChild());
+            parent->setSecondChild(y);
+            parent->setFirstChild(x);
+          }
+          else if (parent->getSecondChild() == item)
+          {
+            item->getParent()->setThirdChild(y);
+            item->getParent()->setSecondChild(x);
             delete item;
           }
           delete to_insert_;
@@ -541,10 +546,10 @@ namespace dimkashelk
       else
       {
         node_type *parent = new node_type(to_insert_->data[1].first, to_insert_->data[1].second);
-        parent->first = x;
-        parent->second = y;
-        x->parent = parent;
-        y->parent = parent;
+        parent->setFirstChild(x);
+        parent->setSecondChild(y);
+        x->setParent(parent);
+        y->setParent(parent);
         delete item;
         delete to_insert_;
         to_insert_ = nullptr;
