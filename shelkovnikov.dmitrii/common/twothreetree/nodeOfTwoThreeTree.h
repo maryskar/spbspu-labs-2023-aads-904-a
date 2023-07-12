@@ -42,13 +42,7 @@ namespace dimkashelk
       }
       void insert(const Key &k, const Value &v)
       {
-        if (size_ == 2)
-        {
-          throw std::logic_error("No node with size more 2");
-        }
-        two_ = new NodeOfTwoThreeTreeTwo< Key, Value >(one_->data.first, one_->data.second, k, v);
-        delete one_;
-        size_ = 2;
+        updateNodes(one_->data.first, one_->data.second, k, v);
       }
       void insertFront(const Key &k, const Value &v)
       {
