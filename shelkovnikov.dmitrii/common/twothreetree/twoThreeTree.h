@@ -247,7 +247,7 @@ namespace dimkashelk
         {
           std::pair< unsigned, node_type * > &p = nodeStack.front();
           node = p.second;
-          f(p.second->getData(p.first));
+          f(p.second->getData(p.first).second);
           if (p.second->getSize() == 2)
           {
             if (p.first == 0)
@@ -291,7 +291,7 @@ namespace dimkashelk
         {
           std::pair< unsigned, node_type * > &p = nodeStack.front();
           node = p.second;
-          f(p.second->getData(p.first));
+          f(p.second->getData(p.first).second);
           if (p.second->getSize() == 2)
           {
             if (p.first == 1)
@@ -519,7 +519,7 @@ namespace dimkashelk
         }
         else
         {
-          if (compare_(parent->getData(0), to_insert_->data[1].first))
+          if (compare_(parent->getData(0).first, to_insert_->data[1].first))
           {
             parent->insert(to_insert_->data[1].first, to_insert_->data[1].second);
           }
@@ -563,21 +563,21 @@ namespace dimkashelk
       {
         return nullptr;
       }
-      if (node->contains(k))
+      if (containsInNode(k, node))
       {
         return node;
       }
-      else if (compare_(k, node->data[0].first))
+      else if (compare_(k, node->getData(0).first))
       {
-        return search(node->first, k);
+        return search(node->getFirstChild(), k);
       }
-      else if ((node->size == 2 && compare_(k, node->data[1].first)) || node->size == 1)
+      else if ((node->getSize() == 2 && compare_(k, node->getData(1).first)) || node->getSize() == 1)
       {
-        return search(node->second, k);
+        return search(node->getSecondChild(), k);
       }
-      else if (node->size == 2)
+      else if (node->getSize() == 2)
       {
-        return search(node->third, k);
+        return search(node->getThirdChild(), k);
       }
       return nullptr;
     }
