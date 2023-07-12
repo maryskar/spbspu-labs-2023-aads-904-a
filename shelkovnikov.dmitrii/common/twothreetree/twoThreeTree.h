@@ -414,27 +414,28 @@ namespace dimkashelk
       bool isEqualSecond = details::isEqual< Key, Compare >(k, twoNode->data[1].first);
       return isEqualFirst || isEqualSecond;
     }
-    node_type *insert(node_type *p, const Key &k, const Value &v) {
+    node_type *insert(node_type *p, const Key &k, const Value &v)
+    {
       if (!p)
       {
         return new node_type(k, v);
       }
-      if (p->contains(k))
+      if (containsInNode(k, p))
       {
-        if (details::isEqual< Key, Compare >(p->data[0].first, k))
+        if (details::isEqual< Key, Compare >(p->getData(0).first, k))
         {
-          p->data[0].second = v;
+          p->getData(0).second = v;
         }
-        else if (details::isEqual< Key, Compare >(p->data[1].first, k))
+        else if (details::isEqual< Key, Compare >(p->getData(1).first, k))
         {
-          p->data[1].second = v;
+          p->getData(1).second = v;
         }
         was_updated_while_insert_ = true;
         return p;
       }
       if (p->isList())
       {
-        if (p->size < 2)
+        if (p->getSize() < 2)
         {
           p->insert(k, v);
           return p;
@@ -445,21 +446,20 @@ namespace dimkashelk
           {
             delete to_insert_;
           }
-          to_insert_ = new node_to_insert(p);
-          to_insert_->insert(k, v);
+          to_insert_ = new node_to_insert(p, k, v);
         }
       }
-      else if (compare_(k, p->data[0].first) && details::isNotEqual< Key, Compare >(p->data[0].first, k))
+      else if (compare_(k, p->getData(0).first))
       {
-        insert(p->first, k, v);
+        insert(p->getFirstChild(), k, v);
       }
-      else if (((p->size == 1) || ((p->size == 2) && compare_(k, p->data[1].first))))
+      else if (((p->getSize() == 1) || ((p->getSize() == 2) && compare_(k, p->getData(1).first))))
       {
-        insert(p->second, k, v);
+        insert(p->getSecondChild(), k, v);
       }
-      else if (details::isNotEqual< Key, Compare >(p->data[2].first, k))
+      else
       {
-        insert(p->third, k, v);
+        insert(p->getThirdChild(), k, v);
       }
       return split(p);
     }
