@@ -1,6 +1,5 @@
 #ifndef NODE_H
 #define NODE_H
-#include <stdexcept>
 namespace details
 {
   template< typename T >
