@@ -8,16 +8,19 @@ namespace dimkashelk
   template< typename Key, typename Value, typename Compare >
   class TwoThreeTree;
   template< typename Key, typename Value, typename Compare >
+  class TwoThreeTreeIterator;
+  template< typename Key, typename Value, typename Compare >
   class TwoThreeTreeReverseIterator: public std::iterator< std::bidirectional_iterator_tag, std::pair< Key, Value > >
   {
-  friend class TwoThreeTree< Key, Value, Compare >;
-  using node_type = details::NodeOfTwoThreeTree< Key, Value, Compare >;
+  friend class TwoThreeTree< const Key, Value, Compare >;
+  friend class TwoThreeTreeIterator< const Key, Value, Compare >;
+  using node_type = details::NodeOfTwoThreeTree< const Key, Value >;
   public:
     using iterator_category = std::bidirectional_iterator_tag;
     using difference_type = std::ptrdiff_t;
-    using value_type = std::pair< Key, Value >;
-    using pointer = std::pair< Key, Value >*;
-    using reference = std::pair< Key, Value >&;
+    using value_type = std::pair< const Key, Value >;
+    using pointer = std::pair< const Key, Value >*;
+    using reference = std::pair< const Key, Value >&;
     TwoThreeTreeReverseIterator &operator++()
     {
       iter_--;
@@ -25,7 +28,7 @@ namespace dimkashelk
     }
     TwoThreeTreeReverseIterator operator++(int)
     {
-      TwoThreeTreeReverseIterator< Key, Value, Compare > result(*this);
+      TwoThreeTreeReverseIterator< const Key, Value, Compare > result(*this);
       iter_--;
       return result;
     }
@@ -36,7 +39,7 @@ namespace dimkashelk
     }
     TwoThreeTreeReverseIterator operator--(int)
     {
-      TwoThreeTreeReverseIterator< Key, Value, Compare > result(*this);
+      TwoThreeTreeReverseIterator< const Key, Value, Compare > result(*this);
       iter_++;
       return result;
     }
@@ -58,7 +61,7 @@ namespace dimkashelk
     }
   private:
     TwoThreeTreeIterator< Key, Value, Compare > iter_;
-    TwoThreeTreeReverseIterator(node_type *node, const dimkashelk::TwoThreeTree< Key, Value, Compare > *parent):
+    TwoThreeTreeReverseIterator(node_type *node, const dimkashelk::TwoThreeTree< const Key, Value, Compare > *parent):
       iter_(node, parent)
     {};
   };

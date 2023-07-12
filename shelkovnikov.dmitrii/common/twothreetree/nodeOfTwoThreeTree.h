@@ -1,86 +1,140 @@
 #ifndef SPBSPU_LABS_2023_AADS_904_A_NODEOFTWOTHREETREE_H
 #define SPBSPU_LABS_2023_AADS_904_A_NODEOFTWOTHREETREE_H
-#include <algorithm>
-#include "math_functions.h"
+#include "nodeOfTwoThreeTreeOne.h"
+#include "nodeOfTwoThreeTreeTwo.h"
 namespace dimkashelk
 {
   namespace details
   {
-    template < typename Key, typename Value, typename Compare >
-    struct NodeOfTwoThreeTree
+    template< typename Key, typename Value >
+    class NodeOfTwoThreeTreeOne;
+    template< typename Key, typename Value >
+    class NodeOfTwoThreeTreeTwo;
+    template< typename Key, typename Value >
+    class NodeOfTwoThreeTree
     {
     public:
-      using node_type = NodeOfTwoThreeTree< Key, Value, Compare >;
-      std::pair< Key, Value > data[2];
-      unsigned size;
-      node_type *first;
-      node_type *second;
-      node_type *third;
-      node_type *parent;
-      NodeOfTwoThreeTree():
-        data{{Key(), Value()}, {Key(), Value()}},
-        size(0),
-        first(nullptr),
-        second(nullptr),
-        third(nullptr),
-        parent(nullptr),
-        compare_(Compare())
-      {}
       NodeOfTwoThreeTree(const Key &k, const Value &v):
-        data{{k, v}, {Key(), Value()}},
-        size(1),
-        first(nullptr),
-        second(nullptr),
-        third(nullptr),
-        parent(nullptr),
-        compare_(Compare())
+        one_(new NodeOfTwoThreeTreeOne< Key, Value >(k, v)),
+        two_(nullptr),
+        size_(1)
       {}
-      bool isList() const
+      NodeOfTwoThreeTree(const Key &k1, const Value &v1, const Key &k2, const Value &v2):
+        one_(nullptr),
+        two_(new NodeOfTwoThreeTreeTwo< Key, Value >(k1, v1, k2, v2)),
+        size_(2)
+      {}
+      ~NodeOfTwoThreeTree()
       {
-        return (first == nullptr) && (second == nullptr) && (third == nullptr);
+        if (one_)
+        {
+          delete one_;
+        }
+        if (two_)
+        {
+          delete two_;
+        }
+      }
+      unsigned getSize()
+      {
+        return size_;
       }
       void insert(const Key &k, const Value &v)
       {
-        data[size] = {k, v};
-        size++;
-        sort();
-      }
-      node_type *getLastChildren()
-      {
-        return (third)? third: (second)? second: first;
-      }
-      bool contains(const Key &k)
-      {
-        for (unsigned int i = 0; i < size; ++i)
+        if (size_ == 2)
         {
-          if (details::isEqual< Key, Compare >(data[i].first, k))
+          throw std::logic_error("No node with size more 2");
+        }
+        two_ = new NodeOfTwoThreeTreeTwo< Key, Value >(one_->data.first, one_->data.second, k, v);
+        delete one_;
+        size_ = 2;
+      }
+      NodeOfTwoThreeTree< Key, Value > *getFirstChild()
+      {
+        if (size_ == 1)
+        {
+          return one_->first;
+        }
+        else
+        {
+          return two_->first;
+        }
+      }
+      NodeOfTwoThreeTree< Key, Value > *getSecondChild()
+      {
+        if (size_ == 1)
+        {
+          return one_->second;
+        }
+        else
+        {
+          return two_->second;
+        }
+      }
+      NodeOfTwoThreeTree< Key, Value > *getThirdChild()
+      {
+        if (size_ == 1)
+        {
+          return nullptr;
+        }
+        else
+        {
+          return two_->third;
+        }
+      }
+      std::pair< const Key, Value > &getData(unsigned ind_)
+      {
+        if (size_ == 1)
+        {
+          if (ind_ != 0)
           {
-            return true;
+            throw std::out_of_range("No element");
           }
+          return one_->data;
         }
-        return false;
+        else
+        {
+          if (ind_ > 1)
+          {
+            throw std::out_of_range("No element");
+          }
+          return two_->data[ind_];
+        }
       }
-      void removeFromNode(Key k)
+      NodeOfTwoThreeTree< Key, Value > *getParent()
       {
-        if (size >= 1 && details::isEqual< Key, Compare >(data[0].first, k))
+        if (size_ == 1)
         {
-          data[0] = data[1];
-          size--;
+          return one_->parent;
         }
-        else if (size == 2 && details::isEqual< Key, Compare >(data[1].first, k))
+        else
         {
-          size--;
+          return two_->parent;
         }
+      }
+      NodeOfTwoThreeTree< Key, Value > *getLastChild()
+      {
+        if (size_ == 1)
+        {
+          return one_->getLastChildren();
+        }
+        else
+        {
+          return two_->getLastChildren();
+        }
+      }
+      NodeOfTwoThreeTreeOne< Key, Value > *getOneNode()
+      {
+        return one_;
+      }
+      NodeOfTwoThreeTreeTwo< Key, Value > *getTwoNode()
+      {
+        return two_;
       }
     private:
-      Compare compare_;
-      void sort()
-      {
-        if (!compare_(data[0].first, data[1].first))
-        {
-          std::swap(data[0], data[1]);
-        }
-      }
+      NodeOfTwoThreeTreeOne< Key, Value > *one_;
+      NodeOfTwoThreeTreeTwo< Key, Value > *two_;
+      unsigned size_;
     };
   }
 }

@@ -5,21 +5,27 @@
 #include <iterator>
 #include "nodeToInsert.h"
 #include "nodeOfTwoThreeTree.h"
+#include "nodeOfTwoThreeTreeOne.h"
+#include "nodeOfTwoThreeTreeTwo.h"
 #include "twoThreeTreeIterator.h"
 #include "twoThreeTreeIteratorConst.h"
 #include "twoThreeTreeReverseIterator.h"
 #include "twoThreeTreeReverseIteratorConst.h"
 #include "math_functions.h"
+#include "stack.h"
+#include "queue.h"
 namespace dimkashelk
 {
   template< typename Key, typename Value, typename Compare >
   class TwoThreeTree
   {
-  using node_to_insert = details::NodeToInsert< Key, Value, Compare >;
-  using node_type = details::NodeOfTwoThreeTree< Key, Value, Compare >;
+  using node_to_insert = details::NodeToInsert< const Key, Value >;
+  using node_type = details::NodeOfTwoThreeTree< const Key, Value >;
+  using node_one_type = details::NodeOfTwoThreeTreeOne< const Key, Value >;
+  using node_two_type = details::NodeOfTwoThreeTreeTwo< const Key, Value >;
   using two_three_tree_type = TwoThreeTree< Key, Value, Compare >;
-  using reference = std::pair< Key, Value >&;
-  using const_reference = const std::pair< Key, Value >&;
+  using reference = std::pair< const Key, Value >&;
+  using const_reference = const reference&;
   friend class TwoThreeTreeIterator< Key, Value, Compare >;
   friend class TwoThreeTreeIteratorConst< Key, Value, Compare >;
   public:
@@ -27,14 +33,14 @@ namespace dimkashelk
     using const_iterator = dimkashelk::TwoThreeTreeIteratorConst< Key, Value, Compare >;
     using reverse_iterator = dimkashelk::TwoThreeTreeReverseIterator< Key, Value, Compare >;
     using const_reverse_iterator = dimkashelk::TwoThreeTreeReverseIteratorConst< Key, Value, Compare >;
-    using key_type = Key;
+    using key_type = const Key;
     using compare_type = Compare;
     TwoThreeTree():
       size_(0),
       was_updated_while_insert_(false),
       compare_(Compare()),
       to_insert_(nullptr),
-      fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
+      fakeNode_(static_cast< node_type * >(::operator new(sizeof(node_one_type)))),
       root_(nullptr)
     {}
     TwoThreeTree(const two_three_tree_type &tree):
@@ -42,7 +48,7 @@ namespace dimkashelk
       was_updated_while_insert_(false),
       compare_(Compare()),
       to_insert_(nullptr),
-      fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
+      fakeNode_(static_cast< node_type * >(::operator new(sizeof(node_one_type)))),
       root_(copy(tree))
     {}
     TwoThreeTree(two_three_tree_type &&tree):
@@ -50,7 +56,7 @@ namespace dimkashelk
       was_updated_while_insert_(false),
       compare_(Compare()),
       to_insert_(tree.to_insert_),
-      fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_type)))),
+      fakeNode_(static_cast< node_type* >(::operator new(sizeof(node_one_type)))),
       root_(tree.root_)
     {
       tree.root_ = nullptr;
@@ -193,13 +199,25 @@ namespace dimkashelk
       node_type *node = search(root_, k);
       if (node)
       {
-        if (details::isEqual< Key, Compare >(k, node->data[0].first))
+        if (node->getSize() == 2)
         {
-          return node->data[0].second;
+          auto *twoNode = node->getTwoNode();
+          if (details::isEqual< Key, Compare >(k, twoNode->data[0].first))
+          {
+            return twoNode->data[0].second;
+          }
+          else if (details::isEqual< Key, Compare >(k, twoNode->data[1].first))
+          {
+            return twoNode->data[1].second;
+          }
         }
-        else if (node->size == 2 && details::isEqual< Key, Compare >(k, node->data[1].first))
+        else
         {
-          return node->data[1].second;
+          auto *oneNode = node->getOneNode();
+          if (details::isEqual< Key, Compare >(k, oneNode->data.first))
+          {
+            return oneNode->data.second;
+          }
         }
       }
       throw std::logic_error("No element");
@@ -207,9 +225,130 @@ namespace dimkashelk
     bool contains(const Key &k) const
     {
       node_type *node = search(root_, k);
-      bool isEqualFirst = details::isEqual< Key, Compare >(k, node->data[0].first);
-      bool isEqualSecond = (node->size == 2 && k == details::isEqual< Key, Compare >(k, node->data[1].first));
-      return node && (isEqualFirst || isEqualSecond);
+      if (node->getSize() == 1)
+      {
+        return details::isEqual< Key, Compare >(k, node->getOneNode()->data.first);
+      }
+      auto *twoNode = node->getTwoNode();
+      bool isEqualFirst = details::isEqual< Key, Compare >(k, twoNode->data[0].first);
+      bool isEqualSecond = details::isEqual< Key, Compare >(k, twoNode->data[1].first);
+      return isEqualFirst || isEqualSecond;
+    }
+    template< typename F >
+    F &traverse_lnr(F &f) const
+    {
+      if (empty())
+      {
+        throw std::logic_error("Empty tree");
+      }
+      Stack< std::pair< unsigned, node_type * > > nodeStack;
+      node_type *node = root_;
+      while (!nodeStack.empty() || node != nullptr)
+      {
+        if (node != nullptr)
+        {
+          nodeStack.pushFront({0, node});
+          node = node->getFirstChild();
+        }
+        else
+        {
+          std::pair< unsigned, node_type * > &p = nodeStack.front();
+          node = p.second;
+          f(p.second->getData(p.first));
+          if (p.second->getSize() == 2)
+          {
+            if (p.first == 0)
+            {
+              nodeStack.popFront();
+              nodeStack.pushFront({1, node});
+              node = node->getSecondChild();
+              continue;
+            }
+            else
+            {
+              node = node->getThirdChild();
+            }
+          }
+          else
+          {
+            node = node->getSecondChild();
+          }
+          nodeStack.popFront();
+        }
+      }
+      return f;
+    }
+    template< typename F >
+    F &traverse_rnl(F &f) const
+    {
+      if (empty())
+      {
+        throw std::logic_error("Empty tree");
+      }
+      Stack< std::pair< unsigned, node_type * > > nodeStack;
+      node_type *node = root_;
+      while (!nodeStack.empty() || node != nullptr)
+      {
+        if (node != nullptr)
+        {
+          nodeStack.pushFront(getPairTraverseRnl(node));
+          node = node->getFirstChild();
+        }
+        else
+        {
+          std::pair< unsigned, node_type * > &p = nodeStack.front();
+          node = p.second;
+          f(p.second->getData(p.first));
+          if (p.second->getSize() == 2)
+          {
+            if (p.first == 1)
+            {
+              nodeStack.popFront();
+              nodeStack.pushFront({0, node});
+              node = node->getSecondChild();
+              continue;
+            }
+            else
+            {
+              node = node->getFirstChild();
+            }
+          }
+          else
+          {
+            node = node->getFirstChild();
+          }
+          nodeStack.popFront();
+        }
+      }
+      return f;
+    }
+    template< typename F >
+    F &traverse_breadth(F &f) const
+    {
+      if (empty())
+      {
+        throw std::logic_error("Empty tree");
+      }
+      Queue< node_type * > queue;
+      queue.push(root_);
+      while (!queue.empty()) {
+        node_type *node = queue.front();
+        queue.popFront();
+        if (node->getSize() == 2)
+        {
+          auto *twoNode = node->getTwoNode();
+          f(twoNode->data[0]);
+          f(twoNode->data[1]);
+          addChildsToQueue(queue, twoNode);
+        }
+        else
+        {
+          auto *oneNode = node->getOneNode();
+          f(oneNode->data);
+          addChildsToQueue(queue, oneNode);
+        }
+      }
+      return f;
     }
   private:
     size_t size_;
@@ -218,6 +357,43 @@ namespace dimkashelk
     node_to_insert *to_insert_;
     node_type *fakeNode_;
     node_type *root_;
+    void addChildsToQueue(Queue< node_type * > &queue, node_two_type *node)
+    {
+      if (node->first)
+      {
+        queue.push(node->first);
+      }
+      if (node->second)
+      {
+        queue.push(node->second);
+      }
+      if (node->third)
+      {
+        queue.push(node->third);
+      }
+    }
+    void addChildsToQueue(Queue< node_type * > &queue, node_one_type *node)
+    {
+      if (node->first)
+      {
+        queue.push(node->first);
+      }
+      if (node->second)
+      {
+        queue.push(node->second);
+      }
+    }
+    std::pair< unsigned, node_type * > getPairTraverseRnl(node_type *node) const
+    {
+      if (node->size == 2)
+      {
+        return {1, node};
+      }
+      else
+      {
+        return {0, node};
+      }
+    }
     node_type *getNewNodeFromLeftChild()
     {
       node_type *new_node = new node_type(to_insert_->data[0].first, to_insert_->data[0].second);
