@@ -47,7 +47,6 @@ namespace romanovich
     const_iterator clast() const noexcept;
     bool empty() const noexcept;
     void clear() noexcept;
-    size_t size() const noexcept;
     template< typename P >
     std::pair< iterator, bool > insert(P &&value);
     iterator insert(const_iterator pos, const value_type &value);
@@ -129,11 +128,6 @@ namespace romanovich
       }
       return {prev, curr};
     }
-  }
-  template< typename Key, typename Value, typename Compare >
-  size_t Dictionary< Key, Value, Compare >::size() const noexcept
-  {
-    return data_.size_;
   }
   template< typename Key, typename Value, typename Compare >
   Dictionary< Key, Value, Compare >::Dictionary(std::initializer_list< value_type > other):

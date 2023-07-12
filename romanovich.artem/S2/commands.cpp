@@ -93,14 +93,7 @@ namespace romanovich
       const auto &dict2 = dictionary[dictName2];
       dict_type newDict;
       operation(newDict, dict1, dict2);
-      if (newDict.empty())
-      {
-        printEmptyDict(out) << "\n";
-      }
-      else
-      {
-        dictionary[newDictName] = newDict;
-      }
+      dictionary[newDictName] = newDict;
     }
   }
   void printCommand(std::istream &in, std::ostream &out, container_type &dictionary)
@@ -115,16 +108,12 @@ namespace romanovich
     {
       throw std::runtime_error("Error: dictionary not found.");
     }
-    if (dictionary.empty())
-    {
-      printEmptyDict(out) << "\n";
-    }
     else
     {
       const auto &dictData = dictionary[dictName];
       if (dictData.empty())
       {
-        throw std::runtime_error("Error: empty dictionary.");
+        printEmptyDict(out) << "\n";
       }
       else
       {
