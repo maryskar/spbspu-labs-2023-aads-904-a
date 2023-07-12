@@ -146,6 +146,17 @@ namespace dimkashelk
           return two_->parent;
         }
       }
+      void setParent(node_type *node)
+      {
+        if (size_ == 1)
+        {
+          one_->parent = node;
+        }
+        else
+        {
+          two_->parent = node;
+        }
+      }
       NodeOfTwoThreeTree< Key, Value > *getLastChild()
       {
         if (size_ == 1)
