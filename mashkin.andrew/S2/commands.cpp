@@ -23,7 +23,7 @@ namespace mashkin
     }
     else
     {
-      throw std::length_error("<EMPTY>");
+      std::cout << "<INVALID COMMAND>\n";
     }
   }
 
