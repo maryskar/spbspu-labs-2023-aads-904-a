@@ -97,7 +97,10 @@ namespace romanovich
       {
         printEmptyDict(out) << "\n";
       }
-      dictionary[newDictName] = newDict;
+      else
+      {
+        dictionary[newDictName] = newDict;
+      }
     }
   }
   void printCommand(std::istream &in, std::ostream &out, container_type &dictionary)
