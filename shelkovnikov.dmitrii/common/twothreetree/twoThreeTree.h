@@ -683,234 +683,295 @@ namespace dimkashelk
       }
       return fix(leaf);
     }
+    node_type *copyPointers(node_type *copy_in, node_type *from_copy)
+    {
+      copy_in->setParent(from_copy->getParent());
+      copy_in->setFirstChild(from_copy->getFirstChild());
+      copy_in->setSecondChild(from_copy->getSecondChild());
+      copy_in->setThirdChild(from_copy->getThirdChild());
+      return copy_in;
+    }
+    node_type *copyBegin(node_type *to_copy, node_type *from_copy)
+    {
+      node_type *new_node = new node_type(to_copy->getData(0).first, to_copy->getData(0).second);
+      new_node->insert(from_copy->getData(0).first, from_copy->getData(0).second);
+      return copyPointers(new_node, to_copy);
+    }
+    node_type *copyInBeginBegin(node_type *to_copy, node_type *from_copy)
+    {
+      node_type *new_node = new node_type(from_copy->getData(0).first, from_copy->getData(0).second);
+      new_node->insert(to_copy->getData(1).first, to_copy->getData(1).second);
+      return copyPointers(new_node, to_copy);
+    }
+    node_type *copyEnd(node_type *to_copy, node_type *from_copy)
+    {
+      node_type *new_node = new node_type(to_copy->getData(0).first, to_copy->getData(0).second);
+      new_node->insert(from_copy->getData(1).first, from_copy->getData(1).second);
+      return copyPointers(new_node, to_copy);
+    }
+    node_type *copyInBeginEnd(node_type *to_copy, node_type *from_copy)
+    {
+      node_type *new_node = new node_type(from_copy->getData(0).first, to_copy->getData(0).second);
+      new_node->insert(to_copy->getData(1).first, to_copy->getData(1).second);
+      return copyPointers(new_node, to_copy);
+    }
+    node_type *copyInEndBegin(node_type *to_copy, node_type *from_copy)
+    {
+      node_type *new_node = new node_type(from_copy->getData(1).first, to_copy->getData(1).second);
+      new_node->insert(to_copy->getData(1).first, to_copy->getData(1).second);
+      return copyPointers(new_node, to_copy);
+    }
     node_type *rebalance(node_type *node)
     {
-      node_type *parent = node->parent;
-      node_type *first = parent->first;
-      node_type *second = parent->second;
-      node_type *third = parent->third;
-      if ((parent->size == 2) && (first->size < 2) && (second->size < 2) && (third->size < 2))
+      node_type *parent = node->getParent();
+      node_type *first = parent->getFirstChild();
+      node_type *second = parent->getSecondChild();
+      node_type *third = parent->getThirdChild();
+      if ((parent->getSize() == 2) && (first->getSize() < 2) && (second->getSize() < 2) && (third->getSize() < 2))
       {
         if (first == node)
         {
-          parent->first = parent->second;
-          parent->second = parent->third;
-          parent->third = nullptr;
-          parent->first->insert(parent->data[0].first, parent->data[0].second);
-          parent->first->third = parent->first->second;
-          parent->first->second = parent->first->first;
-          if (node->first != nullptr)
+          parent->setFirstChild(parent->getSecondChild());
+          parent->setSecondChild(parent->getThirdChild());
+          parent->setThirdChild(nullptr);
+          parent->getFirstChild()->insert(parent->data[0].first, parent->data[0].second);
+          parent->getFirstChild()->setThirdChild(parent->getFirstChild()->getSecondChild());
+          parent->getFirstChild()->setSecondChild(parent->getFirstChild()->getFirstChild());
+          if (node->getFirstChild() != nullptr)
           {
-            parent->first->first = node->first;
+            parent->getFirstChild()->setFirstChild(node->getFirstChild());
           }
-          else if (node->second != nullptr)
+          else if (node->getSecondChild() != nullptr)
           {
-            parent->first->first = node->second;
+            parent->getFirstChild()->setFirstChild(node->getSecondChild());
           }
-          if (parent->first->first != nullptr)
+          if (parent->getFirstChild()->getFirstChild() != nullptr)
           {
-            parent->first->first->parent = parent->first;
+            parent->getFirstChild()->getFirstChild()->setParent(parent->getFirstChild());
           }
-          parent->removeFromNode(parent->data[0].first);
+          removeFromNode(parent, parent->getData(0).first);
           delete first;
         }
         else if (second == node)
         {
           first->insert(parent->data[0].first, parent->data[0].second);
-          parent->removeFromNode(parent->data[0].first);
-          if (node->first != nullptr)
+          removeFromNode(parent, parent->getData(0).first);
+          if (node->getFirstChild() != nullptr)
           {
-            first->third = node->first;
+            first->setThirdChild(node->first);
           }
-          else if (node->second != nullptr)
+          else if (node->getSecondChild() != nullptr)
           {
-            first->third = node->second;
+            first->setThirdChild(node->getSecondChild());
           }
-          if (first->third != nullptr)
+          if (first->getThirdChild() != nullptr)
           {
-            first->third->parent = first;
+            first->getThirdChild()->setParent(first);
           }
-          parent->second = parent->third;
-          parent->third = nullptr;
+          parent->setSecondChild(parent->getThirdChild());
+          parent->become2Node();
           delete second;
         }
         else if (third == node)
         {
-          second->insert(parent->data[1].first, parent->data[1].second);
-          parent->third = nullptr;
-          parent->removeFromNode(parent->data[1].first);
-          if (node->first != nullptr)
+          second->insert(parent->getData(1).first, parent->getData(1).second);
+          parent->become2Node();
+          if (node->getFirstChild() != nullptr)
           {
-            second->third = node->first;
+            second->setThirdChild(node->getFirstChild());
           }
-          else if (node->second != nullptr)
+          else if (node->getSecondChild() != nullptr)
           {
-            second->third = node->second;
+            second->setThirdChild(node->getSecondChild());
           }
-          if (second->third != nullptr)
+          if (second->getThirdChild() != nullptr)
           {
-            second->third->parent = second;
+            second->getThirdChild()->setParent(second);
           }
           delete third;
         }
       }
-      else if ((parent->size == 2) && ((first->size == 2) || (second->size == 2) || (third->size == 2)))
+      else if ((parent->getSize() == 2) && ((first->getSize() == 2) || (second->getSize() == 2) || (third->getSize() == 2)))
       {
         if (third == node)
         {
-          if (node->first != nullptr)
+          if (node->getFirstChild() != nullptr)
           {
-            node->second = node->first;
-            node->first = nullptr;
+            node->getSecondChild(node->first);
+            node->getFirstChild(nullptr);
           }
-          node->insert(parent->data[1].first, parent->data[1].second);
-          if (second->size == 2)
+          node->insert(parent->getData(1).first, parent->getData(1).second);
+          if (second->getSize() == 2)
           {
-            parent->data[1] = second->data[1];
-            second->removeFromNode(second->data[1].first);
-            node->first = second->third;
-            second->third = nullptr;
-            if (node->first != nullptr)
+            auto *new_parent = copyEnd(parent, second);
+            delete parent;
+            parent = new_parent;
+            removeFromNode(second, second->data[1].first);
+            node->setFirstChild(second->getThirdChild());
+            second->become2Node();
+            if (node->getFirstChild() != nullptr)
             {
-              node->first->parent = node;
+              node->getFirstChild()->setParent(node);
             }
           }
-          else if (first->size == 2)
+          else if (first->getSize() == 2)
           {
-            parent->data[1] = second->data[0];
-            node->first = second->second;
-            second->second = second->first;
-            if (node->first != nullptr)
+            auto *res = copyBegin(parent, second);
+            delete parent;
+            parent = res;
+            node->setFirstChild(second->getSecondChild());
+            second->setSecondChild(second->getFirstChild());
+            if (node->getFirstChild() != nullptr)
             {
-              node->first->parent = node;
+              node->getFirstChild()->setParent(node);
             }
-            second->data[0] = parent->data[0];
-            parent->data[0] = first->data[1];
-            first->removeFromNode(first->data[1].first);
-            second->first = first->third;
-            if (second->first != nullptr)
+            res = copyInBeginBegin(second, parent);
+            delete second;
+            second = res;
+            res = copyInEndBegin(parent, first);
+            delete parent;
+            parent = res;
+            removeFromNode(first, first->data[1].first);
+            second->setFirstChild(first->getThirdChild());
+            first->become2Node();
+            if (second->getFirstChild() != nullptr)
             {
-              second->first->parent = second;
+              second->getFirstChild()->setParent(second);
             }
-            first->third = nullptr;
           }
         }
         else if (second == node)
         {
-          if (third->size == 2)
+          if (third->getSize() == 2)
           {
-            if (node->first == nullptr)
+            if (node->getFirstChild() == nullptr)
             {
-              node->first = node->second;
-              node->second = nullptr;
+              node->setFirstChild(node->getSecondChild());
+              node->setSecondChild(nullptr);
             }
-            second->insert(parent->data[1].first, parent->data[1].second);
-            parent->data[1] = third->data[0];
-            third->removeFromNode(third->data[0].first);
-            second->second = third->first;
-            if (second->second != nullptr)
+            second->insert(parent->getData(1).first, parent->getData(1).second);
+            auto *res = copyBegin(parent, third);
+            delete parent;
+            parent = res;
+            removeFromNode(third, third->getData(0).first);
+            second->setSecondChild(third->getFirstChild());
+            if (second->getSecondChild() != nullptr)
             {
-              second->second->parent = second;
+              second->getSecondChild()->setParent(second);
             }
-            third->first = third->second;
-            third->second = third->third;
-            third->third = nullptr;
+            third->setFirstChild(third->getSecondChild());
+            third->setSecondChild(third->getThirdChild());
+            third->become2Node();
           }
-          else if (first->size == 2)
+          else if (first->getSize() == 2)
           {
-            if (node->second == nullptr)
+            if (node->getSecondChild() == nullptr)
             {
-              node->second = node->first;
-              node->first = nullptr;
+              node->setSecondChild(node->getFirstChild());
+              node->setFirstChild(nullptr);
             }
-            second->insert(parent->data[0].first, parent->data[0].second);
-            parent->data[0] = first->data[1];
-            first->removeFromNode(first->key[1]);
-            second->first = first->third;
-            if (second->first != nullptr)
+            second->insert(parent->getData(0).first, parent->getData(0).second);
+            auto *res = copyInEndBegin(parent, first);
+            delete parent;
+            parent = res;
+            first->removeFromNode(first->getData(1).first);
+            second->setFirstChild(first->getThirdChild());
+            if (second->getFirstChild() != nullptr)
             {
-              second->first->parent = second;
+              second->getFirstChild()->setParent(second);
             }
-            first->third = nullptr;
+            first->become2Node();
           }
         }
         else if (first == node)
         {
-          if (node->first == nullptr)
+          if (node->getFirstChild() == nullptr)
           {
-            node->first = node->second;
-            node->second = nullptr;
+            node->setFirstChild(node->getSecondChild());
+            node->setSecondChild(nullptr);
           }
-          first->insert(parent->data[0].first, parent->data[0].second);
-          if (second->size == 2)
+          first->insert(parent->getData(0).first, parent->getData(0).second);
+          if (second->getSize() == 2)
           {
-            parent->data[0] = second->data[0];
-            second->removeFromNode(second->data[0].first);
-            first->second = second->first;
-            if (first->second != nullptr)
+            auto *res = copyInBeginBegin(parent, second);
+            delete parent;
+            parent = res;
+            removeFromNode(second, second->getData(0).first);
+            first->setSecondChild(second->getFirstChild());
+            if (first->getSecondChild() != nullptr)
             {
-              first->second->parent = first;
+              first->getSecondChild()->setParent(first);
             }
-            second->first = second->second;
-            second->second = second->third;
-            second->third = nullptr;
+            second->setFirstChild(second->getSecondChild());
+            second->setSecondChild(second->getThirdChild());
+            second->become2Node();
           }
-          else if (third->size == 2)
+          else if (third->getSize() == 2)
           {
-            parent->data[0] = second->data[0];
-            second->data[0] = parent->data[1];
-            parent->data[1] = third->data[0];
-            third->removeFromNode(third->data[0].first);
-            first->second = second->first;
-            if (first->second != nullptr)
+            auto *res = copyInBeginBegin(parent, second);
+            delete parent;
+            parent = res;
+            res = copyInEndBegin(second, parent);
+            delete second;
+            second = res;
+            res = copyBegin(parent, third);
+            delete parent;
+            parent = res;
+            removeFromNode(third, third->getData(0).first);
+            first->setSecondChild(second->getFirstChild());
+            if (first->getSecondChild() != nullptr)
             {
-              first->second->parent = first;
+              first->getSecondChild()->setParent(first);
             }
-            second->first = second->second;
-            second->second = third->first;
-            if (second->second != nullptr)
+            second->setFirstChild(second->getSecondChild());
+            second->setSecondChild(third->getFirstChild());
+            if (second->getSecondChild() != nullptr)
             {
-              second->second->parent = second;
+              second->getSecondChild()->setParent(second);
             }
-            third->first = third->second;
-            third->second = third->third;
-            third->third = nullptr;
+            third->setFirstChild(third->getSecondChild());
+            third->setSecondChild(third->getThirdChild());
+            third->become2Node();
           }
         }
       }
-      else if (parent->size == 1)
+      else if (parent->getSize() == 1)
       {
-        node->insert(parent->data[0].first, parent->data[0].second);
-        if (first == node && second->size == 2)
+        node->insert(parent->getData(0).first, parent->getData(0).second);
+        if (first == node && second->getSize() == 2)
         {
-          parent->data[0] = second->data[0];
-          second->removeFromNode(second->data[0].first);
-          if (node->first == nullptr)
+          auto *res = copyInBeginBegin(parent, second);
+          delete parent;
+          parent = res;
+          removeFromNode(second, second->getData(0).first);
+          if (node->getFirstChild() == nullptr)
           {
-            node->first = node->second;
+            node->setFirstChild(node->getSecondChild());
           }
-          node->second = second->first;
-          second->first = second->second;
-          second->second = second->third;
-          second->third = nullptr;
-          if (node->second != nullptr)
+          node->setSecondChild(second->getFirstChild());
+          second->setFirstChild(second->getSecondChild());
+          second->setSecondChild(second->getThirdChild());
+          second->become2Node();
+          if (node->getSecondChild() != nullptr)
           {
-            node->second->parent = node;
+            node->getSecondChild()->setParent(node);
           }
         }
-        else if (second == node && first->size == 2)
+        else if (second == node && first->getSize() == 2)
         {
-          parent->data[0] = first->data[1];
-          first->removeFromNode(first->data[1].first);
-          if (node->second == nullptr)
+          auto *res = copyInEndBegin(parent, first);
+          delete parent;
+          parent = first;
+          removeFromNode(first, first->getData(1).first);
+          if (node->getSecondChild() == nullptr)
           {
-            node->second = node->first;
+            node->setSecondChild(node->getFirstChild());
           }
-          node->first = first->third;
-          first->third = nullptr;
-          if (node->first != nullptr)
+          node->setFirstChild(first->getThirdChild());
+          first->become2Node();
+          if (node->getFirstChild() != nullptr)
           {
-            node->first->parent = node;
+            node->getFirstChild()->setParent(node);
           }
         }
       }
