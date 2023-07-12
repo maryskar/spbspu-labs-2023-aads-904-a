@@ -43,6 +43,10 @@ namespace mashkin
     }
     std::string key;
     inp >> key;
+    if (inp.peek() == '\n')
+    {
+      inp.setstate(std::ios::failbit);
+    }
     if (!inp)
     {
       return inp;
