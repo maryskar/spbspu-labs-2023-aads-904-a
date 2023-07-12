@@ -390,11 +390,12 @@ namespace dimkashelk
     node_type *getNewNodeFromLeftChild()
     {
       node_type *new_node = new node_type(to_insert_->data[0].first, to_insert_->data[0].second);
-      new_node->first = to_insert_->first;
-      new_node->second = to_insert_->second;
-      new_node->parent = to_insert_->parent;
+      new_node->setFirstChild(to_insert_->first);
+      new_node->setSecondChild(to_insert_->second);
+      new_node->setParent(to_insert_->parent);
       return new_node;
     }
+    // TODO
     node_type *getNewNodeFromRightChild()
     {
       node_type *new_node = new node_type(to_insert_->data[2].first, to_insert_->data[2].second);
@@ -463,6 +464,7 @@ namespace dimkashelk
       }
       return split(p);
     }
+    // TODO
     node_type *split(node_type *item)
     {
       if (!to_insert_)
