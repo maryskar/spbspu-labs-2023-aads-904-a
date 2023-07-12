@@ -194,6 +194,15 @@ namespace dimkashelk
           updateNodeRemove(0);
         }
       }
+      void become2Node()
+      {
+        one_ = new NodeOfTwoThreeTreeOne< Key, Value >(two_->data[0].first, two_->data[0].second);
+        one_->first = two_->first;
+        one_->second = two_->second;
+        one_->parent = two_->parent;
+        delete two_;
+        size_ = 1;
+      }
       NodeOfTwoThreeTreeOne< Key, Value > *getOneNode()
       {
         return one_;
