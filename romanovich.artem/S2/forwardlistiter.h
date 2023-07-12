@@ -25,14 +25,14 @@ namespace romanovich
     ForwardListIterator< T > &operator=(const ConstForwardListIterator< T > &other);
     ForwardListIterator< T > &operator++();
     ForwardListIterator< T > operator++(int);
-    ~ForwardListIterator() = default;
-    explicit ForwardListIterator(details::ListNode< T > *otherHead);
-    explicit ForwardListIterator(const ConstForwardListIterator< T > &other);
     ForwardListIterator();
+    explicit ForwardListIterator(const ConstForwardListIterator< T > &other);
+    ~ForwardListIterator() = default;
     ForwardListIterator< T > begin();
     ForwardListIterator< T > end();
   private:
     details::ListNode< T > *head_;
+    explicit ForwardListIterator(details::ListNode< T > *otherHead);
   };
   template< typename T >
   ForwardListIterator< T > &ForwardListIterator< T >::operator=(const ConstForwardListIterator< T > &other)

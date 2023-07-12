@@ -10,8 +10,8 @@ namespace romanovich
   class ForwardList
   {
   public:
-    using const_iterator = ConstForwardListIterator< T >;
     using iterator = ForwardListIterator< T >;
+    using const_iterator = ConstForwardListIterator< T >;
     ForwardList();
     ForwardList(const ForwardList &other);
     ForwardList(ForwardList &&other) noexcept;
@@ -23,10 +23,8 @@ namespace romanovich
     T front();
     const T &front() const;
     iterator before_begin() const;
-    iterator before_begin();
     const_iterator cbefore_begin() const;
     iterator begin() const;
-    iterator end();
     const_iterator cbegin() const;
     iterator end() const;
     const_iterator cend() const;
@@ -395,11 +393,6 @@ namespace romanovich
     return ForwardListIterator< T >(node);
   }
   template< typename T >
-  ForwardListIterator< T > ForwardList< T >::end()
-  {
-    return ForwardListIterator< T >(nullptr);
-  }
-  template< typename T >
   ForwardListIterator< T > ForwardList< T >::end() const
   {
     return ForwardListIterator< T >(nullptr);
@@ -408,11 +401,6 @@ namespace romanovich
   ForwardListIterator< T > ForwardList< T >::begin() const
   {
     return ForwardListIterator< T >(begin_);
-  }
-  template< typename T >
-  ForwardListIterator< T > ForwardList< T >::before_begin()
-  {
-    return ForwardListIterator< T >(fakeNode_);
   }
   template< typename T >
   ForwardListIterator< T > ForwardList< T >::before_begin() const

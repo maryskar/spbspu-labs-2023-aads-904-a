@@ -75,8 +75,8 @@ namespace romanovich
     iterator upper_bound(const Key &key);
     const_iterator upper_bound(const Key &key) const;
     Compare key_comp() const;
-    ForwardList< value_type > data_;
   private:
+    ForwardList< value_type > data_;
     Compare comp_;
     Value &insertValue(const Key &key);
     std::pair< iterator, iterator >
@@ -116,7 +116,7 @@ namespace romanovich
   {
     {
       auto prev = start;
-      start++;
+      ++start;
       auto curr = start;
       while (curr != end())
       {
@@ -125,7 +125,7 @@ namespace romanovich
           return {prev, curr};
         }
         prev = curr;
-        curr++;
+        ++curr;
       }
       return {prev, curr};
     }
