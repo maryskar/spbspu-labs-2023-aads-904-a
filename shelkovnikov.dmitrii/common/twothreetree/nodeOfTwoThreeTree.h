@@ -189,6 +189,9 @@ namespace dimkashelk
           throw std::logic_error("No node with size more 2");
         }
         two_ = new NodeOfTwoThreeTreeTwo< Key, Value >(k1, v1, k2, v2);
+        two_->first = one_->first;
+        two_->second = one_->second;
+        two_->parent = one_->parent;
         delete one_;
         one_ = nullptr;
         size_ = 2;
