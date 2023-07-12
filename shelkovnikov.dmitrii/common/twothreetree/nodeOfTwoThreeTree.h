@@ -50,6 +50,16 @@ namespace dimkashelk
         delete one_;
         size_ = 2;
       }
+      void insertFront(const Key &k, const Value &v)
+      {
+        if (size_ == 2)
+        {
+          throw std::logic_error("No node with size more 2");
+        }
+        two_ = new NodeOfTwoThreeTreeTwo< Key, Value >(k, v, one_->data.first, one_->data.second);
+        delete one_;
+        size_ = 2;
+      }
       NodeOfTwoThreeTree< Key, Value > *getFirstChild()
       {
         if (size_ == 1)
