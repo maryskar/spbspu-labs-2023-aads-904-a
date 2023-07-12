@@ -13,6 +13,7 @@ namespace dimkashelk
     template< typename Key, typename Value >
     class NodeOfTwoThreeTree
     {
+    using node_type = NodeOfTwoThreeTree< const Key, Value >;
     public:
       NodeOfTwoThreeTree(const Key &k, const Value &v):
         one_(new NodeOfTwoThreeTreeOne< Key, Value >(k, v)),
@@ -58,6 +59,17 @@ namespace dimkashelk
         else
         {
           return two_->first;
+        }
+      }
+      void setFristChild(node_type node)
+      {
+        if (size_ == 1)
+        {
+          one_->first = node;
+        }
+        else
+        {
+          two_->first = node;
         }
       }
       NodeOfTwoThreeTree< Key, Value > *getSecondChild()
