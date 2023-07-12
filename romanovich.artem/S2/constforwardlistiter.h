@@ -34,7 +34,6 @@ public:
 private:
   ConstForwardListIterator();
   details::ListNode< T > *head_;
-  void checkForNullNode();
 };
 template< typename T >
 ConstForwardListIterator< T > ConstForwardListIterator< T >::begin()
@@ -75,46 +74,32 @@ bool ConstForwardListIterator< T >::operator!=(const ConstForwardListIterator< T
 template< typename T >
 const T *ConstForwardListIterator< T >::operator->() const
 {
-  checkForNullNode();
   return std::addressof(head_->data_);
 }
 template< typename T >
 T *ConstForwardListIterator< T >::operator->()
 {
-  checkForNullNode();
   return const_cast< T * >(std::addressof(head_->data_));
-}
-template< typename T >
-void ConstForwardListIterator< T >::checkForNullNode()
-{
-  if (!head_)
-  {
-    //throw std::runtime_error("head is null");
-  }
 }
 template< typename T >
 const T &ConstForwardListIterator< T >::operator*() const
 {
-  checkForNullNode();
   return head_->data_;
 }
 template< typename T >
 T &ConstForwardListIterator< T >::operator*()
 {
-  checkForNullNode();
   return const_cast<T &>(head_->data_);
 }
 template< typename T >
 ConstForwardListIterator< T > &ConstForwardListIterator< T >::operator++()
 {
-  checkForNullNode();
   head_ = head_->next_;
   return *this;
 }
 template< typename T >
 ConstForwardListIterator< T > ConstForwardListIterator< T >::operator++(int)
 {
-  checkForNullNode();
   ConstForwardListIterator< T > oldIter(*this);
   ++(*this);
   return oldIter;

@@ -102,7 +102,6 @@ details::ListNode< T > *ForwardList< T >::initFake()
   void *nodeMemory = ::operator new(sizeof(details::ListNode< T >));
   details::ListNode< T > *newNode = static_cast< details::ListNode< T > * >(nodeMemory);
   newNode->next_ = nullptr;
-  //newNode->data_ = T();
   return newNode;
 }
 template< typename T >

@@ -115,15 +115,17 @@ Dictionary< Key, Value, Compare >::getFindRange(Dictionary::iterator start, cons
   {
     auto prev = start;
     start++;
-    auto cur = start;
-    for (; cur != end(); prev = cur, cur++)
+    auto curr = start;
+    while (curr != end())
     {
-      if (function(cur->first, key))
+      if (function(curr->first, key))
       {
-        return {prev, cur};
+        return {prev, curr};
       }
+      prev = curr;
+      curr++;
     }
-    return {prev, cur};
+    return {prev, curr};
   }
 }
 template< typename Key, typename Value, typename Compare >

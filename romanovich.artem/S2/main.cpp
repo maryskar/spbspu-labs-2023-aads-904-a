@@ -56,13 +56,13 @@ int main(int argc, char *argv[])
   {
     std::string command;
     std::cin >> command;
-    //try
-    //{
+    try
+    {
       commandDictionary[command](std::cin, std::cout, dictionary);
-    //}
-    //catch (...)
-    //{
-    //  printError(std::cout) << '\n';
-    //}
+    }
+    catch (...)
+    {
+      printError(std::cout) << '\n';
+    }
   }
 }
