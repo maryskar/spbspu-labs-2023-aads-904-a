@@ -225,14 +225,7 @@ namespace dimkashelk
     bool contains(const Key &k) const
     {
       node_type *node = search(root_, k);
-      if (node->getSize() == 1)
-      {
-        return details::isEqual< Key, Compare >(k, node->getOneNode()->data.first);
-      }
-      auto *twoNode = node->getTwoNode();
-      bool isEqualFirst = details::isEqual< Key, Compare >(k, twoNode->data[0].first);
-      bool isEqualSecond = details::isEqual< Key, Compare >(k, twoNode->data[1].first);
-      return isEqualFirst || isEqualSecond;
+      return containsInNode(k, node);
     }
     template< typename F >
     F &traverse_lnr(F &f) const
