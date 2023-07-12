@@ -587,21 +587,21 @@ namespace dimkashelk
       {
         return;
       }
-      if (node->getLastChildren() == nullptr)
+      if (node->getLastChild() == nullptr)
       {
         return;
       }
-      free(node->first);
-      delete node->first;
-      node->first = nullptr;
-      free(node->second);
-      delete node->second;
-      node->second = nullptr;
-      if (node->size == 2)
+      free(node->getFirstChild());
+      delete node->getFirstChild();
+      node->setFirstChild(nullptr);
+      free(node->getSecondChild());
+      delete node->getSecondChild();
+      node->setSecondChild(nullptr);
+      if (node->getSize() == 2)
       {
-        free(node->third);
-        delete node->third;
-        node->third = nullptr;
+        free(node->getThirdChild());
+        delete node->getThirdChild();
+        node->setThirdChild(nullptr);
       }
     }
     node_type *copy(const two_three_tree_type &tree)
