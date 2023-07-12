@@ -10,5 +10,6 @@ namespace mashkin
   {
     dict["print"] = print;
     dict["complement"] = complement;
+    dict["intersect"] = intersect;
   }
 }
