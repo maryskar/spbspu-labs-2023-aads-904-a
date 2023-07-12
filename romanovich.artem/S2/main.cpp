@@ -58,6 +58,10 @@ int main(int argc, char *argv[])
   {
     std::string command;
     std::cin >> command;
+    if (!std::cin)
+    {
+      break;
+    }
     try
     {
       commandDictionary[command](std::cin, std::cout, dictionary);

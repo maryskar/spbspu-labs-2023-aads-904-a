@@ -45,6 +45,10 @@ namespace
       }
     }
   };
+  std::ostream &printEmptyDict(std::ostream &out)
+  {
+    return out << "<EMPTY>";
+  }
 }
 namespace romanovich
 {
@@ -56,12 +60,12 @@ namespace romanovich
     std::string unionCall = "union";
     std::unordered_map< std::string, CommandHandler > commands;
     commands[printCall] = std::bind(printCommand, _1, _2, std::ref(dictionary));
-    commands[complementCall] = std::bind(performCommand, _1, std::ref(dictionary), ComplementOperation());
-    commands[intersectCall] = std::bind(performCommand, _1, std::ref(dictionary), IntersectOperation());
-    commands[unionCall] = std::bind(performCommand, _1, std::ref(dictionary), UnionOperation());
+    commands[complementCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), ComplementOperation());
+    commands[intersectCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), IntersectOperation());
+    commands[unionCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), UnionOperation());
     return commands;
   }
-  void performCommand(std::istream &in, container_type &dictionary,
+  void performCommand(std::istream &in, std::ostream &out, container_type &dictionary,
                       const std::function< void(dict_type &, const dict_type &, const dict_type &) > &operation)
   {
     std::string newDictName, dictName1, dictName2;
@@ -70,20 +74,18 @@ namespace romanovich
     {
       throw std::runtime_error("Error while reading command arguments.");
     }
-    if (dictionary.count(dictName1) == 0 && dictionary.count(dictName2) == 0)
-    {
-      throw std::runtime_error("Error: both dictionaries not found.");
-    }
     if (dictionary.count(dictName1) == 0 || dictionary.count(dictName2) == 0)
     {
-      std::string errDictName = dictionary.count(dictName1) == 0 ? dictName1 : dictName2;
-      throw std::runtime_error("Error: dictionary \"" + errDictName + "\" not found.");
+      printEmptyDict(out) << '\n';
     }
-    const auto &dict1 = dictionary[dictName1];
-    const auto &dict2 = dictionary[dictName2];
-    dict_type newDict;
-    operation(newDict, dict1, dict2);
-    dictionary[newDictName] = newDict;
+    else
+    {
+      const auto &dict1 = dictionary[dictName1];
+      const auto &dict2 = dictionary[dictName2];
+      dict_type newDict;
+      operation(newDict, dict1, dict2);
+      dictionary[newDictName] = newDict;
+    }
   }
   void printCommand(std::istream &in, std::ostream &out, container_type &dictionary)
   {
@@ -92,6 +94,7 @@ namespace romanovich
     if (!in)
     {
       throw std::runtime_error("Error while reading command arguments.");
+      //std::exit(0);
     }
     if (dictionary.count(dictName) > 0)
     {
