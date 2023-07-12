@@ -56,12 +56,12 @@ namespace romanovich
     std::string unionCall = "union";
     std::unordered_map< std::string, CommandHandler > commands;
     commands[printCall] = std::bind(printCommand, _1, _2, std::ref(dictionary));
-    commands[complementCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), ComplementOperation());
-    commands[intersectCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), IntersectOperation());
-    commands[unionCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), UnionOperation());
+    commands[complementCall] = std::bind(performCommand, _1, std::ref(dictionary), ComplementOperation());
+    commands[intersectCall] = std::bind(performCommand, _1, std::ref(dictionary), IntersectOperation());
+    commands[unionCall] = std::bind(performCommand, _1, std::ref(dictionary), UnionOperation());
     return commands;
   }
-  void performCommand(std::istream &in, std::ostream &out, container_type &dictionary,
+  void performCommand(std::istream &in, container_type &dictionary,
                       const std::function< void(dict_type &, const dict_type &, const dict_type &) > &operation)
   {
     std::string newDictName, dictName1, dictName2;
