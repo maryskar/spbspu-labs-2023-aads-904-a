@@ -194,6 +194,16 @@ namespace dimkashelk
       NodeOfTwoThreeTreeOne< Key, Value > *one_;
       NodeOfTwoThreeTreeTwo< Key, Value > *two_;
       unsigned size_;
+      void updateNodes(const Key &k1, const Value &v1, const Key &k2, const Value &v2)
+      {
+        if (size_ == 2)
+        {
+          throw std::logic_error("No node with size more 2");
+        }
+        two_ = new NodeOfTwoThreeTreeTwo< Key, Value >(k1, v1, k2, v2);
+        delete one_;
+        size_ = 2;
+      }
     };
   }
 }
