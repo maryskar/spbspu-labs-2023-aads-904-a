@@ -135,6 +135,10 @@ namespace dimkashelk
           return two_->getLastChildren();
         }
       }
+      bool isList()
+      {
+        return getFirstChild() == nullptr && getSecondChild() == nullptr && getThirdChild() == nullptr;
+      }
       NodeOfTwoThreeTreeOne< Key, Value > *getOneNode()
       {
         return one_;
