@@ -13,6 +13,8 @@ namespace mashkin
     AVL(AVL&& rhs);
     ~AVL();
 
+
+    void clear();
   private:
     Tree< T, Comporator > root_;
     Comporator comp_;
