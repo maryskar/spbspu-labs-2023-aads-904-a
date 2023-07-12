@@ -52,7 +52,9 @@ namespace tarasenko
 
    iterator beforeBegin() const
    {
-     return begin_ ? iterator(fake_, begin_->left_) : iterator(fake_, begin_);
+     fake_->right_ = begin_;
+     begin_->left_ = fake_;
+     return iterator(fake_, begin_->left_);
    }
    iterator begin() const
    {
@@ -60,20 +62,26 @@ namespace tarasenko
    }
    iterator end() const
    {
-     return end_ ? iterator(fake_, end_->right_) : iterator(fake_, end_);
+     fake_->left_ = end_;
+     end_->right_ = fake_;
+     return iterator(fake_, end_->right_);
    }
 
    const_iterator cbeforeBegin() const
    {
-     return begin_ ? iterator(fake_, begin_->left_) : iterator(fake_, begin_);
+     fake_->right_ = begin_;
+     begin_->left_ = fake_;
+     return const_iterator(fake_, begin_->left_);
    }
    const_iterator cbegin() const
    {
-     return iterator(fake_, begin_);
+     return const_iterator(fake_, begin_);
    }
    const_iterator cend() const
    {
-     return end_ ? iterator(fake_, end_->right_) : iterator(fake_, end_);
+     fake_->left_ = end_;
+     end_->right_ = fake_;
+     return const_iterator(fake_, end_->right_);
    }
 
   private:
@@ -108,7 +116,6 @@ namespace tarasenko
       {
         auto res = insert(data, iterator(fake_, node->left_));
         node->left_ = res.first.node_;
-        res.first.node_->parent_ = node;
         inserted = res.second;
       }
     }
@@ -123,7 +130,6 @@ namespace tarasenko
       {
         auto res = insert(data, iterator(fake_, node->right_));
         node->right_ = res.first.node_;
-        res.first.node_->parent_ = node;
         inserted = res.second;
       }
     }
@@ -136,8 +142,6 @@ namespace tarasenko
     if (!root_)
     {
       root_ = new root_t(data, fake_, fake_, fake_);
-      root_->parent_->right_ = root_;
-      root_->parent_->left_ = root_;
       begin_ = root_;
       end_ = root_;
       return std::make_pair(iterator(fake_, root_), true);
