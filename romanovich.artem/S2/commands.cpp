@@ -35,13 +35,13 @@ namespace
   {
     void operator()(dict_ref newDict, const_dict_ref firstDict, const_dict_ref secondDict) const
     {
-      newDict = secondDict;
-      for (const auto &entry: firstDict)
+      for (auto &entry: secondDict)
       {
-        if (newDict.count(entry.first) == 0)
-        {
-          newDict[entry.first] = entry.second;
-        }
+        newDict[entry.first] = entry.second;
+      }
+      for (auto &entry: firstDict)
+      {
+        newDict[entry.first] = entry.second;
       }
     }
   };
