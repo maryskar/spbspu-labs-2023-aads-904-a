@@ -652,28 +652,28 @@ namespace dimkashelk
     }
     node_type *fix(node_type *leaf)
     {
-      if (leaf->size == 0 && leaf->parent == nullptr)
+      if (leaf->getSize() == 0 && leaf->getParent() == nullptr)
       {
         delete leaf;
         return nullptr;
       }
-      if (leaf->size != 0)
+      if (leaf->getSize() != 0)
       {
-        if (leaf->parent)
+        if (leaf->getParent())
         {
-          return fix(leaf->parent);
+          return fix(leaf->getParent());
         }
         else
         {
           return leaf;
         }
       }
-      node_type *parent = leaf->parent;
-      if (parent->first->size == 2 || parent->second->size == 2 || parent->size == 2)
+      node_type *parent = leaf->getParent();
+      if (parent->getFirstChild()->getParent() == 2 || parent->getSecondChild()->getSize() == 2 || parent->getSize() == 2)
       {
         leaf = rebalance(leaf);
       }
-      else if (parent->size == 2 && parent->third->size == 2)
+      else if (parent->getSize() == 2 && parent->getThirdChild()->getSize() == 2)
       {
         leaf = rebalance(leaf);
       }
