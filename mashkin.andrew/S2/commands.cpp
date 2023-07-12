@@ -64,13 +64,13 @@ namespace mashkin
     }
     if (first == newDict)
     {
-      dicts.find(first)->second.erase(firstBegin, firstEnd);
+      dicts.find(first)->second.clear();
       dicts.find(first)->second.insert(newDictionary.begin(), newDictionary.end());
       return;
     }
     else if (second == newDict)
     {
-      dicts.find(second)->second.erase(secondBegin, secondEnd);
+      dicts.find(second)->second.clear();
       dicts.find(second)->second.insert(newDictionary.begin(), newDictionary.end());
       return;
     }
@@ -90,9 +90,7 @@ namespace mashkin
     inp >> second;
     if (dicts.contains(newDict) && newDict != first && newDict != second)
     {
-      auto begin = dicts.find(newDict)->second.begin();
-      auto end = dicts.find(newDict)->second.end();
-      dicts.find(newDict)->second.erase(begin, end);
+      dicts.find(newDict)->second.clear();
     }
     if (!dicts.contains(second) || !dicts.contains(first))
     {
@@ -111,18 +109,15 @@ namespace mashkin
         newDictionary.insert(*i);
       }
     }
-    auto secondDict = dicts.find(second);
-    auto secondBegin = secondDict->second.begin();
-    auto secondEnd = secondDict->second.end();
     if (first == newDict)
     {
-      dicts.find(first)->second.erase(firstBegin, firstEnd);
+      dicts.find(first)->second.clear();
       dicts.find(first)->second.insert(newDictionary.begin(), newDictionary.end());
       return;
     }
     else if (second == newDict)
     {
-      dicts.find(second)->second.erase(secondBegin, secondEnd);
+      dicts.find(second)->second.clear();
       dicts.find(second)->second.insert(newDictionary.begin(), newDictionary.end());
       return;
     }
@@ -157,19 +152,15 @@ namespace mashkin
         newDictionary.insert(*i);
       }
     }
-
     if (first == newDict)
     {
-      auto firstDict = dicts.find(first);
-      auto firstBegin = firstDict->second.begin();
-      auto firstEnd = firstDict->second.end();
-      dicts.find(first)->second.erase(firstBegin, firstEnd);
+      dicts.find(first)->second.clear();
       dicts.find(first)->second.insert(newDictionary.begin(), newDictionary.end());
       return;
     }
     else if (second == newDict)
     {
-      dicts.find(second)->second.erase(secondBegin, secondEnd);
+      dicts.find(second)->second.clear();
       dicts.find(second)->second.insert(newDictionary.begin(), newDictionary.end());
       return;
     }
