@@ -179,12 +179,19 @@ namespace dimkashelk
         else
         {
           size_--;
-          auto *new_node = NodeOfTwoThreeTreeTwo< Key, Value >(two_->data[1].first, two_->data[1].second, Key(), Value());
-          new_node->first = two_->first;
-          new_node->second = two_->second;
-          new_node->third = two_->third;
-          new_node->parent = two_->parent;
-          two_ = new_node;
+          updateNodeRemove(1);
+        }
+      }
+      void removeSecond()
+      {
+        if (size_ == 1)
+        {
+          throw std::logic_error("No element");
+        }
+        else
+        {
+          size_--;
+          updateNodeRemove(0);
         }
       }
       NodeOfTwoThreeTreeOne< Key, Value > *getOneNode()
@@ -212,6 +219,15 @@ namespace dimkashelk
         delete one_;
         one_ = nullptr;
         size_ = 2;
+      }
+      void updateNodeRemove(unsigned ind_)
+      {
+        auto *new_node = NodeOfTwoThreeTreeTwo< Key, Value >(two_->data[ind_].first, two_->data[ind_].second, Key(), Value());
+        new_node->first = two_->first;
+        new_node->second = two_->second;
+        new_node->third = two_->third;
+        new_node->parent = two_->parent;
+        two_ = new_node;
       }
     };
   }
