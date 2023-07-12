@@ -84,76 +84,66 @@ namespace tarasenko
   template< typename T, typename Compare >
   void RedBlackTree< T, Compare >::fixInsert(Tree* node)
   {
+    auto root = root_.root_;
     auto parent = node->parent_;
     if (parent->color_ == 'b') // случай 1
     {
       return;
     }
-    else // случай 2
+    else if (parent == root) // случай 2.0
     {
-      auto root = root_.root_;
+      parent->color_ = 'b';
+    }
+    else
+    {
       auto grandpa = node->parent_->parent_;
       if (parent == grandpa->left_) // родитель слева от G
       {
         auto uncle = node->parent_->parent_->right_;
-        if (parent == root) // случай 2.0
+        if (uncle->color_ == 'r') // случай 2.1
         {
           parent->color_ = 'b';
+          uncle->color_ = 'b';
+          grandpa->color_ = 'r';
+          fixInsert(grandpa);
         }
         else
         {
-          if (uncle->color_ == 'r') // случай 2.1
+          if (node == parent->left_) // случай 2.2.1 // потомок внешний
           {
             parent->color_ = 'b';
-            uncle->color_ = 'b';
             grandpa->color_ = 'r';
-            fixInsert(grandpa);
+            root_.rightRotation(grandpa);
           }
-          else
+          else // случай 2.2.2 // потомок внутренний
           {
-            if (node == parent->left_) // случай 2.2.1 // потомок внешний
-            {
-              parent->color_ = 'b';
-              grandpa->color_ = 'r';
-              root_.rightRotation(grandpa);
-            }
-            else // случай 2.2.2 // потомок внутренний
-            {
-              root_.leftRotation(parent);
-              fixInsert(parent);
-            }
+            root_.leftRotation(parent);
+            fixInsert(parent);
           }
         }
       }
       else // родитель справа от G
       {
         auto uncle = node->parent_->parent_->left_;
-        if (parent == root) // случай 2.0
+        if (uncle->color_ == 'r') // случай 2.1
         {
           parent->color_ = 'b';
+          uncle->color_ = 'b';
+          grandpa->color_ = 'r';
+          fixInsert(grandpa);
         }
         else
         {
-          if (uncle->color_ == 'r') // случай 2.1
+          if (node == parent->right_) // случай 2.2.1 // потомок внешний
           {
             parent->color_ = 'b';
-            uncle->color_ = 'b';
             grandpa->color_ = 'r';
-            fixInsert(grandpa);
+            root_.leftRotation(grandpa);
           }
-          else
+          else // случай 2.2.2 // потомок внутренний
           {
-            if (node == parent->right_) // случай 2.2.1 // потомок внешний
-            {
-              parent->color_ = 'b';
-              grandpa->color_ = 'r';
-              root_.leftRotation(grandpa);
-            }
-            else // случай 2.2.2 // потомок внутренний
-            {
-              root_.rightRotation(parent);
-              fixInsert(parent);
-            }
+            root_.rightRotation(parent);
+            fixInsert(parent);
           }
         }
       }
@@ -173,12 +163,13 @@ namespace tarasenko
     //...
   }
 
-
+//=================================================================
   template< typename T, typename Compare >
   std::string RedBlackTree< T, Compare >::printAsString()
   {
     return root_.printAsString();
   }
+
   template< typename T, typename Compare >
   std::string RedBlackTree< T, Compare >::printColorAsString()
   {
