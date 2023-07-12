@@ -77,18 +77,18 @@ public:
 private:
   Compare comp_;
   Value &insertValue(const Key &key);
-  std::pair< iterator, iterator > search(iterator start, const Key &key, std::function< bool(Key, Key) > function);
+  std::pair< iterator, iterator >
+  getFindRange(iterator start, const Key &key, std::function< bool(Key, Key) > function);
   iterator push(const value_type &value);
 };
 template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::iterator
 Dictionary< Key, Value, Compare >::push(const Dictionary::value_type &value)
 {
-  auto it = data_.begin();
   auto prev = data_.before_begin();
-  for (; it != data_.end(); it++)
+  for (auto it = data_.begin(); it != data_.end(); ++it)
   {
-    if (comp_(value.first, (*it).first))
+    if (comp_(value.first, it->first))
     {
       break;
     }
@@ -109,8 +109,8 @@ std::pair<
   typename ForwardList< std::pair< const Key, Value > >::iterator,
   typename ForwardList< std::pair< const Key, Value > >::iterator
 >
-Dictionary< Key, Value, Compare >::search(Dictionary::iterator start, const Key &key,
-                                          std::function< bool(Key, Key) > function)
+Dictionary< Key, Value, Compare >::getFindRange(Dictionary::iterator start, const Key &key,
+                                                std::function< bool(Key, Key) > function)
 {
   {
     auto prev = start;
@@ -225,7 +225,7 @@ Dictionary< Key, Value, Compare >::emplace(Dictionary::const_iterator pos, Args 
 template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::lower_bound(const Key &key)
 {
-  auto res = search(data_.before_begin(), key, !comp_);
+  auto res = getFindRange(data_.before_begin(), key, !comp_);
   return res.second;
 }
 template< typename Key, typename Value, typename Compare >
@@ -239,7 +239,6 @@ template< typename... Args >
 std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool >
 Dictionary< Key, Value, Compare >::emplace(Args &&... args)
 {
-  // return data_.emplace_front(value_type(std::forward< Args >(args)...));
   try
   {
     auto it = push(std::forward< value_type >(value_type(args...)));
@@ -414,6 +413,11 @@ typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Com
   return data_.before_begin();
 }
 template< typename Key, typename Value, typename Compare >
+Value &Dictionary< Key, Value, Compare >::at(const Key &key) const
+{
+  return at(key);
+}
+template< typename Key, typename Value, typename Compare >
 Value &Dictionary< Key, Value, Compare >::at(const Key &key)
 {
   iterator it = find(key);
@@ -424,42 +428,25 @@ Value &Dictionary< Key, Value, Compare >::at(const Key &key)
   return it->second;
 }
 template< typename Key, typename Value, typename Compare >
-Value &Dictionary< Key, Value, Compare >::at(const Key &key) const
-{
-  return at(key);
-}
-template< typename Key, typename Value, typename Compare >
 Value &Dictionary< Key, Value, Compare >::insertValue(const Key &key)
 {
-  try
+  auto res = getFindRange(data_.before_begin(), key, areEqualKeys< Key, Compare >);
+  if (res.second == end())
   {
-    return at(key);
+    auto insertPair = data_.insert_after(res.first, {key, Value()});
+    return insertPair->second;
   }
-  catch (const std::out_of_range &)
-  {
-    value_type newValue(key, Value());
-    auto insertionResult = data_.emplace_after(data_.cbefore_begin(), {key, Value()});
-    return insertionResult->second;
-  }
+  return res.second->second;
 }
 template< typename Key, typename Value, typename Compare >
 Value &Dictionary< Key, Value, Compare >::operator[](const Key &key)
 {
-  auto res = search(data_.before_begin(), key, areEqualKeys< Key, Compare >);
-  if (res.second == end())
-  {
-    value_type value_to_insert = {key, Value()};
-    auto insert_res = data_.insert_after(res.first, value_to_insert);
-    return insert_res->second;
-  }
-  return res.second->second;
-  //return insertValue(key);
+  return insertValue(key);
 }
 template< typename Key, typename Value, typename Compare >
 Value &Dictionary< Key, Value, Compare >::operator[](Key &&key)
 {
-  return operator[](key);
-  //return insertValue(std::forward< Key >(key));
+  return insertValue(std::forward< Key >(key));
 }
 template< typename Key, typename Value, typename Compare >
 Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(

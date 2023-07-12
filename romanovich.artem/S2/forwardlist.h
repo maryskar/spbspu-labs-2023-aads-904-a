@@ -58,7 +58,6 @@ public:
   template< class Predicate >
   void remove_if(Predicate pred);
   void reverse();
-  void push_back(const T &value);////////
 private:
   details::ListNode< T > *begin_;
   details::ListNode< T > *end_;
@@ -66,6 +65,7 @@ private:
   size_t size_;
   details::ListNode< T > *initFake();
   void copy(const ForwardList< T > &other);
+  void push_back(const T &value);
 };
 template< typename T >
 void ForwardList< T >::push_back(const T &value)
@@ -322,9 +322,6 @@ ForwardList< T >::erase_after(ConstForwardListIterator< T > first, ConstForwardL
 template< typename T >
 ForwardListIterator< T > ForwardList< T >::emplace_after(ConstForwardListIterator< T > position, T &&value)
 {
-  /*ForwardList< T > list;
-  std::copy(position, end(), std::back_inserter(list));
-  return list.insert_after(list.before_begin(), std::forward< T >(value));*/
   return insert_after(position, std::forward< T >(value));
 }
 template< typename T >
