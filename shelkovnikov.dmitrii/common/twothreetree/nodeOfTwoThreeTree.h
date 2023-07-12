@@ -190,6 +190,7 @@ namespace dimkashelk
         }
         two_ = new NodeOfTwoThreeTreeTwo< Key, Value >(k1, v1, k2, v2);
         delete one_;
+        one_ = nullptr;
         size_ = 2;
       }
     };
