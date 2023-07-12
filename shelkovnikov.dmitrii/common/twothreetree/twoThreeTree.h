@@ -395,13 +395,12 @@ namespace dimkashelk
       new_node->setParent(to_insert_->parent);
       return new_node;
     }
-    // TODO
     node_type *getNewNodeFromRightChild()
     {
       node_type *new_node = new node_type(to_insert_->data[2].first, to_insert_->data[2].second);
-      new_node->first = to_insert_->first;
-      new_node->second = to_insert_->third;
-      new_node->parent = to_insert_->fourth;
+      new_node->setFirstChild(to_insert_->first);
+      new_node->setSecondChild(to_insert_->third);
+      new_node->setParent(to_insert_->fourth);
       return new_node;
     }
     bool containsInNode(const Key &k, const node_type *node)
