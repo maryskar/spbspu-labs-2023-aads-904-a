@@ -1,6 +1,8 @@
 #ifndef FORWARDLIST_H
 #define FORWARDLIST_H
 #include <tuple>
+#include <cstddef>
+#include <stdexcept>
 #include "common/listnode.h"
 #include "forwardlistiter.h"
 #include "constforwardlistiter.h"
