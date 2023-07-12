@@ -410,6 +410,17 @@ namespace dimkashelk
       new_node->parent = to_insert_->fourth;
       return new_node;
     }
+    bool containsInNode(const Key &k, const node_type *node)
+    {
+      if (node->getSize() == 1)
+      {
+        return details::isEqual< Key, Compare >(k, node->getOneNode()->data.first);
+      }
+      auto *twoNode = node->getTwoNode();
+      bool isEqualFirst = details::isEqual< Key, Compare >(k, twoNode->data[0].first);
+      bool isEqualSecond = details::isEqual< Key, Compare >(k, twoNode->data[1].first);
+      return isEqualFirst || isEqualSecond;
+    }
     node_type *insert(node_type *p, const Key &k, const Value &v) {
       if (!p)
       {
