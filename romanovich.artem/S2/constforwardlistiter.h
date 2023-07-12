@@ -18,6 +18,9 @@ namespace romanovich
     friend class ForwardListIterator< T >;
     using iterator_category = std::forward_iterator_tag;
     using difference_type = std::ptrdiff_t;
+    ConstForwardListIterator();
+    explicit ConstForwardListIterator(const ForwardListIterator< T > &other);
+    ~ConstForwardListIterator() = default;
     T &operator*();
     const T &operator*() const;
     T *operator->();
@@ -28,9 +31,6 @@ namespace romanovich
     ConstForwardListIterator< T > &operator=(const ForwardListIterator< T > &other);
     ConstForwardListIterator< T > &operator++();
     ConstForwardListIterator< T > operator++(int);
-    ConstForwardListIterator();
-    explicit ConstForwardListIterator(const ForwardListIterator< T > &other);
-    ~ConstForwardListIterator() = default;
     ConstForwardListIterator< T > begin();
     ConstForwardListIterator< T > end();
   private:

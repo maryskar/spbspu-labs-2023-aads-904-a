@@ -9,22 +9,35 @@ namespace details
   {
     T data_;
     ListNode< T > *next_;
-    explicit ListNode(const T &value):
-      data_(value),
-      next_(nullptr)
-    {
-    }
-    ListNode(const T &value, ListNode *next):
-      data_(value),
-      next_(next)
-    {
-    }
-    ListNode(T &&value, ListNode *next):
-      data_(std::move(value)),
-      next_(next)
-    {
-    }
+    explicit ListNode(const T &value);
+    ListNode(const T &value, ListNode *next);
+    explicit ListNode(const T &&value);
+    ListNode(T &&value, ListNode *next);
   };
+  template< typename T >
+  ListNode< T >::ListNode(const T &value):
+    data_(value),
+    next_(nullptr)
+  {
+  }
+  template< typename T >
+  ListNode< T >::ListNode(const T &value, ListNode *next):
+    data_(value),
+    next_(next)
+  {
+  }
+  template< typename T >
+  ListNode< T >::ListNode(const T &&value):
+    data_(std::move(value)),
+    next_(nullptr)
+  {
+  }
+  template< typename T >
+  ListNode< T >::ListNode(T &&value, ListNode *next):
+    data_(std::move(value)),
+    next_(next)
+  {
+  }
   template< typename T >
   void clear(ListNode< T > *node)
   {

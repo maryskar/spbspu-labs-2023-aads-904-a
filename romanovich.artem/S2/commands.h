@@ -2,8 +2,6 @@
 #define COMMANDS_H
 #include <unordered_map>
 #include <iomanip>
-#include <functional>
-#include <vector>
 #include "dict.h"
 namespace romanovich
 {

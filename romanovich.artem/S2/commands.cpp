@@ -1,5 +1,4 @@
 #include "commands.h"
-#include <iostream>
 using namespace std::placeholders;
 namespace
 {
