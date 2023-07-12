@@ -45,7 +45,7 @@ namespace mashkin
     inp >> key;
     if (inp.peek() == '\n')
     {
-      inp.setstate(std::ios::failbit);
+      inp.setstate(std::ios::eofbit);
     }
     if (!inp)
     {

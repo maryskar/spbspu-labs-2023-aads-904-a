@@ -12,7 +12,14 @@ namespace mashkin
     if (dicts.contains(dictionary))
     {
       auto iter = dicts.find(dictionary);
-      std::cout << iter->first << iter->second << "\n";
+      if (iter->second.size() == 0)
+      {
+        std::cout << "<EMPTY>\n";
+      }
+      else
+      {
+        std::cout << iter->first << iter->second << "\n";
+      }
     }
     else
     {
@@ -28,10 +35,6 @@ namespace mashkin
     inp >> first;
     std::string second;
     inp >> second;
-    if (first == second)
-    {
-      throw std::length_error("<EMPTY>");
-    }
     if (!dicts.contains(second) || !dicts.contains(first))
     {
       std::cout << "<INVALID COMMAND>\n";
