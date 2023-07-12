@@ -61,7 +61,7 @@ namespace dimkashelk
           return two_->first;
         }
       }
-      void setFristChild(node_type node)
+      void setFirstChild(node_type node)
       {
         if (size_ == 1)
         {
