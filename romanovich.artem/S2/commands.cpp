@@ -74,9 +74,18 @@ namespace romanovich
     {
       throw std::runtime_error("Error while reading command arguments.");
     }
+    if (dictionary.count(dictName1) == 0 && dictionary.count(dictName2) == 0)
+    {
+      throw std::runtime_error("Error: both dictionaries not found.");
+    }
     if (dictionary.count(dictName1) == 0 || dictionary.count(dictName2) == 0)
     {
-      printEmptyDict(out) << '\n';
+      std::string errDictName = dictionary.count(dictName1) == 0 ? dictName1 : dictName2;
+      throw std::runtime_error("Error: dictionary \"" + errDictName + "\" not found.");
+    }
+    if (dictionary.empty())
+    {
+      printEmptyDict(out) << "\n";
     }
     else
     {
@@ -94,9 +103,16 @@ namespace romanovich
     if (!in)
     {
       throw std::runtime_error("Error while reading command arguments.");
-      //std::exit(0);
     }
-    if (dictionary.count(dictName) > 0)
+    if (dictionary.count(dictName) <= 0)
+    {
+      throw std::runtime_error("Error: dictionary not found.");
+    }
+    if (dictionary.empty())
+    {
+      printEmptyDict(out) << "\n";
+    }
+    else
     {
       const auto &dictData = dictionary[dictName];
       if (dictData.empty())
@@ -112,10 +128,6 @@ namespace romanovich
         }
         out << "\n";
       }
-    }
-    else
-    {
-      throw std::runtime_error("Error: dictionary not found.");
     }
   }
 }
