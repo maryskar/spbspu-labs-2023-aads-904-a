@@ -7,7 +7,7 @@
 namespace dmitriev
 {
 	template< typename T >
-	class ForwardIterator
+	class ForwardIterator: public std::iterator< std::forward_iterator_tag, T >
 	{
 	public:
 		ForwardIterator(List< T >* ptr);
@@ -15,10 +15,11 @@ namespace dmitriev
 		ForwardIterator& operator++();
 		ForwardIterator& operator++(int);
 
-		bool operator==(const ForwardIterator& other);
-		bool operator!=(const ForwardIterator& other);
+		bool operator==(const ForwardIterator& other) const;
+		bool operator!=(const ForwardIterator& other) const;
 
-		const T& operator*();
+		T& operator*();
+		T* operator->();
 
 	private:
 		List< T >* m_ptr;
@@ -29,7 +30,7 @@ namespace dmitriev
 namespace dmitriev
 {
 	template< typename T >
-	class ConstForwardIterator
+	class ConstForwardIterator: public std::iterator< std::forward_iterator_tag, const T >
 	{
 	public:
 		ConstForwardIterator(const List< T >* ptr);
@@ -37,10 +38,11 @@ namespace dmitriev
 		ConstForwardIterator& operator++();
 		ConstForwardIterator& operator++(int);
 
-		bool operator==(const ConstForwardIterator& other);
-		bool operator!=(const ConstForwardIterator& other);
+		bool operator==(const ConstForwardIterator& other) const;
+		bool operator!=(const ConstForwardIterator& other) const;
 
-		const T& operator*();
+		const T& operator*() const;
+		const T* operator->() const;
 
 	private:
 		const List< T >* m_ptr;
@@ -70,22 +72,30 @@ dmitriev::ForwardIterator< T >& dmitriev::ForwardIterator< T >::operator++(int)
 }
 
 template< typename T >
-bool dmitriev::ForwardIterator< T >::operator==(const ForwardIterator& other)
+bool dmitriev::ForwardIterator< T >::operator==(const ForwardIterator& other) const
 {
 	return m_ptr == other.m_ptr;
 }
 
 template< typename T >
-bool dmitriev::ForwardIterator< T >::operator!=(const ForwardIterator& other)
+bool dmitriev::ForwardIterator< T >::operator!=(const ForwardIterator& other) const
 {
 	return !(*this == other);
 }
 
 template< typename T >
-const T& dmitriev::ForwardIterator< T >::operator*()
+T& dmitriev::ForwardIterator< T >::operator*()
 {
 	return m_ptr->data;
 }
+
+template< typename T >
+T* dmitriev::ForwardIterator< T >::operator->()
+{
+	return std::addressof(m_ptr->data);
+}
+
+
 
 template< typename T >
 dmitriev::ConstForwardIterator< T >::ConstForwardIterator(const List< T >* ptr):
@@ -108,21 +118,27 @@ dmitriev::ConstForwardIterator< T >& dmitriev::ConstForwardIterator< T >::operat
 }
 
 template< typename T >
-bool dmitriev::ConstForwardIterator< T >::operator==(const ConstForwardIterator& other)
+bool dmitriev::ConstForwardIterator< T >::operator==(const ConstForwardIterator& other) const
 {
 	return m_ptr == other.m_ptr;
 }
 
 template< typename T >
-bool dmitriev::ConstForwardIterator< T >::operator!=(const ConstForwardIterator& other)
+bool dmitriev::ConstForwardIterator< T >::operator!=(const ConstForwardIterator& other) const
 {
 	return !(*this == other);
 }
 
 template< typename T >
-const T& dmitriev::ConstForwardIterator< T >::operator*()
+const T& dmitriev::ConstForwardIterator< T >::operator*() const
 {
 	return m_ptr->data;
+}
+
+template< typename T >
+const T* dmitriev::ConstForwardIterator< T >::operator->() const
+{
+	return std::addressof(m_ptr->data);
 }
 
 #endif
