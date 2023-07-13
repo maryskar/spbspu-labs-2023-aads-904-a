@@ -26,6 +26,18 @@ namespace dmitriev
 	};
 }
 
+namespace dmitriev
+{
+	class ConstForwardIterator
+	{
+	public:
+		ConstForwardIterator();
+
+	private:
+
+	};
+}
+
 template< typename T >
 dmitriev::ForwardIterator< T >::ForwardIterator(List< T >* ptr):
 	m_ptr(ptr)
