@@ -18,6 +18,8 @@ namespace dmitriev
 		bool operator==(const ForwardIterator& other);
 		bool operator!=(const ForwardIterator& other);
 
+		const T& operator*();
+
 	private:
 		List< T >* m_ptr;
 
@@ -40,9 +42,9 @@ dmitriev::ForwardIterator< T >& dmitriev::ForwardIterator< T >::operator++()
 template< typename T >
 dmitriev::ForwardIterator< T >& dmitriev::ForwardIterator< T >::operator++(int)
 {
-	dmitriev::List< T >* curentPtr = m_ptr;
+	dmitriev::ForwardIterator< T > currentIterator = *this;
 	++(*this);
-	return curentPtr;
+	return currentIterator;
 }
 
 template< typename T >
@@ -55,6 +57,12 @@ template< typename T >
 bool dmitriev::ForwardIterator< T >::operator!=(const ForwardIterator& other)
 {
 	return !(*this == other);
+}
+
+template< typename T >
+const T& dmitriev::ForwardIterator< T >::operator*()
+{
+	return m_ptr->data;
 }
 
 #endif

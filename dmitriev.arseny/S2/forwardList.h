@@ -20,6 +20,10 @@ namespace dmitriev
 
     void pop_front();
 
+    ForwardIterator< T > beforBegin();
+    ForwardIterator< T > begin();
+    ForwardIterator< T > end();
+
   private:
     dmitriev::List< T >* fakeNode;
     //  size_t size;
@@ -29,7 +33,7 @@ namespace dmitriev
 
 template< typename T >
 dmitriev::ForwardList< T >::ForwardList():
-  fakeNode(new dmitriev::List< T >{T(), nullptr})
+  fakeNode(new dmitriev::List< T >{T(), nullptr})//может не быть деф констр
 {}
 
 template< typename T >
@@ -41,8 +45,8 @@ dmitriev::ForwardList< T >::~ForwardList()
 template< typename T >
 void dmitriev::ForwardList< T >::push_front(const T& data)
 {
-  dmitriev::List< T >* newHead = new dmitriev::List< T >{data, fakeNode->next};
-  fakeNode->next = newHead;
+  dmitriev::List< T >* newHead = new dmitriev::List< T >{data, fakeNode->otherList};
+  fakeNode->otherList = newHead;
 }
 
 template< typename T >
@@ -55,7 +59,7 @@ void dmitriev::ForwardList< T >::push_front(T&& data)
 template< typename T >
 const T& dmitriev::ForwardList< T >::front() const
 {
-  return fakeNode->next->data;
+  return fakeNode->otherList->data;
 }
 
 template< typename T >
@@ -67,10 +71,28 @@ T& dmitriev::ForwardList< T >::front()
 template< typename T >
 void dmitriev::ForwardList< T >::pop_front()
 {
-  dmitriev::List< T >* newHead = fakeNode->next->next;
-  delete fakeNode->next;
+  dmitriev::List< T >* newHead = fakeNode->otherList->otherList;
+  delete fakeNode->otherList;
 
-  fakeNode->next = newHead;
+  fakeNode->otherList = newHead;
+}
+
+template< typename T >
+dmitriev::ForwardIterator< T > dmitriev::ForwardList< T >::beforBegin()
+{
+  return ForwardIterator< T >(fakeNode);
+}
+
+template< typename T >
+dmitriev::ForwardIterator< T > dmitriev::ForwardList< T >::begin()
+{
+  return ForwardIterator< T >(fakeNode->otherList);
+}
+
+template< typename T >
+dmitriev::ForwardIterator< T > dmitriev::ForwardList< T >::end()
+{
+  return ForwardIterator< T >(nullptr);
 }
 
 #endif
