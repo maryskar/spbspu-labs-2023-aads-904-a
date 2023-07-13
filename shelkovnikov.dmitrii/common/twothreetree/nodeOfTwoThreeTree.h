@@ -226,12 +226,11 @@ namespace dimkashelk
         {
           throw std::logic_error("No node with size more 2");
         }
-        auto *copy_one = data_.one_;
-        delete data_.one_;
-        data_.two_ = new NodeOfTwoThreeTreeTwo< Key, Value >(k1, v1, k2, v2);
-        data_.two_->first = copy_one->first;
-        data_.two_->second = copy_one->second;
-        data_.two_->parent = copy_one->parent;
+        auto *new_two = new NodeOfTwoThreeTreeTwo< Key, Value >(k1, v1, k2, v2);
+        new_two->first = data_.one_->first;
+        new_two->second = data_.one_->second;
+        new_two->parent = data_.one_->parent;
+        data_.two_ = new_two;
         size_ = 2;
       }
       void updateNodeRemove(unsigned ind_)
