@@ -414,6 +414,27 @@ namespace dimkashelk
       bool isEqualSecond = details::isEqual< Key, Compare >(k, twoNode->data[1].first);
       return isEqualFirst || isEqualSecond;
     }
+    node_to_insert *generateNodeToInsert(node_type *p, const Key &k, const Value &v)
+    {
+      if (p->getSize() != 2)
+      {
+        throw std::logic_error("Doesn't need to create, check");
+      }
+      node_to_insert *toInsert = nullptr;
+      if (compare_(k, p->getData(0).first))
+      {
+        toInsert = new node_to_insert({k, v}, p->getData(0), p->getData(1), p);
+      }
+      else if (compare_(k, p->getData(1).first))
+      {
+        toInsert = new node_to_insert(p->getData(0), {k, v}, p->getData(1), p);
+      }
+      else
+      {
+        toInsert = new node_to_insert(p->getData(0), p->getData(1), {k, v}, p);
+      }
+      return toInsert;
+    }
     node_type *insert(node_type *p, const Key &k, const Value &v)
     {
       if (!p)
@@ -453,8 +474,7 @@ namespace dimkashelk
           {
             delete to_insert_;
           }
-          // НУЖНО ОТСОРТИРОВАТЬ ДАННЫЕ ИСХОДЯ ИЗ КОМПАРАТОРА
-          to_insert_ = new node_to_insert(p, k, v);
+          to_insert_ = generateNodeToInsert(p, k, v);
         }
       }
       else if (compare_(k, p->getData(0).first))
@@ -501,7 +521,7 @@ namespace dimkashelk
         if (parent->getSize() == 2)
         {
           // ТОЖЕ САМОЕ
-          node_to_insert *new_node = new node_to_insert(parent, to_insert_->data[1].first, to_insert_->data[1].second);
+          node_to_insert *new_node = get(parent, to_insert_->data[1].first, to_insert_->data[1].second);
           if (details::isEqual< Key, Compare >(new_node->data[0].first, to_insert_->data[1].first))
           {
             new_node->first = x;
