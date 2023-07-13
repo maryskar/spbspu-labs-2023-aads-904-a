@@ -95,7 +95,7 @@ dmitriev::ConstForwardIterator< T >::ConstForwardIterator(const List< T >* ptr):
 template< typename T >
 dmitriev::ConstForwardIterator< T >& dmitriev::ConstForwardIterator< T >::operator++()
 {
-	m_ptr++;
+	m_ptr = m_ptr->otherList;
 	return *this;
 }
 
@@ -103,7 +103,7 @@ template< typename T >
 dmitriev::ConstForwardIterator< T >& dmitriev::ConstForwardIterator< T >::operator++(int)
 {
 	ConstForwardIterator< T > currPtr = *this;
-	m_ptr++;
+	m_ptr = m_ptr->otherList;
 	return currPtr;
 }
 
@@ -122,7 +122,7 @@ bool dmitriev::ConstForwardIterator< T >::operator!=(const ConstForwardIterator&
 template< typename T >
 const T& dmitriev::ConstForwardIterator< T >::operator*()
 {
-	return *m_ptr;
+	return m_ptr->data;
 }
 
 #endif
