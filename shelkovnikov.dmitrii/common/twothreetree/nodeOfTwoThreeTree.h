@@ -235,14 +235,12 @@ namespace dimkashelk
       }
       void updateNodeRemove(unsigned ind_)
       {
-        auto *copy_two = data_.two_;
-        delete data_.two_;
-        auto *new_node = NodeOfTwoThreeTreeTwo< Key, Value >(copy_two->data[ind_].first, copy_two->data[ind_].second, Key(), Value());
-        new_node->first = copy_two->first;
-        new_node->second = copy_two->second;
-        new_node->third = copy_two->third;
-        new_node->parent = copy_two->parent;
-        data_.two_ = new_node;
+        auto *new_two = new NodeOfTwoThreeTreeTwo< Key, Value >(data_.two_->data[ind_].first, data_.two_->data[ind_].second, Key(), Value());
+        new_two->first = data_.two_->first;
+        new_two->second = data_.two_->second;
+        new_two->third = data_.two_->third;
+        new_two->parent = data_.two_->parent;
+        data_.two_ = new_two;
       }
     };
   }
