@@ -75,7 +75,7 @@ namespace dimkashelk
         if (node_->getSize() == 1)
         {
           node_type *new_node = goUp(node_);
-          if (new_node->parent == nullptr)
+          if (new_node->getParent() == nullptr)
           {
             node_ = nullptr;
             return;
