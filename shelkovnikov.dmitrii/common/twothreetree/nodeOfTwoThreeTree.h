@@ -15,26 +15,26 @@ namespace dimkashelk
     {
     using node_type = NodeOfTwoThreeTree< Key, Value >;
     using data_type = std::pair< const Key, Value >;
+    using node_one_type = NodeOfTwoThreeTreeOne< Key, Value >;
+    using node_two_type = NodeOfTwoThreeTreeTwo< Key, Value >;
     public:
       NodeOfTwoThreeTree(const Key &k, const Value &v):
-        one_(new NodeOfTwoThreeTreeOne< Key, Value >(k, v)),
-        two_(nullptr),
+        data_(new node_one_type(k, v)),
         size_(1)
       {}
       NodeOfTwoThreeTree(const Key &k1, const Value &v1, const Key &k2, const Value &v2):
-        one_(nullptr),
-        two_(new NodeOfTwoThreeTreeTwo< Key, Value >(k1, v1, k2, v2)),
+        data_(new node_two_type(k1, v1, k2, v2)),
         size_(2)
       {}
       ~NodeOfTwoThreeTree()
       {
-        if (one_)
+        if (size_ == 1)
         {
-          delete one_;
+          delete data_.one_;
         }
-        if (two_)
+        else
         {
-          delete two_;
+          delete data_.two_;
         }
       }
       unsigned getSize() const
@@ -43,54 +43,54 @@ namespace dimkashelk
       }
       void insert(const Key &k, const Value &v)
       {
-        updateNodes(one_->data.first, one_->data.second, k, v);
+        updateNodes(data_.one_->data.first, data_.one_->data.second, k, v);
       }
       void insertFront(const Key &k, const Value &v)
       {
-        updateNodes(k, v, one_->data.first, one_->data.second);
+        updateNodes(k, v, data_.one_->data.first, data_.one_->data.second);
       }
       node_type *getFirstChild() const
       {
         if (size_ == 1)
         {
-          return one_->first;
+          return data_.one_->first;
         }
         else
         {
-          return two_->first;
+          return data_.two_->first;
         }
       }
       void setFirstChild(node_type *node)
       {
         if (size_ == 1)
         {
-          one_->first = node;
+          data_.one_->first = node;
         }
         else
         {
-          two_->first = node;
+          data_.two_->first = node;
         }
       }
       node_type *getSecondChild() const
       {
         if (size_ == 1)
         {
-          return one_->second;
+          return data_.one_->second;
         }
         else
         {
-          return two_->second;
+          return data_.two_->second;
         }
       }
       void setSecondChild(node_type *node)
       {
         if (size_ == 1)
         {
-          one_->second = node;
+          data_.one_->second = node;
         }
         else
         {
-          two_->second = node;
+          data_.two_->second = node;
         }
       }
       node_type *getThirdChild() const
@@ -101,7 +101,7 @@ namespace dimkashelk
         }
         else
         {
-          return two_->third;
+          return data_.two_->third;
         }
       }
       void setThirdChild(node_type *node)
@@ -112,7 +112,7 @@ namespace dimkashelk
         }
         else
         {
-          two_->third = node;
+          data_.two_->third = node;
         }
       }
       const data_type &getData(unsigned ind_) const
@@ -123,7 +123,7 @@ namespace dimkashelk
           {
             throw std::out_of_range("No element");
           }
-          return one_->data;
+          return data_.one_->data;
         }
         else
         {
@@ -131,7 +131,7 @@ namespace dimkashelk
           {
             throw std::out_of_range("No element");
           }
-          return two_->data[ind_];
+          return data_.two_->data[ind_];
         }
       }
       data_type &getData(unsigned ind_)
@@ -142,33 +142,33 @@ namespace dimkashelk
       {
         if (size_ == 1)
         {
-          return one_->parent;
+          return data_.one_->parent;
         }
         else
         {
-          return two_->parent;
+          return data_.two_->parent;
         }
       }
       void setParent(node_type *node)
       {
         if (size_ == 1)
         {
-          one_->parent = node;
+          data_.one_->parent = node;
         }
         else
         {
-          two_->parent = node;
+          data_.two_->parent = node;
         }
       }
       node_type *getLastChild() const
       {
         if (size_ == 1)
         {
-          return one_->getLastChildren();
+          return data_.one_->getLastChildren();
         }
         else
         {
-          return two_->getLastChildren();
+          return data_.two_->getLastChildren();
         }
       }
       bool isList() const
@@ -201,25 +201,28 @@ namespace dimkashelk
       }
       void become2Node()
       {
-        one_ = new NodeOfTwoThreeTreeOne< Key, Value >(two_->data[0].first, two_->data[0].second);
-        one_->first = two_->first;
-        one_->second = two_->second;
-        one_->parent = two_->parent;
-        delete two_;
-        two_ = nullptr;
+        auto *copy_two = data_.two_;
+        delete data_.two_;
+        data_.one_ = new NodeOfTwoThreeTreeOne< Key, Value >(copy_two->data[0].first, copy_two->data[0].second);
+        data_.one_->first = copy_two->first;
+        data_.one_->second = copy_two->second;
+        data_.one_->parent = copy_two->parent;
         size_ = 1;
       }
       NodeOfTwoThreeTreeOne< Key, Value > *getOneNode() const
       {
-        return one_;
+        return data_.one_;
       }
       NodeOfTwoThreeTreeTwo< Key, Value > *getTwoNode() const
       {
-        return two_;
+        return data_.two_;
       }
     private:
-      NodeOfTwoThreeTreeOne< Key, Value > *one_;
-      NodeOfTwoThreeTreeTwo< Key, Value > *two_;
+      union
+      {
+        NodeOfTwoThreeTreeOne< Key, Value > *one_;
+        NodeOfTwoThreeTreeTwo< Key, Value > *two_;
+      } data_;
       unsigned size_;
       void updateNodes(const Key &k1, const Value &v1, const Key &k2, const Value &v2)
       {
@@ -227,22 +230,24 @@ namespace dimkashelk
         {
           throw std::logic_error("No node with size more 2");
         }
-        two_ = new NodeOfTwoThreeTreeTwo< Key, Value >(k1, v1, k2, v2);
-        two_->first = one_->first;
-        two_->second = one_->second;
-        two_->parent = one_->parent;
-        delete one_;
-        one_ = nullptr;
+        auto *copy_one = data_.one_;
+        delete data_.one_;
+        data_.two_ = new NodeOfTwoThreeTreeTwo< Key, Value >(k1, v1, k2, v2);
+        data_.two_first = copy_one->first;
+        data_.two_->second = copy_one->second;
+        data_.two_->parent = copy_one->parent;
         size_ = 2;
       }
       void updateNodeRemove(unsigned ind_)
       {
-        auto *new_node = NodeOfTwoThreeTreeTwo< Key, Value >(two_->data[ind_].first, two_->data[ind_].second, Key(), Value());
-        new_node->first = two_->first;
-        new_node->second = two_->second;
-        new_node->third = two_->third;
-        new_node->parent = two_->parent;
-        two_ = new_node;
+        auto *copy_two = data_.two_;
+        delete data_.two_;
+        auto *new_node = NodeOfTwoThreeTreeTwo< Key, Value >(copy_two->data[ind_].first, copy_two->data[ind_].second, Key(), Value());
+        new_node->first = copy_two->first;
+        new_node->second = copy_two->second;
+        new_node->third = copy_two->third;
+        new_node->parent = copy_two->parent;
+        data_.two_ = new_node;
       }
     };
   }
