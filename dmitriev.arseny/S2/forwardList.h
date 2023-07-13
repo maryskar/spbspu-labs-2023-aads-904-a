@@ -3,6 +3,18 @@
 
 #include "forwardIterator.h"
 
+namespace
+{
+  template< typename T >
+  dmitriev::List< T >* copyForwardList(dmitriev::List< T >* otherFakeNode)
+  {
+    std::pair< dmitriev::List< T >*, dmitriev::List< T >* > headTail;
+    headTail = dmitriev::copy(otherFakeNode);
+
+    return headTail.first;
+  }
+}
+
 namespace dmitriev
 {
   template< typename T >
@@ -10,6 +22,9 @@ namespace dmitriev
   {
   public:
     ForwardList();
+    ForwardList(ForwardList< T >&& other);
+    ForwardList(const ForwardList< T >& other);
+
     ~ForwardList();
 
     void pushFront(const T& data);
@@ -28,6 +43,29 @@ namespace dmitriev
     ConstForwardIterator< T > beginConst();
     ConstForwardIterator< T > endConst();
 
+    //operator=();
+    //operator=();
+
+    //bool isEmtpy();
+
+    //void clear();
+    //insertAfter();
+    //emplaceAfter();
+    //eraceAfter();
+    //emplaceFront();
+    //resize();
+    //swap();
+
+    //spliceAfter();
+    //remove();
+    //removeIf();
+    //revrese();
+
+    //operator==();
+    //operator!=();
+
+    //std::swap(ForwardList)//?
+
   private:
     dmitriev::List< T >* m_FakeNode;
     //  size_t size;
@@ -38,6 +76,18 @@ namespace dmitriev
 template< typename T >
 dmitriev::ForwardList< T >::ForwardList():
   m_FakeNode(new dmitriev::List< T >{T(), nullptr})//может не быть деф констр
+{}
+
+template< typename T >
+dmitriev::ForwardList< T >::ForwardList(ForwardList< T >&& other):
+  m_FakeNode(other.m_FakeNode)
+{
+  other.m_FakeNode = nullptr;
+}
+
+template< typename T >
+dmitriev::ForwardList< T >::ForwardList(const ForwardList< T >& other):
+  m_FakeNode(copyForwardList(other.m_FakeNode))
 {}
 
 template< typename T >

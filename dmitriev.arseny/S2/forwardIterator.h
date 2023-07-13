@@ -2,7 +2,7 @@
 #define FORWARDITERATOR_H
 
 #include <iterator>
-#include <C:\Users\BlackEvery\source\repos\spbspu-labs-2023-aads-904-a\dmitriev.arseny\common\list.h>
+#include <C:\Users\BlackEvery\source\repos\spbspu-labs-2023-aads-904-a\dmitriev.arseny\common\list.h>//шакалаки со средой разработки
 
 namespace dmitriev
 {
