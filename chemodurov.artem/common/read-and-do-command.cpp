@@ -4,8 +4,8 @@
 namespace chemodurov
 {
   void doCommand(const std::string & name_command,
-      const std::pair< Dictionary< std::string, union_t >, Dictionary< std::string, print_t > > & commands,
-      Dictionary< std::string, dic_t > & data,
+      const std::pair< Map< std::string, union_t >, Map< std::string, print_t > > & commands,
+      Map< std::string, dic_t > & data,
       std::istream & in,
       std::ostream & out)
   {
