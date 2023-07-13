@@ -12,13 +12,13 @@ namespace dmitriev
     ForwardList();
     ~ForwardList();
 
-    void push_front(const T& data);
-    void push_front(T&& data);
+    void pushFront(const T& data);
+    void pushFront(T&& data);
 
     const T& front() const;
     T& front();
 
-    void pop_front();
+    void popFront();
 
     ForwardIterator< T > beforBegin();
     ForwardIterator< T > begin();
@@ -43,14 +43,14 @@ dmitriev::ForwardList< T >::~ForwardList()
 }
 
 template< typename T >
-void dmitriev::ForwardList< T >::push_front(const T& data)
+void dmitriev::ForwardList< T >::pushFront(const T& data)
 {
   dmitriev::List< T >* newHead = new dmitriev::List< T >{data, fakeNode->otherList};
   fakeNode->otherList = newHead;
 }
 
 template< typename T >
-void dmitriev::ForwardList< T >::push_front(T&& data)
+void dmitriev::ForwardList< T >::pushFront(T&& data)
 {
   dmitriev::List< T >* newHead = new dmitriev::List< T >{std::move(data), fakeNode->otherList};
   fakeNode->otherList = newHead;
@@ -69,7 +69,7 @@ T& dmitriev::ForwardList< T >::front()
 }
 
 template< typename T >
-void dmitriev::ForwardList< T >::pop_front()
+void dmitriev::ForwardList< T >::popFront()
 {
   dmitriev::List< T >* newHead = fakeNode->otherList->otherList;
   delete fakeNode->otherList;
