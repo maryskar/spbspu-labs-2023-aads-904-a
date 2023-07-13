@@ -69,19 +69,15 @@ namespace tarasenko
 
    const_iterator cbeforeBegin() const
    {
-     fake_->right_ = begin_;
-     begin_->left_ = fake_;
-     return const_iterator(fake_, begin_->left_);
+     return const_iterator(beforeBegin());
    }
    const_iterator cbegin() const
    {
-     return const_iterator(fake_, begin_);
+     return const_iterator(begin());
    }
    const_iterator cend() const
    {
-     fake_->left_ = end_;
-     end_->right_ = fake_;
-     return const_iterator(fake_, end_->right_);
+     return const_iterator(end());
    }
 
   private:
@@ -89,10 +85,11 @@ namespace tarasenko
    root_t* root_;
    root_t* begin_;
    root_t* end_;
-   std::pair< iterator, iterator > insert(const T& data, iterator ptree);
-   const_iterator findMin(const_iterator ptree);
-   const_iterator find(const T& data, const_iterator ptree);
-   void remove(const T& data, iterator ptree);
+   std::pair< iterator, iterator > insert(const T& data, iterator it);
+   const_iterator findMax(const_iterator it);
+   const_iterator findMin(const_iterator it);
+   const_iterator find(const T& data, const_iterator it);
+   void remove(const T& data, iterator it);
    void deleteTree(root_t* ptree);
    void leftRotation(root_t* ptree);
    void rightRotation(root_t* ptree);
@@ -300,22 +297,38 @@ namespace tarasenko
       return findMin(const_iterator(fake_, it.node_->left_));
     }
   }
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::findMax(const_iterator it)
+  {
+    if (it.node_ == fake_)
+    {
+      return cend();
+    }
+    else if (it.node_->right_ == fake_)
+    {
+      return it;
+    }
+    else
+    {
+      return findMax(const_iterator(fake_, it.node_->right_));
+    }
+  }
 
   template< typename T, typename Compare >
   void BinarySearchTree< T, Compare >::remove(const T& data, iterator it)
   {
     auto toDelIt = find(data, it);
+    if (toDelIt == cend())
+    {
+      return;
+    }
 
     auto nodeToDel = toDelIt.node_;
     auto left = nodeToDel->left_;
     auto right = nodeToDel->right_;
     auto parent = nodeToDel->parent_;
 
-    if (toDelIt == cend())
-    {
-      return;
-    }
-    else if (left != fake_ && right != fake_)
+    if (left != fake_ && right != fake_)
     {
       auto replaceNodeIt = findMin(const_iterator(fake_, right));
       nodeToDel->data_ = *replaceNodeIt;
@@ -339,6 +352,10 @@ namespace tarasenko
         {
           child->parent_ = parent;
         }
+      }
+      else
+      {
+        root_ = child;
       }
       if (nodeToDel == end_)
       {
@@ -373,7 +390,7 @@ namespace tarasenko
   template< typename T, typename Compare >
   std::string BinarySearchTree< T, Compare >::printAsString()
   {
-    if (!root_)
+    if (!root_ || root_ == fake_)
     {
       return " ";
     }

@@ -64,8 +64,8 @@ namespace tarasenko
 
   private:
    BSTree root_;
-   void fixInsert(Tree* node);
-   void fixRemove(Tree* node);
+   void fixAfterInsert(Tree* node);
+   Tree* fixBeforeRemove(Tree * node);
   };
 
   template< typename T, typename Compare >
@@ -76,13 +76,13 @@ namespace tarasenko
     {
       auto newNode = res.first.node_;
       newNode->color_ = 'r';
-      fixInsert(newNode);
+      fixAfterInsert(newNode);
     }
     return res;
   }
 
   template< typename T, typename Compare >
-  void RedBlackTree< T, Compare >::fixInsert(Tree* node)
+  void RedBlackTree< T, Compare >::fixAfterInsert(Tree* node)
   {
     auto root = root_.root_;
     auto parent = node->parent_;
@@ -105,7 +105,7 @@ namespace tarasenko
           parent->color_ = 'b';
           uncle->color_ = 'b';
           grandpa->color_ = 'r';
-          fixInsert(grandpa);
+          fixAfterInsert(grandpa);
         }
         else
         {
@@ -118,7 +118,7 @@ namespace tarasenko
           else
           {
             root_.leftRotation(parent);
-            fixInsert(parent);
+            fixAfterInsert(parent);
           }
         }
       }
@@ -130,7 +130,7 @@ namespace tarasenko
           parent->color_ = 'b';
           uncle->color_ = 'b';
           grandpa->color_ = 'r';
-          fixInsert(grandpa);
+          fixAfterInsert(grandpa);
         }
         else
         {
@@ -143,7 +143,7 @@ namespace tarasenko
           else
           {
             root_.rightRotation(parent);
-            fixInsert(parent);
+            fixAfterInsert(parent);
           }
         }
       }
@@ -153,14 +153,119 @@ namespace tarasenko
   template< typename T, typename Compare >
   void RedBlackTree< T, Compare >::remove(const T& data)
   {
-    root_.remove(data);
-    fixRemove();
+    auto deletedIt = root_.find(data);
+    if (deletedIt == cend())
+    {
+      return;
+    }
+    Tree* deleted = deletedIt.node_;
+    auto replacingIt = root_.findMax(const_iterator(root_.fake_, deleted->left_));
+    Tree* toDel = deleted;
+    if (replacingIt != cend())
+    {
+      std::swap(*deletedIt, *replacingIt);
+      toDel = fixBeforeRemove(replacingIt.node_);
+    }
+    else
+    {
+      toDel = fixBeforeRemove(toDel);
+    }
+    root_.remove(data, iterator(root_.fake_, toDel));
   }
 
   template< typename T, typename Compare >
-  void RedBlackTree< T, Compare >::fixRemove(Tree* it)
+  details::Tree< T, Compare >* RedBlackTree< T, Compare >::fixBeforeRemove(Tree* toDel)
   {
-    //...
+    auto fake = root_.fake_;
+    if (toDel->color_ == 'r' || toDel == fake) // случай 2
+    {
+      return toDel;
+    }
+    else
+    {
+      auto child = toDel->left_ != fake ? toDel->left_ : toDel->right_;
+      if (child->color_ == 'r') // случай 3
+      {
+        child->color_ = 'b';
+      }
+      else
+      {
+        auto parent = toDel->parent_;
+        if (toDel == parent->left_) // удаляемый слева от P
+        {
+          auto brother = parent->right_;
+          auto out_nephew = brother->right_;
+          auto in_nephew = brother->left_;
+          if (out_nephew != fake && out_nephew->color_ == 'r') // случай 4.1
+          {
+            parent->color_ = 'b';
+            out_nephew->color_ = 'b';
+            root_.leftRotation(parent);
+          }
+          else if (in_nephew != fake && in_nephew->color_ == 'r') // случай 4.2
+          {
+            in_nephew->color_ = 'b';
+            brother->color_ = 'r';
+            root_.rightRotation(brother);
+            toDel = fixBeforeRemove(toDel);
+          }
+          else if (parent->color_ == 'r') // случай 4.3
+          {
+            parent->color_ = 'b';
+            brother->color_ = 'r';
+          }
+          else if (brother->color_ == 'r') // случай 4.4
+          {
+            parent->color_ = 'r';
+            brother->color_ = 'b';
+            root_.leftRotation(parent);
+            toDel = fixBeforeRemove(toDel);
+          }
+          else // случай 4.5
+          {
+            brother->color_ = 'r';
+            toDel->parent_ = fixBeforeRemove(parent);
+          }
+        }
+        else // удаляемый справа от P
+        {
+          auto brother = parent->left_;
+          auto out_nephew = brother->left_;
+          auto in_nephew = brother->right_;
+          if (out_nephew != fake && out_nephew->color_ == 'r') // случай 4.1
+          {
+            parent->color_ = 'b';
+            out_nephew->color_ = 'b';
+            root_.rightRotation(parent);
+          }
+          else if (in_nephew != fake && in_nephew->color_ == 'r') // случай 4.2
+          {
+            in_nephew->color_ = 'b';
+            brother->color_ = 'r';
+            root_.leftRotation(brother);
+            toDel = fixBeforeRemove(toDel);
+          }
+          else if (parent->color_ == 'r') // случай 4.3
+          {
+            parent->color_ = 'b';
+            brother->color_ = 'r';
+          }
+          else if (brother->color_ == 'r') // случай 4.4
+          {
+            parent->color_ = 'r';
+            brother->color_ = 'b';
+            root_.rightRotation(parent);
+            toDel = fixBeforeRemove(toDel);
+          }
+          else // случай 4.5
+          {
+            brother->color_ = 'r';
+            toDel->parent_ = fixBeforeRemove(parent);
+          }
+        }
+      }
+    }
+    return toDel;
   }
 
 //=================================================================
@@ -174,7 +279,7 @@ namespace tarasenko
   std::string RedBlackTree< T, Compare >::printColorAsString()
   {
     auto root = root_.root_;
-    if (!root)
+    if (!root || root == root_.fake_)
     {
       return " ";
     }
