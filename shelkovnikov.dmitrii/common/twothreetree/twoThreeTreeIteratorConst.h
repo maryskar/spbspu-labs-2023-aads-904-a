@@ -70,7 +70,7 @@ namespace dimkashelk
         node_ = goDown(parent_->root_);
         return;
       }
-      if (node_->getLastChildren() == nullptr)
+      if (node_->getLastChild() == nullptr)
       {
         if (node_->getSize() == 1)
         {
