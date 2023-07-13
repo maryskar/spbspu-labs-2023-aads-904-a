@@ -231,6 +231,7 @@ namespace dimkashelk
         new_two->first = data_.one_->first;
         new_two->second = data_.one_->second;
         new_two->parent = data_.one_->parent;
+        delete data_.one_;
         data_.two_ = new_two;
         size_ = 2;
       }
