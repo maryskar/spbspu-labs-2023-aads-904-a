@@ -2,6 +2,7 @@
 #define SPBSPU_LABS_2023_AADS_904_A_NODEOFTWOTHREETREE_H
 #include "nodeOfTwoThreeTreeOne.h"
 #include "nodeOfTwoThreeTreeTwo.h"
+#include "data.h"
 namespace dimkashelk
 {
   namespace details
@@ -218,11 +219,7 @@ namespace dimkashelk
         return data_.two_;
       }
     private:
-      union
-      {
-        NodeOfTwoThreeTreeOne< Key, Value > *one_;
-        NodeOfTwoThreeTreeTwo< Key, Value > *two_;
-      } data_;
+      Data< Key, Value > data_;
       unsigned size_;
       void updateNodes(const Key &k1, const Value &v1, const Key &k2, const Value &v2)
       {
@@ -233,7 +230,7 @@ namespace dimkashelk
         auto *copy_one = data_.one_;
         delete data_.one_;
         data_.two_ = new NodeOfTwoThreeTreeTwo< Key, Value >(k1, v1, k2, v2);
-        data_.two_first = copy_one->first;
+        data_.two_->first = copy_one->first;
         data_.two_->second = copy_one->second;
         data_.two_->parent = copy_one->parent;
         size_ = 2;
