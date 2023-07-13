@@ -421,17 +421,18 @@ namespace dimkashelk
         throw std::logic_error("Doesn't need to create, check");
       }
       node_to_insert *toInsert = nullptr;
+      std::pair< const Key, Value > data = {k, v};
       if (compare_(k, p->getData(0).first))
       {
-        toInsert = new node_to_insert({k, v}, p->getData(0), p->getData(1), p);
+        toInsert = new node_to_insert(data, p->getData(0), p->getData(1), p);
       }
       else if (compare_(k, p->getData(1).first))
       {
-        toInsert = new node_to_insert(p->getData(0), {k, v}, p->getData(1), p);
+        toInsert = new node_to_insert(p->getData(0), data, p->getData(1), p);
       }
       else
       {
-        toInsert = new node_to_insert(p->getData(0), p->getData(1), {k, v}, p);
+        toInsert = new node_to_insert(p->getData(0), p->getData(1), data, p);
       }
       return toInsert;
     }
@@ -520,8 +521,7 @@ namespace dimkashelk
         auto *parent = to_insert_->parent;
         if (parent->getSize() == 2)
         {
-          // ТОЖЕ САМОЕ
-          node_to_insert *new_node = get(parent, to_insert_->data[1].first, to_insert_->data[1].second);
+          node_to_insert *new_node = generateNodeToInsert(parent, to_insert_->data[1].first, to_insert_->data[1].second);
           if (details::isEqual< Key, Compare >(new_node->data[0].first, to_insert_->data[1].first))
           {
             new_node->first = x;
