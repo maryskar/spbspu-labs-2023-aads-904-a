@@ -11,7 +11,7 @@ namespace dimkashelk
     struct NodeToInsert
     {
     public:
-      using node_type = NodeOfTwoThreeTree< const Key, Value >;
+      using node_type = NodeOfTwoThreeTree< Key, Value >;
       std::pair< const Key, Value > data[3];
       unsigned size;
       node_type *first;

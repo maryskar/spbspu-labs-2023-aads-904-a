@@ -13,7 +13,7 @@ namespace dimkashelk
   {
   friend class TwoThreeTree< Key, Value, Compare >;
   friend class TwoThreeTreeReverseIterator< Key, Value, Compare >;
-  using node_type = details::NodeOfTwoThreeTree< const Key, Value >;
+  using node_type = details::NodeOfTwoThreeTree< Key, Value >;
   public:
     using iterator_category = std::bidirectional_iterator_tag;
     using difference_type = std::ptrdiff_t;
@@ -76,12 +76,12 @@ namespace dimkashelk
         node_ = goDown(parent_->root_);
         return;
       }
-      if (node_->getLastChildren() == nullptr)
+      if (node_->getLastChild() == nullptr)
       {
         if (node_->getSize() == 1)
         {
           node_type *new_node = goUp(node_);
-          if (new_node->parent == nullptr)
+          if (new_node->getParent() == nullptr)
           {
             node_ = nullptr;
             return;

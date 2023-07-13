@@ -52,7 +52,7 @@ namespace dimkashelk
       return node_ != other.node_;
     }
   private:
-    using node_type = details::NodeOfTwoThreeTree< const Key, Value >;
+    using node_type = details::NodeOfTwoThreeTree< Key, Value >;
     size_t ind_;
     node_type *node_;
     node_type *prev_;

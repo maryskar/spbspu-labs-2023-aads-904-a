@@ -19,10 +19,10 @@ namespace dimkashelk
   template< typename Key, typename Value, typename Compare >
   class TwoThreeTree
   {
-  using node_to_insert = details::NodeToInsert< const Key, Value >;
-  using node_type = details::NodeOfTwoThreeTree< const Key, Value >;
-  using node_one_type = details::NodeOfTwoThreeTreeOne< const Key, Value >;
-  using node_two_type = details::NodeOfTwoThreeTreeTwo< const Key, Value >;
+  using node_to_insert = details::NodeToInsert< Key, Value >;
+  using node_type = details::NodeOfTwoThreeTree< Key, Value >;
+  using node_one_type = details::NodeOfTwoThreeTreeOne< Key, Value >;
+  using node_two_type = details::NodeOfTwoThreeTreeTwo< Key, Value >;
   using two_three_tree_type = TwoThreeTree< Key, Value, Compare >;
   using reference = std::pair< const Key, Value >&;
   using const_reference = const reference&;
@@ -403,7 +403,7 @@ namespace dimkashelk
       new_node->setParent(to_insert_->fourth);
       return new_node;
     }
-    bool containsInNode(const Key &k, const node_type *node)
+    bool containsInNode(const Key &k, const node_type *node) const
     {
       if (node->getSize() == 1)
       {

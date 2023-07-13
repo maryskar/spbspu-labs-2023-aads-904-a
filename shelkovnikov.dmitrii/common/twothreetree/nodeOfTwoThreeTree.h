@@ -13,7 +13,8 @@ namespace dimkashelk
     template< typename Key, typename Value >
     class NodeOfTwoThreeTree
     {
-    using node_type = NodeOfTwoThreeTree< const Key, Value >;
+    using node_type = NodeOfTwoThreeTree< Key, Value >;
+    using data_type = std::pair< const Key, Value >;
     public:
       NodeOfTwoThreeTree(const Key &k, const Value &v):
         one_(new NodeOfTwoThreeTreeOne< Key, Value >(k, v)),
@@ -36,7 +37,7 @@ namespace dimkashelk
           delete two_;
         }
       }
-      unsigned getSize()
+      unsigned getSize() const
       {
         return size_;
       }
@@ -48,7 +49,7 @@ namespace dimkashelk
       {
         updateNodes(k, v, one_->data.first, one_->data.second);
       }
-      NodeOfTwoThreeTree< Key, Value > *getFirstChild()
+      node_type *getFirstChild() const
       {
         if (size_ == 1)
         {
@@ -70,7 +71,7 @@ namespace dimkashelk
           two_->first = node;
         }
       }
-      NodeOfTwoThreeTree< Key, Value > *getSecondChild()
+      node_type *getSecondChild() const
       {
         if (size_ == 1)
         {
@@ -92,7 +93,7 @@ namespace dimkashelk
           two_->second = node;
         }
       }
-      NodeOfTwoThreeTree< Key, Value > *getThirdChild()
+      node_type *getThirdChild() const
       {
         if (size_ == 1)
         {
@@ -114,7 +115,7 @@ namespace dimkashelk
           two_->third = node;
         }
       }
-      std::pair< const Key, Value > &getData(unsigned ind_)
+      const data_type &getData(unsigned ind_) const
       {
         if (size_ == 1)
         {
@@ -133,7 +134,11 @@ namespace dimkashelk
           return two_->data[ind_];
         }
       }
-      NodeOfTwoThreeTree< Key, Value > *getParent()
+      data_type &getData(unsigned ind_)
+      {
+        return const_cast< data_type & >((static_cast< const node_type & >(*this)).getData(ind_));
+      }
+      node_type *getParent() const
       {
         if (size_ == 1)
         {
@@ -155,7 +160,7 @@ namespace dimkashelk
           two_->parent = node;
         }
       }
-      NodeOfTwoThreeTree< Key, Value > *getLastChild()
+      node_type *getLastChild() const
       {
         if (size_ == 1)
         {
@@ -166,7 +171,7 @@ namespace dimkashelk
           return two_->getLastChildren();
         }
       }
-      bool isList()
+      bool isList() const
       {
         return getFirstChild() == nullptr && getSecondChild() == nullptr && getThirdChild() == nullptr;
       }
@@ -204,11 +209,11 @@ namespace dimkashelk
         two_ = nullptr;
         size_ = 1;
       }
-      NodeOfTwoThreeTreeOne< Key, Value > *getOneNode()
+      NodeOfTwoThreeTreeOne< Key, Value > *getOneNode() const
       {
         return one_;
       }
-      NodeOfTwoThreeTreeTwo< Key, Value > *getTwoNode()
+      NodeOfTwoThreeTreeTwo< Key, Value > *getTwoNode() const
       {
         return two_;
       }
