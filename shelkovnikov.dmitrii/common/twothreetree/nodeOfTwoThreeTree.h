@@ -20,11 +20,11 @@ namespace dimkashelk
     using node_two_type = NodeOfTwoThreeTreeTwo< Key, Value >;
     public:
       NodeOfTwoThreeTree(const Key &k, const Value &v):
-        data_(new node_one_type(k, v)),
+        data_{new node_one_type(k, v)},
         size_(1)
       {}
       NodeOfTwoThreeTree(const Key &k1, const Value &v1, const Key &k2, const Value &v2):
-        data_(new node_two_type(k1, v1, k2, v2)),
+        data_{new node_two_type(k1, v1, k2, v2)},
         size_(2)
       {}
       ~NodeOfTwoThreeTree()
