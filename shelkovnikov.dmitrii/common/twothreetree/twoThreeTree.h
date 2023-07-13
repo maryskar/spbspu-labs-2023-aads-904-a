@@ -437,7 +437,14 @@ namespace dimkashelk
       {
         if (p->getSize() < 2)
         {
-          p->insert(k, v);
+          if (compare_(k, p->getData(0).first))
+          {
+            p->insertFront(k, v);
+          }
+          else
+          {
+            p->insert(k, v);
+          }
           return p;
         }
         else
@@ -446,6 +453,7 @@ namespace dimkashelk
           {
             delete to_insert_;
           }
+          // НУЖНО ОТСОРТИРОВАТЬ ДАННЫЕ ИСХОДЯ ИЗ КОМПАРАТОРА
           to_insert_ = new node_to_insert(p, k, v);
         }
       }
@@ -492,6 +500,7 @@ namespace dimkashelk
         auto *parent = to_insert_->parent;
         if (parent->getSize() == 2)
         {
+          // ТОЖЕ САМОЕ
           node_to_insert *new_node = new node_to_insert(parent, to_insert_->data[1].first, to_insert_->data[1].second);
           if (details::isEqual< Key, Compare >(new_node->data[0].first, to_insert_->data[1].first))
           {
