@@ -202,12 +202,11 @@ namespace dimkashelk
       }
       void become2Node()
       {
-        auto *copy_two = data_.two_;
-        delete data_.two_;
-        data_.one_ = new NodeOfTwoThreeTreeOne< Key, Value >(copy_two->data[0].first, copy_two->data[0].second);
-        data_.one_->first = copy_two->first;
-        data_.one_->second = copy_two->second;
-        data_.one_->parent = copy_two->parent;
+        auto *new_one = new NodeOfTwoThreeTreeOne< Key, Value >(data_.two_->data[0].first, data_.two_->data[0].second);
+        new_one->first = data_.two_->first;
+        new_one->second = data_.two_->second;
+        new_one->parent = data_.two_->parent;
+        data_.one_ = new_one;
         size_ = 1;
       }
       NodeOfTwoThreeTreeOne< Key, Value > *getOneNode() const
