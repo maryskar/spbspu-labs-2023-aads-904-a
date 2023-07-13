@@ -979,59 +979,59 @@ namespace dimkashelk
     }
     node_type *merge(node_type *leaf)
     {
-      node_type *parent = leaf->parent;
-      if (parent->first == leaf)
+      node_type *parent = leaf->getParent();
+      if (parent->getFirstChild() == leaf)
       {
-        parent->second->insert(parent->data[0].first, parent->data[0].second);
-        parent->second->third = parent->second->second;
-        parent->second->second = parent->second->first;
-        if (leaf->first != nullptr)
+        parent->getSecondChild()->insert(parent->getData(0).first, parent->getData(0).second);
+        parent->getSecondChild()->setThirdChild(parent->getSecondChild()->getSecondChild());
+        parent->getSecondChild()->setSecondChild(parent->getSecondChild()->getFirstChild());
+        if (leaf->getFirstChild() != nullptr)
         {
-          parent->second->first = leaf->first;
+          parent->getSecondChild()->setFirstChild(leaf->getFirstChild());
         }
-        else if (leaf->second != nullptr)
+        else if (leaf->getSecondChild() != nullptr)
         {
-          parent->second->first = leaf->second;
+          parent->getSecondChild()->setFirstChild(leaf->getSecondChild());
         }
-        if (parent->second->first != nullptr)
+        if (parent->getSecondChild()->getFirstChild() != nullptr)
         {
-          parent->second->first->parent = parent->second;
+          parent->getSecondChild()->getFirstChild()->setParent(parent->getSecondChild());
         }
-        parent->removeFromNode(parent->data[0].first);
-        delete parent->first;
-        parent->first = nullptr;
+        removeFromNode(parent, parent->getData(0).first);
+        delete parent->getFirstChild();
+        parent->setFirstChild(nullptr);
       }
-      else if (parent->second == leaf)
+      else if (parent->getSecondChild() == leaf)
       {
-        parent->first->insert(parent->data[0].first, parent->data[0].second);
-        if (leaf->first != nullptr)
+        parent->getFirstChild()->insert(parent->getData(0).first, parent->getData(0).second);
+        if (leaf->getFirstChild() != nullptr)
         {
-          parent->first->third = leaf->first;
+          parent->getFirstChild()->setThirdChild(leaf->getFirstChild());
         }
-        else if (leaf->second != nullptr)
+        else if (leaf->getSecondChild() != nullptr)
         {
-          parent->first->third = leaf->second;
+          parent->getFirstChild()->setThirdChild(leaf->getSecondChild());
         }
-        if (parent->first->third != nullptr)
+        if (parent->getFirstChild()->getThirdChild() != nullptr)
         {
-          parent->first->third->parent = parent->first;
+          parent->getFirstChild()->getThirdChild()->setParent(parent->getFirstChild());
         }
-        parent->removeFromNode(parent->data[0].first, parent->data[0].second);
-        delete parent->second;
-        parent->second = nullptr;
+        removeFromNode(parent, parent->getData(0).first);
+        delete parent->getSecondChild();
+        parent->setSecondChild(nullptr);
       }
-      if (parent->parent == nullptr)
+      if (parent->getParent() == nullptr)
       {
         node_type *tmp = nullptr;
-        if (parent->first != nullptr)
+        if (parent->getFirstChild() != nullptr)
         {
-          tmp = parent->first;
+          tmp = parent->getFirstChild();
         }
         else
         {
-          tmp = parent->second;
+          tmp = parent->getSecondChild();
         }
-        tmp->parent = nullptr;
+        tmp->setParent(nullptr);
         delete parent;
         return tmp;
       }
