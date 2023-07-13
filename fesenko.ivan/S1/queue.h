@@ -1,6 +1,8 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 #include <stdexcept>
+#include <utility>
+#include <memory>
 #include "list.h"
 namespace fesenko
 {

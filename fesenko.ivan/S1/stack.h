@@ -1,6 +1,8 @@
 #ifndef STACK_H
 #define STACK_H
 #include <stdexcept>
+#include <utility>
+#include <memory>
 #include "list.h"
 namespace fesenko
 {
