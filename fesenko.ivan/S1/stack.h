@@ -9,6 +9,10 @@ namespace fesenko
   {
    public:
     Stack();
+    Stack(const Stack< T > &);
+    Stack(Stack< T > &&);
+    Stack< T > &operator=(const Stack< T > &);
+    Stack< T > &operator=(Stack< T > &&);
     ~Stack();
     void push(const T &rhs);
     T &top();
@@ -23,6 +27,37 @@ template< typename T >
 fesenko::Stack< T >::Stack():
   head_(nullptr)
 {}
+
+template< typename T >
+fesenko::Stack< T >::Stack(const Stack< T > &other):
+  head_(other.head_)
+{}
+
+template< typename T >
+fesenko::Stack< T >::Stack(Stack< T > &&other):
+ head_(std::move(other.head_))
+{}
+
+template< typename T >
+fesenko::Stack< T > &fesenko::Stack< T >::operator=(const Stack< T > &other)
+{
+  if (this != std::addressof(other))
+  {
+    head_ = other.head_;
+  }
+  return *this;
+}
+
+template< typename T >
+fesenko::Stack< T > &fesenko::Stack< T >::operator=(Stack< T > &&other)
+{
+  if (this != std::addressof(other))
+  {
+    head_ = std::move(other.head_);
+  }
+  return *this;
+}
+
 
 template< typename T >
 fesenko::Stack< T >::~Stack()
