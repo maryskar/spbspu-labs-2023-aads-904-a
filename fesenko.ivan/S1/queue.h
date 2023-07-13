@@ -9,6 +9,10 @@ namespace fesenko
   {
    public:
     Queue();
+    Queue(const Queue< T > &);
+    Queue(Queue< T > &&);
+    Queue< T > &operator=(const Queue< T > &);
+    Queue< T > &operator=(Queue< T > &&);
     ~Queue();
     void push(const T rhs);
     T &front();
@@ -25,6 +29,40 @@ fesenko::Queue< T >::Queue():
   head_(nullptr),
   tail_(nullptr)
 {}
+
+template< typename T >
+fesenko::Queue< T >::Queue(const Queue< T > &other):
+  head_(other.head_),
+  tail_(other.tail_)
+{}
+
+template< typename T >
+fesenko::Queue< T >::Queue(Queue< T > &&other):
+ head_(std::move(other.head_)),
+ tail_(other.tail_)
+{}
+
+template< typename T >
+fesenko::Queue< T > &fesenko::Queue< T >::operator=(const Queue< T > &other)
+{
+  if (this != std::addressof(other))
+  {
+    head_ = other.head_;
+    tail_ = other.tail_;
+  }
+  return *this;
+}
+
+template< typename T >
+fesenko::Queue< T > &fesenko::Queue< T >::operator=(Queue< T > &&other)
+{
+  if (this != std::addressof(other))
+  {
+    head_ = std::move(other.head_);
+    tail_ = other.tail_;
+  }
+  return *this;
+}
 
 template< typename T >
 fesenko::Queue< T >::~Queue()
