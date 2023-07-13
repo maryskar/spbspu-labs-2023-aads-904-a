@@ -58,7 +58,6 @@ fesenko::Stack< T > &fesenko::Stack< T >::operator=(Stack< T > &&other)
   return *this;
 }
 
-
 template< typename T >
 fesenko::Stack< T >::~Stack()
 {
