@@ -40,6 +40,18 @@ namespace mashkin
   };
 
   template< class T, class Comporator >
+  bool AVL_iterator< T, Comporator >::operator==(const AVL_iterator< T >& rhs) const
+  {
+    return node_ == rhs.node_;
+  }
+
+  template< class T, class Comporator >
+  bool AVL_iterator< T, Comporator >::operator!=(const AVL_iterator< T >& rhs) const
+  {
+    return !(rhs == *this);
+  }
+
+  template< class T, class Comporator >
   AVL_iterator< T, Comporator > AVL_iterator< T, Comporator >::operator--(int)
   {
     assert(node_ != nullptr);
