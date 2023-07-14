@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <utility>
 #include <stdexcept>
+#include <iostream>
 
 #include <list.hpp>
 #include "forwardlistiterator.hpp"
@@ -16,6 +17,7 @@ class ForwardList
     using iterator = ForwardListIterator< T >;
     using const_iterator = ForwardListConstIterator< T >;
     ForwardList();
+    ForwardList(ForwardList< T >& other);
     iterator begin() noexcept;
     const_iterator begin() const noexcept;
     const_iterator cbegin() const noexcept;
@@ -51,6 +53,22 @@ template< typename T >
 ForwardList< T >::ForwardList():
   head_(nullptr)
 {
+}
+
+template< typename T >
+ForwardList< T >::ForwardList(ForwardList< T >& other):
+  ForwardList()
+{
+  if (other.empty())
+  {
+    return;
+  }
+  auto oth_it = other.begin();
+  push_front(*oth_it);
+  if (oth_it.ptr_->next_)
+  {
+    insert_after(cbegin(), ++oth_it, other.end());
+  }
 }
 
 template< typename T >
@@ -153,7 +171,8 @@ typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterato
   iterator temp;
   while (first != last)
   {
-    temp = insert_after(pos, first.ptr_->data_);
+    temp = insert_after(pos, *first);
+    pos++;
     first++;
   }
   return temp;
