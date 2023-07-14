@@ -13,14 +13,14 @@ namespace mashkin
   public:
     AVL_iterator();
     ~AVL_iterator() = default;
-    explicit AVL_iterator(const AVL_iterator< T >&);
-    explicit AVL_iterator(Tree< T >* rhs);
+    AVL_iterator(const AVL_iterator< T, Comporator >&) = default;
+    explicit AVL_iterator(Tree< T, Comporator >* rhs);
 
-    AVL_iterator< T >& operator=(const AVL_iterator< T >&);
-    AVL_iterator< T >& operator++();
-    AVL_iterator< T > operator++(int);
-    AVL_iterator< T >& operator--();
-    AVL_iterator< T > operator--(int);
+    AVL_iterator< T, Comporator >& operator=(const AVL_iterator< T, Comporator >&) = default;
+    AVL_iterator< T, Comporator >& operator++();
+    AVL_iterator< T, Comporator > operator++(int);
+    AVL_iterator< T, Comporator >& operator--();
+    AVL_iterator< T, Comporator > operator--(int);
 
     T& operator*();
     T* operator->();
@@ -31,18 +31,86 @@ namespace mashkin
   private:
     Tree< T >* node_;
     Comporator comp_;
-    void doWhileParent();
+
+    void doParentForPlus();
+    void doParentForMinus();
     void doWhileLeft();
+    void doWhileRight();
   };
 
-  template< class T, class Comp >
-  AVL_iterator< T >& AVL_iterator< T, Comp >::operator--()
+  template< class T, class Comporator >
+  AVL_iterator< T, Comporator > AVL_iterator< T, Comporator >::operator--(int)
   {
-    return ;
+    assert(node_ != nullptr);
+    auto res(*this);
+    --(*this);
+    return res;
+  }
+
+  template< class T, class Comporator >
+  void AVL_iterator< T, Comporator >::doParentForMinus()
+  {
+    auto newNode = node_->parent_;
+    while (newNode && comp_(node_->data, newNode->data))
+    {
+      newNode = newNode->parent_;
+    }
+    node_ = newNode;
+  }
+
+  template< class T, class Comporator >
+  void AVL_iterator< T, Comporator >::doWhileRight()
+  {
+    auto newNode = node_->left;
+    while (newNode->right)
+    {
+      newNode = newNode->right;
+    }
+    node_ = newNode;
+  }
+
+  template< class T, class Comporator >
+  AVL_iterator< T, Comporator >& AVL_iterator< T, Comporator >::operator--()
+  {
+    assert(node_ != nullptr);
+    if (!node_->left && !node_->right && node_->parent_)
+    {
+      if (node_ == node_->parent_->left)
+      {
+        doParentForMinus();
+        return *this;
+      }
+      else
+      {
+        node_ = node_->parent_;
+        return *this;
+      }
+    }
+    else if (node_->left && node_->right && node_->parent_)
+    {
+      doWhileRight();
+      return *this;
+    }
+    else if (node_->left && !node_->right && node_->parent_)
+    {
+      doWhileRight();
+      return *this;
+    }
+    else if (!node_->parent_)
+    {
+      doWhileRight();
+      return *this;
+    }
+    else if (!node_->left && node_->right && node_->parent_)
+    {
+      doParentForMinus();
+      return *this;
+    }
+    return *this;
   }
 
   template< class T, class Comp >
-  AVL_iterator< T > AVL_iterator< T, Comp >::operator++(int)
+  AVL_iterator< T, Comp > AVL_iterator< T, Comp >::operator++(int)
   {
     assert(node_ != nullptr);
     auto res(*this);
@@ -62,7 +130,7 @@ namespace mashkin
   }
 
   template< class T, class Comp >
-  void AVL_iterator< T, Comp >::doWhileParent()
+  void AVL_iterator< T, Comp >::doParentForPlus()
   {
     auto newNode = node_->parent_;
     while (newNode && !comp_(node_->data, newNode->data))
@@ -73,7 +141,7 @@ namespace mashkin
   }
 
   template< class T, class Comp >
-  AVL_iterator< T >& AVL_iterator< T, Comp >::operator++()
+  AVL_iterator< T, Comp >& AVL_iterator< T, Comp >::operator++()
   {
     assert(node_ != nullptr);
     if (!node_->left && !node_->right && node_->parent_)
@@ -85,7 +153,7 @@ namespace mashkin
       }
       else
       {
-        doWhileParent();
+        doParentForPlus();
         return *this;
       }
     }
@@ -94,9 +162,9 @@ namespace mashkin
       doWhileLeft();
       return *this;
     }
-    else if (!node_->right && node_->parent_)
+    else if (node_->left && !node_->right && node_->parent_)
     {
-      doWhileParent();
+      doParentForPlus();
       return *this;
     }
     else if (!node_->parent_)
@@ -120,7 +188,7 @@ namespace mashkin
   }
 
   template< class T, class Comp >
-  AVL_iterator< T, Comp >::AVL_iterator(Tree< T >* rhs):
+  AVL_iterator< T, Comp >::AVL_iterator(Tree< T, Comp >* rhs):
     node_(rhs),
     comp_()
   {
