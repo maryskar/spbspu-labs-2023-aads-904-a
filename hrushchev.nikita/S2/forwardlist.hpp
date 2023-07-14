@@ -40,6 +40,12 @@ class ForwardList
     void resize(size_t count);
     void resize(size_t count, const T& value);
     void swap(ForwardList< T >& other);
+    void splice_after(const_iterator pos, ForwardList< T >& other);
+    void splice_after(const_iterator pos, ForwardList< T >&& other);
+    void splice_after(const_iterator pos, ForwardList< T >& other, const_iterator it);
+    void splice_after(const_iterator pos, ForwardList< T >&& other, const_iterator it);
+    void splice_after(const_iterator pos, ForwardList< T >& other, const_iterator first, const_iterator last);
+    void splice_after(const_iterator pos, ForwardList< T >&& other, const_iterator first, const_iterator last);
     List< T >* head_;
 };
 
@@ -262,6 +268,30 @@ template< typename T >
 void ForwardList< T >::swap(ForwardList< T >& other)
 {
   std::swap(head_, other.head_);
+}
+
+template< typename T >
+void ForwardList< T >::splice_after(const_iterator pos, ForwardList< T >& other)
+{
+  if (other.empty())
+  {
+    return;
+  }
+  List< T >* cur = const_cast< List < T >* >(pos.ptr_);
+  List< T >* other_head = other.head_;
+  while (other_head->next_)
+  {
+    other_head = other_head->next_;
+  }
+  other_head->next_ = cur->next_;
+  cur->next_ = std::move(other.head_);
+  other.head_ = nullptr;
+}
+
+template< typename T >
+void ForwardList< T >::splice_after(const_iterator pos, ForwardList< T >&& other)
+{
+  splice_after(pos, other);
 }
 
 template< typename T >
