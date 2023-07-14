@@ -15,6 +15,7 @@ class ForwardList
   public:
     using iterator = ForwardListIterator< T >;
     using const_iterator = ForwardListConstIterator< T >;
+    ForwardList();
     iterator begin() noexcept;
     const_iterator begin() const noexcept;
     const_iterator cbegin() const noexcept;
@@ -42,12 +43,15 @@ class ForwardList
     void swap(ForwardList< T >& other);
     void splice_after(const_iterator pos, ForwardList< T >& other);
     void splice_after(const_iterator pos, ForwardList< T >&& other);
-    void splice_after(const_iterator pos, ForwardList< T >& other, const_iterator it);
-    void splice_after(const_iterator pos, ForwardList< T >&& other, const_iterator it);
-    void splice_after(const_iterator pos, ForwardList< T >& other, const_iterator first, const_iterator last);
-    void splice_after(const_iterator pos, ForwardList< T >&& other, const_iterator first, const_iterator last);
+  private:
     List< T >* head_;
 };
+
+template< typename T >
+ForwardList< T >::ForwardList():
+  head_(nullptr)
+{
+}
 
 template< typename T >
 typename ForwardList< T >::iterator ForwardList< T >::begin() noexcept
