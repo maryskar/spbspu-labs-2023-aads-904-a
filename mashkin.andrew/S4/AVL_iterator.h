@@ -3,6 +3,7 @@
 #include <functional>
 #include <iterator>
 #include <cassert>
+#include <memory>
 #include "tree.h"
 
 namespace mashkin
@@ -45,6 +46,20 @@ namespace mashkin
     auto res(*this);
     --(*this);
     return res;
+  }
+
+  template< class T, class Comporator >
+  T* AVL_iterator< T, Comporator >::operator->()
+  {
+    assert(node_ != nullptr);
+    return std::addressof(node_->data);
+  }
+
+  template< class T, class Comporator >
+  T& AVL_iterator< T, Comporator >::operator*()
+  {
+    assert(node_ != nullptr);
+    return node_->data;
   }
 
   template< class T, class Comporator >
