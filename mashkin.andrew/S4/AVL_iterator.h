@@ -4,6 +4,7 @@
 #include <iterator>
 #include <cassert>
 #include <memory>
+#include "const_AVL_iterator.h"
 #include "tree.h"
 
 namespace mashkin
@@ -30,6 +31,8 @@ namespace mashkin
     bool operator==(const AVL_iterator< T >& rhs) const;
 
   private:
+    template< class U, class C >
+    friend class Const_AVL_iterator;
     Tree< T >* node_;
     Comporator comp_;
 
@@ -105,33 +108,27 @@ namespace mashkin
       if (node_ == node_->parent_->left)
       {
         doParentForMinus();
-        return *this;
       }
       else
       {
         node_ = node_->parent_;
-        return *this;
       }
     }
     else if (node_->left && node_->right && node_->parent_)
     {
       doWhileRight();
-      return *this;
     }
     else if (node_->left && !node_->right && node_->parent_)
     {
       doWhileRight();
-      return *this;
     }
     else if (!node_->parent_)
     {
       doWhileRight();
-      return *this;
     }
     else if (!node_->left && node_->right && node_->parent_)
     {
       doParentForMinus();
-      return *this;
     }
     return *this;
   }
@@ -176,33 +173,27 @@ namespace mashkin
       if (node_ == node_->parent_->left)
       {
         node_ = node_->parent_;
-        return *this;
       }
       else
       {
         doParentForPlus();
-        return *this;
       }
     }
     else if (node_->left && node_->right && node_->parent_)
     {
       doWhileLeft();
-      return *this;
     }
     else if (node_->left && !node_->right && node_->parent_)
     {
       doParentForPlus();
-      return *this;
     }
     else if (!node_->parent_)
     {
       doWhileLeft();
-      return *this;
     }
     else if (!node_->left && node_->right && node_->parent_)
     {
       doWhileLeft();
-      return *this;
     }
     return *this;
   }
