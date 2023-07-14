@@ -46,9 +46,9 @@ namespace dmitriev
     ConstForwardIterator< T > beginConst();
     ConstForwardIterator< T > endConst();
 
-    //bool isEmtpy();
+    bool isEmtpy();
 
-    //void clear();
+    void clear();
     //insertAfter();
     //emplaceAfter();
     //eraceAfter();
@@ -114,15 +114,13 @@ dmitriev::ForwardList< T >& dmitriev::ForwardList< T >::operator=(const ForwardL
   ForwardList < T > newForwardList = other;
   *this = std::move(newForwardList);
 
-
   return *this;
 }
-
 
 template< typename T >
 dmitriev::ForwardList< T >::~ForwardList()
 {
-  clear(m_FakeNode->otherList);
+  dmitriev::clear(m_FakeNode);
 }
 
 template< typename T >
@@ -194,6 +192,18 @@ template< typename T >
 dmitriev::ConstForwardIterator< T > dmitriev::ForwardList< T >::endConst()
 {
   return ConstForwardIterator< T >(nullptr);
+}
+
+template< typename T >
+bool dmitriev::ForwardList< T >::isEmtpy()
+{
+  return m_FakeNode->otherList == nullptr;
+}
+
+template< typename T >
+void dmitriev::ForwardList< T >::clear()
+{
+  dmitriev::clear(m_FakeNode->otherList);
 }
 
 
