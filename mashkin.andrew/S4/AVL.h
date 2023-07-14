@@ -17,7 +17,7 @@ namespace mashkin
     void clear();
 
   private:
-    Tree< T, Comporator > root_;
+    Tree< T, Comporator >* root_;
     Comporator comp_;
   };
 
@@ -26,8 +26,9 @@ namespace mashkin
     root_(static_cast< Tree< T, Comp >* >(::operator new(sizeof(Tree< T, Comp >)))),
     comp_()
   {
-    root_.left = nullptr;
-    root_.right = nullptr;
+    root_->left = nullptr;
+    root_->right = nullptr;
+    root_->parent_ = root_;
   }
 }
 #endif

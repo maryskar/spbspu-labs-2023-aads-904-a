@@ -8,6 +8,7 @@ namespace mashkin
   struct Tree
   {
     T data;
+    Tree< T >* parent_;
     Tree< T >* left;
     Tree< T >* right;
     Comporator comp;
