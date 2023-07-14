@@ -35,9 +35,11 @@ namespace mashkin
     bool operator==(const Const_AVL_iterator< T >& rhs) const;
 
   private:
+    Tree< T >* fake_;
     Tree< T >* node_;
     Comp comp_;
 
+    Tree< T >* getFake(Tree< T, Comp >* rhs);
     void doParentForPlus();
     void doParentForMinus();
     void doWhileLeft();
@@ -45,7 +47,19 @@ namespace mashkin
   };
 
   template< class T, class Comp >
+  Tree< T >* Const_AVL_iterator< T, Comp >::getFake(Tree< T, Comp >* rhs)
+  {
+    auto fake = rhs;
+    while (fake->parent_)
+    {
+      fake = fake->parent_;
+    }
+    return fake;
+  }
+
+  template< class T, class Comp >
   Const_AVL_iterator< T, Comp >::Const_AVL_iterator(const AVL_iterator< T, Comp >& rhs):
+    fake_(rhs.fake_),
     node_(rhs.node_),
     comp_(rhs.comp_)
   {
@@ -84,22 +98,36 @@ namespace mashkin
   void Const_AVL_iterator< T, Comp >::doParentForMinus()
   {
     auto newNode = node_->parent_;
-    while (newNode && comp_(node_->data, newNode->data))
+    while (newNode != fake_ && comp_(node_->data, newNode->data))
     {
       newNode = newNode->parent_;
     }
-    node_ = newNode;
+    if (newNode == fake_)
+    {
+      node_ = node_->left;
+    }
+    else
+    {
+      node_ = newNode;
+    }
   }
 
   template< class T, class Comp >
   void Const_AVL_iterator< T, Comp >::doParentForPlus()
   {
     auto newNode = node_->parent_;
-    while (newNode && !comp_(node_->data, newNode->data))
+    while (newNode != fake_ && !comp_(node_->data, newNode->data))
     {
       newNode = newNode->parent_;
     }
-    node_ = newNode;
+    if (newNode == fake_)
+    {
+      node_ = node_->right;
+    }
+    else
+    {
+      node_ = newNode;
+    }
   }
 
   template< class T, class Comp >
@@ -216,6 +244,7 @@ namespace mashkin
 
   template< class T, class Comp >
   Const_AVL_iterator< T, Comp >::Const_AVL_iterator(Tree< T, Comp >* rhs):
+    fake_(getFake(rhs)),
     node_(rhs),
     comp_()
   {

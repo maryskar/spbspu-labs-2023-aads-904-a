@@ -33,14 +33,27 @@ namespace mashkin
   private:
     template< class U, class C >
     friend class Const_AVL_iterator;
+    Tree< T >* fake_;
     Tree< T >* node_;
     Comporator comp_;
 
+    Tree< T >* getFake(Tree< T, Comporator >* rhs);
     void doParentForPlus();
     void doParentForMinus();
     void doWhileLeft();
     void doWhileRight();
   };
+
+  template< class T, class Comporator >
+  Tree< T >* AVL_iterator< T, Comporator >::getFake(Tree< T, Comporator >* rhs)
+  {
+    auto fake = rhs;
+    while (fake->parent_)
+    {
+      fake = fake->parent_;
+    }
+    return fake;
+  }
 
   template< class T, class Comporator >
   bool AVL_iterator< T, Comporator >::operator==(const AVL_iterator< T >& rhs) const
@@ -81,11 +94,18 @@ namespace mashkin
   void AVL_iterator< T, Comporator >::doParentForMinus()
   {
     auto newNode = node_->parent_;
-    while (newNode && comp_(node_->data, newNode->data))
+    while (newNode != fake_ && comp_(node_->data, newNode->data))
     {
       newNode = newNode->parent_;
     }
-    node_ = newNode;
+    if (newNode == fake_)
+    {
+      node_ = node_->left;
+    }
+    else
+    {
+      node_ = newNode;
+    }
   }
 
   template< class T, class Comporator >
@@ -157,11 +177,18 @@ namespace mashkin
   void AVL_iterator< T, Comp >::doParentForPlus()
   {
     auto newNode = node_->parent_;
-    while (newNode && !comp_(node_->data, newNode->data))
+    while (newNode != fake_ && !comp_(node_->data, newNode->data))
     {
       newNode = newNode->parent_;
     }
-    node_ = newNode;
+    if (newNode == fake_)
+    {
+      node_ = node_->right;
+    }
+    else
+    {
+      node_ = newNode;
+    }
   }
 
   template< class T, class Comp >
@@ -200,6 +227,7 @@ namespace mashkin
 
   template< class T, class Comp >
   AVL_iterator< T, Comp >::AVL_iterator():
+    fake_(nullptr),
     node_(nullptr),
     comp_()
   {
@@ -207,6 +235,7 @@ namespace mashkin
 
   template< class T, class Comp >
   AVL_iterator< T, Comp >::AVL_iterator(Tree< T, Comp >* rhs):
+    fake_(getFake(rhs)),
     node_(rhs),
     comp_()
   {
