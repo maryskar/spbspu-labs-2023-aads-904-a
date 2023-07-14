@@ -23,7 +23,7 @@ namespace mashkin
     void clear();
 
   private:
-    Tree< T, Comporator >* clear_impl(Tree< T, Comporator >* toDel);
+    void clear_impl(Tree< T, Comporator >* toDel);
     Tree< T, Comporator >* fake_;
     Comporator comp_;
   };
@@ -42,11 +42,11 @@ namespace mashkin
   }
 
   template< class T, class Comporator >
-  Tree< T, Comporator >* AVL< T, Comporator >::clear_impl(Tree< T, Comporator >* toDel)
+  void AVL< T, Comporator >::clear_impl(Tree< T, Comporator >* toDel)
   {
     if (!toDel)
     {
-      return toDel;
+      return;
     }
     clear_impl(toDel->left);
     clear_impl(toDel->right);
