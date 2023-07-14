@@ -27,6 +27,13 @@ namespace mashkin
   };
 
   template< class T, class Comporator >
+  AVL< T, Comporator >::~AVL()
+  {
+    clear();
+    ::operator delete(fake_);
+  }
+
+  template< class T, class Comporator >
   Tree< T, Comporator >* AVL< T, Comporator >::clear_impl(Tree< T, Comporator >* toDel)
   {
     if (!toDel)
