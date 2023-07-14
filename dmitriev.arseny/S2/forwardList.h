@@ -25,6 +25,9 @@ namespace dmitriev
     ForwardList(ForwardList< T >&& other);
     ForwardList(const ForwardList< T >& other);
 
+    ForwardList< T >& operator=(ForwardList< T >&& other);
+    ForwardList< T >& operator=(const ForwardList< T >& other);
+
     ~ForwardList();
 
     void pushFront(const T& data);
@@ -42,9 +45,6 @@ namespace dmitriev
     ConstForwardIterator< T > beforBeginConst();
     ConstForwardIterator< T > beginConst();
     ConstForwardIterator< T > endConst();
-
-    //operator=();
-    //operator=();
 
     //bool isEmtpy();
 
@@ -89,6 +89,35 @@ template< typename T >
 dmitriev::ForwardList< T >::ForwardList(const ForwardList< T >& other):
   m_FakeNode(copyForwardList(other.m_FakeNode))
 {}
+
+template< typename T >
+dmitriev::ForwardList< T >& dmitriev::ForwardList< T >::operator=(ForwardList< T >&& other)
+{
+  if (this == std::addressof(other))
+  {
+    return *this;
+  }
+  clear(m_FakeNode->otherList);
+  m_FakeNode->otherList = other.m_FakeNode->otherList;
+  other.m_FakeNode->otherList = nullptr;
+
+  return *this;
+}
+
+template< typename T >
+dmitriev::ForwardList< T >& dmitriev::ForwardList< T >::operator=(const ForwardList< T >& other)
+{
+  if (this == std::addressof(other))
+  {
+    return *this;
+  }
+  ForwardList < T > newForwardList = other;
+  *this = std::move(newForwardList);
+
+
+  return *this;
+}
+
 
 template< typename T >
 dmitriev::ForwardList< T >::~ForwardList()
@@ -166,5 +195,7 @@ dmitriev::ConstForwardIterator< T > dmitriev::ForwardList< T >::endConst()
 {
   return ConstForwardIterator< T >(nullptr);
 }
+
+
 
 #endif
