@@ -2,6 +2,8 @@
 #define S4_AVL_H
 #include <functional>
 #include "tree.h"
+#include "AVL_iterator.h"
+#include "const_AVL_iterator.h"
 
 namespace mashkin
 {
@@ -9,6 +11,8 @@ namespace mashkin
   class AVL
   {
   public:
+    using iter = AVL_iterator< T, Comporator >;
+    using const_iter = Const_AVL_iterator< T, Comporator >;
     AVL();
     AVL(const AVL& lhs);
     AVL(AVL&& rhs);
@@ -17,18 +21,42 @@ namespace mashkin
     void clear();
 
   private:
-    Tree< T, Comporator >* root_;
+    Tree< T, Comporator >* clear_impl(Tree< T, Comporator >* toDel);
+    Tree< T, Comporator >* fake_;
     Comporator comp_;
   };
 
+  template< class T, class Comporator >
+  Tree< T, Comporator >* AVL< T, Comporator >::clear_impl(Tree< T, Comporator >* toDel)
+  {
+    if (!toDel)
+    {
+      return toDel;
+    }
+    clear_impl(toDel->left);
+    clear_impl(toDel->right);
+    delete toDel;
+  }
+
+  template< class T, class Comporator >
+  void AVL< T, Comporator >::clear()
+  {
+    if (fake_ == fake_->parent_)
+    {
+      return;
+    }
+    clear_impl(fake_->parent_);
+    fake_->parent_ = fake_;
+  }
+
   template< class T, class Comp >
   AVL< T, Comp >::AVL():
-    root_(static_cast< Tree< T, Comp >* >(::operator new(sizeof(Tree< T, Comp >)))),
+    fake_(static_cast< Tree< T, Comp >* >(::operator new(sizeof(Tree< T, Comp >)))),
     comp_()
   {
-    root_->left = nullptr;
-    root_->right = nullptr;
-    root_->parent_ = root_;
+    fake_->left = nullptr;
+    fake_->right = nullptr;
+    fake_->parent_ = fake_;
   }
 }
 #endif
