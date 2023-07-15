@@ -23,6 +23,11 @@ namespace mashkin
     const_iter cbegin();
     const_iter cend();
 
+    iter insert(const T& val);
+    iter insert(T&& val);
+    template< class InputIter >
+    iter insert(InputIter first, InputIter last);
+
     void clear();
 
   private:
