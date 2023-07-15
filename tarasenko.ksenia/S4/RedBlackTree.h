@@ -97,7 +97,7 @@ namespace tarasenko
 //   const_iterator lower_bound(const T& data) const;
 //   iterator upper_bound(const T& data);
 //   const_iterator upper_bound(const T& data) const;
-//   Compare value_comp() const;
+   Compare value_comp() const;
 
    std::string printAsString();       //
    std::string printColorAsString(); //
@@ -357,6 +357,11 @@ namespace tarasenko
     root_.clear();
   }
 
+  template< typename T, typename Compare >
+  Compare RedBlackTree< T, Compare >::value_comp() const
+  {
+    return root_.compare_;
+  }
 //=================================================================
   template< typename T, typename Compare >
   std::string RedBlackTree< T, Compare >::printAsString()

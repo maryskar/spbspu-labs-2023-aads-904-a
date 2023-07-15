@@ -24,6 +24,7 @@ namespace tarasenko
      root_(nullptr),
      begin_(nullptr),
      end_(nullptr),
+     compare_(),
      size_(0)
    {
      fake_->left_ = fake_;
@@ -112,7 +113,7 @@ namespace tarasenko
 //   const_iterator lower_bound(const T& data) const;
 //   iterator upper_bound(const T& data);
 //   const_iterator upper_bound(const T& data) const;
-//   Compare value_comp() const;
+   Compare value_comp() const;
 
    std::string printAsString();               //
    std::string printAsString(root_t* ptree); //
@@ -124,6 +125,7 @@ namespace tarasenko
    root_t* begin_;
    root_t* end_;
    size_t size_;
+   Compare compare_;
    std::pair< iterator, iterator > insert(const T& data, iterator it);
    void leftRotation(root_t* ptree);
    void rightRotation(root_t* ptree);
@@ -152,8 +154,7 @@ namespace tarasenko
   {
     auto inserted = end();
     auto node = it.node_;
-    auto comp = node->compare_;
-    if (comp(data, *it))
+    if (compare_(data, *it))
     {
       if (node->left_ == fake_)
       {
@@ -167,7 +168,7 @@ namespace tarasenko
         inserted = res.second;
       }
     }
-    else if (comp(*it, data))
+    else if (compare_(*it, data))
     {
       if (node->right_ == fake_)
       {
@@ -289,7 +290,6 @@ namespace tarasenko
   ConstBidirectionalIterator< T, Compare >
      BinarySearchTree< T, Compare >::find(const T& data, const_iterator it) const
   {
-    auto comp = it.node_->compare_;
     if (it.node_ == fake_)
     {
       return cend();
@@ -298,7 +298,7 @@ namespace tarasenko
     {
       return it;
     }
-    if (comp(data, *it))
+    if (compare_(data, *it))
     {
       return find(data, const_iterator(fake_, it.node_->left_));
     }
@@ -449,6 +449,11 @@ namespace tarasenko
     }
   }
 
+  template< typename T, typename Compare >
+  Compare BinarySearchTree< T, Compare >::value_comp() const
+  {
+    return compare_;
+  }
   //==============================================
 
   template< typename T, typename Compare >

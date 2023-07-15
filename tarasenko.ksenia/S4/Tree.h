@@ -12,8 +12,7 @@ namespace tarasenko
         left_(nullptr),
         right_(nullptr),
         parent_(nullptr),
-        color_(' '),
-        compare_()
+        color_(' ')
       {};
 
       Tree(const T& data, Tree< T, Compare >* left, Tree< T, Compare >* right, Tree< T, Compare >* parent):
@@ -21,8 +20,7 @@ namespace tarasenko
         left_(left),
         right_(right),
         parent_(parent),
-        color_(' '),
-        compare_()
+        color_(' ')
       {};
 
       T data_;
@@ -30,7 +28,6 @@ namespace tarasenko
       Tree< T, Compare >* right_;
       Tree< T, Compare >* parent_;
       char color_;
-      Compare compare_;
     };
   }
 }
