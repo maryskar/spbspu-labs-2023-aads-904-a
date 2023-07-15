@@ -21,6 +21,7 @@ namespace mashkin
     iter begin();
     iter end();
     const_iter cbegin();
+    const_iter cend();
 
     void clear();
 
@@ -29,6 +30,12 @@ namespace mashkin
     Tree< T, Comporator >* fake_;
     Comporator comp_;
   };
+
+  template< class T, class Comp >
+  AVL< T, Comp >::const_iter AVL< T, Comp >::cend()
+  {
+    return Const_AVL_iterator< T, Comp >(fake_);
+  }
 
   template< class T, class Comp >
   AVL< T, Comp >::const_iter AVL< T, Comp >::cbegin()
