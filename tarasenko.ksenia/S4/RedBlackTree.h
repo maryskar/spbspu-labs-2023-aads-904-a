@@ -73,8 +73,8 @@ namespace tarasenko
 //   T& operator[](const T& data);
 //   T& operator[](T&& data);
 
-//   size_t size() const;
-//   bool isEmpty() const;
+   size_t size() const;
+   bool isEmpty() const;
    std::pair< iterator, bool > insert(const T& data);
    //   std::pair< iterator, bool > insert(T&& data);
 //   iterator insert(const_iterator pos, const T& data);
@@ -107,6 +107,18 @@ namespace tarasenko
    void fixAfterInsert(Tree* node);
    Tree* fixBeforeErase(Tree* node);
   };
+
+  template< typename T, typename Compare >
+  size_t RedBlackTree< T, Compare >::size() const
+  {
+    return root_.size();
+  }
+
+  template< typename T, typename Compare >
+  bool RedBlackTree< T, Compare >::isEmpty() const
+  {
+    return root_.isEmpty();
+  }
 
   template< typename T, typename Compare >
   std::pair< BidirectionalIterator< T, Compare >, bool > RedBlackTree< T, Compare >::insert(const T& data)
@@ -217,20 +229,22 @@ namespace tarasenko
   details::Tree< T, Compare >* RedBlackTree< T, Compare >::fixBeforeErase(Tree* toDel)
   {
     auto fake = root_.fake_;
+    auto root = root_.root_;
     if (toDel->color_ == 'r' || toDel == fake)
     {
       return toDel;
     }
     else
     {
-      auto child = toDel->left_ != fake ? toDel->left_ : toDel->right_;
-      if (child->color_ == 'r')
-      {
-        child->color_ = 'b';
-      }
-      else
+      auto l_child = toDel->left_;
+      auto r_child = toDel->right_;
+      if ((l_child != fake && r_child != fake) || (l_child->color_ == 'b' && r_child->color_ == 'b'))
       {
         auto parent = toDel->parent_;
+        if (toDel == root)
+        {
+          return toDel;
+        }
         if (toDel == parent->left_)
         {
           auto brother = parent->right_;
@@ -302,6 +316,17 @@ namespace tarasenko
             brother->color_ = 'r';
             toDel->parent_ = fixBeforeErase(parent);
           }
+        }
+      }
+      else
+      {
+        if (l_child->color_ == 'r')
+        {
+          l_child->color_ = 'b';
+        }
+        else
+        {
+          r_child->color_ = 'b';
         }
       }
     }
