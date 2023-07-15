@@ -25,10 +25,19 @@ namespace tarasenko
    {
      root_.fake_->color_ = 'b';
    }
+//   RedBlackTree(const RBTree& other)
+//   {}
+//   RedBlackTree(RBTree&& other)
+//   {}
+//   explicit RedBlackTree(const Compare& comp)
+//   {}
+//   template< typename InputIt >
+//   RedBlackTree(InputIt first, InputIt last, const Compare& comp = Compare())
+//   {}
    ~RedBlackTree() = default;
 
-   std::pair< iterator, bool > insert(const T& data);
-   void remove(const T& data);
+   //RBTree& operator=(const RBTree& other);
+//   RBTree& operator=(RBTree&& other);
 
    friend class BidirectionalIterator< T, Compare >;
    friend class ConstBidirectionalIterator< T, Compare >;
@@ -59,13 +68,44 @@ namespace tarasenko
      return root_.cend();
    }
 
+   //   T& at(const T& data);
+//   const T& at(const T& data) const;
+//   T& operator[](const T& data);
+//   T& operator[](T&& data);
+
+//   size_t size() const;
+//   bool isEmpty() const;
+   std::pair< iterator, bool > insert(const T& data);
+   //   std::pair< iterator, bool > insert(T&& data);
+//   iterator insert(const_iterator pos, const T& data);
+//   iterator insert(const_iterator pos, T&& data);
+//   template< typename InputIt >
+//   void insert(InputIt first, InputIt last);
+//   iterator find(const T& data);
+//   const_iterator find(const T& data) const;
+//   iterator erase(iterator pos);
+//   iterator erase(const_iterator pos);
+//   iterator erase(const_iterator first, const_iterator last);
+//   size_type erase(const_reference data);
+   void erase(const T& data);
+//   size_t count(const T& data) const;
+//   void resize(size_t count);
+//   void resize(size_t count, const T& value);
+//   void swap(BSTree& other);
+//   void clear();
+//   iterator lower_bound(const T& data);
+//   const_iterator lower_bound(const T& data) const;
+//   iterator upper_bound(const T& data);
+//   const_iterator upper_bound(const T& data) const;
+//   Compare value_comp() const;
+
    std::string printAsString();       //
    std::string printColorAsString(); //
 
   private:
    BSTree root_;
    void fixAfterInsert(Tree* node);
-   Tree* fixBeforeRemove(Tree * node);
+   Tree* fixBeforeErase(Tree* node);
   };
 
   template< typename T, typename Compare >
@@ -151,7 +191,7 @@ namespace tarasenko
   }
 
   template< typename T, typename Compare >
-  void RedBlackTree< T, Compare >::remove(const T& data)
+  void RedBlackTree< T, Compare >::erase(const T& data)
   {
     auto deletedIt = root_.find(data);
     if (deletedIt == cend())
@@ -164,103 +204,103 @@ namespace tarasenko
     if (replacingIt != cend())
     {
       std::swap(*deletedIt, *replacingIt);
-      toDel = fixBeforeRemove(replacingIt.node_);
+      toDel = fixBeforeErase(replacingIt.node_);
     }
     else
     {
-      toDel = fixBeforeRemove(toDel);
+      toDel = fixBeforeErase(toDel);
     }
-    root_.remove(data, iterator(root_.fake_, toDel));
+    root_.erase(data, iterator(root_.fake_, toDel));
   }
 
   template< typename T, typename Compare >
-  details::Tree< T, Compare >* RedBlackTree< T, Compare >::fixBeforeRemove(Tree* toDel)
+  details::Tree< T, Compare >* RedBlackTree< T, Compare >::fixBeforeErase(Tree* toDel)
   {
     auto fake = root_.fake_;
-    if (toDel->color_ == 'r' || toDel == fake) // случай 2
+    if (toDel->color_ == 'r' || toDel == fake)
     {
       return toDel;
     }
     else
     {
       auto child = toDel->left_ != fake ? toDel->left_ : toDel->right_;
-      if (child->color_ == 'r') // случай 3
+      if (child->color_ == 'r')
       {
         child->color_ = 'b';
       }
       else
       {
         auto parent = toDel->parent_;
-        if (toDel == parent->left_) // удаляемый слева от P
+        if (toDel == parent->left_)
         {
           auto brother = parent->right_;
           auto out_nephew = brother->right_;
           auto in_nephew = brother->left_;
-          if (out_nephew != fake && out_nephew->color_ == 'r') // случай 4.1
+          if (out_nephew != fake && out_nephew->color_ == 'r')
           {
             parent->color_ = 'b';
             out_nephew->color_ = 'b';
             root_.leftRotation(parent);
           }
-          else if (in_nephew != fake && in_nephew->color_ == 'r') // случай 4.2
+          else if (in_nephew != fake && in_nephew->color_ == 'r')
           {
             in_nephew->color_ = 'b';
             brother->color_ = 'r';
             root_.rightRotation(brother);
-            toDel = fixBeforeRemove(toDel);
+            toDel = fixBeforeErase(toDel);
           }
-          else if (parent->color_ == 'r') // случай 4.3
+          else if (parent->color_ == 'r')
           {
             parent->color_ = 'b';
             brother->color_ = 'r';
           }
-          else if (brother->color_ == 'r') // случай 4.4
+          else if (brother->color_ == 'r')
           {
             parent->color_ = 'r';
             brother->color_ = 'b';
             root_.leftRotation(parent);
-            toDel = fixBeforeRemove(toDel);
+            toDel = fixBeforeErase(toDel);
           }
-          else // случай 4.5
+          else
           {
             brother->color_ = 'r';
-            toDel->parent_ = fixBeforeRemove(parent);
+            toDel->parent_ = fixBeforeErase(parent);
           }
         }
-        else // удаляемый справа от P
+        else
         {
           auto brother = parent->left_;
           auto out_nephew = brother->left_;
           auto in_nephew = brother->right_;
-          if (out_nephew != fake && out_nephew->color_ == 'r') // случай 4.1
+          if (out_nephew != fake && out_nephew->color_ == 'r')
           {
             parent->color_ = 'b';
             out_nephew->color_ = 'b';
             root_.rightRotation(parent);
           }
-          else if (in_nephew != fake && in_nephew->color_ == 'r') // случай 4.2
+          else if (in_nephew != fake && in_nephew->color_ == 'r')
           {
             in_nephew->color_ = 'b';
             brother->color_ = 'r';
             root_.leftRotation(brother);
-            toDel = fixBeforeRemove(toDel);
+            toDel = fixBeforeErase(toDel);
           }
-          else if (parent->color_ == 'r') // случай 4.3
+          else if (parent->color_ == 'r')
           {
             parent->color_ = 'b';
             brother->color_ = 'r';
           }
-          else if (brother->color_ == 'r') // случай 4.4
+          else if (brother->color_ == 'r')
           {
             parent->color_ = 'r';
             brother->color_ = 'b';
             root_.rightRotation(parent);
-            toDel = fixBeforeRemove(toDel);
+            toDel = fixBeforeErase(toDel);
           }
-          else // случай 4.5
+          else
           {
             brother->color_ = 'r';
-            toDel->parent_ = fixBeforeRemove(parent);
+            toDel->parent_ = fixBeforeErase(parent);
           }
         }
       }
