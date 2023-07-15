@@ -23,7 +23,8 @@ namespace tarasenko
      fake_(static_cast< root_t* >(::operator new(sizeof(root_t)))),
      root_(nullptr),
      begin_(nullptr),
-     end_(nullptr)
+     end_(nullptr),
+     size_(0)
    {
      fake_->left_ = fake_;
      fake_->right_ = fake_;
@@ -85,8 +86,8 @@ namespace tarasenko
 //   T& operator[](const T& data);
 //   T& operator[](T&& data);
 
-//   size_t size() const;
-//   bool isEmpty() const;
+   size_t size() const;
+   bool isEmpty() const;
    std::pair< iterator, bool > insert(const T& data);
 //   std::pair< iterator, bool > insert(T&& data);
 //   iterator insert(const_iterator pos, const T& data);
@@ -134,6 +135,18 @@ namespace tarasenko
   };
 
   template< typename T, typename Compare >
+  size_t BinarySearchTree< T, Compare >::size() const
+  {
+    return size_;
+  }
+
+  template< typename T, typename Compare >
+  bool BinarySearchTree< T, Compare >::isEmpty() const
+  {
+    return !size_;
+  }
+
+  template< typename T, typename Compare >
   std::pair< BidirectionalIterator< T, Compare >, BidirectionalIterator< T, Compare > >
      BinarySearchTree< T, Compare >::insert(const T& data, iterator it)
   {
@@ -179,6 +192,7 @@ namespace tarasenko
       root_ = new root_t(data, fake_, fake_, fake_);
       begin_ = root_;
       end_ = root_;
+      ++size_;
       return std::make_pair(iterator(fake_, root_), true);
     }
     else
@@ -194,6 +208,7 @@ namespace tarasenko
         {
           end_ = inserted;
         }
+        ++size_;
         return std::make_pair(iterator(fake_, inserted), true);
       }
       return std::make_pair(end(), false);
@@ -210,7 +225,7 @@ namespace tarasenko
       rightChild->left_->parent_ = ptree;
     }
     rightChild->parent_ = ptree->parent_;
-    if (ptree->parent_ == fake_)
+    if (ptree == root_)
     {
       root_ = rightChild;
     }
@@ -236,7 +251,7 @@ namespace tarasenko
       leftChild->right_->parent_ = ptree;
     }
     leftChild->parent_ = ptree->parent_;
-    if (ptree->parent_ == fake_)
+    if (ptree == root_)
     {
       root_ = leftChild;
     }
@@ -348,13 +363,13 @@ namespace tarasenko
     {
       auto replaceNodeIt = findMin(const_iterator(fake_, right));
       nodeToDel->data_ = *replaceNodeIt;
-      remove(*replaceNodeIt, iterator(fake_, replaceNodeIt.node_));
+      erase(*replaceNodeIt, iterator(fake_, replaceNodeIt.node_));
       return;
     }
     else
     {
       auto child = left != fake_ ? left : right;
-      if (parent != fake_)
+      if (nodeToDel != root_)
       {
         if (parent->left_ == nodeToDel)
         {
@@ -382,6 +397,7 @@ namespace tarasenko
         begin_ = right != fake_ ? right : parent;
       }
       delete nodeToDel;
+      --size_;
     }
   }
 
@@ -412,6 +428,7 @@ namespace tarasenko
       root_ = nullptr;
       begin_ = nullptr;
       end_ = nullptr;
+      size_ = 0;
     }
   }
 
