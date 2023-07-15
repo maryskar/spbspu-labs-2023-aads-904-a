@@ -19,6 +19,7 @@ namespace mashkin
     ~AVL();
 
     iter begin();
+    iter end();
 
     void clear();
 
@@ -27,6 +28,12 @@ namespace mashkin
     Tree< T, Comporator >* fake_;
     Comporator comp_;
   };
+
+  template< class T, class Comporator >
+  AVL< T, Comporator >::iter AVL< T, Comporator >::end()
+  {
+    return fake_;
+  }
 
   template< class T, class Comporator >
   AVL< T, Comporator >::iter AVL< T, Comporator >::begin()
