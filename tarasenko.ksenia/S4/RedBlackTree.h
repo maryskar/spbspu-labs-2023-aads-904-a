@@ -81,8 +81,8 @@ namespace tarasenko
 //   iterator insert(const_iterator pos, T&& data);
 //   template< typename InputIt >
 //   void insert(InputIt first, InputIt last);
-//   iterator find(const T& data);
-//   const_iterator find(const T& data) const;
+   const_iterator find(const T& data) const;
+   iterator find(const T& data);
 //   iterator erase(iterator pos);
 //   iterator erase(const_iterator pos);
 //   iterator erase(const_iterator first, const_iterator last);
@@ -91,8 +91,8 @@ namespace tarasenko
 //   size_t count(const T& data) const;
 //   void resize(size_t count);
 //   void resize(size_t count, const T& value);
-//   void swap(BSTree& other);
-//   void clear();
+   void swap(RBTree& other);
+   void clear();
 //   iterator lower_bound(const T& data);
 //   const_iterator lower_bound(const T& data) const;
 //   iterator upper_bound(const T& data);
@@ -200,6 +200,18 @@ namespace tarasenko
         }
       }
     }
+  }
+
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare > RedBlackTree< T, Compare >::find(const T& data) const
+  {
+    return root_.find(data);
+  }
+
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare > RedBlackTree< T, Compare >::find(const T& data)
+  {
+    return root_.find(data);
   }
 
   template< typename T, typename Compare >
@@ -331,6 +343,18 @@ namespace tarasenko
       }
     }
     return toDel;
+  }
+
+  template< typename T, typename Compare >
+  void RedBlackTree< T, Compare >::swap(RBTree& other)
+  {
+    root_.swap(other.root_);
+  }
+
+  template< typename T, typename Compare >
+  void RedBlackTree< T, Compare >::clear()
+  {
+    root_.clear();
   }
 
 //=================================================================

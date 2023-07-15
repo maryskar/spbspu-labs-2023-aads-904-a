@@ -96,8 +96,8 @@ namespace tarasenko
 //   void insert(InputIt first, InputIt last);
    void leftRotation();
    void rightRotation();
-//   iterator find(const T& data);
    const_iterator find(const T& data) const;
+   iterator find(const T& data);
 //   iterator erase(iterator pos);
 //   iterator erase(const_iterator pos);
 //   iterator erase(const_iterator first, const_iterator last);
@@ -106,7 +106,7 @@ namespace tarasenko
 //   size_t count(const T& data) const;
 //   void resize(size_t count);
 //   void resize(size_t count, const T& value);
-//   void swap(BSTree& other);
+   void swap(BSTree& other);
    void clear();
 //   iterator lower_bound(const T& data);
 //   const_iterator lower_bound(const T& data) const;
@@ -313,6 +313,13 @@ namespace tarasenko
   }
 
   template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::find(const T& data)
+  {
+    const_iterator cit = static_cast< const BSTree& >(*this).find(data);
+    return iterator(fake_, cit.node_);
+  }
+
+  template< typename T, typename Compare >
   ConstBidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::findMin(const_iterator it)
   {
     if (it.node_ == fake_)
@@ -406,6 +413,16 @@ namespace tarasenko
   {
     auto it = iterator(fake_, root_);
     erase(data, it);
+  }
+
+  template< typename T, typename Compare >
+  void BinarySearchTree< T, Compare >::swap(BSTree& other)
+  {
+    std::swap(fake_, other.fake_);
+    std::swap(root_, other.root_);
+    std::swap(begin_, other.begin_);
+    std::swap(end_, other.end_);
+    std::swap(size_, other.size_);
   }
 
   template< typename T, typename Compare >
