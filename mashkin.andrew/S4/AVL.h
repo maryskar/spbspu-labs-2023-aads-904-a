@@ -32,13 +32,13 @@ namespace mashkin
   template< class T, class Comporator >
   AVL< T, Comporator >::iter AVL< T, Comporator >::end()
   {
-    return fake_;
+    return AVL_iterator< T, Comporator >(fake_);
   }
 
   template< class T, class Comporator >
   AVL< T, Comporator >::iter AVL< T, Comporator >::begin()
   {
-    return fake_->parent_;
+    return AVL_iterator< T, Comporator >(fake_->parent_);
   }
 
   template< class T, class Comporator >
