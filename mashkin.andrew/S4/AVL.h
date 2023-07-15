@@ -29,12 +29,19 @@ namespace mashkin
     iter insert(InputIter first, InputIter last);
 
     void clear();
+    bool empty();
 
   private:
     void clear_impl(Tree< T, Comporator >* toDel);
     Tree< T, Comporator >* fake_;
     Comporator comp_;
   };
+
+  template< class T, class C >
+  bool AVL< T, C >::empty()
+  {
+    return fake_ == fake_->parent_;
+  }
 
   template< class T, class Comp >
   AVL< T, Comp >::const_iter AVL< T, Comp >::cend()
