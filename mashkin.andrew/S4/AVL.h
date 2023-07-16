@@ -45,6 +45,52 @@ namespace mashkin
   };
 
   template< class T, class C >
+  void AVL< T, C >::rotate_LeftRight(Tree< T, C >* node)
+  {
+    rotate_left(node);
+    rotate_right(node);
+  }
+
+  template< class T, class C >
+  void AVL< T, C >::rotate_RightLeft(Tree< T, C >* node)
+  {
+    rotate_right(node);
+    rotate_left(node);
+  }
+
+  template< class T, class C >
+  void AVL< T, C >::rotate_right(Tree< T, C >* node)
+  {
+    auto var = node->parent_;
+    var->left_ = node->right_;
+    node->right_ = var;
+    if(var->parent_->left_ == var)
+    {
+      var->parent_->left_ = node;
+    }
+    else
+    {
+      var->parent_->right_ = node;
+    }
+  }
+
+  template< class T, class C >
+  void AVL< T, C >::rotate_left(Tree< T, C >* node)
+  {
+    auto var = node->parent_;
+    var->right_ = node->left_;
+    node->left_ = var;
+    if(var->parent_->left_ == var)
+    {
+      var->parent_->left_ = node;
+    }
+    else
+    {
+      var->parent_->right_ = node;
+    }
+  }
+
+  template< class T, class C >
   size_t AVL< T, C >::checkHeightImpl(Tree< T, C >* head, size_t height)
   {
     if (!head)
