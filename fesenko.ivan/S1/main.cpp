@@ -23,8 +23,7 @@ int main(int argc, char *argv[])
   std::istream &in = (argc == 2) ? input : std::cin;
   std::string expression = "";
   fesenko::Stack< long long > results;
-  while (in) {
-    std::getline(in, expression);
+  while (std::getline(in, expression)) {
     if (expression.empty()) {
       continue;
     }
