@@ -9,8 +9,8 @@ namespace mashkin
   {
     T data;
     Tree< T >* parent_;
-    Tree< T >* left;
-    Tree< T >* right;
+    Tree< T >* left_;
+    Tree< T >* right_;
     Comporator comp;
   };
 }

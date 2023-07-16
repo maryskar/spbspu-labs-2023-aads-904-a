@@ -52,8 +52,8 @@ namespace mashkin
       return height;
     }
     height++;
-    size_t left = checkHeightImpl(head->left, height);
-    size_t right = checkHeightImpl(head->right, height);
+    size_t left = checkHeightImpl(head->left_, height);
+    size_t right = checkHeightImpl(head->right_, height);
     height = left < right ? right : left;
     return height;
   }
@@ -73,7 +73,7 @@ namespace mashkin
       return before;
     }
     before = root;
-    root = insert_impl(data, comp_(data, root->data) ? root->left : root->right, before);
+    root = insert_impl(data, comp_(data, root->data) ? root->left_ : root->right_, before);
     return root;
   }
 
@@ -95,21 +95,21 @@ namespace mashkin
       auto newNode = insert_impl(val, fake_->parent, fake_->parent);
       if (comp_(val, newNode->data))
       {
-        newNode->left = new Tree< T, C >{val, newNode, nullptr, nullptr};
+        newNode->left_ = new Tree< T, C >{val, newNode, nullptr, nullptr};
       }
       else
       {
-        newNode->right = new Tree< T, C >{val, newNode, nullptr, nullptr};
+        newNode->right_ = new Tree< T, C >{val, newNode, nullptr, nullptr};
       }
       while (newNode != fake_)
       {
-        size_t left = checkHeight(newNode->left);
-        size_t right = checkHeight(newNode->right);
+        size_t left = checkHeight(newNode->left_);
+        size_t right = checkHeight(newNode->right_);
         if (right - left == 2)
         {
-          auto subTree = newNode->right;
-          auto subLeft = checkHeight(subTree->left);
-          auto subRight = checkHeight(subTree->right);
+          auto subTree = newNode->right_;
+          auto subLeft = checkHeight(subTree->left_);
+          auto subRight = checkHeight(subTree->right_);
           if (subLeft <= subRight)
           {
             rotate_left(subTree);
@@ -121,9 +121,9 @@ namespace mashkin
         }
         else if (left - right == 2)
         {
-          auto subTree = newNode->left;
-          auto subLeft = checkHeight(subTree->left);
-          auto subRight = checkHeight(subTree->right);
+          auto subTree = newNode->left_;
+          auto subLeft = checkHeight(subTree->left_);
+          auto subRight = checkHeight(subTree->right_);
           if (subLeft <= subRight)
           {
             rotate_right(subTree);
@@ -176,8 +176,8 @@ namespace mashkin
     {
       return;
     }
-    clear_impl(toDel->left);
-    clear_impl(toDel->right);
+    clear_impl(toDel->left_);
+    clear_impl(toDel->right_);
     delete toDel;
   }
 
@@ -197,8 +197,8 @@ namespace mashkin
     fake_(static_cast< Tree< T, Comp >* >(::operator new(sizeof(Tree< T, Comp >)))),
     comp_()
   {
-    fake_->left = nullptr;
-    fake_->right = nullptr;
+    fake_->left_ = nullptr;
+    fake_->right_ = nullptr;
     fake_->parent_ = fake_;
   }
 }

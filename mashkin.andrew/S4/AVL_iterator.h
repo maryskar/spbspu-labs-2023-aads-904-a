@@ -100,7 +100,7 @@ namespace mashkin
     }
     if (newNode == fake_)
     {
-      node_ = node_->left;
+      node_ = node_->left_;
     }
     else
     {
@@ -111,10 +111,10 @@ namespace mashkin
   template< class T, class Comporator >
   void AVL_iterator< T, Comporator >::doWhileRight()
   {
-    auto newNode = node_->left;
-    while (newNode->right)
+    auto newNode = node_->left_;
+    while (newNode->right_)
     {
-      newNode = newNode->right;
+      newNode = newNode->right_;
     }
     node_ = newNode;
   }
@@ -123,9 +123,9 @@ namespace mashkin
   AVL_iterator< T, Comporator >& AVL_iterator< T, Comporator >::operator--()
   {
     assert(node_ != nullptr);
-    if (!node_->left && !node_->right && node_->parent_)
+    if (!node_->left_ && !node_->right_ && node_->parent_)
     {
-      if (node_ == node_->parent_->left)
+      if (node_ == node_->parent_->left_)
       {
         doParentForMinus();
       }
@@ -134,11 +134,11 @@ namespace mashkin
         node_ = node_->parent_;
       }
     }
-    else if (node_->left && node_->right && node_->parent_)
+    else if (node_->left_ && node_->right_ && node_->parent_)
     {
       doWhileRight();
     }
-    else if (node_->left && !node_->right && node_->parent_)
+    else if (node_->left_ && !node_->right_ && node_->parent_)
     {
       doWhileRight();
     }
@@ -146,7 +146,7 @@ namespace mashkin
     {
       doWhileRight();
     }
-    else if (!node_->left && node_->right && node_->parent_)
+    else if (!node_->left_ && node_->right_ && node_->parent_)
     {
       doParentForMinus();
     }
@@ -165,10 +165,10 @@ namespace mashkin
   template< class T, class Comp >
   void AVL_iterator< T, Comp >::doWhileLeft()
   {
-    auto newNode = node_->right;
-    while (newNode->left)
+    auto newNode = node_->right_;
+    while (newNode->left_)
     {
-      newNode = newNode->left;
+      newNode = newNode->left_;
     }
     node_ = newNode;
   }
@@ -183,7 +183,7 @@ namespace mashkin
     }
     if (newNode == fake_)
     {
-      node_ = node_->right;
+      node_ = node_->right_;
     }
     else
     {
@@ -195,9 +195,9 @@ namespace mashkin
   AVL_iterator< T, Comp >& AVL_iterator< T, Comp >::operator++()
   {
     assert(node_ != nullptr);
-    if (!node_->left && !node_->right && node_->parent_)
+    if (!node_->left_ && !node_->right_ && node_->parent_)
     {
-      if (node_ == node_->parent_->left)
+      if (node_ == node_->parent_->left_)
       {
         node_ = node_->parent_;
       }
@@ -206,11 +206,11 @@ namespace mashkin
         doParentForPlus();
       }
     }
-    else if (node_->left && node_->right && node_->parent_)
+    else if (node_->left_ && node_->right_ && node_->parent_)
     {
       doWhileLeft();
     }
-    else if (node_->left && !node_->right && node_->parent_)
+    else if (node_->left_ && !node_->right_ && node_->parent_)
     {
       doParentForPlus();
     }
@@ -218,7 +218,7 @@ namespace mashkin
     {
       doWhileLeft();
     }
-    else if (!node_->left && node_->right && node_->parent_)
+    else if (!node_->left_ && node_->right_ && node_->parent_)
     {
       doWhileLeft();
     }
