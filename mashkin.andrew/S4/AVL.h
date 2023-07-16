@@ -24,9 +24,9 @@ namespace mashkin
     const_iter cend();
 
     iter insert(const T& val);
-    iter insert(T&& val);
+    /*iter insert(T&& val);
     template< class InputIter >
-    iter insert(InputIter first, InputIter last);
+    iter insert(InputIter first, InputIter last);*/
 
     void clear();
     bool empty();
@@ -64,13 +64,17 @@ namespace mashkin
     auto var = node->parent_;
     var->left_ = node->right_;
     node->right_ = var;
-    if(var->parent_->left_ == var)
+    if (var->parent_->left_ == var)
     {
       var->parent_->left_ = node;
     }
-    else
+    else if (var->parent_->right_ == var)
     {
       var->parent_->right_ = node;
+    }
+    else
+    {
+      var->parent_->parent_ = node;
     }
   }
 
@@ -130,15 +134,16 @@ namespace mashkin
   }
 
   template< class T, class C >
-  AVL< T, C >::iter AVL< T, C >::insert(const T& val)
+  typename AVL< T, C >::iter AVL< T, C >::insert(const T& val)
   {
+    iter res;
     if (empty())
     {
       fake_->parent_ = new Tree< T, C >{val, fake_, nullptr, nullptr};
     }
     else
     {
-      auto newNode = insert_impl(val, fake_->parent, fake_->parent);
+      auto newNode = insert_impl(val, fake_->parent_, fake_->parent_);
       if (comp_(val, newNode->data))
       {
         newNode->left_ = new Tree< T, C >{val, newNode, nullptr, nullptr};
@@ -147,6 +152,7 @@ namespace mashkin
       {
         newNode->right_ = new Tree< T, C >{val, newNode, nullptr, nullptr};
       }
+      res = iter(newNode);
       while (newNode != fake_)
       {
         size_t left = checkHeight(newNode->left_);
@@ -170,7 +176,7 @@ namespace mashkin
           auto subTree = newNode->left_;
           auto subLeft = checkHeight(subTree->left_);
           auto subRight = checkHeight(subTree->right_);
-          if (subLeft <= subRight)
+          if (subRight <= subLeft)
           {
             rotate_right(subTree);
           }
@@ -182,28 +188,29 @@ namespace mashkin
         newNode = newNode->parent_;
       }
     }
+    return res;
   }
 
   template< class T, class Comp >
-  AVL< T, Comp >::const_iter AVL< T, Comp >::cend()
+  typename AVL< T, Comp >::const_iter AVL< T, Comp >::cend()
   {
     return Const_AVL_iterator< T, Comp >(fake_);
   }
 
   template< class T, class Comp >
-  AVL< T, Comp >::const_iter AVL< T, Comp >::cbegin()
+  typename AVL< T, Comp >::const_iter AVL< T, Comp >::cbegin()
   {
     return Const_AVL_iterator< T, Comp >(fake_->parent_);
   }
 
   template< class T, class Comporator >
-  AVL< T, Comporator >::iter AVL< T, Comporator >::end()
+  typename AVL< T, Comporator >::iter AVL< T, Comporator >::end()
   {
     return AVL_iterator< T, Comporator >(fake_);
   }
 
   template< class T, class Comporator >
-  AVL< T, Comporator >::iter AVL< T, Comporator >::begin()
+  typename AVL< T, Comporator >::iter AVL< T, Comporator >::begin()
   {
     return AVL_iterator< T, Comporator >(fake_->parent_);
   }

@@ -50,10 +50,11 @@ namespace mashkin
   Tree< T >* Const_AVL_iterator< T, Comp >::getFake(Tree< T, Comp >* rhs)
   {
     auto fake = rhs;
-    while (fake->parent_)
+    while (fake != fake->parent_->parent_)
     {
       fake = fake->parent_;
     }
+    fake = fake->parent_;
     return fake;
   }
 
