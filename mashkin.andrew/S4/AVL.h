@@ -84,13 +84,17 @@ namespace mashkin
     auto var = node->parent_;
     var->right_ = node->left_;
     node->left_ = var;
-    if(var->parent_->left_ == var)
+    if (var->parent_->left_ == var)
     {
       var->parent_->left_ = node;
     }
-    else
+    else if (var->parent_->right_ == var)
     {
       var->parent_->right_ = node;
+    }
+    else
+    {
+      var->parent_->parent_ = node;
     }
   }
 
