@@ -85,6 +85,7 @@ namespace tarasenko
    iterator upper_bound(const T& data);
    const_iterator upper_bound(const T& data) const;
    Compare value_comp() const;
+   bool isEqualTo(const BSTree& rhs) const;
 
    std::string printAsString();               //
    std::string printAsString(root_t* ptree); //
@@ -611,6 +612,33 @@ namespace tarasenko
   Compare BinarySearchTree< T, Compare >::value_comp() const
   {
     return compare_;
+  }
+
+  template< typename T, typename Compare >
+  bool operator==(const BinarySearchTree< T, Compare >& lhs, const BinarySearchTree< T, Compare >& rhs)
+  {
+    if (lhs.size() != rhs.size())
+    {
+      return false;
+    }
+    auto l_it = lhs.cbegin();
+    auto r_it = rhs.cbegin();
+    while (l_it != lhs.cend())
+    {
+      if (*l_it != *r_it)
+      {
+        return false;
+      }
+      ++l_it;
+      ++r_it;
+    }
+    return true;
+  }
+
+  template< typename T, typename Compare >
+  bool operator!=(const BinarySearchTree< T, Compare >& lhs, const BinarySearchTree< T, Compare >& rhs)
+  {
+    return !(lhs == rhs);
   }
   //==============================================
 

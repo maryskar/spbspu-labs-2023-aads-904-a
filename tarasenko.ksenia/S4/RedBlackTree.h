@@ -71,6 +71,7 @@ namespace tarasenko
    iterator upper_bound(const T& data);
    const_iterator upper_bound(const T& data) const;
    Compare value_comp() const;
+   bool isEqualTo(const RBTree& rhs) const;
 
    std::string printAsString();       //
    std::string printColorAsString(); //
@@ -478,6 +479,33 @@ namespace tarasenko
   Compare RedBlackTree< T, Compare >::value_comp() const
   {
     return root_.compare_;
+  }
+
+  template< typename T, typename Compare >
+  bool operator==(const RedBlackTree< T, Compare >& lhs, const RedBlackTree< T, Compare >& rhs)
+  {
+    if (lhs.size() != rhs.size())
+    {
+      return false;
+    }
+    auto l_it = lhs.cbegin();
+    auto r_it = rhs.cbegin();
+    while (l_it != lhs.cend())
+    {
+      if (*l_it != *r_it)
+      {
+        return false;
+      }
+      ++l_it;
+      ++r_it;
+    }
+    return true;
+  }
+
+  template< typename T, typename Compare >
+  bool operator!=(const RedBlackTree< T, Compare >& lhs, const RedBlackTree< T, Compare >& rhs)
+  {
+    return !(lhs == rhs);
   }
 //=================================================================
   template< typename T, typename Compare >
