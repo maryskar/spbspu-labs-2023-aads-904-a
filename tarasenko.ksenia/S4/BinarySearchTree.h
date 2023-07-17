@@ -99,12 +99,11 @@ namespace tarasenko
    void rightRotation();
    const_iterator find(const T& data) const;
    iterator find(const T& data);
-//   iterator erase(iterator pos);
-//   iterator erase(const_iterator pos);
+   iterator erase(iterator pos);
+   iterator erase(const_iterator pos);
 //   iterator erase(const_iterator first, const_iterator last);
-//   size_type erase(const_reference data);
-   void erase(const T& data);
-//   size_t count(const T& data) const;
+   size_t erase(const T& data);
+   size_t count(const T& data) const;
 //   void resize(size_t count);
 //   void resize(size_t count, const T& value);
    void swap(BSTree& other);
@@ -132,7 +131,7 @@ namespace tarasenko
    const_iterator find(const T& data, const_iterator it) const;
    const_iterator findMax(const_iterator it);
    const_iterator findMin(const_iterator it);
-   void erase(const T& data, iterator it);
+   size_t erase(const T& data, iterator it);
    void deleteTree(root_t* ptree);
   };
 
@@ -353,15 +352,11 @@ namespace tarasenko
   }
 
   template< typename T, typename Compare >
-  void BinarySearchTree< T, Compare >::erase(const T& data, iterator it)
+  BidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::erase(const_iterator pos)
   {
-    auto toDelIt = find(data, it);
-    if (toDelIt == cend())
-    {
-      return;
-    }
-
-    auto nodeToDel = toDelIt.node_;
+    auto toDel = iterator(fake_, pos.node_);
+    auto nodeToDel = toDel.node_;
+    ++toDel;
     auto left = nodeToDel->left_;
     auto right = nodeToDel->right_;
     auto parent = nodeToDel->parent_;
@@ -369,9 +364,8 @@ namespace tarasenko
     if (left != fake_ && right != fake_)
     {
       auto replaceNodeIt = findMin(const_iterator(fake_, right));
-      nodeToDel->data_ = *replaceNodeIt;
-      erase(*replaceNodeIt, iterator(fake_, replaceNodeIt.node_));
-      return;
+      std::swap(nodeToDel->data_, *replaceNodeIt);
+      return erase(replaceNodeIt);
     }
     else
     {
@@ -405,14 +399,32 @@ namespace tarasenko
       }
       delete nodeToDel;
       --size_;
+      return toDel;
     }
   }
 
   template< typename T, typename Compare >
-  void BinarySearchTree< T, Compare >::erase(const T& data)
+  BidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::erase(iterator pos)
   {
-    auto it = iterator(fake_, root_);
-    erase(data, it);
+    return erase(const_iterator(pos));
+  }
+
+  template< typename T, typename Compare >
+  size_t BinarySearchTree< T, Compare >::erase(const T& data)
+  {
+    const_iterator c_it = find(data);
+    if (c_it != cend())
+    {
+      erase(c_it);
+      return 1ull;
+    }
+    return 0ull;
+  }
+
+  template< typename T, typename Compare >
+  size_t BinarySearchTree< T, Compare >::count(const T& data) const
+  {
+    return find(data) != cend() ? 1ull : 0ull;
   }
 
   template< typename T, typename Compare >
