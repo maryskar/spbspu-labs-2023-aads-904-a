@@ -124,7 +124,15 @@ namespace mashkin
   AVL_iterator< T, Comporator >& AVL_iterator< T, Comporator >::operator--()
   {
     assert(node_ != nullptr);
-    if (!node_->left_ && !node_->right_ && node_->parent_)
+    if (node_ == fake_)
+    {
+      node_ = node_->parent_;
+      while (node_->right_)
+      {
+        node_ = node_->right_;
+      }
+    }
+    else if (!node_->left_ && !node_->right_ && node_->parent_)
     {
       if (node_ == node_->parent_->left_)
       {
@@ -182,14 +190,7 @@ namespace mashkin
     {
       newNode = newNode->parent_;
     }
-    if (newNode == fake_)
-    {
-      node_ = node_->right_;
-    }
-    else
-    {
-      node_ = newNode;
-    }
+    node_ = newNode;
   }
 
   template< class T, class Comp >
