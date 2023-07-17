@@ -85,7 +85,7 @@ namespace tarasenko
    iterator find(const T& data);
    iterator erase(iterator pos);
    iterator erase(const_iterator pos);
-//   iterator erase(const_iterator first, const_iterator last);
+   iterator erase(const_iterator first, const_iterator last);
    size_t erase(const T& data);
    size_t count(const T& data) const;
 //   void resize(size_t count);
@@ -239,6 +239,16 @@ namespace tarasenko
   BidirectionalIterator< T, Compare > RedBlackTree< T, Compare >::erase(iterator pos)
   {
     return erase(const_iterator(pos));
+  }
+
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare > RedBlackTree< T, Compare >::erase(const_iterator first, const_iterator last)
+  {
+    while (first != last)
+    {
+      erase(first++);
+    }
+    return iterator(root_.fake_, first.node_);
   }
 
   template< typename T, typename Compare >
