@@ -26,9 +26,9 @@ namespace mashkin
 
     iter insert(const v_type& val);
     iter insert(v_type&& val);
-    /*template< class InputIter >
+    template< class InputIter >
     iter insert(InputIter first, InputIter last);
-*/
+
     void clear();
     bool empty();
 
@@ -44,6 +44,17 @@ namespace mashkin
     Tree< v_type >* fake_;
     Comporator comp_;
   };
+
+  template< class K, class V, class C >
+  template< class InputIter >
+  typename AVL< K, V, C >::iter AVL< K, V, C >::insert(InputIter first, InputIter last)
+  {
+    while (first != last)
+    {
+      insert(*first);
+      first++;
+    }
+  }
 
   template< class K, class V, class C >
   typename AVL< K, V, C >::iter AVL< K, V, C >::insert(v_type&& val)
