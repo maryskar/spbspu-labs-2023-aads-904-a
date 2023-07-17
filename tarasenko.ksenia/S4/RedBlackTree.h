@@ -83,12 +83,11 @@ namespace tarasenko
 //   void insert(InputIt first, InputIt last);
    const_iterator find(const T& data) const;
    iterator find(const T& data);
-//   iterator erase(iterator pos);
-//   iterator erase(const_iterator pos);
+   iterator erase(iterator pos);
+   iterator erase(const_iterator pos);
 //   iterator erase(const_iterator first, const_iterator last);
-//   size_type erase(const_reference data);
-   void erase(const T& data);
-//   size_t count(const T& data) const;
+   size_t erase(const T& data);
+   size_t count(const T& data) const;
 //   void resize(size_t count);
 //   void resize(size_t count, const T& value);
    void swap(RBTree& other);
@@ -215,26 +214,43 @@ namespace tarasenko
   }
 
   template< typename T, typename Compare >
-  void RedBlackTree< T, Compare >::erase(const T& data)
+  BidirectionalIterator< T, Compare > RedBlackTree< T, Compare >::erase(const_iterator pos)
   {
-    auto deletedIt = root_.find(data);
-    if (deletedIt == cend())
-    {
-      return;
-    }
+    auto fake = root_.fake_;
+    iterator deletedIt = iterator(fake, pos.node_);
     Tree* deleted = deletedIt.node_;
-    auto replacingIt = root_.findMax(const_iterator(root_.fake_, deleted->left_));
+    ++deletedIt;
+    auto replacingIt = root_.findMax(const_iterator(fake, deleted->left_));
     Tree* toDel = deleted;
     if (replacingIt != cend())
     {
-      std::swap(*deletedIt, *replacingIt);
+      std::swap(deleted->data_, *replacingIt);
       toDel = fixBeforeErase(replacingIt.node_);
     }
     else
     {
       toDel = fixBeforeErase(toDel);
     }
-    root_.erase(data, iterator(root_.fake_, toDel));
+    root_.erase(const_iterator(fake, toDel));
+    return deletedIt;
+  }
+
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare > RedBlackTree< T, Compare >::erase(iterator pos)
+  {
+    return erase(const_iterator(pos));
+  }
+
+  template< typename T, typename Compare >
+  size_t RedBlackTree< T, Compare >::erase(const T& data)
+  {
+    const_iterator c_it = find(data);
+    if (c_it != cend())
+    {
+      erase(c_it);
+      return 1ull;
+    }
+    return 0ull;
   }
 
   template< typename T, typename Compare >
@@ -343,6 +359,12 @@ namespace tarasenko
       }
     }
     return toDel;
+  }
+
+  template< typename T, typename Compare >
+  size_t RedBlackTree< T, Compare >::count(const T& data) const
+  {
+    return root_.count(data);
   }
 
   template< typename T, typename Compare >
