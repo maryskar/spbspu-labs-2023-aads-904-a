@@ -89,10 +89,10 @@ namespace tarasenko
    size_t count(const T& data) const;
    void swap(RBTree& other);
    void clear();
-//   iterator lower_bound(const T& data);
-//   const_iterator lower_bound(const T& data) const;
-//   iterator upper_bound(const T& data);
-//   const_iterator upper_bound(const T& data) const;
+   iterator lower_bound(const T& data);
+   const_iterator lower_bound(const T& data) const;
+   iterator upper_bound(const T& data);
+   const_iterator upper_bound(const T& data) const;
    Compare value_comp() const;
 
    std::string printAsString();       //
@@ -410,6 +410,18 @@ namespace tarasenko
   void RedBlackTree< T, Compare >::clear()
   {
     root_.clear();
+  }
+
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare > RedBlackTree< T, Compare >::lower_bound(const T& data)
+  {
+    return root_.lower_bound(data);
+  }
+
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare > RedBlackTree< T, Compare >::lower_bound(const T& data) const
+  {
+    return root_.lower_bound(data);
   }
 
   template< typename T, typename Compare >

@@ -106,10 +106,10 @@ namespace tarasenko
    size_t count(const T& data) const;
    void swap(BSTree& other);
    void clear();
-//   iterator lower_bound(const T& data);
-//   const_iterator lower_bound(const T& data) const;
-//   iterator upper_bound(const T& data);
-//   const_iterator upper_bound(const T& data) const;
+   iterator lower_bound(const T& data);
+   const_iterator lower_bound(const T& data) const;
+   iterator upper_bound(const T& data);
+   const_iterator upper_bound(const T& data) const;
    Compare value_comp() const;
 
    std::string printAsString();               //
@@ -506,6 +506,34 @@ namespace tarasenko
       end_ = nullptr;
       size_ = 0;
     }
+  }
+
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::lower_bound(const T& data)
+  {
+    auto curr = iterator(fake_, root_);
+    while (curr != end())
+    {
+      if (!compare_(data, *curr) && !compare_(*curr, data))
+      {
+        return curr;
+      }
+      else if (compare_(data, *curr))
+      {
+        --curr;
+      }
+      else
+      {
+        ++curr;
+      }
+    }
+    return end();
+  }
+
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::lower_bound(const T& data) const
+  {
+    return const_iterator(lower_bound(data));
   }
 
   template< typename T, typename Compare >
