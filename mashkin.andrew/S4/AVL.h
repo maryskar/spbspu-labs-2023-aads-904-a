@@ -1,6 +1,7 @@
 #ifndef S4_AVL_H
 #define S4_AVL_H
 #include <functional>
+#include <utility>
 #include "tree.h"
 #include "AVL_iterator.h"
 #include "const_AVL_iterator.h"
