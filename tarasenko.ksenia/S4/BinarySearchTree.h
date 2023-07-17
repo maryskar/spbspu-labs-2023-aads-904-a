@@ -537,6 +537,33 @@ namespace tarasenko
   }
 
   template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::upper_bound(const T& data)
+  {
+    iterator c_it = lower_bound(data);
+    if (c_it == end())
+    {
+      return end();
+    }
+    else
+    {
+      if (!compare_(*c_it, data) && !compare_(data, *c_it))
+      {
+        return ++c_it;
+      }
+      else
+      {
+        return c_it;
+      }
+    }
+  }
+
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::upper_bound(const T& data) const
+  {
+    return const_iterator(upper_bound(data));
+  }
+
+  template< typename T, typename Compare >
   Compare BinarySearchTree< T, Compare >::value_comp() const
   {
     return compare_;

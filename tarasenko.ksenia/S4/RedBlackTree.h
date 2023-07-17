@@ -425,6 +425,18 @@ namespace tarasenko
   }
 
   template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare > RedBlackTree< T, Compare >::upper_bound(const T& data)
+  {
+    return root_.upper_bound(data);
+  }
+
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare > RedBlackTree< T, Compare >::upper_bound(const T& data) const
+  {
+    return root_.upper_bound(data);
+  }
+
+  template< typename T, typename Compare >
   Compare RedBlackTree< T, Compare >::value_comp() const
   {
     return root_.compare_;
