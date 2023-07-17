@@ -90,11 +90,11 @@ namespace tarasenko
    size_t size() const;
    bool isEmpty() const;
    std::pair< iterator, bool > insert(const T& data);
-//   std::pair< iterator, bool > insert(T&& data);
-//   iterator insert(const_iterator pos, const T& data);
-//   iterator insert(const_iterator pos, T&& data);
-//   template< typename InputIt >
-//   void insert(InputIt first, InputIt last);
+   std::pair< iterator, bool > insert(T&& data);
+   iterator insert(const_iterator pos, const T& data);
+   iterator insert(const_iterator pos, T&& data);
+   template< class InputIt >
+   iterator insert(const_iterator pos, InputIt first, InputIt last);
    void leftRotation();
    void rightRotation();
    const_iterator find(const T& data) const;
@@ -104,8 +104,6 @@ namespace tarasenko
    iterator erase(const_iterator first, const_iterator last);
    size_t erase(const T& data);
    size_t count(const T& data) const;
-//   void resize(size_t count);
-//   void resize(size_t count, const T& value);
    void swap(BSTree& other);
    void clear();
 //   iterator lower_bound(const T& data);
@@ -211,6 +209,46 @@ namespace tarasenko
         return std::make_pair(iterator(fake_, inserted), true);
       }
       return std::make_pair(end(), false);
+    }
+  }
+
+  template< typename T, typename Compare >
+  std::pair< BidirectionalIterator< T, Compare >, bool > BinarySearchTree< T, Compare >::insert(T&& data)
+  {
+    const T value = std::forward< T >(data);
+    return insert(value);
+  }
+
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare >
+     BinarySearchTree< T, Compare >::insert(const_iterator pos, const T& data)
+  {
+    if (compare_(data, *pos) && compare_(*(--pos), data))
+    {
+      std::cout<< '!';
+      pos.node_->left_ = new root_t(data, pos.node_->left_, fake_, pos.node_);
+      ++size_;
+      return iterator(fake_, pos.node_->left_);
+    }
+    return insert(data).first;
+  }
+
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare >
+     BinarySearchTree< T, Compare >::insert(const_iterator pos, T&& data)
+  {
+    const T value = std::forward< T >(data);
+    return insert(pos, value);
+  }
+
+  template< typename T, typename Compare >
+  template< class InputIt >
+  BidirectionalIterator< T, Compare >
+     BinarySearchTree< T, Compare >::insert(const_iterator pos, InputIt first, InputIt last)
+  {
+    while (first != last)
+    {
+      return insert(pos, *first++);
     }
   }
 
