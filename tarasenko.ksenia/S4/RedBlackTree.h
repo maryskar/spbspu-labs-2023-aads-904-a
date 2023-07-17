@@ -40,46 +40,23 @@ namespace tarasenko
 //   RBTree& operator=(RBTree&& other);
 
    friend class BidirectionalIterator< T, Compare >;
+   iterator beforeBegin() const;
+   iterator begin() const;
+   iterator end() const;
    friend class ConstBidirectionalIterator< T, Compare >;
-
-   iterator beforeBegin() const
-   {
-     return root_.beforeBegin();
-   }
-   iterator begin() const
-   {
-     return root_.begin();
-   }
-   iterator end() const
-   {
-     return root_.end();
-   }
-
-   const_iterator cbeforeBegin() const
-   {
-     return root_.cbeforeBegin();
-   }
-   const_iterator cbegin() const
-   {
-     return root_.cbegin();
-   }
-   const_iterator cend() const
-   {
-     return root_.cend();
-   }
-
-   //   T& at(const T& data);
-//   const T& at(const T& data) const;
-//   T& operator[](const T& data);
-//   T& operator[](T&& data);
-
+   const_iterator cbeforeBegin() const;
+   const_iterator cbegin() const;
+   const_iterator cend() const;
+   T& at(const T& data);
+   const T& at(const T& data) const;
+   T& operator[](const T& data);
+   T& operator[](T&& data);
    size_t size() const;
    bool isEmpty() const;
    std::pair< iterator, bool > insert(const T& data);
    std::pair< iterator, bool > insert(T&& data);
    iterator insert(const_iterator pos, const T& data);
    iterator insert(const_iterator pos, T&& data);
-   void insert(const_iterator first, const_iterator last);
    const_iterator find(const T& data) const;
    iterator find(const T& data);
    iterator erase(iterator pos);
@@ -103,6 +80,67 @@ namespace tarasenko
    void fixAfterInsert(Tree* node);
    Tree* fixBeforeErase(Tree* node);
   };
+
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare > RedBlackTree< T, Compare >::beforeBegin() const
+  {
+    return root_.beforeBegin();
+  }
+
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare > RedBlackTree< T, Compare >::begin() const
+  {
+    return root_.begin();
+  }
+
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare > RedBlackTree< T, Compare >::end() const
+  {
+    return root_.end();
+  }
+
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare > RedBlackTree< T, Compare >::cbeforeBegin() const
+  {
+    return root_.cbeforeBegin();
+  }
+
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare > RedBlackTree< T, Compare >::cbegin() const
+  {
+    return root_.cbegin();
+  }
+
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare > RedBlackTree< T, Compare >::cend() const
+  {
+    return root_.cend();
+  }
+
+  template< typename T, typename Compare >
+  const T& RedBlackTree< T, Compare >::at(const T& data) const
+  {
+    return root_.at(data);
+  }
+
+  template< typename T, typename Compare >
+  T& RedBlackTree< T, Compare >::at(const T& data)
+  {
+    return root_.at(data);
+  }
+
+  template< typename T, typename Compare >
+  T& RedBlackTree< T, Compare >::operator[](const T& data)
+  {
+    iterator it = find(data);
+    return *it;
+  }
+
+  template< typename T, typename Compare >
+  T& RedBlackTree< T, Compare >::operator[](T&& data)
+  {
+    return (*this)[data];
+  }
 
   template< typename T, typename Compare >
   size_t RedBlackTree< T, Compare >::size() const

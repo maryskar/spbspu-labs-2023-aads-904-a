@@ -50,43 +50,17 @@ namespace tarasenko
 //   BSTree& operator=(BSTree&& other);
 
    friend class BidirectionalIterator< T, Compare >;
+   iterator beforeBegin() const;
+   iterator begin() const;
+   iterator end() const;
    friend class ConstBidirectionalIterator< T, Compare >;
-
-   iterator beforeBegin() const
-   {
-     fake_->right_ = begin_;
-     begin_->left_ = fake_;
-     return iterator(fake_, begin_->left_);
-   }
-   iterator begin() const
-   {
-     return iterator(fake_, begin_);
-   }
-   iterator end() const
-   {
-     fake_->left_ = end_;
-     end_->right_ = fake_;
-     return iterator(fake_, end_->right_);
-   }
-
-   const_iterator cbeforeBegin() const
-   {
-     return const_iterator(beforeBegin());
-   }
-   const_iterator cbegin() const
-   {
-     return const_iterator(begin());
-   }
-   const_iterator cend() const
-   {
-     return const_iterator(end());
-   }
-
-//   T& at(const T& data);
-//   const T& at(const T& data) const;
-//   T& operator[](const T& data);
-//   T& operator[](T&& data);
-
+   const_iterator cbeforeBegin() const;
+   const_iterator cbegin() const;
+   const_iterator cend() const;
+   T& at(const T& data);
+   const T& at(const T& data) const;
+   T& operator[](const T& data);
+   T& operator[](T&& data);
    size_t size() const;
    bool isEmpty() const;
    std::pair< iterator, bool > insert(const T& data);
@@ -131,6 +105,76 @@ namespace tarasenko
    const_iterator findMin(const_iterator it);
    void deleteTree(root_t* ptree);
   };
+
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::beforeBegin() const
+  {
+    fake_->right_ = begin_;
+    begin_->left_ = fake_;
+    return iterator(fake_, begin_->left_);
+  }
+
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::begin() const
+  {
+    return iterator(fake_, begin_);
+  }
+
+  template< typename T, typename Compare >
+  BidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::end() const
+  {
+    fake_->left_ = end_;
+    end_->right_ = fake_;
+    return iterator(fake_, end_->right_);
+  }
+
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::cbeforeBegin() const
+  {
+    return const_iterator(beforeBegin());
+  }
+
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::cbegin() const
+  {
+    return const_iterator(begin());
+  }
+
+  template< typename T, typename Compare >
+  ConstBidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::cend() const
+  {
+    return const_iterator(end());
+  }
+
+  template< typename T, typename Compare >
+  const T& BinarySearchTree< T, Compare >::at(const T& data) const
+  {
+    const_iterator c_it = find(data);
+    if (c_it == cend())
+    {
+      throw std::out_of_range("No data found");
+    }
+    return *c_it;
+  }
+
+  template< typename T, typename Compare >
+  T& BinarySearchTree< T, Compare >::at(const T& data)
+  {
+    return const_cast< T& >((static_cast< const BSTree& >(*this)).at(data));
+  }
+
+  template< typename T, typename Compare >
+  T& BinarySearchTree< T, Compare >::operator[](const T& data)
+  {
+    iterator it = find(data);
+    return *it;
+  }
+
+  template< typename T, typename Compare >
+  T& BinarySearchTree< T, Compare >::operator[](T&& data)
+  {
+    return (*this)[data];
+  }
 
   template< typename T, typename Compare >
   size_t BinarySearchTree< T, Compare >::size() const
