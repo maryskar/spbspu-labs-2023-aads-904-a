@@ -8,9 +8,13 @@ template< typename T >
 class ForwardList;
 
 template< typename T >
+class ForwardListIterator;
+
+template< typename T >
 class ForwardListConstIterator
 {
   friend class ForwardList< T >;
+  friend class ForwardListIterator< T >;
   public:
     ForwardListConstIterator();
     ~ForwardListConstIterator() = default;

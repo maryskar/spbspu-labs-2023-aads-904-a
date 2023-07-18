@@ -17,7 +17,10 @@ class ForwardList
     using iterator = ForwardListIterator< T >;
     using const_iterator = ForwardListConstIterator< T >;
     ForwardList();
-    ForwardList(ForwardList< T >& other);
+    ForwardList(const ForwardList< T >& other);
+    ForwardList(ForwardList< T >&& other);
+    ForwardList< T >& operator=(const ForwardList< T >& other);
+    ForwardList< T >& operator=(ForwardList< T >&& other);
     iterator begin() noexcept;
     const_iterator begin() const noexcept;
     const_iterator cbegin() const noexcept;
@@ -56,7 +59,7 @@ ForwardList< T >::ForwardList():
 }
 
 template< typename T >
-ForwardList< T >::ForwardList(ForwardList< T >& other):
+ForwardList< T >::ForwardList(const ForwardList< T >& other):
   ForwardList()
 {
   if (other.empty())
@@ -67,8 +70,41 @@ ForwardList< T >::ForwardList(ForwardList< T >& other):
   push_front(*oth_it);
   if (oth_it.ptr_->next_)
   {
-    insert_after(cbegin(), ++oth_it, other.end());
+    oth_it++;
+    insert_after(cbegin(), oth_it, other.end());
   }
+}
+
+
+template< typename T >
+ForwardList< T >::ForwardList(ForwardList< T >&& other):
+  head_(std::move(other.head_))
+{
+}
+
+template< typename T >
+ForwardList< T >& ForwardList< T >::operator=(const ForwardList< T >& other)
+{
+  if (this == std::addressof(other))
+  {
+    return *this;
+  }
+  ForwardList< T > temp(other);
+  clear();
+  swap(temp);
+  return *this;
+}
+
+template< typename T >
+ForwardList< T >& ForwardList< T >::operator=(ForwardList< T >&& other)
+{
+  if (this == addressof(other))
+  {
+    return(this);
+  }
+  clear();
+  swap(other);
+  return *this;
 }
 
 template< typename T >
@@ -172,6 +208,7 @@ typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterato
   while (first != last)
   {
     temp = insert_after(pos, *first);
+    std::cout<<*first;
     pos++;
     first++;
   }
