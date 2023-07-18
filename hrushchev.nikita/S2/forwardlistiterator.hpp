@@ -10,7 +10,6 @@ class ForwardList;
 template< typename T >
 class ForwardListConstIterator;
 
-
 template< typename T >
 class ForwardListIterator
 {

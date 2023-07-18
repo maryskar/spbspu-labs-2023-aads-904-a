@@ -17,6 +17,7 @@ class ForwardList
     using iterator = ForwardListIterator< T >;
     using const_iterator = ForwardListConstIterator< T >;
     ForwardList();
+    ~ForwardList();
     ForwardList(const ForwardList< T >& other);
     ForwardList(ForwardList< T >&& other);
     ForwardList< T >& operator=(const ForwardList< T >& other);
@@ -56,6 +57,13 @@ template< typename T >
 ForwardList< T >::ForwardList():
   head_(nullptr)
 {
+}
+
+template< typename T >
+ForwardList< T >::~ForwardList()
+{
+  clear();
+  ::operator delete(head_);
 }
 
 template< typename T >
@@ -164,6 +172,11 @@ size_t ForwardList< T >::max_size() const noexcept
 template< typename T >
 void ForwardList< T >::clear()
 {
+  if (!head_)
+  {
+    return;
+  }
+
   while(head_->next_ != nullptr)
   {
     List< T >* temp = head_->next_;
