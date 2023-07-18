@@ -16,23 +16,25 @@ namespace tarasenko
   public:
    Map():
      root_(),
-     size_(0),
      compare_()
    {}
 
    Map(const map_t& other):
      root_(other.root_),
-     size_(other.size_),
      compare_(other.compare_)
    {}
 
    Map(map_t&& other):
      root_(std::move(other.root_)),
-     size_(other.size_),
      compare_(other.compare_)
    {
      other.size_ = 0;
    }
+
+   explicit Map(const Compare& comp):
+     root_(comp),
+     compare_(comp)
+   {}
 
    ~Map() = default;
 
@@ -41,7 +43,6 @@ namespace tarasenko
      if (this != std::addressof(other))
      {
        root_ = other.root_;
-       size_ = other.size_;
        compare_ = other.compare_;
      }
      return *this;
@@ -52,33 +53,19 @@ namespace tarasenko
      if (this != std::addressof(other))
      {
        root_ = std::move(other.root_);
-       size_ = other.size_;
        compare_ = other.compare_;
-       other.size_ = 0;
      }
      return *this;
    }
 
-   iterator begin()
-   {
-     return root_.begin();
-   }
-
-   iterator end()
-   {
-     return root_.end();
-   }
-
-   const_iterator cbegin() const
-   {
-     return root_.cbegin();
-   }
-
-   const_iterator cend() const
-   {
-     return root_.cend();
-   }
-
+   iterator begin();
+   iterator end();
+   const_iterator cbegin() const;
+   const_iterator cend() const;
+//   reverse_iterator rbegin() noexcept;
+//   const_reverse_iterator crbegin() const noexcept;
+//   reverse_iterator rend() noexcept;
+//   const_reverse_iterator crend() const noexcept;
    Value& at(const Key& key);
    const Value& at(const Key& key) const;
    Value& operator[](const Key& key);
@@ -87,35 +74,85 @@ namespace tarasenko
    size_t size() const;
    void clear();
    std::pair< iterator, bool > insert(const value_type& value);
+//   std::pair< iterator, bool > insert(value_type&& data);
+//   iterator insert(const_iterator pos, const value_type& data);
+//   iterator insert(const_iterator pos, value_type&& data);
    std::pair< iterator, bool > push(const Key& k, const Value& v);
    void swap(map_t& other);
    size_t count(const Key& key) const;
+//   iterator find(const Key& key);
    const_iterator find(const Key& key) const;
-   size_t remove(const Key& key);
+//   iterator erase(iterator pos);
+//   iterator erase(const_iterator pos);
+//   iterator erase(const_iterator first, const_iterator last);
+   size_t erase(const Key& key);
    bool isEqualTo(const map_t& other) const;
+//   Compare key_comp() const;
+//   iterator lower_bound(const Key& key);
+//   const_iterator lower_bound(const Key& key) const;
+//   iterator upper_bound(const Key& key);
+//   const_iterator upper_bound(const Key& key) const;
 
   private:
    RedBlackTree< std::pair< Key, Value >, Compare > root_;
-   size_t size_;
    Compare compare_;
   };
 
   template< typename Key, typename Value, typename Compare >
-  Value& Map< Key, Value, Compare >::at(const Key& key)
+  BidirectionalIterator< std::pair< Key, Value >, Compare > Map< Key, Value, Compare >::begin()
   {
+    return root_.begin();
+  }
 
+  template< typename Key, typename Value, typename Compare >
+  BidirectionalIterator< std::pair< Key, Value >, Compare > Map< Key, Value, Compare >::end()
+  {
+    return root_.end();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  ConstBidirectionalIterator< std::pair< Key, Value >, Compare > Map< Key, Value, Compare >::cbegin() const
+  {
+    return root_.cbegin();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  ConstBidirectionalIterator< std::pair< Key, Value >, Compare > Map< Key, Value, Compare >::cend() const
+  {
+    return root_.cend();
   }
 
   template< typename Key, typename Value, typename Compare >
   const Value& Map< Key, Value, Compare >::at(const Key& key) const
   {
+    for (auto curr = cbegin(); curr != cend(); curr++)
+    {
+      if (curr->first == key)
+      {
+        return (*curr).second;
+      }
+    }
+    throw std::out_of_range("Out of range!");
+  }
 
+  template< typename Key, typename Value, typename Compare >
+  Value& Map< Key, Value, Compare >::at(const Key& key)
+  {
+    return const_cast< Value& >((static_cast< const map_t& >(*this)).at(key));
   }
 
   template< typename Key, typename Value, typename Compare >
   Value& Map< Key, Value, Compare >::operator[](const Key& key)
   {
-
+    for (auto curr = cbegin(); curr != cend(); curr++)
+    {
+      if (curr->first == key)
+      {
+        return (*curr).second;
+      }
+    }
+    auto res = root_.insert(std::make_pair(key, Value()));
+    return res.first->second;
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -133,21 +170,33 @@ namespace tarasenko
   template< typename Key, typename Value, typename Compare >
   size_t Map< Key, Value, Compare >::size() const
   {
-    return size_;
+    return root_.size();
   }
 
   template< typename Key, typename Value, typename Compare >
   void Map< Key, Value, Compare >::clear()
   {
     root_.clear();
-    size_ = 0;
   }
 
   template< typename Key, typename Value, typename Compare >
   std::pair< BidirectionalIterator< std::pair< Key, Value >, Compare >, bool >
      Map< Key, Value, Compare >::insert(const std::pair< Key, Value >& value)
   {
-
+    if (!isEmpty())
+    {
+      auto curr = begin();
+      while (curr != end() && compare_(curr->first, value.first))
+      {
+        ++curr;
+      }
+      if (curr != end() && curr->first == value.first)
+      {
+        curr->second = value.second;
+        return std::pair< iterator, bool >(curr, false);
+      }
+    }
+    return root_.insert(value);
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -159,27 +208,60 @@ namespace tarasenko
   };
 
   template< typename Key, typename Value, typename Compare >
-  ConstBidirectionalIterator< std::pair< Key, Value >, Compare > Map< Key, Value, Compare >::find(const Key& k) const
+  ConstBidirectionalIterator< std::pair< Key, Value >, Compare >
+     Map< Key, Value, Compare >::find(const Key& key) const
   {
-
+    if (!isEmpty())
+    {
+      for (auto curr = cbegin(); curr != cend(); curr++)
+      {
+        if (curr->first == key)
+        {
+          return curr;
+        }
+      }
+    }
+    return cend();
   }
 
   template< typename Key, typename Value, typename Compare >
-  size_t Map< Key, Value, Compare >::remove(const Key& key)
+  size_t Map< Key, Value, Compare >::erase(const Key& key)
   {
-
+    if (!isEmpty())
+    {
+      for (auto curr = cbegin(); curr != cend(); curr++)
+      {
+        if (curr->first == key)
+        {
+          root_.erase(curr);
+          return 1;
+        }
+      }
+    }
+    return 0;
   }
 
   template< class Key, class Value, class Compare >
   void Map< Key, Value, Compare >::swap(map_t& other)
   {
     root_.swap(other.root_);
+    std::swap(compare_, other.compare_);
   }
 
   template< class Key, class Value, class Compare >
   size_t Map< Key, Value, Compare >::count(const Key& key) const
   {
-
+    if (!isEmpty())
+    {
+      for (auto curr = cbegin(); curr != cend(); curr++)
+      {
+        if (curr->first == key)
+        {
+          return 1;
+        }
+      }
+    }
+    return 0;
   }
 
   template< class Key, class Value, class Compare >
