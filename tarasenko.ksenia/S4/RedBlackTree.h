@@ -37,7 +37,7 @@ namespace tarasenko
      }
      catch (...)
      {
-       root_.clear();
+       clear();
        throw;
      }
      root_.copyBegin(other.root_);
@@ -49,12 +49,36 @@ namespace tarasenko
    {
      root_.fake_->color_ = 'b';
    }
-//   explicit RedBlackTree(const Compare& comp)
-//   {}
+
+   explicit RedBlackTree(const Compare& comp):
+     root_()
+   {
+     root_.compare_ = comp;
+   }
+
    ~RedBlackTree() = default;
 
-   //RBTree& operator=(const RBTree& other);
-//   RBTree& operator=(RBTree&& other);
+   RBTree& operator=(const RBTree& other)
+   {
+     if (this != std::addressof(other))
+     {
+       RBTree temp(other);
+       clear();
+       swap(temp);
+     }
+     return *this;
+   }
+
+   RBTree& operator=(RBTree&& other)
+   {
+     if (this != std::addressof(other))
+     {
+       clear();
+       RBTree temp(std::move(other));
+       swap(temp);
+     }
+     return *this;
+   }
 
    friend class BidirectionalIterator< T, Compare >;
    iterator beforeBegin() const;

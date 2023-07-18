@@ -67,44 +67,34 @@ namespace tarasenko
      other.end_ = nullptr;
      other.size_ = 0;
    }
-   explicit BinarySearchTree(const Compare& comp)
-   {}
-   template< typename InputIt >
-   BinarySearchTree(InputIt first, InputIt last, const Compare& comp = Compare())
-   {}
+
    ~BinarySearchTree()
    {
      clear();
      ::operator delete(fake_);
    }
    
-//   BSTree& operator=(const BSTree& other)
-//   {
-//     if (this != std::addressof(other))
-//     {
-//       details::NodeOfList< T >* new_node = newCopy(other.first_);
-//       details::clear(std::addressof(first_));
-//       first_ = new_node;
-//       null_->next = first_;
-//       setLast();
-//       size_ = other.size_;
-//     }
-//     return *this;
-//   }
-//
-//   BSTree& operator=(BSTree&& other)
-//   {
-//     if (this != std::addressof(other))
-//     {
-//       details::clear(std::addressof(first_));
-//       first_ = other.first_;
-//       null_->next = first_;
-//       last_ = other.last_;
-//       size_ = other.size_;
-//       other.first_ = nullptr;
-//     }
-//     return *this;
-//   }
+   BSTree& operator=(const BSTree& other)
+   {
+     if (this != std::addressof(other))
+     {
+       BSTree temp(other);
+       clear();
+       swap(temp);
+     }
+     return *this;
+   }
+
+   BSTree& operator=(BSTree&& other)
+   {
+     if (this != std::addressof(other))
+     {
+       clear();
+       BSTree temp(std::move(other));
+       swap(temp);
+     }
+     return *this;
+   }
 
    friend class BidirectionalIterator< T, Compare >;
    iterator beforeBegin() const;
