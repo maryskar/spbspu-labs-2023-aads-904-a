@@ -25,6 +25,7 @@ class ForwardListConstIterator
     const T* operator->();
     bool operator==(const ForwardListConstIterator< T >& rhs) const;
     bool operator!=(const ForwardListConstIterator< T >& rhs) const;
+    ForwardListConstIterator(const ForwardListIterator< T >& other) noexcept;
   private:
     const List< T >* ptr_;
 };
@@ -86,4 +87,9 @@ bool ForwardListConstIterator< T >::operator!=(const ForwardListConstIterator< T
   return ptr_ != rhs.ptr_;
 }
 
+template< typename T >
+ForwardListConstIterator< T >::ForwardListConstIterator(const ForwardListIterator< T >& other) noexcept:
+  ptr_(const_cast< List< T > * >(other.ptr_))
+{
+}
 #endif

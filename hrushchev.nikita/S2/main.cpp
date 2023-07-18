@@ -7,5 +7,5 @@
 
 int main()
 {
-  Dictionary< int, int > dict;
+
 }

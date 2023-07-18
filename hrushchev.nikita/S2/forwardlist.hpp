@@ -49,7 +49,7 @@ class ForwardList
     void swap(ForwardList< T >& other);
     void splice_after(const_iterator pos, ForwardList< T >& other);
     void splice_after(const_iterator pos, ForwardList< T >&& other);
-  private:
+
     List< T >* head_;
 };
 

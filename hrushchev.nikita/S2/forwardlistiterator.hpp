@@ -72,7 +72,7 @@ T& ForwardListIterator< T >::operator*()
 template< typename T >
 T* ForwardListIterator< T >::operator->()
 {
-  return std::addressof(ptr_.data_);
+  return std::addressof(ptr_->data_);
 }
 
 template < typename T >
