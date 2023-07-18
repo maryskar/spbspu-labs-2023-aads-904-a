@@ -25,14 +25,31 @@ namespace tarasenko
    {
      root_.fake_->color_ = 'b';
    }
-//   RedBlackTree(const RBTree& other)
-//   {}
-//   RedBlackTree(RBTree&& other)
-//   {}
+
+   RedBlackTree(const RBTree& other):
+     root_()
+   {
+     root_.fake_->color_ = 'b';
+     root_.compare_ = other.value_comp();
+     try
+     {
+       copyTree(other);
+     }
+     catch (...)
+     {
+       root_.clear();
+       throw;
+     }
+     root_.copyBegin(other.root_);
+     root_.copyEnd(other.root_);
+   }
+
+   RedBlackTree(RBTree&& other):
+     root_(std::move(other.root_))
+   {
+     root_.fake_->color_ = 'b';
+   }
 //   explicit RedBlackTree(const Compare& comp)
-//   {}
-//   template< typename InputIt >
-//   RedBlackTree(InputIt first, InputIt last, const Compare& comp = Compare())
 //   {}
    ~RedBlackTree() = default;
 
@@ -71,7 +88,6 @@ namespace tarasenko
    iterator upper_bound(const T& data);
    const_iterator upper_bound(const T& data) const;
    Compare value_comp() const;
-   bool isEqualTo(const RBTree& rhs) const;
 
    std::string printAsString();       //
    std::string printColorAsString(); //
@@ -80,7 +96,18 @@ namespace tarasenko
    BSTree root_;
    void fixAfterInsert(Tree* node);
    Tree* fixBeforeErase(Tree* node);
+   BSTree& copyTree(const RBTree& other);
   };
+
+  template< typename T, typename Compare >
+  BinarySearchTree< T, Compare >& RedBlackTree< T, Compare >::copyTree(const RBTree& other)
+  {
+    for (auto it = other.cbegin(); it != other.cend(); it++)
+    {
+      insert(*it);
+    }
+    return root_;
+  }
 
   template< typename T, typename Compare >
   BidirectionalIterator< T, Compare > RedBlackTree< T, Compare >::beforeBegin() const
