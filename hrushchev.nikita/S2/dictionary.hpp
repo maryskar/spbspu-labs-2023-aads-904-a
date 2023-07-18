@@ -23,7 +23,8 @@ public:
   iterator end() noexcept;
   const_iterator cend() const noexcept;
   iterator insert(const std::pair< Key, Value >& value);
-
+  void push(Key k, Value v);
+private:
   ForwardList< std::pair< Key, Value > > data_;
   Compare compare_;
   size_t size_;
@@ -74,6 +75,12 @@ typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Com
   auto prev = begin();
   auto cur = ++begin();
 
+  if (prev->first == value.first)
+  {
+    prev->second = value.second;
+    return prev;
+  }
+
   while (cur != end() && compare_(cur->first, value.first))
   {
     prev++;
@@ -93,4 +100,11 @@ typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Com
   }
   return prev;
 }
+
+template< typename Key, typename Value, typename Compare >
+void Dictionary< Key, Value, Compare >::push(Key k, Value v)
+{
+  insert(std::pair< Key, Value >(k, v));
+}
+
 #endif
