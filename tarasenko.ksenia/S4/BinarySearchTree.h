@@ -31,6 +31,7 @@ namespace tarasenko
      fake_->right_ = fake_;
      fake_->parent_ = fake_;
    };
+
    BinarySearchTree(const BSTree& other):
      fake_(static_cast< root_t* >(::operator new(sizeof(root_t)))),
      root_(nullptr),
@@ -73,7 +74,7 @@ namespace tarasenko
      clear();
      ::operator delete(fake_);
    }
-   
+
    BSTree& operator=(const BSTree& other)
    {
      if (this != std::addressof(other))
@@ -133,10 +134,6 @@ namespace tarasenko
    const_iterator upper_bound(const T& data) const;
    Compare value_comp() const;
 
-   std::string printAsString();               //
-   std::string printAsString(root_t* ptree); //
-   std::string printColorAsString(root_t* ptree);
-
   private:
    root_t* fake_;
    root_t* root_;
@@ -151,25 +148,34 @@ namespace tarasenko
    const_iterator findMax(const_iterator it);
    const_iterator findMin(const_iterator it);
    void deleteTree(root_t* ptree);
-   root_t* copyTree(const BSTree& other)
-   {
-     for (auto it = other.cbegin(); it != other.cend(); it++)
-     {
-       insert(*it);
-     }
-     return root_;
-   }
-   root_t* copyBegin(const BSTree& other)
-   {
-     begin_ = find(*other.cbegin()).node_;
-     return begin_;
-   }
-   root_t* copyEnd(const BSTree& other)
-   {
-     end_ = find(*(--(other.cend()))).node_;
-     return end_;
-   }
+   root_t* copyTree(const BSTree& other);
+   root_t* copyBegin(const BSTree& other);
+   root_t* copyEnd(const BSTree& other);
   };
+
+  template< typename T, typename Compare >
+  details::Tree< T, Compare >* BinarySearchTree< T, Compare >::copyTree(const BSTree& other)
+  {
+    for (auto it = other.cbegin(); it != other.cend(); it++)
+    {
+      insert(*it);
+    }
+    return root_;
+  }
+
+  template< typename T, typename Compare >
+  details::Tree< T, Compare >* BinarySearchTree< T, Compare >::copyBegin(const BSTree& other)
+  {
+    begin_ = find(*other.cbegin()).node_;
+    return begin_;
+  }
+
+  template< typename T, typename Compare >
+  details::Tree< T, Compare >* BinarySearchTree< T, Compare >::copyEnd(const BSTree& other)
+  {
+    end_ = find(*(--(other.cend()))).node_;
+    return end_;
+  }
 
   template< typename T, typename Compare >
   BidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::beforeBegin() const
@@ -334,7 +340,6 @@ namespace tarasenko
   {
     if (compare_(data, *pos) && compare_(*(--pos), data))
     {
-      std::cout<< '!';
       pos.node_->left_ = new root_t(data, pos.node_->left_, fake_, pos.node_);
       ++size_;
       return iterator(fake_, pos.node_->left_);
@@ -480,6 +485,7 @@ namespace tarasenko
       return findMin(const_iterator(fake_, it.node_->left_));
     }
   }
+
   template< typename T, typename Compare >
   ConstBidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::findMax(const_iterator it)
   {
@@ -703,42 +709,6 @@ namespace tarasenko
   bool operator!=(const BinarySearchTree< T, Compare >& lhs, const BinarySearchTree< T, Compare >& rhs)
   {
     return !(lhs == rhs);
-  }
-  //==============================================
-
-  template< typename T, typename Compare >
-  std::string BinarySearchTree< T, Compare >::printAsString(root_t* ptree)
-  {
-    std::string left = (ptree->left_ == fake_) ? "{ }" : printAsString(ptree->left_);
-    std::string right = (ptree->right_ == fake_) ? "{ }" : printAsString(ptree->right_);
-    std::string res = "{" + std::to_string(ptree->data_) + ", " + left + ", " + right + "}";
-    return res;
-  }
-
-  template< typename T, typename Compare >
-  std::string BinarySearchTree< T, Compare >::printAsString()
-  {
-    if (!root_ || root_ == fake_)
-    {
-      return " ";
-    }
-    std::string left = (root_->left_ == fake_) ? "{ }" : printAsString(root_->left_);
-    std::string right = (root_->right_ == fake_) ? "{ }" : printAsString(root_->right_);
-    return "{" + std::to_string(root_->data_) + ", " + left + ", " + right + "}";
-  }
-
-  template< typename T, typename Compare >
-  std::string BinarySearchTree< T, Compare >::printColorAsString(root_t* ptree)
-  {
-    std::string fake_c = "";
-    fake_c += fake_->color_;
-
-    std::string root_c = "";
-    root_c += ptree->color_;
-
-    std::string left = (ptree->left_ == fake_) ? "{" + fake_c + "}" : printColorAsString(ptree->left_);
-    std::string right = (ptree->right_ == fake_) ? "{" + fake_c + "}" : printColorAsString(ptree->right_);
-    return "{" + root_c + ", " + left + ", " + right + "}";
   }
 }
 

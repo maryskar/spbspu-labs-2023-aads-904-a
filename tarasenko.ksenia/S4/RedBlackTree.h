@@ -113,9 +113,6 @@ namespace tarasenko
    const_iterator upper_bound(const T& data) const;
    Compare value_comp() const;
 
-   std::string printAsString();       //
-   std::string printColorAsString(); //
-
   private:
    BSTree root_;
    void fixAfterInsert(Tree* node);
@@ -557,28 +554,6 @@ namespace tarasenko
   bool operator!=(const RedBlackTree< T, Compare >& lhs, const RedBlackTree< T, Compare >& rhs)
   {
     return !(lhs == rhs);
-  }
-//=================================================================
-  template< typename T, typename Compare >
-  std::string RedBlackTree< T, Compare >::printAsString()
-  {
-    return root_.printAsString();
-  }
-
-  template< typename T, typename Compare >
-  std::string RedBlackTree< T, Compare >::printColorAsString()
-  {
-    auto root = root_.root_;
-    if (!root || root == root_.fake_)
-    {
-      return " ";
-    }
-    std::string fake_c = root_.fake_->color_ == 'b' ? "b" : "r";
-    std::string root_c = root->color_ == 'b' ? "b" : "r";
-
-    std::string left = (root->left_ == root_.fake_) ? "{" + fake_c + "}" : root_.printColorAsString(root->left_);
-    std::string right = (root->right_ == root_.fake_) ? "{" + fake_c + "}" : root_.printColorAsString(root->right_);
-    return "{" + root_c + ", " + left + ", " + right + "}";
   }
 }
 
