@@ -109,7 +109,7 @@ namespace tarasenko
       tree_t* parent = node_->parent_;
       if (node_ != fakeNode_)
       {
-        while (parent != nullptr && node_ == parent->left_)
+        while (parent != fakeNode_ && node_ == parent->left_)
         {
           node_ = parent;
           parent = parent->parent_;
