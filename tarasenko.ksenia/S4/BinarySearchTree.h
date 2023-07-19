@@ -312,11 +312,11 @@ namespace tarasenko
       auto inserted = insert(data, iterator(fake_, root_)).second.node_;
       if (inserted != fake_)
       {
-        if (data < begin_->data_)
+        if (compare_(data, begin_->data_))
         {
           begin_ = inserted;
         }
-        if (end_->data_ < data)
+        if (compare_(end_->data_, data))
         {
           end_ = inserted;
         }

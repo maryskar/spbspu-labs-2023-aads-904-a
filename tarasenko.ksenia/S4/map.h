@@ -62,10 +62,10 @@ namespace tarasenko
    iterator end();
    const_iterator cbegin() const;
    const_iterator cend() const;
-//   reverse_iterator rbegin() noexcept;
-//   const_reverse_iterator crbegin() const noexcept;
-//   reverse_iterator rend() noexcept;
-//   const_reverse_iterator crend() const noexcept;
+//   reverse_iterator rbegin();
+//   const_reverse_iterator crbegin() const;
+//   reverse_iterator rend();
+//   const_reverse_iterator crend() const;
    Value& at(const Key& key);
    const Value& at(const Key& key) const;
    Value& operator[](const Key& key);
@@ -74,9 +74,10 @@ namespace tarasenko
    size_t size() const;
    void clear();
    std::pair< iterator, bool > insert(const value_type& value);
-//   std::pair< iterator, bool > insert(value_type&& data);
-//   iterator insert(const_iterator pos, const value_type& data);
-//   iterator insert(const_iterator pos, value_type&& data);
+   std::pair< iterator, bool > insert(value_type&& data);
+   iterator insert(const_iterator pos, const value_type& data);
+   iterator insert(const_iterator pos, value_type&& data);
+   void insert(const_iterator first, const_iterator last);
    std::pair< iterator, bool > push(const Key& k, const Value& v);
    void swap(map_t& other);
    size_t count(const Key& key) const;
@@ -87,7 +88,7 @@ namespace tarasenko
 //   iterator erase(const_iterator first, const_iterator last);
    size_t erase(const Key& key);
    bool isEqualTo(const map_t& other) const;
-//   Compare key_comp() const;
+   Compare key_comp() const;
 //   iterator lower_bound(const Key& key);
 //   const_iterator lower_bound(const Key& key) const;
 //   iterator upper_bound(const Key& key);
@@ -201,6 +202,39 @@ namespace tarasenko
 
   template< typename Key, typename Value, typename Compare >
   std::pair< BidirectionalIterator< std::pair< Key, Value >, Compare >, bool >
+     Map< Key, Value, Compare >::insert(std::pair< Key, Value >&& value)
+  {
+    const value_type val(std::forward< value_type > >(value));
+    return insert(val);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  BidirectionalIterator< std::pair< Key, Value >, Compare >
+     Map< Key, Value, Compare >::insert(const_iterator pos, const value_type& value)
+  {
+    return root_.insert(pos, value);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  BidirectionalIterator< std::pair< Key, Value >, Compare >
+     Map< Key, Value, Compare >::insert(const_iterator pos, value_type&& value)
+  {
+    const value_type val(std::forward< value_type >(value));
+    return insert(pos, val);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  void Map< Key, Value, Compare >::insert(const_iterator first, const_iterator last)
+  {
+    while (first != last)
+    {
+      insert(*first);
+      first++;
+    }
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  std::pair< BidirectionalIterator< std::pair< Key, Value >, Compare >, bool >
      Map< Key, Value, Compare >::push(const Key& k, const Value& v)
   {
     std::pair< Key, Value > data(k, v);
@@ -262,6 +296,12 @@ namespace tarasenko
       }
     }
     return 0;
+  }
+
+  template< class Key, class Value, class Compare >
+  Compare Map< Key, Value, Compare >::key_comp() const
+  {
+    return compare_;
   }
 
   template< class Key, class Value, class Compare >
