@@ -11,7 +11,7 @@ namespace potapova
 
   struct ArithmExpMember
   {
-    enum class Type
+    enum class Type: std::uint8_t
     {
       Num,
       Operation
