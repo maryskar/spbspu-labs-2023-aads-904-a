@@ -83,9 +83,9 @@ namespace tarasenko
    size_t count(const Key& key) const;
    iterator find(const Key& key);
    const_iterator find(const Key& key) const;
-//   iterator erase(iterator pos);
-//   iterator erase(const_iterator pos);
-//   iterator erase(const_iterator first, const_iterator last);
+   iterator erase(iterator pos);
+   iterator erase(const_iterator pos);
+   iterator erase(const_iterator first, const_iterator last);
    size_t erase(const Key& key);
    bool isEqualTo(const map_t& other) const;
    Compare key_comp() const;
@@ -263,6 +263,25 @@ namespace tarasenko
      Map< Key, Value, Compare >::find(const Key& key) const
   {
     return const_iterator(find(key));
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  BidirectionalIterator< std::pair< Key, Value >, Compare >
+     Map< Key, Value, Compare >::erase(iterator pos)
+  {
+    return root_.erase(pos);
+  }
+  template< typename Key, typename Value, typename Compare >
+  BidirectionalIterator< std::pair< Key, Value >, Compare >
+     Map< Key, Value, Compare >::erase(const_iterator pos)
+  {
+    return root_.erase(pos);
+  }
+  template< typename Key, typename Value, typename Compare >
+  BidirectionalIterator< std::pair< Key, Value >, Compare >
+     Map< Key, Value, Compare >::erase(const_iterator first, const_iterator last)
+  {
+    return root_.erase(first, last);
   }
 
   template< typename Key, typename Value, typename Compare >
