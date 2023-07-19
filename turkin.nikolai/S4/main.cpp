@@ -2,7 +2,7 @@
 #include <cstddef>
 #include <string>
 #include <functional>
-#include "rb-tree.hpp"
+#include "rb-tree/rb-tree.hpp"
 #include "out-msg.hpp"
 
 int main(int argc, char * argv[])
