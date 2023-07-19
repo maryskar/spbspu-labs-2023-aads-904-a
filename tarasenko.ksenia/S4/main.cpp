@@ -1,60 +1,37 @@
 #include <iostream>
-#include "BinarySearchTree.h"
-#include "RedBlackTree.h"
+#include <fstream>
+#include <string>
+#include "callCommands.h"
+#include "map.h"
+#include "readDictsInDict.h"
 
-template< typename Key, typename Value >
-std::ostream& operator<<(std::ostream& out, const std::pair< Key, Value >& data)
+int main(int argc, char* argv[])
 {
-  return out << "{" << data.first << " - " << data.second << "}";
-}
-
-int main()
-{
-//  auto it_b = tree.begin();
-//  auto it_e = tree.end();
-//  auto it_bb = tree.beforeBegin();
-//  auto it = tree.begin();
-//  ++it_bb;
-//  --it_e;
-//  std::cout << *it_bb  << " ";
-//  std::cout << *it_b << " ";
-//  std::cout << *it_e << "\n";
-
-//======================================================================================
-
-  tarasenko::RedBlackTree< int, std::less<> > rb;
-  rb.insert(80);
-  rb.insert(85);
-  rb.insert(67);
-  rb.insert(50);
-  rb.insert(40);
-  rb.insert(60);
-  rb.insert(35);
-  rb.insert(67);
-  rb.insert(55);
-  rb.insert(53);
-
-
-//  rb.insert(1);
-//  rb.insert(2);
-//  rb.insert(3);
-//  rb.insert(4);
-//  rb.insert(5);
-//  rb.insert(6);
-//  rb.insert(7);
-//  rb.insert(8);
-//  rb.insert(9);
-//  rb.insert(10);
-
-//  tree.remove(92);
-
-  auto it = rb.begin();
-  while (it != rb.end())
+  if (argc != 2)
   {
-    std::cout << *(it++) << " ";
+    std::cout << "Incorrect input\n";
+    return 1;
   }
-  std::cout << "\n";
-
-  std::cout << rb.printAsString() << "\n";
-  std::cout << rb.printColorAsString();
+  std::ifstream input(argv[1]);
+  if (!input.is_open())
+  {
+    std::cout << "File not found\n";
+    return 1;
+  }
+  using dict_t = tarasenko::Map< size_t, std::string, std::less<> >;
+  tarasenko::Map< std::string, dict_t, std::greater<> > dict_of_dict;
+  readDictsInDict(input, dict_of_dict);
+  std::string name_of_command = "";
+  while (std::cin >> name_of_command)
+  {
+    try
+    {
+      call(name_of_command, dict_of_dict, std::cin, std::cout);
+    }
+    catch (const std::exception& e)
+    {
+      std::cout << e.what() << "\n";
+      return 1;
+    }
+  }
 }
