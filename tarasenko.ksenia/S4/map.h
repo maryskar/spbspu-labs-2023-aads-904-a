@@ -6,13 +6,32 @@
 
 namespace tarasenko
 {
+  namespace details
+  {
+    template< typename Key, typename Value, typename Compare >
+    class pair_compare
+    {
+    public:
+     pair_compare():
+       compare_()
+     {}
+     bool operator()(const std::pair< Key, Value >& lhs, const std::pair< Key, Value >& rhs) const
+     {
+       return compare_(lhs.first, rhs.first);
+     }
+    private:
+     Compare compare_;
+    };
+  }
+
   template< typename Key, typename Value, typename Compare >
   class Map
   {
    using map_t = Map< Key, Value, Compare >;
    using value_type = std::pair< Key, Value >;
-   using iterator = BidirectionalIterator< value_type, Compare >;
-   using const_iterator = ConstBidirectionalIterator< value_type, Compare >;
+   using value_compare = details::pair_compare< Key, Value, Compare >;
+   using iterator = BidirectionalIterator< value_type, value_compare >;
+   using const_iterator = ConstBidirectionalIterator< value_type, value_compare >;
    using reverse_iterator	= std::reverse_iterator< iterator >;
    using const_reverse_iterator =	std::reverse_iterator< const_iterator >;
   public:
@@ -29,9 +48,7 @@ namespace tarasenko
    Map(map_t&& other):
      root_(std::move(other.root_)),
      compare_(other.compare_)
-   {
-     other.size_ = 0;
-   }
+   {}
 
    explicit Map(const Compare& comp):
      root_(comp),
@@ -97,30 +114,30 @@ namespace tarasenko
    const_iterator upper_bound(const Key& key) const;
 
   private:
-   RedBlackTree< std::pair< Key, Value >, Compare > root_;
+   RedBlackTree< value_type, value_compare > root_;
    Compare compare_;
   };
 
   template< typename Key, typename Value, typename Compare >
-  BidirectionalIterator< std::pair< Key, Value >, Compare > Map< Key, Value, Compare >::begin()
+  typename Map< Key, Value, Compare >::iterator Map< Key, Value, Compare >::begin()
   {
     return root_.begin();
   }
 
   template< typename Key, typename Value, typename Compare >
-  BidirectionalIterator< std::pair< Key, Value >, Compare > Map< Key, Value, Compare >::end()
+  typename Map< Key, Value, Compare >::iterator Map< Key, Value, Compare >::end()
   {
     return root_.end();
   }
 
   template< typename Key, typename Value, typename Compare >
-  ConstBidirectionalIterator< std::pair< Key, Value >, Compare > Map< Key, Value, Compare >::cbegin() const
+  typename Map< Key, Value, Compare >::const_iterator Map< Key, Value, Compare >::cbegin() const
   {
     return root_.cbegin();
   }
 
   template< typename Key, typename Value, typename Compare >
-  ConstBidirectionalIterator< std::pair< Key, Value >, Compare > Map< Key, Value, Compare >::cend() const
+  typename Map< Key, Value, Compare >::const_iterator Map< Key, Value, Compare >::cend() const
   {
     return root_.cend();
   }
@@ -207,7 +224,7 @@ namespace tarasenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  std::pair< BidirectionalIterator< std::pair< Key, Value >, Compare >, bool >
+  std::pair< typename Map< Key, Value, Compare >::iterator, bool >
      Map< Key, Value, Compare >::insert(const std::pair< Key, Value >& value)
   {
     if (!isEmpty())
@@ -227,7 +244,7 @@ namespace tarasenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  std::pair< BidirectionalIterator< std::pair< Key, Value >, Compare >, bool >
+  std::pair< typename Map< Key, Value, Compare >::iterator, bool >
      Map< Key, Value, Compare >::insert(std::pair< Key, Value >&& value)
   {
     const value_type val(std::forward< value_type > >(value));
@@ -235,14 +252,14 @@ namespace tarasenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  BidirectionalIterator< std::pair< Key, Value >, Compare >
+  typename Map< Key, Value, Compare >::iterator
      Map< Key, Value, Compare >::insert(const_iterator pos, const value_type& value)
   {
     return root_.insert(pos, value);
   }
 
   template< typename Key, typename Value, typename Compare >
-  BidirectionalIterator< std::pair< Key, Value >, Compare >
+  typename Map< Key, Value, Compare >::iterator
      Map< Key, Value, Compare >::insert(const_iterator pos, value_type&& value)
   {
     const value_type val(std::forward< value_type >(value));
@@ -260,7 +277,7 @@ namespace tarasenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  std::pair< BidirectionalIterator< std::pair< Key, Value >, Compare >, bool >
+  std::pair< typename Map< Key, Value, Compare >::iterator, bool >
      Map< Key, Value, Compare >::push(const Key& k, const Value& v)
   {
     std::pair< Key, Value > data(k, v);
@@ -268,7 +285,7 @@ namespace tarasenko
   };
 
   template< typename Key, typename Value, typename Compare >
-  BidirectionalIterator< std::pair< Key, Value >, Compare >
+  typename Map< Key, Value, Compare >::iterator
      Map< Key, Value, Compare >::find(const Key& key)
   {
     if (!isEmpty())
@@ -285,26 +302,36 @@ namespace tarasenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  ConstBidirectionalIterator< std::pair< Key, Value >, Compare >
+  typename Map< Key, Value, Compare >::const_iterator
      Map< Key, Value, Compare >::find(const Key& key) const
   {
-    return const_iterator(find(key));
+    if (!isEmpty())
+    {
+      for (auto curr = cbegin(); curr != cend(); curr++)
+      {
+        if (curr->first == key)
+        {
+          return curr;
+        }
+      }
+    }
+    return cend();
   }
 
   template< typename Key, typename Value, typename Compare >
-  BidirectionalIterator< std::pair< Key, Value >, Compare >
+  typename Map< Key, Value, Compare >::iterator
      Map< Key, Value, Compare >::erase(iterator pos)
   {
     return root_.erase(pos);
   }
   template< typename Key, typename Value, typename Compare >
-  BidirectionalIterator< std::pair< Key, Value >, Compare >
+  typename Map< Key, Value, Compare >::iterator
      Map< Key, Value, Compare >::erase(const_iterator pos)
   {
     return root_.erase(pos);
   }
   template< typename Key, typename Value, typename Compare >
-  BidirectionalIterator< std::pair< Key, Value >, Compare >
+  typename Map< Key, Value, Compare >::iterator
      Map< Key, Value, Compare >::erase(const_iterator first, const_iterator last)
   {
     return root_.erase(first, last);
@@ -351,7 +378,7 @@ namespace tarasenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  BidirectionalIterator< std::pair< Key, Value >, Compare >
+  typename Map< Key, Value, Compare >::iterator
      Map< Key, Value, Compare >::lower_bound(const Key& key)
   {
     auto curr = begin();
@@ -374,14 +401,14 @@ namespace tarasenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  ConstBidirectionalIterator< std::pair< Key, Value >, Compare >
+  typename Map< Key, Value, Compare >::const_iterator
      Map< Key, Value, Compare >::lower_bound(const Key& key) const
   {
     return const_iterator(lower_bound(key));
   }
 
   template< typename Key, typename Value, typename Compare >
-  BidirectionalIterator< std::pair< Key, Value >, Compare >
+  typename Map< Key, Value, Compare >::iterator
      Map< Key, Value, Compare >::upper_bound(const Key& key)
   {
     iterator it = lower_bound(key);
@@ -403,7 +430,7 @@ namespace tarasenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  ConstBidirectionalIterator< std::pair< Key, Value >, Compare >
+  typename Map< Key, Value, Compare >::const_iterator
      Map< Key, Value, Compare >::upper_bound(const Key& key) const
   {
     return const_iterator(upper_bound(key));
@@ -431,22 +458,6 @@ namespace tarasenko
   bool operator!=(const Map< Key, Value, Compare >& lhs, const Map< Key, Value, Compare >& rhs)
   {
     return !(lhs == rhs);
-  }
-
-  template< class Key, class Value, class Compare >
-  bool operator<(const Map< Key, Value, Compare >& lhs, const Map< Key, Value, Compare >& rhs)
-  {
-    auto l_it = lhs.cbegin();
-    auto r_it = lhs.cbegin();
-    auto comp = lhs.key_comp();
-    for (; (l_it != lhs.cend()) && (r_it != rhs.cend()); ++l_it, ++r_it)
-    {
-      if (comp(l_it->first, r_it->first))
-        return true;
-      if (comp(r_it->first, l_it->first))
-        return false;
-    }
-    return (l_it == lhs.cend()) && (r_it != rhs.cend());
   }
 }
 #endif

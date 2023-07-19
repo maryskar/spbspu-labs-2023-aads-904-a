@@ -507,8 +507,8 @@ namespace tarasenko
   template< typename T, typename Compare >
   BidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::find(const T& data)
   {
-    const_iterator cit = static_cast< const BSTree& >(*this).find(data);
-    return iterator(fake_, cit.node_);
+    const_iterator c_it = static_cast< const BSTree& >(*this).find(data);
+    return iterator(fake_, c_it.node_);
   }
 
   template< typename T, typename Compare >
