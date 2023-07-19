@@ -43,8 +43,6 @@ namespace potapova
       other.size_ = 0;
     }
 
-    
-
     void push(const T& elem)
     {
       if (begin_ptr_ == nullptr)
