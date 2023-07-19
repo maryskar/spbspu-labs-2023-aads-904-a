@@ -50,12 +50,12 @@ namespace tarasenko
      }
    }
 
-   bool findInTypePrint(const std::string& key)
+   bool findInTypePrint(const std::string& key) const
    {
      return type_print.find(key) != type_print.cend();
    }
 
-   bool findInTypeCreate(const std::string& key)
+   bool findInTypeCreate(const std::string& key) const
    {
      return type_create.find(key) != type_create.cend();
    }
