@@ -186,6 +186,10 @@ namespace tarasenko
   template< typename T, typename Compare >
   BidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::beforeBegin() const
   {
+    if (!begin_)
+    {
+      return iterator(fake_, fake_);
+    }
     fake_->right_ = begin_;
     begin_->left_ = fake_;
     return iterator(fake_, begin_->left_);
@@ -194,12 +198,20 @@ namespace tarasenko
   template< typename T, typename Compare >
   BidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::begin() const
   {
+    if (!begin_)
+    {
+      return iterator(fake_, fake_);
+    }
     return iterator(fake_, begin_);
   }
 
   template< typename T, typename Compare >
   BidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::end() const
   {
+    if (!end_)
+    {
+      return iterator(fake_, fake_);
+    }
     fake_->left_ = end_;
     end_->right_ = fake_;
     return iterator(fake_, end_->right_);
@@ -570,12 +582,13 @@ namespace tarasenko
       else
       {
         root_ = child;
+        root_->parent_ = fake_;
       }
       if (nodeToDel == end_)
       {
         end_ = left != fake_ ? left : parent;
       }
-      else if (nodeToDel == begin_)
+      if (nodeToDel == begin_)
       {
         begin_ = right != fake_ ? right : parent;
       }
