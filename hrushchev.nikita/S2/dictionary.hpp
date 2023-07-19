@@ -23,6 +23,7 @@ public:
   iterator end() noexcept;
   const_iterator cend() const noexcept;
   iterator insert(const std::pair< Key, Value >& value);
+  Value& operator[](const Key& key);
   void push(Key k, Value v);
 private:
   ForwardList< std::pair< Key, Value > > data_;
@@ -100,6 +101,8 @@ typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Com
   }
   return prev;
 }
+
+
 
 template< typename Key, typename Value, typename Compare >
 void Dictionary< Key, Value, Compare >::push(Key k, Value v)

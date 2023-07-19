@@ -18,7 +18,7 @@ class ForwardListConstIterator
   public:
     ForwardListConstIterator();
     ~ForwardListConstIterator() = default;
-    explicit ForwardListConstIterator(const List< T >* rhs);
+    explicit ForwardListConstIterator(const details::List< T >* rhs);
     ForwardListConstIterator< T >& operator++();
     ForwardListConstIterator< T > operator++(int);
     const T& operator*();
@@ -27,7 +27,7 @@ class ForwardListConstIterator
     bool operator!=(const ForwardListConstIterator< T >& rhs) const;
     ForwardListConstIterator(const ForwardListIterator< T >& other) noexcept;
   private:
-    const List< T >* ptr_;
+    const details::List< T >* ptr_;
 };
 
 template< typename T >
@@ -37,7 +37,7 @@ ForwardListConstIterator< T >::ForwardListConstIterator():
 }
 
 template< typename T >
-ForwardListConstIterator< T >::ForwardListConstIterator(const List< T >* rhs):
+ForwardListConstIterator< T >::ForwardListConstIterator(const details::List< T >* rhs):
   ptr_(rhs)
 {
 }
@@ -89,7 +89,7 @@ bool ForwardListConstIterator< T >::operator!=(const ForwardListConstIterator< T
 
 template< typename T >
 ForwardListConstIterator< T >::ForwardListConstIterator(const ForwardListIterator< T >& other) noexcept:
-  ptr_(const_cast< List< T > * >(other.ptr_))
+  ptr_(const_cast< details::List< T > * >(other.ptr_))
 {
 }
 #endif

@@ -50,7 +50,7 @@ class ForwardList
     void splice_after(const_iterator pos, ForwardList< T >& other);
     void splice_after(const_iterator pos, ForwardList< T >&& other);
 
-    List< T >* head_;
+    details::List< T >* head_;
 };
 
 template< typename T >
@@ -160,7 +160,7 @@ template< typename T >
 size_t ForwardList< T >::max_size() const noexcept
 {
   size_t size = 0;
-  List< T >* temp = head_;
+  details::List< T >* temp = head_;
   while (temp)
   {
     temp = temp->next_;
@@ -179,7 +179,7 @@ void ForwardList< T >::clear()
 
   while(head_->next_ != nullptr)
   {
-    List< T >* temp = head_->next_;
+    details::List< T >* temp = head_->next_;
     delete head_;
     head_ = temp;
   }
@@ -188,9 +188,9 @@ void ForwardList< T >::clear()
 template< typename T >
 typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, const T& value)
 {
-  List< T >* temp = new List< T >();
+  details::List< T >* temp = new details::List< T >();
   temp->data_ = value;
-  List< T >* cur = const_cast< List< T >* >(pos.ptr_);
+  details::List< T >* cur = const_cast< details::List< T >* >(pos.ptr_);
   temp->next_ = cur->next_;
   cur->next_ = temp;
   return iterator(temp);
@@ -232,8 +232,8 @@ template< typename T >
 template< typename... Args >
 typename ForwardList< T >::iterator ForwardList< T >::emplace_after(const_iterator pos, Args&&... args)
 {
-  List< T >* temp = new List< T >(std::forward<Args>(args)...);
-  List< T >* cur = const_cast< List< T >* >(pos.ptr_);
+  details::List< T >* temp = new details::List< T >(std::forward< Args >(args)...);
+  details::List< T >* cur = const_cast< details:: List< T >* >(pos.ptr_);
   temp->next_ = cur->next_;
   cur->next_ = temp;
   return iterator(temp);
@@ -247,8 +247,8 @@ typename ForwardList< T >::iterator ForwardList< T >::erase_after(const_iterator
     return end();
   }
 
-  List< T >* cur = const_cast< List< T >* >(pos.ptr_);
-  List< T >* temp = cur;
+  details::List< T >* cur = const_cast< details::List< T >* >(pos.ptr_);
+  details::List< T >* temp = cur;
   temp = temp->next_->next_;
   delete cur->next_;
   cur->next_ = temp;
@@ -262,13 +262,13 @@ typename ForwardList< T >::iterator ForwardList< T >::erase_after(const_iterator
   {
     erase_after(first);
   }
-  return iterator(const_cast< List< T >* >(last.ptr_));
+  return iterator(const_cast< details::List< T >* >(last.ptr_));
 }
 
 template< typename T >
 void ForwardList< T >::push_front(const T& value)
 {
-  List< T >* temp = new List< T >();
+  details::List< T >* temp = new details::List< T >();
   temp->data_ = value;
   temp->next_ = head_;
   head_ = temp;
@@ -284,7 +284,7 @@ template< typename T >
 template< typename... Args >
 void ForwardList< T >::emplace_front(Args && ... args)
 {
-  List< T >* temp = new List< T >(std::forward<Args>(args)...);
+  details::List< T >* temp = new details::List< T >(std::forward< Args >(args)...);
   temp->next_ = head_;
   head_ = temp;
 }
@@ -296,7 +296,7 @@ void ForwardList< T >::pop_front()
   {
     throw std::logic_error("empty list");
   }
-  List< T >* temp = head_;
+  details::List< T >* temp = head_;
   head_ = head_->next_;
   delete temp;
 }
@@ -350,8 +350,8 @@ void ForwardList< T >::splice_after(const_iterator pos, ForwardList< T >& other)
   {
     return;
   }
-  List< T >* cur = const_cast< List < T >* >(pos.ptr_);
-  List< T >* other_head = other.head_;
+  details::List< T >* cur = const_cast< details::List < T >* >(pos.ptr_);
+  details::List< T >* other_head = other.head_;
   while (other_head->next_)
   {
     other_head = other_head->next_;
