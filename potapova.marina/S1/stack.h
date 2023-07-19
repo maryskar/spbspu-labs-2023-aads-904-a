@@ -21,15 +21,7 @@ namespace potapova
 
     Stack(const Stack& other): Stack()
     {
-      Node** cur_node_ptr_ptr = end_ptr_ = nullptr;
-      Node** cur_other_node_ptr = other.end_ptr_;
-      while (cur_other_node_ptr != nullptr)
-      {
-        *cur_node_ptr_ptr = new Node(cur_other_node_ptr_->data);
-        cur_node_ptr_ptr = &(*cur_node_ptr_ptr)->prev_node_ptr;
-        *cur_other_node_ptr = *cur_other_node_ptr->prev_node_ptr;
-      }
-      size_ = other.size_;
+      *this = other;
     }
 
     Stack(Stack&& other): Stack()
@@ -39,15 +31,26 @@ namespace potapova
 
     Stack& operator=(const Stack& other)
     {
-      clear();
-      Node** cur_node_ptr_ptr = end_ptr_ = nullptr;
-      Node** cur_other_node_ptr = other.end_ptr_;
+      Node** cur_node_ptr_ptr = &end_ptr_;
+      const Node* cur_other_node_ptr = other.end_ptr_;
       while (cur_other_node_ptr != nullptr)
       {
-        *cur_node_ptr_ptr = new Node(cur_other_node_ptr_->data);
+        if (*cur_node_ptr_ptr == nullptr)
+        {
+          *cur_node_ptr_ptr = new Node();
+        }
+        (*cur_node_ptr_ptr)->data = cur_other_node_ptr->data;
         cur_node_ptr_ptr = &(*cur_node_ptr_ptr)->prev_node_ptr;
-        *cur_other_node_ptr = *cur_other_node_ptr->prev_node_ptr;
+        cur_other_node_ptr = cur_other_node_ptr->prev_node_ptr;
       }
+      Node* extra_node_ptr = *cur_node_ptr_ptr;
+      while (extra_node_ptr != nullptr)
+      {
+        Node* node_to_delete_ptr = extra_node_ptr;
+        extra_node_ptr = extra_node_ptr->prev_node_ptr;
+        delete node_to_delete_ptr;
+      }
+      *cur_node_ptr_ptr = nullptr;
       size_ = other.size_;
       return *this;
     }
@@ -103,6 +106,13 @@ namespace potapova
   private:
     struct Node
     {
+      Node():
+        data(),
+        prev_node_ptr(nullptr)
+      {
+
+      }
+
       Node(const T& data):
         data(data),
         prev_node_ptr(nullptr)
