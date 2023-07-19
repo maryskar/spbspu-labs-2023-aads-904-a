@@ -432,5 +432,21 @@ namespace tarasenko
   {
     return !(lhs == rhs);
   }
+
+  template< class Key, class Value, class Compare >
+  bool operator<(const Map< Key, Value, Compare >& lhs, const Map< Key, Value, Compare >& rhs)
+  {
+    auto l_it = lhs.cbegin();
+    auto r_it = lhs.cbegin();
+    auto comp = lhs.key_comp();
+    for (; (l_it != lhs.cend()) && (r_it != rhs.cend()); ++l_it, ++r_it)
+    {
+      if (comp(l_it->first, r_it->first))
+        return true;
+      if (comp(r_it->first, l_it->first))
+        return false;
+    }
+    return (l_it == lhs.cend()) && (r_it != rhs.cend());
+  }
 }
 #endif
