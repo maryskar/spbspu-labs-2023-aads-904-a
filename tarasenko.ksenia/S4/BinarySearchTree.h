@@ -486,7 +486,7 @@ namespace tarasenko
     {
       return cend();
     }
-    if (*it == data)
+    if (!compare_(*it, data) && !compare_(data, *it))
     {
       return it;
     }

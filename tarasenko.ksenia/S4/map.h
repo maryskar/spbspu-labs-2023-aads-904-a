@@ -288,34 +288,14 @@ namespace tarasenko
   typename Map< Key, Value, Compare >::iterator
      Map< Key, Value, Compare >::find(const Key& key)
   {
-    if (!isEmpty())
-    {
-      for (auto curr = begin(); curr != end(); curr++)
-      {
-        if (curr->first == key)
-        {
-          return curr;
-        }
-      }
-    }
-    return end();
+    return root_.find({key, Value()});
   }
 
   template< typename Key, typename Value, typename Compare >
   typename Map< Key, Value, Compare >::const_iterator
      Map< Key, Value, Compare >::find(const Key& key) const
   {
-    if (!isEmpty())
-    {
-      for (auto curr = cbegin(); curr != cend(); curr++)
-      {
-        if (curr->first == key)
-        {
-          return curr;
-        }
-      }
-    }
-    return cend();
+    return root_.find({key, Value()});
   }
 
   template< typename Key, typename Value, typename Compare >
