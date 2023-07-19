@@ -60,6 +60,7 @@ namespace turkin
 
       void balanceInsert();
       void balanceErase();
+      void copy(const tree & rhs);
   };
 }
 
@@ -67,7 +68,8 @@ template< typename K, typename V, typename C >
 turkin::RBtree< K, V, C >::RBtree():
   source_(new TreeNode< tree_t, C >),
   dummy_(new TreeNode< tree_t, C >),
-  cmp_()
+  cmp_(),
+  size_(0)
 {
   source_.parent = nullptr;
   source_.left = dummy_;
@@ -78,16 +80,56 @@ turkin::RBtree< K, V, C >::RBtree():
 }
 
 template< typename K, typename V, typename C >
-turkin::RBtree< K, V, C >::RBtree(const tree & rhs) {}
+turkin::RBtree< K, V, C >::RBtree(const tree & rhs):
+  source_(nullptr),
+  dummy_(new TreeNode< tree_t, C >),
+  cmp_(rhs.cmp_),
+  size_(rhs.size_)
+{
+  copy(rhs);
+}
 
 template< typename K, typename V, typename C >
-turkin::RBtree< K, V, C >::RBtree(tree && rhs) {}
+turkin::RBtree< K, V, C >::RBtree(tree && rhs):
+  source_(rhs.source_),
+  dummy_(rhs.dummy_),
+  cmp_(rhs.cmp_),
+  size_(rhs.size_)
+{
+  rhs.source_ = nullptr;
+  rhs.dummy_ = nullptr;
+  rhs.size_ = 0;
+}
 
 template< typename K, typename V, typename C >
-turkin::RBtree< K, V, C > turkin::RBtree< K, V, C >::operator=(const tree & rhs) {}
+turkin::RBtree< K, V, C > turkin::RBtree< K, V, C >::operator=(const tree & rhs)
+{
+  if (std::addressof(rhs) == this)
+  {
+    return * this;
+  }
+  clear();
+  copy(rhs);
+  return * this;
+}
 
 template< typename K, typename V, typename C >
-turkin::RBtree< K, V, C > turkin::RBtree< K, V, C >::operator=(tree && rhs) {}
+turkin::RBtree< K, V, C > turkin::RBtree< K, V, C >::operator=(tree && rhs)
+{
+  if (std::addressof(rhs) == this)
+  {
+    return * this;
+  }
+  clear();
+  source_ = rhs.source_;
+  dummy_ = rhs.dummy_;
+  cmp_ = rhs.cmp_;
+  size_ = rhs.size_;
+  rhs.source_ = nullptr;
+  rhs.dummy_ = nullptr;
+  rhs.size_ = 0;
+  return * this;
+}
 
 template< typename K, typename V, typename C >
 turkin::RBtree< K, V, C >::~RBtree()
