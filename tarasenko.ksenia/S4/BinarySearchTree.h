@@ -654,20 +654,20 @@ namespace tarasenko
   template< typename T, typename Compare >
   BidirectionalIterator< T, Compare > BinarySearchTree< T, Compare >::upper_bound(const T& data)
   {
-    iterator c_it = lower_bound(data);
-    if (c_it == end())
+    iterator it = lower_bound(data);
+    if (it == end())
     {
       return end();
     }
     else
     {
-      if (!compare_(*c_it, data) && !compare_(data, *c_it))
+      if (!compare_(*it, data) && !compare_(data, *it))
       {
-        return ++c_it;
+        return ++it;
       }
       else
       {
-        return c_it;
+        return it;
       }
     }
   }

@@ -81,7 +81,7 @@ namespace tarasenko
    std::pair< iterator, bool > push(const Key& k, const Value& v);
    void swap(map_t& other);
    size_t count(const Key& key) const;
-//   iterator find(const Key& key);
+   iterator find(const Key& key);
    const_iterator find(const Key& key) const;
 //   iterator erase(iterator pos);
 //   iterator erase(const_iterator pos);
@@ -89,10 +89,10 @@ namespace tarasenko
    size_t erase(const Key& key);
    bool isEqualTo(const map_t& other) const;
    Compare key_comp() const;
-//   iterator lower_bound(const Key& key);
-//   const_iterator lower_bound(const Key& key) const;
-//   iterator upper_bound(const Key& key);
-//   const_iterator upper_bound(const Key& key) const;
+   iterator lower_bound(const Key& key);
+   const_iterator lower_bound(const Key& key) const;
+   iterator upper_bound(const Key& key);
+   const_iterator upper_bound(const Key& key) const;
 
   private:
    RedBlackTree< std::pair< Key, Value >, Compare > root_;
@@ -242,12 +242,12 @@ namespace tarasenko
   };
 
   template< typename Key, typename Value, typename Compare >
-  ConstBidirectionalIterator< std::pair< Key, Value >, Compare >
-     Map< Key, Value, Compare >::find(const Key& key) const
+  BidirectionalIterator< std::pair< Key, Value >, Compare >
+     Map< Key, Value, Compare >::find(const Key& key)
   {
     if (!isEmpty())
     {
-      for (auto curr = cbegin(); curr != cend(); curr++)
+      for (auto curr = begin(); curr != end(); curr++)
       {
         if (curr->first == key)
         {
@@ -255,7 +255,14 @@ namespace tarasenko
         }
       }
     }
-    return cend();
+    return end();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  ConstBidirectionalIterator< std::pair< Key, Value >, Compare >
+     Map< Key, Value, Compare >::find(const Key& key) const
+  {
+    return const_iterator(find(key));
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -296,6 +303,65 @@ namespace tarasenko
       }
     }
     return 0;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  BidirectionalIterator< std::pair< Key, Value >, Compare >
+     Map< Key, Value, Compare >::lower_bound(const Key& key)
+  {
+    auto curr = begin();
+    while (curr != end())
+    {
+      if (!compare_(key, curr->first) && !compare_(curr->first, key))
+      {
+        return curr;
+      }
+      else if (compare_(key, curr->first))
+      {
+        --curr;
+      }
+      else
+      {
+        ++curr;
+      }
+    }
+    return end();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  ConstBidirectionalIterator< std::pair< Key, Value >, Compare >
+     Map< Key, Value, Compare >::lower_bound(const Key& key) const
+  {
+    return const_iterator(lower_bound(key));
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  BidirectionalIterator< std::pair< Key, Value >, Compare >
+     Map< Key, Value, Compare >::upper_bound(const Key& key)
+  {
+    iterator it = lower_bound(key);
+    if (it == end())
+    {
+      return end();
+    }
+    else
+    {
+      if (!compare_(it->first, key) && !compare_(key, it->first))
+      {
+        return ++it;
+      }
+      else
+      {
+        return it;
+      }
+    }
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  ConstBidirectionalIterator< std::pair< Key, Value >, Compare >
+     Map< Key, Value, Compare >::upper_bound(const Key& key) const
+  {
+    return const_iterator(upper_bound(key));
   }
 
   template< class Key, class Value, class Compare >
