@@ -3,7 +3,7 @@
 namespace fesenko
 {
   template< typename T >
-  class ForwadrList
+  class ForwardList
   {
    public:
     ForwardList();
