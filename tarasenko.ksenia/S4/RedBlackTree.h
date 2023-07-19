@@ -19,6 +19,8 @@ namespace tarasenko
    using RBTree = RedBlackTree< T, Compare >;
    using iterator = BidirectionalIterator< T, Compare >;
    using const_iterator = ConstBidirectionalIterator< T, Compare >;
+   using reverse_iterator	= std::reverse_iterator< iterator >;
+   using const_reverse_iterator =	std::reverse_iterator< const_iterator >;
   public:
    RedBlackTree():
      root_()
@@ -88,6 +90,10 @@ namespace tarasenko
    const_iterator cbeforeBegin() const;
    const_iterator cbegin() const;
    const_iterator cend() const;
+   reverse_iterator rbegin();
+   reverse_iterator rend();
+   const_reverse_iterator crbegin() const;
+   const_reverse_iterator crend() const;
    T& at(const T& data);
    const T& at(const T& data) const;
    T& operator[](const T& data);
@@ -165,6 +171,30 @@ namespace tarasenko
   ConstBidirectionalIterator< T, Compare > RedBlackTree< T, Compare >::cend() const
   {
     return root_.cend();
+  }
+
+  template< typename T, typename Compare >
+  typename RedBlackTree< T, Compare >::reverse_iterator RedBlackTree< T, Compare >::rbegin()
+  {
+    return reverse_iterator(end());
+  }
+
+  template< typename T, typename Compare >
+  typename RedBlackTree< T, Compare >::reverse_iterator RedBlackTree< T, Compare >::rend()
+  {
+    return reverse_iterator(begin());
+  }
+
+  template< typename T, typename Compare >
+  typename RedBlackTree< T, Compare >::const_reverse_iterator RedBlackTree< T, Compare >::crbegin() const
+  {
+    return const_reverse_iterator(cend());
+  }
+
+  template< typename T, typename Compare >
+  typename RedBlackTree< T, Compare >::const_reverse_iterator RedBlackTree< T, Compare >::crend() const
+  {
+    return const_reverse_iterator(cbegin());
   }
 
   template< typename T, typename Compare >

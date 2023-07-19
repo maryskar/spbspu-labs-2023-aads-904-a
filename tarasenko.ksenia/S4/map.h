@@ -13,6 +13,8 @@ namespace tarasenko
    using value_type = std::pair< Key, Value >;
    using iterator = BidirectionalIterator< value_type, Compare >;
    using const_iterator = ConstBidirectionalIterator< value_type, Compare >;
+   using reverse_iterator	= std::reverse_iterator< iterator >;
+   using const_reverse_iterator =	std::reverse_iterator< const_iterator >;
   public:
    Map():
      root_(),
@@ -62,10 +64,10 @@ namespace tarasenko
    iterator end();
    const_iterator cbegin() const;
    const_iterator cend() const;
-//   reverse_iterator rbegin();
-//   const_reverse_iterator crbegin() const;
-//   reverse_iterator rend();
-//   const_reverse_iterator crend() const;
+   reverse_iterator rbegin();
+   reverse_iterator rend();
+   const_reverse_iterator crbegin() const;
+   const_reverse_iterator crend() const;
    Value& at(const Key& key);
    const Value& at(const Key& key) const;
    Value& operator[](const Key& key);
@@ -121,6 +123,30 @@ namespace tarasenko
   ConstBidirectionalIterator< std::pair< Key, Value >, Compare > Map< Key, Value, Compare >::cend() const
   {
     return root_.cend();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::reverse_iterator Map< Key, Value, Compare >::rbegin()
+  {
+    return root_.rbegin();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::reverse_iterator Map< Key, Value, Compare >::rend()
+  {
+    return root_.rend();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::const_reverse_iterator Map< Key, Value, Compare >::crbegin() const
+  {
+    return root_.crbegin();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Map< Key, Value, Compare >::const_reverse_iterator Map< Key, Value, Compare >::crend() const
+  {
+    return root_.crend();
   }
 
   template< typename Key, typename Value, typename Compare >
