@@ -2,7 +2,7 @@
 #define DIRECT_ITERATOR_HPP
 
 #include <utility>
-#include "tree-node.hpp"
+#include "../tree-node.hpp"
 
 namespace turkin
 {
