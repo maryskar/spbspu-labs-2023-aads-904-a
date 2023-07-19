@@ -12,6 +12,6 @@ namespace fesenko
     ForwardList< T > &operator=(const ForwardList< T > &);
     ForwardList< T > &operator=(ForwardList< T > &&);
     ~ForwardList();
-  }
+  };
 }
 #endif
