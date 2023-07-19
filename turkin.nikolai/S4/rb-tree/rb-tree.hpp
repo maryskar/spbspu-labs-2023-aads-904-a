@@ -75,4 +75,28 @@ namespace turkin
   };
 }
 
+template< typename K, typename V, typename C >
+turkin::RBtree< K, V, C >::RBtree():
+  source_(),
+  cmp_()
+{}
+
+template< typename K, typename V, typename C >
+turkin::RBtree< K, V, C >::RBtree(const tree & rhs) {}
+
+template< typename K, typename V, typename C >
+turkin::RBtree< K, V, C >::RBtree(tree && rhs) {}
+
+template< typename K, typename V, typename C >
+turkin::RBtree< K, V, C > turkin::RBtree< K, V, C >::operator=(const tree & rhs) {}
+
+template< typename K, typename V, typename C >
+turkin::RBtree< K, V, C > turkin::RBtree< K, V, C >::operator=(tree && rhs) {}
+
+template< typename K, typename V, typename C >
+turkin::RBtree< K, V, C >::~RBtree()
+{
+  free(source_);
+}
+
 #endif
