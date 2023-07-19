@@ -1,7 +1,8 @@
 #ifndef RB_TREE_HPP
 #define RB_TREE_HPP
 
-#include <utility>
+#include <cstddef>
+
 #include "iterators/direct-iterator.hpp"
 #include "iterators/direct-const-iterator.hpp"
 #include "iterators/reverse-iterator.hpp"
@@ -27,59 +28,54 @@ namespace turkin
       tree operator=(tree && rhs);
       ~RBtree();
       
-      dit before_begin() noexcept;
-      dcit before_begin() const noexcept;
-      dcit cbefore_begin() const noexcept;
-      dit begin() noexcept;
-      dcit begin() const noexcept;
-      dcit cbegin() const noexcept;
-      dit end() noexcept;
-      dcit end() const noexcept;
-      dcit cend() const noexcept;
-      dit rbegin() noexcept;
-      dcit rbegin() const noexcept;
-      dcit crbegin() const noexcept;
-      dit rend() noexcept;
-      dcit rend() const noexcept;
-      dcit crend() const noexcept;
+      dit dsource() noexcept;
+      dcit dsource() const noexcept;
+      dcit dcsource() const noexcept;
+      
+      rit rsource() noexcept;
+      crit rsource() const noexcept;
+      crit rcsource() const noexcept;
 
       bool empty() const noexcept;
       std::size_t size() const noexcept;
 
       void clear() noexcept;
-      std::pair< dit, bool > insert(const K & k, const V & v);
-      std::pair< dit, bool > insert(const tree_t & value);
-      template< class... Args >
-      std::pair< dit, bool > emplace(Args &&... args);
-      dit erase_after(dcit pos);
-      dit erase_after(dcit first, dcit last);
-      std::size_t erase(const K & k);
+      dit insert(const K & k, const V & v);
+      dit insert(const tree_t & value);
+      void erase(const K & k);
+      tree_t extract(dcit pos);
+      
       void swap(tree & rhs) noexcept;
-      tree_t extract_after(dcit pos);
       V at(const K & k);
       const V at(const K & k) const;
 
-      std::size_t count(const K & k) const;
       dit find(const K & k);
       dcit find(const K & k) const;
-      std::pair< dit, dit > equal_range(const K & k);
-      std::pair< dcit, dcit > equal_range(const K & k) const;
-      dit lower_bound(const K & k);
-      dcit lower_bound(const K & k) const;
-      dit upper_bound(const K & k);
-      dcit upper_bound(const K & k) const;
       
     private:
       TreeNode< tree_t, C > source_;
+      TreeNode< tree_t, C > dummy_;
       C cmp_;
+      std::size_t size_;
+
+      void balanceInsert();
+      void balanceErase();
   };
 }
 
 template< typename K, typename V, typename C >
 turkin::RBtree< K, V, C >::RBtree():
-  source_(),
+  source_(new TreeNode< tree_t, C >),
+  dummy_(new TreeNode< tree_t, C >),
   cmp_()
-{}
+{
+  source_.parent = nullptr;
+  source_.left = dummy_;
+  source_.right = dummy_;
+  source_.color = TreeColor::BLACK;
+  
+  dummy_.color = TreeColor::BLACK;
+}
 
 template< typename K, typename V, typename C >
 turkin::RBtree< K, V, C >::RBtree(const tree & rhs) {}
@@ -97,6 +93,20 @@ template< typename K, typename V, typename C >
 turkin::RBtree< K, V, C >::~RBtree()
 {
   free(source_);
+}
+
+//iterators
+
+template< typename K, typename V, typename C >
+bool turkin::RBtree< K, V, C >::empty() const noexcept
+{
+  return size_ == 0;
+}
+
+template< typename K, typename V, typename C >
+std::size_t turkin::RBtree< K, V, C >::size() const noexcept
+{
+  return size_;
 }
 
 #endif
