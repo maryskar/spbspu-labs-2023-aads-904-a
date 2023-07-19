@@ -35,9 +35,25 @@ namespace turkin
   }
   
   template< typename T, typename C >
-  void copy(TreeNode< T, C > * source)
+  TreeNode< T, C > * copy(TreeNode< T, C > * source)
   {
-    
+
+  }
+
+  template< typename T, typename C >
+  void rotateLeft(TreeNode< T, C > * lhs)
+  {
+    TreeNode< T, C > * rhs = lhs->right;
+    lhs->right = rhs->left;
+    rhs->left = lhs;
+  }
+
+  template< typename T, typename C >
+  void rotateRight(TreeNode< T, C > * rhs)
+  {
+    TreeNode< T, C > * lhs = rhs->right;
+    rhs->left = lhs->right;
+    lhs->left = rhs;
   }
 }
 
