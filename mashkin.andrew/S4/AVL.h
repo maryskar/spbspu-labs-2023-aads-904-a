@@ -57,7 +57,7 @@ namespace mashkin
     template< class InputIter >
     iter insert(InputIter first, InputIter last);
 
-    //iter erase(iter pos);
+    iter erase(iter pos);
     iter erase(const_iter pos);
     //iter erase(const_iter first, const_iter last);
     /*size_t erase(const Key& key);*/
@@ -95,6 +95,12 @@ namespace mashkin
     tree* fake_;
     Comporator comp_;
   };
+
+  template< class K, class V, class C >
+  AVL< K, V, C >::iter AVL< K, V, C >::erase(iter pos)
+  {
+    return erase(const_iter(pos));
+  }
 
   template< class K, class V, class C >
   void AVL< K, V, C >::balance(tree* node)
