@@ -53,6 +53,10 @@ int main(int argc, char* argv[])
       {
         unionDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
       }
+      else
+      {
+        std::cout << "<INVALID COMMAND>";
+      }
     }
   }
 }

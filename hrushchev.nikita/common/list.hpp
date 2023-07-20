@@ -10,6 +10,7 @@ namespace details
     T data_;
     List< T >* next_;
     List();
+    ~List() = default;
     List(const T& value);
     List(T&& value);
   };

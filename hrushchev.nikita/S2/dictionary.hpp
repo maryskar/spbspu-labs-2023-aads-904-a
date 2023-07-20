@@ -32,6 +32,7 @@ public:
   iterator erase(const_iterator first, const_iterator last);
   void swap(Dictionary& other);
   size_t size() const;
+  bool empty() const;
   void push(Key k, Value v);
   Value get(Key k);
 private:
@@ -223,6 +224,12 @@ template< typename Key, typename Value, typename Compare >
 size_t Dictionary< Key, Value, Compare >::size() const
 {
   return size_;
+}
+
+template< typename Key, typename Value, typename Compare >
+bool Dictionary< Key, Value, Compare >::empty() const
+{
+  return data_.empty();
 }
 
 template< typename Key, typename Value, typename Compare >
