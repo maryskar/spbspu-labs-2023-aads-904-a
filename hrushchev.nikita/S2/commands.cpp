@@ -14,3 +14,19 @@ void print(std::string name, Dictionary< std::string, dict_t >& dict_of_dict, st
     out << i->first << " " << i->second << " ";
   }
 }
+
+void unionDict(std::string name, std::string first, std::string second, Dictionary< std::string, dict_t >& dict_of_dict)
+{
+  dict_t temp;
+  dict_t first_dict = dict_of_dict.get(first);
+  dict_t second_dict = dict_of_dict.get(second);
+  for (auto i = second_dict.begin(); i != second_dict.end(); i++)
+  {
+    temp.insert(*i);
+  }
+  for (auto i = first_dict .begin(); i != first_dict.end(); i++)
+  {
+    temp.insert(*i);
+  }
+  dict_of_dict.push(name, temp);
+}
