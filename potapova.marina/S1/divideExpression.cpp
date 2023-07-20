@@ -71,5 +71,9 @@ potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
     postfix_expr.push(operators_stack.back());
     operators_stack.pop();
   }
+  if (!operators_stack.empty())
+  {
+    throw std::runtime_error("Invalid expression");
+  }
   return postfix_expr;
 }
