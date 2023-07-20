@@ -4,6 +4,7 @@
 #include <functional>
 #include <iterator>
 #include <memory>
+#include <AVL.h>
 #include "AVL_iterator.h"
 #include "tree.h"
 
@@ -16,27 +17,30 @@ namespace mashkin
   class ConstAVLMapIter: public std::iterator< std::bidirectional_iterator_tag, std::pair< Key, Value > >
   {
   public:
-    using iter = ConstAVLMapIter< Key, Value, Comp >;
+    using const_iter = ConstAVLMapIter< Key, Value, Comp >;
     using v_type = std::pair< Key, Value >;
     using tree = Tree< v_type >;
     ConstAVLMapIter();
     ~ConstAVLMapIter() = default;
-    ConstAVLMapIter(const iter&) = default;
+    ConstAVLMapIter(const const_iter&) = default;
+    explicit ConstAVLMapIter(const AVLMapIter< Key, Value, Comp >& rhs);
     explicit ConstAVLMapIter(tree* rhs);
 
-    iter& operator=(const iter&) = default;
-    iter& operator++();
-    iter operator++(int);
-    iter& operator--();
-    iter operator--(int);
+    const_iter& operator=(const const_iter&) = default;
+    const_iter& operator++();
+    const_iter operator++(int);
+    const_iter& operator--();
+    const_iter operator--(int);
 
     const v_type& operator*() const;
     const v_type* operator->() const;
 
-    bool operator!=(const iter& rhs) const;
-    bool operator==(const iter& rhs) const;
+    bool operator!=(const const_iter& rhs) const;
+    bool operator==(const const_iter& rhs) const;
 
   private:
+    template< class K, class V, class C >
+    friend class AVL;
     tree* fake_;
     tree* node_;
     Comp comp_;
@@ -47,6 +51,14 @@ namespace mashkin
     void doWhileLeft();
     void doWhileRight();
   };
+
+  template< class K, class V, class C >
+  ConstAVLMapIter< K, V, C >::ConstAVLMapIter(const AVLMapIter< K, V, C >& rhs):
+    fake_(rhs.fake_),
+    node_(rhs.node_),
+    comp_(rhs.comp_)
+  {
+  }
 
   template< class Key, class Value, class Comp >
   ConstAVLMapIter< Key, Value, Comp >::ConstAVLMapIter(tree* rhs):
@@ -76,13 +88,13 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  bool ConstAVLMapIter< K, V, C >::operator==(const iter& rhs) const
+  bool ConstAVLMapIter< K, V, C >::operator==(const const_iter& rhs) const
   {
     return node_ == rhs.node_;
   }
 
   template< class K, class V, class C >
-  bool ConstAVLMapIter< K, V, C >::operator!=(const iter& rhs) const
+  bool ConstAVLMapIter< K, V, C >::operator!=(const const_iter& rhs) const
   {
     return !(rhs == *this);
   }

@@ -5,6 +5,7 @@
 #include <iterator>
 #include <memory>
 #include <utility>
+#include <AVL.h>
 #include "const_AVL_iterator.h"
 #include "tree.h"
 
@@ -37,6 +38,8 @@ namespace mashkin
   private:
     template< class K, class V, class C >
     friend class ConstAVLMapIter;
+    template< class K, class V, class C >
+    friend class AVL;
     tree* fake_;
     tree* node_;
     Comp comp_;
