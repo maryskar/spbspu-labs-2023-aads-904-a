@@ -6,13 +6,13 @@
 #include <string>
 #include "dictionary.h"
 #include "commands.h"
-#include "message.h"
+#include <message.h>
 
 namespace tarasenko
 {
   template< typename Key, typename Value, typename Compare >
-  void call(const std::string& name_of_command, Dictionary< Key, Value, Compare >& dict_of_dict, std::istream& input,
-            std::ostream& output)
+  void call(const std::string& name_of_command, Dictionary< Key, Value, Compare >& dict_of_dict,
+     std::istream& input, std::ostream& output)
   {
     tarasenko::Commands< size_t, std::string, std::less<> > commands;
     if (commands.findInTypePrint(name_of_command))

@@ -88,7 +88,7 @@ namespace tarasenko
    void resize(size_t count);
    void resize(size_t count, const T& value);
    void swap(ForwardList< T >& other);
-   void spliceAfter(const_iterator pos, ForwardList< T >& other );
+   void spliceAfter(const_iterator pos, ForwardList< T >& other);
    void remove(const T& value);
    template< typename UnaryPredicate >
    void removeIf(UnaryPredicate p)
@@ -138,20 +138,23 @@ namespace tarasenko
    details::NodeOfList< T >* first_;
    details::NodeOfList< T >* last_;
    size_t size_;
-   void setLast()
-   {
-     last_ = first_;
-     if (first_)
-     {
-       auto curr = first_->next;
-       while (curr && curr->next)
-       {
-         curr = curr->next;
-       }
-       last_ = curr;
-     }
-   }
+   void setLast();
   };
+
+  template< typename T >
+  void ForwardList< T >::setLast()
+  {
+    last_ = first_;
+    if (first_)
+    {
+      auto curr = first_->next;
+      while (curr && curr->next)
+      {
+        curr = curr->next;
+      }
+      last_ = curr;
+    }
+  }
 
   template< typename T >
   bool ForwardList< T >::isEmpty() const

@@ -1,5 +1,6 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
+
 #include <iostream>
 
 namespace tarasenko

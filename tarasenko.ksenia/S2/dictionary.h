@@ -100,21 +100,6 @@ namespace tarasenko
   };
 
   template< typename Key, typename Value, typename Compare >
-  Value& Dictionary< Key, Value, Compare >::at(const Key& key)
-  {
-    auto curr = begin();
-    while (curr != end())
-    {
-      if ((*curr).first == key)
-      {
-        return (*curr).second;
-      }
-      ++curr;
-    }
-    throw std::out_of_range("Out of range!");
-  }
-
-  template< typename Key, typename Value, typename Compare >
   const Value& Dictionary< Key, Value, Compare >::at(const Key& key) const
   {
     auto curr = cbegin();
@@ -127,6 +112,12 @@ namespace tarasenko
       ++curr;
     }
     throw std::out_of_range("Out of range!");
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Value& Dictionary< Key, Value, Compare >::at(const Key& key)
+  {
+    return const_cast< Value& >((static_cast< const dict_type& >(*this)).at(key));
   }
 
   template< typename Key, typename Value, typename Compare >
