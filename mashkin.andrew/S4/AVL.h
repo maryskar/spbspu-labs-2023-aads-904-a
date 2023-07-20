@@ -50,7 +50,7 @@ namespace mashkin
 
     Value& at(const Key& key);
     const Value& at(const Key& key) const;
-    Value& oparator[](const Key& key);
+    Value& operator[](const Key& key);
 
     iter insert(const v_type& val);
     iter insert(v_type&& val);
