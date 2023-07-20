@@ -61,6 +61,8 @@ namespace mashkin
     size_t size();
     bool empty();
 
+    void swap(AVL& lhs);
+
     size_t count(const Key& key) const;
 
     iter find(const Key& key);
@@ -86,6 +88,14 @@ namespace mashkin
     tree* fake_;
     Comporator comp_;
   };
+
+  template< class K, class V, class C >
+  void AVL< K, V, C >::swap(AVL& lhs)
+  {
+    auto var = lhs;
+    lhs = *this;
+    *this = var;
+  }
 
   template< class K, class V, class C >
   size_t AVL< K, V, C >::count(const K& key) const
