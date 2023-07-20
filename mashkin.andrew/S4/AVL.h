@@ -367,7 +367,6 @@ namespace mashkin
   template< class K, class V, class C >
   typename AVL< K, V, C >::iter AVL< K, V, C >::insert(const v_type& val)
   {
-    iter res;
     if (empty())
     {
       fake_->parent_ = new tree{val, fake_, nullptr, nullptr};
@@ -383,7 +382,6 @@ namespace mashkin
       {
         newNode->right_ = new tree{val, newNode, nullptr, nullptr};
       }
-      res = iter(newNode);
       while (newNode != fake_)
       {
         size_t left = checkHeight(newNode->left_);
@@ -419,7 +417,7 @@ namespace mashkin
         newNode = newNode->parent_;
       }
     }
-    return res;
+    return find(val.first);
   }
 
   template< class K, class V, class C >
