@@ -32,9 +32,8 @@ namespace mashkin
     using tree = Tree< v_type >;
     AVL();
     AVL(const AVL& lhs);
-    AVL(AVL&& rhs);
+    AVL(AVL&& rhs) noexcept;
     ~AVL();
-
     iter begin();
     iter end();
     const_iter cbegin();
@@ -64,6 +63,19 @@ namespace mashkin
     tree* fake_;
     Comporator comp_;
   };
+  template< class K, class V, class C >
+  AVL< K, V, C >::AVL(AVL&& rhs) noexcept :
+    fake_(rhs.fake_),
+    comp_(rhs.comp_)
+  {
+  }
+
+  template< class K, class V, class C >
+  AVL< K, V, C >::AVL(const AVL& lhs):
+    AVL()
+  {
+    insert(lhs.cbegin(), lhs.cend());
+  }
 
   template< class K, class V, class C >
   typename AVL< K, V, C >::const_riter AVL< K, V, C >::crend()
