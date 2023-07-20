@@ -59,7 +59,7 @@ namespace mashkin
 
     iter erase(iter pos);
     iter erase(const_iter pos);
-    //iter erase(const_iter first, const_iter last);
+    iter erase(const_iter first, const_iter last);
     /*size_t erase(const Key& key);*/
 
     void clear();
@@ -95,6 +95,16 @@ namespace mashkin
     tree* fake_;
     Comporator comp_;
   };
+
+  template< class K, class V, class C >
+  AVL< K, V, C >::iter AVL< K, V, C >::erase(const_iter first, const_iter last)
+  {
+    while (first != last)
+    {
+      erase(first++);
+    }
+    return last;
+  }
 
   template< class K, class V, class C >
   AVL< K, V, C >::iter AVL< K, V, C >::erase(iter pos)
