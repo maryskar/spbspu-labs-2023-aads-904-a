@@ -57,6 +57,11 @@ namespace mashkin
     template< class InputIter >
     iter insert(InputIter first, InputIter last);
 
+    //iter erase(iter pos);
+    iter erase(const_iter pos);
+    //iter erase(const_iter first, const_iter last);
+    /*size_t erase(const Key& key);*/
+
     void clear();
     size_t size();
     bool empty();
@@ -71,6 +76,8 @@ namespace mashkin
     bool contains(const Key& key) const;
 
   private:
+    void balance(tree* node);
+
     size_t size_impl(tree* head, size_t size_);
 
     void rotate_left(tree* node);
@@ -88,6 +95,116 @@ namespace mashkin
     tree* fake_;
     Comporator comp_;
   };
+
+  template< class K, class V, class C >
+  void AVL< K, V, C >::balance(tree* node)
+  {
+    while (node != fake_)
+    {
+      size_t left = checkHeight(node->left_);
+      size_t right = checkHeight(node->right_);
+      if (right - left == 2)
+      {
+        auto subTree = node->right_;
+        auto subLeft = checkHeight(subTree->left_);
+        auto subRight = checkHeight(subTree->right_);
+        if (subLeft <= subRight)
+        {
+          rotate_left(subTree);
+        }
+        else
+        {
+          rotate_RightLeft(subTree);
+        }
+      }
+      else if (left - right == 2)
+      {
+        auto subTree = node->left_;
+        auto subLeft = checkHeight(subTree->left_);
+        auto subRight = checkHeight(subTree->right_);
+        if (subRight <= subLeft)
+        {
+          rotate_right(subTree);
+        }
+        else
+        {
+          rotate_LeftRight(subTree);
+        }
+      }
+      node = node->parent_;
+    }
+  }
+
+  template< class K, class V, class C >
+  typename AVL< K, V, C >::iter AVL< K, V, C >::erase(const_iter pos)
+  {
+    auto res = pos;
+    res++;
+    tree* node;
+    if (pos == cbegin())
+    {
+      auto toDel = pos.node_;
+      node = toDel->parent_;
+      node->left_ = toDel->right_;
+      if (toDel->right_)
+      {
+        toDel->right_->parent_ = node;
+      }
+      delete toDel;
+    }
+    else if (!pos.node_->left_ && !pos.node_->right_)
+    {
+      auto toDel = pos.node_;
+      node = toDel->parent_;
+      if (toDel == node->left_)
+      {
+        node->left_ = nullptr;
+      }
+      else if (toDel == node->right_)
+      {
+        node->right_ = nullptr;
+      }
+      delete toDel;
+    }
+    else if (!pos.node_->left_ && pos.node_->right_)
+    {
+      auto toDel = pos.node_;
+      node = toDel->parent_;
+      if (toDel == node->left_)
+      {
+        node->left_ = toDel->right_;
+      }
+      else if (toDel == node->right_)
+      {
+        node->right_ = toDel->right_;
+      }
+      toDel->right_->parent_ = node;
+      delete toDel;
+    }
+    else
+    {
+      auto var = pos.node_;
+      --pos;
+      var->data = *pos;
+      auto toDel = pos.node_;
+      node = toDel->parent_;
+      if (toDel == node->right_)
+      {
+        node->right_ = toDel->left_;
+      }
+      else
+      {
+        node->left_ = toDel->left_;
+      }
+      if (toDel->left_)
+      {
+        toDel->left_->parent_ = node;
+      }
+      delete toDel;
+    }
+    balance(node);
+    return iter(res.node_);
+  }
 
   template< class K, class V, class C >
   void AVL< K, V, C >::swap(AVL& lhs)
@@ -381,40 +498,7 @@ namespace mashkin
       {
         newNode->right_ = new tree{val, newNode, nullptr, nullptr};
       }
-      while (newNode != fake_)
-      {
-        size_t left = checkHeight(newNode->left_);
-        size_t right = checkHeight(newNode->right_);
-        if (right - left == 2)
-        {
-          auto subTree = newNode->right_;
-          auto subLeft = checkHeight(subTree->left_);
-          auto subRight = checkHeight(subTree->right_);
-          if (subLeft <= subRight)
-          {
-            rotate_left(subTree);
-          }
-          else
-          {
-            rotate_RightLeft(subTree);
-          }
-        }
-        else if (left - right == 2)
-        {
-          auto subTree = newNode->left_;
-          auto subLeft = checkHeight(subTree->left_);
-          auto subRight = checkHeight(subTree->right_);
-          if (subRight <= subLeft)
-          {
-            rotate_right(subTree);
-          }
-          else
-          {
-            rotate_LeftRight(subTree);
-          }
-        }
-        newNode = newNode->parent_;
-      }
+      balance(newNode);
     }
     return find(val.first);
   }
