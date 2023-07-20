@@ -9,97 +9,112 @@
 
 namespace mashkin
 {
-  template< class T, class C >
-  class AVL_iterator;
+  template< class K, class V, class C >
+  class AVLMapIter;
 
-  template< class T, class Comp = std::less< T > >
-  class Const_AVL_iterator: public std::iterator< std::bidirectional_iterator_tag, T >
+  template< class Key, class Value, class Comp = std::less< Key > >
+  class ConstAVLMapIter: public std::iterator< std::bidirectional_iterator_tag, std::pair< Key, Value > >
   {
   public:
-    Const_AVL_iterator();
-    ~Const_AVL_iterator() = default;
-    Const_AVL_iterator(const Const_AVL_iterator< T, Comp >&) = default;
-    Const_AVL_iterator(const AVL_iterator< T, Comp >& rhs);
-    explicit Const_AVL_iterator(Tree< T, Comp >* rhs);
+    using iter = ConstAVLMapIter< Key, Value, Comp >;
+    using v_type = std::pair< Key, Value >;
+    using tree = Tree< v_type >;
+    ConstAVLMapIter();
+    ~ConstAVLMapIter() = default;
+    ConstAVLMapIter(const iter&) = default;
+    explicit ConstAVLMapIter(tree* rhs);
 
-    Const_AVL_iterator< T, Comp >& operator=(const Const_AVL_iterator< T, Comp >&) = default;
-    Const_AVL_iterator< T, Comp >& operator++();
-    Const_AVL_iterator< T, Comp > operator++(int);
-    Const_AVL_iterator< T, Comp >& operator--();
-    Const_AVL_iterator< T, Comp > operator--(int);
+    iter& operator=(const iter&) = default;
+    iter& operator++();
+    iter operator++(int);
+    iter& operator--();
+    iter operator--(int);
 
-    const T& operator*() const;
-    const T* operator->() const;
+    const v_type& operator*() const;
+    const v_type* operator->() const;
 
-    bool operator!=(const Const_AVL_iterator< T >& rhs) const;
-    bool operator==(const Const_AVL_iterator< T >& rhs) const;
+    bool operator!=(const iter& rhs) const;
+    bool operator==(const iter& rhs) const;
 
   private:
-    Tree< T >* fake_;
-    Tree< T >* node_;
+    tree* fake_;
+    tree* node_;
     Comp comp_;
 
-    Tree< T >* getFake(Tree< T, Comp >* rhs);
+    tree* getFake(tree* rhs);
     void doParentForPlus();
     void doParentForMinus();
     void doWhileLeft();
     void doWhileRight();
   };
 
-  template< class T, class Comp >
-  Tree< T >* Const_AVL_iterator< T, Comp >::getFake(Tree< T, Comp >* rhs)
+  template< class Key, class Value, class Comp >
+  ConstAVLMapIter< Key, Value, Comp >::ConstAVLMapIter(tree* rhs):
+    fake_(getFake(rhs)),
+    node_(rhs),
+    comp_()
+  {
+  }
+
+  template< class Key, class Value, class Comp >
+  ConstAVLMapIter< Key, Value, Comp >::ConstAVLMapIter():
+    fake_(nullptr),
+    node_(nullptr),
+    comp_()
+  {
+  }
+
+  template< class K, class V, class C >
+  typename ConstAVLMapIter< K, V, C >::tree* ConstAVLMapIter< K, V, C >::getFake(tree* rhs)
   {
     auto fake = rhs;
     while (fake != fake->parent_->parent_)
     {
       fake = fake->parent_;
     }
-    fake = fake->parent_;
     return fake;
   }
 
-  template< class T, class Comp >
-  Const_AVL_iterator< T, Comp >::Const_AVL_iterator(const AVL_iterator< T, Comp >& rhs):
-    fake_(rhs.fake_),
-    node_(rhs.node_),
-    comp_(rhs.comp_)
+  template< class K, class V, class C >
+  bool ConstAVLMapIter< K, V, C >::operator==(const iter& rhs) const
   {
+    return node_ == rhs.node_;
   }
 
-  template< class T, class Comp >
-  Const_AVL_iterator< T, Comp >::Const_AVL_iterator():
-    node_(nullptr),
-    comp_()
+  template< class K, class V, class C >
+  bool ConstAVLMapIter< K, V, C >::operator!=(const iter& rhs) const
   {
+    return !(rhs == *this);
   }
 
-  template< class T, class Comp >
-  void Const_AVL_iterator< T, Comp >::doWhileRight()
+  template< class K, class V, class C >
+  ConstAVLMapIter< K, V, C > ConstAVLMapIter< K, V, C >::operator--(int)
   {
-    auto newNode = node_->left_;
-    while (newNode->right_)
-    {
-      newNode = newNode->right_;
-    }
-    node_ = newNode;
+    assert(node_ != nullptr);
+    auto res(*this);
+    --(*this);
+    return res;
   }
 
-  template< class T, class Comp >
-  void Const_AVL_iterator< T, Comp >::doWhileLeft()
+  template< class K, class V, class C >
+  const typename ConstAVLMapIter< K, V, C >::v_type* ConstAVLMapIter< K, V, C >::operator->() const
   {
-    auto newNode = node_->right_;
-    while (newNode->left_)
-    {
-      newNode = newNode->left_;
-    }
-    node_ = newNode;
+    assert(node_ != nullptr);
+    return std::addressof(node_->data);
   }
 
-  template< class T, class Comp >
-  void Const_AVL_iterator< T, Comp >::doParentForMinus()
+  template< class K, class V, class C >
+  const typename ConstAVLMapIter< K, V, C >::v_type& ConstAVLMapIter< K, V, C >::operator*() const
+  {
+    assert(node_ != nullptr);
+    return node_->data;
+  }
+
+  template< class K, class V, class C >
+  void ConstAVLMapIter< K, V, C >::doParentForMinus()
   {
     auto newNode = node_->parent_;
-    while (newNode != fake_ && comp_(node_->data, newNode->data))
+    while (newNode != fake_ && comp_(node_->data.first, newNode->data.first))
     {
       newNode = newNode->parent_;
     }
@@ -113,54 +128,19 @@ namespace mashkin
     }
   }
 
-  template< class T, class Comp >
-  void Const_AVL_iterator< T, Comp >::doParentForPlus()
+  template< class K, class V, class C >
+  void ConstAVLMapIter< K, V, C >::doWhileRight()
   {
-    auto newNode = node_->parent_;
-    while (newNode != fake_ && !comp_(node_->data, newNode->data))
+    auto newNode = node_->left_;
+    while (newNode->right_)
     {
-      newNode = newNode->parent_;
+      newNode = newNode->right_;
     }
     node_ = newNode;
   }
 
-  template< class T, class Comp >
-  bool Const_AVL_iterator< T, Comp >::operator!=(const Const_AVL_iterator< T >& rhs) const
-  {
-    return !(rhs == *this);
-  }
-
-  template< class T, class Comp >
-  bool Const_AVL_iterator< T, Comp >::operator==(const Const_AVL_iterator< T >& rhs) const
-  {
-    return node_ == rhs.node_;
-  }
-
-  template< class T, class Comp >
-  const T* Const_AVL_iterator< T, Comp >::operator->() const
-  {
-    assert(node_ != nullptr);
-    return std::addressof(node_->data);
-  }
-
-  template< class T, class Comp >
-  const T& Const_AVL_iterator< T, Comp >::operator*() const
-  {
-    assert(node_ != nullptr);
-    return node_->data;
-  }
-
-  template< class T, class Comp >
-  Const_AVL_iterator< T, Comp > Const_AVL_iterator< T, Comp >::operator--(int)
-  {
-    assert(node_ != nullptr);
-    auto res(*this);
-    --(*this);
-    return res;
-  }
-
-  template< class T, class Comp >
-  Const_AVL_iterator< T, Comp >& Const_AVL_iterator< T, Comp >::operator--()
+  template< class K, class V, class C >
+  ConstAVLMapIter< K, V, C >& ConstAVLMapIter< K, V, C >::operator--()
   {
     assert(node_ != nullptr);
     if (node_ == fake_)
@@ -201,8 +181,8 @@ namespace mashkin
     return *this;
   }
 
-  template< class T, class Comp >
-  Const_AVL_iterator< T, Comp > Const_AVL_iterator< T, Comp >::operator++(int)
+  template< class K, class V, class C >
+  ConstAVLMapIter< K, V, C > ConstAVLMapIter< K, V, C >::operator++(int)
   {
     assert(node_ != nullptr);
     auto res(*this);
@@ -210,8 +190,30 @@ namespace mashkin
     return res;
   }
 
-  template< class T, class Comp >
-  Const_AVL_iterator< T, Comp >& Const_AVL_iterator< T, Comp >::operator++()
+  template< class K, class V, class C >
+  void ConstAVLMapIter< K, V, C >::doWhileLeft()
+  {
+    auto newNode = node_->right_;
+    while (newNode->left_)
+    {
+      newNode = newNode->left_;
+    }
+    node_ = newNode;
+  }
+
+  template< class K, class V, class C >
+  void ConstAVLMapIter< K, V, C >::doParentForPlus()
+  {
+    auto newNode = node_->parent_;
+    while (newNode != fake_ && !comp_(node_->data.first, newNode->data.first))
+    {
+      newNode = newNode->parent_;
+    }
+    node_ = newNode;
+  }
+
+  template< class K, class V, class C >
+  ConstAVLMapIter< K, V, C >& ConstAVLMapIter< K, V, C >::operator++()
   {
     assert(node_ != nullptr);
     if (!node_->left_ && !node_->right_ && node_->parent_)
@@ -242,14 +244,6 @@ namespace mashkin
       doWhileLeft();
     }
     return *this;
-  }
-
-  template< class T, class Comp >
-  Const_AVL_iterator< T, Comp >::Const_AVL_iterator(Tree< T, Comp >* rhs):
-    fake_(getFake(rhs)),
-    node_(rhs),
-    comp_()
-  {
   }
 }
 #endif
