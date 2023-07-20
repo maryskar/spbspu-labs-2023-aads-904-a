@@ -60,7 +60,6 @@ namespace mashkin
     iter erase(iter pos);
     iter erase(const_iter pos);
     iter erase(const_iter first, const_iter last);
-    /*size_t erase(const Key& key);*/
 
     void clear();
     size_t size();
