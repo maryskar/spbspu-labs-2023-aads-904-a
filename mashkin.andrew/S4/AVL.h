@@ -48,6 +48,10 @@ namespace mashkin
     const_riter crbegin();
     const_riter crend();
 
+    Value& at(const Key& key);
+    const Value& at(const Key& key) const;
+    Value& oparator[](const Key& key);
+
     iter insert(const v_type& val);
     iter insert(v_type&& val);
     template< class InputIter >
@@ -75,6 +79,27 @@ namespace mashkin
     tree* fake_;
     Comporator comp_;
   };
+
+  template< class K, class V, class C >
+  V& AVL< K, V, C >::at(const K& key)
+  {
+    return const_cast< V& >(static_cast< const AVL& >(*this).at(key));
+  }
+
+  template< class K, class V, class C >
+  const V& AVL< K, V, C >::at(const K& key) const
+  {
+    auto iter(cbegin());
+    while (iter->first != key && iter != cend())
+    {
+      iter++;
+    }
+    if (iter == cend())
+    {
+      throw std::out_of_range("Out of range");
+    }
+    return iter->second;
+  }
 
   template< class K, class V, class C >
   size_t AVL< K, V, C >::size_impl(tree* head, size_t size_)
