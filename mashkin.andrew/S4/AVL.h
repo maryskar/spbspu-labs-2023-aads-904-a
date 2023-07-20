@@ -61,6 +61,8 @@ namespace mashkin
     size_t size();
     bool empty();
 
+    size_t count(const Key& key) const;
+
     iter find(const Key& key);
     const_iter find(const Key& key) const;
 
@@ -84,6 +86,12 @@ namespace mashkin
     tree* fake_;
     Comporator comp_;
   };
+
+  template< class K, class V, class C >
+  size_t AVL< K, V, C >::count(const K& key) const
+  {
+    return contains(key) ? 1 : 0;
+  }
 
   template< class K, class V, class C >
   bool AVL< K, V, C >::contains(const K& key) const
