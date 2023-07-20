@@ -2,6 +2,7 @@
 #define S4_AVL_H
 #include <functional>
 #include <utility>
+#include <cstddef>
 #include "AVL_iterator.h"
 #include "AVL_reverse_iter.h"
 #include "const_AVL_iterator.h"
@@ -53,20 +54,50 @@ namespace mashkin
     iter insert(InputIter first, InputIter last);
 
     void clear();
+    size_t size();
     bool empty();
 
   private:
+    size_t size_impl(tree* head, size_t size_);
+
     void rotate_left(tree* node);
     void rotate_right(tree* node);
     void rotate_RightLeft(tree* node);
     void rotate_LeftRight(tree* node);
+
     size_t checkHeight(tree* head);
     size_t checkHeightImpl(tree* head, size_t height);
+
     tree* ins_impl(const v_type& data, tree* root, tree* before);
+
     void clear_impl(tree* toDel);
+
     tree* fake_;
     Comporator comp_;
   };
+
+  template< class K, class V, class C >
+  size_t AVL< K, V, C >::size_impl(tree* head, size_t size_)
+  {
+    if (!head)
+    {
+      return size_;
+    }
+    size_++;
+    size_ = size_impl(head->left_, size_);
+    size_ = size_impl(head->right_, size_);
+    return size_;
+  }
+
+  template< class K, class V, class C >
+  size_t AVL< K, V, C >::size()
+  {
+    if (fake_ == fake_->parent_)
+    {
+      return 0;
+    }
+    return size_impl(fake_->parent_, 0);
+  }
 
   template< class K, class V, class C >
   AVL< K, V, C >& AVL< K, V, C >::operator=(AVL&& rhs)
