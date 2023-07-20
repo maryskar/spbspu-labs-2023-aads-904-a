@@ -1,9 +1,6 @@
 #ifndef DICTIONARY_HPP
 #define DICTIONARY_HPP
 
-#include <iostream>
-
-
 #include <utility>
 #include <stdexcept>
 #include <list.hpp>

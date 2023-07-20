@@ -20,6 +20,7 @@ void inputDict(std::istream& input, Dictionary< std::string, dict_t >& dict_of_d
         dict.push(key, value);
       }
       dict_of_dict.push(name, dict);
+      input.clear();
     }
   }
 }

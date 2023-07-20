@@ -221,7 +221,6 @@ typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterato
   while (first != last)
   {
     temp = insert_after(pos, *first);
-    std::cout<<*first;
     pos++;
     first++;
   }
