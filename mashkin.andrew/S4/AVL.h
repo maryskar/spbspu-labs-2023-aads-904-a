@@ -84,6 +84,18 @@ namespace mashkin
   };
 
   template< class K, class V, class C >
+  V& AVL< K, V, C >::operator[](const K& key)
+  {
+    iter it = find(key);
+    if (it == end())
+    {
+      insert(std::pair< K, V >(key, V()));
+      return find(key)->second;
+    }
+    return it->second;
+  }
+
+  template< class K, class V, class C >
   typename AVL< K, V, C >::iter AVL< K, V, C >::find(const K& key)
   {
     auto cit = static_cast< const AVL& >(*this).find(key);
