@@ -5,10 +5,21 @@
 #include "AVL_iterator.h"
 #include "AVL_reverse_iter.h"
 #include "const_AVL_iterator.h"
+#include "const_AVL_reverse_iter.h"
 #include "tree.h"
 
 namespace mashkin
 {
+  template< class K, class V, class C >
+  class ConstAVLMapIter;
+  template< class K, class V, class C >
+  class AVLMapIter;
+
+  template< class K, class V, class C >
+  class ConstReverseAVLMapIter;
+  template< class K, class V, class C >
+  class ReverseAVLMapIter;
+
   template< class Key, class Value, class Comporator = std::less< Key > >
   class AVL
   {
@@ -30,6 +41,8 @@ namespace mashkin
     const_iter cend();
     riter rbegin();
     riter rend();
+    const_riter crbegin();
+    const_riter crend();
 
     iter insert(const v_type& val);
     iter insert(v_type&& val);
@@ -51,6 +64,18 @@ namespace mashkin
     tree* fake_;
     Comporator comp_;
   };
+
+  template< class K, class V, class C >
+  typename AVL< K, V, C >::const_riter AVL< K, V, C >::crend()
+  {
+    return const_riter(fake_);
+  }
+
+  template< class K, class V, class C >
+  typename AVL< K, V, C >::const_riter AVL< K, V, C >::crbegin()
+  {
+    return const_riter((--cend()).node_);
+  }
 
   template< class K, class V, class C >
   typename AVL< K, V, C >::riter AVL< K, V, C >::rend()
