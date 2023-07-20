@@ -31,6 +31,9 @@ public:
   Value& at(const Key& key);
   iterator erase(iterator pos);
   iterator erase(const_iterator pos);
+  iterator erase(iterator first, iterator last);
+  iterator erase(const_iterator first, const_iterator last);
+  void swap(Dictionary& other);
   void push(Key k, Value v);
 private:
   ForwardList< std::pair< Key, Value > > data_;
@@ -187,6 +190,27 @@ template< typename Key, typename Value, typename Compare >
 typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::erase(const_iterator pos)
 {
   return erase(iterator(pos));
+}
+
+template< typename Key, typename Value, typename Compare >
+typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::erase(iterator first, iterator last)
+{
+  data_.erase_after(first, last);
+  return erase(first);
+}
+
+template< typename Key, typename Value, typename Compare >
+typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::erase(const_iterator first, const_iterator last)
+{
+  return erase(iterator(first), iterator(last));
+}
+
+template< typename Key, typename Value, typename Compare >
+void Dictionary< Key, Value, Compare >::swap(Dictionary& other)
+{
+  data_.swap(other.data_);
+  std::swap(compare_, other.compare_);
+  std::swap(size_, other.size_);
 }
 
 template< typename Key, typename Value, typename Compare >
