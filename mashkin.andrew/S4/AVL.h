@@ -2,9 +2,10 @@
 #define S4_AVL_H
 #include <functional>
 #include <utility>
-#include "tree.h"
 #include "AVL_iterator.h"
+#include "AVL_reverse_iter.h"
 #include "const_AVL_iterator.h"
+#include "tree.h"
 
 namespace mashkin
 {
@@ -15,6 +16,8 @@ namespace mashkin
     using v_type = std::pair< Key, Value >;
     using iter = AVLMapIter< Key, Value, Comporator >;
     using const_iter = ConstAVLMapIter< Key, Value, Comporator >;
+    using riter = ReverseAVLMapIter< Key, Value, Comporator >;
+    using const_riter = ConstReverseAVLMapIter< Key, Value, Comporator >;
     using tree = Tree< v_type >;
     AVL();
     AVL(const AVL& lhs);
@@ -25,6 +28,8 @@ namespace mashkin
     iter end();
     const_iter cbegin();
     const_iter cend();
+    riter rbegin();
+    riter rend();
 
     iter insert(const v_type& val);
     iter insert(v_type&& val);
@@ -46,6 +51,18 @@ namespace mashkin
     tree* fake_;
     Comporator comp_;
   };
+
+  template< class K, class V, class C >
+  typename AVL< K, V, C >::riter AVL< K, V, C >::rend()
+  {
+    return riter(fake_);
+  }
+
+  template< class K, class V, class C >
+  typename AVL< K, V, C >::riter AVL< K, V, C >::rbegin()
+  {
+    return riter((--end()).node_);
+  }
 
   template< class Key, class Value, class Comporator >
   AVL< Key, Value, Comporator >::AVL():
