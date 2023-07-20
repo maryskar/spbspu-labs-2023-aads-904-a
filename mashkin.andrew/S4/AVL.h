@@ -115,8 +115,7 @@ namespace mashkin
     iter it = find(key);
     if (it == end())
     {
-      insert(std::pair< K, V >(key, V()));
-      return find(key)->second;
+      return insert(std::pair< K, V >(key, V()))->second;
     }
     return it->second;
   }
