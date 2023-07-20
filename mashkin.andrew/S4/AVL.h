@@ -288,7 +288,7 @@ namespace mashkin
   template< class K, class V, class C >
   typename AVL< K, V, C >::const_iter AVL< K, V, C >::cbegin()
   {
-    return ConstAVLMapIter< K, V, C >(fake_->parent_);
+    return const_iter((--crend()).node_);
   }
 
   template< class K, class V, class C >
@@ -300,7 +300,7 @@ namespace mashkin
   template< class K, class V, class C >
   typename AVL< K, V, C >::iter AVL< K, V, C >::begin()
   {
-    return AVLMapIter< K, V, C >(fake_->parent_);
+    return iter((--rend()).node_);
   }
 
   template< class K, class V, class C >
