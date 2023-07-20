@@ -94,6 +94,13 @@ typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Com
     return prev;
   }
 
+  if (!compare_(prev->first, value.first))
+  {
+    data_.push_front(value);
+    size_++;
+    return begin();
+  }
+
   while (cur != end() && compare_(cur->first, value.first))
   {
     prev++;
