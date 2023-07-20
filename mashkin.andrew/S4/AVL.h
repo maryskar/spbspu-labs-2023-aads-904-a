@@ -13,8 +13,9 @@ namespace mashkin
   {
   public:
     using v_type = std::pair< Key, Value >;
-    using iter = AVL_iterator< v_type >;
-    using const_iter = Const_AVL_iterator< v_type >;
+    using iter = AVLMapIter< Key, Value, Comporator >;
+    using const_iter = ConstAVLMapIter< Key, Value, Comporator >;
+    using tree = Tree< v_type >;
     AVL();
     AVL(const AVL& lhs);
     AVL(AVL&& rhs);
@@ -34,17 +35,27 @@ namespace mashkin
     bool empty();
 
   private:
-    void rotate_left(Tree< v_type >* node);
-    void rotate_right(Tree< v_type >* node);
-    void rotate_RightLeft(Tree< v_type >* node);
-    void rotate_LeftRight(Tree< v_type >* node);
-    size_t checkHeight(Tree< v_type >* head);
-    size_t checkHeightImpl(Tree< v_type >* head, size_t height);
-    Tree< v_type >* ins_impl(const v_type& data, Tree< v_type >* root, Tree< v_type >* before);
-    void clear_impl(Tree< v_type >* toDel);
-    Tree< v_type >* fake_;
+    void rotate_left(tree* node);
+    void rotate_right(tree* node);
+    void rotate_RightLeft(tree* node);
+    void rotate_LeftRight(tree* node);
+    size_t checkHeight(tree* head);
+    size_t checkHeightImpl(tree* head, size_t height);
+    tree* ins_impl(const v_type& data, tree* root, tree* before);
+    void clear_impl(tree* toDel);
+    tree* fake_;
     Comporator comp_;
   };
+
+  template< class Key, class Value, class Comporator >
+  AVL< Key, Value, Comporator >::AVL():
+    fake_(static_cast< tree* >(::operator new(sizeof(tree)))),
+    comp_()
+  {
+    fake_->left_ = nullptr;
+    fake_->right_ = nullptr;
+    fake_->parent_ = fake_;
+  }
 
   template< class K, class V, class C >
   template< class InputIter >
@@ -64,21 +75,21 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  void AVL< K, V, C >::rotate_LeftRight(Tree< v_type >* node)
+  void AVL< K, V, C >::rotate_LeftRight(tree* node)
   {
     rotate_left(node->right_);
     rotate_right(node->parent_);
   }
 
   template< class K, class V, class C >
-  void AVL< K, V, C >::rotate_RightLeft(Tree< v_type >* node)
+  void AVL< K, V, C >::rotate_RightLeft(tree* node)
   {
     rotate_right(node->left_);
     rotate_left(node->parent_);
   }
 
   template< class K, class V, class C >
-  void AVL< K, V, C >::rotate_right(Tree< v_type >* node)
+  void AVL< K, V, C >::rotate_right(tree* node)
   {
     auto var = node->parent_;
     var->left_ = node->right_;
@@ -104,7 +115,7 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  void AVL< K, V, C >::rotate_left(Tree< v_type >* node)
+  void AVL< K, V, C >::rotate_left(tree* node)
   {
     auto var = node->parent_;
     var->right_ = node->left_;
@@ -130,7 +141,7 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  size_t AVL< K, V, C >::checkHeightImpl(Tree< v_type >* head, size_t height)
+  size_t AVL< K, V, C >::checkHeightImpl(tree* head, size_t height)
   {
     if (!head)
     {
@@ -144,14 +155,14 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  size_t AVL< K, V, C >::checkHeight(Tree< v_type >* head)
+  size_t AVL< K, V, C >::checkHeight(tree* head)
   {
     size_t height = 0;
     return checkHeightImpl(head, height);
   }
 
   template< class K, class V, class C >
-  Tree< std::pair< K, V > >* AVL< K, V, C >::ins_impl(const v_type& data, Tree< v_type >* root, Tree< v_type >* before)
+  typename AVL< K, V, C >::tree* AVL< K, V, C >::ins_impl(const v_type& data, tree* root, tree* before)
   {
     if (!root)
     {
@@ -174,18 +185,18 @@ namespace mashkin
     iter res;
     if (empty())
     {
-      fake_->parent_ = new Tree< v_type >{val, fake_, nullptr, nullptr};
+      fake_->parent_ = new tree{val, fake_, nullptr, nullptr};
     }
     else
     {
       auto newNode = ins_impl(val, fake_->parent_, fake_->parent_);
       if (comp_(val.first, newNode->data.first))
       {
-        newNode->left_ = new Tree< v_type >{val, newNode, nullptr, nullptr};
+        newNode->left_ = new tree{val, newNode, nullptr, nullptr};
       }
       else
       {
-        newNode->right_ = new Tree< v_type >{val, newNode, nullptr, nullptr};
+        newNode->right_ = new tree{val, newNode, nullptr, nullptr};
       }
       res = iter(newNode);
       while (newNode != fake_)
@@ -229,25 +240,25 @@ namespace mashkin
   template< class K, class V, class C >
   typename AVL< K, V, C >::const_iter AVL< K, V, C >::cend()
   {
-    return Const_AVL_iterator< v_type, C >(fake_);
+    return ConstAVLMapIter< K, V, C >(fake_);
   }
 
   template< class K, class V, class C >
   typename AVL< K, V, C >::const_iter AVL< K, V, C >::cbegin()
   {
-    return Const_AVL_iterator< v_type, C >(fake_->parent_);
+    return ConstAVLMapIter< K, V, C >(fake_->parent_);
   }
 
   template< class K, class V, class C >
   typename AVL< K, V, C >::iter AVL< K, V, C >::end()
   {
-    return AVL_iterator< v_type, C >(fake_);
+    return AVLMapIter< K, V, C >(fake_);
   }
 
   template< class K, class V, class C >
   typename AVL< K, V, C >::iter AVL< K, V, C >::begin()
   {
-    return AVL_iterator< v_type, C >(fake_->parent_);
+    return AVLMapIter< K, V, C >(fake_->parent_);
   }
 
   template< class K, class V, class C >
@@ -258,7 +269,7 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  void AVL< K, V, C >::clear_impl(Tree< v_type >* toDel)
+  void AVL< K, V, C >::clear_impl(tree* toDel)
   {
     if (!toDel)
     {
@@ -280,14 +291,14 @@ namespace mashkin
     fake_->parent_ = fake_;
   }
 
-  template< class K, class V, class C >
+  /*template< class K, class V, class C >
   AVL< K, V, C >::AVL():
-    fake_(static_cast< Tree< v_type >* >(::operator new(sizeof(Tree< v_type >)))),
+    fake_(static_cast< tree* >(::operator new(sizeof(tree)))),
     comp_()
   {
     fake_->left_ = nullptr;
     fake_->right_ = nullptr;
     fake_->parent_ = fake_;
-  }
+  }*/
 }
 #endif

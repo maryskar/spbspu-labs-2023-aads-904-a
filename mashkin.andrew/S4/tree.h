@@ -4,14 +4,13 @@
 
 namespace mashkin
 {
-  template< class T, class Comporator = std::less< T > >
+  template< class T >
   struct Tree
   {
     T data;
     Tree< T >* parent_;
     Tree< T >* left_;
     Tree< T >* right_;
-    Comporator comp;
   };
 }
 #endif
