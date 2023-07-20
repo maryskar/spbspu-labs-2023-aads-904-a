@@ -79,8 +79,8 @@ namespace mashkin
   template< class K, class V, class C >
   typename ConstReverseAVLMapIter< K, V, C >::tree* ConstReverseAVLMapIter< K, V, C >::getFake(tree* rhs)
   {
-    auto fake = rhs;
-    while (fake != fake->parent_->parent_)
+    auto fake = rhs->parent_;
+    while (fake->left_ || fake->right_)
     {
       fake = fake->parent_;
     }

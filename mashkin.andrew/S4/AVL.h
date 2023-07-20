@@ -41,12 +41,12 @@ namespace mashkin
 
     iter begin();
     iter end();
-    const_iter cbegin();
-    const_iter cend();
+    const_iter cbegin() const ;
+    const_iter cend() const;
     riter rbegin();
     riter rend();
-    const_riter crbegin();
-    const_riter crend();
+    const_riter crbegin() const;
+    const_riter crend() const;
 
     Value& at(const Key& key);
     const Value& at(const Key& key) const;
@@ -84,16 +84,16 @@ namespace mashkin
   };
 
   template< class K, class V, class C >
-  AVL< K, V, C >::iter AVL< K, V, C >::find(const K& key)
+  typename AVL< K, V, C >::iter AVL< K, V, C >::find(const K& key)
   {
-    auto cit = static_cast< const AVL& >(*this).find();
+    auto cit = static_cast< const AVL& >(*this).find(key);
     return iter(cit.node_);
   }
 
   template< class K, class V, class C >
-  AVL< K, V, C >::const_iter AVL< K, V, C >::find(const K& key) const
+  typename AVL< K, V, C >::const_iter AVL< K, V, C >::find(const K& key) const
   {
-    auto it(cbegin());
+    auto it = cbegin();
     while (it->first != key && it != cend())
     {
       it++;
@@ -171,13 +171,13 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  typename AVL< K, V, C >::const_riter AVL< K, V, C >::crend()
+  typename AVL< K, V, C >::const_riter AVL< K, V, C >::crend() const
   {
     return const_riter(fake_);
   }
 
   template< class K, class V, class C >
-  typename AVL< K, V, C >::const_riter AVL< K, V, C >::crbegin()
+  typename AVL< K, V, C >::const_riter AVL< K, V, C >::crbegin() const
   {
     return const_riter((--cend()).node_);
   }
@@ -385,13 +385,13 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  typename AVL< K, V, C >::const_iter AVL< K, V, C >::cend()
+  typename AVL< K, V, C >::const_iter AVL< K, V, C >::cend() const
   {
     return ConstAVLMapIter< K, V, C >(fake_);
   }
 
   template< class K, class V, class C >
-  typename AVL< K, V, C >::const_iter AVL< K, V, C >::cbegin()
+  typename AVL< K, V, C >::const_iter AVL< K, V, C >::cbegin() const
   {
     return const_iter((--crend()).node_);
   }
