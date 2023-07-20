@@ -92,7 +92,7 @@ namespace mashkin
   template< class K, class V, class C >
   size_t AVL< K, V, C >::size()
   {
-    if (fake_ == fake_->parent_)
+    if (empty())
     {
       return 0;
     }
