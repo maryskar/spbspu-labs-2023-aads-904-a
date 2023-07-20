@@ -36,6 +36,7 @@ namespace mashkin
     ~AVL();
 
     AVL& operator=(const AVL& lhs);
+    AVL& operator=(AVL&& rhs);
 
     iter begin();
     iter end();
@@ -66,6 +67,13 @@ namespace mashkin
     tree* fake_;
     Comporator comp_;
   };
+
+  template< class K, class V, class C >
+  AVL< K, V, C >& AVL< K, V, C >::operator=(AVL&& rhs)
+  {
+    *this = rhs;
+    return *this;
+  }
 
   template< class K, class V, class C >
   AVL< K, V, C >& AVL< K, V, C >::operator=(const AVL& lhs)
