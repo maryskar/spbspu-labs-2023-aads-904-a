@@ -31,6 +31,36 @@ void unionDict(std::string name, std::string first, std::string second, Dictiona
   dict_of_dict.push(name, temp);
 }
 
+void complementDict(std::string name, std::string first, std::string second, Dictionary< std::string, dict_t >& dict_of_dict)
+{
+  dict_t temp;
+  dict_t first_dict = dict_of_dict.get(first);
+  dict_t second_dict = dict_of_dict.get(second);
+  for (auto i = first_dict.begin(); i != first_dict.end(); i++)
+  {
+    try
+    {
+      second_dict.at(i->first);
+    }
+    catch (...)
+    {
+      temp.insert(*i);
+    }
+  }
+  for (auto i = second_dict.begin(); i != second_dict.end(); i++)
+  {
+    try
+    {
+      first_dict.at(i->first);
+    }
+    catch (...)
+    {
+      temp.insert(*i);
+    }
+  }
+  dict_of_dict.push(name, temp);
+}
+
 void intersectDict(std::string name, std::string first, std::string second, Dictionary< std::string, dict_t >& dict_of_dict)
 {
   dict_t temp;
@@ -49,4 +79,3 @@ void intersectDict(std::string name, std::string first, std::string second, Dict
   }
   dict_of_dict.push(name, temp);
 }
-
