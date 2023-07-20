@@ -18,7 +18,7 @@ namespace tarasenko
       auto iter_lhs = lhs.cbegin();
       for (; iter_lhs != lhs.cend(); iter_lhs++)
       {
-        if (rhs.find((*iter_lhs).first) != lhs.cend())
+        if (rhs.find((*iter_lhs).first) != rhs.cend())
         {
           result.remove((*iter_lhs).first);
         }
