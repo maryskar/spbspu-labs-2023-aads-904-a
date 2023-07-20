@@ -34,6 +34,9 @@ namespace mashkin
     AVL(const AVL& lhs);
     AVL(AVL&& rhs) noexcept;
     ~AVL();
+
+    AVL& operator=(const AVL& lhs);
+
     iter begin();
     iter end();
     const_iter cbegin();
@@ -63,6 +66,15 @@ namespace mashkin
     tree* fake_;
     Comporator comp_;
   };
+
+  template< class K, class V, class C >
+  AVL< K, V, C >& AVL< K, V, C >::operator=(const AVL& lhs)
+  {
+    clear();
+    insert(lhs.cbegin(), lhs.cend());
+    return *this;
+  }
+
   template< class K, class V, class C >
   AVL< K, V, C >::AVL(AVL&& rhs) noexcept :
     fake_(rhs.fake_),
