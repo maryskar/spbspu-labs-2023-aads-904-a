@@ -332,15 +332,5 @@ namespace mashkin
     clear_impl(fake_->parent_);
     fake_->parent_ = fake_;
   }
-
-  /*template< class K, class V, class C >
-  AVL< K, V, C >::AVL():
-    fake_(static_cast< tree* >(::operator new(sizeof(tree)))),
-    comp_()
-  {
-    fake_->left_ = nullptr;
-    fake_->right_ = nullptr;
-    fake_->parent_ = fake_;
-  }*/
 }
 #endif
