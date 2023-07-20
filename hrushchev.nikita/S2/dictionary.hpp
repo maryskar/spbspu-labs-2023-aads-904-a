@@ -5,6 +5,7 @@
 
 
 #include <utility>
+#include <stdexcept>
 #include <list.hpp>
 #include "forwardlist.hpp"
 #include "forwardlistiterator.hpp"
@@ -27,6 +28,9 @@ public:
   Value& operator[](const Key& key);
   iterator find(const Key& key);
   const_iterator find(const Key& key) const;
+  Value& at(const Key& key);
+  iterator erase(iterator pos);
+  iterator erase(const_iterator pos);
   void push(Key k, Value v);
 private:
   ForwardList< std::pair< Key, Value > > data_;
@@ -135,6 +139,54 @@ typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Com
       return cur;
     }
   }
+  return end();
+}
+
+template< typename Key, typename Value, typename Compare >
+typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::find(const Key& key) const
+{
+  return const_iterator(find(key));
+}
+
+template< typename Key, typename Value, typename Compare >
+Value& Dictionary< Key, Value, Compare >::at(const Key& key)
+{
+  for (auto cur = begin(); cur != end(); cur++)
+  {
+    if (cur->first == key)
+    {
+      return cur->second;
+    }
+  }
+  throw std::out_of_range("No such key in dictionary");
+}
+
+template< typename Key, typename Value, typename Compare >
+typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::erase(iterator pos)
+{
+  if (pos == begin())
+  {
+    data_.pop_front();
+    return begin();
+  }
+  else if (pos == end())
+  {
+    return end();
+  }
+  auto prev = begin();
+  auto cur = ++begin();
+  while (cur != pos)
+  {
+    prev++;
+    cur++;
+  }
+  return data_.erase_after(prev);
+}
+
+template< typename Key, typename Value, typename Compare >
+typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::erase(const_iterator pos)
+{
+  return erase(iterator(pos));
 }
 
 template< typename Key, typename Value, typename Compare >
