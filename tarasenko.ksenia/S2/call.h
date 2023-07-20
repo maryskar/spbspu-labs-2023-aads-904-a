@@ -4,9 +4,9 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <message.h>
 #include "dictionary.h"
 #include "commands.h"
-#include <message.h>
 
 namespace tarasenko
 {
