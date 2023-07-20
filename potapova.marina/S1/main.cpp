@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "valueType.h"
 #include "queue.h"
 #include "inputInfixQueue.h"
@@ -12,7 +13,7 @@ int main()
     std::cerr << "Input error\n";
     return 1;
   }
-  auto postfix_queue(potapova::composePostfixQueue(infix_expr));
+  potapova::expr_queue postfix_queue(potapova::composePostfixQueue(infix_expr));
   while (!postfix_queue.empty())
   {
     if (postfix_queue.front().type == potapova::ArithmExpMember::Type::Num)
@@ -25,4 +26,5 @@ int main()
     }
     postfix_queue.pop();
   }
+  return 0; 
 }
