@@ -28,13 +28,13 @@ namespace turkin
       tree operator=(tree && rhs);
       ~RBtree();
       
-      dit dsource() noexcept;
-      dcit dsource() const noexcept;
-      dcit dcsource() const noexcept;
+      dit directSource() noexcept;
+      dcit directSource() const noexcept;
+      dcit directCSource() const noexcept;
       
-      rit rsource() noexcept;
-      rcit rsource() const noexcept;
-      rcit rcsource() const noexcept;
+      rit reverseSource() noexcept;
+      rcit reverseSource() const noexcept;
+      rcit reverseCSource() const noexcept;
 
       bool empty() const noexcept;
       std::size_t size() const noexcept;
@@ -138,37 +138,37 @@ turkin::RBtree< K, V, C >::~RBtree()
 }
 
 template< typename K, typename V, typename C >
-turkin::DirectIterator< K, V, C > turkin::RBtree< K, V, C >::dsource() noexcept
+turkin::DirectIterator< K, V, C > turkin::RBtree< K, V, C >::directSource() noexcept
 {
   return dit(source_);
 }
 
 template< typename K, typename V, typename C >
-turkin::DirectConstIterator< K, V, C > turkin::RBtree< K, V, C >::dsource() const noexcept
+turkin::DirectConstIterator< K, V, C > turkin::RBtree< K, V, C >::directSource() const noexcept
 {
   return dcit(source_);
 }
 
 template< typename K, typename V, typename C >
-turkin::DirectConstIterator< K, V, C > turkin::RBtree< K, V, C >::dcsource() const noexcept
+turkin::DirectConstIterator< K, V, C > turkin::RBtree< K, V, C >::directCSource() const noexcept
 {
   return dcit(source_);
 }
 
 template< typename K, typename V, typename C >
-turkin::ReverseIterator< K, V, C > turkin::RBtree< K, V, C >::rsource() noexcept
+turkin::ReverseIterator< K, V, C > turkin::RBtree< K, V, C >::reverseSource() noexcept
 {
   return rit(source_);
 }
 
 template< typename K, typename V, typename C >
-turkin::ReverseConstIterator< K, V, C > turkin::RBtree< K, V, C >::rsource() const noexcept
+turkin::ReverseConstIterator< K, V, C > turkin::RBtree< K, V, C >::reverseSource() const noexcept
 {
   return rcit(source_); 
 }
 
 template< typename K, typename V, typename C >
-turkin::ReverseConstIterator< K, V, C > turkin::RBtree< K, V, C >::rcsource() const noexcept {}
+turkin::ReverseConstIterator< K, V, C > turkin::RBtree< K, V, C >::reverseCSource() const noexcept {}
 
 template< typename K, typename V, typename C >
 bool turkin::RBtree< K, V, C >::empty() const noexcept
