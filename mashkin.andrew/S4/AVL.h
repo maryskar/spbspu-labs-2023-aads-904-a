@@ -64,6 +64,8 @@ namespace mashkin
     iter find(const Key& key);
     const_iter find(const Key& key) const;
 
+    bool contains(const Key& key) const;
+
   private:
     size_t size_impl(tree* head, size_t size_);
 
@@ -82,6 +84,12 @@ namespace mashkin
     tree* fake_;
     Comporator comp_;
   };
+
+  template< class K, class V, class C >
+  bool AVL< K, V, C >::contains(const K& key) const
+  {
+    return find(key) != cend();
+  }
 
   template< class K, class V, class C >
   V& AVL< K, V, C >::operator[](const K& key)
