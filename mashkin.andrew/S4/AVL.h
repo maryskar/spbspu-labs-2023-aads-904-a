@@ -61,6 +61,9 @@ namespace mashkin
     size_t size();
     bool empty();
 
+    iter find(const Key& key);
+    const_iter find(const Key& key) const;
+
   private:
     size_t size_impl(tree* head, size_t size_);
 
@@ -81,6 +84,24 @@ namespace mashkin
   };
 
   template< class K, class V, class C >
+  AVL< K, V, C >::iter AVL< K, V, C >::find(const K& key)
+  {
+    auto cit = static_cast< const AVL& >(*this).find();
+    return iter(cit.node_);
+  }
+
+  template< class K, class V, class C >
+  AVL< K, V, C >::const_iter AVL< K, V, C >::find(const K& key) const
+  {
+    auto it(cbegin());
+    while (it->first != key && it != cend())
+    {
+      it++;
+    }
+    return it;
+  }
+
+  template< class K, class V, class C >
   V& AVL< K, V, C >::at(const K& key)
   {
     return const_cast< V& >(static_cast< const AVL& >(*this).at(key));
@@ -89,16 +110,12 @@ namespace mashkin
   template< class K, class V, class C >
   const V& AVL< K, V, C >::at(const K& key) const
   {
-    auto iter(cbegin());
-    while (iter->first != key && iter != cend())
-    {
-      iter++;
-    }
-    if (iter == cend())
+    auto it = find(key);
+    if (it == cend())
     {
       throw std::out_of_range("Out of range");
     }
-    return iter->second;
+    return it->second;
   }
 
   template< class K, class V, class C >
