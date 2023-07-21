@@ -7,7 +7,7 @@ using dict_t = Dictionary< size_t, std::string >;
 
 void printDict(std::string name, Dictionary< std::string, dict_t >& dict_of_dict, std::ostream& out)
 {
-  out << name << " ";
+  out << name;
   dict_t dict = dict_of_dict.get(name);
   if (dict.empty())
   {
@@ -16,7 +16,7 @@ void printDict(std::string name, Dictionary< std::string, dict_t >& dict_of_dict
   }
   for (auto i = dict.begin(); i != dict.end(); i++)
   {
-    out << i->first << " " << i->second << " ";
+    out << " " << i->first << " " << i->second;
   }
 }
 
