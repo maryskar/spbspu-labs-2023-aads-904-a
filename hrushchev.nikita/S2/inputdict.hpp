@@ -7,9 +7,9 @@
 
 namespace hrushchev
 {
-	using dict_t = Dictionary< size_t, std::string >;
+  using dict_t = Dictionary< size_t, std::string >;
 
-	void inputDict(std::istream& input, Dictionary< std::string, dict_t >& dict_of_dict);
+  void inputDict(std::istream& input, Dictionary< std::string, dict_t >& dict_of_dict);
 }
 
 #endif

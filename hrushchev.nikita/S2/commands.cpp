@@ -4,8 +4,9 @@
 #include "dictionary.hpp"
 
 using dict_t = hrushchev::Dictionary< size_t, std::string >;
+using main_dict = hrushchev::Dictionary< std::string, dict_t >;
 
-void hrushchev::printDict(std::string name, hrushchev::Dictionary< std::string, dict_t >& dict_of_dict, std::ostream& out)
+void hrushchev::printDict(std::string name, main_dict& dict_of_dict, std::ostream& out)
 {
   try
   {
@@ -27,7 +28,7 @@ void hrushchev::printDict(std::string name, hrushchev::Dictionary< std::string, 
   }
 }
 
-void hrushchev::complementDict(std::string name, std::string first, std::string second, hrushchev::Dictionary< std::string, dict_t >& dict_of_dict)
+void hrushchev::complementDict(std::string name, std::string first, std::string second, main_dict& dict_of_dict)
 {
   try
   {
@@ -64,7 +65,7 @@ void hrushchev::complementDict(std::string name, std::string first, std::string 
   }
 }
 
-void hrushchev::intersectDict(std::string name, std::string first, std::string second, hrushchev::Dictionary< std::string, dict_t >& dict_of_dict)
+void hrushchev::intersectDict(std::string name, std::string first, std::string second, main_dict& dict_of_dict)
 {
   try
   {
@@ -90,7 +91,7 @@ void hrushchev::intersectDict(std::string name, std::string first, std::string s
   }
 }
 
-void hrushchev::unionDict(std::string name, std::string first, std::string second, hrushchev::Dictionary< std::string, dict_t >& dict_of_dict)
+void hrushchev::unionDict(std::string name, std::string first, std::string second, main_dict& dict_of_dict)
 {
   try
   {
