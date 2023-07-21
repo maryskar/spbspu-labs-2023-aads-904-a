@@ -13,7 +13,7 @@ std::istream& potapova::inputInfixQueue(expr_queue& dest, std::istream& in)
   std::string expr_as_str;
   std::getline(in, expr_as_str);
   const char* cur_sym_ptr(expr_as_str.c_str());
-  while (*cur_sym_ptr != '/0')
+  while (*cur_sym_ptr != '\0')
   {
     ArithmExpMember member;
     if (isdigit(*cur_sym_ptr))
