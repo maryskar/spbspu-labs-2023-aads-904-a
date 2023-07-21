@@ -3,7 +3,7 @@
 #include <fstream>
 #include <stdexcept>
 
-std::istream& potapova::getInputStream(int argc, char** argv)
+std::istream& potapova::getInputStream(const int argc, const char* const* const argv)
 {
   if (argc == 2)
   {
