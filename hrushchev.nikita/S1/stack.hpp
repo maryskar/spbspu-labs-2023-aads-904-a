@@ -1,6 +1,5 @@
 #ifndef STACK_HPP
 #define STACK_HPP
-#include <list.hpp>
 #include <stdexcept>
 #include <list.hpp>
 
@@ -39,7 +38,7 @@ namespace hrushchev
   template< typename T >
   void Stack< T >::push(const T& value)
   {
-    details::List< T >* temp = new details::List< T >(value);
+    details::List< T >* temp = new details::List< T >{value, top_};
     top_ = temp;
   }
 

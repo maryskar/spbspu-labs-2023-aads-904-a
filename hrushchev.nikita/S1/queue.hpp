@@ -1,6 +1,5 @@
 #ifndef QUEUE_HPP
 #define QUEUE_HPP
-#include <list.hpp>
 #include <stdexcept>
 #include <list.hpp>
 
@@ -41,7 +40,7 @@ namespace hrushchev
   template< typename T >
   void Queue< T >::push(const T& value)
   {
-    details::List< T >* temp = new details::List< T >(value);
+    details::List< T >* temp = new details::List< T >{value, nullptr};
     if (isEmpty())
     {
       begin_ = temp;
