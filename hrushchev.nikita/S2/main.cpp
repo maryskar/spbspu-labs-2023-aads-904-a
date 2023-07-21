@@ -41,21 +41,28 @@ int main(int argc, char* argv[])
       std::string first_dict_name = "";
       std::string second_dict_name = "";
       std::cin >> res_dict_name >> first_dict_name >> second_dict_name;
-      if (command == "complement")
+      try
       {
-        complementDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
+        if (command == "complement")
+        {
+          complementDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
+        }
+        else if (command == "intersect")
+        {
+          intersectDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
+        }
+        else if (command == "union")
+        {
+          unionDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
+        }
+        else
+        {
+          std::cout << "<INVALID COMMAND>\n";
+        }
       }
-      else if (command == "intersect")
+      catch (...)
       {
-        intersectDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
-      }
-      else if (command == "union")
-      {
-        unionDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
-      }
-      else
-      {
-        std::cout << "<INVALID COMMAND>";
+        std::cout << "<INVALID COMMAND>\n";
       }
     }
   }

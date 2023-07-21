@@ -7,80 +7,108 @@ using dict_t = Dictionary< size_t, std::string >;
 
 void printDict(std::string name, Dictionary< std::string, dict_t >& dict_of_dict, std::ostream& out)
 {
-  out << name;
-  dict_t dict = dict_of_dict.get(name);
-  if (dict.empty())
+  try
   {
-    out << "<EMPTY>";
-    return;
+    out << name;
+    dict_t dict = dict_of_dict.at(name);
+    if (dict.empty())
+    {
+      out << "<EMPTY>";
+      return;
+    }
+    for (auto i = dict.begin(); i != dict.end(); i++)
+    {
+      out << " " << i->first << " " << i->second;
+    }
   }
-  for (auto i = dict.begin(); i != dict.end(); i++)
+  catch (...)
   {
-    out << " " << i->first << " " << i->second;
+    throw;
   }
 }
 
 void complementDict(std::string name, std::string first, std::string second, Dictionary< std::string, dict_t >& dict_of_dict)
 {
-  dict_t temp;
-  dict_t first_dict = dict_of_dict.get(first);
-  dict_t second_dict = dict_of_dict.get(second);
-  for (auto i = first_dict.begin(); i != first_dict.end(); i++)
+  try
   {
-    try
+    dict_t temp;
+    dict_t first_dict = dict_of_dict.at(first);
+    dict_t second_dict = dict_of_dict.at(second);
+    for (auto i = first_dict.begin(); i != first_dict.end(); i++)
     {
-      second_dict.at(i->first);
+      try
+      {
+        second_dict.at(i->first);
+      }
+      catch (...)
+      {
+        temp.insert(*i);
+      }
     }
-    catch (...)
+    for (auto i = second_dict.begin(); i != second_dict.end(); i++)
     {
-      temp.insert(*i);
+      try
+      {
+        first_dict.at(i->first);
+      }
+      catch (...)
+      {
+        temp.insert(*i);
+      }
     }
+    dict_of_dict.push(name, temp);
   }
-  for (auto i = second_dict.begin(); i != second_dict.end(); i++)
+  catch(...)
   {
-    try
-    {
-      first_dict.at(i->first);
-    }
-    catch (...)
-    {
-      temp.insert(*i);
-    }
+    throw;
   }
-  dict_of_dict.push(name, temp);
 }
 
 void intersectDict(std::string name, std::string first, std::string second, Dictionary< std::string, dict_t >& dict_of_dict)
 {
-  dict_t temp;
-  dict_t first_dict = dict_of_dict.get(first);
-  dict_t second_dict = dict_of_dict.get(second);
-  for (auto i = first_dict.begin(); i != first_dict.end(); i++)
+  try
   {
-    try
+    dict_t temp;
+    dict_t first_dict = dict_of_dict.at(first);
+    dict_t second_dict = dict_of_dict.at(second);
+    for (auto i = first_dict.begin(); i != first_dict.end(); i++)
     {
-      second_dict.at(i->first);
-      temp.insert(*i);
+      try
+      {
+        second_dict.at(i->first);
+        temp.insert(*i);
+      }
+      catch (...)
+      {
+      }
     }
-    catch (...)
-    {
-    }
+    dict_of_dict.push(name, temp);
   }
-  dict_of_dict.push(name, temp);
+  catch (...)
+  {
+    throw;
+  }
 }
 
 void unionDict(std::string name, std::string first, std::string second, Dictionary< std::string, dict_t >& dict_of_dict)
 {
-  dict_t temp;
-  dict_t first_dict = dict_of_dict.get(first);
-  dict_t second_dict = dict_of_dict.get(second);
-  for (auto i = second_dict.begin(); i != second_dict.end(); i++)
+  try
   {
-    temp.insert(*i);
+    dict_t temp;
+    dict_t first_dict = dict_of_dict.at(first);
+    dict_t second_dict = dict_of_dict.at(second);
+    for (auto i = second_dict.begin(); i != second_dict.end(); i++)
+    {
+      temp.insert(*i);
+    }
+    for (auto i = first_dict .begin(); i != first_dict.end(); i++)
+    {
+      temp.insert(*i);
+    }
+    dict_of_dict.push(name, temp);
   }
-  for (auto i = first_dict .begin(); i != first_dict.end(); i++)
+  catch (...)
   {
-    temp.insert(*i);
+    throw;
   }
-  dict_of_dict.push(name, temp);
 }
