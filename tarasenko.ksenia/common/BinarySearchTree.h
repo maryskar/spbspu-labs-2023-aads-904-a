@@ -766,7 +766,26 @@ namespace tarasenko
   template< typename F >
   F BinarySearchTree< T, Compare >::traverse_lnr(F f) const
   {
-    //...
+    if (root_)
+    {
+      Stack< root_t* > s;
+      root_t* curr = root_;
+      while (curr != fake_ || !s.isEmpty())
+      {
+        if (curr != fake_)
+        {
+          s.push(curr);
+          curr = curr->left_;
+        }
+        else
+        {
+          curr = s.getTopElem();
+          s.pop();
+          f(curr->data_);
+          curr = curr->right_;
+        }
+      }
+    }
     return f;
   }
 
