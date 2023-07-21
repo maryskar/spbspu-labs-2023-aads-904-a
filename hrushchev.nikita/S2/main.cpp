@@ -1,13 +1,13 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <list.hpp>
 #include "forwardlist.hpp"
 #include "forwardlistiterator.hpp"
 #include "forwardlistconstiterator.hpp"
 #include "dictionary.hpp"
 #include "inputdict.hpp"
 #include "commands.hpp"
-#include <list.hpp>
-#include <iostream>
-#include <fstream>
-#include <string>
 
 int main(int argc, char* argv[])
 {
@@ -22,9 +22,9 @@ int main(int argc, char* argv[])
     std::cout << "Error file\n";
     return 1;
   }
-  using dict_t = Dictionary< size_t, std::string >;
-  Dictionary< std::string, dict_t > dict_of_dict;
-  inputDict(input, dict_of_dict);
+  using dict_t = hrushchev::Dictionary< size_t, std::string >;
+  hrushchev::Dictionary< std::string, dict_t > dict_of_dict;
+  hrushchev::inputDict(input, dict_of_dict);
   std::string command = "";
   while (std::cin >> command)
   {
@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
       {
         std::string dict_name = "";
         std::cin >> dict_name;
-        printDict(dict_name, dict_of_dict, std::cout);
+        hrushchev::printDict(dict_name, dict_of_dict, std::cout);
         std::cout << "\n";
       }
       else
@@ -45,15 +45,15 @@ int main(int argc, char* argv[])
         std::cin >> res_dict_name >> first_dict_name >> second_dict_name;
         if (command == "complement")
         {
-          complementDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
+          hrushchev::complementDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
         }
         else if (command == "intersect")
         {
-          intersectDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
+          hrushchev::intersectDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
         }
         else if (command == "union")
         {
-          unionDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
+          hrushchev::unionDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
         }
         else
         {

@@ -4,15 +4,15 @@
 #include <cstddef>
 #include <utility>
 #include <stdexcept>
-#include <iostream>
-
 #include <list.hpp>
 #include "forwardlistiterator.hpp"
 #include "forwardlistconstiterator.hpp"
 
-template< typename T >
-class ForwardList
+namespace hrushchev
 {
+  template< typename T >
+  class ForwardList
+  {
   public:
     using iterator = ForwardListIterator< T >;
     using const_iterator = ForwardListConstIterator< T >;
@@ -49,358 +49,359 @@ class ForwardList
     void swap(ForwardList< T >& other);
     void splice_after(const_iterator pos, ForwardList< T >& other);
     void splice_after(const_iterator pos, ForwardList< T >&& other);
-
+  private:
     details::List< T >* head_;
-};
+  };
 
-template< typename T >
-ForwardList< T >::ForwardList():
-  head_(nullptr)
-{
-}
-
-template< typename T >
-ForwardList< T >::~ForwardList()
-{
-  clear();
-  ::operator delete(head_);
-}
-
-template< typename T >
-ForwardList< T >::ForwardList(const ForwardList< T >& other):
-  ForwardList()
-{
-  if (other.empty())
+  template< typename T >
+  ForwardList< T >::ForwardList():
+    head_(nullptr)
   {
-    return;
   }
-  auto oth_it = other.begin();
-  push_front(*oth_it);
-  if (oth_it.ptr_->next_)
+
+  template< typename T >
+  ForwardList< T >::~ForwardList()
   {
-    oth_it++;
-    insert_after(cbegin(), oth_it, other.end());
+    clear();
+    ::operator delete(head_);
   }
-}
 
-
-template< typename T >
-ForwardList< T >::ForwardList(ForwardList< T >&& other):
-  head_(std::move(other.head_))
-{
-}
-
-template< typename T >
-ForwardList< T >& ForwardList< T >::operator=(const ForwardList< T >& other)
-{
-  if (this == std::addressof(other))
+  template< typename T >
+  ForwardList< T >::ForwardList(const ForwardList< T >& other):
+    ForwardList()
   {
+    if (other.empty())
+    {
+      return;
+    }
+    auto oth_it = other.begin();
+    push_front(*oth_it);
+    if (oth_it.ptr_->next_)
+    {
+      oth_it++;
+      insert_after(cbegin(), oth_it, other.end());
+    }
+  }
+
+
+  template< typename T >
+  ForwardList< T >::ForwardList(ForwardList< T >&& other):
+    head_(std::move(other.head_))
+  {
+  }
+
+  template< typename T >
+  ForwardList< T >& ForwardList< T >::operator=(const ForwardList< T >& other)
+  {
+    if (this == std::addressof(other))
+    {
+      return *this;
+    }
+    ForwardList< T > temp(other);
+    clear();
+    swap(temp);
     return *this;
   }
-  ForwardList< T > temp(other);
-  clear();
-  swap(temp);
-  return *this;
-}
 
-template< typename T >
-ForwardList< T >& ForwardList< T >::operator=(ForwardList< T >&& other)
-{
-  if (this == addressof(other))
+  template< typename T >
+  ForwardList< T >& ForwardList< T >::operator=(ForwardList< T >&& other)
   {
-    return(this);
-  }
-  clear();
-  swap(other);
-  return *this;
-}
-
-template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::begin() noexcept
-{
-  return iterator(head_);
-}
-
-template< typename T >
-typename ForwardList< T >::const_iterator ForwardList< T >::begin() const noexcept
-{
-  return cbegin();
-}
-
-template< typename T >
-typename ForwardList< T >::const_iterator ForwardList< T >::cbegin() const noexcept
-{
-  return const_iterator(head_);
-}
-template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::end() noexcept
-{
-  return iterator(nullptr);
-}
-
-template< typename T >
-typename ForwardList< T >::const_iterator ForwardList< T >::end() const noexcept
-{
-  return cend();
-}
-
-template< typename T >
-typename ForwardList< T >::const_iterator ForwardList< T >::cend() const noexcept
-{
-  return const_iterator(nullptr);
-}
-
-template< typename T >
-bool ForwardList< T >::empty() const
-{
-  return head_ == nullptr;
-}
-
-template< typename T >
-size_t ForwardList< T >::max_size() const noexcept
-{
-  size_t size = 0;
-  details::List< T >* temp = head_;
-  while (temp)
-  {
-    temp = temp->next_;
-    size++;
-  }
-  return size;
-}
-
-template< typename T >
-void ForwardList< T >::clear()
-{
-  if (!head_)
-  {
-    return;
+    if (this == addressof(other))
+    {
+      return(this);
+    }
+    clear();
+    swap(other);
+    return *this;
   }
 
-  while(head_->next_ != nullptr)
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::begin() noexcept
   {
-    details::List< T >* temp = head_->next_;
+    return iterator(head_);
+  }
+
+  template< typename T >
+  typename ForwardList< T >::const_iterator ForwardList< T >::begin() const noexcept
+  {
+    return cbegin();
+  }
+
+  template< typename T >
+  typename ForwardList< T >::const_iterator ForwardList< T >::cbegin() const noexcept
+  {
+    return const_iterator(head_);
+  }
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::end() noexcept
+  {
+    return iterator(nullptr);
+  }
+
+  template< typename T >
+  typename ForwardList< T >::const_iterator ForwardList< T >::end() const noexcept
+  {
+    return cend();
+  }
+
+  template< typename T >
+  typename ForwardList< T >::const_iterator ForwardList< T >::cend() const noexcept
+  {
+    return const_iterator(nullptr);
+  }
+
+  template< typename T >
+  bool ForwardList< T >::empty() const
+  {
+    return head_ == nullptr;
+  }
+
+  template< typename T >
+  size_t ForwardList< T >::max_size() const noexcept
+  {
+    size_t size = 0;
+    details::List< T >* temp = head_;
+    while (temp)
+    {
+      temp = temp->next_;
+      size++;
+    }
+    return size;
+  }
+
+  template< typename T >
+  void ForwardList< T >::clear()
+  {
+    if (!head_)
+    {
+      return;
+    }
+
+    while(head_->next_ != nullptr)
+    {
+      details::List< T >* temp = head_->next_;
+      delete head_;
+      head_ = temp;
+    }
     delete head_;
+    head_ = nullptr;
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, const T& value)
+  {
+    details::List< T >* temp = new details::List< T >();
+    temp->data_ = value;
+    details::List< T >* cur = const_cast< details::List< T >* >(pos.ptr_);
+    temp->next_ = cur->next_;
+    cur->next_ = temp;
+    return iterator(temp);
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, T&& value)
+  {
+    return insert_after(pos, value);
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, size_t count, const T& value)
+  {
+    iterator temp;
+    for (size_t i = 0; i < count; i++)
+    {
+      temp = insert_after(pos, value);
+      pos++;
+    }
+    return temp;
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, iterator first, iterator last)
+  {
+    iterator temp;
+    while (first != last)
+    {
+      temp = insert_after(pos, *first);
+      pos++;
+      first++;
+    }
+    return temp;
+  }
+
+  template< typename T >
+  template< typename... Args >
+  typename ForwardList< T >::iterator ForwardList< T >::emplace_after(const_iterator pos, Args&&... args)
+  {
+    details::List< T >* temp = new details::List< T >(std::forward< Args >(args)...);
+    details::List< T >* cur = const_cast< details:: List< T >* >(pos.ptr_);
+    temp->next_ = cur->next_;
+    cur->next_ = temp;
+    return iterator(temp);
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::erase_after(const_iterator pos)
+  {
+    if (!(pos.ptr_ || pos.ptr_->next_))
+    {
+      return end();
+    }
+
+    details::List< T >* cur = const_cast< details::List< T >* >(pos.ptr_);
+    details::List< T >* temp = cur;
+    temp = temp->next_->next_;
+    delete cur->next_;
+    cur->next_ = temp;
+    return iterator(cur);
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::erase_after(const_iterator first, const_iterator last)
+  {
+    while ((first.ptr_->next_ != last.ptr_) && first.ptr_->next_)
+    {
+      erase_after(first);
+    }
+    return iterator(const_cast< details::List< T >* >(last.ptr_));
+  }
+
+  template< typename T >
+  void ForwardList< T >::push_front(const T& value)
+  {
+    details::List< T >* temp = new details::List< T >();
+    temp->data_ = value;
+    temp->next_ = head_;
     head_ = temp;
   }
-  delete head_;
-  head_ = nullptr;
-}
 
-template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, const T& value)
-{
-  details::List< T >* temp = new details::List< T >();
-  temp->data_ = value;
-  details::List< T >* cur = const_cast< details::List< T >* >(pos.ptr_);
-  temp->next_ = cur->next_;
-  cur->next_ = temp;
-  return iterator(temp);
-}
-
-template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, T&& value)
-{
-  return insert_after(pos, value);
-}
-
-template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, size_t count, const T& value)
-{
-  iterator temp;
-  for (size_t i = 0; i < count; i++)
+  template< typename T >
+  void ForwardList< T >::push_front(T&& value)
   {
-    temp = insert_after(pos, value);
-    pos++;
-  }
-  return temp;
-}
-
-template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, iterator first, iterator last)
-{
-  iterator temp;
-  while (first != last)
-  {
-    temp = insert_after(pos, *first);
-    pos++;
-    first++;
-  }
-  return temp;
-}
-
-template< typename T >
-template< typename... Args >
-typename ForwardList< T >::iterator ForwardList< T >::emplace_after(const_iterator pos, Args&&... args)
-{
-  details::List< T >* temp = new details::List< T >(std::forward< Args >(args)...);
-  details::List< T >* cur = const_cast< details:: List< T >* >(pos.ptr_);
-  temp->next_ = cur->next_;
-  cur->next_ = temp;
-  return iterator(temp);
-}
-
-template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::erase_after(const_iterator pos)
-{
-  if (!(pos.ptr_ || pos.ptr_->next_))
-  {
-    return end();
+    push_front(value);
   }
 
-  details::List< T >* cur = const_cast< details::List< T >* >(pos.ptr_);
-  details::List< T >* temp = cur;
-  temp = temp->next_->next_;
-  delete cur->next_;
-  cur->next_ = temp;
-  return iterator(cur);
-}
-
-template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::erase_after(const_iterator first, const_iterator last)
-{
-  while ((first.ptr_->next_ != last.ptr_) && first.ptr_->next_)
+  template< typename T >
+  template< typename... Args >
+  void ForwardList< T >::emplace_front(Args && ... args)
   {
-    erase_after(first);
-  }
-  return iterator(const_cast< details::List< T >* >(last.ptr_));
-}
-
-template< typename T >
-void ForwardList< T >::push_front(const T& value)
-{
-  details::List< T >* temp = new details::List< T >();
-  temp->data_ = value;
-  temp->next_ = head_;
-  head_ = temp;
-}
-
-template< typename T >
-void ForwardList< T >::push_front(T&& value)
-{
-  push_front(value);
-}
-
-template< typename T >
-template< typename... Args >
-void ForwardList< T >::emplace_front(Args && ... args)
-{
-  details::List< T >* temp = new details::List< T >(std::forward< Args >(args)...);
-  temp->next_ = head_;
-  head_ = temp;
-}
-
-template< typename T >
-void ForwardList< T >::pop_front()
-{
-  if (empty())
-  {
-    throw std::logic_error("empty list");
-  }
-  details::List< T >* temp = head_;
-  head_ = head_->next_;
-  delete temp;
-}
-
-template< typename T >
-void ForwardList< T >::resize(size_t count, const T& value)
-{
-  size_t cur_size = max_size();
-  if (count == cur_size)
-  {
-    return;
+    details::List< T >* temp = new details::List< T >(std::forward< Args >(args)...);
+    temp->next_ = head_;
+    head_ = temp;
   }
 
-  else if (count < cur_size)
+  template< typename T >
+  void ForwardList< T >::pop_front()
   {
-    auto iter_to_erase = cbegin();
-    for (size_t i = 1; i < count; i++)
+    if (empty())
     {
-      iter_to_erase++;
+      throw std::logic_error("empty list");
     }
-    erase_after(iter_to_erase, cend());
+    details::List< T >* temp = head_;
+    head_ = head_->next_;
+    delete temp;
   }
 
-  else
+  template< typename T >
+  void ForwardList< T >::resize(size_t count, const T& value)
   {
-    auto iter_to_insert = cbegin();
-    for (size_t i = 1; i < cur_size; i++)
+    size_t cur_size = max_size();
+    if (count == cur_size)
     {
-      iter_to_insert++;
+      return;
     }
-    insert_after(iter_to_insert, count - cur_size, value);
-  }
-}
 
-template< typename T >
-void ForwardList< T >::resize(size_t count)
-{
-  resize(count, T());
-}
+    else if (count < cur_size)
+    {
+      auto iter_to_erase = cbegin();
+      for (size_t i = 1; i < count; i++)
+      {
+        iter_to_erase++;
+      }
+      erase_after(iter_to_erase, cend());
+    }
 
-template< typename T >
-void ForwardList< T >::swap(ForwardList< T >& other)
-{
-  std::swap(head_, other.head_);
-}
-
-template< typename T >
-void ForwardList< T >::splice_after(const_iterator pos, ForwardList< T >& other)
-{
-  if (other.empty())
-  {
-    return;
-  }
-  details::List< T >* cur = const_cast< details::List < T >* >(pos.ptr_);
-  details::List< T >* other_head = other.head_;
-  while (other_head->next_)
-  {
-    other_head = other_head->next_;
-  }
-  other_head->next_ = cur->next_;
-  cur->next_ = std::move(other.head_);
-  other.head_ = nullptr;
-}
-
-template< typename T >
-void ForwardList< T >::splice_after(const_iterator pos, ForwardList< T >&& other)
-{
-  splice_after(pos, other);
-}
-
-template< typename T >
-bool operator==(const ForwardList< T >& lhs, const ForwardList< T >& rhs)
-{
-  if (lhs.empty() && rhs.empty())
-  {
-    return true;
+    else
+    {
+      auto iter_to_insert = cbegin();
+      for (size_t i = 1; i < cur_size; i++)
+      {
+        iter_to_insert++;
+      }
+      insert_after(iter_to_insert, count - cur_size, value);
+    }
   }
 
-  else if (lhs.empty() || rhs.empty())
+  template< typename T >
+  void ForwardList< T >::resize(size_t count)
   {
-    return false;
+    resize(count, T());
   }
 
-  auto lhs_begin = lhs.cbegin();
-  auto lhs_end = lhs.cend();
-  auto rhs_begin = rhs.cbegin();
-  auto rhs_end = rhs.cend();
-  while ((lhs_begin != lhs_end) && (rhs_begin != rhs_end))
+  template< typename T >
+  void ForwardList< T >::swap(ForwardList< T >& other)
   {
-    if (*lhs_begin != *rhs_end)
+    std::swap(head_, other.head_);
+  }
+
+  template< typename T >
+  void ForwardList< T >::splice_after(const_iterator pos, ForwardList< T >& other)
+  {
+    if (other.empty())
+    {
+      return;
+    }
+    details::List< T >* cur = const_cast< details::List < T >* >(pos.ptr_);
+    details::List< T >* other_head = other.head_;
+    while (other_head->next_)
+    {
+      other_head = other_head->next_;
+    }
+    other_head->next_ = cur->next_;
+    cur->next_ = std::move(other.head_);
+    other.head_ = nullptr;
+  }
+
+  template< typename T >
+  void ForwardList< T >::splice_after(const_iterator pos, ForwardList< T >&& other)
+  {
+    splice_after(pos, other);
+  }
+
+  template< typename T >
+  bool operator==(const ForwardList< T >& lhs, const ForwardList< T >& rhs)
+  {
+    if (lhs.empty() && rhs.empty())
+    {
+      return true;
+    }
+
+    else if (lhs.empty() || rhs.empty())
     {
       return false;
     }
-    lhs_begin++;
-    rhs_begin++;
-  }
-  return true;
-}
 
-template < typename T >
-bool operator!=(const ForwardList< T >& lhs, const ForwardList< T >& rhs)
-{
-  return !(lhs == rhs);
+    auto lhs_begin = lhs.cbegin();
+    auto lhs_end = lhs.cend();
+    auto rhs_begin = rhs.cbegin();
+    auto rhs_end = rhs.cend();
+    while ((lhs_begin != lhs_end) && (rhs_begin != rhs_end))
+    {
+      if (*lhs_begin != *rhs_end)
+      {
+        return false;
+      }
+      lhs_begin++;
+      rhs_begin++;
+    }
+    return true;
+  }
+
+  template < typename T >
+  bool operator!=(const ForwardList< T >& lhs, const ForwardList< T >& rhs)
+  {
+    return !(lhs == rhs);
+  }
 }
 
 #endif

@@ -3,9 +3,9 @@
 #include <ostream>
 #include "dictionary.hpp"
 
-using dict_t = Dictionary< size_t, std::string >;
+using dict_t = hrushchev::Dictionary< size_t, std::string >;
 
-void printDict(std::string name, Dictionary< std::string, dict_t >& dict_of_dict, std::ostream& out)
+void hrushchev::printDict(std::string name, hrushchev::Dictionary< std::string, dict_t >& dict_of_dict, std::ostream& out)
 {
   try
   {
@@ -27,7 +27,7 @@ void printDict(std::string name, Dictionary< std::string, dict_t >& dict_of_dict
   }
 }
 
-void complementDict(std::string name, std::string first, std::string second, Dictionary< std::string, dict_t >& dict_of_dict)
+void hrushchev::complementDict(std::string name, std::string first, std::string second, hrushchev::Dictionary< std::string, dict_t >& dict_of_dict)
 {
   try
   {
@@ -64,7 +64,7 @@ void complementDict(std::string name, std::string first, std::string second, Dic
   }
 }
 
-void intersectDict(std::string name, std::string first, std::string second, Dictionary< std::string, dict_t >& dict_of_dict)
+void hrushchev::intersectDict(std::string name, std::string first, std::string second, hrushchev::Dictionary< std::string, dict_t >& dict_of_dict)
 {
   try
   {
@@ -90,7 +90,7 @@ void intersectDict(std::string name, std::string first, std::string second, Dict
   }
 }
 
-void unionDict(std::string name, std::string first, std::string second, Dictionary< std::string, dict_t >& dict_of_dict)
+void hrushchev::unionDict(std::string name, std::string first, std::string second, hrushchev::Dictionary< std::string, dict_t >& dict_of_dict)
 {
   try
   {

@@ -3,9 +3,9 @@
 #include <string>
 #include "dictionary.hpp"
 
-using dict_t = Dictionary< size_t, std::string >;
+using dict_t = hrushchev::Dictionary< size_t, std::string >;
 
-void inputDict(std::istream& input, Dictionary< std::string, dict_t >& dict_of_dict)
+void hrushchev::inputDict(std::istream& input, hrushchev::Dictionary< std::string, dict_t >& dict_of_dict)
 {
   while (input)
   {

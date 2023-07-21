@@ -2,17 +2,20 @@
 #define FORWARDLISTITERATOR
 
 #include <memory>
-#include "list.hpp"
+#include <list.hpp>
 
-template< typename T >
-class ForwardList;
 
-template< typename T >
-class ForwardListConstIterator;
-
-template< typename T >
-class ForwardListIterator
+namespace hrushchev
 {
+  template< typename T >
+  class ForwardList;
+
+  template< typename T >
+  class ForwardListConstIterator;
+
+  template< typename T >
+  class ForwardListIterator
+  {
   friend class ForwardList< T >;
   friend class ForwardListConstIterator< T >;
   public:
@@ -28,68 +31,70 @@ class ForwardListIterator
     ForwardListIterator(const ForwardListConstIterator< T >& other) noexcept;
   private:
     details::List< T >* ptr_;
-};
+  };
 
-template< typename T >
-ForwardListIterator< T >::ForwardListIterator():
-  ptr_(nullptr)
-{
-}
-
-template< typename T >
-ForwardListIterator< T >::ForwardListIterator(details::List< T >* rhs):
-  ptr_(rhs)
-{
-}
-
-template< typename T >
-ForwardListIterator< T >& ForwardListIterator< T >::operator++()
-{
-  if (ptr_)
+  template< typename T >
+  ForwardListIterator< T >::ForwardListIterator():
+    ptr_(nullptr)
   {
-    ptr_ = ptr_->next_;
   }
-  return *this;
-}
 
-template< typename T >
-ForwardListIterator< T > ForwardListIterator< T >::operator++(int)
-{
-  ForwardListIterator< T > temp(*this);
-  if (ptr_)
+  template< typename T >
+  ForwardListIterator< T >::ForwardListIterator(details::List< T >* rhs):
+    ptr_(rhs)
   {
-    ptr_ = ptr_->next_;
   }
-  return temp;
+
+  template< typename T >
+  ForwardListIterator< T >& ForwardListIterator< T >::operator++()
+  {
+    if (ptr_)
+    {
+      ptr_ = ptr_->next_;
+    }
+    return *this;
+  }
+
+  template< typename T >
+  ForwardListIterator< T > ForwardListIterator< T >::operator++(int)
+  {
+    ForwardListIterator< T > temp(*this);
+    if (ptr_)
+    {
+      ptr_ = ptr_->next_;
+    }
+    return temp;
+  }
+
+  template< typename T >
+  T& ForwardListIterator< T >::operator*()
+  {
+    return ptr_->data_;
+  }
+
+  template< typename T >
+  T* ForwardListIterator< T >::operator->()
+  {
+    return std::addressof(ptr_->data_);
+  }
+
+  template < typename T >
+  bool ForwardListIterator< T >::operator==(const ForwardListIterator< T >& rhs) const
+  {
+    return ptr_ == rhs.ptr_;
+  }
+
+  template< typename T >
+  bool ForwardListIterator< T >::operator!=(const ForwardListIterator< T >& rhs) const
+  {
+    return ptr_ != rhs.ptr_;
+  }
+
+  template< typename T >
+  ForwardListIterator< T >::ForwardListIterator(const ForwardListConstIterator< T >& other) noexcept:
+    ptr_(const_cast< details::List< T > * >(other.ptr_))
+  {
+  }
 }
 
-template< typename T >
-T& ForwardListIterator< T >::operator*()
-{
-  return ptr_->data_;
-}
-
-template< typename T >
-T* ForwardListIterator< T >::operator->()
-{
-  return std::addressof(ptr_->data_);
-}
-
-template < typename T >
-bool ForwardListIterator< T >::operator==(const ForwardListIterator< T >& rhs) const
-{
-  return ptr_ == rhs.ptr_;
-}
-
-template< typename T >
-bool ForwardListIterator< T >::operator!=(const ForwardListIterator< T >& rhs) const
-{
-  return ptr_ != rhs.ptr_;
-}
-
-template< typename T >
-ForwardListIterator< T >::ForwardListIterator(const ForwardListConstIterator< T >& other) noexcept:
-  ptr_(const_cast< details::List< T > * >(other.ptr_))
-{
-}
 #endif
