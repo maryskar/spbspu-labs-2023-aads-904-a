@@ -820,7 +820,25 @@ namespace tarasenko
   template< typename F >
   F BinarySearchTree< T, Compare >::traverse_breadth(F f) const
   {
-    //...
+    Queue< root_t* > q;
+    if (root_)
+    {
+      q.push(root_);
+    }
+    while (!q.isEmpty())
+    {
+      root_t* curr = q.getHeadElem();
+      q.popFront();
+      f(curr->data_);
+      if (curr->left_ != fake_)
+      {
+        q.push(curr->left_);
+      }
+      if (curr->right_ != fake_)
+      {
+        q.push(curr->right_);
+      }
+    }
     return f;
   }
 }
