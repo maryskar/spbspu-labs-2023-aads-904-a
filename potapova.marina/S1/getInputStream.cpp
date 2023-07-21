@@ -11,7 +11,7 @@ std::istream& potapova::getInputStream(int argc, char** argv)
     input_file.open(argv[1]);
     if (!input_file.is_open())
     {
-      throw std::runtime_error("Failed to open file");
+      throw std::ifstream::failure("Failed to open file");
     }
     return input_file;
   }

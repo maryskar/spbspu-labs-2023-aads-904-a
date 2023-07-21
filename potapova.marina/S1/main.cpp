@@ -5,10 +5,20 @@
 #include "queue.h"
 #include "inputInfixQueue.h"
 #include "divideExpression.h"
+#include "getInputStream.h"
 
-int main()
+int main(int argc, char* argv[])
 {
   potapova::expr_queue infix_expr;
+  try
+  {
+    potapova::getInputStream(argc, argv);
+  }
+  catch (const std::exception& e)
+  {
+    std::cerr << "Error: " << e.what() << '\n';
+    return 1;
+  }
   if (!inputInfixQueue(infix_expr))
   {
     std::cerr << "Input error\n";
@@ -35,5 +45,5 @@ int main()
     std::cerr << "Error: " << e.what() << '\n';
     return 1;
   }
-  return 0; 
+  return 0;
 }
