@@ -2,6 +2,8 @@
 #define BINARYSEARCHTREE_H
 
 #include <utility>
+#include <stack.h>
+#include <queue.h>
 #include "Tree.h"
 #include "bidirect_iter.h"
 #include "const_bidirect_iter.h"
@@ -139,6 +141,12 @@ namespace tarasenko
    iterator upper_bound(const T& data);
    const_iterator upper_bound(const T& data) const;
    Compare value_comp() const;
+   template< typename F >
+   F traverse_lnr(F f) const;
+   template< typename F >
+   F traverse_rnl(F f) const;
+   template< typename F >
+   F traverse_breadth(F f) const;
 
   private:
    root_t* fake_;
@@ -753,6 +761,29 @@ namespace tarasenko
   {
     return !(lhs == rhs);
   }
-}
 
+  template< typename T, typename Compare >
+  template< typename F >
+  F BinarySearchTree< T, Compare >::traverse_lnr(F f) const
+  {
+    //...
+    return f;
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F BinarySearchTree< T, Compare >::traverse_rnl(F f) const
+  {
+    //...
+    return f;
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F BinarySearchTree< T, Compare >::traverse_breadth(F f) const
+  {
+    //...
+    return f;
+  }
+}
 #endif

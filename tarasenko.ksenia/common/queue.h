@@ -45,7 +45,7 @@ namespace tarasenko
    void popFront();
    bool isEmpty() const;
   private:
-   details::ForwardList< T > head_;
+   ForwardList< T > head_;
   };
 
   template< typename T >

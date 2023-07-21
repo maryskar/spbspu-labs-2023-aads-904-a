@@ -42,7 +42,7 @@ namespace tarasenko
    void pop();
    bool isEmpty() const;
   private:
-   details::ForwardList< T > top_;
+   ForwardList< T > top_;
   };
 
   template< typename T >
