@@ -9,13 +9,13 @@ void printDict(std::string name, Dictionary< std::string, dict_t >& dict_of_dict
 {
   try
   {
-    out << name;
     dict_t dict = dict_of_dict.at(name);
     if (dict.empty())
     {
       out << "<EMPTY>";
       return;
     }
+    out << name;
     for (auto i = dict.begin(); i != dict.end(); i++)
     {
       out << " " << i->first << " " << i->second;

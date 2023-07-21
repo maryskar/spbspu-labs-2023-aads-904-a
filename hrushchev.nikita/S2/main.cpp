@@ -28,21 +28,21 @@ int main(int argc, char* argv[])
   std::string command = "";
   while (std::cin >> command)
   {
-    if (command == "print")
+    try
     {
-      std::string dict_name = "";
-      std::cin >> dict_name;
-      printDict(dict_name, dict_of_dict, std::cout);
-      std::cout << "\n";
-    }
-    else
-    {
-      std::string res_dict_name = "";
-      std::string first_dict_name = "";
-      std::string second_dict_name = "";
-      std::cin >> res_dict_name >> first_dict_name >> second_dict_name;
-      try
+      if (command == "print")
       {
+        std::string dict_name = "";
+        std::cin >> dict_name;
+        printDict(dict_name, dict_of_dict, std::cout);
+        std::cout << "\n";
+      }
+      else
+      {
+        std::string res_dict_name = "";
+        std::string first_dict_name = "";
+        std::string second_dict_name = "";
+        std::cin >> res_dict_name >> first_dict_name >> second_dict_name;
         if (command == "complement")
         {
           complementDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
@@ -60,10 +60,10 @@ int main(int argc, char* argv[])
           std::cout << "<INVALID COMMAND>\n";
         }
       }
-      catch (...)
-      {
-        std::cout << "<INVALID COMMAND>\n";
-      }
+    }
+    catch (...)
+    {
+      std::cout << "<INVALID COMMAND>\n";
     }
   }
 }
