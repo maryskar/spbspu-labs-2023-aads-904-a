@@ -18,6 +18,10 @@ namespace hrushchev
     using const_iterator = ForwardListConstIterator< std::pair< Key, Value > >;
     Dictionary();
     ~Dictionary() = default;
+    Dictionary(const Dictionary& other);
+    Dictionary(Dictionary&& other);
+    Dictionary< Key, Value, Compare >& operator=(const Dictionary& other);
+    Dictionary< Key, Value, Compare >& operator=(Dictionary&& other);
     iterator begin() noexcept;
     const_iterator cbegin() const noexcept;
     iterator end() noexcept;
@@ -49,6 +53,44 @@ namespace hrushchev
     compare_(),
     size_()
   {
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare >::Dictionary(const Dictionary& other):
+    data_(other.data_),
+    compare_(other.compare_),
+    size_(other.size_)
+  {
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare >::Dictionary(Dictionary&& other):
+    data_(std::move(other.data_)),
+    compare_(other.compare_),
+    size_(other.size_)
+  {
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare >& Dictionary< Key, Value, Compare >::operator=(const Dictionary& other)
+  {
+    if (this == std::addressof(other))
+    {
+      return *this;
+    }
+    data_ = other.data_;
+    return *this;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare >& Dictionary< Key, Value, Compare >::operator=(Dictionary&& other)
+  {
+    if (this == std::addressof(other))
+    {
+      return *this;
+    }
+    data_ = std::move(other.data_);
+    return *this;
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -179,6 +221,7 @@ namespace hrushchev
     if (pos == begin())
     {
       data_.pop_front();
+      size_--;
       return begin();
     }
     else if (pos == end())
@@ -192,6 +235,7 @@ namespace hrushchev
       prev++;
       cur++;
     }
+    size_--;
     return data_.erase_after(prev);
   }
 
