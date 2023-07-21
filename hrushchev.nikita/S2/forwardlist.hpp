@@ -183,6 +183,8 @@ void ForwardList< T >::clear()
     delete head_;
     head_ = temp;
   }
+  delete head_;
+  head_ = nullptr;
 }
 
 template< typename T >
