@@ -96,7 +96,7 @@ namespace mashkin
   };
 
   template< class K, class V, class C >
-  AVL< K, V, C >::iter AVL< K, V, C >::erase(const_iter first, const_iter last)
+  typename AVL< K, V, C >::iter AVL< K, V, C >::erase(const_iter first, const_iter last)
   {
     while (first != last)
     {
@@ -106,7 +106,7 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  AVL< K, V, C >::iter AVL< K, V, C >::erase(iter pos)
+  typename AVL< K, V, C >::iter AVL< K, V, C >::erase(iter pos)
   {
     return erase(const_iter(pos));
   }
