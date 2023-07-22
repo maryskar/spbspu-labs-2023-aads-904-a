@@ -5,15 +5,7 @@
 #include <map.h>
 #include <message.h>
 #include "readDataForTree.h"
-
-class Printer
-{
-public:
- void operator()(const std::pair< long long, std::string >& key_value)
- {
-   std::cout << key_value.second << " ";
- }
-};
+#include "printer.h"
 
 int main(int argc, char* argv[])
 {
@@ -32,11 +24,12 @@ int main(int argc, char* argv[])
   tree_t tree;
   tarasenko::readDataForTree(input, tree);
 
-  Printer print;
-  tarasenko::Map< std::string, Printer(tree_t::*)(Printer f), std::less<> > directs;
-  directs.push("ascending", &tree_t::traverse_lnr< Printer >);
-  directs.push("descending", &tree_t::traverse_rnl< Printer >);
-  directs.push("breadth", &tree_t::traverse_breadth< Printer >);
+  using printer = tarasenko::Printer;
+  printer print(std::cout);
+  tarasenko::Map< std::string, printer(tree_t::*)(printer f), std::less<> > directs;
+  directs.push("ascending", &tree_t::traverse_lnr< printer >);
+  directs.push("descending", &tree_t::traverse_rnl< printer >);
+  directs.push("breadth", &tree_t::traverse_breadth< printer >);
 
   if (tree.isEmpty()) {
     tarasenko::outMessageEmpty(std::cout);
