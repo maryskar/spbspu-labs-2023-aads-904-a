@@ -2,9 +2,9 @@
 #define RBTREE_H
 
 #include "Tree.h"
+#include "BinarySearchTree.h"
 #include "bidirect_iter.h"
 #include "const_bidirect_iter.h"
-#include "BinarySearchTree.h"
 
 namespace tarasenko
 {

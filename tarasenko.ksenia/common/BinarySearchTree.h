@@ -414,7 +414,7 @@ namespace tarasenko
   template< typename T, typename Compare >
   template< class InputIt >
   BidirectionalIterator< T, Compare >
-  BinarySearchTree< T, Compare >::insert(const_iterator pos, InputIt first, InputIt last)
+    BinarySearchTree< T, Compare >::insert(const_iterator pos, InputIt first, InputIt last)
   {
     while (first != last)
     {

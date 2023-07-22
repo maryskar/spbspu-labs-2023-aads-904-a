@@ -15,7 +15,6 @@ namespace tarasenko
      pair_compare():
        compare_()
      {}
-
      bool operator()(const std::pair< Key, Value >& lhs, const std::pair< Key, Value >& rhs) const
      {
        return compare_(lhs.first, rhs.first);
