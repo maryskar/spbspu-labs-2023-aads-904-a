@@ -89,11 +89,29 @@ namespace mashkin
 
     tree* ins_impl(const v_type& data, tree* root, tree* before) const;
 
+    tree* search_near_node(const Key& key, tree* root, tree* before) const;
+
     void clear_impl(tree* toDel);
 
     tree* fake_;
     Comporator comp_;
   };
+
+  template< class K, class V, class C >
+  typename AVL< K, V, C >::tree* AVL< K, V, C  >::search_near_node(const K& key, tree* root, tree* before) const
+  {
+    if (!root)
+    {
+      return before;
+    }
+    if (root->data.first == key)
+    {
+      return root;
+    }
+    before = root;
+    root = search_near_node(key, comp_(key, root->data.first) ? root->left_ : root->right_, before);
+    return root;
+  }
 
   template< class K, class V, class C >
   typename AVL< K, V, C >::iter AVL< K, V, C >::erase(const_iter first, const_iter last)
