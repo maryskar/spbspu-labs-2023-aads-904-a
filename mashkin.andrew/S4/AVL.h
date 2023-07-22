@@ -87,7 +87,7 @@ namespace mashkin
     size_t checkHeight(tree* head);
     size_t checkHeightImpl(tree* head, size_t height);
 
-    tree* ins_impl(const v_type& data, tree* root, tree* before);
+    tree* ins_impl(const v_type& data, tree* root, tree* before) const;
 
     void clear_impl(tree* toDel);
 
@@ -478,7 +478,7 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  typename AVL< K, V, C >::tree* AVL< K, V, C >::ins_impl(const v_type& data, tree* root, tree* before)
+  typename AVL< K, V, C >::tree* AVL< K, V, C >::ins_impl(const v_type& data, tree* root, tree* before) const
   {
     if (!root)
     {
