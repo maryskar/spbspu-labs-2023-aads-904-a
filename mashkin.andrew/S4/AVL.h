@@ -40,11 +40,15 @@ namespace mashkin
     AVL& operator=(AVL&& rhs);
 
     iter begin();
+    const_iter begin() const;
     iter end();
+    const_iter end() const;
     const_iter cbegin() const ;
     const_iter cend() const;
     riter rbegin();
+    const_riter rbegin() const;
     riter rend();
+    const_riter rend() const;
     const_riter crbegin() const;
     const_riter crend() const;
 
@@ -102,6 +106,29 @@ namespace mashkin
     tree* fake_;
     Comporator comp_;
   };
+  template< class K, class V, class C >
+  typename AVL< K, V, C >::const_riter AVL< K, V, C >::rbegin() const
+  {
+    return crbegin();
+  }
+
+  template< class K, class V, class C >
+  typename AVL< K, V, C >::const_riter AVL< K, V, C >::rend() const
+  {
+    return crend();
+  }
+
+  template< class K, class V, class C >
+  typename AVL< K, V, C >::const_iter AVL< K, V, C >::end() const
+  {
+    return cend();
+  }
+
+  template< class K, class V, class C >
+  typename AVL< K, V, C >::const_iter AVL< K, V, C >::begin() const
+  {
+    return cbegin();
+  }
 
   template< class K, class V, class C >
   typename AVL< K, V, C >::tree* AVL< K, V, C  >::search_near_node(const K& key, tree* root, tree* before) const
@@ -444,6 +471,7 @@ namespace mashkin
       insert(*first);
       first++;
     }
+    return iter(last.node_);
   }
 
   template< class K, class V, class C >
