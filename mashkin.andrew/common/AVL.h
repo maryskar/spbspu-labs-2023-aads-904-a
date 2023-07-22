@@ -84,6 +84,9 @@ namespace mashkin
 
     bool contains(const Key& key) const;
 
+    template< class F >
+    F traverse_lnr(F f) const;
+
   private:
     void balance(tree* node);
 
