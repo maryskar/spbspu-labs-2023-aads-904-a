@@ -6,6 +6,7 @@
 #include <message.h>
 #include "readDataForTree.h"
 #include "printer.h"
+#include "summator.h"
 
 int main(int argc, char* argv[])
 {
@@ -25,20 +26,40 @@ int main(int argc, char* argv[])
   tarasenko::readDataForTree(input, tree);
 
   using printer = tarasenko::Printer;
-  printer print(std::cout);
   tarasenko::Map< std::string, printer(tree_t::*)(printer f), std::less<> > directs;
   directs.push("ascending", &tree_t::traverse_lnr< printer >);
   directs.push("descending", &tree_t::traverse_rnl< printer >);
   directs.push("breadth", &tree_t::traverse_breadth< printer >);
 
-  if (tree.isEmpty()) {
+  if (tree.isEmpty())
+  {
     tarasenko::outMessageEmpty(std::cout);
   }
-  std::string direct = argv[1];
-  auto it = directs.find(direct);
-  if (directs.find(direct) == directs.end()) {
-    tarasenko::outMessageInvalidCommand(std::cout);
+  else
+  {
+    std::string direct = argv[1];
+    auto it = directs.find(direct);
+    if (directs.find(direct) == directs.end())
+    {
+      tarasenko::outMessageInvalidCommand(std::cout);
+    }
+    else
+    {
+      try
+      {
+        tarasenko::Summator sum;
+        sum = tree.traverse_lnr(sum);
+        std::cout << sum.getResult();
+      }
+      catch (const std::overflow_error& e)
+      {
+        std::cout << e.what() << "\n";
+        return 1;
+      }
+      printer print(std::cout);
+      std::cout << " ";
+      (tree.*(it->second))(print);
+    }
   }
-  (tree.*(it->second))(print);
   std::cout << "\n";
 }

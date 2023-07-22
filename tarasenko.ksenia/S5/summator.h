@@ -3,7 +3,7 @@
 
 #include <utility>
 #include <string>
-#include <mathfunc.cpp>
+#include <mathfunc.h>
 
 namespace tarasenko
 {
