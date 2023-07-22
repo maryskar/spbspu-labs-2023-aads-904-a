@@ -19,8 +19,8 @@ namespace tarasenko
    using RBTree = RedBlackTree< T, Compare >;
    using iterator = BidirectionalIterator< T, Compare >;
    using const_iterator = ConstBidirectionalIterator< T, Compare >;
-   using reverse_iterator	= std::reverse_iterator< iterator >;
-   using const_reverse_iterator =	std::reverse_iterator< const_iterator >;
+   using reverse_iterator = std::reverse_iterator< iterator >;
+   using const_reverse_iterator = std::reverse_iterator< const_iterator >;
   public:
    RedBlackTree():
      root_()
