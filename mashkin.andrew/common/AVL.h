@@ -87,6 +87,9 @@ namespace mashkin
     template< class F >
     F traverse_lnr(F f) const;
 
+    template< class F >
+    F traverse_rnl(F f) const;
+
   private:
     template< class F >
     F traverse_lnr_impl(tree* root, F f) const;
