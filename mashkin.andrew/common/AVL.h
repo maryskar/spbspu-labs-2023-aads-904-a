@@ -93,6 +93,8 @@ namespace mashkin
 
   private:
     template< class F >
+    F traverse_breadth_impl(tree* root, size_t height, F f) const;
+    template< class F >
     F traverse_rnl_impl(tree* root, F f) const;
     template< class F >
     F traverse_lnr_impl(tree* root, F f) const;
@@ -118,6 +120,34 @@ namespace mashkin
     tree* fake_;
     Comporator comp_;
   };
+
+  template< class K, class V, class C >
+  template< class F >
+  F AVL< K, V, C >::traverse_breadth_impl(tree* root, size_t height, F f) const
+  {
+    if (!root)
+    {
+      return f;
+    }
+    if (checkHeight(root) == height)
+    {
+      f(root->data);
+    }
+    f = traverse_lnr_impl(root->right_, f);
+    f = traverse_lnr_impl(root->left_, f);
+    return f;
+  }
+
+  template< class K, class V, class C >
+  template< class F >
+  F AVL< K, V, C >::traverse_breadth(F f) const
+  {
+    auto height = checkHeight(fake_->parent_);
+    for (auto i = 0; i != height; i++)
+    {
+      f = traverse_breadth_impl(fake_->parant_, i, f);
+    }
+  }
 
   template< class K, class V, class C >
   template< class F >
