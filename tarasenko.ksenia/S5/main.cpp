@@ -3,12 +3,13 @@
 #include <string>
 #include <RedBlackTree.h>
 #include <map.h>
+#include <message.h>
 #include "readDataForTree.h"
 
 class Printer
 {
 public:
- void operator()(const std::pair< int, std::string >& key_value)
+ void operator()(const std::pair< long long, std::string >& key_value)
  {
    std::cout << key_value.second << " ";
  }
@@ -28,21 +29,22 @@ int main(int argc, char* argv[])
     return 1;
   }
   using tree_t = tarasenko::RedBlackTree< std::pair< long long, std::string >, std::less<> >;
-  tarasenko::RedBlackTree< std::pair< long long, std::string >, std::less<> > tree;
+  tree_t tree;
   tarasenko::readDataForTree(input, tree);
+
   Printer print;
-  tarasenko::Map< std::string, decltype(&tree_t::traverse_lnr< Printer >), std::less<> > directs;
+  tarasenko::Map< std::string, Printer(tree_t::*)(Printer f), std::less<> > directs;
   directs.push("ascending", &tree_t::traverse_lnr< Printer >);
   directs.push("descending", &tree_t::traverse_rnl< Printer >);
   directs.push("breadth", &tree_t::traverse_breadth< Printer >);
 
   if (tree.isEmpty()) {
-    std::cout << "<EMPTY>";
+    tarasenko::outMessageEmpty(std::cout);
   }
   std::string direct = argv[1];
   auto it = directs.find(direct);
   if (directs.find(direct) == directs.end()) {
-    std::cout << "<INVALID COMMAND>";
+    tarasenko::outMessageInvalidCommand(std::cout);
   }
   (tree.*(it->second))(print);
   std::cout << "\n";

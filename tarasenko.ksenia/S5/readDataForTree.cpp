@@ -13,4 +13,3 @@ void tarasenko::readDataForTree(std::istream& in,
     }
   }
 }
-
