@@ -117,7 +117,8 @@ namespace mashkin
   template< class F >
   F AVL< K, V, C >::traverse_lnr_impl(tree* root, F f) const
   {
-    if (!root) {
+    if (!root)
+    {
       return f;
     }
     f = traverse_lnr_impl(root->left_, f);
