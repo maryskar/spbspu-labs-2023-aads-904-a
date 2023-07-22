@@ -18,8 +18,8 @@ namespace tarasenko
    using root_t = details::Tree< T, Compare >;
    using iterator = BidirectionalIterator< T, Compare >;
    using const_iterator = ConstBidirectionalIterator< T, Compare >;
-   using reverse_iterator	= std::reverse_iterator< iterator >;
-   using const_reverse_iterator =	std::reverse_iterator< const_iterator >;
+   using reverse_iterator = std::reverse_iterator< iterator >;
+   using const_reverse_iterator = std::reverse_iterator< const_iterator >;
   public:
    friend class RedBlackTree< T, Compare >;
 
@@ -317,7 +317,7 @@ namespace tarasenko
 
   template< typename T, typename Compare >
   std::pair< BidirectionalIterator< T, Compare >, BidirectionalIterator< T, Compare > >
-     BinarySearchTree< T, Compare >::insert(const T& data, iterator it)
+    BinarySearchTree< T, Compare >::insert(const T& data, iterator it)
   {
     auto inserted = end();
     auto node = it.node_;
@@ -392,7 +392,7 @@ namespace tarasenko
 
   template< typename T, typename Compare >
   BidirectionalIterator< T, Compare >
-     BinarySearchTree< T, Compare >::insert(const_iterator pos, const T& data)
+    BinarySearchTree< T, Compare >::insert(const_iterator pos, const T& data)
   {
     if (compare_(data, *pos) && compare_(*(--pos), data))
     {
@@ -405,7 +405,7 @@ namespace tarasenko
 
   template< typename T, typename Compare >
   BidirectionalIterator< T, Compare >
-     BinarySearchTree< T, Compare >::insert(const_iterator pos, T&& data)
+    BinarySearchTree< T, Compare >::insert(const_iterator pos, T&& data)
   {
     const T value = std::forward< T >(data);
     return insert(pos, value);
@@ -414,7 +414,7 @@ namespace tarasenko
   template< typename T, typename Compare >
   template< class InputIt >
   BidirectionalIterator< T, Compare >
-     BinarySearchTree< T, Compare >::insert(const_iterator pos, InputIt first, InputIt last)
+  BinarySearchTree< T, Compare >::insert(const_iterator pos, InputIt first, InputIt last)
   {
     while (first != last)
     {
@@ -494,7 +494,7 @@ namespace tarasenko
 
   template< typename T, typename Compare >
   ConstBidirectionalIterator< T, Compare >
-     BinarySearchTree< T, Compare >::find(const T& data, const_iterator it) const
+    BinarySearchTree< T, Compare >::find(const T& data, const_iterator it) const
   {
     if (it.node_ == fake_)
     {
