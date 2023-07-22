@@ -88,6 +88,8 @@ namespace mashkin
     F traverse_lnr(F f) const;
     template< class F >
     F traverse_rnl(F f) const;
+    template< class F >
+    F traverse_breadth(F f) const;
 
   private:
     template< class F >
