@@ -61,6 +61,7 @@ namespace mashkin
     iter erase(const_iter pos);
     iter erase(const_iter first, const_iter last);
 
+    iter lower_bound(const Key& key);
     const_iter lower_bound(const Key& key) const;
 
     void clear();
@@ -113,6 +114,13 @@ namespace mashkin
     before = root;
     root = search_near_node(key, comp_(key, root->data.first) ? root->left_ : root->right_, before);
     return root;
+  }
+
+  template< class K, class V, class C >
+  typename AVL< K, V, C >::iter AVL< K, V, C >::lower_bound(const K& key)
+  {
+    auto toReturn = static_cast< const AVL& >(*this).lower_bound(key);
+    return iter(toReturn.node_);
   }
 
   template< class K, class V, class C >
