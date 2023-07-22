@@ -19,6 +19,7 @@ namespace tarasenko
      out_ << key_value.second;
      wasCalled_ = true;
    }
+
   private:
    bool wasCalled_;
    std::ostream& out_;
