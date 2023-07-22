@@ -352,7 +352,7 @@ namespace mashkin
   typename AVL< K, V, C >::const_iter AVL< K, V, C >::find(const K& key) const
   {
     auto it = cbegin();
-    while (it->first != key && it != cend())
+    while (it != cend() && it->first != key)
     {
       it++;
     }
