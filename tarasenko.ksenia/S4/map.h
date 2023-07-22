@@ -1,5 +1,5 @@
-#ifndef MAP_H
-#define MAP_H
+#ifndef S4_MAP_H
+#define S4_MAP_H
 
 #include <utility>
 #include "RedBlackTree.h"

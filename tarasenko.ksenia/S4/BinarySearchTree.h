@@ -1,5 +1,5 @@
-#ifndef BINARYSEARCHTREE_H
-#define BINARYSEARCHTREE_H
+#ifndef S4_BINARYSEARCHTREE_H
+#define S4_BINARYSEARCHTREE_H
 
 #include <utility>
 #include "Tree.h"

@@ -1,5 +1,5 @@
-#ifndef RBTREE_H
-#define RBTREE_H
+#ifndef S4_RBTREE_H
+#define S4_RBTREE_H
 
 #include "Tree.h"
 #include "bidirect_iter.h"
@@ -578,5 +578,4 @@ namespace tarasenko
     return !(lhs == rhs);
   }
 }
-
 #endif
