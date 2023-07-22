@@ -142,9 +142,15 @@ namespace tarasenko
    const_iterator upper_bound(const T& data) const;
    Compare value_comp() const;
    template< typename F >
+   F traverse_lnr(F f);
+   template< typename F >
    F traverse_lnr(F f) const;
    template< typename F >
+   F traverse_rnl(F f);
+   template< typename F >
    F traverse_rnl(F f) const;
+   template< typename F >
+   F traverse_breadth(F f);
    template< typename F >
    F traverse_breadth(F f) const;
 
@@ -764,6 +770,13 @@ namespace tarasenko
 
   template< typename T, typename Compare >
   template< typename F >
+  F BinarySearchTree< T, Compare >::traverse_lnr(F f)
+  {
+    return static_cast< const BSTree& >(*this).traverse_lnr(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
   F BinarySearchTree< T, Compare >::traverse_lnr(F f) const
   {
     if (root_)
@@ -791,6 +804,13 @@ namespace tarasenko
 
   template< typename T, typename Compare >
   template< typename F >
+  F BinarySearchTree< T, Compare >::traverse_rnl(F f)
+  {
+    return static_cast< const BSTree& >(*this).traverse_rnl(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
   F BinarySearchTree< T, Compare >::traverse_rnl(F f) const
   {
     if (root_)
@@ -814,6 +834,13 @@ namespace tarasenko
       }
     }
     return f;
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F BinarySearchTree< T, Compare >::traverse_breadth(F f)
+  {
+    return static_cast< const BSTree& >(*this).traverse_breadth(f);
   }
 
   template< typename T, typename Compare >

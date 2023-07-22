@@ -120,9 +120,15 @@ namespace tarasenko
    Compare value_comp() const;
    bool isEqualTo(const RBTree& other) const;
    template< typename F >
+   F traverse_lnr(F f);
+   template< typename F >
    F traverse_lnr(F f) const;
    template< typename F >
+   F traverse_rnl(F f);
+   template< typename F >
    F traverse_rnl(F f) const;
+   template< typename F >
+   F traverse_breadth(F f);
    template< typename F >
    F traverse_breadth(F f) const;
 
@@ -586,6 +592,13 @@ namespace tarasenko
 
   template< typename T, typename Compare >
   template< typename F >
+  F RedBlackTree< T, Compare >::traverse_lnr(F f)
+  {
+    return root_.traverse_lnr(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
   F RedBlackTree< T, Compare >::traverse_lnr(F f) const
   {
     return root_.traverse_lnr(f);
@@ -593,9 +606,23 @@ namespace tarasenko
 
   template< typename T, typename Compare >
   template< typename F >
+  F RedBlackTree< T, Compare >::traverse_rnl(F f)
+  {
+    return root_.traverse_rnl(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
   F RedBlackTree< T, Compare >::traverse_rnl(F f) const
   {
     return root_.traverse_rnl(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F RedBlackTree< T, Compare >::traverse_breadth(F f)
+  {
+    return root_.traverse_breadth(f);
   }
 
   template< typename T, typename Compare >
