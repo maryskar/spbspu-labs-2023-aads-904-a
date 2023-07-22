@@ -1,5 +1,5 @@
-#ifndef FORWARDLISTITERATOR_H
-#define FORWARDLISTITERATOR_H
+#ifndef FORWARDITERATOR_H
+#define FORWARDITERATOR_H
 #include <cassert>
 #include <list.h>
 #include <memory>
@@ -7,13 +7,13 @@
 namespace fesenko
 {
   template< typename T >
-  class ForwardListIterator
+  class ForwardIterator
   {
    public:
-    using this_t = ForwardListIterator< T >;
-    ForwardListIterator();
-    ForwardListIterator(const this_t &) = default;
-    ~ForwardListIterator() = default;
+    using this_t = ForwardIterator< T >;
+    ForwardIterator();
+    ForwardIterator(const this_t &) = default;
+    ~ForwardIterator() = default;
     this_t &operator=(const this_t &) = default;
     this_t &operator++();
     this_t operator++(int);
@@ -28,12 +28,12 @@ namespace fesenko
   };
 
   template< typename T >
-  ForwardListIterator< T >::ForwardListIterator():
+  ForwardIterator< T >::ForwardIterator():
     node_(nullptr)
   {}
 
   template< typename T >
-  ForwardListIterator< T > &ForwardListIterator< T >::operator++()
+  ForwardIterator< T > &ForwardIterator< T >::operator++()
   {
     assert(node_ != nullptr);
     node_ = node_->next;
@@ -41,7 +41,7 @@ namespace fesenko
   }
 
   template< typename T >
-  ForwardListIterator< T > ForwardListIterator< T >::operator++(int)
+  ForwardIterator< T > ForwardIterator< T >::operator++(int)
   {
     assert(node_ != nullptr);
     this_t result(*this);
@@ -50,39 +50,39 @@ namespace fesenko
   }
 
   template< typename T >
-  const T &ForwardListIterator< T >::operator*() const
+  const T &ForwardIterator< T >::operator*() const
   {
     assert(node_ != nullptr);
     return node_->data;
   }
 
   template< typename T >
-  T &ForwardListIterator< T >::operator*()
+  T &ForwardIterator< T >::operator*()
   {
-    return const_cast< T & >((static_cast< const ForwardListIterator< T > >(*this)).operator*());
+    return const_cast< T & >((static_cast< const ForwardIterator< T > >(*this)).operator*());
   }
 
   template< typename T >
-  const T *ForwardListIterator< T >::operator->() const
+  const T *ForwardIterator< T >::operator->() const
   {
     assert(node_ != nullptr);
     return std::addressof(node_->data);
   }
 
   template< typename T >
-  T *ForwardListIterator< T >::operator->()
+  T *ForwardIterator< T >::operator->()
   {
-    return const_cast< T * >((static_cast< const ForwardListIterator< T > >(*this)).operator->());
+    return const_cast< T * >((static_cast< const ForwardIterator< T > >(*this)).operator->());
   }
 
   template< typename T >
-  bool ForwardListIterator< T >::operator==(const this_t &rhs) const
+  bool ForwardIterator< T >::operator==(const this_t &rhs) const
   {
     return node_ == rhs.mode;
   }
 
   template< typename T >
-  bool ForwardListIterator< T >::operator!=(const this_t &rhs) const
+  bool ForwardIterator< T >::operator!=(const this_t &rhs) const
   {
     return !(rhs == *this);
   }
