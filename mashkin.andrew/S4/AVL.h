@@ -61,6 +61,8 @@ namespace mashkin
     iter erase(const_iter pos);
     iter erase(const_iter first, const_iter last);
 
+    const_iter lower_bound(const Key& key) const;
+
     void clear();
     size_t size();
     bool empty();
@@ -111,6 +113,19 @@ namespace mashkin
     before = root;
     root = search_near_node(key, comp_(key, root->data.first) ? root->left_ : root->right_, before);
     return root;
+  }
+
+  template< class K, class V, class C >
+  typename AVL< K, V, C >::const_iter AVL< K, V, C >::lower_bound(const K& key) const
+  {
+    auto node = fake_->parent_;
+    node = search_near_node(key, node, node);
+    const_iter toReturn(node);
+    if (!comp_(key, node->data.first) && node->data.first != key)
+    {
+      toReturn++;
+    }
+    return toReturn;
   }
 
   template< class K, class V, class C >
