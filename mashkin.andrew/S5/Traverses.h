@@ -8,5 +8,7 @@ namespace mashkin
 {
   using avl = AVL< int, std::string >;
   void ascend(std::ostream& out, avl& tree);
+  void descend(std::ostream& out, avl& tree);
+  void doBreadthTr(std::ostream& out, avl& tree);
 }
 #endif

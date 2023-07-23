@@ -17,4 +17,11 @@ namespace mashkin
     tree.traverse_rnl(res);
     out << res.res_;
   }
+
+  void doBreadthTr(std::ostream& out, avl& tree)
+  {
+    StackForTraverse res;
+    tree.traverse_breadth(res);
+    out << res.res_;
+  }
 }
