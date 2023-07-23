@@ -4,6 +4,7 @@
 #include "AVL.h"
 #include "queue.h"
 #include "stack.h"
+#include "../S5/structsForTraverse.h"
 
 namespace mashkin
 {
@@ -28,5 +29,7 @@ namespace mashkin
   std::ostream& operator<<(std::ostream& out, const dictionary& dicts);
   std::ostream& operator<<(std::ostream& out, const Queue< std::string >& que);
   std::ostream& operator<<(std::ostream& out, const Stack< std::string >& stack);
+  std::ostream& operator<<(std::ostream& out, const QueueForTraverse& queueForTraverse);
+  std::ostream& operator<<(std::ostream& out, const StackForTraverse& stackForTraverse);
 }
 #endif
