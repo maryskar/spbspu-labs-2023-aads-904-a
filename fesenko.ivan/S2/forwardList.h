@@ -19,8 +19,8 @@ namespace fesenko
     ForwardList();
     ForwardList(const this_t &);
     ForwardList(this_t &&);
-    ForwardList< T > &operator=(const this_t &);
-    ForwardList< T > &operator=(this_t &&);
+    this_t &operator=(const this_t &);
+    this_t &operator=(this_t &&);
     ~ForwardList();
   };
 }
