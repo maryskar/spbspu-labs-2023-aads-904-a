@@ -40,7 +40,7 @@ mashkin::Queue< T >::Queue(const Queue< T >& lhs):
   head_(nullptr),
   tail_(nullptr)
 {
-  auto var = head_;
+  auto var = lhs.head_;
   while (var)
   {
     enqueue(var->data);
