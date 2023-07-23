@@ -148,6 +148,7 @@ namespace mashkin
     {
       traverse_breadth_impl(node, i, f);
     }
+    return f;
   }
 
   template< class K, class V, class C >
