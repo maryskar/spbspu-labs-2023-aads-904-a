@@ -85,19 +85,19 @@ namespace mashkin
     bool contains(const Key& key) const;
 
     template< class F >
-    F traverse_lnr(F f) const;
+    F traverse_lnr(F& f) const;
     template< class F >
-    F traverse_rnl(F f) const;
+    F traverse_rnl(F& f) const;
     template< class F >
-    F traverse_breadth(F f) const;
+    F traverse_breadth(F& f) const;
 
   private:
     template< class F >
-    F traverse_breadth_impl(tree* root, size_t height, F f) const;
+    F traverse_breadth_impl(tree* root, size_t height, F& f) const;
     template< class F >
-    F traverse_rnl_impl(tree* root, F f) const;
+    F traverse_rnl_impl(tree* root, F& f) const;
     template< class F >
-    F traverse_lnr_impl(tree* root, F f) const;
+    F traverse_lnr_impl(tree* root, F& f) const;
 
     void balance(tree* node);
 
@@ -123,7 +123,7 @@ namespace mashkin
 
   template< class K, class V, class C >
   template< class F >
-  F AVL< K, V, C >::traverse_breadth_impl(tree* root, size_t height, F f) const
+  F AVL< K, V, C >::traverse_breadth_impl(tree* root, size_t height, F& f) const
   {
     if (!root)
     {
@@ -140,7 +140,7 @@ namespace mashkin
 
   template< class K, class V, class C >
   template< class F >
-  F AVL< K, V, C >::traverse_breadth(F f) const
+  F AVL< K, V, C >::traverse_breadth(F& f) const
   {
     auto height = checkHeight(fake_->parent_);
     for (auto i = 0; i != height; i++)
@@ -151,7 +151,7 @@ namespace mashkin
 
   template< class K, class V, class C >
   template< class F >
-  F AVL< K, V, C >::traverse_rnl_impl(tree* root, F f) const
+  F AVL< K, V, C >::traverse_rnl_impl(tree* root, F& f) const
   {
     if (!root)
     {
@@ -165,28 +165,28 @@ namespace mashkin
 
   template< class K, class V, class C >
   template< class F >
-  F AVL< K, V, C >::traverse_rnl(F f) const
+  F AVL< K, V, C >::traverse_rnl(F& f) const
   {
     return traverse_rnl_impl(fake_->parent_, f);
   }
 
   template< class K, class V, class C >
   template< class F >
-  F AVL< K, V, C >::traverse_lnr_impl(tree* root, F f) const
+  F AVL< K, V, C >::traverse_lnr_impl(tree* root, F& f) const
   {
     if (!root)
     {
       return f;
     }
-    f = traverse_lnr_impl(root->left_, f);
+    traverse_lnr_impl(root->left_, f);
     f(root->data);
-    f = traverse_lnr_impl(root->right_, f);
+    traverse_lnr_impl(root->right_, f);
     return f;
   }
 
   template< class K, class V, class C>
   template< class F >
-  F AVL< K, V, C >::traverse_lnr(F f) const
+  F AVL< K, V, C >::traverse_lnr(F& f) const
   {
     return traverse_lnr_impl(fake_->parent_, f);
   }
