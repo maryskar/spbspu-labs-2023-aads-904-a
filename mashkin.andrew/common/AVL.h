@@ -133,8 +133,8 @@ namespace mashkin
     {
       f(root->data);
     }
-    f = traverse_lnr_impl(root->right_, f);
-    f = traverse_lnr_impl(root->left_, f);
+    traverse_lnr_impl(root->right_, f);
+    traverse_lnr_impl(root->left_, f);
     return f;
   }
 
@@ -145,7 +145,7 @@ namespace mashkin
     auto height = checkHeight(fake_->parent_);
     for (auto i = 0; i != height; i++)
     {
-      f = traverse_breadth_impl(fake_->parant_, i, f);
+      traverse_breadth_impl(fake_->parant_, i, f);
     }
   }
 
@@ -157,9 +157,9 @@ namespace mashkin
     {
       return f;
     }
-    f = traverse_lnr_impl(root->right_, f);
+    traverse_lnr_impl(root->right_, f);
     f(root->data);
-    f = traverse_lnr_impl(root->left_, f);
+    traverse_lnr_impl(root->left_, f);
     return f;
   }
 
