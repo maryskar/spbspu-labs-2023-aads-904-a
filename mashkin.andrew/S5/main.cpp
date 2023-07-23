@@ -40,6 +40,11 @@ int main(int argc, char** argv)
         input.ignore(maxSize, '\n');
       }
     }
+    if (avl.empty())
+    {
+      std::cout << "<EMPTY>\n";
+      return 0;
+    }
     mashkin::AVL< std::string, void (*)(std::ostream&, dict&) > commands;
     mashkin::createTreeWithTraverses(commands);
     if (commands.contains(argv[1]))
