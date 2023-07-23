@@ -15,11 +15,12 @@ namespace fesenko
     using const_iterator = ConstForwardIterator< T >;
     using size_type = std::size_t;
     using difference_type = std::ptrdiff_t;
+    using this_t = ForwardList< T >;
     ForwardList();
-    ForwardList(const ForwardList< T > &);
-    ForwardList(ForwardList< T > &&);
-    ForwardList< T > &operator=(const ForwardList< T > &);
-    ForwardList< T > &operator=(ForwardList< T > &&);
+    ForwardList(const this_t &);
+    ForwardList(this_t &&);
+    ForwardList< T > &operator=(const this_t &);
+    ForwardList< T > &operator=(this_t &&);
     ~ForwardList();
   };
 }
