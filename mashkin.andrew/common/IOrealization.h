@@ -2,6 +2,8 @@
 #define S4_IOREALIZATION_H
 #include <ios>
 #include "AVL.h"
+#include "queue.h"
+#include "stack.h"
 
 namespace mashkin
 {
@@ -24,5 +26,7 @@ namespace mashkin
   std::istream& operator>>(std::istream& inp, dictionary& dict);
   std::istream& operator>>(std::istream& inp, dictionaries& dicts);
   std::ostream& operator<<(std::ostream& out, const dictionary& dicts);
+  std::ostream& operator<<(std::ostream& out, const Queue< std::string >& que);
+  std::ostream& operator<<(std::ostream& out, const Stack< std::string >& stack);
 }
 #endif
