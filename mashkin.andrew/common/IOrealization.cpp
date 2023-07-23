@@ -119,4 +119,25 @@ namespace mashkin
     }
     return out;
   }
+
+  std::ostream& operator<<(std::ostream& out, const Stack< std::string >& stack)
+  {
+    std::ostream::sentry sentry(out);
+    if (!sentry)
+    {
+      return out;
+    }
+    iofmtguard fmtguard(out);
+    Stack< std::string > res(stack);
+    while (res.isEmpty())
+    {
+      out << res.getTop();
+      res.pop();
+      if (!res.isEmpty())
+      {
+        out << " ";
+      }
+    }
+    return out;
+  }
 }
