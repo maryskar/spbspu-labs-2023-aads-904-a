@@ -49,7 +49,8 @@ int main(int argc, char** argv)
     }
     else
     {
-      std::cout << "<INVALID COMMAND>\n";
+      std::cerr << "<INVALID COMMAND>\n";
+      return 1;
     }
   }
   return 0;
