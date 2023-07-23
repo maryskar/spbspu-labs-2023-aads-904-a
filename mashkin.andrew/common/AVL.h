@@ -108,8 +108,8 @@ namespace mashkin
     void rotate_RightLeft(tree* node);
     void rotate_LeftRight(tree* node);
 
-    size_t checkHeight(tree* head);
-    size_t checkHeightImpl(tree* head, size_t height);
+    size_t checkHeight(tree* head) const;
+    size_t checkHeightImpl(tree* head, size_t height) const;
 
     tree* ins_impl(const v_type& data, tree* root, tree* before) const;
 
@@ -142,10 +142,11 @@ namespace mashkin
   template< class F >
   F AVL< K, V, C >::traverse_breadth(F& f) const
   {
-    auto height = checkHeight(fake_->parent_);
+    tree* node = fake_->parent_;
+    auto height = checkHeight(node);
     for (auto i = 0; i != height; i++)
     {
-      traverse_breadth_impl(fake_->parant_, i, f);
+      traverse_breadth_impl(node, i, f);
     }
   }
 
@@ -632,7 +633,7 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  size_t AVL< K, V, C >::checkHeightImpl(tree* head, size_t height)
+  size_t AVL< K, V, C >::checkHeightImpl(tree* head, size_t height) const
   {
     if (!head)
     {
@@ -646,7 +647,7 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  size_t AVL< K, V, C >::checkHeight(tree* head)
+  size_t AVL< K, V, C >::checkHeight(tree* head) const
   {
     size_t height = 0;
     return checkHeightImpl(head, height);
