@@ -144,7 +144,7 @@ namespace mashkin
   {
     tree* node = fake_->parent_;
     auto height = checkHeight(node);
-    for (auto i = 0; i != height; i++)
+    for (size_t i = 0; i != height; i++)
     {
       traverse_breadth_impl(node, i, f);
     }
