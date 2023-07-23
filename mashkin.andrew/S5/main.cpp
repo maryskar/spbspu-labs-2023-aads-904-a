@@ -1,15 +1,11 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
+#include <stdexcept>
 #include <string>
-#include <utility>
 #include <IOrealization.h>
 #include "AVL.h"
-#include "AVL_iterator.h"
-#include "AVL_reverse_iter.h"
 #include "TreeWithTraverses.h"
-#include "const_AVL_iterator.h"
-#include "const_AVL_reverse_iter.h"
 #include "tree.h"
 
 int main(int argc, char** argv)
@@ -47,14 +43,22 @@ int main(int argc, char** argv)
     }
     mashkin::AVL< std::string, void (*)(std::ostream&, dict&) > commands;
     mashkin::createTreeWithTraverses(commands);
-    if (commands.contains(argv[1]))
+    try
     {
-      commands[argv[1]](std::cout, avl);
-      std::cout << "\n";
+      if (commands.contains(argv[1]))
+      {
+        commands[argv[1]](std::cout, avl);
+        std::cout << "\n";
+      }
+      else
+      {
+        std::cerr << "<INVALID COMMAND>\n";
+        return 1;
+      }
     }
-    else
+    catch (const std::exception& exception)
     {
-      std::cerr << "<INVALID COMMAND>\n";
+      std::cerr << exception.what() << "\n";
       return 1;
     }
   }
