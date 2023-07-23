@@ -10,12 +10,14 @@ namespace mashkin
   struct QueueForTraverse
   {
     void operator()(const std::pair< const int, std::string >& key_value);
+    int summ_ = 0;
     mashkin::Queue< std::string > res_;
   };
 
   struct StackForTraverse
   {
     void operator()(const std::pair< const int, std::string >& key_value);
+    int summ_ = 0;
     mashkin::Stack< std::string > res_;
   };
 }
