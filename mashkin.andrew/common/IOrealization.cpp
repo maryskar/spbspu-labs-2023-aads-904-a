@@ -112,7 +112,7 @@ namespace mashkin
     {
       out << res.getHead();
       res.dequeue();
-      if (!res.isEmpty())
+      if (res.isEmpty())
       {
         out << " ";
       }
@@ -133,7 +133,7 @@ namespace mashkin
     {
       out << res.getTop();
       res.pop();
-      if (!res.isEmpty())
+      if (res.isEmpty())
       {
         out << " ";
       }
