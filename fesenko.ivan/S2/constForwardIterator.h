@@ -1,8 +1,9 @@
 #ifndef CONSTFORWARDITERATOR_H
 #define CONSTFORWARDITERATOR_H
 #include <cassert>
-#include <list.h>
 #include <memory>
+#include <list.h>
+#include "forwardIterator.h"
 namespace fesenko
 {
   template< typename T >
@@ -12,6 +13,7 @@ namespace fesenko
     using this_t = ConstForwardIterator< T >;
     ConstForwardIterator();
     ConstForwardIterator(const this_t &) = default;
+    explicit ConstForwardIterator(const ForwardIterator< T > &);
     ~ConstForwardIterator() = default;
     this_t &operator=(const this_t &) = default;
     this_t &operator++();
@@ -27,6 +29,11 @@ namespace fesenko
   template< typename T >
   ConstForwardIterator< T >::ConstForwardIterator():
     node_(nullptr)
+  {}
+
+  template< typename T >
+  ConstForwardIterator< T >::ConstForwardIterator(const ForwardIterator< T > &rhs):
+    node_(static_cast< const List< T > * >(rhs.node_))
   {}
 
   template< typename T >

@@ -7,8 +7,12 @@
 namespace fesenko
 {
   template< typename T >
+  class ConstForwardIterator;
+
+  template< typename T >
   class ForwardIterator
   {
+    friend class ConstForwardIterator< T >;
    public:
     using this_t = ForwardIterator< T >;
     ForwardIterator();
