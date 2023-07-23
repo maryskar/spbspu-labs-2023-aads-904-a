@@ -2,12 +2,17 @@
 #include <iostream>
 #include <iterator>
 #include <string>
+#include <limits>
+#include <stdexcept>
 #include "AVL.h"
 #include "queue.h"
 #include "stack.h"
 
 namespace mashkin
 {
+  constexpr long maxInt = std::numeric_limits< int >::max();
+  constexpr long minInt = std::numeric_limits< int >::min();
+
   std::istream& operator>>(std::istream& inp, dictionary& dict)
   {
     std::istream::sentry sentry(inp);
@@ -15,9 +20,18 @@ namespace mashkin
     {
       return inp;
     }
-    int key;
+    long long var;
     std::string value;
-    inp >> key;
+    inp >> var;
+    if (var > maxInt)
+    {
+      throw std::overflow_error("Overflow of int");
+    }
+    else if (var < minInt)
+    {
+      throw std::underflow_error("Underflow of int");
+    }
+    int key = static_cast< int >(var);
     if (inp.peek() == '\n')
     {
       inp.setstate(std::ios::failbit);

@@ -29,11 +29,19 @@ int main(int argc, char** argv)
     dict avl;
     while (!input.eof())
     {
-      input >> avl;
-      if (input.fail())
+      try
       {
-        input.clear();
-        input.ignore(maxSize, '\n');
+        input >> avl;
+        if (input.fail())
+        {
+          input.clear();
+          input.ignore(maxSize, '\n');
+        }
+      }
+      catch (const std::exception& ex)
+      {
+        std::cerr << ex.what() << "\n";
+        return 1;
       }
     }
     if (avl.empty())
