@@ -133,8 +133,8 @@ namespace mashkin
     {
       f(root->data);
     }
-    traverse_lnr_impl(root->right_, f);
-    traverse_lnr_impl(root->left_, f);
+    traverse_breadth_impl(root->right_, height, f);
+    traverse_breadth_impl(root->left_, height, f);
     return f;
   }
 
@@ -144,7 +144,7 @@ namespace mashkin
   {
     tree* node = fake_->parent_;
     auto height = checkHeight(node);
-    for (size_t i = 0; i != height; i++)
+    for (size_t i = 1; i <= height; i++)
     {
       traverse_breadth_impl(node, i, f);
     }
