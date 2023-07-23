@@ -10,4 +10,11 @@ namespace mashkin
     tree.traverse_lnr(res);
     out << res.res_;
   }
+
+  void descend(std::ostream& out, avl& tree)
+  {
+    QueueForTraverse res;
+    tree.traverse_rnl(res);
+    out << res.res_;
+  }
 }
