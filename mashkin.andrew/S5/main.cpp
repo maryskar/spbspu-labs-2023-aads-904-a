@@ -45,6 +45,7 @@ int main(int argc, char** argv)
     if (commands.contains(argv[1]))
     {
       commands[argv[1]](std::cout, avl);
+      std::cout << "\n";
     }
     else
     {
