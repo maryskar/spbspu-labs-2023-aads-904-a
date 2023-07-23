@@ -3,6 +3,8 @@
 #include <iterator>
 #include <string>
 #include "AVL.h"
+#include "queue.h"
+#include "stack.h"
 
 namespace mashkin
 {
@@ -93,6 +95,27 @@ namespace mashkin
     for (auto it = dicts.begin(); it != dicts.end(); it++)
     {
       out << " " << it->first << " " << it->second;
+    }
+    return out;
+  }
+
+  std::ostream& operator<<(std::ostream& out, const Queue< std::string >& que)
+  {
+    std::ostream::sentry sentry(out);
+    if (!sentry)
+    {
+      return out;
+    }
+    iofmtguard fmtguard(out);
+    Queue< std::string > res(que);
+    while (res.isEmpty())
+    {
+      out << res.getHead();
+      res.dequeue();
+      if (!res.isEmpty())
+      {
+        out << " ";
+      }
     }
     return out;
   }
