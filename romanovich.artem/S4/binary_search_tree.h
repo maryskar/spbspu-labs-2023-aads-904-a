@@ -1,24 +1,147 @@
 #ifndef BINARY_SEARCH_TREE_H
 #define BINARY_SEARCH_TREE_H
 #include <functional>
+#include <cstddef>
 #include "tree_node.h"
 template< typename Key, typename Value, typename Compare = std::less< Key >>
 class BinarySearchTree
 {
 public:
+  using bst_t = BinarySearchTree< Key, Value, Compare >;
+  using tree_t = TreeNode< Key, Value >;
+  ///
+  using iterator = void;
+  using const_iterator = void;
+  using reverse_iterator = void;
+  using const_reverse_iterator = void;
+  ///
   BinarySearchTree();
   ~BinarySearchTree();
-  void insert(const Key &key, const Value &value);
+  BinarySearchTree(const BinarySearchTree &other);
+  BinarySearchTree(BinarySearchTree &&other) noexcept;
+  BinarySearchTree &operator=(const BinarySearchTree &other);
+  BinarySearchTree &operator=(BinarySearchTree &&other) noexcept;
+  //void insert(const Key &key, const Value &value);
   void remove(const Key &key);
   Value *find(const Key &key);
+  ///
+  iterator beforeBegin() const;
+  iterator begin() const;
+  iterator end() const;
+  const_iterator cbeforeBegin() const;
+  const_iterator cbegin() const;
+  const_iterator cend() const;
+  reverse_iterator rbegin();
+  reverse_iterator rend();
+  const_reverse_iterator crbegin() const;
+  const_reverse_iterator crend() const;
+  Value &at(const Key &key);
+  const Value &at(const Key &key) const;
+  Value &operator[](const Key &key);
+  Value &operator[](Key &&key);
+  size_t size() const;
+  bool isEmpty() const;
+  std::pair< iterator, bool > insert(const Key &key, const Value &value);
+  std::pair< iterator, bool > insert(Key &&key, Value &&value);
+  /*iterator insert(const_iterator pos, const Key &key, const Value &value);
+  iterator insert(const_iterator pos, Key &&key, Value &&value);
+  template< class InputIt >
+  iterator insert(const_iterator pos, InputIt first, InputIt last);
+  void clear();
+  iterator erase(iterator pos);
+  iterator erase(const_iterator pos);
+  iterator erase(const_iterator first, const_iterator last);*/
+  size_t erase(const Key &key);
+  size_t count(const Key &key) const;
+  void swap(bst_t &other);
+  iterator lower_bound(const Key &key);
+  const_iterator lower_bound(const Key &key) const;
+  iterator upper_bound(const Key &key);
+  const_iterator upper_bound(const Key &key) const;
+  Compare value_comp() const;
 private:
-  TreeNode< Key, Value > *root_;
+  tree_t *fakeNode_;
+  tree_t *root_;
+  tree_t *begin_;
+  tree_t *end_;
+  size_t size_;
+  Compare compare_;
   void clear(TreeNode< Key, Value > *node);
-  TreeNode< Key, Value > *
-  insertImpl(TreeNode< Key, Value > *node, TreeNode< Key, Value > *parent, const Key &key, const Value &value);
+  TreeNode< Key, Value > *insertImpl(TreeNode< Key, Value > *node, TreeNode< Key, Value > *parent, const Key &key,
+                                     const Value &value);
   TreeNode< Key, Value > *removeImpl(TreeNode< Key, Value > *node, const Key &key);
   TreeNode< Key, Value > *findMin(TreeNode< Key, Value > *node);
+  tree_t *initFake();
 };
+template< typename Key, typename Value, typename Compare >
+BinarySearchTree< Key, Value, Compare > &
+BinarySearchTree< Key, Value, Compare >::operator=(BinarySearchTree &&other) noexcept
+{
+  if (this != std::addressof(other))
+  {
+    bst_t tmp(std::move(other));
+    clear();
+    swap(tmp);
+  }
+  return *this;
+}
+template< typename Key, typename Value, typename Compare >
+BinarySearchTree< Key, Value, Compare > &
+BinarySearchTree< Key, Value, Compare >::operator=(const BinarySearchTree &other)
+{
+  if (this != std::addressof(other))
+  {
+    bst_t tmp(other);
+    clear();
+    swap(tmp);
+  }
+  return *this;
+}
+template< typename Key, typename Value, typename Compare >
+BinarySearchTree< Key, Value, Compare >::BinarySearchTree(BinarySearchTree &&other) noexcept:
+  fakeNode_(other.fakeNode_),
+  root_(other.root_),
+  begin_(other.begin_),
+  end_(other.end_),
+  size_(other.size_),
+  compare_(other.compare_)
+{
+  other.fake_ = nullptr;
+  other.root_ = nullptr;
+  other.begin_ = nullptr;
+  other.end_ = nullptr;
+  other.size_ = 0;
+}
+template< typename Key, typename Value, typename Compare >
+TreeNode< Key, Value > *BinarySearchTree< Key, Value, Compare >::initFake()
+{
+  void *nodeMemory = ::operator new(sizeof(BinarySearchTree::tree_t));
+  BinarySearchTree::tree_t *newNode = static_cast< BinarySearchTree::tree_t >(nodeMemory);
+  newNode->next_ = nullptr;
+  return newNode;
+}
+template< typename Key, typename Value, typename Compare >
+BinarySearchTree< Key, Value, Compare >::BinarySearchTree(const BinarySearchTree &other):
+  fakeNode_(initFake()),
+  root_(nullptr),
+  begin_(nullptr),
+  end_(nullptr),
+  compare_(other.compare_),
+  size_(0)
+{
+  try
+  {
+    root_ = copyTree(other.root_);
+  }
+  catch (...)
+  {
+    clear();
+    delete fakeNode_;
+    throw;
+  }
+  begin_ = copyBegin(other.begin_);
+  end_ = copyEnd(other.end_);
+}
 template< typename Key, typename Value, typename Compare >
 TreeNode< Key, Value > *BinarySearchTree< Key, Value, Compare >::findMin(TreeNode< Key, Value > *node)
 {
@@ -134,19 +257,25 @@ void BinarySearchTree< Key, Value, Compare >::remove(const Key &key)
 {
   root_ = removeImpl(root_, key);
 }
-template< typename Key, typename Value, typename Compare >
+/*template< typename Key, typename Value, typename Compare >
 void BinarySearchTree< Key, Value, Compare >::insert(const Key &key, const Value &value)
 {
   root_ = insertImpl(root_, nullptr, key, value);
-}
+}*/
 template< typename Key, typename Value, typename Compare >
 BinarySearchTree< Key, Value, Compare >::BinarySearchTree():
-  root_(nullptr)
+  fakeNode_(nullptr),
+  root_(nullptr),
+  begin_(nullptr),
+  end_(nullptr),
+  size_(0),
+  compare_()
 {
 }
 template< typename Key, typename Value, typename Compare >
 BinarySearchTree< Key, Value, Compare >::~BinarySearchTree()
 {
+  delete fakeNode_;
   clear(root_);
 }
 template< typename Key, typename Value, typename Compare >
