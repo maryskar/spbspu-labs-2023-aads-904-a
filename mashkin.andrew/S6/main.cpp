@@ -23,13 +23,13 @@ int main(int argc, char** argv)
     else
     {
       std::cerr << "Incorrect argument\n";
-      return 0;
+      return 1;
     }
   }
   else
   {
     std::cerr << "Incorrect argument\n";
-    return 0;
+    return 1;
   }
   return 0;
 }
