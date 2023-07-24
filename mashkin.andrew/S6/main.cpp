@@ -16,7 +16,7 @@ int main(int argc, char** argv)
   if (numbOfNumbers == 0)
   {
     std::cerr << "Empty sequence\n";
-    return 0;
+    return 1;
   }
   mashkin::AVL< std::string, mashkin::AVL< std::string, void (*)(std::ostream&, size_t) > > dict;
   if (dict.contains(argv[1]))
