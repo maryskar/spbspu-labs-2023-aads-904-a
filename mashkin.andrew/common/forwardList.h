@@ -22,6 +22,8 @@ namespace mashkin
     ForwardList();
     ForwardList(const ForwardList< T >& lhs);
     ForwardList(ForwardList< T >&& rhs) noexcept;
+    template< class InputIt >
+    ForwardList(InputIt first, InputIt last);
     ~ForwardList();
 
     ForwardList< T >& operator=(const ForwardList< T >& rhs);
@@ -68,6 +70,14 @@ namespace mashkin
     NodeList< T >* fake_;
     NodeList< T >* tail_;
   };
+
+  template< class T >
+  template< class InputIt >
+  ForwardList< T >::ForwardList(InputIt first, InputIt last):
+    ForwardList()
+  {
+    insert_after(before_begin(), first, last);
+  }
 
   template< class T >
   ForwardList< T >::ForwardList():
