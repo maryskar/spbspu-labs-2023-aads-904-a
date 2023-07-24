@@ -2,7 +2,7 @@
 #define S2_FORWARDCONSTITERATOR_H
 #include <cassert>
 #include <memory>
-#include "dictionary.h"
+#include <dictionary.h>
 #include "forwardIterator.h"
 #include "forwardList.h"
 #include "nodeList.h"

@@ -2,7 +2,7 @@
 #define ITERATOR_H
 #include <cassert>
 #include <memory>
-#include "dictionary.h"
+#include <dictionary.h>
 #include "forwardConstIterator.h"
 #include "nodeList.h"
 
