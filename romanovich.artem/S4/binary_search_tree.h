@@ -72,7 +72,70 @@ private:
   TreeNode< Key, Value > *removeImpl(TreeNode< Key, Value > *node, const Key &key);
   TreeNode< Key, Value > *findMin(TreeNode< Key, Value > *node);
   tree_t *initFake();
+  TreeNode< Key, Value > *copyTree(const TreeNode< Key, Value > *node);
+  TreeNode< Key, Value > *copyBegin(const TreeNode< Key, Value > *beginNode);
+  TreeNode< Key, Value > *copyEnd(const TreeNode< Key, Value > *endNode);
 };
+template< typename Key, typename Value, typename Compare >
+TreeNode< Key, Value > *BinarySearchTree< Key, Value, Compare >::copyTree(const TreeNode< Key, Value > *node)
+{
+  if (!node)
+  {
+    return nullptr;
+  }
+  TreeNode< Key, Value > *newNode = new TreeNode< Key, Value >(node->key, node->value);
+  newNode->left = copyTree(node->left);
+  newNode->right = copyTree(node->right);
+  if (newNode->left)
+  {
+    newNode->left->parent = newNode;
+  }
+  if (newNode->right)
+  {
+    newNode->right->parent = newNode;
+  }
+  return newNode;
+}
+template< typename Key, typename Value, typename Compare >
+TreeNode< Key, Value > *BinarySearchTree< Key, Value, Compare >::copyBegin(const TreeNode< Key, Value > *beginNode)
+{
+  if (!beginNode)
+  {
+    return nullptr;
+  }
+  TreeNode< Key, Value > *newBegin = new TreeNode< Key, Value >(beginNode->key, beginNode->value);
+  newBegin->left = copyBegin(beginNode->left);
+  newBegin->right = copyBegin(beginNode->right);
+  if (newBegin->left)
+  {
+    newBegin->left->parent = newBegin;
+  }
+  if (newBegin->right)
+  {
+    newBegin->right->parent = newBegin;
+  }
+  return newBegin;
+}
+template< typename Key, typename Value, typename Compare >
+TreeNode< Key, Value > *BinarySearchTree< Key, Value, Compare >::copyEnd(const TreeNode< Key, Value > *endNode)
+{
+  if (!endNode)
+  {
+    return nullptr;
+  }
+  TreeNode< Key, Value > *newEnd = new TreeNode< Key, Value >(endNode->key, endNode->value);
+  newEnd->left = copyEnd(endNode->left);
+  newEnd->right = copyEnd(endNode->right);
+  if (newEnd->left)
+  {
+    newEnd->left->parent = newEnd;
+  }
+  if (newEnd->right)
+  {
+    newEnd->right->parent = newEnd;
+  }
+  return newEnd;
+}
 template< typename Key, typename Value, typename Compare >
 BinarySearchTree< Key, Value, Compare > &
 BinarySearchTree< Key, Value, Compare >::operator=(BinarySearchTree &&other) noexcept
@@ -106,7 +169,7 @@ BinarySearchTree< Key, Value, Compare >::BinarySearchTree(BinarySearchTree &&oth
   size_(other.size_),
   compare_(other.compare_)
 {
-  other.fake_ = nullptr;
+  other.fakeNode_ = nullptr;
   other.root_ = nullptr;
   other.begin_ = nullptr;
   other.end_ = nullptr;
