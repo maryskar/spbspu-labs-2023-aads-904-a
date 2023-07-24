@@ -12,13 +12,18 @@ int main(int argc, char** argv)
     return 1;
   }
   char* end{};
-  size_t nimbOfNumbers = std::strtol(argv[3], &end, 10);
+  size_t numbOfNumbers = std::strtol(argv[3], &end, 10);
+  if (numbOfNumbers == 0)
+  {
+    std::cerr << "Empty sequence\n";
+    return 0;
+  }
   mashkin::AVL< std::string, mashkin::AVL< std::string, void (*)(std::ostream&, size_t) > > dict;
   if (dict.contains(argv[1]))
   {
     if (dict[argv[1]].contains(argv[2]))
     {
-      dict[argv[1]][argv[2]](std::cout, nimbOfNumbers);
+      dict[argv[1]][argv[2]](std::cout, numbOfNumbers);
     }
     else
     {
