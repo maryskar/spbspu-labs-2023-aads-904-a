@@ -14,7 +14,8 @@ public:
 private:
   TreeNode< Key, Value > *root_;
   void clear(TreeNode< Key, Value > *node);
-  TreeNode< Key, Value > *insertImpl(TreeNode< Key, Value > *node, const Key &key, const Value &value);
+  TreeNode< Key, Value > *
+  insertImpl(TreeNode< Key, Value > *node, TreeNode< Key, Value > *parent, const Key &key, const Value &value);
   TreeNode< Key, Value > *removeImpl(TreeNode< Key, Value > *node, const Key &key);
   TreeNode< Key, Value > *findMin(TreeNode< Key, Value > *node);
 };
@@ -53,12 +54,20 @@ BinarySearchTree< Key, Value, Compare >::removeImpl(TreeNode< Key, Value > *node
     if (!node->left)
     {
       TreeNode< Key, Value > *rightChild = node->right;
+      if (rightChild)
+      {
+        rightChild->parent = node->parent;
+      }
       delete node;
       return rightChild;
     }
     else if (!node->right)
     {
       TreeNode< Key, Value > *leftChild = node->left;
+      if (leftChild)
+      {
+        leftChild->parent = node->parent;
+      }
       delete node;
       return leftChild;
     }
@@ -74,20 +83,23 @@ BinarySearchTree< Key, Value, Compare >::removeImpl(TreeNode< Key, Value > *node
 }
 template< typename Key, typename Value, typename Compare >
 TreeNode< Key, Value > *
-BinarySearchTree< Key, Value, Compare >::insertImpl(TreeNode< Key, Value > *node, const Key &key, const Value &value)
+BinarySearchTree< Key, Value, Compare >::insertImpl(TreeNode< Key, Value > *node, TreeNode< Key, Value > *parent,
+                                                    const Key &key, const Value &value)
 {
   if (!node)
   {
-    return new TreeNode< Key, Value >(key, value);
+    TreeNode< Key, Value > *newNode = new TreeNode< Key, Value >(key, value);
+    newNode->parent = parent;
+    return newNode;
   }
   Compare cmp;
   if (cmp(key, node->key))
   {
-    node->left = insertImpl(node->left, key, value);
+    node->left = insertImpl(node->left, node, key, value);
   }
   else if (cmp(node->key, key))
   {
-    node->right = insertImpl(node->right, key, value);
+    node->right = insertImpl(node->right, node, key, value);
   }
   else
   {
@@ -125,7 +137,7 @@ void BinarySearchTree< Key, Value, Compare >::remove(const Key &key)
 template< typename Key, typename Value, typename Compare >
 void BinarySearchTree< Key, Value, Compare >::insert(const Key &key, const Value &value)
 {
-  root_ = insertImpl(root_, key, value);
+  root_ = insertImpl(root_, nullptr, key, value);
 }
 template< typename Key, typename Value, typename Compare >
 BinarySearchTree< Key, Value, Compare >::BinarySearchTree():
