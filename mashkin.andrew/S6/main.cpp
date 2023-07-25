@@ -1,8 +1,10 @@
-#include <iostream>
 #include <cstddef>
 #include <cstdlib>
-#include <AVL.h>
+#include <iostream>
+#include <map>
 #include <string>
+#include <AVL.h>
+#include "createMapOfSortFunctions.h"
 
 int main(int argc, char** argv)
 {
@@ -19,6 +21,7 @@ int main(int argc, char** argv)
     return 1;
   }
   mashkin::AVL< std::string, mashkin::AVL< std::string, void (*)(std::ostream&, size_t) > > dict;
+  mashkin::createMapOfSortFunctions(dict);
   if (dict.contains(argv[1]))
   {
     if (dict[argv[1]].contains(argv[2]))
