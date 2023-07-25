@@ -9,9 +9,6 @@ namespace mashkin
   void createMapOfSortFunctions(T& map)
   {
     map["ascending"]["ints"] = ascendInt;
-    /*map["ascending"]["floats"];
-    map["descending"]["ints"];
-    map["descending"]["floats"];*/
   }
 }
 #endif

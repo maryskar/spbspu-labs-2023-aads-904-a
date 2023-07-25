@@ -26,29 +26,23 @@ namespace mashkin
     return out;
   }
 
-  void ascendInt(std::ostream& out, size_t numOfElem)
+  template< class Type, class Comporator >
+  void sortAndPrint(std::ostream& out, size_t numOfElem, ForwardList< Type > forwardList, Comporator comp)
   {
-    ForwardList< int > forwardList;
-
-    for (size_t i = 0; i < numOfElem; i++)
-    {
-      forwardList.push_front(std::rand());
-    }
-
-    std::deque< int > queueForMerge(forwardList.begin(), forwardList.end());
-    std::list< int > listForMerge(forwardList.begin(), forwardList.end());
-    std::deque< int > queueForOddEven(forwardList.begin(), forwardList.end());
-    std::list< int > listForOddEven(forwardList.begin(), forwardList.end());
-    std::deque< int > queueForQSort(forwardList.begin(), forwardList.end());
-
     print(out, forwardList.begin(), forwardList.end()) << "\n";
 
-    mergeSort(forwardList, 0, numOfElem - 1, std::less< int >());
-    mergeSort(queueForMerge, 0, numOfElem - 1, std::less< int >());
-    mergeSort(listForMerge, 0, numOfElem - 1, std::less< int >());
-    oddEvenSort(listForOddEven, std::less< int >());
-    oddEvenSort(queueForOddEven, std::less< int >());
-    quickSort(queueForQSort, 0, numOfElem - 1);
+    std::deque< Type > queueForMerge(forwardList.begin(), forwardList.end());
+    std::list< Type > listForMerge(forwardList.begin(), forwardList.end());
+    std::deque< Type > queueForOddEven(forwardList.begin(), forwardList.end());
+    std::list< Type > listForOddEven(forwardList.begin(), forwardList.end());
+    std::deque< Type > queueForQSort(forwardList.begin(), forwardList.end());
+
+    mergeSort(forwardList, 0, numOfElem - 1, comp);
+    mergeSort(queueForMerge, 0, numOfElem - 1, comp);
+    mergeSort(listForMerge, 0, numOfElem - 1, comp);
+    oddEvenSort(listForOddEven, comp);
+    oddEvenSort(queueForOddEven, comp);
+    quickSort< decltype(queueForQSort), Type, Comporator >( queueForQSort, 0, numOfElem - 1, comp);
 
     print(out, forwardList.begin(), forwardList.end()) << "\n";
     print(out, queueForMerge.begin(), queueForMerge.end()) << "\n";
@@ -56,5 +50,21 @@ namespace mashkin
     print(out, listForOddEven.begin(), listForOddEven.end()) << "\n";
     print(out, queueForOddEven.begin(), queueForOddEven.end()) << "\n";
     print(out, queueForQSort.begin(), queueForQSort.end()) << "\n";
+  }
+
+  void getRandForwardListOfInts(ForwardList< int >& forwardList, size_t numOfElem)
+  {
+    srand(time(NULL));
+    for (size_t i = 0; i < numOfElem; i++)
+    {
+      forwardList.push_front(std::rand());
+    }
+  }
+
+  void ascendInt(std::ostream& out, size_t numOfElem)
+  {
+    ForwardList< int > forwardList;
+    getRandForwardListOfInts(forwardList, numOfElem);
+    sortAndPrint< int, decltype(std::less< int >()) >(out, numOfElem, forwardList, std::less< int >());
   }
 }

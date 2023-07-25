@@ -5,14 +5,14 @@
 
 namespace mashkin
 {
-  template< class DataStrucct >
-  int partition(DataStrucct& dataStrucct, int low, int high)
+  template< class DataStrucct, class Type, class Comparator >
+  int partition(DataStrucct& dataStrucct, int low, int high, Comparator comp)
   {
-    int pivot = dataStrucct[high];
+    Type pivot = dataStrucct[high];
     int i = (low - 1);
     for (auto j = low; j <= high - 1; j++)
     {
-      if (dataStrucct[j] < pivot)
+      if (comp(dataStrucct[j], pivot))
       {
         i++;
         std::swap(dataStrucct[i], dataStrucct[j]);
@@ -22,14 +22,14 @@ namespace mashkin
     return (i + 1);
   }
 
-  template< class DataStruct >
-  void quickSort(DataStruct& dataStruct, int low, int high)
+  template< class DataStruct, class Type, class Comparator  >
+  void quickSort(DataStruct& dataStruct, int low, int high, Comparator comp)
   {
     if (low < high)
     {
-      int pivot = partition(dataStruct, low, high);
-      quickSort(dataStruct, low, pivot - 1);
-      quickSort(dataStruct, pivot + 1, high);
+      int pivot = partition< DataStruct, Type, Comparator >(dataStruct, low, high, comp);
+      quickSort< DataStruct, Type, Comparator >(dataStruct, low, pivot - 1, comp);
+      quickSort< DataStruct, Type, Comparator >(dataStruct, pivot + 1, high, comp);
     }
   }
 }
