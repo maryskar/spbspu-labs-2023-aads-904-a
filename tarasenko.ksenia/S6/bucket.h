@@ -25,9 +25,10 @@ namespace tarasenko
         min_val = *i;
       }
     }
-    double num_buckets = std::round(1 + 3.322 * std::log10(num_value));
-    auto bucketSize = (max_val - min_val + 1) / num_buckets;
-    auto buckets = new ForwardList< value_t >[static_cast< size_t >(num_buckets)];
+    double k = std::round(1 + 3.322 * std::log10(num_value));
+    auto num_buckets = static_cast< size_t >(k);
+    auto bucketSize = (max_val - min_val + 1) / k;
+    auto buckets = new ForwardList< value_t >[num_buckets];
 
     try
     {
@@ -48,12 +49,26 @@ namespace tarasenko
       quickSort(buckets[i].begin(), buckets[i].end(), comp);
     }
 
-    for (size_t i = 0; i < num_buckets; i++)
+    if (comp(*buckets[0].begin(), *buckets[num_buckets - 1].begin()))
     {
-      for (auto it = buckets[i].begin(); it != buckets[i].end(); it++)
+      for (size_t i = 0; i < num_buckets; i++)
       {
-        *begin = *it;
-        begin++;
+        for (auto it = buckets[i].begin(); it != buckets[i].end(); it++)
+        {
+          *begin = *it;
+          begin++;
+        }
+      }
+    }
+    else
+    {
+      for (long i = num_buckets - 1; i >= 0 ; i--)
+      {
+        for (auto it = buckets[i].begin(); it != buckets[i].end(); it++)
+        {
+          *begin = *it;
+          begin++;
+        }
       }
     }
     delete [] buckets;
