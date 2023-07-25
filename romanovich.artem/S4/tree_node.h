@@ -1,19 +1,18 @@
 #ifndef TREE_NODE_H
 #define TREE_NODE_H
-template< typename Key, typename Value >
+template< typename T >
 struct TreeNode
 {
-  Key key;
-  Value value;
+  T data;
   TreeNode *parent;
   TreeNode *left;
   TreeNode *right;
-  TreeNode(const Key &key, const Value &value);
-  TreeNode< Key, Value > *findMin(TreeNode< Key, Value > *node);
-  TreeNode< Key, Value > *findMax(TreeNode< Key, Value > *node);
+  explicit TreeNode(const T &data);
+  TreeNode< T > *findMin(TreeNode< T > *node);
+  TreeNode< T > *findMax(TreeNode< T > *node);
 };
-template< typename Key, typename Value >
-TreeNode< Key, Value > *TreeNode< Key, Value >::findMax(TreeNode< Key, Value > *node)
+template< typename T >
+TreeNode< T > *TreeNode< T >::findMax(TreeNode< T > *node)
 {
   if (!node)
   {
@@ -25,8 +24,8 @@ TreeNode< Key, Value > *TreeNode< Key, Value >::findMax(TreeNode< Key, Value > *
   }
   return node;
 }
-template< typename Key, typename Value >
-TreeNode< Key, Value > *TreeNode< Key, Value >::findMin(TreeNode< Key, Value > *node)
+template< typename T >
+TreeNode< T > *TreeNode< T >::findMin(TreeNode< T > *node)
 {
   if (!node)
   {
@@ -38,10 +37,9 @@ TreeNode< Key, Value > *TreeNode< Key, Value >::findMin(TreeNode< Key, Value > *
   }
   return node;
 }
-template< typename Key, typename Value >
-TreeNode< Key, Value >::TreeNode(const Key &key, const Value &value):
-  key(key),
-  value(value),
+template< typename T >
+TreeNode< T >::TreeNode(const T &data):
+  data(data),
   parent(nullptr),
   left(nullptr),
   right(nullptr)

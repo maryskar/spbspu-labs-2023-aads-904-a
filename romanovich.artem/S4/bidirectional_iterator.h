@@ -8,17 +8,18 @@ class BidirectionalIterator
 public:
   using iterator_category = std::bidirectional_iterator_tag;
   using difference_type = std::ptrdiff_t;
-  BidirectionalIterator(TreeNode< Key, Value > *root, TreeNode< Key, Value > *node, TreeNode< Key, Value > *fakeNode);
-  BidirectionalIterator &operator*();
-  BidirectionalIterator *operator->() const;
+  using data_type = std::pair< Key, Value >;
+  BidirectionalIterator(TreeNode< data_type > *root, TreeNode< data_type > *node, TreeNode< data_type > *fakeNode);
+  data_type &operator*();
+  data_type *operator->();
   BidirectionalIterator &operator++();
   BidirectionalIterator operator++(int);
   BidirectionalIterator &operator--();
   BidirectionalIterator operator--(int);
 private:
-  TreeNode< Key, Value > *current_;
-  TreeNode< Key, Value > *fakeNode_;
-  TreeNode< Key, Value > *root_;
+  TreeNode< data_type > *node_;
+  TreeNode< data_type > *fakeNode_;
+  TreeNode< data_type > *root_;
 };
 template< typename Key, typename Value, typename Compare >
 BidirectionalIterator< Key, Value, Compare > BidirectionalIterator< Key, Value, Compare >::operator--(int)
@@ -30,47 +31,43 @@ BidirectionalIterator< Key, Value, Compare > BidirectionalIterator< Key, Value, 
 template< typename Key, typename Value, typename Compare >
 BidirectionalIterator< Key, Value, Compare > &BidirectionalIterator< Key, Value, Compare >::operator--()
 {
-  if (current_ == fakeNode_)
+  if (node_ == fakeNode_)
   {
-    current_ = findMax(root_);
+    node_ = root_->findMax(root_);
     return *this;
   }
-  if (current_->left)
+  if (node_->left)
   {
-    current_ = current_->left;
-    while (current_->right)
+    node_ = node_->left;
+    while (node_->right)
     {
-      current_ = current_->right;
+      node_ = node_->right;
     }
   }
   else
   {
-    TreeNode< Key, Value > *prev = nullptr;
+    TreeNode< data_type > *prev = nullptr;
     do
     {
-      prev = current_;
-      current_ = current_->parent;
-    } while (current_ && current_->left == prev);
+      prev = node_;
+      node_ = node_->parent;
+    } while (node_ && node_->left == prev);
   }
-  if (current_ == nullptr)
+  if (node_ == nullptr)
   {
-    current_ = fakeNode_;
+    node_ = fakeNode_;
   }
   return *this;
 }
 template< typename Key, typename Value, typename Compare >
-BidirectionalIterator< Key, Value, Compare > *BidirectionalIterator< Key, Value, Compare >::operator->() const
+std::pair< Key, Value > *BidirectionalIterator< Key, Value, Compare >::operator->()
 {
-  return std::addressof(*(*this));
+  return std::addressof(operator*());;
 }
 template< typename Key, typename Value, typename Compare >
-BidirectionalIterator< Key, Value, Compare > &BidirectionalIterator< Key, Value, Compare >::operator*()
+std::pair< Key, Value > &BidirectionalIterator< Key, Value, Compare >::operator*()
 {
-  if (current_ == fakeNode_)
-  {
-    throw std::out_of_range("Iterator is out of range.");
-  }
-  return std::make_pair(current_->key, current_->value);
+  return node_->data;
 }
 template< typename Key, typename Value, typename Compare >
 BidirectionalIterator< Key, Value, Compare > BidirectionalIterator< Key, Value, Compare >::operator++(int)
@@ -82,37 +79,37 @@ BidirectionalIterator< Key, Value, Compare > BidirectionalIterator< Key, Value, 
 template< typename Key, typename Value, typename Compare >
 BidirectionalIterator< Key, Value, Compare > &BidirectionalIterator< Key, Value, Compare >::operator++()
 {
-  if (current_ == fakeNode_)
+  if (node_ == fakeNode_)
   {
     return *this;
   }
-  if (current_->right)
+  if (node_->right)
   {
-    current_ = current_->right;
-    while (current_->left)
+    node_ = node_->right;
+    while (node_->left)
     {
-      current_ = current_->left;
+      node_ = node_->left;
     }
   }
   else
   {
-    TreeNode< Key, Value > *prev = nullptr;
+    TreeNode< data_type > *prev = nullptr;
     do
     {
-      prev = current_;
-      current_ = current_->parent;
-    } while (current_ && current_->right == prev);
+      prev = node_;
+      node_ = node_->parent;
+    } while (node_ && node_->right == prev);
   }
-  if (current_ == nullptr)
+  if (node_ == nullptr)
   {
-    current_ = fakeNode_;
+    node_ = fakeNode_;
   }
   return *this;
 }
 template< typename Key, typename Value, typename Compare >
 BidirectionalIterator< Key, Value, Compare >
-::BidirectionalIterator(TreeNode< Key, Value > *root, TreeNode< Key, Value > *node, TreeNode< Key, Value > *fakeNode):
-  current_(node),
+::BidirectionalIterator(TreeNode< data_type > *root, TreeNode< data_type > *node, TreeNode< data_type > *fakeNode):
+  node_(node),
   fakeNode_(fakeNode),
   root_(root)
 {
