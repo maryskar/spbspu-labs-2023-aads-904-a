@@ -66,7 +66,7 @@ namespace mashkin
     srand(time(NULL));
     for (size_t i = 0; i < numOfElem; i++)
     {
-      forwardList.push_front(static_cast< float >(std::rand()) / 100);
+      forwardList.push_front(static_cast< float >(std::rand()));
     }
   }
 
@@ -88,7 +88,7 @@ namespace mashkin
   {
     ForwardList< int > forwardList;
     getRandForwardListOfInts(forwardList, numOfElem);
-    sortAndPrint< int, decltype(std::less< int >()) >(out, numOfElem, forwardList, std::less< int >());
+    sortAndPrint< int, decltype(std::greater< int >()) >(out, numOfElem, forwardList, std::greater< int >());
   }
 
   void descendFloat(std::ostream& out, size_t numOfElem)
