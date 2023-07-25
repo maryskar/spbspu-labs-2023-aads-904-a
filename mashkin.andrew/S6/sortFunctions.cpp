@@ -4,6 +4,7 @@
 #include <deque>
 #include <list>
 #include <random>
+#include <iomanip>
 #include "mergeSort.h"
 #include "OddEvenSort.h"
 #include "quickSort.h"
@@ -82,6 +83,7 @@ namespace mashkin
   {
     ForwardList< double > forwardList;
     getRandForwardListOfFloats(forwardList, numOfElem);
+    out << std::fixed << std::setprecision(1);
     sortAndPrint< double, decltype(std::less< double >()) >(out, numOfElem, forwardList, std::less< double >());
   }
 
@@ -96,6 +98,7 @@ namespace mashkin
   {
     ForwardList< double > forwardList;
     getRandForwardListOfFloats(forwardList, numOfElem);
+    out << std::fixed << std::setprecision(1);
     sortAndPrint< double, decltype(std::greater< double >()) >(out, numOfElem, forwardList, std::greater< double >());
   }
 }
