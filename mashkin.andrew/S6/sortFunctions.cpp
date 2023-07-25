@@ -1,10 +1,9 @@
 #include "sortFunctions.h"
 #include <iostream>
-#include <cstddef>
 #include <forwardList.h>
 #include <deque>
 #include <list>
-#include <cstdlib>
+#include <random>
 #include "mergeSort.h"
 #include "OddEvenSort.h"
 #include "quickSort.h"
@@ -54,19 +53,21 @@ namespace mashkin
 
   void getRandForwardListOfInts(ForwardList< int >& forwardList, size_t numOfElem)
   {
-    srand(time(NULL));
+    std::default_random_engine generator;
+    std::uniform_int_distribution< > distribution;
     for (size_t i = 0; i < numOfElem; i++)
     {
-      forwardList.push_front(std::rand());
+      forwardList.push_front(distribution(generator));
     }
   }
 
   void getRandForwardListOfFloats(ForwardList< double >& forwardList, size_t numOfElem)
   {
-    srand(time(NULL));
+    std::default_random_engine generator;
+    std::uniform_int_distribution< > distribution;
     for (size_t i = 0; i < numOfElem; i++)
     {
-      forwardList.push_front(std::rand());
+      forwardList.push_front(distribution(generator));
     }
   }
 
