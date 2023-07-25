@@ -2,6 +2,7 @@
 #define BINARY_SEARCH_TREE_H
 #include <functional>
 #include <cstddef>
+#include <stdexcept>
 #include "tree_node.h"
 template< typename Key, typename Value, typename Compare = std::less< Key >>
 class BinarySearchTree
@@ -10,10 +11,10 @@ public:
   using bst_t = BinarySearchTree< Key, Value, Compare >;
   using tree_t = TreeNode< Key, Value >;
   ///
-  using iterator = void;
-  using const_iterator = void;
-  using reverse_iterator = void;
-  using const_reverse_iterator = void;
+  using iterator = int;
+  using const_iterator = int;
+  using reverse_iterator = int;
+  using const_reverse_iterator = int;
   ///
   BinarySearchTree();
   ~BinarySearchTree();
@@ -25,7 +26,7 @@ public:
   void remove(const Key &key);
   Value *find(const Key &key);
   ///
-  iterator beforeBegin() const;
+  /*iterator beforeBegin() const;
   iterator begin() const;
   iterator end() const;
   const_iterator cbeforeBegin() const;
@@ -34,7 +35,7 @@ public:
   reverse_iterator rbegin();
   reverse_iterator rend();
   const_reverse_iterator crbegin() const;
-  const_reverse_iterator crend() const;
+  const_reverse_iterator crend() const;*/
   Value &at(const Key &key);
   const Value &at(const Key &key) const;
   Value &operator[](const Key &key);
@@ -76,6 +77,45 @@ private:
   TreeNode< Key, Value > *copyBegin(const TreeNode< Key, Value > *beginNode);
   TreeNode< Key, Value > *copyEnd(const TreeNode< Key, Value > *endNode);
 };
+template< typename Key, typename Value, typename Compare >
+Value &BinarySearchTree< Key, Value, Compare >::operator[](const Key &key)
+{
+  std::pair< iterator, bool > result = insert(key, Value{});
+  return result.first->value;
+}
+template< typename Key, typename Value, typename Compare >
+Value &BinarySearchTree< Key, Value, Compare >::operator[](Key &&key)
+{
+  std::pair< iterator, bool > result = insert(std::move(key), Value{});
+  return result.first->value;
+}
+template< typename Key, typename Value, typename Compare >
+Value &BinarySearchTree< Key, Value, Compare >::at(const Key &key)
+{
+  const BinarySearchTree *constThis = this;
+  return const_cast<Value &>(constThis->at(key));
+}
+template< typename Key, typename Value, typename Compare >
+const Value &BinarySearchTree< Key, Value, Compare >::at(const Key &key) const
+{
+  tree_t *node = root_;
+  while (node)
+  {
+    if (compare_(key, node->key))
+    {
+      node = node->left;
+    }
+    else if (compare_(node->key, key))
+    {
+      node = node->right;
+    }
+    else
+    {
+      return node->value;
+    }
+  }
+  throw std::out_of_range("Key not found.");
+}
 template< typename Key, typename Value, typename Compare >
 TreeNode< Key, Value > *BinarySearchTree< Key, Value, Compare >::copyTree(const TreeNode< Key, Value > *node)
 {
