@@ -20,13 +20,13 @@ int main(int argc, char** argv)
     std::cerr << "Empty sequence\n";
     return 1;
   }
-  mashkin::AVL< std::string, mashkin::AVL< std::string, void (*)(std::ostream&, size_t) > > dict;
-  mashkin::createMapOfSortFunctions(dict);
-  if (dict.contains(argv[1]))
+  mashkin::AVL< std::string, mashkin::AVL< std::string, void (*)(std::ostream&, size_t) > > map;
+  mashkin::createMapOfSortFunctions(map);
+  if (map.contains(argv[1]))
   {
-    if (dict[argv[1]].contains(argv[2]))
+    if (map[argv[1]].contains(argv[2]))
     {
-      dict[argv[1]][argv[2]](std::cout, numbOfNumbers);
+      map[argv[1]][argv[2]](std::cout, numbOfNumbers);
     }
     else
     {

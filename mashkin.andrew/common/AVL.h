@@ -55,6 +55,7 @@ namespace mashkin
     Value& at(const Key& key);
     const Value& at(const Key& key) const;
     Value& operator[](const Key& key);
+    Value& operator[](Key&& key);
 
     iter insert(const v_type& val);
     iter insert(v_type&& val);
@@ -106,6 +107,21 @@ namespace mashkin
     tree* fake_;
     Comporator comp_;
   };
+
+  template<class K, class V, class C >
+  V& AVL< K, V, C >::operator[](K&& key)
+  {
+    iter it = find(key);
+    if (it == end())
+    {
+      V defaultValue;
+      std::pair< K, V > toInsert(std::forward< K >(key), defaultValue);
+      it = insert(toInsert);
+      return it->second;
+    }
+    return it->second;
+  }
+
   template< class K, class V, class C >
   typename AVL< K, V, C >::const_riter AVL< K, V, C >::rbegin() const
   {
@@ -635,14 +651,11 @@ namespace mashkin
   template< class K, class V, class C >
   AVL< K, V, C >::~AVL()
   {
-    if (!fake_->left_ && !fake_->right_)
+    if (!empty())
     {
-      if (!empty())
-      {
-        clear();
-      }
-      ::operator delete(fake_);
+      clear();
     }
+    ::operator delete(fake_);
   }
 
   template< class K, class V, class C >
