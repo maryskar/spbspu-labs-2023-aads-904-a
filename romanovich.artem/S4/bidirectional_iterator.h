@@ -10,17 +10,33 @@ public:
   using difference_type = std::ptrdiff_t;
   using data_type = std::pair< Key, Value >;
   BidirectionalIterator(TreeNode< data_type > *root, TreeNode< data_type > *node, TreeNode< data_type > *fakeNode);
+  ~BidirectionalIterator() = default;
+  BidirectionalIterator(const BidirectionalIterator< Key, Value, Compare > &) = default;
+  BidirectionalIterator< Key, Value, Compare > &
+  operator=(const BidirectionalIterator< Key, Value, Compare > &) = default;
   data_type &operator*();
   data_type *operator->();
   BidirectionalIterator &operator++();
   BidirectionalIterator operator++(int);
   BidirectionalIterator &operator--();
   BidirectionalIterator operator--(int);
-private:
+  bool operator!=(const BidirectionalIterator &other) const;
+  bool operator==(const BidirectionalIterator &other) const;
   TreeNode< data_type > *node_;
   TreeNode< data_type > *fakeNode_;
   TreeNode< data_type > *root_;
+private:
 };
+template< typename Key, typename Value, typename Compare >
+bool BidirectionalIterator< Key, Value, Compare >::operator==(const BidirectionalIterator &other) const
+{
+  return node_ == other.node_;
+}
+template< typename Key, typename Value, typename Compare >
+bool BidirectionalIterator< Key, Value, Compare >::operator!=(const BidirectionalIterator &other) const
+{
+  return !(*this == other);
+}
 template< typename Key, typename Value, typename Compare >
 BidirectionalIterator< Key, Value, Compare > BidirectionalIterator< Key, Value, Compare >::operator--(int)
 {
@@ -33,7 +49,6 @@ BidirectionalIterator< Key, Value, Compare > &BidirectionalIterator< Key, Value,
 {
   if (node_ == fakeNode_)
   {
-    node_ = root_->findMax(root_);
     return *this;
   }
   if (node_->left)
@@ -53,7 +68,7 @@ BidirectionalIterator< Key, Value, Compare > &BidirectionalIterator< Key, Value,
       node_ = node_->parent;
     } while (node_ && node_->left == prev);
   }
-  if (node_ == nullptr)
+  if (!node_)
   {
     node_ = fakeNode_;
   }
