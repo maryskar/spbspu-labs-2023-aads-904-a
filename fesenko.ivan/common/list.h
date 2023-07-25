@@ -1,15 +1,16 @@
 #ifndef LIST_H
 #define LIST_H
+#include <utility>
 namespace fesenko
 {
-  template < typename T >
+  template< typename T >
   struct List
   {
     T data;
     List< T > *next;
   };
 
-  template < typename T >
+  template< typename T >
   void deleteList(List< T > *head)
   {
     while (head) {
@@ -18,6 +19,29 @@ namespace fesenko
       head = temp;
     }
     head = nullptr;
+  }
+
+  template< typename T >
+  std::pair< List< T > *, List< T > * > copy(const List< T > *head)
+  {
+    if (head == nullptr) {
+      return {nullptr, nullptr};
+    }
+    List< T > *newHead = nullptr;
+    try {
+      newHead = new List< T >(head->data);
+      head = head->next;
+      auto *cur = newHead;
+      while (head) {
+        cur->next = new List< T >(head->data);
+        cur = cur->next;
+        head = head->next;
+      }
+      return {newHead, cur};
+    } catch (...) {
+      deleteList(newHead);
+      throw;
+    }
   }
 }
 #endif
