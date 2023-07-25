@@ -61,10 +61,26 @@ namespace mashkin
     }
   }
 
+  void getRandForwardListOfFloats(ForwardList< float >& forwardList, size_t numOfElem)
+  {
+    srand(time(NULL));
+    for (size_t i = 0; i < numOfElem; i++)
+    {
+      forwardList.push_front(static_cast< float >(std::rand()) / 100);
+    }
+  }
+
   void ascendInt(std::ostream& out, size_t numOfElem)
   {
     ForwardList< int > forwardList;
     getRandForwardListOfInts(forwardList, numOfElem);
     sortAndPrint< int, decltype(std::less< int >()) >(out, numOfElem, forwardList, std::less< int >());
+  }
+
+  void ascendFloat(std::ostream& out, size_t numOfElem)
+  {
+    ForwardList< float > forwardList;
+    getRandForwardListOfFloats(forwardList, numOfElem);
+    sortAndPrint< float, decltype(std::less< float >()) >(out, numOfElem, forwardList, std::less< float >());
   }
 }
