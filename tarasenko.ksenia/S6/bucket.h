@@ -25,9 +25,9 @@ namespace tarasenko
         min_val = *i;
       }
     }
-    auto num_buckets = static_cast< size_t >(1 + 3.322 * std::log10(num_value));
-    auto bucketSize = std::ceil((max_val - min_val + 1) / static_cast< double >(num_buckets));
-    auto buckets = new ForwardList< value_t >[num_buckets];
+    double num_buckets = std::round(1 + 3.322 * std::log10(num_value));
+    auto bucketSize = (max_val - min_val + 1) / num_buckets;
+    auto buckets = new ForwardList< value_t >[static_cast< size_t >(num_buckets)];
 
     try
     {
