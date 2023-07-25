@@ -635,8 +635,14 @@ namespace mashkin
   template< class K, class V, class C >
   AVL< K, V, C >::~AVL()
   {
-    clear();
-    ::operator delete(fake_);
+    if (!fake_->left_ && !fake_->right_)
+    {
+      if (!empty())
+      {
+        clear();
+      }
+      ::operator delete(fake_);
+    }
   }
 
   template< class K, class V, class C >
