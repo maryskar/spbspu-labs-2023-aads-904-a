@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include "mergeSort.h"
 #include "OddEvenSort.h"
+#include "quickSort.h"
 
 namespace mashkin
 {
@@ -38,6 +39,7 @@ namespace mashkin
     std::list< int > listForMerge(forwardList.begin(), forwardList.end());
     std::deque< int > queueForOddEven(forwardList.begin(), forwardList.end());
     std::list< int > listForOddEven(forwardList.begin(), forwardList.end());
+    std::deque< int > queueForQSort(forwardList.begin(), forwardList.end());
 
     print(out, forwardList.begin(), forwardList.end()) << "\n";
 
@@ -46,11 +48,13 @@ namespace mashkin
     mergeSort(listForMerge, 0, numOfElem - 1, std::less< int >());
     oddEvenSort(listForOddEven, std::less< int >());
     oddEvenSort(queueForOddEven, std::less< int >());
+    quickSort(queueForQSort, 0, numOfElem - 1);
 
     print(out, forwardList.begin(), forwardList.end()) << "\n";
     print(out, queueForMerge.begin(), queueForMerge.end()) << "\n";
     print(out, listForMerge.begin(), listForMerge.end()) << "\n";
     print(out, listForOddEven.begin(), listForOddEven.end()) << "\n";
     print(out, queueForOddEven.begin(), queueForOddEven.end()) << "\n";
+    print(out, queueForQSort.begin(), queueForQSort.end()) << "\n";
   }
 }
