@@ -9,7 +9,35 @@ struct TreeNode
   TreeNode *left;
   TreeNode *right;
   TreeNode(const Key &key, const Value &value);
+  TreeNode< Key, Value > *findMin(TreeNode< Key, Value > *node);
+  TreeNode< Key, Value > *findMax(TreeNode< Key, Value > *node);
 };
+template< typename Key, typename Value >
+TreeNode< Key, Value > *TreeNode< Key, Value >::findMax(TreeNode< Key, Value > *node)
+{
+  if (!node)
+  {
+    return nullptr;
+  }
+  while (node->right)
+  {
+    node = node->right;
+  }
+  return node;
+}
+template< typename Key, typename Value >
+TreeNode< Key, Value > *TreeNode< Key, Value >::findMin(TreeNode< Key, Value > *node)
+{
+  if (!node)
+  {
+    return nullptr;
+  }
+  while (node->left)
+  {
+    node = node->left;
+  }
+  return node;
+}
 template< typename Key, typename Value >
 TreeNode< Key, Value >::TreeNode(const Key &key, const Value &value):
   key(key),

@@ -71,7 +71,6 @@ private:
   TreeNode< Key, Value > *insertImpl(TreeNode< Key, Value > *node, TreeNode< Key, Value > *parent,
                                      const Key &key, const Value &value);
   TreeNode< Key, Value > *removeImpl(TreeNode< Key, Value > *node, const Key &key);
-  TreeNode< Key, Value > *findMin(TreeNode< Key, Value > *node);
   tree_t *initFake();
   TreeNode< Key, Value > *copyTree(const TreeNode< Key, Value > *node);
   TreeNode< Key, Value > *copyBegin(const TreeNode< Key, Value > *beginNode);
@@ -244,19 +243,6 @@ BinarySearchTree< Key, Value, Compare >::BinarySearchTree(const BinarySearchTree
   }
   begin_ = copyBegin(other.begin_);
   end_ = copyEnd(other.end_);
-}
-template< typename Key, typename Value, typename Compare >
-TreeNode< Key, Value > *BinarySearchTree< Key, Value, Compare >::findMin(TreeNode< Key, Value > *node)
-{
-  if (!node)
-  {
-    return nullptr;
-  }
-  while (node->left)
-  {
-    node = node->left;
-  }
-  return node;
 }
 template< typename Key, typename Value, typename Compare >
 TreeNode< Key, Value > *
