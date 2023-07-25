@@ -11,6 +11,7 @@ namespace mashkin
     map["ascending"]["ints"] = ascendInt;
     map["ascending"]["floats"] = ascendFloat;
     map["descending"]["ints"] = descendInt;
+    map["descending"]["floats"] = descendFloat;
   }
 }
 #endif

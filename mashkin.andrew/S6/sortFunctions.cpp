@@ -90,4 +90,11 @@ namespace mashkin
     getRandForwardListOfInts(forwardList, numOfElem);
     sortAndPrint< int, decltype(std::less< int >()) >(out, numOfElem, forwardList, std::less< int >());
   }
+
+  void descendFloat(std::ostream& out, size_t numOfElem)
+  {
+    ForwardList< float > forwardList;
+    getRandForwardListOfFloats(forwardList, numOfElem);
+    sortAndPrint< float, decltype(std::greater< float >()) >(out, numOfElem, forwardList, std::greater< float >());
+  }
 }
