@@ -76,7 +76,10 @@ namespace mashkin
   ForwardList< T >::ForwardList(InputIt first, InputIt last):
     ForwardList()
   {
-    insert_after(before_begin(), first, last);
+    if (first != last)
+    {
+      insert_after(before_begin(), first, last);
+    }
   }
 
   template< class T >
