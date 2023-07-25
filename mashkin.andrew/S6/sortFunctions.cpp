@@ -14,8 +14,7 @@ namespace mashkin
     ForwardList< int > forwardList;
     for (size_t i = 0; i < numOfElem; i++)
     {
-      forwardList.push_front(i);
-      //forwardList.push_front(std::rand());
+      forwardList.push_front(std::rand());
     }
     std::deque< int > queue(forwardList.begin(), forwardList.end());
     std::list< int > list(forwardList.begin(), forwardList.end());
