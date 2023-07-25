@@ -68,8 +68,8 @@ private:
   size_t size_;
   Compare compare_;
   void clear(TreeNode< Key, Value > *node);
-  TreeNode< Key, Value > *insertImpl(TreeNode< Key, Value > *node, TreeNode< Key, Value > *parent, const Key &key,
-                                     const Value &value);
+  TreeNode< Key, Value > *insertImpl(TreeNode< Key, Value > *node, TreeNode< Key, Value > *parent,
+                                     const Key &key, const Value &value);
   TreeNode< Key, Value > *removeImpl(TreeNode< Key, Value > *node, const Key &key);
   TreeNode< Key, Value > *findMin(TreeNode< Key, Value > *node);
   tree_t *initFake();
