@@ -66,7 +66,7 @@ namespace mashkin
     srand(time(NULL));
     for (size_t i = 0; i < numOfElem; i++)
     {
-      forwardList.push_front(static_cast< double >(std::rand()));
+      forwardList.push_front(std::rand());
     }
   }
 
