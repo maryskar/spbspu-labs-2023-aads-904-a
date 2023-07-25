@@ -1,6 +1,6 @@
 #ifndef S6_SHAKER_H
 #define S6_SHAKER_H
-#include <algorithm>
+#include <iterator>
 
 namespace tarasenko
 {

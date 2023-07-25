@@ -1,6 +1,5 @@
 #ifndef S6_QSORT_H
 #define S6_QSORT_H
-
 #include <iterator>
 
 namespace tarasenko
