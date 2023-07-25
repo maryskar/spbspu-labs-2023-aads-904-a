@@ -1,7 +1,9 @@
 #ifndef S6_FILL_RANDOM_H
 #define S6_FILL_RANDOM_H
+
 #include <random>
 #include <stdexcept>
+
 namespace tarasenko
 {
   template< typename T >
