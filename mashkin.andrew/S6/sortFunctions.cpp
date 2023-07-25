@@ -6,6 +6,7 @@
 #include <list>
 #include <cstdlib>
 #include "mergeSort.h"
+#include "OddEvenSort.h"
 
 namespace mashkin
 {
@@ -27,21 +28,29 @@ namespace mashkin
   void ascendInt(std::ostream& out, size_t numOfElem)
   {
     ForwardList< int > forwardList;
+
     for (size_t i = 0; i < numOfElem; i++)
     {
       forwardList.push_front(std::rand());
     }
-    std::deque< int > queue(forwardList.begin(), forwardList.end());
-    std::list< int > list(forwardList.begin(), forwardList.end());
+
+    std::deque< int > queueForMerge(forwardList.begin(), forwardList.end());
+    std::list< int > listForMerge(forwardList.begin(), forwardList.end());
+    std::deque< int > queueForOddEven(forwardList.begin(), forwardList.end());
+    std::list< int > listForOddEven(forwardList.begin(), forwardList.end());
 
     print(out, forwardList.begin(), forwardList.end()) << "\n";
 
     mergeSort(forwardList, 0, numOfElem - 1, std::less< int >());
-    mergeSort(queue, 0, numOfElem - 1, std::less< int >());
-    mergeSort(list, 0, numOfElem - 1, std::less< int >());
+    mergeSort(queueForMerge, 0, numOfElem - 1, std::less< int >());
+    mergeSort(listForMerge, 0, numOfElem - 1, std::less< int >());
+    oddEvenSort(listForOddEven, std::less< int >());
+    oddEvenSort(queueForOddEven, std::less< int >());
 
     print(out, forwardList.begin(), forwardList.end()) << "\n";
-    print(out, queue.begin(), queue.end()) << "\n";
-    print(out, list.begin(), list.end()) << "\n";
+    print(out, queueForMerge.begin(), queueForMerge.end()) << "\n";
+    print(out, listForMerge.begin(), listForMerge.end()) << "\n";
+    print(out, listForOddEven.begin(), listForOddEven.end()) << "\n";
+    print(out, queueForOddEven.begin(), queueForOddEven.end()) << "\n";
   }
 }
