@@ -36,6 +36,8 @@ namespace fesenko
     void clear() noexcept;
     reference front();
     const_reference front() const;
+    void push_front(const value_type &);
+    void push_front(value_type &&);
    private:
     List< T > *fakeNode_;
     List< T > *begin_;
@@ -148,6 +150,37 @@ namespace fesenko
   typename ForwardList< T >::const_reference ForwardList< T >::front() const
   {
     return begin_->data;
+  }
+
+  template< typename T >
+  void ForwardList< T >::push_front(const value_type &val)
+  {
+    List< T > *node = new List< T >(val);
+    if (begin_) {
+      node->next = begin_;
+      begin_ = node;
+    } else {
+      begin_ = node;
+      end_ = node;
+    }
+    fakeNode_->next = begin_;
+    size_++;
+  }
+
+  template< typename T >
+  void ForwardList< T >::push_front(value_type &&val)
+  {
+    List< T > *node = new List< T >(val);
+    delete val;
+    if (begin_) {
+      node->next = begin_;
+      begin_ = node;
+    } else {
+      begin_ = node;
+      end_ = node;
+    }
+    fakeNode_->next = begin_;
+    size_++;
   }
 
   template< typename T >
