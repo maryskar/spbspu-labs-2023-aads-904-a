@@ -8,6 +8,7 @@ struct Tree
 	Tree< T >* left;
 	Tree< T >* head;
 	Tree< T >* right;
+	size_t height = 0;
 };
 
 #endif
