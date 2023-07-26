@@ -43,6 +43,21 @@ namespace tarasenko
      other.last_ = nullptr;
      other.size_ = 0;
    }
+
+   template< typename InputIt >
+   ForwardList(InputIt first, InputIt last):
+     null_(static_cast< details::NodeOfList< T >* >(::operator new (sizeof(details::NodeOfList< T >)))),
+     first_(nullptr),
+     last_(nullptr),
+     size_(0)
+   {
+     while (first != last)
+     {
+       pushBack(*first);
+       first++;
+     }
+   }
+
    ~ForwardList()
    {
      clear();
