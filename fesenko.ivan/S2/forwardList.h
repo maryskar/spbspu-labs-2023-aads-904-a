@@ -23,6 +23,9 @@ namespace fesenko
     this_t &operator=(const this_t &);
     this_t &operator=(this_t &&);
     ~ForwardList();
+    iterator before_begin() noexcept;
+    const_iterator before_begin() const noexcept;
+    const_iterator cbefore_begin() const noexcept;
     void clear() noexcept;
    private:
     List< T > *fakeNode_;
@@ -56,6 +59,24 @@ namespace fesenko
     std::swap(begin_, rhs.begin_);
     std::swap(end_, rhs.end_);
     std::swap(size_, rhs.size_);
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::before_begin() noexcept
+  {
+    return iterator(fakeNode_);
+  }
+
+  template< typename T >
+  typename ForwardList< T >::const_iterator ForwardList< T >::before_begin() const noexcept
+  {
+    return cbefore_begin();
+  }
+
+  template< typename T >
+  typename ForwardList< T >::const_iterator ForwardList< T >::cbefore_begin() const noexcept
+  {
+    return const_iterator(fakeNode_);
   }
 
   template< typename T >
