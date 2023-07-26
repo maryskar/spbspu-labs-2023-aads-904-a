@@ -32,7 +32,10 @@ namespace fesenko
     iterator end() noexcept;
     const_iterator end() const noexcept;
     const_iterator cend() const noexcept;
+    bool empty() const noexcept;
     void clear() noexcept;
+    reference front();
+    const_reference front() const;
    private:
     List< T > *fakeNode_;
     List< T > *begin_;
@@ -122,11 +125,29 @@ namespace fesenko
   }
 
   template< typename T >
+  bool ForwardList< T >::empty() const noexcept
+  {
+    return begin_ == nullptr;
+  }
+
+  template< typename T >
   void ForwardList< T >::clear() noexcept
   {
     deleteList(begin_);
     end_ = nullptr;
     size_ = 0;
+  }
+
+  template< typename T >
+  typename ForwardList< T >::reference ForwardList< T >::front()
+  {
+    return begin_->data;
+  }
+
+  template< typename T >
+  typename ForwardList< T >::const_reference ForwardList< T >::front() const
+  {
+    return begin_->data;
   }
 
   template< typename T >
