@@ -1,5 +1,6 @@
 #ifndef FORWARDLIST_H
 #define FORWARDLIST_H
+#include <list.h>
 #include "forwardIterator.h"
 #include "constForwardIterator.h"
 namespace fesenko
@@ -22,6 +23,77 @@ namespace fesenko
     this_t &operator=(const this_t &);
     this_t &operator=(this_t &&);
     ~ForwardList();
+    void clear() noexcept;
+   private:
+    List< T > *fakeNode_;
+    List< T > *begin_;
+    List< T > *end_;
+    size_t size_;
   };
+
+  template< typename T >
+  ForwardList< T >::ForwardList():
+    fakeNode_(static_cast< List< T > * >(::operator new (sizeof(List< T >)))),
+    begin_(nullptr),
+    end_(nullptr),
+    size_(0)
+  {
+    fakeNode_->next = nullptr;
+  }
+
+  template< typename T >
+  ForwardList< T >::ForwardList(const this_t &rhs):
+    ForwardList()
+  {
+    copy(rhs);
+  }
+
+  template< typename T >
+  ForwardList< T >::ForwardList(this_t &&rhs):
+    ForwardList()
+  {
+    std::swap(fakeNode_, rhs.fakeNode_);
+    std::swap(begin_, rhs.begin_);
+    std::swap(end_, rhs.end_);
+    std::swap(size_, rhs.size_);
+  }
+
+  template< typename T >
+  void ForwardList< T >::clear() noexcept
+  {
+    deleteList(begin_);
+    end_ = nullptr;
+    size_ = 0;
+  }
+
+  template< typename T >
+  ForwardList< T > &ForwardList< T >::operator=(const this_t &rhs)
+  {
+    if (std::addressof(rhs) != this) {
+      clear();
+      copy(rhs);
+    }
+    return *this;
+  }
+
+  template< typename T >
+  ForwardList< T > &ForwardList< T >::operator=(this_t &&rhs)
+  {
+    if (std::addressof(rhs) != this) {
+      clear();
+      std::swap(fakeNode_, rhs.fakeNode_);
+      std::swap(begin_, rhs.begin_);
+      std::swap(end_, rhs.end_);
+      std::swap(size_, rhs.size_);
+    }
+    return *this;
+  }
+
+  template< typename T >
+  ForwardList< T >::~ForwardList()
+  {
+    clear();
+    ::operator delete(fakeNode_);
+  }
 }
 #endif
