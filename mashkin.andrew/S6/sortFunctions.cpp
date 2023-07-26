@@ -52,17 +52,8 @@ namespace mashkin
     print(out, queueForQSort.begin(), queueForQSort.end()) << "\n";
   }
 
-  void getRandForwardListOfInts(ForwardList< int >& forwardList, size_t numOfElem)
-  {
-    std::default_random_engine generator;
-    std::uniform_int_distribution< > distribution;
-    for (size_t i = 0; i < numOfElem; i++)
-    {
-      forwardList.push_front(distribution(generator));
-    }
-  }
-
-  void getRandForwardListOfFloats(ForwardList< double >& forwardList, size_t numOfElem)
+  template< class Type >
+  void getRandVelueForForwardList(ForwardList< Type >& forwardList, size_t numOfElem)
   {
     std::default_random_engine generator;
     std::uniform_int_distribution< > distribution;
@@ -75,14 +66,14 @@ namespace mashkin
   void ascendInt(std::ostream& out, size_t numOfElem)
   {
     ForwardList< int > forwardList;
-    getRandForwardListOfInts(forwardList, numOfElem);
+    getRandVelueForForwardList(forwardList, numOfElem);
     sortAndPrint< int, decltype(std::less< int >()) >(out, numOfElem, forwardList, std::less< int >());
   }
 
   void ascendFloat(std::ostream& out, size_t numOfElem)
   {
     ForwardList< double > forwardList;
-    getRandForwardListOfFloats(forwardList, numOfElem);
+    getRandVelueForForwardList(forwardList, numOfElem);
     out << std::fixed << std::setprecision(1);
     sortAndPrint< double, decltype(std::less< double >()) >(out, numOfElem, forwardList, std::less< double >());
   }
@@ -90,14 +81,14 @@ namespace mashkin
   void descendInt(std::ostream& out, size_t numOfElem)
   {
     ForwardList< int > forwardList;
-    getRandForwardListOfInts(forwardList, numOfElem);
+    getRandVelueForForwardList(forwardList, numOfElem);
     sortAndPrint< int, decltype(std::greater< int >()) >(out, numOfElem, forwardList, std::greater< int >());
   }
 
   void descendFloat(std::ostream& out, size_t numOfElem)
   {
     ForwardList< double > forwardList;
-    getRandForwardListOfFloats(forwardList, numOfElem);
+    getRandVelueForForwardList(forwardList, numOfElem);
     out << std::fixed << std::setprecision(1);
     sortAndPrint< double, decltype(std::greater< double >()) >(out, numOfElem, forwardList, std::greater< double >());
   }
