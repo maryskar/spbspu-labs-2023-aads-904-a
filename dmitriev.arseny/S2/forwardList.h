@@ -51,12 +51,20 @@ namespace dmitriev
 
     ForwardIterator& operator++()
     {
+      if (isEmpty())
+      {
+        throw std::logic_error("inc nullptr");
+      }
       m_ptr = m_ptr->otherList;
 
       return *this;
     }
     ForwardIterator& operator++(int)
     {
+      if (isEmpty())
+      {
+        throw std::logic_error("inc nullptr");
+      }
       ForwardIterator< T > currentIterator = *this;
       ++(*this);
       return currentIterator;
@@ -73,11 +81,24 @@ namespace dmitriev
 
     T& operator*()
     {
+      if (isEmpty())
+      {
+        throw std::logic_error("inc nullptr");
+      }
       return m_ptr->data;
     }
     T* operator->()
     {
+      if (isEmpty())
+      {
+        throw std::logic_error("inc nullptr");
+      }
       return std::addressof(m_ptr->data);
+    }
+
+    bool isEmpty()
+    {
+      return m_ptr == nullptr;
     }
 
   private:
@@ -102,11 +123,19 @@ namespace dmitriev
 
     ConstForwardIterator& operator++()
     {
+      if (isEmpty())
+      {
+        throw std::logic_error("inc nullptr");
+      }
       m_ptr = m_ptr->otherList;
       return *this;
     }
     ConstForwardIterator& operator++(int)
     {
+      if (isEmpty())
+      {
+        throw std::logic_error("inc nullptr");
+      }
       ConstForwardIterator< T > currPtr = *this;
       m_ptr = m_ptr->otherList;
       return currPtr;
@@ -123,11 +152,24 @@ namespace dmitriev
 
     const T& operator*() const
     {
+      if (isEmpty())
+      {
+        throw std::logic_error("inc nullptr");
+      }
       return m_ptr->data;
     }
     const T* operator->() const
     {
+      if (isEmpty())
+      {
+        throw std::logic_error("inc nullptr");
+      }
       return std::addressof(m_ptr->data);
+    }
+
+    bool isEmpty()
+    {
+      return m_ptr == nullptr;
     }
 
   private:
@@ -200,15 +242,27 @@ namespace dmitriev
 
     const T& front() const
     {
+      if (isEmtpy())
+      {
+        throw std::logic_error("try to get data from empty list");
+      }
       return m_beforeHead->otherList->data;
     }
     T& front()
     {
+      if (isEmtpy())
+      {
+        throw std::logic_error("try to get data from empty list");
+      }
       return m_beforeHead->otherList->data;
     }
 
     void popFront()
     {
+      if (isEmtpy())
+      {
+        throw std::logic_error("try to pop data from empty list");
+      }
       list* newHead = m_beforeHead->otherList->otherList;
       delete m_beforeHead->otherList;
 
@@ -248,6 +302,31 @@ namespace dmitriev
     constIterator constEnd()
     {
       return constIterator();
+    }
+
+    iterator insertAfter(constIterator pos, const T& data)
+    {
+      if (pos.isEmpty())
+      {
+        throw std::logic_error("empty iter");
+      }
+      list* changeablePos = const_cast< list* >(pos.m_ptr);
+      list* newList = new list{data, changeablePos->otherList};
+      changeablePos->otherList = newList;
+
+      return iterator(changeablePos->otherList);
+    }
+    iterator insertAfter(constIterator pos, T&& data)
+    {
+      if (pos.isEmpty())
+      {
+        throw std::logic_error("empty iter");
+      }
+      list* changeablePos = const_cast< list* >(pos.m_ptr);
+      list* newList = new list{std::move(data), changeablePos->otherList};
+      changeablePos->otherList = newList;
+
+      return iterator(changeablePos->otherList);
     }
 
   private:
