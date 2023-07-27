@@ -36,11 +36,14 @@ namespace fesenko
     void clear() noexcept;
     reference front();
     const_reference front() const;
+    iterator insert_after(const_iterator position, const value_type &);
+    iterator insert_after(const_iterator position, value_type &&);
+    iterator insert_after(const_iterator, size_type, const value_type &);
     void push_front(const value_type &);
     void push_front(value_type &&);
-    void pop_front();
     iterator erase_after(const_iterator);
     iterator erase_after(const_iterator, const_iterator);
+    void pop_front();
    private:
     List< T > *fakeNode_;
     List< T > *begin_;
@@ -156,34 +159,49 @@ namespace fesenko
   }
 
   template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, const value_type &val)
+  {
+    auto *newNode = new List< T >(val);
+    newNode->next = pos.node_->next;
+    pos.node_->next = newNode;
+    if (pos.node_ == fakeNode_) {
+      if (!end_) {
+        end_ = begin_;
+      }
+      begin_ = newNode;
+    } else if (!newNode->next) {
+      end_ = newNode;
+    }
+    size_++;
+    return iterator(pos.node_->next);
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, value_type &&val)
+  {
+    return insert_after(pos, val);
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, size_type n, const value_type &val)
+  {
+    for (size_type i = 0; i < n; ++i)
+    {
+      pos = insert_after(pos, val);
+    }
+    return iterator(pos.node_->next);
+  }
+
+  template< typename T >
   void ForwardList< T >::push_front(const value_type &val)
   {
-    List< T > *node = new List< T >(val);
-    if (begin_) {
-      node->next = begin_;
-      begin_ = node;
-    } else {
-      begin_ = node;
-      end_ = node;
-    }
-    fakeNode_->next = begin_;
-    size_++;
+     insert_after(cbefore_begin(), val);
   }
 
   template< typename T >
   void ForwardList< T >::push_front(value_type &&val)
   {
-    List< T > *node = new List< T >(val);
-    delete val;
-    if (begin_) {
-      node->next = begin_;
-      begin_ = node;
-    } else {
-      begin_ = node;
-      end_ = node;
-    }
-    fakeNode_->next = begin_;
-    size_++;
+    insert_after(cbefore_begin(), std::move(val));
   }
 
   template< typename T >
@@ -214,7 +232,7 @@ namespace fesenko
   typename ForwardList< T >::iterator ForwardList< T >::erase_after(const_iterator pos, const_iterator last)
   {
     while (pos != last) {
-      erase_after(pos);
+      pos = erase_after(pos);
     }
     return iterator(last.node_);
   }
