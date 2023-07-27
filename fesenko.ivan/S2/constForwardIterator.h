@@ -7,11 +7,19 @@
 namespace fesenko
 {
   template< typename T >
+  class ForwardList;
+
+  template< typename T >
+  class ForwardIterator;
+
+  template< typename T >
   class ConstForwardIterator
   {
+    friend class ForwardList< T >;
    public:
     using this_t = ConstForwardIterator< T >;
     ConstForwardIterator();
+    ConstForwardIterator(ForwardIterator< T >);
     ConstForwardIterator(const this_t &) = default;
     explicit ConstForwardIterator(const ForwardIterator< T > &);
     ~ConstForwardIterator() = default;
@@ -24,11 +32,17 @@ namespace fesenko
     bool operator==(const this_t &) const;
    private:
     List< T > *node_;
+    explicit ConstForwardIterator(List< T > *);
   };
 
   template< typename T >
   ConstForwardIterator< T >::ConstForwardIterator():
     node_(nullptr)
+  {}
+
+  template< typename T >
+  ConstForwardIterator< T >::ConstForwardIterator(ForwardIterator< T > rhs):
+    node_(rhs.node_)
   {}
 
   template< typename T >
@@ -78,6 +92,11 @@ namespace fesenko
   {
     return !(rhs == *this);
   }
+
+  template< typename T >
+  ConstForwardIterator< T >::ConstForwardIterator(List< T > *head):
+    node_(head)
+  {}
 }
 
 #endif
