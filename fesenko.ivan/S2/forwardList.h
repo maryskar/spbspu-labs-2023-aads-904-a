@@ -38,6 +38,9 @@ namespace fesenko
     const_reference front() const;
     void push_front(const value_type &);
     void push_front(value_type &&);
+    void pop_front();
+    iterator erase_after(const_iterator);
+    iterator erase_after(const_iterator, const_iterator);
    private:
     List< T > *fakeNode_;
     List< T > *begin_;
@@ -181,6 +184,45 @@ namespace fesenko
     }
     fakeNode_->next = begin_;
     size_++;
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::erase_after(const_iterator pos)
+  {
+    auto next = pos.node_->next;
+    if (next) {
+      pos.node_->next = next->next;
+    }
+    if (pos.node_ == fakeNode_) {
+      begin_ = pos.node_->next;
+    }
+    if (next) {
+      delete next;
+    }
+    size_--;
+    if (size_ == 1) {
+      end_ = nullptr;
+    } else if (size_ == 0) {
+      begin_ = nullptr;
+      end_ = nullptr;
+      fakeNode_->next = nullptr;
+    }
+    return iterator(pos.node_->next);
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::erase_after(const_iterator pos, const_iterator last)
+  {
+    while (pos != last) {
+      erase_after(pos);
+    }
+    return iterator(last.node_);
+  }
+
+  template< typename T >
+  void ForwardList< T >::pop_front()
+  {
+    erase_after(cbefore_begin());
   }
 
   template< typename T >
