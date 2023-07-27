@@ -2,6 +2,8 @@
 #define FORWARDLSIT_H
 
 #include "forwardIterator.h"
+#include <iterator>
+#include <C:\Users\BlackEvery\source\repos\spbspu-labs-2023-aads-904-a\dmitriev.arseny\common\list.h>//шакалаки со средой разработки
 
 namespace
 {
@@ -26,6 +28,115 @@ namespace
 
 namespace dmitriev
 {
+  template< typename T >
+  class ForwardList;
+
+  template< typename T >
+  class ConstForwardIterator;
+
+  template< typename T >
+  class ForwardIterator: public std::iterator< std::forward_iterator_tag, T >
+  {
+  public:
+    friend ForwardList;
+    friend ConstForwardIterator;
+
+    using list = List< T >;
+
+    ForwardIterator():
+      m_ptr(nullptr)
+    {}
+    ForwardIterator(list* ptr) noexcept:
+      m_ptr(ptr)
+    {}
+
+    ForwardIterator& operator++()
+    {
+      m_ptr = m_ptr->otherList;
+
+      return *this;
+    }
+    ForwardIterator& operator++(int)
+    {
+      ForwardIterator< T > currentIterator = *this;
+      ++(*this);
+      return currentIterator;
+    }
+
+    bool operator==(const ForwardIterator& other) const
+    {
+      return m_ptr == other.m_ptr;
+    }
+    bool operator!=(const ForwardIterator& other) const
+    {
+      return !(*this == other);
+    }
+
+    T& operator*()
+    {
+      return m_ptr->data;
+    }
+    T* operator->()
+    {
+      return std::addressof(m_ptr->data);
+    }
+
+  private:
+    list* m_ptr;
+
+  };
+
+  template< typename T >
+  class ConstForwardIterator: public std::iterator< std::forward_iterator_tag, const T >
+  {
+  public:
+    friend ForwardList;
+
+    using list = List< T >;
+
+    ConstForwardIterator():
+      m_ptr(nullptr)
+    {}
+    ConstForwardIterator(const list* ptr):
+      m_ptr(ptr)
+    {}
+
+    ConstForwardIterator& operator++()
+    {
+      m_ptr = m_ptr->otherList;
+      return *this;
+    }
+    ConstForwardIterator& operator++(int)
+    {
+      ConstForwardIterator< T > currPtr = *this;
+      m_ptr = m_ptr->otherList;
+      return currPtr;
+    }
+
+    bool operator==(const ConstForwardIterator& other) const
+    {
+      return m_ptr == other.m_ptr;
+    }
+    bool operator!=(const ConstForwardIterator& other) const
+    {
+      return !(*this == other);
+    }
+
+    const T& operator*() const
+    {
+      return m_ptr->data;
+    }
+    const T* operator->() const
+    {
+      return std::addressof(m_ptr->data);
+    }
+
+  private:
+    const list* m_ptr;
+
+  };
+
+
   template< typename T >
   class ForwardList
   {
@@ -117,7 +228,5 @@ namespace dmitriev
 
   };
 }
-
-
 
 #endif
