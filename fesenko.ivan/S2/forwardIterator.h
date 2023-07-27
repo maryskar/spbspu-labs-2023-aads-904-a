@@ -1,17 +1,22 @@
 #ifndef FORWARDITERATOR_H
 #define FORWARDITERATOR_H
 #include <cassert>
-#include <list.h>
 #include <memory>
+#include <list.h>
+#include "constForwardIterator.h"
 
 namespace fesenko
 {
+  template< typename T >
+  class ForwardList;
+
   template< typename T >
   class ConstForwardIterator;
 
   template< typename T >
   class ForwardIterator
   {
+    friend class ForwardList< T >;
     friend class ConstForwardIterator< T >;
    public:
     using this_t = ForwardIterator< T >;
@@ -29,6 +34,7 @@ namespace fesenko
     bool operator==(const this_t &) const;
    private:
     List< T > *node_;
+    explicit ForwardIterator(List< T > *);
   };
 
   template< typename T >
@@ -90,6 +96,11 @@ namespace fesenko
   {
     return !(rhs == *this);
   }
+
+  template< typename T >
+  ForwardIterator< T >::ForwardIterator(List< T > *head):
+    node_(head)
+  {}
 }
 
 #endif
