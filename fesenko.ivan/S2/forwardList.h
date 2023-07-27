@@ -34,6 +34,7 @@ namespace fesenko
     const_iterator cend() const noexcept;
     bool empty() const noexcept;
     void clear() noexcept;
+    void swap(this_t &);
     reference front();
     const_reference front() const;
     iterator insert_after(const_iterator position, const value_type &);
@@ -72,10 +73,7 @@ namespace fesenko
   ForwardList< T >::ForwardList(this_t &&rhs):
     ForwardList()
   {
-    std::swap(fakeNode_, rhs.fakeNode_);
-    std::swap(begin_, rhs.begin_);
-    std::swap(end_, rhs.end_);
-    std::swap(size_, rhs.size_);
+    swap(rhs);
   }
 
   template< typename T >
@@ -144,6 +142,15 @@ namespace fesenko
     deleteList(begin_);
     end_ = nullptr;
     size_ = 0;
+  }
+
+  template< typename T >
+  void ForwardList< T >::swap(this_t &rhs)
+  {
+    std::swap(fakeNode_, rhs.fakeNode_);
+    std::swap(begin_, rhs.begin_);
+    std::swap(end_, rhs.end_);
+    std::swap(size_, rhs.size_);
   }
 
   template< typename T >
@@ -258,10 +265,7 @@ namespace fesenko
   {
     if (std::addressof(rhs) != this) {
       clear();
-      std::swap(fakeNode_, rhs.fakeNode_);
-      std::swap(begin_, rhs.begin_);
-      std::swap(end_, rhs.end_);
-      std::swap(size_, rhs.size_);
+      swap(rhs);
     }
     return *this;
   }
