@@ -1,7 +1,6 @@
 #ifndef FORWARDLSIT_H
 #define FORWARDLSIT_H
 
-#include "forwardIterator.h"
 #include <iterator>
 #include <C:\Users\BlackEvery\source\repos\spbspu-labs-2023-aads-904-a\dmitriev.arseny\common\list.h>//шакалаки со средой разработки
 
@@ -38,8 +37,8 @@ namespace dmitriev
   class ForwardIterator: public std::iterator< std::forward_iterator_tag, T >
   {
   public:
-    friend ForwardList;
-    friend ConstForwardIterator;
+    friend ForwardList< T >;
+    friend ConstForwardIterator< T >;
 
     using list = List< T >;
 
@@ -90,7 +89,7 @@ namespace dmitriev
   class ConstForwardIterator: public std::iterator< std::forward_iterator_tag, const T >
   {
   public:
-    friend ForwardList;
+    friend ForwardList< T >;
 
     using list = List< T >;
 
@@ -142,6 +141,8 @@ namespace dmitriev
   {
   public:
     using list = dmitriev::List< T >;
+    using iterator = ForwardIterator< T >;
+    using constIterator = ConstForwardIterator< T >;
 
     ForwardList():
       m_beforeHead(static_cast< list* >(::operator new (sizeof(list))))
@@ -221,6 +222,32 @@ namespace dmitriev
     void clear()
     {
       dmitriev::clear(m_beforeHead->otherList);
+    }
+
+    iterator beforeBegin()
+    {
+      return iterator(m_beforeHead);
+    }
+    iterator begin()
+    {
+      return iterator(m_beforeHead->otherList);
+    }
+    iterator end()
+    {
+      return iterator();
+    }
+
+    constIterator constBeforeBegin()
+    {
+      return constIterator(m_beforeHead);
+    }
+    constIterator constBegin()
+    {
+      return constIterator(m_beforeHead->otherList);
+    }
+    constIterator constEnd()
+    {
+      return constIterator();
     }
 
   private:
