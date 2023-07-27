@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "call.h"
+#include "commands.h"
 #include "dictionary.h"
 #include "read_dicts_in_dict.h"
 
@@ -21,12 +21,13 @@ int main(int argc, char* argv[])
   using dict_t = tarasenko::Dictionary< size_t, std::string, std::less<> >;
   tarasenko::Dictionary< std::string, dict_t, std::greater<> > dict_of_dict;
   readDictsInDict(input, dict_of_dict);
-  std::string name_of_command = "";
+  tarasenko::Commands< size_t, std::string, std::less<> > commands;
+  std::string name_of_command = " ";
   while (std::cin >> name_of_command)
   {
     try
     {
-      call(name_of_command, dict_of_dict, std::cin, std::cout);
+      commands.callCommand(name_of_command, dict_of_dict, std::cin, std::cout);
     }
     catch (const std::exception& e)
     {
