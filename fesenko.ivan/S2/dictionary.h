@@ -38,9 +38,6 @@ namespace fesenko
     iterator end() noexcept;
     const_iterator end() const noexcept;
     const_iterator cend() const noexcept;
-    iterator last() noexcept;
-    const_iterator last() const noexcept;
-    const_iterator clast() const noexcept;
     bool empty() const noexcept;
     size_type size() const noexcept;
     mapped_type &operator[](const key_type &);
@@ -158,6 +155,18 @@ namespace fesenko
   typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::cend() const noexcept
   {
     return list_.cend();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  bool Dictionary< Key, Value, Compare >::empty() const noexcept
+  {
+    return cbegin() == cend();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::size_type Dictionary< Key, Value, Compare >::size() const noexcept
+  {
+    return size_;
   }
 }
 #endif
