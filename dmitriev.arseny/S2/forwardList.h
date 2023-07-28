@@ -329,6 +329,29 @@ namespace dmitriev
       return iterator(changeablePos->otherList);
     }
 
+    iterator insertAfter(constIterator pos, size_t count, const T& data)
+    {
+      if (pos.isEmpty())
+      {
+        throw std::logic_error("empty iter");
+      }
+      list* changeablePos = const_cast< list* >(pos.m_ptr);
+
+      for (size_t i = 0; i < count; i++)
+      {
+        list* newList = new list{data, changeablePos->otherList};
+        changeablePos->otherList = newList;
+
+        changeablePos = changeablePos->otherList;
+      }
+
+      return iterator(changeablePos);
+    }
+    //template< class InputIt >
+    //iterator insert_after(constIterator pos, InputIt first, InputIt last);
+    //iterator insert_after(constIterator pos, std::initializer_list< T > ilist);
+
+
   private:
     list* m_beforeHead;
 
