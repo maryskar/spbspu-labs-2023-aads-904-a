@@ -57,7 +57,6 @@ potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
     }
     else if (!operators_stack.empty() && getPriority(cur_member.operation) <= getPriority(operators_stack.back()))
     {
-      //operators_stack.push(cur_member.operation);
       postfix_expr.push(operators_stack.back());
       operators_stack.pop();
       operators_stack.push(cur_member.operation);
