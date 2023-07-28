@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <stdexcept>
 #include "tree_node.h"
+#include "bidirectional_iterator.h"
 template< typename Key, typename Value, typename Compare = std::less< Key >>
 class BinarySearchTree
 {
@@ -12,7 +13,7 @@ public:
   using bst_t = BinarySearchTree< Key, Value, Compare >;
   using tree_t = TreeNode< data_type >;
   ///
-  using iterator = int;
+  using iterator = BidirectionalIterator< Key, Value, Compare >;
   using const_iterator = int;
   using reverse_iterator = int;
   using const_reverse_iterator = int;
@@ -23,16 +24,15 @@ public:
   BinarySearchTree(BinarySearchTree &&other) noexcept;
   BinarySearchTree &operator=(const BinarySearchTree &other);
   BinarySearchTree &operator=(BinarySearchTree &&other) noexcept;
-  //void insert(const Key &key, const Value &value);
+  std::pair< iterator, bool > insert(const Key &key, const Value &value);
   void remove(const Key &key);
-  Value *find(const Key &key);
+  iterator find(const Key &key);
   ///
+  iterator end() const;
   /*iterator beforeBegin() const;
   iterator begin() const;
-  iterator end() const;
   const_iterator cbeforeBegin() const;
   const_iterator cbegin() const;
-  const_iterator cend() const;
   reverse_iterator rbegin();
   reverse_iterator rend();
   const_reverse_iterator crbegin() const;
@@ -43,7 +43,7 @@ public:
   Value &operator[](Key &&key);
   size_t size() const;
   bool isEmpty() const;
-  std::pair< iterator, bool > insert(const Key &key, const Value &value);
+  //std::pair< iterator, bool > insert(const Key &key, const Value &value);
   std::pair< iterator, bool > insert(Key &&key, Value &&value);
   /*iterator insert(const_iterator pos, const Key &key, const Value &value);
   iterator insert(const_iterator pos, Key &&key, Value &&value);
@@ -77,6 +77,53 @@ private:
   TreeNode< data_type > *copyBegin(const TreeNode< data_type > *beginNode);
   TreeNode< data_type > *copyEnd(const TreeNode< data_type > *endNode);
 };
+template< typename Key, typename Value, typename Compare >
+BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::end() const
+{
+  //Надо cend()
+  return BidirectionalIterator< Key, Value, Compare >(fakeNode_, fakeNode_);
+}
+template< typename Key, typename Value, typename Compare >
+std::pair< typename BinarySearchTree< Key, Value, Compare >::iterator, bool >
+BinarySearchTree< Key, Value, Compare >::insert(Key &&key, Value &&value)
+{
+  data_type new_data(std::forward< Key >(key), std::forward< Value >(value));
+  tree_t *parent = nullptr;
+  tree_t *current = root_;
+  while (current != nullptr)
+  {
+    if (compare_(new_data.first, current->data.first))
+    {
+      parent = current;
+      current = current->left;
+    }
+    else if (compare_(current->data.first, new_data.first))
+    {
+      parent = current;
+      current = current->right;
+    }
+    else
+    {
+      return std::make_pair(iterator(current, fakeNode_), false);
+    }
+  }
+  current = new tree_t(std::move(new_data));
+  current->parent = parent;
+  if (parent == nullptr)
+  {
+    root_ = current;
+  }
+  else if (compare_(current->data.first, parent->data.first))
+  {
+    parent->left = current;
+  }
+  else
+  {
+    parent->right = current;
+  }
+  ++size_;
+  return std::make_pair(iterator(current, fakeNode_), true);
+}
 template< typename Key, typename Value, typename Compare >
 Value &BinarySearchTree< Key, Value, Compare >::operator[](const Key &key)
 {
@@ -257,11 +304,11 @@ BinarySearchTree< Key, Value, Compare >::removeImpl(TreeNode< data_type > *node,
     return nullptr;
   }
   Compare cmp;
-  if (cmp(key, node->key))
+  if (cmp(key, node->data.first))
   {
     node->left = removeImpl(node->left, key);
   }
-  else if (cmp(node->key, key))
+  else if (cmp(node->data.first, key))
   {
     node->right = removeImpl(node->right, key);
   }
@@ -289,10 +336,10 @@ BinarySearchTree< Key, Value, Compare >::removeImpl(TreeNode< data_type > *node,
     }
     else
     {
-      TreeNode< data_type > *minRight = findMin(node->right);
-      node->key = minRight->key;
-      node->value = minRight->value;
-      node->right = removeImpl(node->right, minRight->key);
+      TreeNode< data_type > *minRight = root_->findMin(node->right);
+      node->data.first = minRight->data.first;
+      node->data.second = minRight->data.second;
+      node->right = removeImpl(node->right, minRight->data.first);
     }
   }
   return node;
@@ -325,37 +372,47 @@ TreeNode< std::pair< Key, Value > > *BinarySearchTree< Key, Value, Compare >::in
   return node;
 }
 template< typename Key, typename Value, typename Compare >
-Value *BinarySearchTree< Key, Value, Compare >::find(const Key &key)
+BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::find(const Key &key)
 {
-  TreeNode< data_type > *node = root_;
-  Compare cmp;
-  while (node)
+  tree_t *current = root_;
+  while (current != nullptr)
   {
-    if (cmp(key, node->key))
+    if (compare_(current->data.first, key))
     {
-      node = node->left;
+      current = current->right;
     }
-    else if (cmp(node->key, key))
+    else if (compare_(key, current->data.first))
     {
-      node = node->right;
+      current = current->left;
     }
     else
     {
-      return &node->value;
+      return iterator(current, fakeNode_);
     }
   }
-  return nullptr;
+  return end();
 }
 template< typename Key, typename Value, typename Compare >
 void BinarySearchTree< Key, Value, Compare >::remove(const Key &key)
 {
   root_ = removeImpl(root_, key);
 }
-/*template< typename Key, typename Value, typename Compare >
-void BinarySearchTree< Key, Value, Compare >::insert(const Key &key, const Value &value)
+template< typename Key, typename Value, typename Compare >
+std::pair< typename BinarySearchTree< Key, Value, Compare >::iterator, bool >
+BinarySearchTree< Key, Value, Compare >::insert(const Key &key, const Value &value)
 {
   root_ = insertImpl(root_, nullptr, key, value);
-}*/
+  TreeNode< data_type > *node = find(key);
+  if (node == nullptr)
+  {
+    throw;
+//    return {end(), false};
+  }
+  else
+  {
+    return {iterator(node), true};
+  }
+}
 template< typename Key, typename Value, typename Compare >
 BinarySearchTree< Key, Value, Compare >::BinarySearchTree():
   fakeNode_(nullptr),
