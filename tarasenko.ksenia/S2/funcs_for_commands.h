@@ -91,5 +91,90 @@ namespace tarasenko
     }
     return output;
   }
+
+  template< class Key, class Value, class Compare >
+  void add(std::istream& input, Dictionary< std::string,
+    Dictionary< size_t, std::string, std::less<> >, std::greater<> >& dict_of_dict)
+  {
+    while (input)
+    {
+      char begin = ' ';
+      input >> begin;
+      if (begin != '(')
+      {
+        input.putback(begin);
+        break;
+      }
+      std::string name_of_dict = " ";
+      while (input >> name_of_dict)
+      {
+        if (name_of_dict == ")")
+        {
+          break;
+        }
+        size_t key;
+        std::string value;
+        Dictionary< size_t, std::string, std::less<> > dict;
+        while (input >> key >> value)
+        {
+          dict.push(key, value);
+        }
+        dict_of_dict.push(name_of_dict, dict);
+        input.clear();
+      }
+    }
+  }
+
+//  delete <dataset-1> <dataset-2> ... (удалить указанные словари)
+
+//  write <dataset-1><dataset-2> ... <namefile> (записать указанные словари в файл на отдельной строке имя словаря ключ значение ключ значение ...)
+
+//  resort <greater/less> (изменить порядок ключей(сортировку) в словарях)
+//  second 1 name 2 sec 4 mouse
+//
+//    resort less
+//    print second
+//  4 mouse 2 sec 1 name
+
+//    put <key-1-1> <value-1-1><dataset-1><dataset-2> ... (записать новый элемент в указанные словари, если ключ уже существует, то значение обновляется)
+//  print_if <key-1-1> (выводит имена словарей, в которых есть заданный ключ)
+//  swap <dataset-1> <dataset-2> (меняет данные двух словарей)
+//
+//  first 1 base 2 market 3 cats
+//    second 1 name 2 sec 4 mouse
+//
+//    swap first second
+//  print first
+//  1 name 2 sec 4 mouse
+//    print second
+//  1 base 2 market 3 cats
+//    copy <dataset> <newdataset> (создает копию указанного словаря с новым именем)
+//  second 1 name 2 sec 4 mouse
+//
+//    copy second new
+//  print new
+//
+//  1 name 2 sec 4 mouse
+//    update <dataset-1> <dataset-2> (обновляет значения первого словаря значениями из второго словаря по совпадающим ключам)
+//  first 1 base 2 market 3 cats
+//    second 1 name 2 sec 4 mouse
+//
+//    update first second
+//  print first
+//
+//  1 name 2 sec 3 cats
+//    merge <dataset-1> <dataset-2> (добавляет ключи из второго словаря в первый. Если ключи дублируются, в качестве значения выбираются данные из правого операнда)
+//
+//  merge first second
+//    print first
+//  1 name 2 sec 3 cats 4 mouse
+//    random <newdataset> <size><dataset-1><dataset-2>...(создает, новый словарь с заданный количеством случайным слов из указанных словарей)
+//
+//  random four 4
+//  print four
+//  1 dog 2 tree 3 fish 4 frogs
+//    subset <dataset-1> <dataset-2> ( проверяет, является ли первый словарь подмножеством второго)
+//  subset second first
+//  true
 }
 #endif

@@ -18,13 +18,16 @@ namespace tarasenko
   public:
    Commands():
      type_create(),
-     type_print()
+     type_print(),
+     type_input()
    {
      type_create.push("complement", &complement< Key, Value, Compare >);
      type_create.push("intersect", &intersect< Key, Value, Compare >);
      type_create.push("union", &unionWith< Key, Value, Compare >);
 
      type_print.push("print", &print< Key, Value, Compare >);
+
+     type_input.push("add", &add< std::string, dict_type, std::greater<> >);
    }
 
    void callCommand(const std::string& name_of_command,
@@ -39,6 +42,10 @@ namespace tarasenko
      {
        callCreate(name_of_command, dict_of_dict, input, output);
      }
+     else if (findInTypeInput(name_of_command))
+     {
+       type_input.at(name_of_command)(input, dict_of_dict);
+     }
      else
      {
        output << outMessageInvalidCommand << "\n";
@@ -52,9 +59,13 @@ namespace tarasenko
      std::function< dict_type(const dict_type&, const dict_type&) >, Compare > type_create;
    Dictionary< std::string,
      std::function< std::ostream&(std::ostream&, const std::string&, const dict_type&) >, Compare > type_print;
+   Dictionary< std::string,
+     std::function< void(std::istream&, Dictionary< std::string, dict_type, std::greater<> >&) >,
+     Compare > type_input;
 
    bool findInTypePrint(const std::string& key) const;
    bool findInTypeCreate(const std::string& key) const;
+   bool findInTypeInput(const std::string& key) const;
    void callCreate(const std::string& name_of_command,
       Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
       std::istream& input, std::ostream& output);
@@ -73,6 +84,12 @@ namespace tarasenko
   bool Commands< Key, Value, Compare >::findInTypeCreate(const std::string& key) const
   {
     return type_create.find(key) != type_create.cend();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  bool Commands< Key, Value, Compare >::findInTypeInput(const std::string& key) const
+  {
+    return type_input.find(key) != type_input.cend();
   }
 
   template< typename Key, typename Value, typename Compare >
