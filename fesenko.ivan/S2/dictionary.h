@@ -72,32 +72,56 @@ namespace fesenko
 
   template< typename Key, typename Value, typename Compare >
   Dictionary< Key, Value, Compare >::Dictionary():
-   list_(),
-   comp_(),
-   size_(0)
+    list_(),
+    comp_(),
+    size_(0)
   {}
 
   template< typename Key, typename Value, typename Compare >
   Dictionary< Key, Value, Compare >::Dictionary(const key_compare &comp):
-   list_(),
-   comp_(comp),
-   size_(0)
+    list_(),
+    comp_(comp),
+    size_(0)
   {}
 
   template< typename Key, typename Value, typename Compare >
   Dictionary< Key, Value, Compare >::Dictionary(const this_t &other):
-   list_(other.list_),
-   comp_(other.comp_),
-   size_(other.size_)
+    list_(other.list_),
+    comp_(other.comp_),
+    size_(other.size_)
   {}
 
   template< typename Key, typename Value, typename Compare >
   Dictionary< Key, Value, Compare >::Dictionary(this_t &&other):
-   list_(std::move(other.list_)),
-   comp_(std::move(other.comp_)),
-   size_(other.size_)
+    list_(std::move(other.list_)),
+    comp_(std::move(other.comp_)),
+    size_(other.size_)
   {
     other.size_ = 0;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(const this_t &other)
+  {
+    if (this != std::addressof(other)) {
+      Compare temp = other.comp_;
+      list_ = other.list_;
+      comp_ = std::move(temp);
+      size_ = other.size_;
+    }
+    return *this;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(this_t &&other)
+  {
+    if (this != std::addressof(other)) {
+      list_ = std::move(other.list_);
+      comp_ = std::move(other.comp_);
+      size_ = other.size_;
+      other.size_ = 0;
+    }
+    return *this;
   }
 }
 #endif
