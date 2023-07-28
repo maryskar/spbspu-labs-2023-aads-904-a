@@ -77,6 +77,11 @@ private:
   TreeNode< data_type > *copyEnd(const TreeNode< data_type > *endNode);
 };
 template< typename Key, typename Value, typename Compare >
+size_t BinarySearchTree< Key, Value, Compare >::size() const
+{
+  return size_;
+}
+template< typename Key, typename Value, typename Compare >
 void BinarySearchTree< Key, Value, Compare >::clear()
 {
   clear(root_);

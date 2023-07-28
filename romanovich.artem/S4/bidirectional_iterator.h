@@ -2,6 +2,7 @@
 #define BIDIRECTIONAL_ITERATOR_H
 #include <iterator>
 #include "tree_node.h"
+#include "iterator_dto.h"
 template< typename Key, typename Value, typename Compare >
 class BidirectionalIterator
 {
@@ -14,24 +15,32 @@ public:
   ~BidirectionalIterator() = default;
   BidirectionalIterator(const BidirectionalIterator< Key, Value, Compare > &) = default;
   BidirectionalIterator(TreeNode< data_type > *otherNode, TreeNode< data_type > *otherFakeNode);
+  explicit BidirectionalIterator(const IteratorDto< Key, Value > &dto);
   BidirectionalIterator< Key, Value, Compare > &
   operator=(const BidirectionalIterator< Key, Value, Compare > &) = default;
   data_type &operator*();
   data_type *operator->();
   BidirectionalIterator &operator++();
   BidirectionalIterator operator++(int);
-  TreeNode< data_type > *getNode() const;
   BidirectionalIterator &operator--();
   BidirectionalIterator operator--(int);
   bool operator!=(const BidirectionalIterator &other) const;
   bool operator==(const BidirectionalIterator &other) const;
+  /*TreeNode< data_type > *getNode() const;
   TreeNode< data_type > *getFakeNode() const;
-  TreeNode< data_type > *getRoot() const;
+  TreeNode< data_type > *getRoot() const;*/
 private:
   TreeNode< data_type > *node_;
   TreeNode< data_type > *fakeNode_;
   TreeNode< data_type > *root_;
 };
+template< typename Key, typename Value, typename Compare >
+BidirectionalIterator< Key, Value, Compare >::BidirectionalIterator(const IteratorDto< Key, Value > &dto):
+  node_(dto.node),
+  fakeNode_(dto.fakeNode),
+  root_(dto.root)
+{
+}
 template< typename Key, typename Value, typename Compare >
 BidirectionalIterator< Key, Value, Compare >::BidirectionalIterator(TreeNode< data_type > *otherNode,
                                                                     TreeNode< data_type > *otherFakeNode):
@@ -39,7 +48,7 @@ BidirectionalIterator< Key, Value, Compare >::BidirectionalIterator(TreeNode< da
   fakeNode_(otherFakeNode)
 {
 }
-template< typename Key, typename Value, typename Compare >
+/*template< typename Key, typename Value, typename Compare >
 TreeNode< std::pair< Key, Value > > *BidirectionalIterator< Key, Value, Compare >::getFakeNode() const
 {
   return fakeNode_;
@@ -53,7 +62,7 @@ template< typename Key, typename Value, typename Compare >
 TreeNode< std::pair< Key, Value > > *BidirectionalIterator< Key, Value, Compare >::getNode() const
 {
   return node_;
-}
+}*/
 template< typename Key, typename Value, typename Compare >
 bool BidirectionalIterator< Key, Value, Compare >::operator==(const BidirectionalIterator &other) const
 {
