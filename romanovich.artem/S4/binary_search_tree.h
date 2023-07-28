@@ -24,7 +24,6 @@ public:
   BinarySearchTree(BinarySearchTree &&other) noexcept;
   BinarySearchTree &operator=(const BinarySearchTree &other);
   BinarySearchTree &operator=(BinarySearchTree &&other) noexcept;
-  std::pair< iterator, bool > insert(const Key &key, const Value &value);
   void remove(const Key &key);
   iterator find(const Key &key);
   ///
@@ -43,14 +42,14 @@ public:
   Value &operator[](Key &&key);
   size_t size() const;
   bool isEmpty() const;
-  //std::pair< iterator, bool > insert(const Key &key, const Value &value);
   std::pair< iterator, bool > insert(Key &&key, Value &&value);
-  /*iterator insert(const_iterator pos, const Key &key, const Value &value);
+  std::pair< iterator, bool > insert(const Key &key, const Value &value);
+  iterator insert(const_iterator pos, const Key &key, const Value &value);
   iterator insert(const_iterator pos, Key &&key, Value &&value);
   template< class InputIt >
   iterator insert(const_iterator pos, InputIt first, InputIt last);
   void clear();
-  iterator erase(iterator pos);
+  /*iterator erase(iterator pos);
   iterator erase(const_iterator pos);
   iterator erase(const_iterator first, const_iterator last);*/
   size_t erase(const Key &key);
@@ -78,6 +77,11 @@ private:
   TreeNode< data_type > *copyEnd(const TreeNode< data_type > *endNode);
 };
 template< typename Key, typename Value, typename Compare >
+void BinarySearchTree< Key, Value, Compare >::clear()
+{
+  clear(root_);
+}
+template< typename Key, typename Value, typename Compare >
 BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::end() const
 {
   //Надо cend()
@@ -88,41 +92,9 @@ std::pair< typename BinarySearchTree< Key, Value, Compare >::iterator, bool >
 BinarySearchTree< Key, Value, Compare >::insert(Key &&key, Value &&value)
 {
   data_type new_data(std::forward< Key >(key), std::forward< Value >(value));
-  tree_t *parent = nullptr;
-  tree_t *current = root_;
-  while (current != nullptr)
-  {
-    if (compare_(new_data.first, current->data.first))
-    {
-      parent = current;
-      current = current->left;
-    }
-    else if (compare_(current->data.first, new_data.first))
-    {
-      parent = current;
-      current = current->right;
-    }
-    else
-    {
-      return std::make_pair(iterator(current, fakeNode_), false);
-    }
-  }
-  current = new tree_t(std::move(new_data));
-  current->parent = parent;
-  if (parent == nullptr)
-  {
-    root_ = current;
-  }
-  else if (compare_(current->data.first, parent->data.first))
-  {
-    parent->left = current;
-  }
-  else
-  {
-    parent->right = current;
-  }
-  ++size_;
-  return std::make_pair(iterator(current, fakeNode_), true);
+  const Key &const_key = new_data.first;
+  const Value &const_value = new_data.second;
+  return insert(const_key, const_value);
 }
 template< typename Key, typename Value, typename Compare >
 Value &BinarySearchTree< Key, Value, Compare >::operator[](const Key &key)
@@ -352,22 +324,22 @@ TreeNode< std::pair< Key, Value > > *BinarySearchTree< Key, Value, Compare >::in
 {
   if (!node)
   {
-    TreeNode< data_type > *newNode = new TreeNode< data_type >(key, value);
+    TreeNode< data_type > *newNode = new TreeNode< data_type >(data_type(key, value));
     newNode->parent = parent;
     return newNode;
   }
   Compare cmp;
-  if (cmp(key, node->key))
+  if (cmp(key, node->data.first))
   {
     node->left = insertImpl(node->left, node, key, value);
   }
-  else if (cmp(node->key, key))
+  else if (cmp(node->data.first, key))
   {
     node->right = insertImpl(node->right, node, key, value);
   }
   else
   {
-    node->value = value;
+    node->data.second = value;
   }
   return node;
 }
@@ -402,15 +374,14 @@ std::pair< typename BinarySearchTree< Key, Value, Compare >::iterator, bool >
 BinarySearchTree< Key, Value, Compare >::insert(const Key &key, const Value &value)
 {
   root_ = insertImpl(root_, nullptr, key, value);
-  TreeNode< data_type > *node = find(key);
-  if (node == nullptr)
+  iterator it = find(key);
+  if (it == end())
   {
-    throw;
-//    return {end(), false};
+    return std::make_pair(end(), false);
   }
   else
   {
-    return {iterator(node), true};
+    return std::make_pair(it, true);
   }
 }
 template< typename Key, typename Value, typename Compare >
@@ -438,5 +409,64 @@ void BinarySearchTree< Key, Value, Compare >::clear(TreeNode< data_type > *node)
     clear(node->right);
     delete node;
   }
+}
+template< typename Key, typename Value, typename Compare >
+typename BinarySearchTree< Key, Value, Compare >::iterator
+BinarySearchTree< Key, Value, Compare >::insert(const_iterator pos, const Key &key, const Value &value)
+{
+  TreeNode< data_type > *parent = nullptr;
+  TreeNode< data_type > *current = root_;
+  while (current != nullptr)
+  {
+    if (compare_(key, current->data.first))
+    {
+      parent = current;
+      current = current->left;
+    }
+    else if (compare_(current->data.first, key))
+    {
+      parent = current;
+      current = current->right;
+    }
+    else
+    {
+      return iterator(current, fakeNode_);
+    }
+  }
+  current = new TreeNode< data_type >(key, value);
+  current->parent = parent;
+  if (parent == nullptr)
+  {
+    root_ = current;
+  }
+  else if (compare_(key, parent->data.first))
+  {
+    parent->left = current;
+  }
+  else
+  {
+    parent->right = current;
+  }
+  ++size_;
+  return iterator(current, fakeNode_);
+}
+template< typename Key, typename Value, typename Compare >
+typename BinarySearchTree< Key, Value, Compare >::iterator
+BinarySearchTree< Key, Value, Compare >::insert(const_iterator pos, Key &&key, Value &&value)
+{
+  iterator insertPos = const_cast<iterator>(pos);
+  return insert(insertPos, std::forward< Key >(key), std::forward< Value >(value));
+}
+template< typename Key, typename Value, typename Compare >
+template< class InputIt >
+typename BinarySearchTree< Key, Value, Compare >::iterator
+BinarySearchTree< Key, Value, Compare >::insert(const_iterator pos, InputIt first, InputIt last)
+{
+  iterator result;
+  for (InputIt it = first; it != last; ++it)
+  {
+    result = insert(pos, it->first, it->second);
+  }
+  return result;
 }
 #endif

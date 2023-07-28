@@ -4,7 +4,6 @@ int main()
 {
   BinarySearchTree< int, int > bst;
 
-  // Test insertion
   auto [it1, inserted1] = bst.insert(5, 5);
   auto [it2, inserted2] = bst.insert(3, 3);
   auto [it3, inserted3] = bst.insert(7, 7);
