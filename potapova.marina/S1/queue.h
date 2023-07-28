@@ -1,6 +1,8 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
+#include  <cstddef>
+
 namespace potapova
 {
   template< typename T >

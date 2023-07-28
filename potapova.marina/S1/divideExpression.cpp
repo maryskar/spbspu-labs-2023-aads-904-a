@@ -4,7 +4,7 @@
 
 size_t getPriority(const char operation)
 {
-  if (operation == '*' || operation == '/')
+  if (operation == '*' || operation == '/' || operation == '%')
   {
     return 1;
   }
@@ -47,7 +47,7 @@ potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
     {
       postfix_expr.push(cur_member);
     }
-    else if (isOpenBracket(cur_member.operation || operators_stack.empty() || isOpenBracket(operators_stack.back())))
+    else if (isOpenBracket(cur_member.operation) || operators_stack.empty() || isOpenBracket(operators_stack.back()))
     {
       operators_stack.push(cur_member.operation);
     }
@@ -55,14 +55,16 @@ potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
     {
       moveExprInBracketsToPostfix(operators_stack, postfix_expr);
     }
-    else if (getPriority(cur_member.operation) < getPriority(operators_stack.back()))
+    else if (!operators_stack.empty() && getPriority(cur_member.operation) <= getPriority(operators_stack.back()))
     {
+      //operators_stack.push(cur_member.operation);
+      postfix_expr.push(operators_stack.back());
+      operators_stack.pop();
       operators_stack.push(cur_member.operation);
     }
     else
     {
-      postfix_expr.push(ArithmExpMember(operators_stack.back()));
-      operators_stack.back() = cur_member.operation;
+      operators_stack.push(cur_member.operation);
     }
     infix_expr.pop();
   }

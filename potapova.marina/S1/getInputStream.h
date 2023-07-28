@@ -5,7 +5,7 @@
 
 namespace potapova
 {
-  std::istream& getInputStream(const int argc, const char* const* const argv);
+  std::istream* getInputStream(const int argc, const char* const* const argv);
 }
 
 #endif

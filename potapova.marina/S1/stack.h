@@ -1,6 +1,8 @@
 #ifndef STACK_H
 #define STACK_H
 
+#include  <cstddef>
+
 namespace potapova
 {
   template< typename T >

@@ -3,7 +3,7 @@
 #include <fstream>
 #include <stdexcept>
 
-std::istream& potapova::getInputStream(const int argc, const char* const* const argv)
+std::istream* potapova::getInputStream(const int argc, const char* const* const argv)
 {
   if (argc == 2)
   {
@@ -13,11 +13,11 @@ std::istream& potapova::getInputStream(const int argc, const char* const* const 
     {
       throw std::ifstream::failure("Failed to open file");
     }
-    return input_file;
+    return &input_file;
   }
   if (argc > 2)
   {
     throw std::logic_error("Incorrect number of arguments");
   }
-  return std::cin;
+  return &std::cin;
 }
