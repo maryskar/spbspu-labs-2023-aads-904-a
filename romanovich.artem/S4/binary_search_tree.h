@@ -83,32 +83,32 @@ private:
 template< typename Key, typename Value, typename Compare >
 ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::clast() const noexcept
 {
-  return const_iterator(fakeNode_->right, fakeNode_);
+  return const_iterator(root_, fakeNode_->right, fakeNode_);
 }
 template< typename Key, typename Value, typename Compare >
 BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::last() noexcept
 {
-  return iterator(fakeNode_->right, fakeNode_);
+  return iterator(root_, fakeNode_->right, fakeNode_);
 }
 template< typename Key, typename Value, typename Compare >
 ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::cbegin() const noexcept
 {
-  return const_iterator(fakeNode_->parent, fakeNode_);
+  return const_iterator(root_, fakeNode_->parent, fakeNode_);
 }
 template< typename Key, typename Value, typename Compare >
 BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::begin() noexcept
 {
-  return iterator(fakeNode_->parent, fakeNode_);
+  return iterator(root_, fakeNode_->parent, fakeNode_);
 }
 template< typename Key, typename Value, typename Compare >
 bool BinarySearchTree< Key, Value, Compare >::isEmpty() const
 {
-  return false;
+  return root_ == nullptr;
 }
 template< typename Key, typename Value, typename Compare >
 size_t BinarySearchTree< Key, Value, Compare >::size() const
 {
-  return root_ == nullptr;
+  return size_;
 }
 template< typename Key, typename Value, typename Compare >
 void BinarySearchTree< Key, Value, Compare >::clear()
@@ -118,12 +118,12 @@ void BinarySearchTree< Key, Value, Compare >::clear()
 template< typename Key, typename Value, typename Compare >
 BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::end() const noexcept
 {
-  return cend();
+  return iterator(root_, fakeNode_, fakeNode_);
 }
 template< typename Key, typename Value, typename Compare >
 ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::cend() const noexcept
 {
-  return ConstBidirectionalIterator< Key, Value, Compare >(fakeNode_, fakeNode_);
+  return const_iterator(root_, fakeNode_, fakeNode_);
 }
 template< typename Key, typename Value, typename Compare >
 std::pair< typename BinarySearchTree< Key, Value, Compare >::iterator, bool >
@@ -144,7 +144,7 @@ template< typename Key, typename Value, typename Compare >
 Value &BinarySearchTree< Key, Value, Compare >::operator[](Key &&key)
 {
   std::pair< iterator, bool > result = insert(std::move(key), Value{});
-  return result.first->value;
+  return result.first->second;
 }
 template< typename Key, typename Value, typename Compare >
 Value &BinarySearchTree< Key, Value, Compare >::at(const Key &key)
@@ -158,17 +158,17 @@ const Value &BinarySearchTree< Key, Value, Compare >::at(const Key &key) const
   tree_t *node = root_;
   while (node)
   {
-    if (compare_(key, node->key))
+    if (compare_(key, node->data.first))
     {
       node = node->left;
     }
-    else if (compare_(node->key, key))
+    else if (compare_(node->data.first, key))
     {
       node = node->right;
     }
     else
     {
-      return node->value;
+      return node->data.second;
     }
   }
   throw std::out_of_range("Key not found.");
@@ -421,6 +421,7 @@ BinarySearchTree< Key, Value, Compare >::insert(const Key &key, const Value &val
   {
     return std::make_pair(it, true);
   }
+  ++size_;
 }
 template< typename Key, typename Value, typename Compare >
 BinarySearchTree< Key, Value, Compare >::BinarySearchTree():
@@ -488,11 +489,12 @@ BinarySearchTree< Key, Value, Compare >::insert(const_iterator pos, const Key &k
   ++size_;
   return iterator(current, fakeNode_);
 }
+//Не работает size при Insert
 template< typename Key, typename Value, typename Compare >
 typename BinarySearchTree< Key, Value, Compare >::iterator
 BinarySearchTree< Key, Value, Compare >::insert(const_iterator pos, Key &&key, Value &&value)
 {
-  iterator insertPos = const_cast<iterator>(pos);
+  iterator insertPos = const_cast< iterator >(pos);
   return insert(insertPos, std::forward< Key >(key), std::forward< Value >(value));
 }
 template< typename Key, typename Value, typename Compare >

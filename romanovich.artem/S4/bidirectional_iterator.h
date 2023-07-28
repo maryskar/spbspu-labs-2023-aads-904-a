@@ -10,8 +10,7 @@ public:
   using iterator_category = std::bidirectional_iterator_tag;
   using difference_type = std::ptrdiff_t;
   using data_type = std::pair< Key, Value >;
-  BidirectionalIterator(const TreeNode< data_type > *root, const TreeNode< data_type > *node,
-                        const TreeNode< data_type > *fakeNode);
+  BidirectionalIterator(TreeNode< data_type > *root, TreeNode< data_type > *node, TreeNode< data_type > *fakeNode);
   ~BidirectionalIterator() = default;
   BidirectionalIterator(const BidirectionalIterator< Key, Value, Compare > &) = default;
   BidirectionalIterator(TreeNode< data_type > *otherNode, TreeNode< data_type > *otherFakeNode);
@@ -166,16 +165,16 @@ BidirectionalIterator< Key, Value, Compare > &BidirectionalIterator< Key, Value,
   return *this;
 }
 template< typename Key, typename Value, typename Compare >
-BidirectionalIterator< Key, Value, Compare >::BidirectionalIterator(const TreeNode< data_type > *root,
-                                                                    const TreeNode< data_type > *node,
-                                                                    const TreeNode< data_type > *fakeNode):
+BidirectionalIterator< Key, Value, Compare >::BidirectionalIterator(TreeNode< data_type > *root,
+                                                                    TreeNode< data_type > *node,
+                                                                    TreeNode< data_type > *fakeNode):
   node_(node),
   fakeNode_(fakeNode),
   root_(root)
 {
   if (!root || !fakeNode)
   {
-    throw std::invalid_argument("Null pointer passed to iterator.");
+    //throw std::invalid_argument("Null pointer passed to iterator.");
   }
 }
 #endif

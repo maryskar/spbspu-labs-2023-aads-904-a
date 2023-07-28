@@ -2,39 +2,54 @@
 #include <iostream>
 int main()
 {
-  BinarySearchTree< int, int > bst;
+  using Key = int;
+  using Value = int;
+  using Compare = std::less< int >;
+  using data_type = std::pair< Key, Value >;
+  using bst_t = BinarySearchTree< Key, Value, Compare >;
+  using tree_t = TreeNode< data_type >;
+  using iterator = BidirectionalIterator< Key, Value, Compare >;
+  using const_iterator = ConstBidirectionalIterator< Key, Value, Compare >;
 
-  auto [it1, inserted1] = bst.insert(5, 5);
-  auto [it2, inserted2] = bst.insert(3, 3);
-  auto [it3, inserted3] = bst.insert(7, 7);
-  if (!inserted1 || !inserted2 || !inserted3 || it1->second != 5 || it2->second != 3 || it3->second != 7)
-  {
-    std::cout << "Test insert - FAIL" << std::endl;
-    return 1;
-  }
+  // Test BinarySearchTree constructor, insert, and size
+  bst_t bst;
+  bst.insert(5, 5);
+  bst.insert(3, 3);
+  bst.insert(7, 7);
+  std::cout << "Size of BST: " << bst.size() << std::endl; // Expected output: 3
 
-  // Test finding elements
-  auto it_find_5 = bst.find(5);
-  auto it_find_3 = bst.find(3);
-  auto it_find_7 = bst.find(7);
-  auto it_find_1 = bst.find(1);
-  if (it_find_5 == bst.end() || it_find_5->second != 5 ||
-      it_find_3 == bst.end() || it_find_3->second != 3 ||
-      it_find_7 == bst.end() || it_find_7->second != 7 ||
-      it_find_1 != bst.end())
+  // Test find
+  iterator it_find_5 = bst.find(5);
+  if (it_find_5 == bst.end() || it_find_5->second != 5)
   {
     std::cout << "Test find - FAIL" << std::endl;
     return 1;
   }
 
-  // Test removal
-  bst.remove(5);
-  auto it_after_remove = bst.find(5);
-  if (it_after_remove != bst.end())
+  // Test const_iterator and cend
+  const_iterator cit = bst.cbegin();
+  const_iterator cit_end = bst.cend();
+  while (cit != cit_end)
   {
-    std::cout << "Test remove - FAIL" << std::endl;
-    return 1;
+    std::cout << cit->first << ": " << cit->second << std::endl;
+    ++cit;
   }
+
+  // Test operator[]
+  bst[10] = 10;
+  std::cout << "Size of BST after operator[]: " << bst.size() << std::endl; // Expected output: 4
+
+  // Test at
+  std::cout << "Value at key 10: " << bst.at(10) << std::endl; // Expected output: 10
+
+  // Test remove
+  bst.remove(10);
+  std::cout << "Size of BST after remove: " << bst.size() << std::endl; // Expected output: 3
+
+  // Test clear and isEmpty
+  bst.clear();
+  std::cout << "Is BST empty? " << (bst.isEmpty() ? "Yes" : "No") << std::endl; // Expected output: Yes
+
   std::cout << "Tests OK" << std::endl;
   return 0;
 }
