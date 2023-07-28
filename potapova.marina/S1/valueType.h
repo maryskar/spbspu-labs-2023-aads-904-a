@@ -28,6 +28,11 @@ namespace potapova
     ArithmExpMember();
     ArithmExpMember(std::int64_t num);
     ArithmExpMember(char operation);
+
+    explicit operator int() const
+    {
+      return static_cast< int >(num);
+    }
   };
 }
 
