@@ -194,11 +194,13 @@ namespace fesenko
     return comp_;
   }
 
+  template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::value_compare Dictionary< Key, Value, Compare >::value_comp() const
   {
     return value_compare(comp_);
   }
 
+  template< typename Key, typename Value, typename Compare >
   class Dictionary< Key, Value, Compare >::value_compare
   {
    public:
