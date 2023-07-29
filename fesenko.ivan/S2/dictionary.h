@@ -270,8 +270,8 @@ template< typename Key, typename Value, typename Compare >
   }
 
   template< typename Key, typename Value, typename Compare >
-  template< typename InputIt >
-  void Dictionary< Key, Value, Compare >::insert(InputIt first, InputIt last)
+  template< typename InputIterator >
+  void Dictionary< Key, Value, Compare >::insert(InputIterator first, InputIterator last)
   {
     for (; first != last; first++) {
       insert(*first);
@@ -295,6 +295,21 @@ template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::find(const key_type &key)
   {
     return (static_cast< const this_t & >(*this)).find(key);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  void Dictionary< Key, Value, Compare >::swap(this_t &other)
+  {
+    list_.swap(other.data_);
+    std::swap(comp_, other.comp_);
+    std::swap(size_, other.size_);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  void Dictionary< Key, Value, Compare >::clear() noexcept
+  {
+    list_.clear();
+    size_ = 0;
   }
 
   template< typename Key, typename Value, typename Compare >
