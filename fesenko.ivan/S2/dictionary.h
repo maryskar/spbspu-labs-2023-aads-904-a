@@ -52,9 +52,8 @@ namespace fesenko
     iterator insert(const_iterator, P &&);
     template< typename InputIterator >
     void insert(InputIterator, InputIterator);
-    iterator erase(const_iterator);
-    size_type erase(const key_type &);
-    iterator erase(const_iterator, const_iterator);
+    iterator erase_after(const_iterator);
+    iterator erase_after(const_iterator, const_iterator);
     void swap(this_t &);
     void clear() noexcept;
     key_compare key_comp() const;
@@ -277,6 +276,19 @@ template< typename Key, typename Value, typename Compare >
     for (; first != last; first++) {
       insert(*first);
     }
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::erase_after(const_iterator pos)
+  {
+    return list_.erase_after(pos);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::iterator
+      Dictionary< Key, Value, Compare >::erase_after(const_iterator first, const_iterator last)
+  {
+    return list_.erase_after(first, last);
   }
 
   template< typename Key, typename Value, typename Compare >
