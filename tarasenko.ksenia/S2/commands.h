@@ -17,34 +17,35 @@ namespace tarasenko
    using dict_type = Dictionary< Key, Value, Compare >;
   public:
    Commands():
-     type_create(),
-     type_print(),
-     type_input()
+     type_1(),
+     type_2(),
+     type_3()
    {
-     type_create.push("complement", &complement< Key, Value, Compare >);
-     type_create.push("intersect", &intersect< Key, Value, Compare >);
-     type_create.push("union", &unionWith< Key, Value, Compare >);
+     type_1.push("complement", &complement< Key, Value, Compare >);
+     type_1.push("intersect", &intersect< Key, Value, Compare >);
+     type_1.push("union", &unionWith< Key, Value, Compare >);
 
-     type_print.push("print", &print< Key, Value, Compare >);
+     type_2.push("print", &print< Key, Value, Compare >);
 
-     type_input.push("add", &add< std::string, dict_type, std::greater<> >);
+     type_3.push("add", &add< std::string, dict_type, std::greater<> >);
+     type_3.push("delete", &deleteDicts< Key, Value, Compare >);
    }
 
-   void callCommand(const std::string& name_of_command,
+   void call(const std::string& name_of_command,
       Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
       std::istream& input, std::ostream& output)
    {
-     if (findInTypePrint(name_of_command))
+     if (findInType1(name_of_command))
      {
-       callPrint(name_of_command, dict_of_dict, input, output);
+       callType1(name_of_command, dict_of_dict, input, output);
      }
-     else if (findInTypeCreate(name_of_command))
+     else if (findInType2(name_of_command))
      {
-       callCreate(name_of_command, dict_of_dict, input, output);
+       callType2(name_of_command, dict_of_dict, input, output);
      }
-     else if (findInTypeInput(name_of_command))
+     else if (findInType3(name_of_command))
      {
-       type_input.at(name_of_command)(input, dict_of_dict);
+       callType3(name_of_command, dict_of_dict, input, output);
      }
      else
      {
@@ -56,44 +57,46 @@ namespace tarasenko
 
   private:
    Dictionary< std::string,
-     std::function< dict_type(const dict_type&, const dict_type&) >, Compare > type_create;
+     std::function< dict_type(const dict_type&, const dict_type&) >, Compare > type_1;
    Dictionary< std::string,
-     std::function< std::ostream&(std::ostream&, const std::string&, const dict_type&) >, Compare > type_print;
+     std::function< std::ostream&(std::ostream&, const std::string&, const dict_type&) >, Compare > type_2;
    Dictionary< std::string,
-     std::function< void(std::istream&, Dictionary< std::string, dict_type, std::greater<> >&) >,
-     Compare > type_input;
+     std::function< void(std::istream&, Dictionary< std::string, dict_type, std::greater<> >&) >, Compare > type_3;
 
-   bool findInTypePrint(const std::string& key) const;
-   bool findInTypeCreate(const std::string& key) const;
-   bool findInTypeInput(const std::string& key) const;
-   void callCreate(const std::string& name_of_command,
+   bool findInType1(const std::string& key) const;
+   bool findInType2(const std::string& key) const;
+   bool findInType3(const std::string& key) const;
+   void callType1(const std::string& name_of_command,
       Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
       std::istream& input, std::ostream& output);
-   void callPrint(const std::string& name_of_command,
+   void callType2(const std::string& name_of_command,
+      Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
+      std::istream& input, std::ostream& output);
+   void callType3(const std::string& name_of_command,
       Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
       std::istream& input, std::ostream& output);
   };
 
   template< typename Key, typename Value, typename Compare >
-  bool Commands< Key, Value, Compare >::findInTypePrint(const std::string& key) const
+  bool Commands< Key, Value, Compare >::findInType1(const std::string& key) const
   {
-    return type_print.find(key) != type_print.cend();
+    return type_1.find(key) != type_1.cend();
   }
 
   template< typename Key, typename Value, typename Compare >
-  bool Commands< Key, Value, Compare >::findInTypeCreate(const std::string& key) const
+  bool Commands< Key, Value, Compare >::findInType2(const std::string& key) const
   {
-    return type_create.find(key) != type_create.cend();
+    return type_2.find(key) != type_2.cend();
   }
 
   template< typename Key, typename Value, typename Compare >
-  bool Commands< Key, Value, Compare >::findInTypeInput(const std::string& key) const
+  bool Commands< Key, Value, Compare >::findInType3(const std::string& key) const
   {
-    return type_input.find(key) != type_input.cend();
+    return type_3.find(key) != type_3.cend();
   }
 
   template< typename Key, typename Value, typename Compare >
-  void Commands< Key, Value, Compare >::callCreate(const std::string& name_of_command,
+  void Commands< Key, Value, Compare >::callType1(const std::string& name_of_command,
       Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
       std::istream& input, std::ostream& output)
   {
@@ -113,12 +116,12 @@ namespace tarasenko
       output << outMessageInvalidCommand << "\n";
       return;
     }
-    auto new_dict = type_create.at(name_of_command)(dict1, dict2);
+    auto new_dict = type_1.at(name_of_command)(dict1, dict2);
     dict_of_dict.push(name_new_dict, new_dict);
   }
 
   template< typename Key, typename Value, typename Compare >
-  void Commands< Key, Value, Compare >::callPrint(const std::string& name_of_command,
+  void Commands< Key, Value, Compare >::callType2(const std::string& name_of_command,
      Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
      std::istream& input, std::ostream& output)
   {
@@ -139,8 +142,23 @@ namespace tarasenko
       output << outMessageEmpty << "\n";
       return;
     }
-    type_print.at(name_of_command)(output, name_of_dict, given_dict);
+    type_2.at(name_of_command)(output, name_of_dict, given_dict);
     output << "\n";
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  void Commands< Key, Value, Compare >::callType3(const std::string& name_of_command,
+     Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
+     std::istream& input, std::ostream& output)
+  {
+    try
+    {
+      type_3.at(name_of_command)(input, dict_of_dict);
+    }
+    catch (const std::invalid_argument&)
+    {
+      output << outMessageInvalidCommand << "\n";
+    }
   }
 }
 #endif

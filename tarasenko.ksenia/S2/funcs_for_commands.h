@@ -10,7 +10,7 @@ namespace tarasenko
 {
   template< class Key, class Value, class Compare >
   Dictionary< Key, Value, Compare > complement(const Dictionary< Key, Value, Compare >& lhs,
-      const Dictionary< Key, Value, Compare >& rhs)
+     const Dictionary< Key, Value, Compare >& rhs)
   {
     auto result = lhs;
     if (!lhs.isEmpty() && !rhs.isEmpty())
@@ -29,7 +29,7 @@ namespace tarasenko
 
   template< class Key, class Value, class Compare >
   Dictionary< Key, Value, Compare > intersect(const Dictionary< Key, Value, Compare >& lhs,
-      const Dictionary< Key, Value, Compare >& rhs)
+     const Dictionary< Key, Value, Compare >& rhs)
   {
     if (rhs.isEmpty())
     {
@@ -75,7 +75,7 @@ namespace tarasenko
 
   template< class Key, class Value, class Compare >
   std::ostream& print(std::ostream& output, const std::string& name_of_dict,
-      const Dictionary< Key, Value, Compare >& dict)
+     const Dictionary< Key, Value, Compare >& dict)
   {
     if (!dict.isEmpty())
     {
@@ -93,8 +93,19 @@ namespace tarasenko
   }
 
   template< class Key, class Value, class Compare >
-  void add(std::istream& input, Dictionary< std::string,
-    Dictionary< size_t, std::string, std::less<> >, std::greater<> >& dict_of_dict)
+  std::istream& operator>>(std::istream& input, Dictionary< Key, Value, Compare >& dict)
+  {
+    Key key;
+    Value value;
+    while (input >> key >> value)
+    {
+      dict.push(key, value);
+    }
+    return input;
+  }
+
+  template< class Key, class Value, class Compare >
+  void add(std::istream& input, Dictionary< Key, Value, Compare >& dict)
   {
     while (input)
     {
@@ -105,27 +116,51 @@ namespace tarasenko
         input.putback(begin);
         break;
       }
-      std::string name_of_dict = " ";
-      while (input >> name_of_dict)
+      char end = ' ';
+      while (input >> end)
       {
-        if (name_of_dict == ")")
+        if (end == ')')
         {
           break;
         }
-        size_t key;
-        std::string value;
-        Dictionary< size_t, std::string, std::less<> > dict;
-        while (input >> key >> value)
+        else
         {
-          dict.push(key, value);
+          input.putback(end);
         }
-        dict_of_dict.push(name_of_dict, dict);
+        Key key;
+        Value value;
+        input >> key >> value;
+        dict.push(key, value);
         input.clear();
       }
     }
   }
 
-//  delete <dataset-1> <dataset-2> ... (удалить указанные словари)
+  template< class Key, class Value, class Compare >
+  void deleteDicts(std::istream& input, Dictionary< std::string,
+     Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
+  {
+    std::string line;
+    std::getline(input, line);
+    std::string key = "";
+    for (size_t i = 0; i < line.size(); i++)
+    {
+      if (line[i] == ' ')
+      {
+        dict_of_dict.remove(key);
+      }
+      else
+      {
+        key += line[i];
+      }
+    }
+    if (key != "")
+    {
+      dict_of_dict.remove(key);
+      return;
+    }
+    throw std::invalid_argument("Incorrect key");
+  }
 
 //  write <dataset-1><dataset-2> ... <namefile> (записать указанные словари в файл на отдельной строке имя словаря ключ значение ключ значение ...)
 
