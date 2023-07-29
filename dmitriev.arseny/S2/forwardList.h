@@ -1,6 +1,7 @@
 #ifndef FORWARDLSIT_H
 #define FORWARDLSIT_H
 
+#include <iostream>//временно
 #include <iterator>
 #include <C:\Users\BlackEvery\source\repos\spbspu-labs-2023-aads-904-a\dmitriev.arseny\common\list.h>//шакалаки со средой разработки
 
@@ -113,12 +114,20 @@ namespace dmitriev
     friend ForwardList< T >;
 
     using list = List< T >;
+    using iterator = ForwardIterator< T >;
 
     ConstForwardIterator():
       m_ptr(nullptr)
     {}
     ConstForwardIterator(const list* ptr):
       m_ptr(ptr)
+    {}
+
+    ConstForwardIterator(const iterator& other):
+      m_ptr(other.m_ptr)
+    {}
+    ConstForwardIterator(iterator&& other):
+      m_ptr(other.m_ptr)
     {}
 
     ConstForwardIterator& operator++()
@@ -328,7 +337,6 @@ namespace dmitriev
 
       return iterator(changeablePos->otherList);
     }
-
     iterator insertAfter(constIterator pos, size_t count, const T& data)
     {
       if (pos.isEmpty())
@@ -347,8 +355,25 @@ namespace dmitriev
 
       return iterator(changeablePos);
     }
-    //template< class InputIt >
-    //iterator insert_after(constIterator pos, InputIt first, InputIt last);
+    template< class inputIterator >
+    iterator insertAfter(constIterator pos, inputIterator first, inputIterator last)
+    {
+      if (pos.isEmpty())
+      {
+        throw std::logic_error("empty iter");
+      }
+      list* changeablePos = const_cast< list* >(pos.m_ptr);
+
+      for (; first != last; ++first)
+      {
+        list* newList = new list{*first, changeablePos->otherList};
+        changeablePos->otherList = newList;
+
+        changeablePos = changeablePos->otherList;
+      }
+
+      return iterator(changeablePos);
+    }
     //iterator insert_after(constIterator pos, std::initializer_list< T > ilist);
 
 
