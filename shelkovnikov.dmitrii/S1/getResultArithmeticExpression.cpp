@@ -1,7 +1,7 @@
 #include "getResultArithmeticExpression.h"
 #include <limits>
 #include <stdexcept>
-#include "stack.h"
+#include <stack.h>
 namespace
 {
   constexpr long long max_long_long = std::numeric_limits< long long >::max();
