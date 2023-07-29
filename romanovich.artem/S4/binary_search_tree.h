@@ -3,6 +3,7 @@
 #include <functional>
 #include <cstddef>
 #include <stdexcept>
+#include <iostream>
 #include "tree_node.h"
 #include "bidirectional_iterator.h"
 #include "const_bidirectional_iterator.h"
@@ -93,7 +94,11 @@ BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compa
 template< typename Key, typename Value, typename Compare >
 ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::cbegin() const noexcept
 {
-  return const_iterator(root_, fakeNode_->parent, fakeNode_);
+  //std::cout << "###\n";
+  //std::cout << root_->data.second << "\n";
+  //std::cout << "###\n";
+  IteratorDto< Key, Value > iteratorDto{root_, fakeNode_->parent, fakeNode_};
+  return const_iterator(iteratorDto);
 }
 template< typename Key, typename Value, typename Compare >
 BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::begin() noexcept
@@ -360,10 +365,24 @@ TreeNode< std::pair< Key, Value > > *BinarySearchTree< Key, Value, Compare >::in
                                                                                          const Key &key,
                                                                                          const Value &value)
 {
+  if (!fakeNode_)
+  {
+    fakeNode_ = new TreeNode< data_type >(std::make_pair(Key(), Value()));
+  }
   if (!node)
   {
     TreeNode< data_type > *newNode = new TreeNode< data_type >(data_type(key, value));
-    newNode->parent = parent;
+    if (!parent)
+    {
+      fakeNode_->left = newNode;
+      fakeNode_->right = newNode;
+      newNode->parent = fakeNode_;
+    }
+    else
+    {
+      parent->right = newNode;
+      newNode->parent = parent;
+    }
     return newNode;
   }
   Compare cmp;
@@ -413,6 +432,7 @@ BinarySearchTree< Key, Value, Compare >::insert(const Key &key, const Value &val
 {
   root_ = insertImpl(root_, nullptr, key, value);
   iterator it = find(key);
+  ++size_;
   if (it == end())
   {
     return std::make_pair(end(), false);
@@ -421,7 +441,6 @@ BinarySearchTree< Key, Value, Compare >::insert(const Key &key, const Value &val
   {
     return std::make_pair(it, true);
   }
-  ++size_;
 }
 template< typename Key, typename Value, typename Compare >
 BinarySearchTree< Key, Value, Compare >::BinarySearchTree():

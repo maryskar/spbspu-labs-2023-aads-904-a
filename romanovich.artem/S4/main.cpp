@@ -29,9 +29,11 @@ int main()
   // Test const_iterator and cend
   const_iterator cit = bst.cbegin();
   const_iterator cit_end = bst.cend();
-  while (cit != cit_end)
+  if (cit != cit_end)
   {
-    std::cout << cit->first << ": " << cit->second << std::endl;
+    std::cout
+      << cit->first << ": "
+      << cit->second << std::endl;
     ++cit;
   }
 
