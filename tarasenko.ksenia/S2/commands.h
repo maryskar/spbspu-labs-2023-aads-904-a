@@ -29,6 +29,7 @@ namespace tarasenko
 
      type_3.push("add", &add< std::string, dict_type, std::greater<> >);
      type_3.push("delete", &deleteDicts< Key, Value, Compare >);
+     type_3.push("write", &writeDicts< Key, Value, Compare >);
    }
 
    void call(const std::string& name_of_command,
@@ -155,7 +156,7 @@ namespace tarasenko
     {
       type_3.at(name_of_command)(input, dict_of_dict);
     }
-    catch (const std::invalid_argument&)
+    catch (const std::exception&)
     {
       output << outMessageInvalidCommand << "\n";
     }

@@ -148,6 +148,7 @@ namespace tarasenko
       if (line[i] == ' ')
       {
         dict_of_dict.remove(key);
+        key = "";
       }
       else
       {
@@ -162,7 +163,40 @@ namespace tarasenko
     throw std::invalid_argument("Incorrect key");
   }
 
-//  write <dataset-1><dataset-2> ... <namefile> (записать указанные словари в файл на отдельной строке имя словаря ключ значение ключ значение ...)
+  template< class Key, class Value, class Compare >
+  void writeDicts(std::istream& input, Dictionary< std::string,
+    Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
+  {
+    std::string filename = " ";
+    input >> filename;
+    std::ofstream out;
+    out.open(filename);
+    if (!out.is_open())
+    {
+      throw std::invalid_argument("File not found");
+    }
+    std::string line;
+    std::getline(input, line);
+    std::string key = "";
+    for (size_t i = 1; i < line.size(); i++)
+    {
+      if (line[i] == ' ')
+      {
+        print(out, key, dict_of_dict.at(key)) << "\n";
+        key = "";
+      }
+      else
+      {
+        key += line[i];
+      }
+    }
+    if (key != "")
+    {
+      print(out, key, dict_of_dict.at(key)) << "\n";
+      return;
+    }
+    throw std::invalid_argument("Incorrect key");
+  }
 
 //  resort <greater/less> (изменить порядок ключей(сортировку) в словарях)
 //  second 1 name 2 sec 4 mouse
