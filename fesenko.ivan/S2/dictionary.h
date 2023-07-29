@@ -204,14 +204,79 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::find(const key_type &key) const
   {
+    Compare comp = key_comp();
     const_iterator cur = cbegin();
     while (cur->next != cend()) {
-      if (!compare(cur->first, key) && !compare(key, cur->first)) {
+      if (!comp(cur->first, key) && !comp(key, cur->first)) {
         break;
       }
       cur++;
     }
     return cur;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  std::pair<
+      typename Dictionary< Key, Value, Compare >::iterator,
+      bool
+  > Dictionary< Key, Value, Compare >::insert(const value_type &value)
+  {
+    Compare comp = key_comp();
+    iterator cur = cbegin();
+    while (cur->next != cend()) {
+      if (!comp(cur->first, value.first)) {
+        if (comp(value.first, cur->first)) {
+          return {list_.insert_after(cur, value), true};
+        }
+        break;
+      }
+      cur++;
+    }
+    return {cur, false};
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename P >
+  std::pair<
+      typename Dictionary< Key, Value, Compare >::iterator,
+      bool
+  > Dictionary< Key, Value, Compare >::insert(P &&value)
+  {
+    static_assert(std::is_constructible< value_type, P && >::value, "Can`t construct value type");
+    const value_type temp(std::forward< P >(value));
+    return insert(temp);
+  }
+
+template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::iterator
+      Dictionary< Key, Value, Compare >::insert(const_iterator pos, const value_type &value)
+  {
+    Compare comp = key_comp();
+    const_iterator cur = pos;
+    cur++;
+    if (comp(pos->first, value.first) && comp(value.first, cur->first)) {
+      return list_.insert_after(pos, value);
+    }
+    return (insert(value)).first;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename P >
+  typename Dictionary< Key, Value, Compare >::iterator
+      Dictionary< Key, Value, Compare >::insert(const_iterator pos, P &&value)
+  {
+    static_assert(std::is_constructible< value_type, P&& >::value, "Can`t construct value type");
+    const value_type temp(std::forward< P >(value));
+    return insert(pos, temp);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename InputIt >
+  void Dictionary< Key, Value, Compare >::insert(InputIt first, InputIt last)
+  {
+    for (; first != last; first++) {
+      insert(*first);
+    }
   }
 
   template< typename Key, typename Value, typename Compare >
