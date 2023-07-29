@@ -174,7 +174,7 @@ namespace fesenko
   {
     const_iterator cur = cbegin();
     while (cur->next != cend()) {
-      if (cur.first == key) {
+      if (!compare(cur->first, key) && !compare(key, cur->first)) {
         break;
       }
       cur++;
@@ -187,5 +187,29 @@ namespace fesenko
   {
     return (static_cast< const this_t & >(*this)).find(key);
   }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::key_compare Dictionary< Key, Value, Compare >::key_comp() const
+  {
+    return comp_;
+  }
+
+  typename Dictionary< Key, Value, Compare >::value_compare Dictionary< Key, Value, Compare >::value_comp() const
+  {
+    return value_compare(comp_);
+  }
+
+  class Dictionary< Key, Value, Compare >::value_compare
+  {
+   public:
+    bool operator()(const value_type &lhs, const value_type &rhs) const
+    {
+      return comp(lhs.first, rhs.first);
+    };
+   protected:
+    Compare comp;
+    explicit value_compare(Compare c): comp(c) {};
+  };
+
 }
 #endif
