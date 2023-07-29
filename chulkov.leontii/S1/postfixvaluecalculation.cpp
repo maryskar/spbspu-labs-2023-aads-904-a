@@ -5,26 +5,36 @@
 #include "stack.h"
 
 namespace chulkov {
-  bool isOverflow(long long a, long long b, char op) {
-    long long max = std::numeric_limits<long long>::max();
-    long long min = std::numeric_limits<long long>::min();
+  bool compareFrstAndSec(long long frst, long long sec, long long max, long long min) {
+    if (frst > 0 && sec > 0 && frst > max / sec) {
+      return true;
+    }
+    if (frst < 0 && sec < 0 && frst < max / sec) {
+      return true;
+    }
+    if (frst < 0 && sec > 0 && frst < min / sec) {
+      return true;
+    }
+    if (frst > 0 && sec < 0 && sec < min / frst) {
+      return true;
+    }
+    return false;
+  }
+
+  bool addSub(long long frst, long long sec, long long max, long long min) {
+    if ((sec > 0 && frst > max - sec) || (sec < 0 && frst < min - sec)) {
+      return true;
+    }
+    return false;
+  }
+
+  bool isOverflow(long long frst, long long sec, char op) {
+    long long max = std::numeric_limits< long long >::max();
+    long long min = std::numeric_limits< long long >::min();
     if (op == '+' || op == '-') {
-      if ((b > 0 && a > max - b) || (b < 0 && a < min - b)) {
-        return true;
-      }
+      return addSub(frst, sec, max, min);
     } else if (op == '*') {
-      if (a > 0 && b > 0 && a > max / b) {
-        return true;
-      }
-      if (a < 0 && b < 0 && a < max / b) {
-        return true;
-      }
-      if (a < 0 && b > 0 && a < min / b) {
-        return true;
-      }
-      if (a > 0 && b < 0 && b < min / a) {
-        return true;
-      }
+      return compareFrstAndSec(frst, sec, max, min);
     }
     return false;
   }
