@@ -136,10 +136,9 @@ namespace tarasenko
     }
   }
 
-  template< class Key, class Value, class Compare >
-  void deleteDicts(std::istream& input, Dictionary< std::string,
-     Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
+  ForwardList< std::string > getKeys(std::istream& input)
   {
+    ForwardList< std::string > keys;
     std::string line;
     std::getline(input, line);
     std::string key = "";
@@ -147,8 +146,11 @@ namespace tarasenko
     {
       if (line[i] == ' ')
       {
-        dict_of_dict.remove(key);
-        key = "";
+        if (key != "")
+        {
+          keys.pushBack(key);
+          key = "";
+        }
       }
       else
       {
@@ -157,10 +159,20 @@ namespace tarasenko
     }
     if (key != "")
     {
-      dict_of_dict.remove(key);
-      return;
+      keys.pushBack(key);
     }
-    throw std::invalid_argument("Incorrect key");
+    return keys;
+  }
+
+  template< class Key, class Value, class Compare >
+  void deleteDicts(std::istream& input, Dictionary< std::string,
+     Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
+  {
+    ForwardList< std::string > keys = getKeys(input);
+    for (auto i: keys)
+    {
+      dict_of_dict.remove(i);
+    }
   }
 
   template< class Key, class Value, class Compare >
@@ -175,27 +187,11 @@ namespace tarasenko
     {
       throw std::invalid_argument("File not found");
     }
-    std::string line;
-    std::getline(input, line);
-    std::string key = "";
-    for (size_t i = 1; i < line.size(); i++)
+    ForwardList< std::string > keys = getKeys(input);
+    for (auto i: keys)
     {
-      if (line[i] == ' ')
-      {
-        print(out, key, dict_of_dict.at(key)) << "\n";
-        key = "";
-      }
-      else
-      {
-        key += line[i];
-      }
+      print(out, i, dict_of_dict.at(i)) << "\n";
     }
-    if (key != "")
-    {
-      print(out, key, dict_of_dict.at(key)) << "\n";
-      return;
-    }
-    throw std::invalid_argument("Incorrect key");
   }
 
 //  resort <greater/less> (изменить порядок ключей(сортировку) в словарях)
