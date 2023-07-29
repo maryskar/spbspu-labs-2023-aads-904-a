@@ -50,8 +50,8 @@ namespace fesenko
     iterator insert(const_iterator, const value_type &);
     template< typename P >
     iterator insert(const_iterator, P &&);
-    template< typename InputIt >
-    void insert(InputIt, InputIt);
+    template< typename InputIterator >
+    void insert(InputIterator, InputIterator);
     iterator erase(const_iterator);
     size_type erase(const key_type &);
     iterator erase(const_iterator, const_iterator);
@@ -59,8 +59,8 @@ namespace fesenko
     void clear() noexcept;
     key_compare key_comp() const;
     value_compare value_comp() const;
-    iterator find(const key_type & key);
-    const_iterator find(const key_type & key) const;
+    iterator find(const key_type &);
+    const_iterator find(const key_type &) const;
    private:
     ForwardList< value_type > list_;
     Compare comp_;
@@ -167,6 +167,25 @@ namespace fesenko
   typename Dictionary< Key, Value, Compare >::size_type Dictionary< Key, Value, Compare >::size() const noexcept
   {
     return size_;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::find(const key_type &key) const
+  {
+    const_iterator cur = cbegin();
+    while (cur->next != cend()) {
+      if (cur.first == key) {
+        break;
+      }
+      cur++;
+    }
+    return cur;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::find(const key_type &key)
+  {
+    return (static_cast< const this_t & >(*this)).find(key);
   }
 }
 #endif
