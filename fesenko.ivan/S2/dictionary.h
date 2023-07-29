@@ -170,6 +170,38 @@ namespace fesenko
   }
 
   template< typename Key, typename Value, typename Compare >
+  const Value &Dictionary< Key, Value, Compare >::at(const key_type &key) const
+  {
+    const_iterator cit = find(key);
+    if (cit++ == cend()) {
+      throw std::out_of_range("There is no such key");
+    }
+    return cit->second;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Value &Dictionary< Key, Value, Compare >::at(const key_type &key)
+  {
+    return const_cast< Value & >((static_cast< const this_t & >(*this)).at(key));
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Value &Dictionary< Key, Value, Compare >::operator[](const key_type &key)
+  {
+    try {
+      return at(key);
+    } catch (const std::out_of_range &e) {
+    }
+    return (*((this->insert(std::make_pair(key, mapped_type()))).first));
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Value &Dictionary< Key, Value, Compare >::operator[](key_type &&key)
+  {
+    return (*this)[key];
+  }
+
+  template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::find(const key_type &key) const
   {
     const_iterator cur = cbegin();
