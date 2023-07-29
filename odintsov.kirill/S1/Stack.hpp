@@ -4,7 +4,7 @@
 #include <memory>
 #include <stdexcept>
 
-#include "Node.hpp"
+#include <Node.hpp>
 
 namespace odintsov {
   template< typename T >
