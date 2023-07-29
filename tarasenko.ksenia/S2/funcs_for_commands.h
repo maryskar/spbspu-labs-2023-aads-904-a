@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <functional>
+#include <compare.h>
 #include "dictionary.h"
 
 namespace tarasenko
@@ -194,12 +195,33 @@ namespace tarasenko
     }
   }
 
-//  resort <greater/less> (изменить порядок ключей(сортировку) в словарях)
-//  second 1 name 2 sec 4 mouse
-//
-//    resort less
-//    print second
-//  4 mouse 2 sec 1 name
+  template< class Key, class Value, class Compare >
+  void resort(std::istream& input, Dictionary< std::string,
+    Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
+  {
+    std::string sort = " ";
+    input >> sort;
+    Comp comp;
+    if (sort == "ascending")
+    {
+      Comp ascending(std::less<>{});
+      comp = ascending;
+    }
+    else if (sort == "descending")
+    {
+      Comp descending(std::greater<>{});
+      comp = descending;
+    }
+    else
+    {
+      throw std::invalid_argument("Invalid command");
+    }
+    auto it = dict_of_dict.begin();
+    for ( ; it != dict_of_dict.end(); it++)
+    {
+      it->second.setCompare(comp);
+    }
+  }
 
 //    put <key-1-1> <value-1-1><dataset-1><dataset-2> ... (записать новый элемент в указанные словари, если ключ уже существует, то значение обновляется)
 //  print_if <key-1-1> (выводит имена словарей, в которых есть заданный ключ)

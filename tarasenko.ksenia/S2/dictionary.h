@@ -92,6 +92,8 @@ namespace tarasenko
    size_t count(const Key& key) const;
    const_iterator find(const Key& key) const;
    size_t remove(const Key& key);
+   Compare key_comp() const;
+   void setCompare(Compare comp);
 
   private:
    ForwardList< std::pair< Key, Value > > list_;
@@ -248,6 +250,27 @@ namespace tarasenko
       ++curr;
     }
     return 0;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Compare Dictionary< Key, Value, Compare >::key_comp() const
+  {
+    return compare_;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  void Dictionary< Key, Value, Compare >::setCompare(Compare comp)
+  {
+    compare_ = comp;
+    auto temp(*this);
+    for (auto it = temp.begin(); it != temp.end(); it++)
+    {
+      remove(it->first);
+    }
+    for (auto it = temp.begin(); it != temp.end(); it++)
+    {
+      insert(*it);
+    }
   }
 
   template< class Key, class Value, class Compare >
