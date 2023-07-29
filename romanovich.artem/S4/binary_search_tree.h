@@ -365,39 +365,42 @@ TreeNode< std::pair< Key, Value > > *BinarySearchTree< Key, Value, Compare >::in
                                                                                          const Key &key,
                                                                                          const Value &value)
 {
-  if (!fakeNode_)
-  {
-    fakeNode_ = new TreeNode< data_type >(std::make_pair(Key(), Value()));
+  if (!fakeNode_) {
+    fakeNode_ = new TreeNode<data_type>(std::make_pair(Key(), Value()));
   }
-  if (!node)
-  {
-    TreeNode< data_type > *newNode = new TreeNode< data_type >(data_type(key, value));
-    if (!parent)
-    {
+
+  if (!node) {
+    TreeNode<data_type>* newNode = new TreeNode<data_type>(data_type(key, value));
+
+    if (!parent) {
       fakeNode_->left = newNode;
       fakeNode_->right = newNode;
       newNode->parent = fakeNode_;
     }
-    else
-    {
-      parent->right = newNode;
+    else {
+      if (compare_(key, parent->data.first)) {
+        parent->left = newNode;
+      }
+      else {
+        parent->right = newNode;
+      }
+
       newNode->parent = parent;
     }
+
     return newNode;
   }
-  Compare cmp;
-  if (cmp(key, node->data.first))
-  {
+
+  if (compare_(key, node->data.first)) {
     node->left = insertImpl(node->left, node, key, value);
   }
-  else if (cmp(node->data.first, key))
-  {
+  else if (compare_(node->data.first, key)) {
     node->right = insertImpl(node->right, node, key, value);
   }
-  else
-  {
+  else {
     node->data.second = value;
   }
+
   return node;
 }
 template< typename Key, typename Value, typename Compare >
