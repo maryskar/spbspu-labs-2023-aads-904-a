@@ -5,9 +5,9 @@ int main()
   using Key = int;
   using Value = int;
   using Compare = std::less< int >;
-  using data_type = std::pair< Key, Value >;
+  // using data_type = std::pair< Key, Value >;
   using bst_t = BinarySearchTree< Key, Value, Compare >;
-  using tree_t = TreeNode< data_type >;
+  // using tree_t = TreeNode< data_type >;
   using iterator = BidirectionalIterator< Key, Value, Compare >;
   using const_iterator = ConstBidirectionalIterator< Key, Value, Compare >;
 
