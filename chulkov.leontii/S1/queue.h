@@ -10,26 +10,30 @@ namespace chulkov {
   private:
     List< T >* front_;
     List< T >* back_;
-    size_t size_;
 
   public:
     Queue():
       front_(nullptr),
-      back_(nullptr),
-      size_(0)
+      back_(nullptr)
     {}
 
     Queue(const Queue< T >& other):
       front_(nullptr),
-      back_(nullptr),
-      size_(0)
+      back_(nullptr)
     {
-      if (!other.empty()) {
-        List< T >* tp = other.front_;
-        while (tp != nullptr) {
-          push(tp->data);
-          tp = tp->next;
+      try {
+        if (!other.empty()) {
+          List< T >* tp = other.front_;
+          while (tp != nullptr) {
+            push(tp->data);
+            tp = tp->next;
+          }
         }
+      }
+      catch (...) {
+        delete front_;
+        front_ = nullptr;
+        back_ = nullptr;
       }
     }
 
@@ -63,7 +67,7 @@ namespace chulkov {
 
     ~Queue() {
       while (!empty()) {
-        clear();
+        drop();
       }
     }
 
@@ -72,13 +76,9 @@ namespace chulkov {
       if (empty()) {
         front_ = back_ = node;
       } else {
-        if (back_ == nullptr) {
-          throw std::runtime_error("pointer is null");
-        }
         back_->next = node;
         back_ = node;
       }
-      ++size_;
     }
 
     T drop() {
@@ -92,7 +92,6 @@ namespace chulkov {
         back_ = nullptr;
       }
       delete node;
-      --size_;
       return value;
     }
 
@@ -104,17 +103,7 @@ namespace chulkov {
     }
 
     bool empty() const {
-      return size_ == 0;
-    }
-
-    size_t size() const {
-      return size_;
-    }
-
-    void clear() {
-      while (!empty()) {
-        drop();
-      }
+      return front_ == nullptr;
     }
   };
 }
