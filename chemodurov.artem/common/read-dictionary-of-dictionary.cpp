@@ -1,7 +1,7 @@
 #include "read-dictionary-of-dictionary.hpp"
 #include <iostream>
 
-using dic_t = chemodurov::Dictionary< int, std::string >;
+using dic_t = chemodurov::Map< int, std::string >;
 
 namespace chemodurov
 {
@@ -42,9 +42,9 @@ namespace chemodurov
   }
 }
 
-chemodurov::Dictionary< std::string, dic_t > chemodurov::readDictionaryOfDictionary(std::istream & in)
+chemodurov::Map< std::string, dic_t > chemodurov::readDictionaryOfDictionary(std::istream & in)
 {
-  Dictionary< std::string, dic_t > res;
+  Map< std::string, dic_t > res;
   while (in)
   {
     std::string line;
