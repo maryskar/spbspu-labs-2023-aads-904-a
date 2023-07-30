@@ -246,7 +246,7 @@ namespace fesenko
     return insert(temp);
   }
 
-template< typename Key, typename Value, typename Compare >
+  template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::iterator
       Dictionary< Key, Value, Compare >::insert(const_iterator pos, const value_type &value)
   {
