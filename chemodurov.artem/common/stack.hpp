@@ -2,7 +2,7 @@
 #define STACK_HPP
 #include <cstddef>
 #include <stdexcept>
-#include <list.hpp>
+#include <list/list.hpp>
 
 namespace chemodurov
 {

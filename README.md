@@ -142,6 +142,41 @@ Boost
 Accepted Labs
 =====
 
-| Name      | S0 | S1 | S2 | S4 | S5 | S6 |
-|-----------|----|----|----|----|----|----|
-| __Total__ |   0|   0|   0|   0|   0|   0|
+| Name                      | FA | S0 | S1 | S2 | S4 | S5 | S6 |
+|---------------------------|----|----|----|----|----|----|----|
+| Aksenov Egor              |    | ✓  |    |    |    |    |    |
+| Averich Vladimir          |    | ✓  |    |    |    |    |    |
+| Azheganova Faina          |    | ✓  |    |    |    |    |    |
+| Chemodurov Artem          |    | ✓  | ✓  | ✓  | ✓  | ✓  | ✓  |
+| Chulkov Leontii           |    | ✓  |    |    |    |    |    |
+| Dmitriev Arseny           |    | ✓  | ✓  |    |    |    |    |
+| Ekelik Muhammet           |    | ✓  |    |    |    |    |    |
+| Fesenko Ivan              |    | ✓  |    |    |    |    |    |
+| Garzonnavarrete Alexander |    | ✓  |    |    |    |    |    |
+| Gulkov Mikhail            |    | ✓  |    |    |    |    |    |
+| Hrushchev Nikita          |    | ✓  | ✓  |    |    |    |    |
+| Kotova Yaroslava          |    | ✓  |    |    |    |    |    |
+| Kozyrin Semen             |    | ✓  |    |    |    |    |    |
+| Kryuchkova Kira           |    | ✓  |    |    |    |    |    |
+| Kurdikova Elizaveta       |    | ✓  |    |    |    |    |    |
+| Lisovskaya Lisa           |    | ✓  |    |    |    |    |    |
+| Mashkin Andrew            |    | ✓  | ✓  |    |    |    |    |
+| Mishanina Elena           |    | ✓  |    |    |    |    |    |
+| Muhortov Viktor           |    | ✓  |    |    |    |    |    |
+| Odintsov Kirill           |    | ✓  | ✓  |    |    |    |    |
+| Potapova Marina           |    | ✓  |    |    |    |    |    |
+| Roblesgonzalez Guillermo  |    | ✓  |    |    |    |    |    |
+| Romanovich Artem          |    | ✓  | ✓  |    |    |    |    |
+| Samoilenko Alena          |    | ✓  |    |    |    |    |    |
+| Shelkovnikov Dmitrii      |    | ✓  | ✓  | ✓  |    |    |    |
+| Skarlygina Mariia         |    | ✓  |    |    |    |    |    |
+| Suslov Dmitriy            |    | ✓  |    |    |    |    |    |
+| Tarasenko Ksenia          |    | ✓  | ✓  |    |    |    |    |
+| Tellez Aron               |    | ✓  |    |    |    |    |    |
+| Timofeev Maxim            |    | ✓  |    |    |    |    |    |
+| Tobbo Kirill              |    | ✓  |    |    |    |    |    |
+| Tsareva Yana              |    | ✓  |    |    |    |    |    |
+| Turkin Nikolai            |    | ✓  | ✓  |    |    |    |    |
+| Zasulsky Egor             |    | ✓  |    |    |    |    |    |
+| Zhuravlev Ivan            |    | ✓  |    |    |    |    |    |
+| __Total__                 |   0|  35|   9|   2|   1|   1|   1|

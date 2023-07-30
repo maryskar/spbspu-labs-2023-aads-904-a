@@ -13,11 +13,11 @@ namespace chemodurov
     return out << "<INVALID COMMAND>";
   }
 
-  void printCommand(std::istream & in, std::ostream & out, const Dictionary< std::string, dic_t > & data)
+  void printCommand(std::istream & in, std::ostream & out, const Map< std::string, dic_t > & data)
   {
     std::string name;
     in >> name;
-    Dictionary< std::string, dic_t >::mapped_type dic = data.at(name);
+    Map< std::string, dic_t >::mapped_type dic = data.at(name);
     if (!in)
     {
       throw std::invalid_argument("Invalid command");
@@ -33,7 +33,7 @@ namespace chemodurov
   }
 
   template< typename P >
-  void complementOrIntersect(std::istream & in, Dictionary< std::string, dic_t > & data, P p)
+  void complementOrIntersect(std::istream & in, Map< std::string, dic_t > & data, P p)
   {
     std::string name_res;
     in >> name_res;
@@ -42,8 +42,8 @@ namespace chemodurov
     in >> name_fst;
     std::string name_snd;
     in >> name_snd;
-    Dictionary< std::string, dic_t >::mapped_type fst_dic = data.at(name_fst);
-    Dictionary< std::string, dic_t >::mapped_type snd_dic = data.at(name_snd);
+    Map< std::string, dic_t >::mapped_type fst_dic = data.at(name_fst);
+    Map< std::string, dic_t >::mapped_type snd_dic = data.at(name_snd);
     if (!in)
     {
       throw std::invalid_argument("Invalid command");
@@ -51,26 +51,30 @@ namespace chemodurov
     res = fst_dic;
     for (auto i = res.begin(); i != res.end(); ++i)
     {
-      if (p(snd_dic.find(i->first), snd_dic.last()))
+      if (p(snd_dic.find(i->first), snd_dic.end()))
       {
         res.erase(i->first);
-        i = res.before_begin();
+        i = res.begin();
       }
+    }
+    if (!res.empty() && p(snd_dic.find(res.begin()->first), snd_dic.end()))
+    {
+      res.erase(res.begin()->first);
     }
     data.insert({name_res, res});
   }
 
-  void complementCommand(std::istream & in, Dictionary< std::string, dic_t > & data)
+  void complementCommand(std::istream & in, Map< std::string, dic_t > & data)
   {
     complementOrIntersect(in, data, std::not_equal_to< >{});
   }
 
-  void intersectCommand(std::istream & in, Dictionary< std::string, dic_t > & data)
+  void intersectCommand(std::istream & in, Map< std::string, dic_t > & data)
   {
     complementOrIntersect(in, data, std::equal_to< >{});
   }
 
-  void unionCommand(std::istream & in, Dictionary< std::string, dic_t > & data)
+  void unionCommand(std::istream & in, Map< std::string, dic_t > & data)
   {
     std::string name_res;
     in >> name_res;
@@ -79,8 +83,8 @@ namespace chemodurov
     in >> name_fst;
     std::string name_snd;
     in >> name_snd;
-    Dictionary< std::string, dic_t >::mapped_type fst_dic = data.at(name_fst);
-    Dictionary< std::string, dic_t >::mapped_type snd_dic = data.at(name_snd);
+    Map< std::string, dic_t >::mapped_type fst_dic = data.at(name_fst);
+    Map< std::string, dic_t >::mapped_type snd_dic = data.at(name_snd);
     if (!in)
     {
       throw std::invalid_argument("Invalid command");
@@ -90,10 +94,10 @@ namespace chemodurov
     data.insert({name_res, res});
   }
 
-  std::pair< Dictionary< std::string, union_t >, Dictionary< std::string, print_t > > createCommandDictionary()
+  std::pair< Map< std::string, union_t >, Map< std::string, print_t > > createCommandDictionary()
   {
-    Dictionary< std::string, union_t > unions;
-    Dictionary< std::string, print_t > print;
+    Map< std::string, union_t > unions;
+    Map< std::string, print_t > print;
     print.insert({"print", printCommand});
     unions.insert({"complement", complementCommand});
     unions.insert({"intersect", intersectCommand});
