@@ -15,11 +15,13 @@ namespace tarasenko
   class Commands
   {
    using dict_type = Dictionary< Key, Value, Compare >;
+   using dict_of_dict_t = Dictionary< std::string, dict_type, std::greater<> >;
   public:
    Commands():
      type_1(),
      type_2(),
-     type_3()
+     type_3(),
+     type_4()
    {
      type_1.push("complement", &complement< Key, Value, Compare >);
      type_1.push("intersect", &intersect< Key, Value, Compare >);
@@ -33,6 +35,8 @@ namespace tarasenko
      type_3.push("write", &writeDicts< Key, Value, Compare >);
      type_3.push("resort", &resort< Key, Value, Compare >);
      type_3.push("put", &put< Key, Value, Compare >);
+
+     type_4.push("swap", &swap< Key, Value, Compare >);
    }
 
    void call(const std::string& name_of_command,
@@ -51,6 +55,10 @@ namespace tarasenko
      {
        callType3(name_of_command, dict_of_dict, input, output);
      }
+     else if (findInType4(name_of_command))
+     {
+       callType4(name_of_command, dict_of_dict, input, output);
+     }
      else
      {
        output << outMessageInvalidCommand << "\n";
@@ -60,25 +68,23 @@ namespace tarasenko
    }
 
   private:
+   Dictionary< std::string, std::function< dict_type(const dict_type&, const dict_type&) >, Compare > type_1;
    Dictionary< std::string,
-     std::function< dict_type(const dict_type&, const dict_type&) >, Compare > type_1;
-   Dictionary< std::string,
-     std::function< std::ostream&(std::ostream&, const std::string&,
-     const Dictionary< std::string, dict_type, std::greater<> >&) >, Compare > type_2;
-   Dictionary< std::string,
-     std::function< void(std::istream&, Dictionary< std::string, dict_type, std::greater<> >&) >, Compare > type_3;
+     std::function< std::ostream&(std::ostream&, const std::string&, const dict_of_dict_t&) >, Compare > type_2;
+   Dictionary< std::string, std::function< void(std::istream&, dict_of_dict_t&) >, Compare > type_3;
+   Dictionary< std::string, std::function< void(dict_type&, dict_type&) >, Compare > type_4;
 
    bool findInType1(const std::string& key) const;
    bool findInType2(const std::string& key) const;
    bool findInType3(const std::string& key) const;
-   void callType1(const std::string& name_of_command,
-      Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
+   bool findInType4(const std::string& key) const;
+   void callType1(const std::string& name_of_command, dict_of_dict_t& dict_of_dict,
       std::istream& input, std::ostream& output);
-   void callType2(const std::string& name_of_command,
-      Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
+   void callType2(const std::string& name_of_command, dict_of_dict_t& dict_of_dict,
       std::istream& input, std::ostream& output);
-   void callType3(const std::string& name_of_command,
-      Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
+   void callType3(const std::string& name_of_command, dict_of_dict_t& dict_of_dict,
+      std::istream& input, std::ostream& output);
+   void callType4(const std::string& name_of_command, dict_of_dict_t& dict_of_dict,
       std::istream& input, std::ostream& output);
   };
 
@@ -101,9 +107,14 @@ namespace tarasenko
   }
 
   template< typename Key, typename Value, typename Compare >
+  bool Commands< Key, Value, Compare >::findInType4(const std::string& key) const
+  {
+    return type_4.find(key) != type_4.cend();
+  }
+
+  template< typename Key, typename Value, typename Compare >
   void Commands< Key, Value, Compare >::callType1(const std::string& name_of_command,
-      Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
-      std::istream& input, std::ostream& output)
+      dict_of_dict_t& dict_of_dict, std::istream& input, std::ostream& output)
   {
     std::string name_new_dict = " ";
     std::string name_dict1 = " ";
@@ -127,8 +138,7 @@ namespace tarasenko
 
   template< typename Key, typename Value, typename Compare >
   void Commands< Key, Value, Compare >::callType2(const std::string& name_of_command,
-     Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
-     std::istream& input, std::ostream& output)
+     dict_of_dict_t& dict_of_dict, std::istream& input, std::ostream& output)
   {
     std::string key = " ";
     input >> key;
@@ -148,8 +158,7 @@ namespace tarasenko
 
   template< typename Key, typename Value, typename Compare >
   void Commands< Key, Value, Compare >::callType3(const std::string& name_of_command,
-     Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
-     std::istream& input, std::ostream& output)
+     dict_of_dict_t& dict_of_dict, std::istream& input, std::ostream& output)
   {
     try
     {
@@ -158,6 +167,28 @@ namespace tarasenko
     catch (const std::exception&)
     {
       output << outMessageInvalidCommand << "\n";
+    }
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  void Commands< Key, Value, Compare >::callType4(const std::string& name_of_command,
+     dict_of_dict_t& dict_of_dict, std::istream& input, std::ostream& output)
+  {
+    std::string name_dict1 = " ";
+    std::string name_dict2 = " ";
+    input >> name_dict1 >> name_dict2;
+    try
+    {
+      dict_type dict1 = dict_of_dict.at(name_dict1);
+      dict_type dict2 = dict_of_dict.at(name_dict2);
+      type_4.at(name_of_command)(dict1, dict2);
+      dict_of_dict[name_dict1] = dict1;
+      dict_of_dict[name_dict2] = dict2;
+    }
+    catch (const std::out_of_range& e)
+    {
+      output << outMessageInvalidCommand << "\n";
+      return;
     }
   }
 }

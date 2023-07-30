@@ -279,47 +279,43 @@ namespace tarasenko
       dict_of_dict[i].push(new_key, new_val);
     }
   }
-//  print_if <key-1-1> (выводит имена словарей, в которых есть заданный ключ)
 
-//  swap <dataset-1> <dataset-2> (меняет данные двух словарей)
-//
-//  first 1 base 2 market 3 cats
-//    second 1 name 2 sec 4 mouse
-//
-//    swap first second
-//  print first
-//  1 name 2 sec 4 mouse
-//    print second
-//  1 base 2 market 3 cats
-//    copy <dataset> <newdataset> (создает копию указанного словаря с новым именем)
+  template< class Key, class Value, class Compare >
+  void swap(Dictionary< Key, Value, Compare >& lhs, Dictionary< Key, Value, Compare >& rhs)
+  {
+    lhs.swap(rhs);
+  }
+
+//  copy <dataset> <newdataset> (создает копию указанного словаря с новым именем)
 //  second 1 name 2 sec 4 mouse
 //
-//    copy second new
+//  copy second new
 //  print new
-//
 //  1 name 2 sec 4 mouse
-//    update <dataset-1> <dataset-2>
-//    (обновляет значения первого словаря значениями из второго словаря по совпадающим ключам)
+
+//  update <dataset-1> <dataset-2>
+//  (обновляет значения первого словаря значениями из второго словаря по совпадающим ключам)
 //  first 1 base 2 market 3 cats
-//    second 1 name 2 sec 4 mouse
+//  second 1 name 2 sec 4 mouse
 //
-//    update first second
+//  update first second
 //  print first
-//
 //  1 name 2 sec 3 cats
+
 //    merge <dataset-1> <dataset-2> (добавляет ключи из второго словаря в первый.
 //    Если ключи дублируются, в качестве значения выбираются данные из правого операнда)
 //
-//  merge first second
+//    merge first second
 //    print first
-//  1 name 2 sec 3 cats 4 mouse
+//    1 name 2 sec 3 cats 4 mouse
 //    random <newdataset> <size><dataset-1><dataset-2>...
 //    (создает, новый словарь с заданный количеством случайным слов из указанных словарей)
-//
+
 //  random four 4
 //  print four
 //  1 dog 2 tree 3 fish 4 frogs
-//    subset <dataset-1> <dataset-2> ( проверяет, является ли первый словарь подмножеством второго)
+
+//  subset <dataset-1> <dataset-2> ( проверяет, является ли первый словарь подмножеством второго)
 //  subset second first
 //  true
 }
