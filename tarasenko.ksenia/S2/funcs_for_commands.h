@@ -36,7 +36,7 @@ namespace tarasenko
     {
       return rhs;
     }
-    Dictionary< Key, Value, Compare > result;
+    Dictionary< Key, Value, Compare > result(lhs.key_comp());
     if (!lhs.isEmpty())
     {
       auto iter_lhs = lhs.cbegin();
@@ -223,7 +223,8 @@ namespace tarasenko
     }
   }
 
-//    put <key-1-1> <value-1-1><dataset-1><dataset-2> ... (записать новый элемент в указанные словари, если ключ уже существует, то значение обновляется)
+//    put <key-1-1> <value-1-1><dataset-1><dataset-2> ...
+//    (записать новый элемент в указанные словари, если ключ уже существует, то значение обновляется)
 //  print_if <key-1-1> (выводит имена словарей, в которых есть заданный ключ)
 //  swap <dataset-1> <dataset-2> (меняет данные двух словарей)
 //
@@ -242,7 +243,8 @@ namespace tarasenko
 //  print new
 //
 //  1 name 2 sec 4 mouse
-//    update <dataset-1> <dataset-2> (обновляет значения первого словаря значениями из второго словаря по совпадающим ключам)
+//    update <dataset-1> <dataset-2>
+//    (обновляет значения первого словаря значениями из второго словаря по совпадающим ключам)
 //  first 1 base 2 market 3 cats
 //    second 1 name 2 sec 4 mouse
 //
@@ -250,12 +252,14 @@ namespace tarasenko
 //  print first
 //
 //  1 name 2 sec 3 cats
-//    merge <dataset-1> <dataset-2> (добавляет ключи из второго словаря в первый. Если ключи дублируются, в качестве значения выбираются данные из правого операнда)
+//    merge <dataset-1> <dataset-2> (добавляет ключи из второго словаря в первый.
+//    Если ключи дублируются, в качестве значения выбираются данные из правого операнда)
 //
 //  merge first second
 //    print first
 //  1 name 2 sec 3 cats 4 mouse
-//    random <newdataset> <size><dataset-1><dataset-2>...(создает, новый словарь с заданный количеством случайным слов из указанных словарей)
+//    random <newdataset> <size><dataset-1><dataset-2>...
+//    (создает, новый словарь с заданный количеством случайным слов из указанных словарей)
 //
 //  random four 4
 //  print four

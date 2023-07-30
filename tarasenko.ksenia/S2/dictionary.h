@@ -35,6 +35,12 @@ namespace tarasenko
      other.size_ = 0;
    }
 
+   explicit Dictionary(const Compare& comp):
+     list_(),
+     size_(0),
+     compare_(comp)
+   {}
+
    ~Dictionary() = default;
 
    dict_type& operator=(const dict_type& other)
