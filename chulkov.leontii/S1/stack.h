@@ -22,7 +22,7 @@ namespace chulkov {
     }
 
     Stack(const Stack< T >& other):
-      top_(nullptr)
+      top_(other.top_)
     {
       if (!other.empty()) {
         List< T >* tp = other.top_;
