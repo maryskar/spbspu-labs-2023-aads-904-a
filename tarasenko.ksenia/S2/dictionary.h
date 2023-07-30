@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <forward_list.h>
+#include <sort.h>
 
 namespace tarasenko
 {
@@ -262,15 +263,7 @@ namespace tarasenko
   void Dictionary< Key, Value, Compare >::setCompare(Compare comp)
   {
     compare_ = comp;
-    auto temp(*this);
-    for (auto it = temp.begin(); it != temp.end(); it++)
-    {
-      remove(it->first);
-    }
-    for (auto it = temp.begin(); it != temp.end(); it++)
-    {
-      insert(*it);
-    }
+    quickSort(list_.begin(), list_.end(), compare_);
   }
 
   template< class Key, class Value, class Compare >
