@@ -2,6 +2,7 @@
 #define FUNCS_FOR_COMMANDS_H
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <functional>
 #include <compare.h>
@@ -75,7 +76,7 @@ namespace tarasenko
   }
 
   template< class Key, class Value, class Compare >
-  std::ostream& print(std::ostream& output, const std::string& name_of_dict,
+  std::ostream& printDict(std::ostream& output, const std::string& name_of_dict,
      const Dictionary< Key, Value, Compare >& dict)
   {
     if (!dict.isEmpty())
@@ -91,6 +92,44 @@ namespace tarasenko
       }
     }
     return output;
+  }
+
+  template< class Key, class Value, class Compare >
+  std::ostream& print(std::ostream& output, const std::string& name_of_dict,
+     const Dictionary< std::string, Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
+  {
+    Dictionary< Key, Value, Compare > given_dict = dict_of_dict.at(name_of_dict);
+    if (given_dict.isEmpty())
+    {
+      throw std::invalid_argument("Empty");
+    }
+    printDict(output, name_of_dict, given_dict) << "\n";
+    return output;
+  }
+
+  template< class Key, class Value, class Compare >
+  std::ostream& printIf(std::ostream& output, const std::string& key,
+     const Dictionary< std::string, Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
+  {
+    auto it = dict_of_dict.cbegin();
+    auto key_dict = std::stoll(key);
+    bool was_out = false;
+    for ( ; it != dict_of_dict.cend(); it++)
+    {
+      if (it->second.find(key_dict) != it->second.cend())
+      {
+        if (was_out)
+        {
+          output << " " << it->first;
+        }
+        else
+        {
+          output << it->first;
+          was_out = true;
+        }
+      }
+    }
+    return output << "\n";
   }
 
   template< class Key, class Value, class Compare >
@@ -191,7 +230,7 @@ namespace tarasenko
     ForwardList< std::string > keys = getKeys(input);
     for (auto i: keys)
     {
-      print(out, i, dict_of_dict.at(i)) << "\n";
+      printDict(out, i, dict_of_dict.at(i)) << "\n";
     }
   }
 

@@ -26,6 +26,7 @@ namespace tarasenko
      type_1.push("union", &unionWith< Key, Value, Compare >);
 
      type_2.push("print", &print< Key, Value, Compare >);
+     type_2.push("print_if", &printIf< Key, Value, Compare >);
 
      type_3.push("add", &add< std::string, dict_type, std::greater<> >);
      type_3.push("delete", &deleteDicts< Key, Value, Compare >);
@@ -62,7 +63,8 @@ namespace tarasenko
    Dictionary< std::string,
      std::function< dict_type(const dict_type&, const dict_type&) >, Compare > type_1;
    Dictionary< std::string,
-     std::function< std::ostream&(std::ostream&, const std::string&, const dict_type&) >, Compare > type_2;
+     std::function< std::ostream&(std::ostream&, const std::string&,
+     const Dictionary< std::string, dict_type, std::greater<> >&) >, Compare > type_2;
    Dictionary< std::string,
      std::function< void(std::istream&, Dictionary< std::string, dict_type, std::greater<> >&) >, Compare > type_3;
 
@@ -128,25 +130,20 @@ namespace tarasenko
      Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
      std::istream& input, std::ostream& output)
   {
-    std::string name_of_dict = " ";
-    input >> name_of_dict;
-    dict_type given_dict;
+    std::string key = " ";
+    input >> key;
     try
     {
-      given_dict = dict_of_dict.at(name_of_dict);
+      type_2.at(name_of_command)(output, key, dict_of_dict);
     }
     catch (const std::out_of_range& e)
     {
       output << outMessageInvalidCommand << "\n";
-      return;
     }
-    if (given_dict.isEmpty())
+    catch (...)
     {
       output << outMessageEmpty << "\n";
-      return;
     }
-    type_2.at(name_of_command)(output, name_of_dict, given_dict);
-    output << "\n";
   }
 
   template< typename Key, typename Value, typename Compare >
