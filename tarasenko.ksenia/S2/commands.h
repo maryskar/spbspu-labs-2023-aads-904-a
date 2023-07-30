@@ -27,7 +27,7 @@ namespace tarasenko
      type_print.push("print", &print< Key, Value, Compare >);
    }
 
-   void callCommand(const std::string& name_of_command,
+   void call(const std::string& name_of_command,
       Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
       std::istream& input, std::ostream& output)
    {

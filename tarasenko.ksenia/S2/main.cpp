@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
   {
     try
     {
-      commands.callCommand(name_of_command, dict_of_dict, std::cin, std::cout);
+      commands.call(name_of_command, dict_of_dict, std::cin, std::cout);
     }
     catch (const std::exception& e)
     {
