@@ -5,7 +5,7 @@
 
 namespace potapova
 {
-  size_t countPostfixExpression(expr_queue& postfix_queue);
+  int countPostfixExpression(expr_queue& postfix_queue);
 }
 
 #endif

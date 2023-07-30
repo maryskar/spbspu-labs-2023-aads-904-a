@@ -1,8 +1,10 @@
 #include "countPostfixExpression.h"
+#include <iostream>
+#include <istream>
 #include "queue.h"
 #include "stack.h"
 
-size_t potapova::countPostfixExpression(expr_queue& postfix_queue)
+int potapova::countPostfixExpression(expr_queue& postfix_queue)
 {
   Stack< int > operands_stack;
   while (!postfix_queue.empty())
@@ -22,18 +24,23 @@ size_t potapova::countPostfixExpression(expr_queue& postfix_queue)
       {
         case '+':
           operands_stack.push(operand1 + operand2);
+          postfix_queue.pop();
           break;
         case '-':
           operands_stack.push(operand1 - operand2);
+          postfix_queue.pop();
           break;
         case '*':
           operands_stack.push(operand1 * operand2);
+          postfix_queue.pop();
           break;
         case '/':
           operands_stack.push(operand1 / operand2);
+          postfix_queue.pop();
           break;
         case '%':
           operands_stack.push(operand1 % operand2);
+          postfix_queue.pop();
           break;
       }
     }
