@@ -105,6 +105,16 @@ namespace chulkov {
     bool empty() const {
       return front_ == nullptr;
     }
+
+    void clear() {
+      List<T>* node = front_;
+      while (node != nullptr) {
+        List<T>* next = node->next;
+        delete node;
+        node = next;
+      }
+      front_ = back_ = nullptr;
+    }
   };
 }
 
