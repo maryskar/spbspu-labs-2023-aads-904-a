@@ -31,6 +31,7 @@ namespace tarasenko
      type_3.push("delete", &deleteDicts< Key, Value, Compare >);
      type_3.push("write", &writeDicts< Key, Value, Compare >);
      type_3.push("resort", &resort< Key, Value, Compare >);
+     type_3.push("put", &put< Key, Value, Compare >);
    }
 
    void call(const std::string& name_of_command,

@@ -183,16 +183,16 @@ namespace tarasenko
       ++prev;
       ++curr;
     }
-    if (prev != list_.beforeBegin() && (*prev).first == value.first)
+    if (curr != list_.end() && (*curr).first == value.first)
     {
-      (*prev).second = value.second;
-      return std::pair< iterator, bool >(iterator(prev), false);
+      (*curr).second = value.second;
+      return std::pair< iterator, bool >(curr, false);
     }
     else
     {
       list_.insertAfter(prev, value);
       ++size_;
-      return std::pair< iterator, bool >(iterator(prev), true);
+      return std::pair< iterator, bool >(++prev, true);
     }
   }
 

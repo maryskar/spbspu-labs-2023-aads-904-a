@@ -223,9 +223,25 @@ namespace tarasenko
     }
   }
 
-//    put <key-1-1> <value-1-1><dataset-1><dataset-2> ...
-//    (записать новый элемент в указанные словари, если ключ уже существует, то значение обновляется)
+  template< class Key, class Value, class Compare >
+  void put(std::istream& input, Dictionary< std::string,
+    Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
+  {
+    Key new_key;
+    Value new_val;
+    input >> new_key >> new_val;
+    if (!input)
+    {
+      throw std::invalid_argument("Incorrect data");
+    }
+    ForwardList< std::string > keys = getKeys(input);
+    for (auto i: keys)
+    {
+      dict_of_dict[i].push(new_key, new_val);
+    }
+  }
 //  print_if <key-1-1> (выводит имена словарей, в которых есть заданный ключ)
+
 //  swap <dataset-1> <dataset-2> (меняет данные двух словарей)
 //
 //  first 1 base 2 market 3 cats
