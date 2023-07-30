@@ -16,7 +16,7 @@ std::istream& potapova::inputInfixQueue(expr_queue& dest, std::istream& in)
   while (*cur_sym_ptr != '\0')
   {
     ArithmExpMember member;
-    if (isdigit(*cur_sym_ptr))
+    if (isdigit(*cur_sym_ptr) || (*cur_sym_ptr == '-' && isdigit(*(cur_sym_ptr + 1))))
     {
       member.type = ArithmExpMember::Type::Num;
       char* end_conv_ptr = nullptr;
