@@ -39,6 +39,7 @@ namespace tarasenko
 
      type_4.push("swap", &swap< Key, Value, Compare >);
      type_4.push("update", &update< Key, Value, Compare >);
+     type_4.push("merge", &merge< Key, Value, Compare >);
    }
 
    void call(const std::string& name_of_command,

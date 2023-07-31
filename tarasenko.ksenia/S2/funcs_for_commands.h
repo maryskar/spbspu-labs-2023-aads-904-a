@@ -314,15 +314,35 @@ namespace tarasenko
     }
   }
 
+  template< class Key, class Value, class Compare >
+  void merge(Dictionary< Key, Value, Compare > &merging, Dictionary< Key, Value, Compare > &dict)
+  {
+    if (merging.isEmpty())
+    {
+      return;
+    }
+    auto it = merging.begin();
+    for (; it != merging.end(); it++)
+    {
+      if (dict.find(it->first) != dict.end())
+      {
+        dict[it->first] = merging[it->first];
+      }
+      else
+      {
+        dict.insert(*it);
+      }
+    }
+  }
 //    merge <dataset-1> <dataset-2> (добавляет ключи из второго словаря в первый.
 //    Если ключи дублируются, в качестве значения выбираются данные из правого операнда)
 //
 //    merge first second
 //    print first
 //    1 name 2 sec 3 cats 4 mouse
+
 //    random <newdataset> <size><dataset-1><dataset-2>...
 //    (создает, новый словарь с заданный количеством случайным слов из указанных словарей)
-
 //  random four 4
 //  print four
 //  1 dog 2 tree 3 fish 4 frogs
