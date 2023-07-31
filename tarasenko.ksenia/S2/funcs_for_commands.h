@@ -286,12 +286,16 @@ namespace tarasenko
     lhs.swap(rhs);
   }
 
-//  copy <dataset> <newdataset> (создает копию указанного словаря с новым именем)
-//  second 1 name 2 sec 4 mouse
-//
-//  copy second new
-//  print new
-//  1 name 2 sec 4 mouse
+  template< class Key, class Value, class Compare >
+  void copy(std::istream& input, Dictionary< std::string,
+    Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
+  {
+    std::string name_dict = " ";
+    std::string name_new_dict = " ";
+    input >> name_dict >> name_new_dict;
+    auto dict = dict_of_dict.at(name_dict);
+    dict_of_dict.push(name_new_dict, dict);
+  }
 
 //  update <dataset-1> <dataset-2>
 //  (обновляет значения первого словаря значениями из второго словаря по совпадающим ключам)

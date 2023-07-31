@@ -35,6 +35,7 @@ namespace tarasenko
      type_3.push("write", &writeDicts< Key, Value, Compare >);
      type_3.push("resort", &resort< Key, Value, Compare >);
      type_3.push("put", &put< Key, Value, Compare >);
+     type_3.push("copy", &copy< Key, Value, Compare >);
 
      type_4.push("swap", &swap< Key, Value, Compare >);
    }
