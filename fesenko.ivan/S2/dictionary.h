@@ -172,7 +172,7 @@ namespace fesenko
   const Value &Dictionary< Key, Value, Compare >::at(const key_type &key) const
   {
     const_iterator cit = find(key);
-    if (cit++ == cend()) {
+    if (cit == cend()) {
       throw std::out_of_range("There is no such key");
     }
     return cit->second;
@@ -205,7 +205,7 @@ namespace fesenko
   {
     Compare comp = key_comp();
     const_iterator cur = cbegin();
-    while (cur->next != cend()) {
+    while (cur != cend()) {
       if (!comp(cur->first, key) && !comp(key, cur->first)) {
         break;
       }
@@ -222,7 +222,7 @@ namespace fesenko
   {
     Compare comp = key_comp();
     iterator cur = cbegin();
-    while (cur->next != cend()) {
+    while (cur != cend()) {
       if (!comp(cur->first, value.first)) {
         if (comp(value.first, cur->first)) {
           return {list_.insert_after(cur, value), true};
