@@ -3,15 +3,19 @@
 #include <stdexcept>
 #include "valueType.h"
 #include "queue.h"
+#include "stack.h"
 #include "inputInfixQueue.h"
 #include "divideExpression.h"
 #include "getInputStream.h"
+#include "countPostfixExpression.h"
+#include "printAnswer.h"
 
 int main()
 {
   const char* argv[]{"", "C:/Users/79213/Desktop/Marina/UniversitySPBSPU/aip_labs/spbspu-labs-2023-aads-904-a/potapova.marina/S1/in.txt"};
   std::istream* in_ptr;
   potapova::expr_queue infix_expr;
+  potapova::Stack< std::int64_t > answer_stack;
   try
   {
     in_ptr = potapova::getInputStream(2, argv);
@@ -31,17 +35,9 @@ int main()
     try
     {
       potapova::expr_queue postfix_queue(potapova::composePostfixQueue(infix_expr));
-      while (!postfix_queue.empty())
+      if (!postfix_queue.empty())
       {
-        if (postfix_queue.front().type == potapova::ArithmExpMember::Type::Num)
-        {
-          std::cout << postfix_queue.front().num << ' ';
-        }
-        else
-        {
-          std::cout << postfix_queue.front().operation << ' ';
-        }
-        postfix_queue.pop();
+        answer_stack.push(potapova::countPostfixExpression(postfix_queue));
       }
     }
     catch (const std::exception& e)
@@ -50,6 +46,11 @@ int main()
       return 1;
     }
     *in_ptr >> std::ws;
+  }
+  while (!answer_stack.empty())
+  {
+    std::cout << answer_stack.back() << ' ' << std::endl;
+    answer_stack.pop();
   }
   return 0;
 }
