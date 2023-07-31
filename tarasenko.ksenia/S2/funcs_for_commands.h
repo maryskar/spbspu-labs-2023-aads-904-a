@@ -375,8 +375,22 @@ namespace tarasenko
     dict_of_dict.push(name_new_dict, random_dict);
   }
 
-//  subset <dataset-1> <dataset-2> ( проверяет, является ли первый словарь подмножеством второго)
-//  subset second first
-//  true
+  template< class Key, class Value, class Compare >
+  bool isSubset(const Dictionary< Key, Value, Compare > &lhs, const Dictionary< Key, Value, Compare > &rhs)
+  {
+    if (lhs.isEmpty() || rhs.isEmpty())
+    {
+      return false;
+    }
+    auto it = lhs.cbegin();
+    for (; it != lhs.cend(); it++)
+    {
+      if (rhs.find(it->first) == rhs.cend())
+      {
+        return false;
+      }
+    }
+    return true;
+  }
 }
 #endif

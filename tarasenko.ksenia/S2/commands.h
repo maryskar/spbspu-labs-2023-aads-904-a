@@ -21,7 +21,8 @@ namespace tarasenko
      type_1(),
      type_2(),
      type_3(),
-     type_4()
+     type_4(),
+     type_5()
    {
      type_1.push("complement", &complement< Key, Value, Compare >);
      type_1.push("intersect", &intersect< Key, Value, Compare >);
@@ -41,6 +42,8 @@ namespace tarasenko
      type_4.push("swap", &swap< Key, Value, Compare >);
      type_4.push("update", &update< Key, Value, Compare >);
      type_4.push("merge", &merge< Key, Value, Compare >);
+
+     type_5.push("subset", &isSubset< Key, Value, Compare >);
    }
 
    void call(const std::string& name_of_command,
@@ -59,9 +62,9 @@ namespace tarasenko
      {
        callType3(name_of_command, dict_of_dict, input, output);
      }
-     else if (findInType4(name_of_command))
+     else if (findInType4(name_of_command) || findInType5(name_of_command))
      {
-       callType4(name_of_command, dict_of_dict, input, output);
+       callType45(name_of_command, dict_of_dict, input, output);
      }
      else
      {
@@ -77,18 +80,20 @@ namespace tarasenko
      std::function< std::ostream&(std::ostream&, const std::string&, const dict_of_dict_t&) >, Compare > type_2;
    Dictionary< std::string, std::function< void(std::istream&, dict_of_dict_t&) >, Compare > type_3;
    Dictionary< std::string, std::function< void(dict_type&, dict_type&) >, Compare > type_4;
+   Dictionary< std::string, std::function< bool(const dict_type&, const dict_type&) >, Compare > type_5;
 
    bool findInType1(const std::string& key) const;
    bool findInType2(const std::string& key) const;
    bool findInType3(const std::string& key) const;
    bool findInType4(const std::string& key) const;
+   bool findInType5(const std::string& key) const;
    void callType1(const std::string& name_of_command, dict_of_dict_t& dict_of_dict,
       std::istream& input, std::ostream& output);
    void callType2(const std::string& name_of_command, dict_of_dict_t& dict_of_dict,
       std::istream& input, std::ostream& output);
    void callType3(const std::string& name_of_command, dict_of_dict_t& dict_of_dict,
       std::istream& input, std::ostream& output);
-   void callType4(const std::string& name_of_command, dict_of_dict_t& dict_of_dict,
+   void callType45(const std::string& name_of_command, dict_of_dict_t& dict_of_dict,
       std::istream& input, std::ostream& output);
   };
 
@@ -114,6 +119,12 @@ namespace tarasenko
   bool Commands< Key, Value, Compare >::findInType4(const std::string& key) const
   {
     return type_4.find(key) != type_4.cend();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  bool Commands< Key, Value, Compare >::findInType5(const std::string& key) const
+  {
+    return type_5.find(key) != type_5.cend();
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -175,7 +186,7 @@ namespace tarasenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  void Commands< Key, Value, Compare >::callType4(const std::string& name_of_command,
+  void Commands< Key, Value, Compare >::callType45(const std::string& name_of_command,
      dict_of_dict_t& dict_of_dict, std::istream& input, std::ostream& output)
   {
     std::string name_dict1 = " ";
@@ -185,9 +196,16 @@ namespace tarasenko
     {
       dict_type dict1 = dict_of_dict.at(name_dict1);
       dict_type dict2 = dict_of_dict.at(name_dict2);
-      type_4.at(name_of_command)(dict1, dict2);
-      dict_of_dict[name_dict1] = dict1;
-      dict_of_dict[name_dict2] = dict2;
+      if (findInType4(name_of_command))
+      {
+        type_4.at(name_of_command)(dict1, dict2);
+        dict_of_dict[name_dict1] = dict1;
+        dict_of_dict[name_dict2] = dict2;
+      }
+      else
+      {
+        output << std::boolalpha << type_5.at(name_of_command)(dict1, dict2) << "\n";
+      }
     }
     catch (const std::out_of_range& e)
     {
