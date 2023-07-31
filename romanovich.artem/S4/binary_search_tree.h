@@ -279,9 +279,11 @@ template< typename Key, typename Value, typename Compare >
 TreeNode< std::pair< Key, Value > > *BinarySearchTree< Key, Value, Compare >::initFake()
 {
   void *nodeMemory = ::operator new(sizeof(BinarySearchTree::tree_t));
-  BinarySearchTree::tree_t *newNode = static_cast< BinarySearchTree::tree_t >(nodeMemory);
-  newNode->next_ = nullptr;
-  return newNode;
+  BinarySearchTree::tree_t *fakeNode = static_cast< BinarySearchTree::tree_t * >(nodeMemory);
+  fakeNode->parent = nullptr;
+  fakeNode->left = nullptr;
+  fakeNode->right = nullptr;
+  return fakeNode;
 }
 template< typename Key, typename Value, typename Compare >
 BinarySearchTree< Key, Value, Compare >::BinarySearchTree(const BinarySearchTree &other):
@@ -412,6 +414,7 @@ std::pair< typename BinarySearchTree< Key, Value, Compare >::iterator, bool >
 BinarySearchTree< Key, Value, Compare >::insert(const Key &key, const Value &value)
 {
   root_ = insertImpl(root_, nullptr, key, value);
+  ++size_;
   iterator it = find(key);
   if (it == end())
   {
@@ -421,11 +424,10 @@ BinarySearchTree< Key, Value, Compare >::insert(const Key &key, const Value &val
   {
     return std::make_pair(it, true);
   }
-  ++size_;
 }
 template< typename Key, typename Value, typename Compare >
 BinarySearchTree< Key, Value, Compare >::BinarySearchTree():
-  fakeNode_(nullptr),
+  fakeNode_(initFake()),
   root_(nullptr),
   begin_(nullptr),
   end_(nullptr),
