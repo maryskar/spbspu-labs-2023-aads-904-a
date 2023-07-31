@@ -221,7 +221,7 @@ namespace fesenko
   > Dictionary< Key, Value, Compare >::insert(const value_type &value)
   {
     Compare comp = key_comp();
-    iterator cur = cbegin();
+    const_iterator cur = cbegin();
     while (cur != cend()) {
       if (!comp(cur->first, value.first)) {
         if (comp(value.first, cur->first)) {
@@ -231,7 +231,7 @@ namespace fesenko
       }
       cur++;
     }
-    return {cur, false};
+    return {end(), false};
   }
 
   template< typename Key, typename Value, typename Compare >

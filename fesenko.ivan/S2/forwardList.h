@@ -168,10 +168,10 @@ namespace fesenko
   template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, const value_type &val)
   {
-    auto *newNode = new List< T >(val);
-    newNode->next = pos.node_->next;
+    auto *newNode = new List< T >{val, pos.node_->next};
     pos.node_->next = newNode;
     if (pos.node_ == fakeNode_) {
+      begin_ = newNode;
       if (!end_) {
         end_ = begin_;
       }
