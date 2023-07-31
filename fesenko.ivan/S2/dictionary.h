@@ -159,7 +159,7 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   bool Dictionary< Key, Value, Compare >::empty() const noexcept
   {
-    return cbegin() == cend();
+    return list_.empty();
   }
 
   template< typename Key, typename Value, typename Compare >
