@@ -4,8 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <functional>
 #include <compare.h>
+#include <take_random_elem.h>
 #include "dictionary.h"
 
 namespace tarasenko
@@ -176,39 +176,42 @@ namespace tarasenko
     }
   }
 
-  ForwardList< std::string > getKeys(std::istream& input)
+  namespace details
   {
-    ForwardList< std::string > keys;
-    std::string line;
-    std::getline(input, line);
-    std::string key = "";
-    for (size_t i = 0; i < line.size(); i++)
+    ForwardList< std::string > getKeys(std::istream& input)
     {
-      if (line[i] == ' ')
+      ForwardList< std::string > keys;
+      std::string line;
+      std::getline(input, line);
+      std::string key = "";
+      for (size_t i = 0; i < line.size(); i++)
       {
-        if (key != "")
+        if (line[i] == ' ')
         {
-          keys.pushBack(key);
-          key = "";
+          if (key != "")
+          {
+            keys.pushBack(key);
+            key = "";
+          }
+        }
+        else
+        {
+          key += line[i];
         }
       }
-      else
+      if (key != "")
       {
-        key += line[i];
+        keys.pushBack(key);
       }
+      return keys;
     }
-    if (key != "")
-    {
-      keys.pushBack(key);
-    }
-    return keys;
   }
 
   template< class Key, class Value, class Compare >
   void deleteDicts(std::istream& input, Dictionary< std::string,
      Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
   {
-    ForwardList< std::string > keys = getKeys(input);
+    ForwardList< std::string > keys = details::getKeys(input);
     for (auto i: keys)
     {
       dict_of_dict.remove(i);
@@ -227,7 +230,7 @@ namespace tarasenko
     {
       throw std::invalid_argument("File not found");
     }
-    ForwardList< std::string > keys = getKeys(input);
+    ForwardList< std::string > keys = details::getKeys(input);
     for (auto i: keys)
     {
       printDict(out, i, dict_of_dict.at(i)) << "\n";
@@ -273,7 +276,7 @@ namespace tarasenko
     {
       throw std::invalid_argument("Incorrect data");
     }
-    ForwardList< std::string > keys = getKeys(input);
+    ForwardList< std::string > keys = details::getKeys(input);
     for (auto i: keys)
     {
       dict_of_dict[i].push(new_key, new_val);
@@ -334,18 +337,43 @@ namespace tarasenko
       }
     }
   }
-//    merge <dataset-1> <dataset-2> (добавляет ключи из второго словаря в первый.
-//    Если ключи дублируются, в качестве значения выбираются данные из правого операнда)
-//
-//    merge first second
-//    print first
-//    1 name 2 sec 3 cats 4 mouse
 
-//    random <newdataset> <size><dataset-1><dataset-2>...
-//    (создает, новый словарь с заданный количеством случайным слов из указанных словарей)
-//  random four 4
-//  print four
-//  1 dog 2 tree 3 fish 4 frogs
+  template< class Key, class Value, class Compare >
+  void addRandomDict(std::istream& input, Dictionary< std::string,
+    Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
+  {
+    std::string name_new_dict = " ";
+    size_t size = 0;
+    input >> name_new_dict >> size;
+    if (!input)
+    {
+      throw std::invalid_argument("Incorrect data");
+    }
+    ForwardList< std::string > names_of_dicts = details::getKeys(input);
+
+    Dictionary< Key, Value, Compare > dict_of_elems;
+    auto i = names_of_dicts.begin();
+    for (; i != names_of_dicts.end(); i++)
+    {
+      auto dict = dict_of_dict.at(*i);
+      for (auto j = dict.begin(); j != dict.end(); j++)
+      {
+        dict_of_elems.insert(*j);
+      }
+    }
+    if (dict_of_elems.size() < size)
+    {
+      throw std::invalid_argument("Not enough elements");
+    }
+
+    Dictionary< Key, Value, Compare > random_dict;
+    while (random_dict.size() != size)
+    {
+      auto random_elem = *takeRandomElem(dict_of_elems.begin(), dict_of_elems.end());
+      random_dict.insert(random_elem);
+    }
+    dict_of_dict.push(name_new_dict, random_dict);
+  }
 
 //  subset <dataset-1> <dataset-2> ( проверяет, является ли первый словарь подмножеством второго)
 //  subset second first
