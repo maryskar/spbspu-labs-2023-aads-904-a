@@ -76,7 +76,6 @@ private:
                                     const Key &key, const Value &value);
   TreeNode< data_type > *removeImpl(TreeNode< data_type > *node, const Key &key);
   tree_t *initFake();
-  TreeNode< data_type > *copyTree(const TreeNode< data_type > *node);
   TreeNode< data_type > *copyBegin(const TreeNode< data_type > *beginNode);
   TreeNode< data_type > *copyEnd(const TreeNode< data_type > *endNode);
 };
@@ -172,27 +171,6 @@ const Value &BinarySearchTree< Key, Value, Compare >::at(const Key &key) const
     }
   }
   throw std::out_of_range("Key not found.");
-}
-template< typename Key, typename Value, typename Compare >
-TreeNode< std::pair< Key, Value > > *
-BinarySearchTree< Key, Value, Compare >::copyTree(const TreeNode< data_type > *node)
-{
-  if (!node)
-  {
-    return nullptr;
-  }
-  TreeNode< data_type > *newNode = new TreeNode< data_type >(node->key, node->value);
-  newNode->left = copyTree(node->left);
-  newNode->right = copyTree(node->right);
-  if (newNode->left)
-  {
-    newNode->left->parent = newNode;
-  }
-  if (newNode->right)
-  {
-    newNode->right->parent = newNode;
-  }
-  return newNode;
 }
 template< typename Key, typename Value, typename Compare >
 TreeNode< std::pair< Key, Value > > *
@@ -315,12 +293,11 @@ BinarySearchTree< Key, Value, Compare >::removeImpl(TreeNode< data_type > *node,
   {
     return nullptr;
   }
-  Compare cmp;
-  if (cmp(key, node->data.first))
+  if (compare_(key, node->data.first))
   {
     node->left = removeImpl(node->left, key);
   }
-  else if (cmp(node->data.first, key))
+  else if (compare_(node->data.first, key))
   {
     node->right = removeImpl(node->right, key);
   }
@@ -408,6 +385,7 @@ template< typename Key, typename Value, typename Compare >
 void BinarySearchTree< Key, Value, Compare >::remove(const Key &key)
 {
   root_ = removeImpl(root_, key);
+  --size_;
 }
 template< typename Key, typename Value, typename Compare >
 std::pair< typename BinarySearchTree< Key, Value, Compare >::iterator, bool >
@@ -450,6 +428,9 @@ void BinarySearchTree< Key, Value, Compare >::clear(TreeNode< data_type > *node)
     clear(node->right);
     delete node;
   }
+  root_ = nullptr;
+  begin_ = nullptr;
+  end_ = nullptr;
 }
 template< typename Key, typename Value, typename Compare >
 typename BinarySearchTree< Key, Value, Compare >::iterator

@@ -15,7 +15,7 @@ public:
                              const TreeNode< data_type > *fakeNode);
   ~ConstBidirectionalIterator() = default;
   ConstBidirectionalIterator(const ConstBidirectionalIterator< Key, Value, Compare > &) = default;
-  explicit ConstBidirectionalIterator(const IteratorDto< Key, Value > &dto);
+  explicit ConstBidirectionalIterator(const IteratorDto< data_type > &dto);
   ConstBidirectionalIterator< Key, Value, Compare > &
   operator=(const ConstBidirectionalIterator< Key, Value, Compare > &) = default;
   const_data_type &operator*() const;
@@ -48,7 +48,7 @@ ConstBidirectionalIterator< Key, Value, Compare >::ConstBidirectionalIterator(co
   }
 }
 template< typename Key, typename Value, typename Compare >
-ConstBidirectionalIterator< Key, Value, Compare >::ConstBidirectionalIterator(const IteratorDto< Key, Value > &dto):
+ConstBidirectionalIterator< Key, Value, Compare >::ConstBidirectionalIterator(const IteratorDto< data_type > &dto):
   node_(dto.node),
   fakeNode_(dto.fakeNode),
   root_(dto.root)

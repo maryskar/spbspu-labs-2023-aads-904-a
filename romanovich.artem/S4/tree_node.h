@@ -10,6 +10,7 @@ struct TreeNode
   explicit TreeNode(const T &data);
   TreeNode< T > *findMin(TreeNode< T > *node);
   TreeNode< T > *findMax(TreeNode< T > *node);
+  TreeNode< T > *copyTree(const TreeNode< T > *node);
 };
 template< typename T >
 TreeNode< T > *TreeNode< T >::findMax(TreeNode< T > *node)
@@ -44,5 +45,25 @@ TreeNode< T >::TreeNode(const T &data):
   left(nullptr),
   right(nullptr)
 {
+}
+template< typename T >
+TreeNode< T > * TreeNode< T >::copyTree(const TreeNode< T > *node)
+{
+  if (!node)
+  {
+    return nullptr;
+  }
+  TreeNode< T > *newNode = new TreeNode< T >(node->key, node->value);
+  newNode->left = copyTree(node->left);
+  newNode->right = copyTree(node->right);
+  if (newNode->left)
+  {
+    newNode->left->parent = newNode;
+  }
+  if (newNode->right)
+  {
+    newNode->right->parent = newNode;
+  }
+  return newNode;
 }
 #endif

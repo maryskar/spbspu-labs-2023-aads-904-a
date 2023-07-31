@@ -2,11 +2,11 @@
 #define ITERATOR_DTO_H
 #include <utility>
 #include "tree_node.h"
-template< typename Key, typename Value >
+template< typename T >
 struct IteratorDto
 {
-  const TreeNode< std::pair< Key, Value > > *root;
-  const TreeNode< std::pair< Key, Value > > *node;
-  const TreeNode< std::pair< Key, Value > > *fakeNode;
+  const TreeNode< T > *root;
+  const TreeNode< T > *node;
+  const TreeNode< T > *fakeNode;
 };
 #endif

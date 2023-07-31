@@ -4,7 +4,6 @@ int main()
 {
   using Key = int;
   using Value = int;
-
   using Compare = std::less< int >;
   // using data_type = std::pair< Key, Value >;
   using bst_t = BinarySearchTree< Key, Value, Compare >;
@@ -28,15 +27,8 @@ int main()
   }
 
   // Test const_iterator and cend
-  const_iterator cit = bst.cbegin();
-  const_iterator cit_end = bst.cend();
-  if (cit != cit_end)
-  {
-    std::cout
-      << cit->first << ": "
-      << cit->second << std::endl;
-    ++cit;
-  }
+  iterator it = bst.begin();
+  std::cout << it->second << ": ";
 
   // Test operator[]
   bst[10] = 10;
