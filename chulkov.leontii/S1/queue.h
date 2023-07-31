@@ -67,7 +67,7 @@ namespace chulkov {
 
     ~Queue() {
       while (!empty()) {
-        drop();
+        clear();
       }
     }
 
