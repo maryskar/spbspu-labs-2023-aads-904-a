@@ -88,7 +88,7 @@ namespace fesenko
   template< typename T >
   bool ForwardIterator< T >::operator==(const this_t &rhs) const
   {
-    return node_ == rhs.mode;
+    return node_ == rhs.node_;
   }
 
   template< typename T >
