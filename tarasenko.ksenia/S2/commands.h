@@ -38,6 +38,7 @@ namespace tarasenko
      type_3.push("copy", &copy< Key, Value, Compare >);
 
      type_4.push("swap", &swap< Key, Value, Compare >);
+     type_4.push("update", &update< Key, Value, Compare >);
    }
 
    void call(const std::string& name_of_command,

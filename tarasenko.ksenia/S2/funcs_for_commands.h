@@ -114,7 +114,7 @@ namespace tarasenko
     auto it = dict_of_dict.cbegin();
     auto key_dict = std::stoll(key);
     bool was_out = false;
-    for ( ; it != dict_of_dict.cend(); it++)
+    for (; it != dict_of_dict.cend(); it++)
     {
       if (it->second.find(key_dict) != it->second.cend())
       {
@@ -217,7 +217,7 @@ namespace tarasenko
 
   template< class Key, class Value, class Compare >
   void writeDicts(std::istream& input, Dictionary< std::string,
-    Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
+     Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
   {
     std::string filename = " ";
     input >> filename;
@@ -236,7 +236,7 @@ namespace tarasenko
 
   template< class Key, class Value, class Compare >
   void resort(std::istream& input, Dictionary< std::string,
-    Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
+     Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
   {
     std::string sort = " ";
     input >> sort;
@@ -256,7 +256,7 @@ namespace tarasenko
       throw std::invalid_argument("Invalid command");
     }
     auto it = dict_of_dict.begin();
-    for ( ; it != dict_of_dict.end(); it++)
+    for (; it != dict_of_dict.end(); it++)
     {
       it->second.setCompare(comp);
     }
@@ -288,7 +288,7 @@ namespace tarasenko
 
   template< class Key, class Value, class Compare >
   void copy(std::istream& input, Dictionary< std::string,
-    Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
+     Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
   {
     std::string name_dict = " ";
     std::string name_new_dict = " ";
@@ -297,14 +297,22 @@ namespace tarasenko
     dict_of_dict.push(name_new_dict, dict);
   }
 
-//  update <dataset-1> <dataset-2>
-//  (обновляет значения первого словаря значениями из второго словаря по совпадающим ключам)
-//  first 1 base 2 market 3 cats
-//  second 1 name 2 sec 4 mouse
-//
-//  update first second
-//  print first
-//  1 name 2 sec 3 cats
+  template< class Key, class Value, class Compare >
+  void update(Dictionary< Key, Value, Compare > &updated, Dictionary< Key, Value, Compare > &dict)
+  {
+    if (dict.isEmpty() || updated.isEmpty())
+    {
+      return;
+    }
+    auto it = updated.begin();
+    for (; it != updated.end(); it++)
+    {
+      if (dict.find(it->first) != dict.end())
+      {
+        updated[it->first] = dict[it->first];
+      }
+    }
+  }
 
 //    merge <dataset-1> <dataset-2> (добавляет ключи из второго словаря в первый.
 //    Если ключи дублируются, в качестве значения выбираются данные из правого операнда)
