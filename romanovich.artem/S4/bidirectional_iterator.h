@@ -174,7 +174,7 @@ BidirectionalIterator< Key, Value, Compare >::BidirectionalIterator(TreeNode< da
 {
   if (!root || !fakeNode)
   {
-    //throw std::invalid_argument("Null pointer passed to iterator.");
+    throw std::invalid_argument("Null pointer passed to iterator.");
   }
 }
 #endif

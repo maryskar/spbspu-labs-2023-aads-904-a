@@ -44,7 +44,7 @@ ConstBidirectionalIterator< Key, Value, Compare >::ConstBidirectionalIterator(co
 {
   if (!root || !fakeNode)
   {
-    //throw std::invalid_argument("Null pointer passed to iterator.");
+    throw std::invalid_argument("Null pointer passed to iterator.");
   }
 }
 template< typename Key, typename Value, typename Compare >

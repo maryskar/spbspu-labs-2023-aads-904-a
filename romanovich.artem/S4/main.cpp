@@ -41,9 +41,9 @@ int main()
   bst.remove(10);
   std::cout << "Size of BST after remove: " << bst.size() << std::endl; // Expected output: 3
 
-  // Test clear and isEmpty
+  // Test clear and empty
   bst.clear();
-  std::cout << "Is BST empty? " << (bst.isEmpty() ? "Yes" : "No") << std::endl; // Expected output: Yes
+  std::cout << "Is BST empty? " << (bst.empty() ? "Yes" : "No") << std::endl; // Expected output: Yes
 
   std::cout << "Tests OK" << std::endl;
   return 0;

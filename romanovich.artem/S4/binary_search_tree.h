@@ -45,7 +45,7 @@ public:
   Value &operator[](const Key &key);
   Value &operator[](Key &&key);
   size_t size() const;
-  bool isEmpty() const;
+  bool empty() const;
   std::pair< iterator, bool > insert(Key &&key, Value &&value);
   std::pair< iterator, bool > insert(const Key &key, const Value &value);
   iterator insert(const_iterator pos, const Key &key, const Value &value);
@@ -97,10 +97,10 @@ ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, 
 template< typename Key, typename Value, typename Compare >
 BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::begin() noexcept
 {
-  return iterator(root_, fakeNode_->parent, fakeNode_);
+  return iterator(root_, fakeNode_->parent, fakeNode_); // ошибка!!!!!!!
 }
 template< typename Key, typename Value, typename Compare >
-bool BinarySearchTree< Key, Value, Compare >::isEmpty() const
+bool BinarySearchTree< Key, Value, Compare >::empty() const
 {
   return root_ == nullptr;
 }
@@ -341,22 +341,61 @@ TreeNode< std::pair< Key, Value > > *BinarySearchTree< Key, Value, Compare >::in
 {
   if (!node)
   {
-    TreeNode< data_type > *newNode = new TreeNode< data_type >(data_type(key, value));
+    auto *newNode = new TreeNode< data_type >(data_type(key, value));
     newNode->parent = parent;
+    if (!fakeNode_)
+    {
+      fakeNode_ = new TreeNode< data_type >(data_type(Key(), Value()));
+      root_ = newNode;
+      fakeNode_->left = newNode;
+      fakeNode_->right = newNode;
+    }
+    else if (!parent)
+    {
+      root_ = newNode;
+      fakeNode_->left = newNode;
+      fakeNode_->right = newNode;
+    }
+    else if (compare_(key, parent->data.first))
+    {
+      parent->left = newNode;
+      if (parent == fakeNode_)
+      {
+        fakeNode_->left = newNode;
+      }
+      fakeNode_->parent = nullptr;
+    }
+    else
+    {
+      parent->right = newNode;
+      if (parent == fakeNode_)
+      {
+        fakeNode_->right = newNode;
+      }
+      fakeNode_->parent = nullptr;
+    }
     return newNode;
   }
-  Compare cmp;
-  if (cmp(key, node->data.first))
+  TreeNode< data_type > *child_node = compare_(key, node->data.first) ? node->left : node->right;
+  TreeNode< data_type > *new_child = insertImpl(child_node, node, key, value);
+  if (new_child != child_node)
   {
-    node->left = insertImpl(node->left, node, key, value);
-  }
-  else if (cmp(node->data.first, key))
-  {
-    node->right = insertImpl(node->right, node, key, value);
+    if (compare_(key, node->data.first))
+    {
+      node->left = new_child;
+    }
+    else
+    {
+      node->right = new_child;
+    }
   }
   else
   {
     node->data.second = value;
+  }
+  if (node == root_ && !node)
+  {
+    fakeNode_->parent = nullptr;
   }
   return node;
 }
