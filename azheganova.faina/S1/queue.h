@@ -33,24 +33,8 @@ namespace azheganova
 
   template< typename T >
   Queue< T >::Queue(const Queue< T > & rhs):
-   top_(nullptr),
-   last_(nullptr)
-  {
-    details::ListNode< T > * tmp = rhs.top_;
-    while (tmp != nullptr)
-    {
-      try
-      {
-        push(tmp->data_);
-      }
-      catch (const std::exception & e)
-      {
-        clearQueue();
-        throw;
-      }
-      tmp = tmp->next_;
-    }
-  }
+   Queue(details::copy(rhs.top_))
+  {}
 
   template< typename T >
   Queue< T >::Queue(Queue< T > && rhs):

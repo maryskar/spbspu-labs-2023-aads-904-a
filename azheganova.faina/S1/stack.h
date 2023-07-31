@@ -38,26 +38,8 @@ namespace azheganova
 
   template< typename T >
   Stack< T >::Stack(const Stack< T > & rhs):
-   top_(nullptr)
-  {
-    details::ListNode< T > * node1 = rhs.top_;
-    top_ = new details::ListNode< T >(node1->data_);
-    details::ListNode< T > * node2 = top_;
-    while (node1->next_)
-    {
-      node1 = node1->next_;
-      try
-      {
-        node2->next_ = new details::ListNode< T >(node1->data_);
-      }
-      catch (const std::exception & e)
-      {
-        clearStack();
-        throw;
-      }
-      node2 = node2->next_;
-    }
-  }
+   Stack(details::copy(rhs.top_))
+  {}
 
   template< typename T >
   Stack< T >::Stack(Stack< T > && rhs):
