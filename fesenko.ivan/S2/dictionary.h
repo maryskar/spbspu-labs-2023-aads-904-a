@@ -121,6 +121,24 @@ namespace fesenko
   }
 
   template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::before_begin() noexcept
+  {
+    return list_.before_begin();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::before_begin() const noexcept
+  {
+    return cbefore_begin();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::cbefore_begin() const noexcept
+  {
+    return list_.cbefore_begin();
+  }
+
+  template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::begin() noexcept
   {
     return list_.begin();
@@ -221,15 +239,24 @@ namespace fesenko
   > Dictionary< Key, Value, Compare >::insert(const value_type &value)
   {
     Compare comp = key_comp();
-    const_iterator cur = cbegin();
-    while (cur != cend()) {
-      if (!comp(cur->first, value.first)) {
-        if (comp(value.first, cur->first)) {
+    if (empty() || comp(value.first, cbegin()->first)) {
+      return {list_.insert_after(cbefore_begin(), value), true};
+    }
+    iterator cur = before_begin();
+    iterator sup = begin();
+    while (sup != end()) {
+      if (comp(value.first, sup->first)) {
+        if (comp(cur->first, value.first)) {
           return {list_.insert_after(cur, value), true};
+        } else {
+          return {cur, false};
         }
-        break;
       }
       cur++;
+      sup++;
+    }
+    if (comp(cur->first, value.first)) {
+      return {list_.insert_after(cur, value), true};
     }
     return {end(), false};
   }
