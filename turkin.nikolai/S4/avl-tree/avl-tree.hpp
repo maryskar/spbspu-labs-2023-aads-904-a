@@ -5,52 +5,37 @@
 
 #include "iterators/direct-iterator.hpp"
 #include "iterators/direct-const-iterator.hpp"
-#include "iterators/reverse-iterator.hpp"
-#include "iterators/reverse-const-iterator.hpp"
 #include "tree-node.hpp"
 
 namespace turkin
 {
   template< typename K, typename V, typename C >
-  class RBtree
+  class AVLtree
   {
-    using tree = RBtree< K, V, C >;
+    using tree = AVLtree< K, V, C >;
     using tree_t = std::pair< K, V >;
-    using dit = DirectIterator< K, V, C >;
-    using dcit = DirectConstIterator< K, V, C >;
-    using rit = ReverseIterator< K, V, C >;
-    using rcit = ReverseConstIterator< K, V, C >;
+    using it = DirectIterator< K, V, C >;
+    using cit = DirectConstIterator< K, V, C >;
     public:
-      RBtree();
-      RBtree(const tree & rhs);
-      RBtree(tree && rhs);
+      AVLtree();
+      AVLtree(const tree & rhs);
+      AVLtree(tree && rhs);
       tree operator=(const tree & rhs);
       tree operator=(tree && rhs);
-      ~RBtree();
+      ~AVLtree();
       
-      dit directSource() noexcept;
-      dcit directSource() const noexcept;
-      dcit directCSource() const noexcept;
-      
-      rit reverseSource() noexcept;
-      rcit reverseSource() const noexcept;
-      rcit reverseCSource() const noexcept;
+      it directSource() noexcept;
+      cit directSource() const noexcept;
+      cit directCSource() const noexcept;
 
       bool empty() const noexcept;
       std::size_t size() const noexcept;
 
       void clear() noexcept;
-      dit insert(const K & k, const V & v);
-      dit insert(const tree_t & value);
+      it insert(const K & k, const V & v);
       void erase(const K & k);
-      tree_t extract(dcit pos);
       
       void swap(tree & rhs) noexcept;
-      V at(const K & k);
-      const V at(const K & k) const;
-
-      dit find(const K & k);
-      dcit find(const K & k) const;
       
     private:
       TreeNode< tree_t, C > source_;
@@ -65,7 +50,7 @@ namespace turkin
 }
 
 template< typename K, typename V, typename C >
-turkin::RBtree< K, V, C >::RBtree():
+turkin::AVLtree< K, V, C >::AVLtree():
   source_(new TreeNode< tree_t, C >),
   dummy_(new TreeNode< tree_t, C >),
   cmp_(),
@@ -74,13 +59,10 @@ turkin::RBtree< K, V, C >::RBtree():
   source_.parent = nullptr;
   source_.left = dummy_;
   source_.right = dummy_;
-  source_.color = TreeColor::BLACK;
-  
-  dummy_.color = TreeColor::BLACK;
 }
 
 template< typename K, typename V, typename C >
-turkin::RBtree< K, V, C >::RBtree(const tree & rhs):
+turkin::AVLtree< K, V, C >::AVLtree(const tree & rhs):
   source_(nullptr),
   dummy_(new TreeNode< tree_t, C >),
   cmp_(rhs.cmp_),
@@ -90,7 +72,7 @@ turkin::RBtree< K, V, C >::RBtree(const tree & rhs):
 }
 
 template< typename K, typename V, typename C >
-turkin::RBtree< K, V, C >::RBtree(tree && rhs):
+turkin::AVLtree< K, V, C >::AVLtree(tree && rhs):
   source_(rhs.source_),
   dummy_(rhs.dummy_),
   cmp_(rhs.cmp_),
@@ -102,7 +84,7 @@ turkin::RBtree< K, V, C >::RBtree(tree && rhs):
 }
 
 template< typename K, typename V, typename C >
-turkin::RBtree< K, V, C > turkin::RBtree< K, V, C >::operator=(const tree & rhs)
+turkin::AVLtree< K, V, C > turkin::AVLtree< K, V, C >::operator=(const tree & rhs)
 {
   if (std::addressof(rhs) == this)
   {
@@ -114,7 +96,7 @@ turkin::RBtree< K, V, C > turkin::RBtree< K, V, C >::operator=(const tree & rhs)
 }
 
 template< typename K, typename V, typename C >
-turkin::RBtree< K, V, C > turkin::RBtree< K, V, C >::operator=(tree && rhs)
+turkin::AVLtree< K, V, C > turkin::AVLtree< K, V, C >::operator=(tree && rhs)
 {
   if (std::addressof(rhs) == this)
   {
@@ -132,52 +114,37 @@ turkin::RBtree< K, V, C > turkin::RBtree< K, V, C >::operator=(tree && rhs)
 }
 
 template< typename K, typename V, typename C >
-turkin::RBtree< K, V, C >::~RBtree()
+turkin::AVLtree< K, V, C >::~AVLtree()
 {
   free(source_);
 }
 
 template< typename K, typename V, typename C >
-turkin::DirectIterator< K, V, C > turkin::RBtree< K, V, C >::directSource() noexcept
+turkin::DirectIterator< K, V, C > turkin::AVLtree< K, V, C >::directSource() noexcept
 {
   return dit(source_);
 }
 
 template< typename K, typename V, typename C >
-turkin::DirectConstIterator< K, V, C > turkin::RBtree< K, V, C >::directSource() const noexcept
+turkin::DirectConstIterator< K, V, C > turkin::AVLtree< K, V, C >::directSource() const noexcept
 {
   return dcit(source_);
 }
 
 template< typename K, typename V, typename C >
-turkin::DirectConstIterator< K, V, C > turkin::RBtree< K, V, C >::directCSource() const noexcept
+turkin::DirectConstIterator< K, V, C > turkin::AVLtree< K, V, C >::directCSource() const noexcept
 {
   return dcit(source_);
 }
 
 template< typename K, typename V, typename C >
-turkin::ReverseIterator< K, V, C > turkin::RBtree< K, V, C >::reverseSource() noexcept
-{
-  return rit(source_);
-}
-
-template< typename K, typename V, typename C >
-turkin::ReverseConstIterator< K, V, C > turkin::RBtree< K, V, C >::reverseSource() const noexcept
-{
-  return rcit(source_); 
-}
-
-template< typename K, typename V, typename C >
-turkin::ReverseConstIterator< K, V, C > turkin::RBtree< K, V, C >::reverseCSource() const noexcept {}
-
-template< typename K, typename V, typename C >
-bool turkin::RBtree< K, V, C >::empty() const noexcept
+bool turkin::AVLtree< K, V, C >::empty() const noexcept
 {
   return size_ == 0;
 }
 
 template< typename K, typename V, typename C >
-std::size_t turkin::RBtree< K, V, C >::size() const noexcept
+std::size_t turkin::AVLtree< K, V, C >::size() const noexcept
 {
   return size_;
 }

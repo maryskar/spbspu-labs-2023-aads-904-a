@@ -2,7 +2,7 @@
 #include <cstddef>
 #include <string>
 #include <functional>
-#include "rb-tree/rb-tree.hpp"
+#include "avl-tree/avl-tree.hpp"
 #include "out-msg.hpp"
 
 int main(int argc, char * argv[])
@@ -21,9 +21,9 @@ int main(int argc, char * argv[])
     return 1;
   }
 
-  using tree_t = turkin::RBtree< std::size_t, std::string, std::less< std::size_t > >;
-  using tree_a = turkin::RBtree< std::string, tree_t, std::less< std::string > >;
-  using tree_c = turkin::RBtree< std::string, tree_t (*)(const tree_t &, const tree_t &), std::less< std::string > >;
+  using tree_t = turkin::AVLtree< std::size_t, std::string, std::less< std::size_t > >;
+  using tree_a = turkin::AVLtree< std::string, tree_t, std::less< std::string > >;
+  using tree_c = turkin::AVLtree< std::string, tree_t (*)(const tree_t &, const tree_t &), std::less< std::string > >;
 
   while (std::cin)
   {

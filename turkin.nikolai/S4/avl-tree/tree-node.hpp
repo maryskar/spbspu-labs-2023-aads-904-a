@@ -2,12 +2,7 @@
 #define TREE_NODE
 
 namespace turkin
-{
-  enum class TreeColor
-  {
-    RED, BLACK
-  };
-  
+{ 
   template< typename T, typename C >
   struct TreeNode
   {
@@ -15,7 +10,6 @@ namespace turkin
     TreeNode< T, C > * parent;
     TreeNode< T, C > * left;
     TreeNode< T, C > * right;
-    TreeColor color;
     C cmp;
   };
   
