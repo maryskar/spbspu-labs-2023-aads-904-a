@@ -233,17 +233,23 @@ void turkin::AVLtree< K, V, C >::balance(TreeNode< tree_t > * source)
   {
     if (discern(source->left) == 1)
     {
-      slr(source->left);
+      brr(source);
     }
-    srr(source);
+    else
+    {
+      srr(source);
+    }
   }
   else if (diff == 2)
   {
     if (discern(source->right) == -1)
     {
-      srr(source->right);
+      blr(source);
     }
-    slr(source);
+    else
+    {
+      slr(source);
+    }
   }
 }
 
