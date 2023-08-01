@@ -53,7 +53,7 @@ TreeNode< T > * TreeNode< T >::copyTree(const TreeNode< T > *node)
   {
     return nullptr;
   }
-  TreeNode< T > *newNode = new TreeNode< T >(node->key, node->value);
+  auto *newNode = new TreeNode< T >(node->key, node->value);
   newNode->left = copyTree(node->left);
   newNode->right = copyTree(node->right);
   if (newNode->left)

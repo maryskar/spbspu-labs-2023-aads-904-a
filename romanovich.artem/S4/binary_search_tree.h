@@ -92,13 +92,12 @@ BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compa
 template< typename Key, typename Value, typename Compare >
 ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::cbegin() const noexcept
 {
-  return const_iterator(root_, fakeNode_->parent, fakeNode_);
+  return const_iterator(root_, fakeNode_->left, fakeNode_);
 }
 template< typename Key, typename Value, typename Compare >
 BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::begin() noexcept
 {
-  //return iterator(root_, root_, fakeNode_);
-  return iterator(root_, fakeNode_->parent, fakeNode_); // ошибка!!!!!!!
+  return iterator(root_, fakeNode_->left, fakeNode_); // ошибка!!!!!!!
 }
 template< typename Key, typename Value, typename Compare >
 bool BinarySearchTree< Key, Value, Compare >::empty() const
@@ -344,22 +343,22 @@ TreeNode< std::pair< Key, Value > > *BinarySearchTree< Key, Value, Compare >::in
   {
     fakeNode_ = new TreeNode< data_type >(data_type(Key(), Value()));
   }
+  fakeNode_->parent = root_;
   if (!node)
   {
     auto *newNode = new TreeNode< data_type >(data_type(key, value));
     newNode->parent = parent;
-    fakeNode_->left = newNode;
-    fakeNode_->right = newNode;
-    fakeNode_->parent = newNode;
     return newNode;
   }
   if (compare_(key, node->data.first))
   {
     node->left = insertImpl(node->left, node, key, value);
+    fakeNode_->left = node->left;
   }
   else if (compare_(node->data.first, key))
   {
     node->right = insertImpl(node->right, node, key, value);
+    fakeNode_->right = node->right;
   }
   else
   {
