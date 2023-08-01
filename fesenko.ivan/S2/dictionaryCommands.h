@@ -1,5 +1,7 @@
 #ifndef DICTIONARYCOMMANDS_H
 #define DICTIONARYCOMMANDS_H
+#include <fstream>
+#include <string>
 #include "dictionary.h"
 #include "messages.h"
 
@@ -9,13 +11,13 @@ namespace fesenko
   void print(const std::pair< std::string, Dictionary< Key, Value, Compare > > &rhs, std::ostream &out)
   {
     auto dict = rhs.second;
-    if (dict.size() == 0) {
+    auto cit = dict.cbegin();
+    if (cit == dict.cend()) {
       outEmptyMessage(out);
       return;
     }
-    const_iterator cit = dict.cbegin();
-    out << rhs.first();
-    while (cit != cend()) {
+    out << rhs.first;
+    while (cit != dict.cend()) {
       out << " " << cit->first << " " << cit->second;
       cit++;
     }
