@@ -97,6 +97,7 @@ ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, 
 template< typename Key, typename Value, typename Compare >
 BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::begin() noexcept
 {
+  //return iterator(root_, root_, fakeNode_);
   return iterator(root_, fakeNode_->parent, fakeNode_); // ошибка!!!!!!!
 }
 template< typename Key, typename Value, typename Compare >
@@ -339,63 +340,30 @@ TreeNode< std::pair< Key, Value > > *BinarySearchTree< Key, Value, Compare >::in
                                                                                          const Key &key,
                                                                                          const Value &value)
 {
+  if (!fakeNode_)
+  {
+    fakeNode_ = new TreeNode< data_type >(data_type(Key(), Value()));
+  }
   if (!node)
   {
     auto *newNode = new TreeNode< data_type >(data_type(key, value));
     newNode->parent = parent;
-    if (!fakeNode_)
-    {
-      fakeNode_ = new TreeNode< data_type >(data_type(Key(), Value()));
-      root_ = newNode;
-      fakeNode_->left = newNode;
-      fakeNode_->right = newNode;
-    }
-    else if (!parent)
-    {
-      root_ = newNode;
-      fakeNode_->left = newNode;
-      fakeNode_->right = newNode;
-    }
-    else if (compare_(key, parent->data.first))
-    {
-      parent->left = newNode;
-      if (parent == fakeNode_)
-      {
-        fakeNode_->left = newNode;
-      }
-      fakeNode_->parent = nullptr;
-    }
-    else
-    {
-      parent->right = newNode;
-      if (parent == fakeNode_)
-      {
-        fakeNode_->right = newNode;
-      }
-      fakeNode_->parent = nullptr;
-    }
+    fakeNode_->left = newNode;
+    fakeNode_->right = newNode;
+    fakeNode_->parent = newNode;
     return newNode;
   }
-  TreeNode< data_type > *child_node = compare_(key, node->data.first) ? node->left : node->right;
-  TreeNode< data_type > *new_child = insertImpl(child_node, node, key, value);
-  if (new_child != child_node)
+  if (compare_(key, node->data.first))
   {
-    if (compare_(key, node->data.first))
-    {
-      node->left = new_child;
-    }
-    else
-    {
-      node->right = new_child;
-    }
+    node->left = insertImpl(node->left, node, key, value);
+  }
+  else if (compare_(node->data.first, key))
+  {
+    node->right = insertImpl(node->right, node, key, value);
   }
   else
   {
     node->data.second = value;
-  }
-  if (node == root_ && !node)
-  {
-    fakeNode_->parent = nullptr;
   }
   return node;
 }
@@ -477,6 +445,7 @@ BinarySearchTree< Key, Value, Compare >::insert(const_iterator pos, const Key &k
 {
   TreeNode< data_type > *parent = nullptr;
   TreeNode< data_type > *current = root_;
+  ++size_; // тут хуйня какая-то
   while (current != nullptr)
   {
     if (compare_(key, current->data.first))
@@ -508,7 +477,6 @@ BinarySearchTree< Key, Value, Compare >::insert(const_iterator pos, const Key &k
   {
     parent->right = current;
   }
-  ++size_;
   return iterator(current, fakeNode_);
 }
 //Не работает size при Insert
