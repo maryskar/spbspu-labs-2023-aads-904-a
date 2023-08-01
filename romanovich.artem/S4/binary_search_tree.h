@@ -442,49 +442,38 @@ template< typename Key, typename Value, typename Compare >
 typename BinarySearchTree< Key, Value, Compare >::iterator
 BinarySearchTree< Key, Value, Compare >::insert(const_iterator pos, const Key &key, const Value &value)
 {
-  TreeNode< data_type > *parent = nullptr;
-  TreeNode< data_type > *current = root_;
-  ++size_; // тут хуйня какая-то
-  while (current != nullptr)
+  if (!pos.node_)
   {
-    if (compare_(key, current->data.first))
+    return insertImpl(nullptr, nullptr, key, value);
+  }
+  else if (compare_(key, pos.node_->data.first))
+  {
+    if (pos.node_->left == nullptr)
     {
-      parent = current;
-      current = current->left;
-    }
-    else if (compare_(current->data.first, key))
-    {
-      parent = current;
-      current = current->right;
+      return insertImpl(nullptr, pos.node_, key, value);
     }
     else
     {
-      return iterator(current, fakeNode_);
+      return insertImpl(pos.node_->left, pos.node_, key, value);
     }
-  }
-  current = new TreeNode< data_type >(key, value);
-  current->parent = parent;
-  if (parent == nullptr)
-  {
-    root_ = current;
-  }
-  else if (compare_(key, parent->data.first))
-  {
-    parent->left = current;
   }
   else
   {
-    parent->right = current;
+    if (pos.node_->right == nullptr)
+    {
+      return insertImpl(nullptr, pos.node_, key, value);
+    }
+    else
+    {
+      return insertImpl(pos.node_->right, pos.node_, key, value);
+    }
   }
-  return iterator(current, fakeNode_);
 }
-//Не работает size при Insert
 template< typename Key, typename Value, typename Compare >
 typename BinarySearchTree< Key, Value, Compare >::iterator
 BinarySearchTree< Key, Value, Compare >::insert(const_iterator pos, Key &&key, Value &&value)
 {
-  iterator insertPos = const_cast< iterator >(pos);
-  return insert(insertPos, std::forward< Key >(key), std::forward< Value >(value));
+  return insert(pos, std::forward< Key >(key), std::forward< Value >(value));
 }
 template< typename Key, typename Value, typename Compare >
 template< class InputIt >
