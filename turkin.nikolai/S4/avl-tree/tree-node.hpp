@@ -49,6 +49,12 @@ namespace turkin
     rhs->left = lhs->right;
     lhs->left = rhs;
   }
+
+  template< typename T, typename C >
+  void bigRotateLeft(TreeNode< T, C > * lhs);
+
+  template< typename T, typename C >
+  void bigRotateRight(TreeNode< T, C > * rhs);
 }
 
 
