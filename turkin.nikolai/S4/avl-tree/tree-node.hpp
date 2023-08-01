@@ -3,60 +3,27 @@
 
 namespace turkin
 { 
-  template< typename T, typename C >
+  template< typename T >
   struct TreeNode
   {
     T data;
-    TreeNode< T, C > * parent;
-    TreeNode< T, C > * left;
-    TreeNode< T, C > * right;
-    C cmp;
+    TreeNode< T > * parent;
+    TreeNode< T > * left;
+    TreeNode< T > * right;
+    int height;
   };
-  
-  template< typename T, typename C >
-  void free(TreeNode< T, C > * source)
+
+  template< typename T >
+  void free(TreeNode< T > * source)
   {
-    if (source->left)
+    if (!source)
     {
-      free(source->left);
+      return;
     }
-    if (source->right)
-    {
-      free(source->right);
-    }
-    delete source->left;
-    delete source->right;
+    free(source->left);
+    free(source->right);
+    delete source;
   }
-  
-  template< typename T, typename C >
-  TreeNode< T, C > * copy(TreeNode< T, C > * source)
-  {
-
-  }
-
-  template< typename T, typename C >
-  void rotateLeft(TreeNode< T, C > * lhs)
-  {
-    TreeNode< T, C > * rhs = lhs->right;
-    lhs->right = rhs->left;
-    rhs->left = lhs;
-  }
-
-  template< typename T, typename C >
-  void rotateRight(TreeNode< T, C > * rhs)
-  {
-    TreeNode< T, C > * lhs = rhs->right;
-    rhs->left = lhs->right;
-    lhs->left = rhs;
-  }
-
-  template< typename T, typename C >
-  void bigRotateLeft(TreeNode< T, C > * lhs);
-
-  template< typename T, typename C >
-  void bigRotateRight(TreeNode< T, C > * rhs);
 }
-
-
 
 #endif

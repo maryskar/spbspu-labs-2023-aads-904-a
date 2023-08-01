@@ -14,7 +14,7 @@ namespace turkin
     friend class AVLtree< K, V, C >;
     using cit = ConstIterator< K, V, C >;
     using tree_t = std::pair< K, V >;
-    using Node = TreeNode< tree_t, C > *;
+    using Node = TreeNode< tree_t > *;
     public:
       ConstIterator();
       explicit ConstIterator(Node rhs);
