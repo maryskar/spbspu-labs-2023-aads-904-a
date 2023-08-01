@@ -50,6 +50,7 @@ namespace fesenko
     List< T > *begin_;
     List< T > *end_;
     size_t size_;
+    void copy(const this_t &);
   };
 
   template< typename T >
@@ -275,6 +276,15 @@ namespace fesenko
   {
     clear();
     ::operator delete(fakeNode_);
+  }
+
+  template< typename T >
+  void ForwardList< T >::copy(const this_t &rhs)
+  {
+    auto res = copyList(rhs.begin_);
+    begin_ = res.first;
+    end_ = res.second;
+    fakeNode_->next = begin_;
   }
 }
 #endif

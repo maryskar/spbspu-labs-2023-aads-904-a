@@ -22,18 +22,18 @@ namespace fesenko
   }
 
   template< typename T >
-  std::pair< List< T > *, List< T > * > copy(const List< T > *head)
+  std::pair< List< T > *, List< T > * > copyList(const List< T > *head)
   {
     if (head == nullptr) {
       return {nullptr, nullptr};
     }
     List< T > *newHead = nullptr;
     try {
-      newHead = new List< T >(head->data);
+      newHead = new List< T > {head->data, nullptr};
       head = head->next;
       auto *cur = newHead;
       while (head) {
-        cur->next = new List< T >(head->data);
+        cur->next = new List< T > {head->data, nullptr};
         cur = cur->next;
         head = head->next;
       }
