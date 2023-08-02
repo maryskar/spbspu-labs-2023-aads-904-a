@@ -3,6 +3,7 @@
 #include <functional>
 #include <cstddef>
 #include <stdexcept>
+#include <iostream>
 #include "tree_node.h"
 #include "bidirectional_iterator.h"
 #include "const_bidirectional_iterator.h"
@@ -59,8 +60,8 @@ public:
   size_t erase(const Key &key);
   size_t count(const Key &key) const;
   void swap(bst_t &other);
-  iterator lower_bound(const Key &key);
-  const_iterator lower_bound(const Key &key) const;
+  iterator lower_bound(const Value &value);
+  const_iterator lower_bound(const Value &value) const;
   iterator upper_bound(const Key &key);
   const_iterator upper_bound(const Key &key) const;
   Compare value_comp() const;
@@ -80,24 +81,60 @@ private:
   TreeNode< data_type > *copyEnd(const TreeNode< data_type > *endNode);
 };
 template< typename Key, typename Value, typename Compare >
+typename BinarySearchTree< Key, Value, Compare >::iterator
+BinarySearchTree< Key, Value, Compare >::lower_bound(const Value &value)
+{
+  TreeNode< data_type > *tmp = fakeNode_->left;
+  while (tmp != fakeNode_)
+  {
+    if (compare_(value, tmp->data))
+    {
+      if (tmp->left != fakeNode_)
+      {
+        tmp = tmp->left;
+      }
+      else
+      {
+        return const_iterator(root_, tmp, fakeNode_);
+      }
+    }
+    else if (!compare_(value, tmp->data_) && !compare_(tmp->data_, value))
+    {
+      return const_iterator(tmp, fakeNode_);
+    }
+    else
+    {
+      if (tmp->right != fakeNode_)
+      {
+        tmp = tmp->right;
+      }
+      else
+      {
+        return ++const_iterator(tmp, fakeNode_);
+      }
+    }
+  }
+  return cend();
+}
+template< typename Key, typename Value, typename Compare >
 ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::clast() const noexcept
 {
-  return const_iterator(root_, fakeNode_->right, fakeNode_);
+  return const_iterator(root_, root_->findMax(root_), fakeNode_);
 }
 template< typename Key, typename Value, typename Compare >
 BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::last() noexcept
 {
-  return iterator(root_, fakeNode_->right, fakeNode_);
+  return iterator(root_, root_->findMax(root_), fakeNode_);
 }
 template< typename Key, typename Value, typename Compare >
 ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::cbegin() const noexcept
 {
-  return const_iterator(root_, fakeNode_->left, fakeNode_);
+  return const_iterator(root_, root_->findMin(root_), fakeNode_);
 }
 template< typename Key, typename Value, typename Compare >
 BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::begin() noexcept
 {
-  return iterator(root_, fakeNode_->left, fakeNode_); // ошибка!!!!!!!
+  return iterator(root_, root_->findMin(root_), fakeNode_);
 }
 template< typename Key, typename Value, typename Compare >
 bool BinarySearchTree< Key, Value, Compare >::empty() const
@@ -310,6 +347,7 @@ BinarySearchTree< Key, Value, Compare >::removeImpl(TreeNode< data_type > *node,
       {
         rightChild->parent = node->parent;
       }
+      --size_;
       delete node;
       return rightChild;
     }
@@ -320,6 +358,7 @@ BinarySearchTree< Key, Value, Compare >::removeImpl(TreeNode< data_type > *node,
       {
         leftChild->parent = node->parent;
       }
+      --size_;
       delete node;
       return leftChild;
     }
@@ -339,11 +378,6 @@ TreeNode< std::pair< Key, Value > > *BinarySearchTree< Key, Value, Compare >::in
                                                                                          const Key &key,
                                                                                          const Value &value)
 {
-  if (!fakeNode_)
-  {
-    fakeNode_ = new TreeNode< data_type >(data_type(Key(), Value()));
-  }
-  fakeNode_->parent = root_;
   if (!node)
   {
     auto *newNode = new TreeNode< data_type >(data_type(key, value));
@@ -353,12 +387,12 @@ TreeNode< std::pair< Key, Value > > *BinarySearchTree< Key, Value, Compare >::in
   if (compare_(key, node->data.first))
   {
     node->left = insertImpl(node->left, node, key, value);
-    fakeNode_->left = node->left;
+    node->left->parent = node;
   }
   else if (compare_(node->data.first, key))
   {
     node->right = insertImpl(node->right, node, key, value);
-    fakeNode_->right = node->right;
+    node->right->parent = node;
   }
   else
   {
@@ -391,7 +425,6 @@ template< typename Key, typename Value, typename Compare >
 void BinarySearchTree< Key, Value, Compare >::remove(const Key &key)
 {
   root_ = removeImpl(root_, key);
-  --size_;
 }
 template< typename Key, typename Value, typename Compare >
 std::pair< typename BinarySearchTree< Key, Value, Compare >::iterator, bool >
@@ -486,5 +519,78 @@ BinarySearchTree< Key, Value, Compare >::insert(const_iterator pos, InputIt firs
     result = insert(pos, it->first, it->second);
   }
   return result;
+}
+template< typename Key, typename Value, typename Compare >
+typename BinarySearchTree< Key, Value, Compare >::iterator BinarySearchTree< Key, Value, Compare >::erase(iterator pos)
+{
+  if (pos == end() || pos.getNode() == fakeNode_)
+  {
+    throw std::out_of_range("Invalid iterator for erase.");
+  }
+  tree_t *node = pos.getNode();
+  tree_t *parent = node->parent;
+  tree_t *next_node = nullptr;
+  if (node->right)
+  {
+    next_node = node->right;
+    while (next_node->left)
+    {
+      next_node = next_node->left;
+    }
+  }
+  else if (node->left)
+  {
+    next_node = node->left;
+    while (next_node->right)
+    {
+      next_node = next_node->right;
+    }
+  }
+  if (!parent)
+  {
+    root_ = next_node;
+  }
+  else if (parent->left == node)
+  {
+    parent->left = next_node;
+  }
+  else
+  {
+    parent->right = next_node;
+  }
+  delete node;
+  --size_;
+  return iterator(next_node, fakeNode_);
+}
+template< typename Key, typename Value, typename Compare >
+typename BinarySearchTree< Key, Value, Compare >::iterator
+BinarySearchTree< Key, Value, Compare >::erase(const_iterator pos)
+{
+  iterator it(const_cast<tree_t *>(pos.node_), const_cast<tree_t *>(pos.fakeNode_));
+  return erase(it);
+}
+template< typename Key, typename Value, typename Compare >
+typename BinarySearchTree< Key, Value, Compare >::iterator
+BinarySearchTree< Key, Value, Compare >::erase(const_iterator first, const_iterator last)
+{
+  iterator it_first(const_cast<tree_t * >(first.getNode()), const_cast<tree_t * >(first.getFakeNode()));
+  iterator it_last(const_cast<tree_t * >(last.getNode()), const_cast<tree_t * >(last.getFakeNode()));
+  while (it_first != it_last)
+  {
+    it_first = erase(it_first);
+  }
+  return it_first;
+}
+template< typename Key, typename Value, typename Compare >
+size_t BinarySearchTree< Key, Value, Compare >::erase(const Key &key)
+{
+  size_t count = 0;
+  iterator it = find(key);
+  while (it != end() && it->first == key)
+  {
+    it = erase(it);
+    ++count;
+  }
+  return count;
 }
 #endif

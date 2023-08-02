@@ -15,7 +15,7 @@ public:
                              const TreeNode< data_type > *fakeNode);
   ~ConstBidirectionalIterator() = default;
   ConstBidirectionalIterator(const ConstBidirectionalIterator< Key, Value, Compare > &) = default;
-  explicit ConstBidirectionalIterator(const IteratorDto< data_type > &dto);
+  explicit ConstBidirectionalIterator(IteratorDto< data_type > &dto);
   ConstBidirectionalIterator< Key, Value, Compare > &
   operator=(const ConstBidirectionalIterator< Key, Value, Compare > &) = default;
   const_data_type &operator*() const;
@@ -26,9 +26,9 @@ public:
   ConstBidirectionalIterator< Key, Value, Compare > operator--(int);
   bool operator!=(const ConstBidirectionalIterator< Key, Value, Compare > &other) const;
   bool operator==(const ConstBidirectionalIterator< Key, Value, Compare > &other) const;
-  /*const TreeNode< data_type > *getNode() const;
+  const TreeNode< data_type > *getNode() const;
   const TreeNode< data_type > *getFakeNode() const;
-  const TreeNode< data_type > *getRoot() const;*/
+  const TreeNode< data_type > *getRoot() const;
 private:
   const TreeNode< data_type > *node_;
   const TreeNode< data_type > *fakeNode_;
@@ -48,7 +48,7 @@ ConstBidirectionalIterator< Key, Value, Compare >::ConstBidirectionalIterator(co
   }
 }
 template< typename Key, typename Value, typename Compare >
-ConstBidirectionalIterator< Key, Value, Compare >::ConstBidirectionalIterator(const IteratorDto< data_type > &dto):
+ConstBidirectionalIterator< Key, Value, Compare >::ConstBidirectionalIterator(IteratorDto< data_type > &dto):
   node_(dto.node),
   fakeNode_(dto.fakeNode),
   root_(dto.root)
@@ -158,7 +158,7 @@ bool ConstBidirectionalIterator< Key, Value, Compare >::operator!=(
 {
   return !(*this == other);
 }
-/*template< typename Key, typename Value, typename Compare >
+template< typename Key, typename Value, typename Compare >
 const TreeNode< typename ConstBidirectionalIterator< Key, Value, Compare >::data_type > *
 ConstBidirectionalIterator< Key, Value, Compare >::getNode() const
 {
@@ -175,5 +175,5 @@ const TreeNode< typename ConstBidirectionalIterator< Key, Value, Compare >::data
 ConstBidirectionalIterator< Key, Value, Compare >::getRoot() const
 {
   return root_;
-}*/
+}
 #endif
