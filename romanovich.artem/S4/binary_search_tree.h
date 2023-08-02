@@ -107,7 +107,7 @@ typename BinarySearchTree< Key, Value, Compare >::iterator
 BinarySearchTree< Key, Value, Compare >::upper_bound(const Key &key)
 {
   iterator it = begin();
-  while (it != end() && compare(key, it->first))
+  while (it != end() && compare_(key, it->first))
   {
     ++it;
   }
@@ -131,7 +131,7 @@ BinarySearchTree< Key, Value, Compare >::lower_bound(const Value &value)
   TreeNode< data_type > *tmp = fakeNode_->left;
   while (tmp != fakeNode_)
   {
-    if (compare_(value, tmp->data))
+    if (compare_(value, tmp->data.second))
     {
       if (tmp->left != fakeNode_)
       {
@@ -139,12 +139,12 @@ BinarySearchTree< Key, Value, Compare >::lower_bound(const Value &value)
       }
       else
       {
-        return const_iterator(root_, tmp, fakeNode_);
+        return iterator(root_, tmp, fakeNode_);
       }
     }
-    else if (!compare_(value, tmp->data_) && !compare_(tmp->data_, value))
+    else if (!compare_(value, tmp->data.second) && !compare_(tmp->data.second, value))
     {
-      return const_iterator(tmp, fakeNode_);
+      return iterator(root_, tmp, fakeNode_);
     }
     else
     {
@@ -154,11 +154,11 @@ BinarySearchTree< Key, Value, Compare >::lower_bound(const Value &value)
       }
       else
       {
-        return ++const_iterator(tmp, fakeNode_);
+        return ++const_iterator(root_, tmp, fakeNode_);
       }
     }
   }
-  return cend();
+  return end();
 }
 template< typename Key, typename Value, typename Compare >
 ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::clast() const noexcept
@@ -217,14 +217,16 @@ BinarySearchTree< Key, Value, Compare >::insert(Key &&key, Value &&value)
 template< typename Key, typename Value, typename Compare >
 Value &BinarySearchTree< Key, Value, Compare >::operator[](const Key &key)
 {
-  std::pair< iterator, bool > result = insert(key, Value{});
-  return result.first->value;
+  //std::pair< iterator, bool > result = insert(key, Value{});
+  //return result.first->value;
+  return find(key).node_->data.second;
 }
 template< typename Key, typename Value, typename Compare >
 Value &BinarySearchTree< Key, Value, Compare >::operator[](Key &&key)
 {
-  std::pair< iterator, bool > result = insert(std::move(key), Value{});
-  return result.first->second;
+  //std::pair< iterator, bool > result = insert(std::move(key), Value{});
+  //return result.first->second;
+  return find(key).node_->data.second;
 }
 template< typename Key, typename Value, typename Compare >
 Value &BinarySearchTree< Key, Value, Compare >::at(const Key &key)
@@ -460,7 +462,7 @@ BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compa
     }
     else
     {
-      return iterator(current, fakeNode_);
+      return iterator(root_, current, fakeNode_);
     }
   }
   return end();
@@ -521,28 +523,29 @@ BinarySearchTree< Key, Value, Compare >::insert(const_iterator pos, const Key &k
 {
   if (!pos.node_)
   {
-    return insertImpl(nullptr, nullptr, key, value);
+    return iterator(root_, insertImpl(nullptr, nullptr, key, value), fakeNode_);
   }
-  else if (compare_(key, pos.node_->data.first))
+  auto nonConstPos = iterator(pos);
+  if (compare_(key, pos.node_->data.first))
   {
     if (!pos.node_->left)
     {
-      return insertImpl(nullptr, pos.node_, key, value);
+      return iterator(root_, insertImpl(nullptr, nonConstPos.node_, key, value), fakeNode_);
     }
     else
     {
-      return insertImpl(pos.node_->left, pos.node_, key, value);
+      return iterator(root_, insertImpl(pos.node_->left, nonConstPos.node_, key, value), fakeNode_);
     }
   }
   else
   {
     if (!pos.node_->right)
     {
-      return insertImpl(nullptr, pos.node_, key, value);
+      return iterator(root_, insertImpl(nullptr, nonConstPos.node_, key, value), fakeNode_);
     }
     else
     {
-      return insertImpl(pos.node_->right, pos.node_, key, value);
+      return iterator(root_, insertImpl(pos.node_->right, nonConstPos.node_, key, value), fakeNode_);
     }
   }
 }
