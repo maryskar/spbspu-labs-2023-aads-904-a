@@ -65,8 +65,6 @@ namespace turkin
 
       void slr(TreeNode< tree_t > * src); //done
       void srr(TreeNode< tree_t > * src); //done
-      void blr(TreeNode< tree_t > * src); //done
-      void brr(TreeNode< tree_t > * src); //done
 
       void balanceDelete();
       void copy(const tree & rhs);
@@ -193,42 +191,21 @@ void turkin::AVLtree< K, V, C >::clear() noexcept
 template< typename K, typename V, typename C >
 void turkin::AVLtree< K, V, C >::slr(TreeNode< tree_t > * src)
 {
-  std::swap(src, src->right);
-  TreeNode< tree_t > * local = src->left;
-  src->left = src->right;
-  src->right = src->left->right;
-  src->right->left = src->right->right;
-  src->left->right = src->left->left;
-  src->left->left = local;
-  increase(src->left);
+  TreeNode< tree_t > * rhs = src->right;
+  src->right = rhs->left;
+  rhs->left = src;
+  increase(rhs);
   increase(src);
 }
 
 template< typename K, typename V, typename C >
 void turkin::AVLtree< K, V, C >::srr(TreeNode< tree_t > * src)
 {
-  std::swap(src, src->left);
-  TreeNode< tree_t > * local = src->right;
-  src->right = src->left;
-  src->left = src->right->left;
-  src->right->left = src->right->right;
-  src->right->right = local;
-  increase(src->right);
+  TreeNode< tree_t > * lhs = src->right;
+  src->left = lhs->right;
+  lhs->left = src;
+  increase(lhs);
   increase(src);
-}
-
-template< typename K, typename V, typename C >
-void turkin::AVLtree< K, V, C >::blr(TreeNode< tree_t > * src)
-{
-  srr(src->right);
-  slr(src);
-}
-
-template< typename K, typename V, typename C >
-void turkin::AVLtree< K, V, C >::brr(TreeNode< tree_t > * src)
-{
-  slr(src->left);
-  srr(src);
 }
 
 template< typename K, typename V, typename C >
@@ -275,23 +252,17 @@ void turkin::AVLtree< K, V, C >::balance(TreeNode< tree_t > * src)
   {
     if (discern(src->left) == 1)
     {
-      brr(src);
+      slr(src);
     }
-    else
-    {
-      srr(src);
-    }
+    srr(src);
   }
   else if (diff == 2)
   {
     if (discern(src->right) == -1)
     {
-      blr(src);
+      srr(src);
     }
-    else
-    {
-      slr(src);
-    }
+    slr(src);
   }
 }
 

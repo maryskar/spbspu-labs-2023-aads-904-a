@@ -27,18 +27,32 @@ int main(int argc, char * argv[])
   auto data2 = std::make_pair(123112, 4);
   auto data3 = std::make_pair(3331, 3);
   auto data4 = std::make_pair(188, 2);
+
+  tree.insert(data4);
+  std::cout << "inserted 4\n";
   tree.insert(data);
   std::cout << "inserted 1\n";
   tree.insert(data2);
   std::cout << "inserted 2\n";
   tree.insert(data3);
   std::cout << "inserted 3\n";
-  tree.insert(data4);
-  std::cout << "inserted 4\n";
+
 
   auto it = tree.src();
   it++;
   auto result = it->first;
+  std::cout << result << "\n";
+  it++;
+  result = it->first;
+  std::cout << result << "\n";
+  it--;
+  result = it->first;
+  std::cout << result << "\n";
+  it--;
+  result = it->first;
+  std::cout << result << "\n";
+  it--;
+  result = it->first;
   std::cout << result << "\n";
   return 0;
 }
