@@ -1,13 +1,12 @@
-#ifndef ITERATOR_DTO_H
-#define ITERATOR_DTO_H
+#ifndef ITERATOR_DATA_H
+#define ITERATOR_DATA_H
 #include <utility>
 #include "tree_node.h"
 template< typename T >
-struct IteratorDto
+struct IteratorData
 {
   const TreeNode< T > *root;
   const TreeNode< T > *node;
   const TreeNode< T > *fakeNode;
 };
-// to bi
 #endif

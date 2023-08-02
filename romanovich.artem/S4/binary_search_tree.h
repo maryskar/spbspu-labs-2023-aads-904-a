@@ -1,9 +1,9 @@
 #ifndef BINARY_SEARCH_TREE_H
 #define BINARY_SEARCH_TREE_H
 #include <functional>
-#include <cstddef>
 #include <stdexcept>
 #include <iostream>
+#include <cstddef>
 #include "tree_node.h"
 #include "bidirectional_iterator.h"
 #include "const_bidirectional_iterator.h"

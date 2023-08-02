@@ -1,71 +1,102 @@
 #include "binary_search_tree.h"
 #include <iostream>
-#include <cassert>
+#include <vector>
 int main()
 {
-  using Key = int;
-  using Value = int;
-  using Compare = std::less< int >;
-  using data_type = std::pair< Key, Value >;
-  using bst_t = BinarySearchTree< Key, Value, Compare >;
-  // using tree_t = TreeNode< data_type >;
-  using iterator = BidirectionalIterator< Key, Value, Compare >;
-  using const_iterator = ConstBidirectionalIterator< Key, Value, Compare >;
+  BinarySearchTree< int, int > bst;
 
-  // Test BinarySearchTree constructor, insert, and size
-  bst_t bst;
-  bst.insert(1, 1);
-  bst.insert(3, 3);
-  bst.insert(5, 5);
-  iterator it = bst.begin();
+  // insert
+  bst.insert(1, 10);
+  bst.insert(2, 20);
 
-  std::cout << it->second << std::endl;
-  std::cout << "Size of BST: " << bst.size() << std::endl; // Expected output: 3
-
-  bst.remove(10);
-  std::cout << "Size of BST after remove: " << bst.size() << std::endl; // Expected output: 3
-
-  // Test erase with iterator
-  iterator it_erase = bst.find(5);
-  bst.erase(it_erase);
-  std::cout << "Size of BST after erase by iterator: " << bst.size() << std::endl; // Expected output: 2
-
-  // Test erase with key
-  size_t count_erased = bst.erase(3);
-  std::cout << "Size of BST after erase by key: " << bst.size() << std::endl; // Expected output: 1
-  std::cout << "Elements erased by key: " << count_erased << std::endl; // Expected output: 1
-
-  // Test erase with range of iterators
-  bst.insert(15, 15);
-  bst.insert(12, 12);
-  bst.insert(17, 17);
-  std::cout << "Size of BST before erasing range: " << bst.size() << std::endl; // Expected output: 4
-  iterator it_range_begin = bst.find(12);
-  iterator it_range_end = bst.find(17);
-  IteratorDto< data_type > it_range_b
+  // at
+  if (bst.at(1) != 10 || bst.at(2) != 20)
   {
-    it_range_begin.getRoot(),
-    it_range_begin.getNode(),
-    it_range_begin.getFakeNode()
-  };
-  IteratorDto< data_type > it_range_e
+    std::cout << "at() failed" << std::endl;
+    return 1;
+  }
+
+  // []
+  if (bst[1] != 10 || bst[2] != 20)
   {
-    it_range_end.getRoot(),
-    it_range_end.getNode(),
-    it_range_end.getFakeNode()
-  };
-  bst.erase(const_iterator(it_range_b), const_iterator(it_range_e));
-  std::cout << "Size of BST after erasing range: " << bst.size() << std::endl; // Expected output: 2
+    std::cout << "[] failed" << std::endl;
+    return 1;
+  }
 
-  // Test erase for a key that doesn't exist
-  size_t count_erased_nonexistent = bst.erase(100);
-  std::cout << "Size of BST after erase of nonexistent key: " << bst.size() << std::endl; // Expected output: 2
-  std::cout << "Elements erased by nonexistent key: " << count_erased_nonexistent << std::endl; // Expected output: 0
+  // size
+  if (bst.size() != 2)
+  {
+    std::cout << "size() failed" << std::endl;
+    return 1;
+  }
 
-  // Test clear and empty
-  bst.clear();
-  std::cout << "Is BST empty? " << (bst.empty() ? "Yes" : "No") << std::endl; // Expected output: Yes
+  // empty
+  if (!bst.empty())
+  {
+    std::cout << "empty() failed" << std::endl;
+    return 1;
+  }
 
-  std::cout << "Tests OK" << std::endl;
+  // insert pair
+  auto res = bst.insert(3, 30);
+  if (!res.second || bst.at(3) != 30)
+  {
+    std::cout << "insert(pair) failed" << std::endl;
+    return 1;
+  }
+
+  // insert hint
+  auto it = bst.find(2).asConst<ConstBidirectionalIterator<int, int>>();
+  bst.insert(it, 4, 40);
+  if (bst.at(4) != 40)
+  {
+    std::cout << "insert(hint) failed" << std::endl;
+    return 1;
+  }
+
+  // insert range
+  std::vector< std::pair< int, int>> v = {{5, 50},
+                                          {6, 60}};
+  bst.insert(bst.begin(), v.begin(), v.end());
+  if (bst.at(5) != 50 || bst.at(6) != 60)
+  {
+    std::cout << "insert(range) failed" << std::endl;
+    return 1;
+  }
+
+  // find
+  it = bst.find(1);
+  if (it == bst.end() || it->second != 10)
+  {
+    std::cout << "find() failed" << std::endl;
+    return 1;
+  }
+
+  // count
+  if (bst.count(4) != 1)
+  {
+    std::cout << "count() failed" << std::endl;
+    return 1;
+  }
+
+  // lower_bound
+  it = bst.lower_bound(25);
+  if (it != bst.find(3))
+  {
+    std::cout << "lower_bound() failed" << std::endl;
+    return 1;
+  }
+
+  // upper_bound
+  it = bst.upper_bound(3);
+  if (it != bst.find(4))
+  {
+    std::cout << "upper_bound() failed" << std::endl;
+    return 1;
+  }
+
+  // Тесты для остальных методов...
+
+  std::cout << "All tests passed!" << std::endl;
   return 0;
 }

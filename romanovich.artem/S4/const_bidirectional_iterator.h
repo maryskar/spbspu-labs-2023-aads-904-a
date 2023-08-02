@@ -2,8 +2,8 @@
 #define CONST_BIDIRECTIONAL_ITERATOR_H
 #include <iterator>
 #include "tree_node.h"
-#include "iterator_dto.h"
-template< typename Key, typename Value, typename Compare >
+#include "iterator_data.h"
+template< typename Key, typename Value, typename Compare = std::less< Key > >
 class ConstBidirectionalIterator
 {
 public:
@@ -11,11 +11,9 @@ public:
   using difference_type = std::ptrdiff_t;
   using data_type = std::pair< Key, Value >;
   using const_data_type = const std::pair< Key, Value >;
-  ConstBidirectionalIterator(const TreeNode< data_type > *root, const TreeNode< data_type > *node,
-                             const TreeNode< data_type > *fakeNode);
   ~ConstBidirectionalIterator() = default;
   ConstBidirectionalIterator(const ConstBidirectionalIterator< Key, Value, Compare > &) = default;
-  explicit ConstBidirectionalIterator(IteratorDto< data_type > &dto);
+  explicit ConstBidirectionalIterator(const IteratorData< data_type > &dto);
   ConstBidirectionalIterator< Key, Value, Compare > &
   operator=(const ConstBidirectionalIterator< Key, Value, Compare > &) = default;
   const_data_type &operator*() const;
@@ -29,30 +27,29 @@ public:
   const TreeNode< data_type > *getNode() const;
   const TreeNode< data_type > *getFakeNode() const;
   const TreeNode< data_type > *getRoot() const;
+  template< typename NonConstIterator >
+  NonConstIterator asNonConst();
 private:
   const TreeNode< data_type > *node_;
   const TreeNode< data_type > *fakeNode_;
   const TreeNode< data_type > *root_;
 };
 template< typename Key, typename Value, typename Compare >
-ConstBidirectionalIterator< Key, Value, Compare >::ConstBidirectionalIterator(const TreeNode< data_type > *root,
-                                                                              const TreeNode< data_type > *node,
-                                                                              const TreeNode< data_type > *fakeNode) :
-  node_(node),
-  fakeNode_(fakeNode),
-  root_(root)
+template< typename NonConstIterator >
+NonConstIterator ConstBidirectionalIterator< Key, Value, Compare >::asNonConst()
 {
-  if (!root || !fakeNode)
-  {
-    throw std::invalid_argument("Null pointer passed to iterator.");
-  }
+  return NonConstIterator(IteratorData< data_type >{root_, node_, fakeNode_});
 }
 template< typename Key, typename Value, typename Compare >
-ConstBidirectionalIterator< Key, Value, Compare >::ConstBidirectionalIterator(IteratorDto< data_type > &dto):
+ConstBidirectionalIterator< Key, Value, Compare >::ConstBidirectionalIterator(const IteratorData< data_type > &dto):
   node_(dto.node),
   fakeNode_(dto.fakeNode),
   root_(dto.root)
 {
+  if (!dto.root || !dto.fakeNode)
+  {
+    throw std::invalid_argument("Null pointer passed to iterator.");
+  }
 }
 template< typename Key, typename Value, typename Compare >
 const std::pair< Key, Value > &ConstBidirectionalIterator< Key, Value, Compare >::operator*() const
