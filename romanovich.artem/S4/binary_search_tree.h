@@ -217,7 +217,7 @@ BinarySearchTree< Key, Value, Compare >::copyBegin(const TreeNode< data_type > *
   {
     return nullptr;
   }
-  TreeNode< data_type > *newBegin = new TreeNode< data_type >(beginNode->key, beginNode->value);
+  auto *newBegin = new TreeNode< data_type >(beginNode->key, beginNode->value);
   newBegin->left = copyBegin(beginNode->left);
   newBegin->right = copyBegin(beginNode->right);
   if (newBegin->left)
@@ -238,7 +238,7 @@ BinarySearchTree< Key, Value, Compare >::copyEnd(const TreeNode< data_type > *en
   {
     return nullptr;
   }
-  TreeNode< data_type > *newEnd = new TreeNode< data_type >(endNode->key, endNode->value);
+  auto *newEnd = new TreeNode< data_type >(endNode->key, endNode->value);
   newEnd->left = copyEnd(endNode->left);
   newEnd->right = copyEnd(endNode->right);
   if (newEnd->left)
@@ -294,7 +294,7 @@ template< typename Key, typename Value, typename Compare >
 TreeNode< std::pair< Key, Value > > *BinarySearchTree< Key, Value, Compare >::initFake()
 {
   void *nodeMemory = ::operator new(sizeof(BinarySearchTree::tree_t));
-  BinarySearchTree::tree_t *fakeNode = static_cast< BinarySearchTree::tree_t * >(nodeMemory);
+  auto *fakeNode = static_cast< BinarySearchTree::tree_t * >(nodeMemory);
   fakeNode->parent = nullptr;
   fakeNode->left = nullptr;
   fakeNode->right = nullptr;
@@ -481,7 +481,7 @@ BinarySearchTree< Key, Value, Compare >::insert(const_iterator pos, const Key &k
   }
   else if (compare_(key, pos.node_->data.first))
   {
-    if (pos.node_->left == nullptr)
+    if (!pos.node_->left)
     {
       return insertImpl(nullptr, pos.node_, key, value);
     }
@@ -492,7 +492,7 @@ BinarySearchTree< Key, Value, Compare >::insert(const_iterator pos, const Key &k
   }
   else
   {
-    if (pos.node_->right == nullptr)
+    if (!pos.node_->right)
     {
       return insertImpl(nullptr, pos.node_, key, value);
     }
@@ -575,10 +575,11 @@ BinarySearchTree< Key, Value, Compare >::erase(const_iterator first, const_itera
 {
   iterator it_first(const_cast<tree_t * >(first.getNode()), const_cast<tree_t * >(first.getFakeNode()));
   iterator it_last(const_cast<tree_t * >(last.getNode()), const_cast<tree_t * >(last.getFakeNode()));
-  while (it_first != it_last) {
+  while (it_first != it_last)
+  {
     auto next = it_first;
     ++next;
-    it_first = erase(it_first);
+    erase(it_first);
     it_first = next;
   }
   return it_first;
@@ -592,7 +593,7 @@ size_t BinarySearchTree< Key, Value, Compare >::erase(const Key &key)
   {
     iterator next = it;
     ++next;
-    it = erase(it);
+    erase(it);
     it = next;
     ++count;
   }
