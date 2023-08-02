@@ -14,15 +14,16 @@ namespace turkin
   };
 
   template< typename T >
-  void free(TreeNode< T > * source)
+  void free(TreeNode< T > * src)
   {
-    if (!source)
+    if (src == nullptr)
     {
       return;
     }
-    free(source->left);
-    free(source->right);
-    delete source;
+    if (src->left)
+    free(src->left);
+    free(src->right);
+    delete src;
   }
 }
 

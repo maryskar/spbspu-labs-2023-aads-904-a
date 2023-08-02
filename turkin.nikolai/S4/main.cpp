@@ -5,6 +5,7 @@
 #include "avl-tree/avl-tree.hpp"
 #include "out-msg.hpp"
 
+
 int main(int argc, char * argv[])
 {
   if (argc == 1)
@@ -21,43 +22,23 @@ int main(int argc, char * argv[])
     return 1;
   }
 
-  using tree_t = turkin::AVLtree< std::size_t, std::string, std::less< std::size_t > >;
-  using tree_a = turkin::AVLtree< std::string, tree_t, std::less< std::string > >;
-  using tree_c = turkin::AVLtree< std::string, tree_t (*)(const tree_t &, const tree_t &), std::less< std::string > >;
+  turkin::AVLtree< int, int, std::less< int > > tree;
+  auto data = std::make_pair(1, 1);
+  auto data2 = std::make_pair(123112, 4);
+  auto data3 = std::make_pair(3331, 3);
+  auto data4 = std::make_pair(188, 2);
+  tree.insert(data);
+  std::cout << "inserted 1\n";
+  tree.insert(data2);
+  std::cout << "inserted 2\n";
+  tree.insert(data3);
+  std::cout << "inserted 3\n";
+  tree.insert(data4);
+  std::cout << "inserted 4\n";
 
-  while (std::cin)
-  {
-    std::string cmd;
-    std::cin >> cmd;
-    if (!std::cin)
-    {
-      break;
-    }
-    try
-    {
-      if (cmd == "print")
-      {
-        std::string name;
-        std::cin >> name;
-        //turkin::print(std::make_pair(name, dict.at(name)), std::cout);
-      }
-      else
-      {
-        std::string set0;
-        std::string set1;
-        std::string set2;
-        std::cin >> set0 >> set1 >> set2;
-        //dict_t dict1 = dict.at(set1);
-        //dict_t dict2 = dict.at(set2);
-        //auto func = commands.at(cmd);
-        //dict_t temp = func(dict1, dict2);
-        //dict.emplace(set0, temp);
-      }
-    }
-    catch (...)
-    {
-      turkin::outInvalidCMD(std::cout);
-    }
-  }
+  auto it = tree.src();
+  it++;
+  auto result = it->first;
+  std::cout << result << "\n";
   return 0;
 }
