@@ -1,7 +1,7 @@
 #ifndef TREE_HPP
 #define TREE_HPP
 
-#include <cstddef>  
+#include <cstddef>
 
 template< typename T >
 struct Tree
