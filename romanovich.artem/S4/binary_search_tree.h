@@ -575,9 +575,11 @@ BinarySearchTree< Key, Value, Compare >::erase(const_iterator first, const_itera
 {
   iterator it_first(const_cast<tree_t * >(first.getNode()), const_cast<tree_t * >(first.getFakeNode()));
   iterator it_last(const_cast<tree_t * >(last.getNode()), const_cast<tree_t * >(last.getFakeNode()));
-  while (it_first != it_last)
-  {
+  while (it_first != it_last) {
+    auto next = it_first;
+    ++next;
     it_first = erase(it_first);
+    it_first = next;
   }
   return it_first;
 }
@@ -588,7 +590,10 @@ size_t BinarySearchTree< Key, Value, Compare >::erase(const Key &key)
   iterator it = find(key);
   while (it != end() && it->first == key)
   {
+    iterator next = it;
+    ++next;
     it = erase(it);
+    it = next;
     ++count;
   }
   return count;
