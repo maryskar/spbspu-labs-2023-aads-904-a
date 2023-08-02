@@ -52,5 +52,25 @@ namespace fesenko
     }
     return result;
   }
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare > intersect(const Dictionary< Key, Value, Compare > &one, const Dictionary< Key, Value, Compare > &two)
+  {
+    Dictionary< Key, Value, Compare > result;
+    Compare comp = Compare{};
+    for (auto i = two.cbegin(); i != two.cend(); i++) {
+      auto res = two.cend();
+      for (auto j = one.cbegin(); j != one.cend(); j++) {
+        if (!comp(i->first, j->first) && !comp(j->first, i->first)) {
+          res = j;
+          break;
+        }
+      }
+      if (res != two.cend()) {
+        result.insert(*res);
+      }
+    }
+    return result;
+  }
 }
 #endif
