@@ -40,8 +40,8 @@ fesenko::Queue< T >::Queue(const Queue< T > &other):
 
 template< typename T >
 fesenko::Queue< T >::Queue(Queue< T > &&other):
- head_(std::move(other.head_)),
- tail_(other.tail_)
+  head_(std::move(other.head_)),
+  tail_(other.tail_)
 {}
 
 template< typename T >

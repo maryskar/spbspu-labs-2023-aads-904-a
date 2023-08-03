@@ -37,7 +37,7 @@ fesenko::Stack< T >::Stack(const Stack< T > &other):
 
 template< typename T >
 fesenko::Stack< T >::Stack(Stack< T > &&other):
- head_(std::move(other.head_))
+  head_(std::move(other.head_))
 {}
 
 template< typename T >
