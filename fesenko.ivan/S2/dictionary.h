@@ -234,6 +234,13 @@ namespace fesenko
   }
 
   template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::find(const key_type &key)
+  {
+    const_iterator cit = (static_cast< const this_t & >(*this)).find(key);
+    return list_.erase_after(cit, cit);
+  }
+
+  template< typename Key, typename Value, typename Compare >
   std::pair<
       typename Dictionary< Key, Value, Compare >::iterator,
       bool
@@ -317,12 +324,6 @@ namespace fesenko
       Dictionary< Key, Value, Compare >::erase_after(const_iterator first, const_iterator last)
   {
     return list_.erase_after(first, last);
-  }
-
-  template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::find(const key_type &key)
-  {
-    return (static_cast< const this_t & >(*this)).find(key);
   }
 
   template< typename Key, typename Value, typename Compare >
