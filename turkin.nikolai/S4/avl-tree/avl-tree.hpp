@@ -15,6 +15,7 @@ namespace turkin
   {
     using tree = AVLtree< K, V, C >;
     using tree_t = std::pair< K, V >;
+    using node_t = TreeNode< tree_t > *;
     using it = Iterator< K, V, C >;
     using cit = ConstIterator< K, V, C >;
     public:
@@ -25,9 +26,17 @@ namespace turkin
       tree operator=(tree && rhs); //done
       ~AVLtree(); //done
       
-      it src() noexcept; //done
-      cit src() const noexcept; //done
-      cit csrc() const noexcept; //done
+      it root() noexcept; //done
+      cit root() const noexcept; //done
+      cit croot() const noexcept; //done
+
+      it begin() noexcept;
+      cit begin() const noexcept;
+      cit cbegin() const noexcept;
+
+      it end() noexcept;
+      cit end() const noexcept;
+      cit cend() const noexcept;
 
       V & at(const K & key);
       const V & at(const K & key) const;
@@ -59,20 +68,20 @@ namespace turkin
       void swap(tree & rhs) noexcept;
       
     private:
-      TreeNode< tree_t > * root_;
+      node_t root_;
       C cmp_;
       std::size_t size_;
 
-      void slr(TreeNode< tree_t > * src); //done
-      void srr(TreeNode< tree_t > * src); //done
+      void slr(node_t src); //done
+      void srr(node_t src); //done
 
       void balanceDelete();
       void copy(const tree & rhs);
-      void insert(TreeNode< tree_t > * src, const tree_t & value);
-      void balance(TreeNode< tree_t > * src); //done
-      void increase(TreeNode< tree_t > * src); //done
-      int measure(TreeNode< tree_t > * src); //done
-      int discern(TreeNode< tree_t > * src); //done
+      void insert(node_t src, const tree_t & value);
+      void balance(node_t src); //done
+      void increase(node_t src); //done
+      int measure(node_t src); //done
+      int discern(node_t src); //done
   };
 }
 
@@ -94,11 +103,11 @@ turkin::AVLtree< K, V, C >::AVLtree(const tree & rhs):
 
 template< typename K, typename V, typename C >
 turkin::AVLtree< K, V, C >::AVLtree(tree && rhs):
-  root_(rhs.src_),
+  root_(rhs.root_),
   cmp_(rhs.cmp_),
   size_(rhs.size_)
 {
-  rhs.src_ = nullptr;
+  rhs.root_ = nullptr;
   rhs.size_ = 0;
 }
 
@@ -122,10 +131,10 @@ turkin::AVLtree< K, V, C > turkin::AVLtree< K, V, C >::operator=(tree && rhs)
     return * this;
   }
   clear();
-  root_ = rhs.src_;
+  root_ = rhs.root_;
   cmp_ = rhs.cmp_;
   size_ = rhs.size_;
-  rhs.src_ = nullptr;
+  rhs.root_ = nullptr;
   rhs.size_ = 0;
   return * this;
 }
@@ -137,27 +146,73 @@ turkin::AVLtree< K, V, C >::~AVLtree()
 }
 
 template< typename K, typename V, typename C >
-turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::src() noexcept
+turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::root() noexcept
 {
   return it(root_);
 }
 
 template< typename K, typename V, typename C >
-turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::src() const noexcept
+turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::root() const noexcept
 {
-  return cit(root_);
+  return croot();
 }
 
 template< typename K, typename V, typename C >
-turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::csrc() const noexcept
+turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::croot() const noexcept
 {
-  return cit(root_);
+  return cit(root());
+}
+
+template< typename K, typename V, typename C >
+turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::begin() noexcept
+{
+  node_t temp = root_;
+  while (temp->left != nullptr)
+  {
+    temp = temp->left;
+  }
+  return it(temp);
+}
+
+template< typename K, typename V, typename C >
+turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::begin() const noexcept
+{
+  return cbegin();
+}
+
+template< typename K, typename V, typename C >
+turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::cbegin() const noexcept
+{
+  return cit(begin());
+}
+
+template< typename K, typename V, typename C >
+turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::end() noexcept
+{
+  node_t temp = root_;
+  while (temp->right != nullptr)
+  {
+    temp = temp->right;
+  }
+  return it(temp);
+}
+
+template< typename K, typename V, typename C >
+turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::end() const noexcept
+{
+  return cbegin();
+}
+
+template< typename K, typename V, typename C >
+turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::cend() const noexcept
+{
+  return cit(begin());
 }
 
 template< typename K, typename V, typename C >
 turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::insert(const tree_t & value)
 {
-  if (root_ == nullptr)
+  if (empty())
   {
     root_ = new TreeNode< tree_t > {value, nullptr, nullptr, nullptr, 0};
     increase(root_);
@@ -166,13 +221,13 @@ turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::insert(const tree_t & va
   {
     insert(root_, value);
   }
-  return src();
+  return root();
 }
 
 template< typename K, typename V, typename C >
 bool turkin::AVLtree< K, V, C >::empty() const noexcept
 {
-  return size_ == 0;
+  return root_ == nullptr;
 }
 
 template< typename K, typename V, typename C >
@@ -189,23 +244,31 @@ void turkin::AVLtree< K, V, C >::clear() noexcept
 }
 
 template< typename K, typename V, typename C >
-void turkin::AVLtree< K, V, C >::slr(TreeNode< tree_t > * src)
+void turkin::AVLtree< K, V, C >::slr(node_t src)
 {
-  TreeNode< tree_t > * rhs = src->right;
-  src->right = rhs->left;
-  rhs->left = src;
-  increase(rhs);
+  auto head = src->right;
+  if (src == root_)
+  {
+    root_ = src->right;
+  }
+  src->right = src->right->left;
+  head->left = src;
   increase(src);
+  increase(head);
 }
 
 template< typename K, typename V, typename C >
-void turkin::AVLtree< K, V, C >::srr(TreeNode< tree_t > * src)
+void turkin::AVLtree< K, V, C >::srr(node_t src)
 {
-  TreeNode< tree_t > * lhs = src->right;
-  src->left = lhs->right;
-  lhs->left = src;
-  increase(lhs);
+  auto head = src->left;
+  if (src == root_)
+  {
+    root_ = src->left;
+  }
+  src->left = src->left->right;
+  head->right = src;
   increase(src);
+  increase(head);
 }
 
 template< typename K, typename V, typename C >
@@ -215,7 +278,7 @@ template< typename K, typename V, typename C >
 void turkin::AVLtree< K, V, C >::copy(const tree & rhs) {}
 
 template< typename K, typename V, typename C >
-void turkin::AVLtree< K, V, C >::insert(TreeNode< tree_t > * src, const tree_t & value)
+void turkin::AVLtree< K, V, C >::insert(node_t src, const tree_t & value)
 {
   if (cmp_(value.first, src->data.first))
   {
@@ -245,7 +308,7 @@ void turkin::AVLtree< K, V, C >::insert(TreeNode< tree_t > * src, const tree_t &
 }
 
 template< typename K, typename V, typename C >
-void turkin::AVLtree< K, V, C >::balance(TreeNode< tree_t > * src)
+void turkin::AVLtree< K, V, C >::balance(node_t src)
 {
   int diff = discern(src);
   if (diff == -2)
@@ -267,19 +330,19 @@ void turkin::AVLtree< K, V, C >::balance(TreeNode< tree_t > * src)
 }
 
 template< typename K, typename V, typename C >
-void turkin::AVLtree< K, V, C >::increase(TreeNode< tree_t > * src)
+void turkin::AVLtree< K, V, C >::increase(node_t src)
 {
   src->height = std::max(measure(src->left), measure(src->right)) + 1;
 }
 
 template< typename K, typename V, typename C >
-int turkin::AVLtree< K, V, C >::measure(TreeNode< tree_t > * src)
+int turkin::AVLtree< K, V, C >::measure(node_t src)
 {
   return (src == nullptr) ? -1 : src->height;
 }
 
 template< typename K, typename V, typename C >
-int turkin::AVLtree< K, V, C >::discern(TreeNode< tree_t > * src)
+int turkin::AVLtree< K, V, C >::discern(node_t src)
 {
   return (src == nullptr) ? 0 : measure(src->right) - measure(src->left);
 }

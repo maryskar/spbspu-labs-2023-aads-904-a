@@ -32,8 +32,6 @@ namespace turkin
     private:
       Node cur_;
       C cmp_;
-      it next(it);
-      it prev(it);
   };
 }
 
@@ -142,12 +140,6 @@ template< typename K, typename V, typename C >
 bool turkin::Iterator< K, V, C >::operator!=(const Iterator< K, V, C > & rhs) const
 {
   return !(rhs == * this);
-}
-
-template< typename K, typename V, typename C >
-turkin::Iterator< K, V, C > turkin::Iterator< K, V, C >::next(it)
-{
-
 }
 
 #endif

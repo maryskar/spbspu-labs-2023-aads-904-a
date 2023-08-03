@@ -12,19 +12,6 @@ namespace turkin
     TreeNode< T > * right;
     int height;
   };
-
-  template< typename T >
-  void free(TreeNode< T > * src)
-  {
-    if (src == nullptr)
-    {
-      return;
-    }
-    if (src->left)
-    free(src->left);
-    free(src->right);
-    delete src;
-  }
 }
 
 #endif
