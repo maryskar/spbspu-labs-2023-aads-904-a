@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/S5.dir/main.cpp.o CMakeFiles/S5.dir/readDataForTree.cpp.o -o S5 
