@@ -23,8 +23,16 @@ bool fesenko::isNumber(std::string s)
 size_t fesenko::priority(std::string s)
 {
   if (s == "+" || s == "-") {
-    return 1;
-  } else {
     return 0;
+  } else {
+    return 1;
   }
+}
+
+bool fesenko::isBiggerPriority(std::string a, std::string b)
+{
+  if (priority(a) > priority(b)) {
+    return true;
+  }
+  return false;
 }
