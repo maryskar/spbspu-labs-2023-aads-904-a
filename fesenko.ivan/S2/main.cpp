@@ -72,12 +72,9 @@ int main(int argc, char *argv[])
           fesenko::outInvalidCommandMessage(std::cout);
           continue;
         }
-        if (newDictName.compare(dictName1) == 0) {
-          container.at(dictName1) = newDict;
-        } else if (newDictName.compare(dictName2) == 0) {
-          container.at(dictName2) = newDict;
-        } else {
-          container.insert(dict_of_dict_elem(newDictName, newDict));
+        if (container.insert(dict_of_dict_elem(newDictName, newDict)).second == false) {
+          auto it = container.find(newDictName);
+          container.at(it->first) = newDict;
         }
       }
     }
