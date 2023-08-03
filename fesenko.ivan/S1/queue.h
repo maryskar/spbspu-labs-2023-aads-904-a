@@ -23,6 +23,7 @@ namespace fesenko
    private:
     List< T > *head_;
     List< T > *tail_;
+    void copy(const Queue< T > &);
   };
 }
 
@@ -34,9 +35,10 @@ fesenko::Queue< T >::Queue():
 
 template< typename T >
 fesenko::Queue< T >::Queue(const Queue< T > &other):
-  head_(other.head_),
-  tail_(other.tail_)
-{}
+  Queue()
+{
+  copy(other);
+}
 
 template< typename T >
 fesenko::Queue< T >::Queue(Queue< T > &&other):
@@ -109,5 +111,13 @@ template< typename T >
 bool fesenko::Queue< T >::isEmpty()
 {
   return head_ == nullptr;
+}
+
+template< typename T >
+void fesenko::Queue< T >::copy(const Queue< T > &other)
+{
+  auto res = copyList(other.head_);
+  head_ = res.first;
+  tail_ = res.second;
 }
 #endif

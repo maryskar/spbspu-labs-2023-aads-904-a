@@ -22,6 +22,7 @@ namespace fesenko
     bool isEmpty();
    private:
     List< T > *head_;
+    void copy(const Stack< T > &);
   };
 }
 
@@ -32,8 +33,10 @@ fesenko::Stack< T >::Stack():
 
 template< typename T >
 fesenko::Stack< T >::Stack(const Stack< T > &other):
-  head_(other.head_)
-{}
+  Stack()
+{
+  copy(other);
+}
 
 template< typename T >
 fesenko::Stack< T >::Stack(Stack< T > &&other):
@@ -98,4 +101,12 @@ bool fesenko::Stack< T >::isEmpty()
 {
   return head_ == nullptr;
 }
+
+template< typename T >
+void fesenko::Stack< T >::copy(const Stack< T > &other)
+{
+  auto res = copyList(other.head_);
+  head_ = res.first;
+}
 #endif
+
