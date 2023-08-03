@@ -12,6 +12,8 @@
 template< typename OutputIt, typename Compare >
 std::ostream& printSorts(OutputIt first, OutputIt last, Compare comp, std::ostream& out)
 {
+  tarasenko::print(first, last, out) << "\n";
+
   using value_t = typename OutputIt::value_type;
   std::list< value_t > bidir_list_1(first, last);
   std::deque< value_t > deque_1(first, last);
