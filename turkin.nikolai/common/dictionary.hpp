@@ -302,12 +302,12 @@ std::pair< K, V > Dictionary< K, V, C >::extract_after(cit pos)
 template< typename K, typename V, typename C >
 V Dictionary< K, V, C >::at(const K & k)
 {
-  auto ins = *find(k);
-  if (neq< K, C >(ins.first, k))
+  auto ins = find(k);
+  if (neq< K, C >(ins->first, k))
   {
     throw std::out_of_range("Out of range");
   }
-  return ins.second;
+  return ins->second;
 }
 
 template< typename K, typename V, typename C >
