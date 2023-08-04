@@ -93,8 +93,8 @@ ForwardList< T >::ForwardList(fl && rhs):
 
 template< typename T >
 ForwardList< T >::ForwardList(std::initializer_list< T > & list):
-  dummy_(new OneWayNode< T >),
-  tail_(new OneWayNode< T >),
+  dummy_(static_cast< OneWayNode< T > * >(::operator new (sizeof(OneWayNode< T >)))),
+  tail_(static_cast< OneWayNode< T > * >(::operator new (sizeof(OneWayNode< T >)))),
   size_(0)
 {
   dummy_.cur_->next = tail_.cur_;
