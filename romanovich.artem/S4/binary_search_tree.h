@@ -16,6 +16,7 @@ public:
   using tree_t = TreeNode< data_type >;
   using iterator = BidirectionalIterator< Key, Value, Compare >;
   using const_iterator = ConstBidirectionalIterator< Key, Value, Compare >;
+  using this_t = BinarySearchTree< Key, Value, Compare >;
   //using reverse_iterator = int;
   //using const_reverse_iterator = int;
   BinarySearchTree();
@@ -132,39 +133,39 @@ template< typename Key, typename Value, typename Compare >
 typename BinarySearchTree< Key, Value, Compare >::const_iterator
 BinarySearchTree< Key, Value, Compare >::lower_bound(const data_type &data) const
 {
-  return const_iterator(this->lower_bound(data));
+  return const_iterator(const_cast< BinarySearchTree * >(this)->lower_bound(data));
 }
 template< typename Key, typename Value, typename Compare >
 typename BinarySearchTree< Key, Value, Compare >::iterator
 BinarySearchTree< Key, Value, Compare >::lower_bound(const data_type &data)
 {
-  TreeNode< data_type > *tmp = fakeNode_->left;
-  while (tmp != fakeNode_)
+  TreeNode< data_type > *current = root_->findMin(root_);
+  while (current != fakeNode_)
   {
-    if (compare_(data.second, tmp->data.second))
+    if (compare_(data.second, current->data.second))
     {
-      if (tmp->left != fakeNode_)
+      if (current->left != fakeNode_)
       {
-        tmp = tmp->left;
+        current = current->left;
       }
       else
       {
-        return iterator(root_, tmp, fakeNode_);
+        return iterator(root_, current, fakeNode_);
       }
     }
-    else if (!compare_(data.second, tmp->data.second) && !compare_(tmp->data.second, data.second))
+    else if (!compare_(current->data.second, data.second))
     {
-      return iterator(root_, tmp, fakeNode_);
+      return iterator(root_, current, fakeNode_);
     }
     else
     {
-      if (tmp->right != fakeNode_)
+      if (current->right != fakeNode_)
       {
-        tmp = tmp->right;
+        current = current->right;
       }
       else
       {
-        return ++const_iterator(root_, tmp, fakeNode_);
+        return iterator(root_, current, fakeNode_);
       }
     }
   }
