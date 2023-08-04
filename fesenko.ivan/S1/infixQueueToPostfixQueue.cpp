@@ -14,7 +14,7 @@ fesenko::Queue< std::string > fesenko::infixQueueToPostfixQueue(Queue< std::stri
       postfixQueue.push(element);
     }
     if (isOperation(element)) {
-      while (!stack.isEmpty() && !isOpenedBracket(stack.top()) && priority(element) >= priority(stack.top())) {
+      while (!stack.isEmpty() && !isOpenedBracket(stack.top()) && !isBiggerPriority(element, stack.top())) {
         postfixQueue.push(stack.top());
         stack.pop();
       }
