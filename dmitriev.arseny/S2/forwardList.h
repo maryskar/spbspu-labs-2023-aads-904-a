@@ -393,14 +393,25 @@ namespace dmitriev
 
       return iterator(changeablePos->otherList);
     }
-    iterator eraseAfter(constIterator first, constIterator last)
+    iterator eraseAfter(constIterator beforeFirst, constIterator last)
     {
-      while(first.m_ptr->otherList != last.m_ptr)
+      while(beforeFirst.m_ptr->otherList != last.m_ptr)
       {
-        eraseAfter(first);
+        eraseAfter(beforeFirst);
       }
 
-      return iterator(const_cast< list* >(first.m_ptr));
+      return iterator(const_cast< list* >(beforeFirst.m_ptr));
+    }
+
+    template< class... Args >
+    iterator emplaceAfter(constIterator pos, Args&&... args)
+    {
+      if (pos.m_ptr == nullptr)
+      {
+        throw std::logic_error("null iter");
+      }
+
+      return insertAfter(pos, {std::forward< Args >(args)...});
     }
 
   private:
