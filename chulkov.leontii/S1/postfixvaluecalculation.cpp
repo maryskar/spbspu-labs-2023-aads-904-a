@@ -17,7 +17,9 @@ namespace chulkov {
   }
 
   bool isMultOverflow(long long frst, long long sec) {
-    if (frst == 0 || sec == 0) return false;
+    if (frst == 0 || sec == 0) {
+      return false;
+    }
     return frst > max / sec || frst < min / sec;
   }
 
