@@ -92,16 +92,13 @@ namespace turkin
   Dictionary< K, V, C > to_union(const Dictionary< K, V, C > & one, const Dictionary< K, V, C > & two)
   {
     Dictionary< K, V, C > result(one);
-    auto ins = two.cbefore_begin();
-    do
+    for (auto ins = two.cbegin(); ins != two.cend(); ins++)
     {
-      ins++;
       if (result.find(ins->first)->first != ins->first)
       {
         result.emplace(*ins);
       }
     }
-    while (ins != two.cend());
     return result;
   }
 }
