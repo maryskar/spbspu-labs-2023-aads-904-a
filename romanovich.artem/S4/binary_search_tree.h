@@ -139,37 +139,16 @@ template< typename Key, typename Value, typename Compare >
 typename BinarySearchTree< Key, Value, Compare >::iterator
 BinarySearchTree< Key, Value, Compare >::lower_bound(const data_type &data)
 {
-  TreeNode< data_type > *current = root_->findMin(root_);
-  while (current != fakeNode_)
+  iterator it = begin();
+  while (it != end())
   {
-    if (compare_(data.second, current->data.second))
+    if (!compare_(data.first, it->first))
     {
-      if (current->left != fakeNode_)
-      {
-        current = current->left;
-      }
-      else
-      {
-        return iterator(root_, current, fakeNode_);
-      }
+      break;
     }
-    else if (!compare_(current->data.second, data.second))
-    {
-      return iterator(root_, current, fakeNode_);
-    }
-    else
-    {
-      if (current->right != fakeNode_)
-      {
-        current = current->right;
-      }
-      else
-      {
-        return iterator(root_, current, fakeNode_);
-      }
-    }
+    ++it;
   }
-  return end();
+  return it;
 }
 template< typename Key, typename Value, typename Compare >
 ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::clast() const noexcept
