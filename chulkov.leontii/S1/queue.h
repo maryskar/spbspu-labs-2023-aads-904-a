@@ -66,9 +66,7 @@ namespace chulkov {
     }
 
     ~Queue() {
-      while (!empty()) {
-        clear();
-      }
+      clear();
     }
 
     void push(const T& rhs) {
