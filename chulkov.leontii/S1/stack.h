@@ -29,7 +29,7 @@ namespace chulkov {
           List< T >** tp = other.top_;
           List< T >** prev = nullptr;
           while (tp != nullptr) {
-            List< T >** newNode = new List< T >(tp->data);
+            List< T >* newNode = new List< T >(tp->data);
             newNode->next = prev;
             prev = newNode;
             tp = tp->next;
