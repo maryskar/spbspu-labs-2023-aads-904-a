@@ -6,7 +6,7 @@ namespace turkin
   template< typename K, typename C >
   bool eq(const K & lhs, const K & rhs)
   {
-    return !C{}(lhs, rhs) && !C{}(lhs, rhs);
+    return !C{}(lhs, rhs) && !C{}(rhs, lhs);
   }
 
   template< typename K, typename C >

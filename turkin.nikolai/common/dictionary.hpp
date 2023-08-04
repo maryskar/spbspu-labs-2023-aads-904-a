@@ -305,7 +305,7 @@ V Dictionary< K, V, C >::at(const K & k)
   auto ins = find(k);
   if (neq< K, C >(ins->first, k))
   {
-    throw std::out_of_range("Out of range");
+    throw std::out_of_range("out of range");
   }
   return ins->second;
 }
