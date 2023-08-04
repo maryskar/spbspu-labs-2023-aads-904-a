@@ -31,9 +31,10 @@ namespace chulkov {
         }
       }
       catch (...) {
-        delete front_;
+        clear();
         front_ = nullptr;
         back_ = nullptr;
+        throw;
       }
     }
 
