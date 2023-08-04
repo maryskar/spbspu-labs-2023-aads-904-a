@@ -15,7 +15,7 @@ namespace turkin
   {
     auto name = rhs.first;
     auto ret = rhs.second;
-    if (ret.size() == 0)
+    if (ret.empty())
     {
       outEmptyCMD(out);
       return;
