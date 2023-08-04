@@ -343,17 +343,14 @@ namespace dmitriev
       {
         throw std::logic_error("empty iter");
       }
-      list* changeablePos = const_cast< list* >(pos.m_ptr);
+      iterator changeablePos(const_cast< list* >(pos.m_ptr));
 
       for (size_t i = 0; i < count; i++)
       {
-        list* newList = new list{data, changeablePos->otherList};
-        changeablePos->otherList = newList;
-
-        changeablePos = changeablePos->otherList;
+        changeablePos = insertAfter(changeablePos, data);
       }
 
-      return iterator(changeablePos);
+      return changeablePos;
     }
     template< class inputIterator >
     iterator insertAfter(constIterator pos, inputIterator first, inputIterator last)
@@ -362,20 +359,49 @@ namespace dmitriev
       {
         throw std::logic_error("empty iter");
       }
-      list* changeablePos = const_cast< list* >(pos.m_ptr);
+      iterator changeablePos(const_cast< list* >(pos.m_ptr));
 
       for (; first != last; ++first)
       {
-        list* newList = new list{*first, changeablePos->otherList};
-        changeablePos->otherList = newList;
-
-        changeablePos = changeablePos->otherList;
+        changeablePos = insertAfter(changeablePos, *first);
       }
 
-      return iterator(changeablePos);
+      return changeablePos;
     }
-    //iterator insert_after(constIterator pos, std::initializer_list< T > ilist);
+    iterator insertAfter(constIterator pos, std::initializer_list< T > ilist)
+    {
+      if (pos.m_ptr == nullptr)
+      {
+        throw std::logic_error("null iter");
+      }
 
+      return insertAfter(pos, ilist.begin(), ilist.end());
+    }
+
+    iterator eraseAfter(constIterator pos)
+    {
+      if (pos.m_ptr == nullptr)
+      {
+        throw std::logic_error("null iter");
+      }
+
+      list* changeablePos = const_cast< list* >(pos.m_ptr);
+      list* current = const_cast< list* >(changeablePos->otherList);
+
+      changeablePos->otherList = current->otherList;
+      delete current;
+
+      return iterator(changeablePos->otherList);
+    }
+    iterator eraseAfter(constIterator first, constIterator last)
+    {
+      while(first.m_ptr->otherList != last.m_ptr)
+      {
+        eraseAfter(first);
+      }
+
+      return iterator(const_cast< list* >(first.m_ptr));
+    }
 
   private:
     list* m_beforeHead;
