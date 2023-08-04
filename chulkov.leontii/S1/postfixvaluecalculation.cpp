@@ -5,36 +5,29 @@
 #include "stack.h"
 
 namespace chulkov {
-  bool compareFrstAndSec(long long frst, long long sec, long long max, long long min) {
-    if (frst > 0 && sec > 0 && frst > max / sec) {
-      return true;
-    }
-    if (frst < 0 && sec < 0 && frst < max / sec) {
-      return true;
-    }
-    if (frst < 0 && sec > 0 && frst < min / sec) {
-      return true;
-    }
-    if (frst > 0 && sec < 0 && sec < min / frst) {
-      return true;
-    }
-    return false;
+  long long max = std::numeric_limits< long long >::max();
+  long long min = std::numeric_limits< long long >::min();
+
+  bool isAddOverflow(long long frst, long long sec) {
+    return (sec > 0 && frst > max - sec) || (sec < 0 && frst < min - sec);
   }
 
-  bool addSub(long long frst, long long sec, long long max, long long min) {
-    if ((sec > 0 && frst > max - sec) || (sec < 0 && frst < min - sec)) {
-      return true;
-    }
-    return false;
+  bool isSubOverflow(long long frst, long long sec) {
+    return (sec < 0 && frst > max + sec) || (sec > 0 && frst < min + sec);
+  }
+
+  bool isMultOverflow(long long frst, long long sec) {
+    if (frst == 0 || sec == 0) return false;
+    return frst > max / sec || frst < min / sec;
   }
 
   bool isOverflow(long long frst, long long sec, char op) {
-    long long max = std::numeric_limits< long long >::max();
-    long long min = std::numeric_limits< long long >::min();
-    if (op == '+' || op == '-') {
-      return addSub(frst, sec, max, min);
+    if (op == '+') {
+      return isAddOverflow(frst, sec);
+    } else if (op == '-') {
+      return isSubOverflow(frst, sec);
     } else if (op == '*') {
-      return compareFrstAndSec(frst, sec, max, min);
+      return isMultOverflow(frst, sec);
     }
     return false;
   }
