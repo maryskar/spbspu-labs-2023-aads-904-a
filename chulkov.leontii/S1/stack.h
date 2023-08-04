@@ -1,8 +1,9 @@
 #ifndef STACK_H
 #define STACK_H
 #include <stdexcept>
-
 #include "list.h"
+#include "copyconstructor.h"
+
 namespace chulkov {
   template < typename T >
   class Stack {
@@ -24,12 +25,13 @@ namespace chulkov {
     Stack(const Stack< T >& other):
       top_(other.top_)
     {
-      if (!other.empty()) {
-        List< T >* tp = other.top_;
-        while (tp != nullptr) {
-          push(tp->data);
-          tp = tp->next;
-        }
+      try {
+        copylist(top_, other.top_);
+      }
+      catch (...) {
+        clear();
+        top_ = nullptr;
+        throw;
       }
     }
 

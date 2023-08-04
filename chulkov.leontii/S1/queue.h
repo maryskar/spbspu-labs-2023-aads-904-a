@@ -1,8 +1,8 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 #include <stdexcept>
-
 #include "list.h"
+#include "copyconstructor.h"
 
 namespace chulkov {
   template < typename T >
@@ -22,13 +22,8 @@ namespace chulkov {
       back_(nullptr)
     {
       try {
-        if (!other.empty()) {
-          List< T >* tp = other.front_;
-          while (tp != nullptr) {
-            push(tp->data);
-            tp = tp->next;
-          }
-        }
+        copylist(front_, other.top_);
+        back_ = nullptr;
       }
       catch (...) {
         clear();
