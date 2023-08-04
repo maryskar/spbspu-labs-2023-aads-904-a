@@ -126,16 +126,14 @@ namespace romanovich
     splice_after(position, std::move(source), iterator, std::next(iterator));
   }
   template< typename T >
-  void
-  ForwardList< T >::splice_after(const_iterator position, ForwardList &source, const_iterator first,
-                                 const_iterator last)
+  void ForwardList< T >::splice_after(const_iterator position,
+                                        ForwardList &source, const_iterator first, const_iterator last)
   {
     splice_after(position, std::move(source), first, last);
   }
   template< typename T >
-  void
-  ForwardList< T >::splice_after(const_iterator position, ForwardList &&source, const_iterator first,
-                                 const_iterator last)
+  void ForwardList< T >::splice_after(const_iterator position,
+                                        ForwardList &&source, const_iterator first, const_iterator last)
   {
     if (first == last)
     {
