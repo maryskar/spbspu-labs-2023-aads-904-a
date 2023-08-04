@@ -1,7 +1,7 @@
 #ifndef DICT_H
 #define DICT_H
 #include <functional>
-#include "../common/listnode.h"//#include "listnode.h"
+#include "listnode.h"
 #include "forwardlist.h"
 namespace romanovich
 {
