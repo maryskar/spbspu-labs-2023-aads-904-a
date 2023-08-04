@@ -268,26 +268,7 @@ namespace tarasenko
   template< typename T >
   void ForwardList< T >::resize(size_t count)
   {
-    if (count == size_)
-    {
-      return;
-    }
-    auto curr = cbegin();
-    for (size_t i = 1; i < size_ && i < count; i++)
-    {
-      curr++;
-    }
-    if (count < size_)
-    {
-      eraseAfter(curr, cend());
-    }
-    else if (count > size_)
-    {
-      while (size_ < count)
-      {
-        pushBack(T());
-      }
-    }
+    resize(count, T{});
   }
 
   template< typename T >
@@ -308,10 +289,20 @@ namespace tarasenko
     }
     else if (count > size_)
     {
-      while (size_ < count)
+      auto temp(*this);
+      try
       {
-        pushBack(value);
+        while (temp.size_ < count)
+        {
+          temp.pushBack(value);
+        }
       }
+      catch (const std::bad_alloc& e)
+      {
+        temp.clear();
+        throw;
+      }
+      swap(temp);
     }
   }
 
