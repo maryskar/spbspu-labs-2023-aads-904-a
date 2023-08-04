@@ -124,5 +124,3 @@ void fesenko::Stack< T >::copy(const Stack< T > &other)
   head_ = res.first;
 }
 #endif
-
-

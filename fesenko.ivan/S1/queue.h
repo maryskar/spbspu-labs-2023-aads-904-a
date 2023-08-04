@@ -140,4 +140,3 @@ void fesenko::Queue< T >::copy(const Queue< T > &other)
   tail_ = res.second;
 }
 #endif
-

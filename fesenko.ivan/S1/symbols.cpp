@@ -36,4 +36,3 @@ bool fesenko::isBiggerPriority(std::string a, std::string b)
   }
   return false;
 }
-
