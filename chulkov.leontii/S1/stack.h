@@ -26,8 +26,8 @@ namespace chulkov {
     {
       try {
         if (!other.empty()) {
-          List< T >** tp = other.top_;
-          List< T >** prev = nullptr;
+          List< T >* tp = other.top_;
+          List< T >* prev = nullptr;
           while (tp != nullptr) {
             List< T >* newNode = new List< T >(tp->data);
             newNode->next = prev;
