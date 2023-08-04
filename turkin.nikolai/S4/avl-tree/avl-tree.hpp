@@ -30,13 +30,13 @@ namespace turkin
       cit root() const noexcept; //done
       cit croot() const noexcept; //done
 
-      it begin() noexcept;
-      cit begin() const noexcept;
-      cit cbegin() const noexcept;
+      it begin() noexcept; //done
+      cit begin() const noexcept; //done
+      cit cbegin() const noexcept; //done
 
-      it end() noexcept;
-      cit end() const noexcept;
-      cit cend() const noexcept;
+      it end() noexcept; //done
+      cit end() const noexcept; //done
+      cit cend() const noexcept; //done
 
       V & at(const K & key);
       const V & at(const K & key) const;
@@ -77,6 +77,7 @@ namespace turkin
 
       void balanceDelete();
       void copy(const tree & rhs);
+      void free(node_t src);
       void insert(node_t src, const tree_t & value);
       void balance(node_t src); //done
       void increase(node_t src); //done
@@ -244,6 +245,13 @@ void turkin::AVLtree< K, V, C >::clear() noexcept
 }
 
 template< typename K, typename V, typename C >
+void turkin::AVLtree< K, V, C >::swap(tree & rhs) noexcept
+{
+  std::swap(root_, rhs.root_);
+  std::swap(cmp_, rhs.cmp_);
+}
+
+template< typename K, typename V, typename C >
 void turkin::AVLtree< K, V, C >::slr(node_t src)
 {
   auto head = src->right;
@@ -276,6 +284,18 @@ void turkin::AVLtree< K, V, C >::balanceDelete() {}
 
 template< typename K, typename V, typename C >
 void turkin::AVLtree< K, V, C >::copy(const tree & rhs) {}
+
+template< typename K, typename V, typename C >
+void turkin::AVLtree< K, V, C >::free(node_t src)
+{
+  if (src == nullptr)
+  {
+    return;
+  }
+  free(src->left);
+  free(src->right);
+  delete src;
+}
 
 template< typename K, typename V, typename C >
 void turkin::AVLtree< K, V, C >::insert(node_t src, const tree_t & value)
