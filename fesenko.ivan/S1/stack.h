@@ -48,7 +48,7 @@ fesenko::Stack< T > &fesenko::Stack< T >::operator=(const Stack< T > &other)
 {
   if (this != std::addressof(other))
   {
-    head_ = other.head_;
+    copy(other);
   }
   return *this;
 }

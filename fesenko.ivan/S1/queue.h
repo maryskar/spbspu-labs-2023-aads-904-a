@@ -51,8 +51,7 @@ fesenko::Queue< T > &fesenko::Queue< T >::operator=(const Queue< T > &other)
 {
   if (this != std::addressof(other))
   {
-    head_ = other.head_;
-    tail_ = other.tail_;
+    copy(other);
   }
   return *this;
 }
