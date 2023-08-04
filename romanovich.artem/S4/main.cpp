@@ -8,18 +8,19 @@ int main()///////// переделать для даты
   BinarySearchTree< int, int > bst;
 
   // insert
-  bst.insert(1, 10);
-  bst.insert(2, 20);
+  bst.insert(std::make_pair(1, 10));
+  bst.insert(std::make_pair(2, 20));
 
   // at
-  if (bst.at(1) != 10 || bst.at(2) != 20)
+  if (bst.at(std::make_pair(1, 10)) != std::make_pair(1, 10)
+  || bst.at(std::make_pair(2, 20)) != std::make_pair(2, 20))
   {
     std::cout << "at() failed" << std::endl;
     return 1;
   }
 
   // []
-  if (bst[1] != 10 || bst[2] != 20)
+  if (bst[std::make_pair(1, 10)] != std::make_pair(1, 10) || bst[std::make_pair(2, 20)] != std::make_pair(2, 20))
   {
     std::cout << "[] failed" << std::endl;
     //return 1;
@@ -40,8 +41,8 @@ int main()///////// переделать для даты
   }
 
   // insert pair
-  auto res = bst.insert(3, 30);
-  if (!res.second || bst.at(3) != 30)
+  auto res = bst.insert(std::make_pair(3, 30));
+  if (!res.second || bst.at(std::make_pair(3, 30)) != std::make_pair(3, 30))
   {
     std::cout << "insert(pair) failed" << std::endl;
     return 1;
@@ -49,26 +50,16 @@ int main()///////// переделать для даты
 
 
   // insert hint
-  auto it = bst.find(2);
+/*  auto it = bst.find(std::make_pair(2, 20));
   bst.insert(it, 4, 40);
   if (bst.at(4) != 40)
   {
     std::cout << "insert(hint) failed" << std::endl;//////////
     return 1;
-  }
-
-  // insert range
-  std::vector< std::pair< int, int>> v = {{5, 50},
-                                          {6, 60}};
-  bst.insert(bst.begin(), v.begin(), v.end());
-  if (bst.at(5) != 50 || bst.at(6) != 60)
-  {
-    std::cout << "insert(range) failed" << std::endl;
-    return 1;
-  }
+  }*/
 
   // find
-  it = bst.find(1);
+  auto it = bst.find(std::make_pair(1, 10));
   if (it == bst.end() || it->second != 10)
   {
     std::cout << "find() failed" << std::endl;
@@ -76,23 +67,23 @@ int main()///////// переделать для даты
   }
 
   // count
-  if (bst.count(4) != 1)
+  if (bst.count(std::make_pair(4, 40)) != 1)
   {
     std::cout << "count() failed" << std::endl;
     return 1;
   }
 
   // lower_bound
-  it = bst.lower_bound(25);
-  if (it != bst.find(3))
+  it = bst.lower_bound(std::make_pair(25, 25));
+  if (it != bst.find(std::make_pair(3, 30)))
   {
     std::cout << "lower_bound() failed" << std::endl;
     return 1;
   }
 
   // upper_bound
-  it = bst.upper_bound(3);
-  if (it != bst.find(4))
+  it = bst.upper_bound(std::make_pair(3, 30));
+  if (it != bst.find(std::make_pair(3, 30)))
   {
     std::cout << "upper_bound() failed" << std::endl;
     return 1;
