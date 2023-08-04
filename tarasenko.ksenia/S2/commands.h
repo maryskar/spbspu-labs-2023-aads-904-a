@@ -31,19 +31,32 @@ namespace tarasenko
       Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
       std::istream& input, std::ostream& output)
    {
-     if (findInTypePrint(name_of_command))
+     try
      {
-       callPrint(name_of_command, dict_of_dict, input, output);
+       if (findInTypePrint(name_of_command))
+       {
+         callPrint(name_of_command, dict_of_dict, input, output);
+       }
+       else if (findInTypeCreate(name_of_command))
+       {
+         callCreate(name_of_command, dict_of_dict, input, output);
+       }
+       else
+       {
+         output << outMessageInvalidCommand << "\n";
+         std::string trash = " ";
+         getline(input, trash);
+       }
      }
-     else if (findInTypeCreate(name_of_command))
-     {
-       callCreate(name_of_command, dict_of_dict, input, output);
-     }
-     else
+     catch (const std::out_of_range& e)
      {
        output << outMessageInvalidCommand << "\n";
-       std::string trash = " ";
-       getline(input, trash);
+       return;
+     }
+     catch (const std::invalid_argument& e)
+     {
+       output << outMessageEmpty << "\n";
+       return;
      }
    }
 
@@ -86,16 +99,8 @@ namespace tarasenko
     input >> name_new_dict >> name_dict1 >> name_dict2;
     dict_type dict1;
     dict_type dict2;
-    try
-    {
-      dict1 = dict_of_dict.at(name_dict1);
-      dict2 = dict_of_dict.at(name_dict2);
-    }
-    catch (const std::out_of_range& e)
-    {
-      output << outMessageInvalidCommand << "\n";
-      return;
-    }
+    dict1 = dict_of_dict.at(name_dict1);
+    dict2 = dict_of_dict.at(name_dict2);
     auto new_dict = type_create.at(name_of_command)(dict1, dict2);
     dict_of_dict.push(name_new_dict, new_dict);
   }
@@ -108,19 +113,10 @@ namespace tarasenko
     std::string name_of_dict = " ";
     input >> name_of_dict;
     dict_type given_dict;
-    try
-    {
-      given_dict = dict_of_dict.at(name_of_dict);
-    }
-    catch (const std::out_of_range& e)
-    {
-      output << outMessageInvalidCommand << "\n";
-      return;
-    }
+    given_dict = dict_of_dict.at(name_of_dict);
     if (given_dict.isEmpty())
     {
-      output << outMessageEmpty << "\n";
-      return;
+      throw std::invalid_argument("Empty");
     }
     type_print.at(name_of_command)(output, name_of_dict, given_dict);
     output << "\n";
