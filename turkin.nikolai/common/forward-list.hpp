@@ -211,7 +211,7 @@ ConstIterator< T > ForwardList< T >::cend() const noexcept
 template< typename T >
 bool ForwardList< T >::empty() const noexcept
 {
-  return dummy_.cur_->next == nullptr;
+  return size_ == 0;
 };
 
 template< typename T >
