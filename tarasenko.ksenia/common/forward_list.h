@@ -3,7 +3,7 @@
 
 #include <memory>
 #include <algorithm>
-#include <../S1/node.h>
+#include "node.h"
 #include "forward_list_iterator.h"
 #include "const_forward_list_iterator.h"
 
