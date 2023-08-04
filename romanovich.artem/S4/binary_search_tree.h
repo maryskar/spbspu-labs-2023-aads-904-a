@@ -48,6 +48,8 @@ public:
   iterator insert(const_iterator pos, Key &&key, Value &&value);
   template< class InputIt >
   iterator insert(const_iterator pos, InputIt first, InputIt last);
+  template< typename... Args >
+  std::pair< iterator, bool > emplace(Args &&... args);
   void clear();
   iterator erase(iterator pos);
   iterator erase(const_iterator pos);
@@ -75,6 +77,14 @@ private:
   TreeNode< data_type > *copyBegin(const TreeNode< data_type > *beginNode);
   TreeNode< data_type > *copyEnd(const TreeNode< data_type > *endNode);
 };
+template< typename Key, typename Value, typename Compare >
+template< typename... Args >
+std::pair< typename BinarySearchTree< Key, Value, Compare >::iterator, bool >
+BinarySearchTree< Key, Value, Compare >::emplace(Args &&... args)
+{
+  data_type data(std::forward< Args >(args)...);
+  return insert(std::move(data));
+}
 template< typename Key, typename Value, typename Compare >
 void BinarySearchTree< Key, Value, Compare >::swap(BinarySearchTree::bst_t &other)
 {
@@ -184,6 +194,7 @@ template< typename Key, typename Value, typename Compare >
 bool BinarySearchTree< Key, Value, Compare >::empty() const
 {
   return root_ == nullptr;
+  //return size_ == 0;
 }
 template< typename Key, typename Value, typename Compare >
 size_t BinarySearchTree< Key, Value, Compare >::size() const
@@ -224,9 +235,14 @@ Value &BinarySearchTree< Key, Value, Compare >::operator[](const Key &key)
 template< typename Key, typename Value, typename Compare >
 Value &BinarySearchTree< Key, Value, Compare >::operator[](Key &&key)
 {
-  //std::pair< iterator, bool > result = insert(std::move(key), Value{});
-  //return result.first->second;
-  return find(key).node_->data.second;
+  try
+  {
+    return at(key);
+  }
+  catch (const std::out_of_range &e)
+  {
+  }
+  return *(insert(value).first);
 }
 template< typename Key, typename Value, typename Compare >
 Value &BinarySearchTree< Key, Value, Compare >::at(const Key &key)

@@ -3,7 +3,7 @@
 #include "const_bidirectional_iterator.h"
 #include <iostream>
 #include <vector>
-int main()
+int main()///////// переделать для даты
 {
   BinarySearchTree< int, int > bst;
 
@@ -33,7 +33,7 @@ int main()
   }
 
   // empty
-  if (!bst.empty())
+  if (bst.empty())
   {
     std::cout << "empty() failed" << std::endl;
     return 1;
@@ -47,12 +47,13 @@ int main()
     return 1;
   }
 
+
   // insert hint
   auto it = bst.find(2);
   bst.insert(it, 4, 40);
   if (bst.at(4) != 40)
   {
-    std::cout << "insert(hint) failed" << std::endl;
+    std::cout << "insert(hint) failed" << std::endl;//////////
     return 1;
   }
 
