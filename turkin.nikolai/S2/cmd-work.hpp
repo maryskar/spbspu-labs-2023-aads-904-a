@@ -7,7 +7,6 @@
 #include <functional>
 #include <dictionary.hpp>
 #include <out-msg.hpp>
-#include <comparator.hpp>
 
 namespace turkin
 {
@@ -52,7 +51,7 @@ namespace turkin
       {
         break;
       }
-      if (neq< K, C >(iter_first->first, iter_second->first))
+      if (iter_first->first != iter_second->first)
       {
         result.emplace(*iter_first);
       }
@@ -75,7 +74,7 @@ namespace turkin
       auto res = two.cend();
       for (auto i = one.cbegin(); i != one.cend(); i++)
       {
-        if (eq< K, C >(ins->first, i->first))
+        if (ins->first == i->first)
         {
           res = i;
           break;
@@ -97,7 +96,7 @@ namespace turkin
     do
     {
       ins++;
-      if (eq< K, C >(result.find(ins->first)->first, ins->first))
+      if (result.find(ins->first)->first != ins->first)
       {
         result.emplace(*ins);
       }
