@@ -8,6 +8,7 @@
 #include <forward-list.hpp>
 #include <iterator.hpp>
 #include <const-iterator.hpp>
+#include <comparator.hpp>
 
 namespace turkin
 {
@@ -275,7 +276,7 @@ std::size_t Dictionary< K, V, C >::erase(const K & k)
     temp++;
     if (temp != cend())
     {
-      if (temp->first == k)
+      if (eq(temp->first, k))
       {
         erase_after(ins);
         amount++;
@@ -302,7 +303,7 @@ template< typename K, typename V, typename C >
 V Dictionary< K, V, C >::at(const K & k)
 {
   auto ins = *find(k);
-  if (ins.first != k)
+  if (neq(ins.first, k))
   {
     throw std::out_of_range("Out of range");
   }
@@ -320,7 +321,7 @@ Iterator< std::pair< K, V > > Dictionary< K, V, C >::find(const K & k)
 {
   for (auto ins = begin(); ins != end(); ins++)
   {
-    if(ins->first == k)
+    if (eq(ins->first, k))
     {
       return ins;
     }
@@ -353,7 +354,7 @@ std::size_t Dictionary< K, V, C >::count(const K & k) const
   std::size_t amount = 0;
   for(auto ins = cbegin(); ins != cend(); ins++)
   {
-    if (ins->first == k)
+    if (eq(ins->first, k))
     {
       amount++;
     }
