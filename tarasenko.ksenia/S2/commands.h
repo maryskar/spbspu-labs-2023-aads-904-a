@@ -39,7 +39,7 @@ namespace tarasenko
        }
        else if (findInTypeCreate(name_of_command))
        {
-         callCreate(name_of_command, dict_of_dict, input, output);
+         callCreate(name_of_command, dict_of_dict, input);
        }
        else
        {
@@ -69,8 +69,7 @@ namespace tarasenko
    bool findInTypePrint(const std::string& key) const;
    bool findInTypeCreate(const std::string& key) const;
    void callCreate(const std::string& name_of_command,
-      Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
-      std::istream& input, std::ostream& output);
+      Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict, std::istream& input);
    void callPrint(const std::string& name_of_command,
       Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
       std::istream& input, std::ostream& output);
@@ -90,8 +89,7 @@ namespace tarasenko
 
   template< typename Key, typename Value, typename Compare >
   void Commands< Key, Value, Compare >::callCreate(const std::string& name_of_command,
-      Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
-      std::istream& input, std::ostream& output)
+      Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict, std::istream& input)
   {
     std::string name_new_dict = " ";
     std::string name_dict1 = " ";
