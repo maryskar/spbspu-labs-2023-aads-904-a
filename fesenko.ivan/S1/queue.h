@@ -16,10 +16,12 @@ namespace fesenko
     Queue< T > &operator=(const Queue< T > &);
     Queue< T > &operator=(Queue< T > &&);
     ~Queue();
-    void push(const T rhs);
+    void push(const T &);
+    void push(T &&);
+    const T &front() const;
     T &front();
     void pop();
-    bool isEmpty();
+    bool isEmpty() const noexcept;
    private:
     List< T > *head_;
     List< T > *tail_;
@@ -75,7 +77,7 @@ fesenko::Queue< T >::~Queue()
 }
 
 template< typename T >
-void fesenko::Queue< T >::push(const T rhs)
+void fesenko::Queue< T >::push(const T &rhs)
 {
   if (isEmpty()) {
     tail_ = new List< T >{rhs, nullptr};
@@ -87,12 +89,30 @@ void fesenko::Queue< T >::push(const T rhs)
 }
 
 template< typename T >
-T &fesenko::Queue< T >::front()
+void fesenko::Queue< T >::push(T &&rhs)
+{
+  if (isEmpty()) {
+    tail_ = new List< T >{std::move(rhs), nullptr};
+    head_ = tail_;
+  } else {
+    tail_->next = new List< T >{std::move(rhs), nullptr};
+    tail_ = tail_->next;
+  }
+}
+
+template< typename T >
+const T &fesenko::Queue< T >::front() const
 {
   if (isEmpty()) {
     throw std::out_of_range("Queue is empty");
   }
   return head_->data;
+}
+
+template< typename T >
+T &fesenko::Queue< T >::front()
+{
+   return const_cast< T & >((static_cast< const Queue< T > & >(*this)).front());
 }
 
 template< typename T >
@@ -107,7 +127,7 @@ void fesenko::Queue< T >::pop()
 }
 
 template< typename T >
-bool fesenko::Queue< T >::isEmpty()
+bool fesenko::Queue< T >::isEmpty() const noexcept
 {
   return head_ == nullptr;
 }

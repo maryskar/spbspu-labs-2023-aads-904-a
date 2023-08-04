@@ -16,10 +16,12 @@ namespace fesenko
     Stack< T > &operator=(const Stack< T > &);
     Stack< T > &operator=(Stack< T > &&);
     ~Stack();
-    void push(const T &rhs);
+    void push(const T &);
+    void push(T &&);
     T &top();
+    const T &top() const;
     void pop();
-    bool isEmpty();
+    bool isEmpty() const noexcept;
    private:
     List< T > *head_;
     void copy(const Stack< T > &);
@@ -77,12 +79,25 @@ void fesenko::Stack< T >::push(const T &rhs)
 }
 
 template< typename T >
-T &fesenko::Stack< T >::top()
+void fesenko::Stack< T >::push(T &&rhs)
+{
+  List< T > *temp = new List< T >{std::move(rhs), head_};
+  head_ = temp;
+}
+
+template< typename T >
+const T &fesenko::Stack< T >::top() const
 {
   if (isEmpty()) {
     throw std::out_of_range("Stack is empty");
   }
   return head_->data;
+}
+
+template< typename T >
+T &fesenko::Stack< T >::top()
+{
+  return const_cast< T & >((static_cast< const Stack< T > & >(*this)).top());
 }
 
 template< typename T >
@@ -97,7 +112,7 @@ void fesenko::Stack< T >::pop()
 }
 
 template< typename T >
-bool fesenko::Stack< T >::isEmpty()
+bool fesenko::Stack< T >::isEmpty() const noexcept
 {
   return head_ == nullptr;
 }
