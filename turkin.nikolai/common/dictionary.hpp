@@ -276,7 +276,7 @@ std::size_t Dictionary< K, V, C >::erase(const K & k)
     temp++;
     if (temp != cend())
     {
-      if (eq(temp->first, k))
+      if (eq< K, C >(temp->first, k))
       {
         erase_after(ins);
         amount++;
@@ -303,7 +303,7 @@ template< typename K, typename V, typename C >
 V Dictionary< K, V, C >::at(const K & k)
 {
   auto ins = *find(k);
-  if (neq(ins.first, k))
+  if (neq< K, C >(ins.first, k))
   {
     throw std::out_of_range("Out of range");
   }
@@ -321,7 +321,7 @@ Iterator< std::pair< K, V > > Dictionary< K, V, C >::find(const K & k)
 {
   for (auto ins = begin(); ins != end(); ins++)
   {
-    if (eq(ins->first, k))
+    if (eq< K, C >(ins->first, k))
     {
       return ins;
     }
@@ -354,7 +354,7 @@ std::size_t Dictionary< K, V, C >::count(const K & k) const
   std::size_t amount = 0;
   for(auto ins = cbegin(); ins != cend(); ins++)
   {
-    if (eq(ins->first, k))
+    if (eq< K, C >(ins->first, k))
     {
       amount++;
     }

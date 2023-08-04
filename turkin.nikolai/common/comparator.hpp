@@ -12,7 +12,7 @@ namespace turkin
   template< typename K, typename C >
   bool neq(const K & lhs, const K & rhs)
   {
-    return !eq(lhs, rhs);
+    return !eq< K, C >(lhs, rhs);
   }
 }
 
