@@ -91,16 +91,6 @@ namespace chulkov {
       return top_ == nullptr;
     }
 
-    size_t size() const {
-      List< T >* node = top_;
-      size_t count = 0;
-      while (node != nullptr) {
-        node = node->next;
-        count++;
-      }
-      return count;
-    }
-
     void clear() {
       while (!empty()) {
         drop();
