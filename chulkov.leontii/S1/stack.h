@@ -26,7 +26,7 @@ namespace chulkov {
       top_(other.top_)
     {
       try {
-        copylist(top_, other.top_);
+        copyList(top_, other.top_);
       }
       catch (...) {
         clear();

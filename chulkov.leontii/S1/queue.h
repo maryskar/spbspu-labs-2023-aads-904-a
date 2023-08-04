@@ -22,7 +22,7 @@ namespace chulkov {
       back_(nullptr)
     {
       try {
-        copylist(front_, other.top_);
+        copyList(front_, other.top_);
         back_ = nullptr;
       }
       catch (...) {
