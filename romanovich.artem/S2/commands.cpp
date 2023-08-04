@@ -1,5 +1,5 @@
 #include "commands.h"
-using namespace std::placeholders;
+#include "../common/printmessages.h"
 namespace
 {
   using dict_ref = romanovich::dict_type &;
@@ -44,10 +44,6 @@ namespace
       }
     }
   };
-  std::ostream &printEmptyDict(std::ostream &out)
-  {
-    return out << "<EMPTY>";
-  }
 }
 namespace romanovich
 {
@@ -58,6 +54,7 @@ namespace romanovich
     std::string intersectCall = "intersect";
     std::string unionCall = "union";
     std::unordered_map< std::string, CommandHandler > commands;
+    using namespace std::placeholders;
     commands[printCall] = std::bind(printCommand, _1, _2, std::ref(dictionary));
     commands[complementCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), ComplementOperation());
     commands[intersectCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), IntersectOperation());
@@ -84,7 +81,7 @@ namespace romanovich
     }
     if (dictionary.empty())
     {
-      printEmptyDict(out) << "\n";
+      printEmpty(out) << "\n";
     }
     else
     {
@@ -112,7 +109,7 @@ namespace romanovich
       const auto &dictData = dictionary[dictName];
       if (dictData.empty())
       {
-        printEmptyDict(out) << "\n";
+        printEmpty(out) << "\n";
       }
       else
       {

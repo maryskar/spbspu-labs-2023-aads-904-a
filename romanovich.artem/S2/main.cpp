@@ -4,10 +4,7 @@
 #include <vector>
 #include <limits>
 #include "commands.h"
-std::ostream &printError(std::ostream &out)
-{
-  return out << "<INVALID COMMAND>";
-}
+#include "../common/printmessages.h"
 void splitString(std::vector< std::string > &elems, const std::string &line, char del)
 {
   std::string word;
@@ -68,7 +65,7 @@ int main(int argc, char *argv[])
     }
     catch (...)
     {
-      printError(std::cout) << '\n';
+      printInvalidCommand(std::cout) << '\n';
       std::cin.ignore(maxLLSize, '\n');
     }
   }
