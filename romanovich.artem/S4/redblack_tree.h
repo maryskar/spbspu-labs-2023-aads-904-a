@@ -2,6 +2,8 @@
 #define RREDBLACK_TREE_H
 #include "color_tree_node.h"
 #include "rotatable_binary_search_tree.h"
+namespace romanovich
+{
 template< typename Key, typename Value, typename Compare >
 class RedBlackTree
 {
@@ -51,5 +53,5 @@ template< typename Key, typename Value, typename Compare >
 RedBlackTree< Key, Value, Compare >::RedBlackTree():
   root_(nullptr)
 {
-}
+}}
 #endif
