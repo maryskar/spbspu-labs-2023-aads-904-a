@@ -30,11 +30,14 @@ public:
   BinarySearchTree &operator=(BinarySearchTree &&other) noexcept;
   void remove(const data_type &data);
   iterator find(const data_type &data);
-  iterator end() const noexcept;
+  iterator end()  noexcept;
+  const_iterator end() const noexcept;
   const_iterator cend() const noexcept;
   iterator last() noexcept;
+  const_iterator last() const noexcept;
   const_iterator clast() const noexcept;
   iterator begin() noexcept;
+  const_iterator begin() const noexcept;
   const_iterator cbegin() const noexcept;
   /*reverse_iterator rbegin();
   reverse_iterator rend();
@@ -81,6 +84,21 @@ private:
   TreeNode< data_type > *copyBegin(const TreeNode< data_type > *beginNode);
   TreeNode< data_type > *copyEnd(const TreeNode< data_type > *endNode);
 };
+template< typename Key, typename Value, typename Compare >
+ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::begin() const noexcept
+{
+  return cbegin();
+}
+template< typename Key, typename Value, typename Compare >
+ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::last() const noexcept
+{
+  return clast();
+}
+template< typename Key, typename Value, typename Compare >
+ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::end() const noexcept
+{
+  return cend();
+}
 template< typename Key, typename Value, typename Compare >
 template< typename... Args >
 std::pair< typename BinarySearchTree< Key, Value, Compare >::iterator, bool >
@@ -190,7 +208,7 @@ void BinarySearchTree< Key, Value, Compare >::clear()
   clear(root_);
 }
 template< typename Key, typename Value, typename Compare >
-BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::end() const noexcept
+BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::end() noexcept
 {
   return iterator(root_, fakeNode_, fakeNode_);
 }
