@@ -1,5 +1,6 @@
 #ifndef COLOR_TREE_NODE_H
 #define COLOR_TREE_NODE_H
+#include <memory>
 #include "tree_node.h"
 enum class Color
 {
@@ -15,7 +16,7 @@ public:
   void setColor(Color color);
   Color getColor() const;
 private:
-  TreeNode< T > *node_;
+  std::unique_ptr< TreeNode< T > > node_;
   Color color_;
 };
 template< typename T >
@@ -35,7 +36,7 @@ TreeNode< T > *ColorTreeNode< T >::getNode() const
 }
 template< typename T >
 ColorTreeNode< T >::ColorTreeNode(const T &data, Color color):
-  node_(new TreeNode< T >(data)),
+  node_(std::make_unique< TreeNode< T > >(data)),
   color_(color)
 {
 }
