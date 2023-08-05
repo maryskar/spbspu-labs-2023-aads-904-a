@@ -6,13 +6,16 @@ template< typename Key, typename Value, typename Compare >
 class ConstBidirectionalIterator;
 template< typename Key, typename Value, typename Compare >
 class BinarySearchTree;
-template< typename Key, typename Value, typename Compare = std::less< Key > >
+template< typename Key, typename Value, typename Compare >
+class RedBlackTree;
+template< typename Key, typename Value, typename Compare >
 class BidirectionalIterator
 {
 public:
-  BidirectionalIterator();
-  friend class ConstBidirectionalIterator< Key, Value, Compare >;
   friend class BinarySearchTree< Key, Value, Compare >;
+  friend class BidirectionalIterator< Key, Value, Compare >;
+  friend class RedBlackTree< Key, Value, Compare >;
+  BidirectionalIterator();
   using iterator_category = std::bidirectional_iterator_tag;
   using difference_type = std::ptrdiff_t;
   using data_type = std::pair< Key, Value >;

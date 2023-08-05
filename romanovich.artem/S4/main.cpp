@@ -1,5 +1,7 @@
 #include <iostream>
 #include "rotatable_binary_search_tree.h"
+template<typename K, typename V, typename C>
+class RotatableBinarySearchTree;
 int main()
 {
   RotatableBinarySearchTree< int, int, std::less< int > > rotatableBinarySearchTree;

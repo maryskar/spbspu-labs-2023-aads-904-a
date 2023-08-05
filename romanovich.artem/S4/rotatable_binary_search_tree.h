@@ -3,19 +3,22 @@
 #include <utility>
 #include <functional>
 #include "tree_node.h"
-#include "bidirectional_iterator.h"
-#include "const_bidirectional_iterator.h"
-template< typename Key, typename Value, typename Compare = std::less< Key >>
+#include "binary_search_tree.h"
+template< typename Key, typename Value, typename Compare >
+class RedBlackTree;
+template< typename Key, typename Value, typename Compare >
 class BinarySearchTree;
-template< typename Key, typename Value, typename Compare = std::less< Key >>
+template< typename Key, typename Value, typename Compare >
 class RotatableBinarySearchTree
 {
 public:
+  friend class RedBlackTree< Key, Value, Compare >;
   using data_type = std::pair< Key, Value >;
   using r_bst_t = RotatableBinarySearchTree< Key, Value, Compare >;
+  using bst_t = BinarySearchTree< Key, Value, Compare >;
   using tree_t = TreeNode< data_type >;
-  using iterator = BidirectionalIterator< Key, Value, Compare >;
-  using const_iterator = ConstBidirectionalIterator< Key, Value, Compare >;
+  using iterator = typename BinarySearchTree< Key, Value, Compare >::iterator;
+  using const_iterator = typename BinarySearchTree< Key, Value, Compare >::const_iterator;
   RotatableBinarySearchTree();
   RotatableBinarySearchTree(const RotatableBinarySearchTree &other) = default;
   RotatableBinarySearchTree(RotatableBinarySearchTree &&other) noexcept;
@@ -73,7 +76,7 @@ public:
   void rotateLeftLeft(TreeNode< data_type > *node);
   void rotateRightRight(TreeNode< data_type > *node);
 private:
-  BinarySearchTree< Key, Value, Compare > bst_;
+  bst_t bst_;
 };
 template< typename Key, typename Value, typename Compare >
 void RotatableBinarySearchTree< Key, Value, Compare >::rotateLeftLeft(TreeNode< data_type > *node)
@@ -131,49 +134,49 @@ Compare RotatableBinarySearchTree< Key, Value, Compare >::data_comp() const
   return bst_.value_comp();
 }
 template< typename Key, typename Value, typename Compare >
-ConstBidirectionalIterator< Key, Value, Compare >
+typename BinarySearchTree< Key, Value, Compare >::const_iterator
 RotatableBinarySearchTree< Key, Value, Compare >::upper_bound(const RotatableBinarySearchTree::data_type &data) const
 {
   return bst_.upper_bound(data);
 }
 template< typename Key, typename Value, typename Compare >
-BidirectionalIterator< Key, Value, Compare >
+typename BinarySearchTree< Key, Value, Compare >::iterator
 RotatableBinarySearchTree< Key, Value, Compare >::upper_bound(const RotatableBinarySearchTree::data_type &data)
 {
   return bst_.upper_bound(data);
 }
 template< typename Key, typename Value, typename Compare >
-ConstBidirectionalIterator< Key, Value, Compare >
+typename BinarySearchTree< Key, Value, Compare >::const_iterator
 RotatableBinarySearchTree< Key, Value, Compare >::lower_bound(const RotatableBinarySearchTree::data_type &data) const
 {
   return bst_.lower_bound(data);
 }
 template< typename Key, typename Value, typename Compare >
-BidirectionalIterator< Key, Value, Compare >
+typename BinarySearchTree< Key, Value, Compare >::iterator
 RotatableBinarySearchTree< Key, Value, Compare >::lower_bound(const RotatableBinarySearchTree::data_type &data)
 {
   return bst_.lower_bound(data);
 }
 template< typename Key, typename Value, typename Compare >
-std::pair< ConstBidirectionalIterator< Key, Value, Compare >, ConstBidirectionalIterator< Key, Value, Compare > >
+std::pair< typename BinarySearchTree< Key, Value, Compare >::const_iterator, typename BinarySearchTree< Key, Value, Compare >::const_iterator >
 RotatableBinarySearchTree< Key, Value, Compare >::equal_range(const RotatableBinarySearchTree::data_type &data) const
 {
   return data.equal_range(data);
 }
 template< typename Key, typename Value, typename Compare >
-std::pair< BidirectionalIterator< Key, Value, Compare >, BidirectionalIterator< Key, Value, Compare > >
+std::pair< typename BinarySearchTree< Key, Value, Compare >::iterator, typename BinarySearchTree< Key, Value, Compare >::iterator >
 RotatableBinarySearchTree< Key, Value, Compare >::equal_range(const RotatableBinarySearchTree::data_type &data)
 {
   return bst_.equal_range(data);
 }
 template< typename Key, typename Value, typename Compare >
-ConstBidirectionalIterator< Key, Value, Compare >
+typename BinarySearchTree< Key, Value, Compare >::const_iterator
 RotatableBinarySearchTree< Key, Value, Compare >::find(const RotatableBinarySearchTree::data_type &data) const
 {
   return bst_.find(data);
 }
 template< typename Key, typename Value, typename Compare >
-BidirectionalIterator< Key, Value, Compare >
+typename BinarySearchTree< Key, Value, Compare >::iterator
 RotatableBinarySearchTree< Key, Value, Compare >::find(const RotatableBinarySearchTree::data_type &data)
 {
   return bst_.find(data);
@@ -194,20 +197,20 @@ size_t RotatableBinarySearchTree< Key, Value, Compare >::erase(const RotatableBi
   return bst_.erase(data);
 }
 template< typename Key, typename Value, typename Compare >
-BidirectionalIterator< Key, Value, Compare >
+typename BinarySearchTree< Key, Value, Compare >::iterator
 RotatableBinarySearchTree< Key, Value, Compare >::erase(RotatableBinarySearchTree::const_iterator first,
                                                         RotatableBinarySearchTree::const_iterator last)
 {
   return bst_.erase(first, last);
 }
 template< typename Key, typename Value, typename Compare >
-BidirectionalIterator< Key, Value, Compare >
+typename BinarySearchTree< Key, Value, Compare >::iterator
 RotatableBinarySearchTree< Key, Value, Compare >::erase(RotatableBinarySearchTree::const_iterator pos)
 {
   return bst_.erase(pos);
 }
 template< typename Key, typename Value, typename Compare >
-BidirectionalIterator< Key, Value, Compare >
+typename BinarySearchTree< Key, Value, Compare >::iterator
 RotatableBinarySearchTree< Key, Value, Compare >::erase(RotatableBinarySearchTree::iterator pos)
 {
   return bst_.erase(pos);
@@ -238,10 +241,13 @@ RotatableBinarySearchTree< Key, Value, Compare >::at(const RotatableBinarySearch
 }
 template< typename Key, typename Value, typename Compare >
 template< typename... Args >
-std::pair< BidirectionalIterator< Key, Value, Compare >, bool >
-RotatableBinarySearchTree< Key, Value, Compare >::emplace(Args &&... args)
+std::pair< typename BinarySearchTree< Key, Value, Compare >::iterator, bool >
+RotatableBinarySearchTree< Key, Value, Compare >::emplace(Args
+                                                          &&... args)
 {
-  return bst_.emplace(std::forward< Args >(args)...);
+  return bst_.
+    emplace(std::forward< Args >(args)
+              ...);
 }
 template< typename Key, typename Value, typename Compare >
 void RotatableBinarySearchTree< Key, Value, Compare >::insert(std::initializer_list< data_type > initializerList)
@@ -256,13 +262,13 @@ void RotatableBinarySearchTree< Key, Value, Compare >::insert(InputIt first, Inp
 }
 template< typename Key, typename Value, typename Compare >
 template< typename P >
-BidirectionalIterator< Key, Value, Compare >
+typename BinarySearchTree< Key, Value, Compare >::iterator
 RotatableBinarySearchTree< Key, Value, Compare >::insert(RotatableBinarySearchTree::const_iterator pos, P &&data)
 {
   return bst_.insert(pos, data);
 }
 template< typename Key, typename Value, typename Compare >
-BidirectionalIterator< Key, Value, Compare >
+typename BinarySearchTree< Key, Value, Compare >::iterator
 RotatableBinarySearchTree< Key, Value, Compare >::insert(RotatableBinarySearchTree::const_iterator pos,
                                                          const RotatableBinarySearchTree::data_type &data)
 {
@@ -270,13 +276,15 @@ RotatableBinarySearchTree< Key, Value, Compare >::insert(RotatableBinarySearchTr
 }
 template< typename Key, typename Value, typename Compare >
 template< typename P >
-std::pair< BidirectionalIterator< Key, Value, Compare >, bool >
-RotatableBinarySearchTree< Key, Value, Compare >::insert(P &&data)
+std::pair< typename BinarySearchTree< Key, Value, Compare >::iterator, bool >
+RotatableBinarySearchTree< Key, Value, Compare >::insert(P
+                                                         &&data)
 {
-  return bst_.insert(data);
+  return bst_.
+    insert(data);
 }
 template< typename Key, typename Value, typename Compare >
-std::pair< BidirectionalIterator< Key, Value, Compare >, bool >
+std::pair< typename BinarySearchTree< Key, Value, Compare >::iterator, bool >
 RotatableBinarySearchTree< Key, Value, Compare >::insert(const RotatableBinarySearchTree::data_type &data)
 {
   return bst_.insert(data);
@@ -297,52 +305,53 @@ bool RotatableBinarySearchTree< Key, Value, Compare >::empty() const noexcept
   return bst_.empty();
 }
 template< typename Key, typename Value, typename Compare >
-ConstBidirectionalIterator< Key, Value, Compare >
+typename BinarySearchTree< Key, Value, Compare >::const_iterator
 RotatableBinarySearchTree< Key, Value, Compare >::cend() const noexcept
 {
   return bst_.cend();
 }
 template< typename Key, typename Value, typename Compare >
-ConstBidirectionalIterator< Key, Value, Compare > RotatableBinarySearchTree< Key, Value, Compare >::end() const noexcept
+typename BinarySearchTree< Key, Value, Compare >::const_iterator
+RotatableBinarySearchTree< Key, Value, Compare >::end() const noexcept
 {
   return cend();
 }
 template< typename Key, typename Value, typename Compare >
-BidirectionalIterator< Key, Value, Compare > RotatableBinarySearchTree< Key, Value, Compare >::end() noexcept
+typename BinarySearchTree< Key, Value, Compare >::iterator RotatableBinarySearchTree< Key, Value, Compare >::end() noexcept
 {
   return bst_.end();
 }
 template< typename Key, typename Value, typename Compare >
-ConstBidirectionalIterator< Key, Value, Compare >
+typename BinarySearchTree< Key, Value, Compare >::const_iterator
 RotatableBinarySearchTree< Key, Value, Compare >::clast() const noexcept
 {
   return bst_.clast();
 }
 template< typename Key, typename Value, typename Compare >
-ConstBidirectionalIterator< Key, Value, Compare >
+typename BinarySearchTree< Key, Value, Compare >::const_iterator
 RotatableBinarySearchTree< Key, Value, Compare >::last() const noexcept
 {
   return clast();
 }
 template< typename Key, typename Value, typename Compare >
-BidirectionalIterator< Key, Value, Compare > RotatableBinarySearchTree< Key, Value, Compare >::last() noexcept
+typename BinarySearchTree< Key, Value, Compare >::iterator RotatableBinarySearchTree< Key, Value, Compare >::last() noexcept
 {
   return bst_.last();
 }
 template< typename Key, typename Value, typename Compare >
-ConstBidirectionalIterator< Key, Value, Compare >
+typename BinarySearchTree< Key, Value, Compare >::const_iterator
 RotatableBinarySearchTree< Key, Value, Compare >::cbegin() const noexcept
 {
   return bst_.cbegin();
 }
 template< typename Key, typename Value, typename Compare >
-ConstBidirectionalIterator< Key, Value, Compare >
+typename BinarySearchTree< Key, Value, Compare >::const_iterator
 RotatableBinarySearchTree< Key, Value, Compare >::begin() const noexcept
 {
   return cbegin();
 }
 template< typename Key, typename Value, typename Compare >
-BidirectionalIterator< Key, Value, Compare > RotatableBinarySearchTree< Key, Value, Compare >::begin() noexcept
+typename BinarySearchTree< Key, Value, Compare >::iterator RotatableBinarySearchTree< Key, Value, Compare >::begin() noexcept
 {
   return bst_.begin();
 }

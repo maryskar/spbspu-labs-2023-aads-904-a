@@ -1,17 +1,14 @@
 #ifndef CONST_BIDIRECTIONAL_ITERATOR_H
 #define CONST_BIDIRECTIONAL_ITERATOR_H
 #include <iterator>
-#include "tree_node.h"
+#include "bidirectional_iterator.h"
 template< typename Key, typename Value, typename Compare >
-class BidirectionalIterator;
-template< typename Key, typename Value, typename Compare >
-class BinarySearchTree;
-template< typename Key, typename Value, typename Compare = std::less< Key > >
 class ConstBidirectionalIterator
 {
 public:
-  friend class BidirectionalIterator< Key, Value, Compare >;
   friend class BinarySearchTree< Key, Value, Compare >;
+  friend class BidirectionalIterator< Key, Value, Compare >;
+  friend class RedBlackTree< Key, Value, Compare >;
   using iterator_category = std::bidirectional_iterator_tag;
   using difference_type = std::ptrdiff_t;
   using data_type = std::pair< Key, Value >;

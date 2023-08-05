@@ -5,16 +5,18 @@
 #include <iostream>
 #include <cstddef>
 #include "tree_node.h"
-#include "bidirectional_iterator.h"
 #include "const_bidirectional_iterator.h"
-#include "rotatable_binary_search_tree.h"
-template< typename Key, typename Value, typename Compare >
+template< typename Key, typename Value, typename Compare>
 class RotatableBinarySearchTree;
-template< typename Key, typename Value, typename Compare = std::less< Key >>
+template< typename Key, typename Value, typename Compare>
+class RedBlackTree;
+template< typename Key, typename Value, typename Compare>
 class BinarySearchTree
 {
 public:
+  friend class BidirectionalIterator< Key, Value, Compare >;
   friend class RotatableBinarySearchTree< Key, Value, Compare >;
+  friend class RedBlackTree< Key, Value, Compare >;
   using data_type = std::pair< Key, Value >;
   using bst_t = BinarySearchTree< Key, Value, Compare >;
   using tree_t = TreeNode< data_type >;

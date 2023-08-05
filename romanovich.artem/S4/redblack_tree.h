@@ -1,52 +1,54 @@
 #ifndef RREDBLACK_TREE_H
 #define RREDBLACK_TREE_H
 #include "color_tree_node.h"
-template< typename T >
+#include "rotatable_binary_search_tree.h"
+template< typename Key, typename Value, typename Compare >
 class RedBlackTree
 {
 public:
+  using data_type = std::pair< Key, Value >;
   RedBlackTree();
-  void insert(const T &data);
-  void remove(const T &data);
+  void insert(const data_type &data);
+  void remove(const data_type &data);
 private:
-  ColorTreeNode< T > *root_;
-  void leftRotate(ColorTreeNode< T > *colorNode);
-  void rightRotate(ColorTreeNode< T > *colorNode);
-  void balanceAfterInsert(ColorTreeNode< T > *colorNode);
-  void balanceAfterRemove(ColorTreeNode< T > *colorNode);
+  ColorTreeNode< data_type > *root_;
+  void leftRotate(ColorTreeNode< data_type > *colorNode);
+  void rightRotate(ColorTreeNode< data_type > *colorNode);
+  void balanceAfterInsert(ColorTreeNode< data_type > *colorNode);
+  void balanceAfterRemove(ColorTreeNode< data_type > *colorNode);
 };
-template< typename T >
-void RedBlackTree< T >::balanceAfterRemove(ColorTreeNode< T > *colorNode)
+template< typename Key, typename Value, typename Compare >
+void RedBlackTree< Key, Value, Compare >::balanceAfterRemove(ColorTreeNode< data_type > *colorNode)
 {
 }
-template< typename T >
-void RedBlackTree< T >::balanceAfterInsert(ColorTreeNode< T > *colorNode)
+template< typename Key, typename Value, typename Compare >
+void RedBlackTree< Key, Value, Compare >::balanceAfterInsert(ColorTreeNode< data_type > *colorNode)
 {
 }
-template< typename T >
-void RedBlackTree< T >::rightRotate(ColorTreeNode< T > *colorNode)
+template< typename Key, typename Value, typename Compare >
+void RedBlackTree< Key, Value, Compare >::rightRotate(ColorTreeNode< data_type > *colorNode)
 {
 }
-template< typename T >
-void RedBlackTree< T >::leftRotate(ColorTreeNode< T > *colorNode)
+template< typename Key, typename Value, typename Compare >
+void RedBlackTree< Key, Value, Compare >::leftRotate(ColorTreeNode< data_type > *colorNode)
 {
 }
-template< typename T >
-void RedBlackTree< T >::remove(const T &data)
+template< typename Key, typename Value, typename Compare >
+void RedBlackTree< Key, Value, Compare >::remove(const data_type &data)
 {
-  ColorTreeNode< T > *node = findNode(data);
+  ColorTreeNode< data_type > *node = findNode(data);
   //delete
   balanceAfterRemove(node);
 }
-template< typename T >
-void RedBlackTree< T >::insert(const T &data)
+template< typename Key, typename Value, typename Compare >
+void RedBlackTree< Key, Value, Compare >::insert(const data_type &data)
 {
-  auto *newNode = new ColorTreeNode< T >(data);
+  auto *newNode = new ColorTreeNode< data_type >(data);
   //insert
   balanceAfterInsert(newNode);
 }
-template< typename T >
-RedBlackTree< T >::RedBlackTree():
+template< typename Key, typename Value, typename Compare >
+RedBlackTree< Key, Value, Compare >::RedBlackTree():
   root_(nullptr)
 {
 }
