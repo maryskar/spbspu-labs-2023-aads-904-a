@@ -7,16 +7,19 @@
 #include "tree_node.h"
 #include "bidirectional_iterator.h"
 #include "const_bidirectional_iterator.h"
+#include "rotatable_binary_search_tree.h"
+template< typename Key, typename Value, typename Compare >
+class RotatableBinarySearchTree;
 template< typename Key, typename Value, typename Compare = std::less< Key >>
 class BinarySearchTree
 {
 public:
+  friend class RotatableBinarySearchTree< Key, Value, Compare >;
   using data_type = std::pair< Key, Value >;
   using bst_t = BinarySearchTree< Key, Value, Compare >;
   using tree_t = TreeNode< data_type >;
   using iterator = BidirectionalIterator< Key, Value, Compare >;
   using const_iterator = ConstBidirectionalIterator< Key, Value, Compare >;
-  using this_t = BinarySearchTree< Key, Value, Compare >;
   //using reverse_iterator = int;
   //using const_reverse_iterator = int;
   BinarySearchTree();
