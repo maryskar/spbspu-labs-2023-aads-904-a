@@ -19,9 +19,9 @@ namespace romanovich
     RotatableBinarySearchTree(const RotatableBinarySearchTree &other) = default;
     RotatableBinarySearchTree(RotatableBinarySearchTree &&other) noexcept;
     // explicit RotatableBinarySearchTree(const Compare &comp);
-/*  template< typename InputIt >
-  RotatableBinarySearchTree(InputIt first, InputIt last, const Compare &comp = Compare());
-  RotatableBinarySearchTree(std::initializer_list< data_type > init, const Compare &comp = Compare());*/
+    /*  template< typename InputIt >
+      RotatableBinarySearchTree(InputIt first, InputIt last, const Compare &comp = Compare());
+      RotatableBinarySearchTree(std::initializer_list< data_type > init, const Compare &comp = Compare());*/
     ~RotatableBinarySearchTree() = default;
     RotatableBinarySearchTree &operator=(const RotatableBinarySearchTree &other);
     RotatableBinarySearchTree &operator=(RotatableBinarySearchTree &&other) noexcept;
@@ -71,13 +71,47 @@ namespace romanovich
     bool isEqual(const RotatableBinarySearchTree &rhs) const;
     void rotateLeftLeft(TreeNode< data_type > *node);
     void rotateRightRight(TreeNode< data_type > *node);
+    void printNode(const TreeNode< data_type > *node, bool isLeft, const std::string &prefix) const
+    {
+      std::cout << prefix;
+      if (node == nullptr)
+      {
+        std::cout << "nullptr\n";
+        return;
+      }
+      if (isLeft)
+      {
+        std::cout << "├── ";
+      }
+      else if (node == bst_.root_)
+      {
+        std::cout << "─── ";
+      }
+      else
+      {
+        std::cout << "└── ";
+      }
+      std::cout << node->data.second << "\n";
+      std::string newPrefix = prefix + (isLeft ? "│   " : "    ");
+      printNode(node->left, true, newPrefix);
+      printNode(node->right, false, newPrefix);
+    }
   private:
     BinarySearchTree< Key, Value, Compare > bst_;
+  public:
+    const BinarySearchTree< Key, Value, Compare > &getBst() const
+    {
+      return bst_;
+    }
   };
   template< typename Key, typename Value, typename Compare >
   void RotatableBinarySearchTree< Key, Value, Compare >::rotateLeftLeft(TreeNode< data_type > *node)
   {
     auto rightChild = node->right;
+    if (!rightChild)
+    {
+      return;
+    }
     node->right = rightChild->left;
     if (rightChild->left != nullptr)
     {

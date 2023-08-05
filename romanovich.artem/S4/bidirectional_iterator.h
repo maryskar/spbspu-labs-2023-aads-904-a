@@ -10,7 +10,7 @@ namespace romanovich
   class BinarySearchTree;
   template< typename Key, typename Value, typename Compare >
   class RedBlackTree;
-  template< typename Key, typename Value, typename Compare = std::less< > >
+  template< typename Key, typename Value, typename Compare = std::less<> >
   class BidirectionalIterator
   {
     friend class BinarySearchTree< Key, Value, Compare >;
@@ -38,6 +38,12 @@ namespace romanovich
     bool operator==(const BidirectionalIterator &other) const;
   private:
     TreeNode< data_type > *node_;
+  public:
+    TreeNode< data_type > *getNode() const
+    {
+      return node_;
+    }
+  private:
     TreeNode< data_type > *fakeNode_;
     TreeNode< data_type > *root_;
   };
