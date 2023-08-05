@@ -454,6 +454,15 @@ namespace dmitriev
     }
     void spliceAfter(constIterator pos, ForwardList& other, constIterator it)
     {
+      if (pos.m_ptr == nullptr)
+      {
+        throw std::logic_error("null iter");
+      }
+      if (pos == it || pos.m_ptr == it.m_ptr->otherList)
+      {
+        return;
+      }
+
       iterator changablePos = const_cast< list* >(pos.m_ptr);
       iterator changableIt = const_cast< list* >(it.m_ptr);
 
@@ -465,9 +474,36 @@ namespace dmitriev
       changablePos.m_ptr->otherList->otherList = tail1;
       changableIt.m_ptr->otherList = tail2;
     }
-    /*void splice_after(const_iterator pos, forward_list&& other, const_iterator it);*/
-    //void splice_after(const_iterator pos, forward_list& other, const_iterator first, const_iterator last);
-    //void splice_after(const_iterator pos, forward_list&& other, const_iterator first, const_iterator last);
+    void spliceAfter(constIterator pos, ForwardList&& other, constIterator it)
+    {
+      spliceAfter(pos, other, it);
+    }
+    void spliceAfter(constIterator pos, ForwardList& other, constIterator beforeFirst, constIterator last)
+    {
+      if (pos.m_ptr == nullptr)
+      {
+        throw std::logic_error("null iter");
+      }
+
+
+      iterator changablePos = const_cast< list* >(pos.m_ptr);
+      iterator changableFirst = const_cast< list* >(beforeFirst.m_ptr);
+      iterator changableLast = const_cast< list* >(last.m_ptr);
+
+      list* tail1 = changablePos.m_ptr->otherList;
+      list* tail2 = changableLast.m_ptr->otherList;
+
+      changablePos.m_ptr->otherList = changableFirst.m_ptr->otherList;
+
+      changableFirst.m_ptr->otherList = tail2;
+      changableLast.m_ptr->otherList = tail1;
+    }
+    void spliceAfter(constIterator pos, ForwardList&& other, constIterator beforeFirst, constIterator last)
+    {
+      spliceAfter(pos, other, beforeFirst, last);
+    }
+
+
 
   private:
     list* m_beforeHead;
