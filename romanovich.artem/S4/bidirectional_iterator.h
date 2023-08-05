@@ -18,7 +18,7 @@ public:
   using data_type = std::pair< Key, Value >;
   ~BidirectionalIterator() = default;
   BidirectionalIterator(const BidirectionalIterator< Key, Value, Compare > &) = default;
-  BidirectionalIterator(ConstBidirectionalIterator< Key, Value, Compare > &);
+  explicit BidirectionalIterator(ConstBidirectionalIterator< Key, Value, Compare > &);
   explicit BidirectionalIterator(TreeNode< data_type > *root, TreeNode< data_type > *node,
                                  TreeNode< data_type > *fakeNode);
   BidirectionalIterator< Key, Value, Compare > &

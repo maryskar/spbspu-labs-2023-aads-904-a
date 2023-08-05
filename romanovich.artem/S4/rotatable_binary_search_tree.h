@@ -3,9 +3,10 @@
 #include <utility>
 #include <functional>
 #include "tree_node.h"
-#include "binary_search_tree.h"
 #include "bidirectional_iterator.h"
 #include "const_bidirectional_iterator.h"
+template< typename Key, typename Value, typename Compare = std::less< Key >>
+class BinarySearchTree;
 template< typename Key, typename Value, typename Compare = std::less< Key >>
 class RotatableBinarySearchTree
 {

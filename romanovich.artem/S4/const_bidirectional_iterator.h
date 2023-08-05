@@ -19,7 +19,7 @@ public:
   ~ConstBidirectionalIterator() = default;
   ConstBidirectionalIterator();
   ConstBidirectionalIterator(const ConstBidirectionalIterator< Key, Value, Compare > &) = default;
-  ConstBidirectionalIterator(const BidirectionalIterator< Key, Value, Compare > &);
+  explicit ConstBidirectionalIterator(const BidirectionalIterator< Key, Value, Compare > &);
   explicit ConstBidirectionalIterator(TreeNode< data_type > *root, TreeNode< data_type > *node, TreeNode< data_type > *fakeNode);
   ConstBidirectionalIterator< Key, Value, Compare > &
   operator=(const ConstBidirectionalIterator< Key, Value, Compare > &) = default;
