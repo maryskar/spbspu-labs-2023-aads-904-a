@@ -413,6 +413,61 @@ namespace dmitriev
 
       return insertAfter(pos, {std::forward< Args >(args)...});
     }
+    template< class... Args >
+    void emplaceFront(Args&&... args)
+    {
+      insertAfter(beforeBegin(), {std::forward< Args >(args)...});
+    }
+
+    void swap(ForwardList& other)
+    {
+      std::swap(m_beforeHead->otherList, other.m_beforeHead->otherList);
+    }
+    
+    void spliceAfter(constIterator pos, ForwardList& other)
+    {
+      if (pos.m_ptr == nullptr)
+      {
+        throw std::logic_error("null iter");
+      }
+      if (this == std::addressof(other))
+      {
+        return;
+      }
+
+      iterator changablePos = const_cast< list* >(pos.m_ptr);
+      list* current = changablePos.m_ptr->otherList;
+
+      changablePos.m_ptr->otherList = other.m_beforeHead->otherList;
+
+      while (changablePos.m_ptr->otherList)
+      {
+        changablePos++;
+      }
+
+      changablePos.m_ptr->otherList = current;
+      other.m_beforeHead->otherList = nullptr;
+    }
+    void spliceAfter(constIterator pos, ForwardList&& other)
+    {
+      spliceAfter(pos, other);
+    }
+    void spliceAfter(constIterator pos, ForwardList& other, constIterator it)
+    {
+      iterator changablePos = const_cast< list* >(pos.m_ptr);
+      iterator changableIt = const_cast< list* >(it.m_ptr);
+
+      list* tail1 = changablePos.m_ptr->otherList;
+      list* tail2 = changableIt.m_ptr->otherList->otherList;
+
+      changablePos.m_ptr->otherList = changableIt.m_ptr->otherList;
+
+      changablePos.m_ptr->otherList->otherList = tail1;
+      changableIt.m_ptr->otherList = tail2;
+    }
+    /*void splice_after(const_iterator pos, forward_list&& other, const_iterator it);*/
+    //void splice_after(const_iterator pos, forward_list& other, const_iterator first, const_iterator last);
+    //void splice_after(const_iterator pos, forward_list&& other, const_iterator first, const_iterator last);
 
   private:
     list* m_beforeHead;
