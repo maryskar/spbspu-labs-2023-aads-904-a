@@ -6,15 +6,41 @@
 #include "queue.h"
 #include "stack.h"
 
-bool checkOverflow(const std::int64_t& value, std::int64_t& added)
+bool checkOverflowPlus(std::int64_t operand1, std::int64_t operand2, std::int64_t max_int)
 {
-  return (std::numeric_limits< std::int64_t >::max() - added >= value);
+  return operand1 > 0 && operand2 > 0 && operand2 > (max_int - operand1);
+}
+    
+bool checkOverflowMinus(std::int64_t operand1, std::int64_t operand2, std::int64_t min_int)
+{
+  return (operand1 < 0 && operand2 < 0 && operand1 < (min_int - operand2)) || (operand1 < 0 && operand2 > 0 && operand1 < (min_int + operand2)) || (operand1 > 0 && operand2 < 0 && operand1 < (min_int + operand2));
+}
+
+bool checkOverflowMultiply(std::int64_t operand1, std::int64_t operand2, std::int64_t max_int)
+{
+  return (operand1 > max_int / operand2) && ((operand1 > 0 && operand2 > 0) || (operand1 < 0 && operand2 < 0));
+}
+
+bool checkOverflowDivision(std::int64_t operand1, std::int64_t operand2, std::int64_t min_int)
+{
+  return (operand1 < min_int / operand2) && ((operand1 > 0 && operand2 < 0) || (operand1 < 0 && operand2 > 0));
+}
+
+bool isOverflowPlusMinus(std::int64_t operand1, std::int64_t operand2, std::int64_t max_int, std::int64_t min_int)
+{
+  return checkOverflowPlus(operand1, operand2, max_int) || checkOverflowMinus(operand1, operand2, min_int);
+}
+
+bool isOverflowMultiplyDivision(std::int64_t operand1, std::int64_t operand2, std::int64_t max_int, std::int64_t min_int)
+{
+  return checkOverflowMultiply(operand1, operand2, max_int) || checkOverflowDivision(operand1, operand2, min_int);
 }
 
 std::int64_t potapova::countPostfixExpression(expr_queue& postfix_queue)
 {
+  const std::int64_t max_int = std::numeric_limits< std::int64_t >::max();
+  const std::int64_t min_int = std::numeric_limits< std::int64_t >::min();
   Stack< std::int64_t > operands_stack;
-  std::int64_t added = 0;
   while (!postfix_queue.empty())
   {
     if (postfix_queue.front().type == ArithmExpMember::Type::Num)
@@ -31,36 +57,43 @@ std::int64_t potapova::countPostfixExpression(expr_queue& postfix_queue)
       switch (postfix_queue.front().operation)
       {
         case '+':
+          if (isOverflowPlusMinus(operand1, operand2, max_int, min_int))
+          {
+            throw std::overflow_error("Overflow for plus");
+          }
           operands_stack.push(operand1 + operand2);
-          added += operand1 + operand2;
-          postfix_queue.pop();
           break;
         case '-':
+          if (isOverflowPlusMinus(operand1, operand2, max_int, min_int))
+          {
+            throw std::overflow_error("Overflow for minus");
+          }
           operands_stack.push(operand1 - operand2);
-          added += operand1 - operand2;
-          postfix_queue.pop();
           break;
         case '*':
+          if (isOverflowMultiplyDivision(operand1, operand2, max_int, min_int))
+          {
+            throw std::overflow_error("Overflow for multiply");
+          }
           operands_stack.push(operand1 * operand2);
-          postfix_queue.pop();
           break;
         case '/':
+          if (operand2 == 0)
+          {
+            throw std::runtime_error("Division by zero");
+          }
+          if (isOverflowMultiplyDivision(operand1, operand2, max_int, min_int))
+          {
+            throw std::overflow_error("Overflow for division");
+          }
           operands_stack.push(operand1 / operand2);
-          postfix_queue.pop();
           break;
         case '%':
           operands_stack.push(operand1 % operand2);
-          postfix_queue.pop();
           break;
       }
+      postfix_queue.pop();
     }
   }
-  if (!checkOverflow(operands_stack.back(), added))
-  {
-    throw std::overflow_error("Overflow");
-  }
-  else
-  {
-    return operands_stack.back();
-  }
+  return operands_stack.back();
 }
