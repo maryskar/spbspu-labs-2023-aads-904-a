@@ -3,6 +3,7 @@
 #include <utility>
 #include <functional>
 #include "binary_search_tree.h"
+#include "tree_node.h"
 namespace romanovich
 {
   template< typename Key, typename Value, typename Compare >
@@ -15,7 +16,7 @@ namespace romanovich
     using data_type = std::pair< Key, Value >;
     using r_bst_t = RotatableBinarySearchTree< Key, Value, Compare >;
     using bst_t = BinarySearchTree< Key, Value, Compare >;
-    using tree_t = BinarySearchTree< data_type >::tree_t;
+    using tree_t = typename BinarySearchTree< Key, Value, Compare >::tree_t;
     using iterator = typename BinarySearchTree< Key, Value, Compare >::iterator;
     using const_iterator = typename BinarySearchTree< Key, Value, Compare >::const_iterator;
     RotatableBinarySearchTree();
@@ -72,13 +73,13 @@ namespace romanovich
     const_iterator upper_bound(const data_type &data) const;
     Compare data_comp() const;
     bool isEqual(const RotatableBinarySearchTree &rhs) const;
-    void rotateLeftLeft(TreeNode <data_type> *node);
-    void rotateRightRight(TreeNode <data_type> *node);
+    void rotateLeftLeft(TreeNode< data_type > *node);
+    void rotateRightRight(TreeNode< data_type > *node);
   private:
     bst_t bst_;
   };
   template< typename Key, typename Value, typename Compare >
-  void RotatableBinarySearchTree< Key, Value, Compare >::rotateLeftLeft(TreeNode <data_type> *node)
+  void RotatableBinarySearchTree< Key, Value, Compare >::rotateLeftLeft(TreeNode< data_type > *node)
   {
     auto rightChild = node->right;
     node->right = rightChild->left;
@@ -103,7 +104,7 @@ namespace romanovich
     node->parent = rightChild;
   }
   template< typename Key, typename Value, typename Compare >
-  void RotatableBinarySearchTree< Key, Value, Compare >::rotateRightRight(TreeNode <data_type> *node)
+  void RotatableBinarySearchTree< Key, Value, Compare >::rotateRightRight(TreeNode< data_type > *node)
   {
     auto leftChild = node->left;
     node->left = leftChild->right;
