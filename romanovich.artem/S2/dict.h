@@ -2,7 +2,7 @@
 #define DICT_H
 #include <functional>
 #include "listnode.h"
-#include "forwardlist.h"
+#include <forwardlist.h>
 namespace romanovich
 {
   namespace details
