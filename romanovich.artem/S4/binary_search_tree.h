@@ -21,8 +21,8 @@ public:
   using data_type = std::pair< Key, Value >;
   using bst_t = BinarySearchTree< Key, Value, Compare >;
   using tree_t = TreeNode< data_type >;
-  using iterator = BinarySearchTree< Key, Value, Compare >::iterator;
-  using const_iterator = BinarySearchTree< Key, Value, Compare >const_iterator;
+  using iterator = BidirectionalIterator<Key, Value, Compare>;
+  using const_iterator = ConstBidirectionalIterator<Key, Value, Compare>;
   //using reverse_iterator = int;
   //using const_reverse_iterator = int;
   BinarySearchTree();
@@ -88,17 +88,17 @@ private:
   TreeNode< data_type > *copyEnd(const TreeNode< data_type > *endNode);
 };
 template< typename Key, typename Value, typename Compare >
-BinarySearchTree< Key, Value, Compare >const_iterator BinarySearchTree< Key, Value, Compare >::begin() const noexcept
+ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::begin() const noexcept
 {
   return cbegin();
 }
 template< typename Key, typename Value, typename Compare >
-BinarySearchTree< Key, Value, Compare >const_iterator BinarySearchTree< Key, Value, Compare >::last() const noexcept
+ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::last() const noexcept
 {
   return clast();
 }
 template< typename Key, typename Value, typename Compare >
-BinarySearchTree< Key, Value, Compare >const_iterator BinarySearchTree< Key, Value, Compare >::end() const noexcept
+ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::end() const noexcept
 {
   return cend();
 }
@@ -175,22 +175,22 @@ BinarySearchTree< Key, Value, Compare >::lower_bound(const data_type &data)
   return it;
 }
 template< typename Key, typename Value, typename Compare >
-BinarySearchTree< Key, Value, Compare >const_iterator BinarySearchTree< Key, Value, Compare >::clast() const noexcept
+ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::clast() const noexcept
 {
   return const_iterator(root_, root_->findMax(root_), fakeNode_);
 }
 template< typename Key, typename Value, typename Compare >
-BinarySearchTree< Key, Value, Compare >iterator BinarySearchTree< Key, Value, Compare >::last() noexcept
+BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::last() noexcept
 {
   return iterator(root_, root_->findMax(root_), fakeNode_);
 }
 template< typename Key, typename Value, typename Compare >
-BinarySearchTree< Key, Value, Compare >const_iterator BinarySearchTree< Key, Value, Compare >::cbegin() const noexcept
+ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::cbegin() const noexcept
 {
   return const_iterator(root_, root_->findMin(root_), fakeNode_);
 }
 template< typename Key, typename Value, typename Compare >
-BinarySearchTree< Key, Value, Compare >iterator BinarySearchTree< Key, Value, Compare >::begin() noexcept
+BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::begin() noexcept
 {
   return iterator(root_, root_->findMin(root_), fakeNode_);
 }
@@ -211,12 +211,12 @@ void BinarySearchTree< Key, Value, Compare >::clear()
   clear(root_);
 }
 template< typename Key, typename Value, typename Compare >
-BinarySearchTree< Key, Value, Compare >iterator BinarySearchTree< Key, Value, Compare >::end() noexcept
+BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::end() noexcept
 {
   return iterator(root_, fakeNode_, fakeNode_);
 }
 template< typename Key, typename Value, typename Compare >
-BinarySearchTree< Key, Value, Compare >const_iterator BinarySearchTree< Key, Value, Compare >::cend() const noexcept
+ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::cend() const noexcept
 {
   return const_iterator(root_, fakeNode_, fakeNode_);
 }
@@ -467,7 +467,7 @@ TreeNode< std::pair< Key, Value > > *BinarySearchTree< Key, Value, Compare >::in
   return node;
 }
 template< typename Key, typename Value, typename Compare >
-BinarySearchTree< Key, Value, Compare >iterator BinarySearchTree< Key, Value, Compare >::find(const data_type &data)
+BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::find(const data_type &data)
 {
   tree_t *current = root_;
   while (current != nullptr)

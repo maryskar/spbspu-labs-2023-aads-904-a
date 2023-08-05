@@ -1,9 +1,9 @@
-#ifndef BINARY_SEARCH_TREE_H
-#define BINARY_SEARCH_TREE_H
+#ifndef ROTATABLE_BINARY_SEARCH_TREE_H
+#define ROTATABLE_BINARY_SEARCH_TREE_H
 #include <utility>
 #include <functional>
 #include "tree_node.h"
-#include "bidirectional_iterator.h"
+#include "binary_search_tree.h"
 namespace romanovich
 {
   template< typename Key, typename Value, typename Compare = std::less< Key >>

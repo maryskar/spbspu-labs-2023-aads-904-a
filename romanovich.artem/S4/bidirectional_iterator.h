@@ -10,7 +10,7 @@ namespace romanovich
   class BinarySearchTree;
   template< typename Key, typename Value, typename Compare >
   class RedBlackTree;
-  template< typename Key, typename Value, typename Compare >
+  template< typename Key, typename Value, typename Compare = std::less< > >
   class BidirectionalIterator
   {
     friend class BinarySearchTree< Key, Value, Compare >;
