@@ -1,16 +1,16 @@
 #ifndef COLOR_TREE_NODE_H
 #define COLOR_TREE_NODE_H
 #include "tree_node.h"
-enum Color
+enum class Color
 {
-  RED,
-  BLACK
+  C_RED,
+  C_BLACK
 };
 template< typename T >
 class ColorTreeNode
 {
 public:
-  explicit ColorTreeNode(const T &data, Color color = RED);
+  explicit ColorTreeNode(const T &data, Color color = Color::C_RED);
   TreeNode< T > *getNode() const;
   void setColor(Color color);
   Color getColor() const;
