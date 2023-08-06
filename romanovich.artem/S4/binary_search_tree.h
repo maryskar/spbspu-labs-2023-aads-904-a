@@ -297,7 +297,7 @@ namespace romanovich
     {
       return at(data);
     }
-    catch (const std::out_of_range &e)
+    catch (const std::out_of_range &)
     {
     }
     return *(emplace(data).first);
