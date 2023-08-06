@@ -29,7 +29,7 @@ namespace romanovich
     ~BinarySearchTree();
     BinarySearchTree(const BinarySearchTree &other);
     BinarySearchTree(BinarySearchTree &&other) noexcept;
-    explicit BinarySearchTree(const Compare & compare);
+    explicit BinarySearchTree(const Compare &compare);
     BinarySearchTree &operator=(const BinarySearchTree &other);
     BinarySearchTree &operator=(BinarySearchTree &&other) noexcept;
     void remove(const data_t &data);
@@ -53,7 +53,8 @@ namespace romanovich
     data_t &operator[](data_t &&data);
     size_t size() const;
     bool empty() const;
-    std::pair< iterator, bool > insert(data_t &&data);
+    template< typename P >
+    std::pair< iterator, bool > insert(P &&data);
     std::pair< iterator, bool > insert(const data_t &data);
     iterator insert(const_iterator pos, const data_t &data);
     iterator insert(const_iterator pos, data_t &&data);
@@ -73,14 +74,14 @@ namespace romanovich
     iterator upper_bound(const data_t &data);
     const_iterator upper_bound(const data_t &data) const;
     Compare value_comp() const;
+    tree_t *root_;
   private:
     tree_t *fakeNode_;
-    tree_t *root_;
     size_t size_;
     Compare compare_;
     void clear(TreeNode< data_t > *node);
     TreeNode< data_t > *insertImpl(TreeNode< data_t > *node, TreeNode< data_t > *parent,
-                                      const Key &key, const Value &value);
+                                   const Key &key, const Value &value);
     TreeNode< data_t > *removeImpl(TreeNode< data_t > *node, const data_t &data);
     tree_t *initFake();
     TreeNode< data_t > *copyBegin(const TreeNode< data_t > *beginNode);
@@ -91,7 +92,7 @@ namespace romanovich
   };
   template< typename Key, typename Value, typename Compare >
   BinarySearchTree< Key, Value, Compare >::BinarySearchTree(const Compare &compare):
-  BinarySearchTree()
+    BinarySearchTree()
   {
     compare_ = compare;
   }
@@ -275,13 +276,12 @@ namespace romanovich
     return const_iterator(root_, fakeNode_, fakeNode_);
   }
   template< typename Key, typename Value, typename Compare >
+  template< typename P >
   std::pair< typename BinarySearchTree< Key, Value, Compare >::iterator, bool >
-  BinarySearchTree< Key, Value, Compare >::insert(data_t &&data)
+  BinarySearchTree< Key, Value, Compare >::insert(P &&data)
   {
-//  const Key &const_key = new_data.first;
-//  const Value &const_value = new_data.second;
-    data_t new_data(std::forward< data_t >(data));
-    return insert(new_data);
+    data_t newData(std::forward< P >(data));
+    return insert(newData);
   }
   template< typename Key, typename Value, typename Compare >
   std::pair< Key, Value > &BinarySearchTree< Key, Value, Compare >::operator[](const data_t &data)

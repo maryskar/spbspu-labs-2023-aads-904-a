@@ -73,8 +73,8 @@ namespace romanovich
     void rotateLeftLeft(TreeNode< data_t > *node);
     void rotateRightRight(TreeNode< data_t > *node);
     void printNode(const TreeNode< data_t > *node, bool isLeft, const std::string &prefix) const;
-  private:
     BinarySearchTree< Key, Value, Compare > bst_;
+  private:
   };
   template< typename Key, typename Value, typename Compare >
   RotatableBinarySearchTree< Key, Value, Compare >::RotatableBinarySearchTree(const Compare &compare):
