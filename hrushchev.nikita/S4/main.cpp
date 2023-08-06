@@ -20,7 +20,7 @@ void printTree(Tree<std::pair<Key, Value>>* node, int indent = 0)
     printTree(node->right_, indent + 4);
     std::cout << std::string(indent, ' ') << node->data_.first << "\n";
     printTree(node->left_, indent + 4);
-    }
+  }
 }
 
 int main() {
@@ -33,7 +33,7 @@ int main() {
     avlTree.insert(8, "eight");
     avlTree.insert(10, "ten");
     avlTree.insert(9, "nine");
-    avlTree.insert(11, "11");
+    avlTree.erase(10);
     printTree(avlTree.node_);
   
     inOrderTraversal(avlTree.node_);

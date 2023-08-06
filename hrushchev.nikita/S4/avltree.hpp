@@ -11,11 +11,14 @@ class AVLTree
   public:
     using data_t = std::pair< Key, Value >;
     AVLTree();
-    void insert(Key key, Value value);
+    void insert(const Key& key, const Value& value);
+    void erase(const Key& key);
     Tree< data_t >* node_;
     Compare comp_;
   private:
-    Tree< data_t >* insert(Key key, Value value, Tree< data_t >* tree);
+    Tree< data_t >* insert(const Key& key, const Value& value, Tree< data_t >* tree);
+    Tree< data_t >* find(const Key& key, Tree< data_t >* tree);
+    void erase(Tree< data_t >* tree);
 };
 
 template< typename Key, typename Value, typename Compare >
@@ -25,8 +28,21 @@ AVLTree< Key, Value, Compare >::AVLTree():
 {
 }
 
+template< typename Key, typename Value, typename Compare >
+void AVLTree< Key, Value, Compare >::insert(const Key& key, const Value& value)
+{
+  insert(key, value, node_);
+}
+
+template< typename Key, typename Value, typename Compare >
+void AVLTree< Key, Value, Compare >::erase(const Key& key)
+{
+  erase(find(key, node_));
+}
+
 template<typename Key, typename Value, typename Compare>
-Tree< typename AVLTree< Key, Value, Compare >::data_t >* AVLTree< Key, Value, Compare >::insert(Key key, Value value, Tree<data_t>* tree)
+Tree< typename AVLTree< Key, Value, Compare >::data_t >* AVLTree< Key, Value, Compare >::insert(const Key& key,
+    const Value & value, Tree< data_t >* tree)
 {
   if (!node_)
   {
@@ -68,9 +84,41 @@ Tree< typename AVLTree< Key, Value, Compare >::data_t >* AVLTree< Key, Value, Co
 }
 
 template< typename Key, typename Value, typename Compare >
-void AVLTree< Key, Value, Compare >::insert(Key key, Value value)
+Tree< typename AVLTree< Key, Value, Compare >::data_t >* AVLTree< Key, Value, Compare >::find(const Key& key, Tree< data_t >* tree)
 {
-  insert(key, value, node_);
+  if (!tree)
+  {
+    return nullptr;
+  }
+  if (comp_(key, tree->data_.first))
+  {
+    if (key == tree->data_.first)
+    {
+      return tree;
+    }
+    return find(key, tree->right_);
+  }
+  else
+  {
+    if (key == tree->data_.first)
+    {
+      return tree;
+    }
+    return find(key, tree->left_);
+  }
+}
+
+template< typename Key, typename Value, typename Compare >
+void AVLTree< Key, Value, Compare >::erase( Tree< typename AVLTree<Key, Value, Compare >::data_t >* tree)
+{
+  if (!tree)
+  {
+    return;
+  }
+  if (!tree->right_ || !tree->left_)
+  {
+    tree = (tree->left_ = nullptr) ? tree->left_ : tree->right_;
+  }
 }
 
 #endif
