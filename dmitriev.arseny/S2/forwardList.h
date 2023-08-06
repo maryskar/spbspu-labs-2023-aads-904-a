@@ -233,6 +233,33 @@ namespace dmitriev
       return *this;
     }
 
+    bool operator==(const ForwardList< T >& other)
+    {
+      constIterator i = constBeforeBegin();
+      constIterator j = other.constBeforeBegin();
+      bool k = true;
+
+      for (; i.m_ptr->otherList != nullptr || j.m_ptr->otherList != nullptr; i++, j++)
+      {
+        if (i.m_ptr->data != j.m_ptr->data)
+        {
+          k = false;
+          break;
+        }
+      }
+
+      if (i.m_ptr->otherList != j.m_ptr->otherList)
+      {
+        return false;
+      }
+
+      return k;
+    }
+    bool operator!=(const ForwardList< T >& other)
+    {
+      return !(*this == other);
+    }
+
     ~ForwardList()
     {
       dmitriev::clear(m_beforeHead);
@@ -300,15 +327,15 @@ namespace dmitriev
       return iterator();
     }
 
-    constIterator constBeforeBegin()
+    constIterator constBeforeBegin() const
     {
       return constIterator(m_beforeHead);
     }
-    constIterator constBegin()
+    constIterator constBegin() const
     {
       return constIterator(m_beforeHead->otherList);
     }
-    constIterator constEnd()
+    constIterator constEnd() const
     {
       return constIterator();
     }
