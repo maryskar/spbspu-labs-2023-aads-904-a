@@ -76,6 +76,29 @@ namespace tarasenko
   }
 
   template< class Key, class Value, class Compare >
+  Dictionary< Key, Value, Compare > merge(const Dictionary< Key, Value, Compare >& lhs,
+     const Dictionary< Key, Value, Compare >& rhs)
+  {
+    if (rhs.isEmpty())
+    {
+      return lhs;
+    }
+    auto result = rhs;
+    for (auto it = lhs.cbegin(); it != lhs.cend(); it++)
+    {
+      if (rhs.find(it->first) != rhs.cend())
+      {
+        result[it->first] = lhs.at(it->first);
+      }
+      else
+      {
+        result.insert(*it);
+      }
+    }
+    return result;
+  }
+
+  template< class Key, class Value, class Compare >
   std::ostream& printDict(std::ostream& output, const std::string& name_of_dict,
      const Dictionary< Key, Value, Compare >& dict)
   {
@@ -317,24 +340,18 @@ namespace tarasenko
     }
   }
 
-  template< class Key, class Value, class Compare >
-  void merge(Dictionary< Key, Value, Compare > &merging, Dictionary< Key, Value, Compare > &dict)
+  namespace details
   {
-    if (merging.isEmpty())
+    template< class Key, class Value, class Compare >
+    Dictionary< Key, Value, Compare > createRandomDict(size_t size, const Dictionary< Key, Value, Compare >& range)
     {
-      return;
-    }
-    auto it = merging.begin();
-    for (; it != merging.end(); it++)
-    {
-      if (dict.find(it->first) != dict.end())
+      Dictionary< Key, Value, Compare > random_dict(range.key_comp());
+      while (random_dict.size() != size)
       {
-        dict[it->first] = merging[it->first];
+        auto random_elem = *takeRandomElem(range.cbegin(), range.cend());
+        random_dict.insert(random_elem);
       }
-      else
-      {
-        dict.insert(*it);
-      }
+      return random_dict;
     }
   }
 
@@ -366,13 +383,7 @@ namespace tarasenko
       throw std::invalid_argument("Not enough elements");
     }
 
-    Dictionary< Key, Value, Compare > random_dict;
-    while (random_dict.size() != size)
-    {
-      auto random_elem = *takeRandomElem(dict_of_elems.begin(), dict_of_elems.end());
-      random_dict.insert(random_elem);
-    }
-    dict_of_dict.push(name_new_dict, random_dict);
+    dict_of_dict.push(name_new_dict, details::createRandomDict(size, dict_of_elems));
   }
 
   template< class Key, class Value, class Compare >

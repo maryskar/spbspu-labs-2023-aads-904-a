@@ -27,6 +27,7 @@ namespace tarasenko
      type_1.push("complement", &complement< Key, Value, Compare >);
      type_1.push("intersect", &intersect< Key, Value, Compare >);
      type_1.push("union", &unionWith< Key, Value, Compare >);
+     type_1.push("merge", &merge< Key, Value, Compare >);
 
      type_2.push("print", &print< Key, Value, Compare >);
      type_2.push("print_if", &printIf< Key, Value, Compare >);
@@ -41,7 +42,6 @@ namespace tarasenko
 
      type_4.push("swap", &swap< Key, Value, Compare >);
      type_4.push("update", &update< Key, Value, Compare >);
-     type_4.push("merge", &merge< Key, Value, Compare >);
 
      type_5.push("subset", &isSubset< Key, Value, Compare >);
    }
