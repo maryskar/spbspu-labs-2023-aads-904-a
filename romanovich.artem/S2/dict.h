@@ -17,17 +17,17 @@ namespace romanovich
   class Dictionary
   {
   public:
-    using value_type = std::pair< const Key, Value >;
-    using iterator = typename ForwardList< value_type >::iterator;
-    using const_iterator = typename ForwardList< value_type >::const_iterator;
+    using value_t = std::pair< const Key, Value >;
+    using iterator = typename ForwardList< value_t >::iterator;
+    using const_iterator = typename ForwardList< value_t >::const_iterator;
     Dictionary();
     Dictionary(const Dictionary< Key, Value, Compare > &other);
     Dictionary(Dictionary< Key, Value, Compare > &&other) noexcept;
-    Dictionary(std::initializer_list< value_type > other);
+    Dictionary(std::initializer_list< value_t > other);
     ~Dictionary() = default;
     Dictionary< Key, Value, Compare > &operator=(const Dictionary< Key, Value, Compare > &other);
     Dictionary< Key, Value, Compare > &operator=(Dictionary< Key, Value, Compare > &&other) noexcept;
-    Dictionary< Key, Value, Compare > &operator=(std::initializer_list< value_type > initializerList);
+    Dictionary< Key, Value, Compare > &operator=(std::initializer_list< value_t > initializerList);
     Value &operator[](const Key &key);
     Value &operator[](Key &&key);
     Value &at(const Key &key);
@@ -48,13 +48,13 @@ namespace romanovich
     void clear() noexcept;
     template< typename P >
     std::pair< iterator, bool > insert(P &&value);
-    iterator insert(const_iterator pos, const value_type &value);
-    std::pair< iterator, bool > insert(const value_type &value);
+    iterator insert(const_iterator pos, const value_t &value);
+    std::pair< iterator, bool > insert(const value_t &value);
     template< typename P >
     iterator insert(const_iterator pos, P &&value);
     template< typename InputIt >
     void insert(InputIt first, InputIt last);
-    void insert(std::initializer_list< value_type > initializerList);
+    void insert(std::initializer_list< value_t > initializerList);
     template< typename... Args >
     std::pair< iterator, bool > emplace(Args &&... args);
     template< typename... Args >
@@ -74,16 +74,16 @@ namespace romanovich
     const_iterator upper_bound(const Key &key) const;
     Compare key_comp() const;
   private:
-    ForwardList< value_type > data_;
+    ForwardList< value_t > data_;
     Compare comp_;
     Value &insertValue(const Key &key);
     std::pair< iterator, iterator >
     getFindRange(iterator start, const Key &key, std::function< bool(Key, Key) > function);
-    iterator push(const value_type &value);
+    iterator push(const value_t &value);
   };
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::iterator
-  Dictionary< Key, Value, Compare >::push(const Dictionary::value_type &value)
+  Dictionary< Key, Value, Compare >::push(const Dictionary::value_t &value)
   {
     auto prev = data_.before_begin();
     for (auto it = data_.begin(); it != data_.end(); ++it)
@@ -127,7 +127,7 @@ namespace romanovich
     }
   }
   template< typename Key, typename Value, typename Compare >
-  Dictionary< Key, Value, Compare >::Dictionary(std::initializer_list< value_type > other):
+  Dictionary< Key, Value, Compare >::Dictionary(std::initializer_list< value_t > other):
     data_(other),
     comp_()
   {
@@ -236,7 +236,7 @@ namespace romanovich
   {
     try
     {
-      auto it = push(std::forward< value_type >(value_type(args...)));
+      auto it = push(std::forward< value_t >(value_t(args...)));
       return {it, true};
     }
     catch (...)
@@ -245,7 +245,7 @@ namespace romanovich
     }
   }
   template< typename Key, typename Value, typename Compare >
-  void Dictionary< Key, Value, Compare >::insert(std::initializer_list< value_type > initializerList)
+  void Dictionary< Key, Value, Compare >::insert(std::initializer_list< value_t > initializerList)
   {
     data_.insert_after(data_.cbefore_begin(), initializerList.begin(), initializerList.end());
   }
@@ -268,7 +268,7 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::iterator
-  Dictionary< Key, Value, Compare >::insert(Dictionary::const_iterator pos, const Dictionary::value_type &value)
+  Dictionary< Key, Value, Compare >::insert(Dictionary::const_iterator pos, const Dictionary::value_t &value)
   {
     return data_.insert_after(pos, value);
   }
@@ -277,7 +277,7 @@ namespace romanovich
   std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool >
   Dictionary< Key, Value, Compare >::insert(P &&value)
   {
-    value_type tmpValue(std::forward< P >(value));
+    value_t tmpValue(std::forward< P >(value));
     iterator it = lower_bound(tmpValue.first);
     if (it != end() && details::areEqualKeys< Key, Compare >(tmpValue.first, it->first))
     {
@@ -328,7 +328,7 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   std::pair< typename ForwardList< std::pair< const Key, Value > >::iterator, bool >
-  Dictionary< Key, Value, Compare >::insert(const Dictionary::value_type &value)
+  Dictionary< Key, Value, Compare >::insert(const Dictionary::value_t &value)
   {
     auto it = find(value.first);
     if (it != end())
@@ -448,7 +448,7 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   Dictionary< Key, Value, Compare > &
-  Dictionary< Key, Value, Compare >::operator=(std::initializer_list< value_type > initializerList)
+  Dictionary< Key, Value, Compare >::operator=(std::initializer_list< value_t > initializerList)
   {
     data_.clear();
     insert(initializerList);

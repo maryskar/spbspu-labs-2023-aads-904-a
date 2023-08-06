@@ -17,7 +17,7 @@ namespace romanovich
     friend class ForwardList< T >;
     friend class ForwardListIterator< T >;
     using iterator_category = std::forward_iterator_tag;
-    using difference_type = std::ptrdiff_t;
+    using difference_t = std::ptrdiff_t;
     ConstForwardListIterator();
     explicit ConstForwardListIterator(const ForwardListIterator< T > &other);
     ~ConstForwardListIterator() = default;
