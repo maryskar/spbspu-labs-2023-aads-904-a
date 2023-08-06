@@ -50,27 +50,40 @@ namespace tarasenko
       Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
       std::istream& input, std::ostream& output)
    {
-     if (findInType1(name_of_command))
+     try
      {
-       callType1(name_of_command, dict_of_dict, input, output);
+       if (findInType1(name_of_command))
+       {
+         callType1(name_of_command, dict_of_dict, input, output);
+       }
+       else if (findInType2(name_of_command))
+       {
+         callType2(name_of_command, dict_of_dict, input, output);
+       }
+       else if (findInType3(name_of_command))
+       {
+         callType3(name_of_command, dict_of_dict, input, output);
+       }
+       else if (findInType4(name_of_command) || findInType5(name_of_command))
+       {
+         callType45(name_of_command, dict_of_dict, input, output);
+       }
+       else
+       {
+         output << outMessageInvalidCommand << "\n";
+         std::string trash = " ";
+         getline(input, trash);
+       }
      }
-     else if (findInType2(name_of_command))
+     catch (const std::invalid_argument& e)
      {
-       callType2(name_of_command, dict_of_dict, input, output);
+       output << outMessageEmpty << "\n";
+       return;
      }
-     else if (findInType3(name_of_command))
-     {
-       callType3(name_of_command, dict_of_dict, input, output);
-     }
-     else if (findInType4(name_of_command) || findInType5(name_of_command))
-     {
-       callType45(name_of_command, dict_of_dict, input, output);
-     }
-     else
+     catch (const std::exception& e)
      {
        output << outMessageInvalidCommand << "\n";
-       std::string trash = " ";
-       getline(input, trash);
+       return;
      }
    }
 
@@ -135,18 +148,8 @@ namespace tarasenko
     std::string name_dict1 = " ";
     std::string name_dict2 = " ";
     input >> name_new_dict >> name_dict1 >> name_dict2;
-    dict_type dict1;
-    dict_type dict2;
-    try
-    {
-      dict1 = dict_of_dict.at(name_dict1);
-      dict2 = dict_of_dict.at(name_dict2);
-    }
-    catch (const std::out_of_range& e)
-    {
-      output << outMessageInvalidCommand << "\n";
-      return;
-    }
+    dict_type dict1 = dict_of_dict.at(name_dict1);
+    dict_type dict2 = dict_of_dict.at(name_dict2);
     auto new_dict = type_1.at(name_of_command)(dict1, dict2);
     dict_of_dict.push(name_new_dict, new_dict);
   }
@@ -157,32 +160,14 @@ namespace tarasenko
   {
     std::string key = " ";
     input >> key;
-    try
-    {
-      type_2.at(name_of_command)(output, key, dict_of_dict);
-    }
-    catch (const std::out_of_range& e)
-    {
-      output << outMessageInvalidCommand << "\n";
-    }
-    catch (...)
-    {
-      output << outMessageEmpty << "\n";
-    }
+    type_2.at(name_of_command)(output, key, dict_of_dict);
   }
 
   template< typename Key, typename Value, typename Compare >
   void Commands< Key, Value, Compare >::callType3(const std::string& name_of_command,
      dict_of_dict_t& dict_of_dict, std::istream& input, std::ostream& output)
   {
-    try
-    {
-      type_3.at(name_of_command)(input, dict_of_dict);
-    }
-    catch (const std::exception&)
-    {
-      output << outMessageInvalidCommand << "\n";
-    }
+    type_3.at(name_of_command)(input, dict_of_dict);
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -192,25 +177,18 @@ namespace tarasenko
     std::string name_dict1 = " ";
     std::string name_dict2 = " ";
     input >> name_dict1 >> name_dict2;
-    try
+
+    dict_type dict1 = dict_of_dict.at(name_dict1);
+    dict_type dict2 = dict_of_dict.at(name_dict2);
+    if (findInType4(name_of_command))
     {
-      dict_type dict1 = dict_of_dict.at(name_dict1);
-      dict_type dict2 = dict_of_dict.at(name_dict2);
-      if (findInType4(name_of_command))
-      {
-        type_4.at(name_of_command)(dict1, dict2);
-        dict_of_dict[name_dict1] = dict1;
-        dict_of_dict[name_dict2] = dict2;
-      }
-      else
-      {
-        output << std::boolalpha << type_5.at(name_of_command)(dict1, dict2) << "\n";
-      }
+      type_4.at(name_of_command)(dict1, dict2);
+      dict_of_dict[name_dict1] = dict1;
+      dict_of_dict[name_dict2] = dict2;
     }
-    catch (const std::out_of_range& e)
+    else
     {
-      output << outMessageInvalidCommand << "\n";
-      return;
+      output << std::boolalpha << type_5.at(name_of_command)(dict1, dict2) << "\n";
     }
   }
 }
