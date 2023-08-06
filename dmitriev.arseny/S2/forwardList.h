@@ -503,7 +503,54 @@ namespace dmitriev
       spliceAfter(pos, other, beforeFirst, last);
     }
 
+    size_t remove(const T& value)
+    {
+      size_t count = 0;
 
+      for (iterator it = beforeBegin(); it != end(); it++)
+      {
+        if (it.m_ptr->otherList->data == value)
+        {
+          eraseAfter(it);
+          count++;
+        }
+      }
+
+      return count;
+    }
+    template< class UnaryPredicate >
+    size_t removeIf(UnaryPredicate p)
+    {
+      size_t count = 0;
+
+      for (iterator it = beforeBegin(); it != end(); it++)
+      {
+        if (p(it.m_ptr->otherList->data))
+        {
+          eraseAfter(it);
+          count++;
+        }
+      }
+
+      return count;
+    }
+
+    void reverse() noexcept
+    {
+      list* top = m_beforeHead->otherList;
+      list* tail = top;
+      list* val = nullptr;
+
+      while (tail->otherList != nullptr)
+      {
+        m_beforeHead->otherList = tail->otherList;
+        val = tail->otherList->otherList;
+        tail->otherList->otherList = top;
+        tail->otherList = val;
+
+        top = m_beforeHead->otherList;
+      }
+    }
 
   private:
     list* m_beforeHead;
