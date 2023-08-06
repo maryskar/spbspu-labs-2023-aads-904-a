@@ -1,6 +1,6 @@
 #ifndef RED_BLACK_TREE_H
 #define RED_BLACK_TREE_H
-#include "tree_node.h"
+#include "color_tree_node.h"
 #include "rotatable_binary_search_tree.h"
 namespace romanovich
 {
@@ -11,8 +11,6 @@ namespace romanovich
     using data_t = std::pair< Key, Value >;
     using iterator = typename RotatableBinarySearchTree< Key, Value, Compare >::iterator;
     using const_iterator = typename RotatableBinarySearchTree< Key, Value, Compare >::const_iterator;
-    using redblack_bst = std::pair< Key, Value >;
-    using tree_node_t = TreeNode< data_t, redblack_bst >;
     RedBlackTree();
     RedBlackTree(const RedBlackTree &other);
     RedBlackTree(RedBlackTree &&other) noexcept;
@@ -73,42 +71,42 @@ namespace romanovich
     void remove(const data_t &data);
   private:
     RotatableBinarySearchTree< Key, Value, Compare > *rotBst_;
-    void leftRotate(tree_node_t *node);
-    void rightRotate(tree_node_t *node);
-    void balanceAfterInsert(tree_node_t *node);
-    void balanceAfterRemove(tree_node_t *node);
+    void leftRotate(ColorTreeNode< data_t > *colorNode);
+    void rightRotate(ColorTreeNode< data_t > *colorNode);
+    void balanceAfterInsert(ColorTreeNode< data_t > *colorNode);
+    void balanceAfterRemove(ColorTreeNode< data_t > *colorNode);
   };
   template< typename Key, typename Value, typename Compare >
   RedBlackTree< Key, Value, Compare >::RedBlackTree(const RedBlackTree &other)
   {
   }
   template< typename Key, typename Value, typename Compare >
-  void RedBlackTree< Key, Value, Compare >::balanceAfterRemove(tree_node_t *node)
+  void RedBlackTree< Key, Value, Compare >::balanceAfterRemove(ColorTreeNode< data_t > *colorNode)
   {
   }
   template< typename Key, typename Value, typename Compare >
-  void RedBlackTree< Key, Value, Compare >::balanceAfterInsert(tree_node_t *node)
+  void RedBlackTree< Key, Value, Compare >::balanceAfterInsert(ColorTreeNode< data_t > *colorNode)
   {
   }
   template< typename Key, typename Value, typename Compare >
-  void RedBlackTree< Key, Value, Compare >::rightRotate(tree_node_t *node)
+  void RedBlackTree< Key, Value, Compare >::rightRotate(ColorTreeNode< data_t > *colorNode)
   {
   }
   template< typename Key, typename Value, typename Compare >
-  void RedBlackTree< Key, Value, Compare >::leftRotate(tree_node_t *node)
+  void RedBlackTree< Key, Value, Compare >::leftRotate(ColorTreeNode< data_t > *colorNode)
   {
   }
   template< typename Key, typename Value, typename Compare >
   void RedBlackTree< Key, Value, Compare >::remove(const data_t &data)
   {
-    tree_node_t *node = findNode(data);
+    ColorTreeNode< data_t > *node = findNode(data);
     //delete
     balanceAfterRemove(node);
   }
   template< typename Key, typename Value, typename Compare >
   void RedBlackTree< Key, Value, Compare >::insert(const data_t &data)
   {
-    auto *newNode = new tree_node_t(data);
+    auto *newNode = new ColorTreeNode< data_t >(data);
     //insert
     balanceAfterInsert(newNode);
   }
@@ -116,8 +114,7 @@ namespace romanovich
   RedBlackTree< Key, Value, Compare >::RedBlackTree():
     rotBst_(nullptr)
   {
-      rotBst_->bst_.fakeNode_ = new tree_node_t{};
-      //->color = Color::C_BLACK;
+      rotBst_->bst_.fakeNode_ = ColorTreeNode< data_t>();
   }
 }
 #endif
