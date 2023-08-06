@@ -70,12 +70,16 @@ namespace romanovich
     void insert(const data_type &data);
     void remove(const data_type &data);
   private:
-    ColorTreeNode< data_type > *root_;
+    RotatableBinarySearchTree< Key, Value, Compare > *rotBst_;
     void leftRotate(ColorTreeNode< data_type > *colorNode);
     void rightRotate(ColorTreeNode< data_type > *colorNode);
     void balanceAfterInsert(ColorTreeNode< data_type > *colorNode);
     void balanceAfterRemove(ColorTreeNode< data_type > *colorNode);
   };
+  template< typename Key, typename Value, typename Compare >
+  RedBlackTree< Key, Value, Compare >::RedBlackTree(const RedBlackTree &other)
+  {
+  }
   template< typename Key, typename Value, typename Compare >
   void RedBlackTree< Key, Value, Compare >::balanceAfterRemove(ColorTreeNode< data_type > *colorNode)
   {
@@ -108,8 +112,9 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   RedBlackTree< Key, Value, Compare >::RedBlackTree():
-    root_(nullptr)
+    rotBst_(nullptr)
   {
+      rotBst_->bst_.fakeNode_ = ColorTreeNode< data_type>();
   }
 }
 #endif

@@ -2,13 +2,15 @@
 #define ROTATABLE_BINARY_SEARCH_TREE_H
 #include <utility>
 #include <functional>
-#include "tree_node.h"
 #include "binary_search_tree.h"
 namespace romanovich
 {
+  template< typename TKey, typename Value, typename Compare >
+  class RedBlackTree;
   template< typename Key, typename Value, typename Compare = std::less< Key >>
   class RotatableBinarySearchTree
   {
+    friend class RedBlackTree< Key, Value, Compare >;
   public:
     using data_type = std::pair< Key, Value >;
     using iterator = BidirectionalIterator< Key, Value, Compare >;
