@@ -192,7 +192,7 @@ namespace tarasenko
   {
     std::pair< Key, Value > data(k, v);
     return insert(data);
-  };
+  }
 
   template< typename Key, typename Value, typename Compare >
   ConstForwardListIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::find(const Key& k) const

@@ -11,6 +11,14 @@
 
 namespace tarasenko
 {
+  std::istream& readTrash(std::istream& input)
+  {
+    input.clear();
+    std::string trash = " ";
+    getline(input, trash);
+    return input;
+  }
+
   template< typename Key, typename Value, typename Compare >
   class Commands
   {
@@ -44,19 +52,18 @@ namespace tarasenko
        else
        {
          output << outMessageInvalidCommand << "\n";
-         std::string trash = " ";
-         getline(input, trash);
+         readTrash(input);
        }
      }
      catch (const std::out_of_range& e)
      {
        output << outMessageInvalidCommand << "\n";
-       return;
+       readTrash(input);
      }
      catch (const std::invalid_argument& e)
      {
        output << outMessageEmpty << "\n";
-       return;
+       readTrash(input);
      }
    }
 
@@ -95,10 +102,8 @@ namespace tarasenko
     std::string name_dict1 = " ";
     std::string name_dict2 = " ";
     input >> name_new_dict >> name_dict1 >> name_dict2;
-    dict_type dict1;
-    dict_type dict2;
-    dict1 = dict_of_dict.at(name_dict1);
-    dict2 = dict_of_dict.at(name_dict2);
+    dict_type dict1 = dict_of_dict.at(name_dict1);
+    dict_type dict2 = dict_of_dict.at(name_dict2);
     auto new_dict = type_create.at(name_of_command)(dict1, dict2);
     dict_of_dict.push(name_new_dict, new_dict);
   }
