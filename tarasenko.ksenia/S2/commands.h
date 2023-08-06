@@ -11,6 +11,14 @@
 
 namespace tarasenko
 {
+  std::istream& readTrash(std::istream& input)
+  {
+    input.clear();
+    std::string trash = " ";
+    getline(input, trash);
+    return input;
+  }
+
   template< typename Key, typename Value, typename Compare >
   class Commands
   {
@@ -71,19 +79,18 @@ namespace tarasenko
        else
        {
          output << outMessageInvalidCommand << "\n";
-         std::string trash = " ";
-         getline(input, trash);
+         readTrash(input);
        }
      }
      catch (const std::invalid_argument& e)
      {
        output << outMessageEmpty << "\n";
-       return;
+       readTrash(input);
      }
      catch (const std::exception& e)
      {
        output << outMessageInvalidCommand << "\n";
-       return;
+       readTrash(input);
      }
    }
 
