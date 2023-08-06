@@ -62,7 +62,7 @@ namespace tarasenko
      {
        if (findInType1(name_of_command))
        {
-         callType1(name_of_command, dict_of_dict, input, output);
+         callType1(name_of_command, dict_of_dict, input);
        }
        else if (findInType2(name_of_command))
        {
@@ -70,7 +70,7 @@ namespace tarasenko
        }
        else if (findInType3(name_of_command))
        {
-         callType3(name_of_command, dict_of_dict, input, output);
+         callType3(name_of_command, dict_of_dict, input);
        }
        else if (findInType4(name_of_command) || findInType5(name_of_command))
        {
@@ -107,12 +107,10 @@ namespace tarasenko
    bool findInType3(const std::string& key) const;
    bool findInType4(const std::string& key) const;
    bool findInType5(const std::string& key) const;
-   void callType1(const std::string& name_of_command, dict_of_dict_t& dict_of_dict,
-      std::istream& input, std::ostream& output);
+   void callType1(const std::string& name_of_command, dict_of_dict_t& dict_of_dict, std::istream& input);
    void callType2(const std::string& name_of_command, dict_of_dict_t& dict_of_dict,
       std::istream& input, std::ostream& output);
-   void callType3(const std::string& name_of_command, dict_of_dict_t& dict_of_dict,
-      std::istream& input, std::ostream& output);
+   void callType3(const std::string& name_of_command, dict_of_dict_t& dict_of_dict, std::istream& input);
    void callType45(const std::string& name_of_command, dict_of_dict_t& dict_of_dict,
       std::istream& input, std::ostream& output);
   };
@@ -149,7 +147,7 @@ namespace tarasenko
 
   template< typename Key, typename Value, typename Compare >
   void Commands< Key, Value, Compare >::callType1(const std::string& name_of_command,
-      dict_of_dict_t& dict_of_dict, std::istream& input, std::ostream& output)
+      dict_of_dict_t& dict_of_dict, std::istream& input)
   {
     std::string name_new_dict = " ";
     std::string name_dict1 = " ";
@@ -172,7 +170,7 @@ namespace tarasenko
 
   template< typename Key, typename Value, typename Compare >
   void Commands< Key, Value, Compare >::callType3(const std::string& name_of_command,
-     dict_of_dict_t& dict_of_dict, std::istream& input, std::ostream& output)
+     dict_of_dict_t& dict_of_dict, std::istream& input)
   {
     type_3.at(name_of_command)(input, dict_of_dict);
   }
