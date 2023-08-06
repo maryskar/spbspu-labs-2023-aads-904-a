@@ -29,6 +29,7 @@ namespace romanovich
     ~BinarySearchTree();
     BinarySearchTree(const BinarySearchTree &other);
     BinarySearchTree(BinarySearchTree &&other) noexcept;
+    explicit BinarySearchTree(const Compare & compare);
     BinarySearchTree &operator=(const BinarySearchTree &other);
     BinarySearchTree &operator=(BinarySearchTree &&other) noexcept;
     void remove(const data_t &data);
@@ -88,6 +89,12 @@ namespace romanovich
     TreeNode< data_t > *findMax(TreeNode< data_t > *node);
     TreeNode< data_t > *copyTree(const TreeNode< data_t > *node);
   };
+  template< typename Key, typename Value, typename Compare >
+  BinarySearchTree< Key, Value, Compare >::BinarySearchTree(const Compare &compare):
+  BinarySearchTree()
+  {
+    compare_ = compare;
+  }
   template< typename Key, typename Value, typename Compare >
   TreeNode< std::pair< Key, Value > > *BinarySearchTree< Key, Value, Compare >::copyTree(const TreeNode< data_t > *node)
   {

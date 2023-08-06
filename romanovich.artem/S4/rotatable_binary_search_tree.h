@@ -18,7 +18,8 @@ namespace romanovich
     RotatableBinarySearchTree();
     RotatableBinarySearchTree(const RotatableBinarySearchTree &other) = default;
     RotatableBinarySearchTree(RotatableBinarySearchTree &&other) noexcept;
-    // explicit RotatableBinarySearchTree(const Compare &comp);
+    explicit RotatableBinarySearchTree(const Compare &compare);
+    // explicit RotatableBinarySearchTree(const Compare &compare);
     /*  template< typename InputIt >
       RotatableBinarySearchTree(InputIt first, InputIt last, const Compare &comp = Compare());
       RotatableBinarySearchTree(std::initializer_list< data_t > init, const Compare &comp = Compare());*/
@@ -75,6 +76,11 @@ namespace romanovich
   private:
     BinarySearchTree< Key, Value, Compare > bst_;
   };
+  template< typename Key, typename Value, typename Compare >
+  RotatableBinarySearchTree< Key, Value, Compare >::RotatableBinarySearchTree(const Compare &compare):
+    bst_(compare)
+  {
+  }
   template< typename Key, typename Value, typename Compare >
   void RotatableBinarySearchTree< Key, Value, Compare >::printNode(const TreeNode< data_t > *node, bool isLeft,
                                                                    const std::string &prefix) const
