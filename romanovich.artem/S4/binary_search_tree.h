@@ -75,14 +75,6 @@ namespace romanovich
   private:
     tree_t *fakeNode_;
     tree_t *root_;
-  public:
-    tree_t *getRoot() const
-    {
-      return root_;
-    }
-  private:
-//  tree_t *begin_;
-//  tree_t *end_;
     size_t size_;
     Compare compare_;
     void clear(TreeNode< data_type > *node);

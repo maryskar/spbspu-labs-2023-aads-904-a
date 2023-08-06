@@ -11,8 +11,6 @@ namespace romanovich
   {
   public:
     using data_type = std::pair< Key, Value >;
-    using r_bst_t = RotatableBinarySearchTree< Key, Value, Compare >;
-    using tree_t = TreeNode< data_type >;
     using iterator = BidirectionalIterator< Key, Value, Compare >;
     using const_iterator = ConstBidirectionalIterator< Key, Value, Compare >;
     RotatableBinarySearchTree();
@@ -71,39 +69,37 @@ namespace romanovich
     bool isEqual(const RotatableBinarySearchTree &rhs) const;
     void rotateLeftLeft(TreeNode< data_type > *node);
     void rotateRightRight(TreeNode< data_type > *node);
-    void printNode(const TreeNode< data_type > *node, bool isLeft, const std::string &prefix) const
-    {
-      std::cout << prefix;
-      if (node == nullptr)
-      {
-        std::cout << "nullptr\n";
-        return;
-      }
-      if (isLeft)
-      {
-        std::cout << "├── ";
-      }
-      else if (node == bst_.root_)
-      {
-        std::cout << "─── ";
-      }
-      else
-      {
-        std::cout << "└── ";
-      }
-      std::cout << node->data.second << "\n";
-      std::string newPrefix = prefix + (isLeft ? "│   " : "    ");
-      printNode(node->left, true, newPrefix);
-      printNode(node->right, false, newPrefix);
-    }
+    void printNode(const TreeNode< data_type > *node, bool isLeft, const std::string &prefix) const;
   private:
     BinarySearchTree< Key, Value, Compare > bst_;
-  public:
-    const BinarySearchTree< Key, Value, Compare > &getBst() const
-    {
-      return bst_;
-    }
   };
+  template< typename Key, typename Value, typename Compare >
+  void RotatableBinarySearchTree< Key, Value, Compare >::printNode(const TreeNode< data_type > *node, bool isLeft,
+                                                                   const std::string &prefix) const
+  {
+    std::cout << prefix;
+    if (node == nullptr)
+    {
+      std::cout << "nullptr\n";
+      return;
+    }
+    if (isLeft)
+    {
+      std::cout << "├── ";
+    }
+    else if (node == bst_.root_)
+    {
+      std::cout << "─── ";
+    }
+    else
+    {
+      std::cout << "└── ";
+    }
+    std::cout << node->data.second << "\n";
+    std::string newPrefix = prefix + (isLeft ? "│   " : "    ");
+    printNode(node->left, true, newPrefix);
+    printNode(node->right, false, newPrefix);
+  }
   template< typename Key, typename Value, typename Compare >
   void RotatableBinarySearchTree< Key, Value, Compare >::rotateLeftLeft(TreeNode< data_type > *node)
   {

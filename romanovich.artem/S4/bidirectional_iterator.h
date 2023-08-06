@@ -38,12 +38,6 @@ namespace romanovich
     bool operator==(const BidirectionalIterator &other) const;
   private:
     TreeNode< data_type > *node_;
-  public:
-    TreeNode< data_type > *getNode() const
-    {
-      return node_;
-    }
-  private:
     TreeNode< data_type > *fakeNode_;
     TreeNode< data_type > *root_;
   };
