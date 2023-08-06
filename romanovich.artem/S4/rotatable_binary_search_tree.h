@@ -88,7 +88,7 @@ namespace romanovich
     std::cout << prefix;
     if (node == nullptr)
     {
-      std::cout << "nullptr\n";
+      std::cout << "NULL\n";
       return;
     }
     if (isLeft)
@@ -103,7 +103,8 @@ namespace romanovich
     {
       std::cout << "└── ";
     }
-    std::cout << node->data.second << "\n";
+    std::string color = (bool)(node->color == Color::C_RED) ? "◼" : "◻";
+    std::cout << node->data.second << " " << color << "\n";
     std::string newPrefix = prefix + (isLeft ? "│   " : "    ");
     printNode(node->left, true, newPrefix);
     printNode(node->right, false, newPrefix);

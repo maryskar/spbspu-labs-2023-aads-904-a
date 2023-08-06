@@ -103,7 +103,7 @@ namespace romanovich
     {
       return nullptr;
     }
-    auto *newNode = new TreeNode< data_t >(node->key, node->value);
+    auto *newNode = new TreeNode< data_t >(node->data);
     newNode->left = copyTree(node->left);
     newNode->right = copyTree(node->right);
     if (newNode->left)

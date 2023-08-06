@@ -1,27 +1,26 @@
 #include <iostream>
 #include "redblack_tree.h"
+void insertAndPrint(romanovich::RedBlackTree< int, int, std::less<> > &rbTree, int i)
+{
+  rbTree.insert({i, 10 * i});
+  rbTree.rotBst_.printNode(rbTree.rotBst_.bst_.root_, false, "");
+  std::cout << "-------------\n";
+}
 int main()
 {
   // Создаем красно-черное дерево для целых чисел
   romanovich::RedBlackTree< int, int, std::less<> > rbTree;
+//  insertAndPrint(rbTree, 24);
+//  insertAndPrint(rbTree, 5);
+//  insertAndPrint(rbTree, 1);
 
-  // Вставляем элементы в дерево
-  rbTree.rotBst_.printNode(rbTree.rotBst_.bst_.root_, false, ""); std::cout << "-------------\n";
-  rbTree.insert({10, 100}); rbTree.rotBst_.printNode(rbTree.rotBst_.bst_.root_, false, ""); std::cout << "-------------\n";
-  rbTree.insert({5, 50});rbTree.rotBst_.printNode(rbTree.rotBst_.bst_.root_, false, ""); std::cout << "-------------\n";
-  rbTree.insert({15, 150});rbTree.rotBst_.printNode(rbTree.rotBst_.bst_.root_, false, ""); std::cout << "-------------\n";
-  rbTree.insert({3, 30});rbTree.rotBst_.printNode(rbTree.rotBst_.bst_.root_, false, ""); std::cout << "-------------\n";
-  rbTree.insert({7, 70});rbTree.rotBst_.printNode(rbTree.rotBst_.bst_.root_, false, ""); std::cout << "-------------\n";
-  rbTree.insert({12, 120});rbTree.rotBst_.printNode(rbTree.rotBst_.bst_.root_, false, ""); std::cout << "-------------\n";
-  rbTree.insert({17, 170});rbTree.rotBst_.printNode(rbTree.rotBst_.bst_.root_, false, ""); std::cout << "-------------\n";
-  rbTree.insert({2, 20});rbTree.rotBst_.printNode(rbTree.rotBst_.bst_.root_, false, ""); std::cout << "-------------\n";
-  rbTree.insert({4, 40});rbTree.rotBst_.printNode(rbTree.rotBst_.bst_.root_, false, ""); std::cout << "-------------\n";
-  rbTree.insert({6, 60});rbTree.rotBst_.printNode(rbTree.rotBst_.bst_.root_, false, ""); std::cout << "-------------\n";
-  rbTree.insert({8, 80});rbTree.rotBst_.printNode(rbTree.rotBst_.bst_.root_, false, ""); std::cout << "-------------\n";
-  rbTree.insert({11, 110});rbTree.rotBst_.printNode(rbTree.rotBst_.bst_.root_, false, ""); std::cout << "-------------\n";
-  rbTree.insert({13, 130});rbTree.rotBst_.printNode(rbTree.rotBst_.bst_.root_, false, ""); std::cout << "-------------\n";
-  rbTree.insert({16, 160});rbTree.rotBst_.printNode(rbTree.rotBst_.bst_.root_, false, ""); std::cout << "-------------\n";
-  rbTree.insert({18, 180});rbTree.rotBst_.printNode(rbTree.rotBst_.bst_.root_, false, ""); std::cout << "-------------\n";
+  insertAndPrint(rbTree, 1);
+  insertAndPrint(rbTree, 3);
+  insertAndPrint(rbTree, 4);
+  insertAndPrint(rbTree, 7);
+  insertAndPrint(rbTree, 10);
+  insertAndPrint(rbTree, 13);
+  insertAndPrint(rbTree, 1000);
 
   // Выводим элементы дерева в возрастающем порядке
   for (const auto &node: rbTree)

@@ -74,10 +74,26 @@ namespace romanovich
     void remove(const data_t &data);
     RotatableBinarySearchTree< Key, Value, Compare > rotBst_;
   private:
-    void balanceAfterInsert(TreeNode <data_t> *operationNode);
-    void balanceAfterRemove(TreeNode <data_t> *operationNode);
+    void balanceAfterInsert(TreeNode< data_t > *operationNode);
+    void balanceAfterRemove(TreeNode< data_t > *operationNode);
     void initColor();
   };
+  template< typename Key, typename Value, typename Compare >
+  typename RedBlackTree< Key, Value, Compare >::iterator
+  RedBlackTree< Key, Value, Compare >::insert(RedBlackTree::const_iterator pos, const RedBlackTree::data_t value)
+  {
+    auto insertionResult = rotBst_.insert(pos, value);
+    if (!insertionResult.second)
+    {
+      return insertionResult.first;
+    }
+    TreeNode< data_t > *newNode = insertionResult.first.node_;
+    if (newNode->parent && newNode->parent->color == Color::C_RED)
+    {
+      balanceAfterInsert(newNode);
+    }
+    return insertionResult.first;
+  }
   template< typename Key, typename Value, typename Compare >
   template< typename P >
   std::pair< typename RedBlackTree< Key, Value, Compare >::iterator,
@@ -241,13 +257,13 @@ namespace romanovich
     initColor();
   }
   template< typename Key, typename Value, typename Compare >
-  void RedBlackTree< Key, Value, Compare >::balanceAfterRemove(TreeNode <data_t> *operationNode)
+  void RedBlackTree< Key, Value, Compare >::balanceAfterRemove(TreeNode< data_t > *operationNode)
   {
     while (operationNode != rotBst_.root() && operationNode->color == Color::C_BLACK)
     {
       if (operationNode == operationNode->parent->left)
       {
-        TreeNode <data_t> *sibling = operationNode->parent->right;
+        TreeNode< data_t > *sibling = operationNode->parent->right;
         if (sibling->color == Color::C_RED)
         {
           // Case 1: Sibling is red
@@ -284,7 +300,7 @@ namespace romanovich
       else
       {
         // Symmetric cases with "left" and "right" exchanged
-        TreeNode <data_t> *sibling = operationNode->parent->left;
+        TreeNode< data_t > *sibling = operationNode->parent->left;
         if (sibling->color == Color::C_RED)
         {
           sibling->color = Color::C_BLACK;
@@ -317,14 +333,14 @@ namespace romanovich
     operationNode->color = Color::C_BLACK;
   }
   template< typename Key, typename Value, typename Compare >
-  void RedBlackTree< Key, Value, Compare >::balanceAfterInsert(TreeNode <data_t> *operationNode)
+  void RedBlackTree< Key, Value, Compare >::balanceAfterInsert(TreeNode< data_t > *operationNode)
   {
     // Re-color and rotate as necessary to maintain Red-Black Tree properties
     while (operationNode->parent && operationNode->parent->color == Color::C_RED)
     {
       if (operationNode->parent == operationNode->parent->parent->left)
       {
-        TreeNode <data_t> *uncle = operationNode->parent->parent->right;
+        TreeNode< data_t > *uncle = operationNode->parent->parent->right;
         if (uncle && uncle->color == Color::C_RED)
         {
           // Case 1: Recolor
@@ -350,7 +366,7 @@ namespace romanovich
       else
       {
         // Symmetric cases with "left" and "right" exchanged
-        TreeNode <data_t> *uncle = operationNode->parent->parent->left;
+        TreeNode< data_t > *uncle = operationNode->parent->parent->left;
         if (uncle && uncle->color == Color::C_RED)
         {
           operationNode->parent->color = Color::C_BLACK;
@@ -378,7 +394,7 @@ namespace romanovich
   template< typename Key, typename Value, typename Compare >
   void RedBlackTree< Key, Value, Compare >::remove(const data_t &data)
   {
-    TreeNode <data_t> *node = findNode(data);
+    TreeNode< data_t > *node = findNode(data);
     //delete
     balanceAfterRemove(node);
   }
