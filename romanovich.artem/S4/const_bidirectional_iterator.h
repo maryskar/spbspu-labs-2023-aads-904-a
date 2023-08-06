@@ -17,12 +17,13 @@ namespace romanovich
     using difference_t = std::ptrdiff_t;
     using data_t = std::pair< Key, Value >;
     using const_data_t = const std::pair< Key, Value >;
+    using tree_node_t = TreeNode< data_t, BinarySearchTree< Key, Value, Compare > >;
     ~ConstBidirectionalIterator() = default;
     ConstBidirectionalIterator();
     ConstBidirectionalIterator(const ConstBidirectionalIterator< Key, Value, Compare > &) = default;
     explicit ConstBidirectionalIterator(const BidirectionalIterator< Key, Value, Compare > &);
-    explicit ConstBidirectionalIterator(TreeNode< data_t > *root, TreeNode< data_t > *node,
-                                        TreeNode< data_t > *fakeNode);
+    explicit ConstBidirectionalIterator(tree_node_t *root, tree_node_t *node,
+                                        tree_node_t *fakeNode);
     ConstBidirectionalIterator< Key, Value, Compare > &
     operator=(const ConstBidirectionalIterator< Key, Value, Compare > &) = default;
     const_data_t &operator*() const;
@@ -34,9 +35,9 @@ namespace romanovich
     bool operator!=(const ConstBidirectionalIterator< Key, Value, Compare > &other) const;
     bool operator==(const ConstBidirectionalIterator< Key, Value, Compare > &other) const;
   private:
-    const TreeNode< data_t > *node_;
-    const TreeNode< data_t > *fakeNode_;
-    const TreeNode< data_t > *root_;
+    const tree_node_t *node_;
+    const tree_node_t *fakeNode_;
+    const tree_node_t *root_;
   };
   template< typename Key, typename Value, typename Compare >
   ConstBidirectionalIterator< Key, Value, Compare >::ConstBidirectionalIterator():
@@ -54,9 +55,9 @@ namespace romanovich
   {
   }
   template< typename Key, typename Value, typename Compare >
-  ConstBidirectionalIterator< Key, Value, Compare >::ConstBidirectionalIterator(TreeNode< data_t > *root,
-                                                                                TreeNode< data_t > *node,
-                                                                                TreeNode< data_t > *fakeNode):
+  ConstBidirectionalIterator< Key, Value, Compare >::ConstBidirectionalIterator(tree_node_t *root,
+                                                                                tree_node_t *node,
+                                                                                tree_node_t *fakeNode):
     node_(node),
     fakeNode_(fakeNode),
     root_(root)
@@ -97,7 +98,7 @@ namespace romanovich
     }
     else
     {
-      const TreeNode< data_t > *prev = nullptr;
+      const tree_node_t *prev = nullptr;
       do
       {
         prev = node_;
@@ -138,7 +139,7 @@ namespace romanovich
     }
     else
     {
-      const TreeNode< data_t > *prev = nullptr;
+      const tree_node_t *prev = nullptr;
       do
       {
         prev = node_;
