@@ -12,7 +12,7 @@ namespace romanovich
   {
     friend class RedBlackTree< Key, Value, Compare >;
   public:
-    using data_type = std::pair< Key, Value >;
+    using data_t = std::pair< Key, Value >;
     using iterator = BidirectionalIterator< Key, Value, Compare >;
     using const_iterator = ConstBidirectionalIterator< Key, Value, Compare >;
     RotatableBinarySearchTree();
@@ -21,11 +21,11 @@ namespace romanovich
     // explicit RotatableBinarySearchTree(const Compare &comp);
     /*  template< typename InputIt >
       RotatableBinarySearchTree(InputIt first, InputIt last, const Compare &comp = Compare());
-      RotatableBinarySearchTree(std::initializer_list< data_type > init, const Compare &comp = Compare());*/
+      RotatableBinarySearchTree(std::initializer_list< data_t > init, const Compare &comp = Compare());*/
     ~RotatableBinarySearchTree() = default;
     RotatableBinarySearchTree &operator=(const RotatableBinarySearchTree &other);
     RotatableBinarySearchTree &operator=(RotatableBinarySearchTree &&other) noexcept;
-    RotatableBinarySearchTree &operator=(std::initializer_list< data_type > initializerList);
+    RotatableBinarySearchTree &operator=(std::initializer_list< data_t > initializerList);
     iterator begin() noexcept;
     const_iterator begin() const noexcept;
     const_iterator cbegin() const noexcept;
@@ -38,45 +38,45 @@ namespace romanovich
     bool empty() const noexcept;
     size_t size() const noexcept;
     void clear() noexcept;
-    std::pair< iterator, bool > insert(const data_type &data);
+    std::pair< iterator, bool > insert(const data_t &data);
     template< typename P >
     std::pair< iterator, bool > insert(P &&data);
-    iterator insert(const_iterator pos, const data_type &data);
+    iterator insert(const_iterator pos, const data_t &data);
     template< typename P >
     iterator insert(const_iterator pos, P &&data);
     template< typename InputIt >
     void insert(InputIt first, InputIt last);
-    void insert(std::initializer_list< data_type > initializerList);
+    void insert(std::initializer_list< data_t > initializerList);
     template< typename... Args >
     std::pair< iterator, bool > emplace(Args &&... args);
-    data_type &at(const data_type &data);
-    const data_type &at(const data_type &data) const;
-    data_type &operator[](const data_type &data);
-    data_type &operator[](data_type &&data);
+    data_t &at(const data_t &data);
+    const data_t &at(const data_t &data) const;
+    data_t &operator[](const data_t &data);
+    data_t &operator[](data_t &&data);
     iterator erase(iterator pos);
     iterator erase(const_iterator pos);
     iterator erase(const_iterator first, const_iterator last);
-    size_t erase(const data_type &data);
+    size_t erase(const data_t &data);
     void swap(RotatableBinarySearchTree &other);
-    size_t count(const data_type &data) const;
-    iterator find(const data_type &data);
-    const_iterator find(const data_type &data) const;
-    std::pair< iterator, iterator > equal_range(const data_type &data);
-    std::pair< const_iterator, const_iterator > equal_range(const data_type &data) const;
-    iterator lower_bound(const data_type &data);
-    const_iterator lower_bound(const data_type &data) const;
-    iterator upper_bound(const data_type &data);
-    const_iterator upper_bound(const data_type &data) const;
+    size_t count(const data_t &data) const;
+    iterator find(const data_t &data);
+    const_iterator find(const data_t &data) const;
+    std::pair< iterator, iterator > equal_range(const data_t &data);
+    std::pair< const_iterator, const_iterator > equal_range(const data_t &data) const;
+    iterator lower_bound(const data_t &data);
+    const_iterator lower_bound(const data_t &data) const;
+    iterator upper_bound(const data_t &data);
+    const_iterator upper_bound(const data_t &data) const;
     Compare data_comp() const;
     bool isEqual(const RotatableBinarySearchTree &rhs) const;
-    void rotateLeftLeft(TreeNode< data_type > *node);
-    void rotateRightRight(TreeNode< data_type > *node);
-    void printNode(const TreeNode< data_type > *node, bool isLeft, const std::string &prefix) const;
+    void rotateLeftLeft(TreeNode< data_t > *node);
+    void rotateRightRight(TreeNode< data_t > *node);
+    void printNode(const TreeNode< data_t > *node, bool isLeft, const std::string &prefix) const;
   private:
     BinarySearchTree< Key, Value, Compare > bst_;
   };
   template< typename Key, typename Value, typename Compare >
-  void RotatableBinarySearchTree< Key, Value, Compare >::printNode(const TreeNode< data_type > *node, bool isLeft,
+  void RotatableBinarySearchTree< Key, Value, Compare >::printNode(const TreeNode< data_t > *node, bool isLeft,
                                                                    const std::string &prefix) const
   {
     std::cout << prefix;
@@ -103,7 +103,7 @@ namespace romanovich
     printNode(node->right, false, newPrefix);
   }
   template< typename Key, typename Value, typename Compare >
-  void RotatableBinarySearchTree< Key, Value, Compare >::rotateLeftLeft(TreeNode< data_type > *node)
+  void RotatableBinarySearchTree< Key, Value, Compare >::rotateLeftLeft(TreeNode< data_t > *node)
   {
     auto rightChild = node->right;
     if (!rightChild)
@@ -132,7 +132,7 @@ namespace romanovich
     node->parent = rightChild;
   }
   template< typename Key, typename Value, typename Compare >
-  void RotatableBinarySearchTree< Key, Value, Compare >::rotateRightRight(TreeNode< data_type > *node)
+  void RotatableBinarySearchTree< Key, Value, Compare >::rotateRightRight(TreeNode< data_t > *node)
   {
     auto leftChild = node->left;
     node->left = leftChild->right;
@@ -163,54 +163,54 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   ConstBidirectionalIterator< Key, Value, Compare >
-  RotatableBinarySearchTree< Key, Value, Compare >::upper_bound(const RotatableBinarySearchTree::data_type &data) const
+  RotatableBinarySearchTree< Key, Value, Compare >::upper_bound(const RotatableBinarySearchTree::data_t &data) const
   {
     return bst_.upper_bound(data);
   }
   template< typename Key, typename Value, typename Compare >
   BidirectionalIterator< Key, Value, Compare >
-  RotatableBinarySearchTree< Key, Value, Compare >::upper_bound(const RotatableBinarySearchTree::data_type &data)
+  RotatableBinarySearchTree< Key, Value, Compare >::upper_bound(const RotatableBinarySearchTree::data_t &data)
   {
     return bst_.upper_bound(data);
   }
   template< typename Key, typename Value, typename Compare >
   ConstBidirectionalIterator< Key, Value, Compare >
-  RotatableBinarySearchTree< Key, Value, Compare >::lower_bound(const RotatableBinarySearchTree::data_type &data) const
+  RotatableBinarySearchTree< Key, Value, Compare >::lower_bound(const RotatableBinarySearchTree::data_t &data) const
   {
     return bst_.lower_bound(data);
   }
   template< typename Key, typename Value, typename Compare >
   BidirectionalIterator< Key, Value, Compare >
-  RotatableBinarySearchTree< Key, Value, Compare >::lower_bound(const RotatableBinarySearchTree::data_type &data)
+  RotatableBinarySearchTree< Key, Value, Compare >::lower_bound(const RotatableBinarySearchTree::data_t &data)
   {
     return bst_.lower_bound(data);
   }
   template< typename Key, typename Value, typename Compare >
   std::pair< ConstBidirectionalIterator< Key, Value, Compare >, ConstBidirectionalIterator< Key, Value, Compare > >
-  RotatableBinarySearchTree< Key, Value, Compare >::equal_range(const RotatableBinarySearchTree::data_type &data) const
+  RotatableBinarySearchTree< Key, Value, Compare >::equal_range(const RotatableBinarySearchTree::data_t &data) const
   {
     return data.equal_range(data);
   }
   template< typename Key, typename Value, typename Compare >
   std::pair< BidirectionalIterator< Key, Value, Compare >, BidirectionalIterator< Key, Value, Compare > >
-  RotatableBinarySearchTree< Key, Value, Compare >::equal_range(const RotatableBinarySearchTree::data_type &data)
+  RotatableBinarySearchTree< Key, Value, Compare >::equal_range(const RotatableBinarySearchTree::data_t &data)
   {
     return bst_.equal_range(data);
   }
   template< typename Key, typename Value, typename Compare >
   ConstBidirectionalIterator< Key, Value, Compare >
-  RotatableBinarySearchTree< Key, Value, Compare >::find(const RotatableBinarySearchTree::data_type &data) const
+  RotatableBinarySearchTree< Key, Value, Compare >::find(const RotatableBinarySearchTree::data_t &data) const
   {
     return bst_.find(data);
   }
   template< typename Key, typename Value, typename Compare >
   BidirectionalIterator< Key, Value, Compare >
-  RotatableBinarySearchTree< Key, Value, Compare >::find(const RotatableBinarySearchTree::data_type &data)
+  RotatableBinarySearchTree< Key, Value, Compare >::find(const RotatableBinarySearchTree::data_t &data)
   {
     return bst_.find(data);
   }
   template< typename Key, typename Value, typename Compare >
-  size_t RotatableBinarySearchTree< Key, Value, Compare >::count(const RotatableBinarySearchTree::data_type &data) const
+  size_t RotatableBinarySearchTree< Key, Value, Compare >::count(const RotatableBinarySearchTree::data_t &data) const
   {
     return bst_.count(data);
   }
@@ -220,7 +220,7 @@ namespace romanovich
     bst_.swap(other.bst_);
   }
   template< typename Key, typename Value, typename Compare >
-  size_t RotatableBinarySearchTree< Key, Value, Compare >::erase(const RotatableBinarySearchTree::data_type &data)
+  size_t RotatableBinarySearchTree< Key, Value, Compare >::erase(const RotatableBinarySearchTree::data_t &data)
   {
     return bst_.erase(data);
   }
@@ -245,25 +245,25 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   std::pair< Key, Value > &
-  RotatableBinarySearchTree< Key, Value, Compare >::operator[](RotatableBinarySearchTree::data_type &&data)
+  RotatableBinarySearchTree< Key, Value, Compare >::operator[](RotatableBinarySearchTree::data_t &&data)
   {
     return bst_[std::move(data)];
   }
   template< typename Key, typename Value, typename Compare >
   std::pair< Key, Value > &
-  RotatableBinarySearchTree< Key, Value, Compare >::operator[](const RotatableBinarySearchTree::data_type &data)
+  RotatableBinarySearchTree< Key, Value, Compare >::operator[](const RotatableBinarySearchTree::data_t &data)
   {
     return bst_[data];
   }
   template< typename Key, typename Value, typename Compare >
   const std::pair< Key, Value > &
-  RotatableBinarySearchTree< Key, Value, Compare >::at(const RotatableBinarySearchTree::data_type &data) const
+  RotatableBinarySearchTree< Key, Value, Compare >::at(const RotatableBinarySearchTree::data_t &data) const
   {
     return bst_.at(data);
   }
   template< typename Key, typename Value, typename Compare >
   std::pair< Key, Value > &
-  RotatableBinarySearchTree< Key, Value, Compare >::at(const RotatableBinarySearchTree::data_type &data)
+  RotatableBinarySearchTree< Key, Value, Compare >::at(const RotatableBinarySearchTree::data_t &data)
   {
     return bst_.at(data);
   }
@@ -275,7 +275,7 @@ namespace romanovich
     return bst_.emplace(std::forward< Args >(args)...);
   }
   template< typename Key, typename Value, typename Compare >
-  void RotatableBinarySearchTree< Key, Value, Compare >::insert(std::initializer_list< data_type > initializerList)
+  void RotatableBinarySearchTree< Key, Value, Compare >::insert(std::initializer_list< data_t > initializerList)
   {
     bst_.insert(initializerList);
   }
@@ -295,7 +295,7 @@ namespace romanovich
   template< typename Key, typename Value, typename Compare >
   BidirectionalIterator< Key, Value, Compare >
   RotatableBinarySearchTree< Key, Value, Compare >::insert(RotatableBinarySearchTree::const_iterator pos,
-                                                           const RotatableBinarySearchTree::data_type &data)
+                                                           const RotatableBinarySearchTree::data_t &data)
   {
     return bst_.insert(pos, data);
   }
@@ -308,7 +308,7 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   std::pair< BidirectionalIterator< Key, Value, Compare >, bool >
-  RotatableBinarySearchTree< Key, Value, Compare >::insert(const RotatableBinarySearchTree::data_type &data)
+  RotatableBinarySearchTree< Key, Value, Compare >::insert(const RotatableBinarySearchTree::data_t &data)
   {
     return bst_.insert(data);
   }
@@ -380,7 +380,7 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   RotatableBinarySearchTree< Key, Value, Compare > &
-  RotatableBinarySearchTree< Key, Value, Compare >::operator=(std::initializer_list< data_type > initializerList)
+  RotatableBinarySearchTree< Key, Value, Compare >::operator=(std::initializer_list< data_t > initializerList)
   {
     bst_ = initializerList;
     return *this;
