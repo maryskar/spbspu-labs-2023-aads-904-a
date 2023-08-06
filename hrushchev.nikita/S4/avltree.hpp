@@ -5,6 +5,7 @@
 #include <functional>
 #include "tree.hpp"
 
+
 template< typename Key, typename Value, typename Compare = std::less< > >
 class AVLTree
 {
@@ -59,6 +60,7 @@ Tree< typename AVLTree< Key, Value, Compare >::data_t >* AVLTree< Key, Value, Co
       temp->data_ = data_t(key, value);
       temp->height_ = 1;
       tree->right_ = temp;
+      temp->head_ = tree;
       tree->height_ = 1 + std::max(getHeight(tree->left_), getHeight(tree->right_));
       return tree->right_;
     }
@@ -74,6 +76,7 @@ Tree< typename AVLTree< Key, Value, Compare >::data_t >* AVLTree< Key, Value, Co
       temp->data_ = data_t(key, value);
       temp->height_ = 1;
       tree->left_ = temp;
+      temp->head_ = tree;
       tree->height_ = 1 + std::max(getHeight(tree->left_), getHeight(tree->right_));
       return tree->left_;
     }
@@ -90,7 +93,7 @@ Tree< typename AVLTree< Key, Value, Compare >::data_t >* AVLTree< Key, Value, Co
   {
     return nullptr;
   }
-  if (comp_(key, tree->data_.first))
+  if (!comp_(key, tree->data_.first))
   {
     if (key == tree->data_.first)
     {
@@ -109,15 +112,27 @@ Tree< typename AVLTree< Key, Value, Compare >::data_t >* AVLTree< Key, Value, Co
 }
 
 template< typename Key, typename Value, typename Compare >
-void AVLTree< Key, Value, Compare >::erase( Tree< typename AVLTree<Key, Value, Compare >::data_t >* tree)
+void AVLTree< Key, Value, Compare >::erase(Tree< typename AVLTree<Key, Value, Compare >::data_t >* tree)
 {
   if (!tree)
   {
     return;
   }
+  if (!tree->right_ && !tree->left_)
+  {
+    if (tree->head_->left_ == tree)
+    {
+      tree->head_->left_ = nullptr;
+    }
+    else
+    {
+      tree->head_->right_ = nullptr;
+    }
+    delete tree;
+  }
   if (!tree->right_ || !tree->left_)
   {
-    tree = (tree->left_ = nullptr) ? tree->left_ : tree->right_;
+    tree = (tree->left_ == nullptr) ? tree->right_ : tree->left_;
   }
 }
 
