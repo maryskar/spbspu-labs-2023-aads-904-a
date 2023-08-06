@@ -3,14 +3,14 @@
 template< typename T >
 struct TreeNodeImpl
 {
-  T data;
-  TreeNodeImpl *parent;
-  TreeNodeImpl *left;
-  TreeNodeImpl *right;
   explicit TreeNodeImpl(const T &data);
   TreeNodeImpl< T > *findMin(TreeNodeImpl< T > *node);
   TreeNodeImpl< T > *findMax(TreeNodeImpl< T > *node);
   TreeNodeImpl< T > *copyTree(const TreeNodeImpl< T > *node);
+  T data;
+  TreeNodeImpl *parent;
+  TreeNodeImpl *left;
+  TreeNodeImpl *right;
 };
 template< typename T >
 TreeNodeImpl< T > *TreeNodeImpl< T >::findMax(TreeNodeImpl< T > *node)
