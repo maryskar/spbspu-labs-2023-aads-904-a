@@ -4,7 +4,6 @@
 #include <iostream>
 #include <stdexcept>
 #include <forward_list.h>
-#include <sort.h>
 
 namespace tarasenko
 {
@@ -100,7 +99,6 @@ namespace tarasenko
    const_iterator find(const Key& key) const;
    size_t remove(const Key& key);
    Compare key_comp() const;
-   void setCompare(Compare comp);
 
   private:
    ForwardList< std::pair< Key, Value > > list_;
@@ -263,13 +261,6 @@ namespace tarasenko
   Compare Dictionary< Key, Value, Compare >::key_comp() const
   {
     return compare_;
-  }
-
-  template< typename Key, typename Value, typename Compare >
-  void Dictionary< Key, Value, Compare >::setCompare(Compare comp)
-  {
-    compare_ = comp;
-    quickSort(list_.begin(), list_.end(), compare_);
   }
 
   template< class Key, class Value, class Compare >

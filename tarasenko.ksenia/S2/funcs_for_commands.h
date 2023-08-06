@@ -260,6 +260,20 @@ namespace tarasenko
     }
   }
 
+  namespace details
+  {
+    template< typename Key, typename Value, typename Compare >
+    Dictionary< Key, Value, Compare > resortDict(const Dictionary< Key, Value, Compare >& dict, Compare comp)
+    {
+      Dictionary< Key, Value, Compare > new_dict(comp);
+      for (auto it = dict.cbegin(); it != dict.cend(); it++)
+      {
+        new_dict.insert(*it);
+      }
+      return new_dict;
+    }
+  }
+
   template< class Key, class Value, class Compare >
   void resort(std::istream& input, Dictionary< std::string,
      Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
@@ -284,7 +298,7 @@ namespace tarasenko
     auto it = dict_of_dict.begin();
     for (; it != dict_of_dict.end(); it++)
     {
-      it->second.setCompare(comp);
+      dict_of_dict[it->first] = details::resortDict(it->second, comp);
     }
   }
 
