@@ -2,8 +2,8 @@
 using namespace std::placeholders;
 namespace
 {
-  using dict_ref = romanovich::dict_type &;
-  using const_dict_ref = const romanovich::dict_type &;
+  using dict_ref = romanovich::dict_t &;
+  using const_dict_ref = const romanovich::dict_t &;
   struct ComplementOperation
   {
     void operator()(dict_ref newDict, const_dict_ref firstDict, const_dict_ref secondDict) const
@@ -51,7 +51,7 @@ namespace
 }
 namespace romanovich
 {
-  std::unordered_map< std::string, CommandHandler > createCommandDictionary(container_type &dictionary)
+  std::unordered_map< std::string, CommandHandler > createCommandDictionary(container_t &dictionary)
   {
     std::string printCall = "print";
     std::string complementCall = "complement";
@@ -64,8 +64,8 @@ namespace romanovich
     commands[unionCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), UnionOperation());
     return commands;
   }
-  void performCommand(std::istream &in, std::ostream &out, container_type &dictionary,
-                      const std::function< void(dict_type &, const dict_type &, const dict_type &) > &operation)
+  void performCommand(std::istream &in, std::ostream &out, container_t &dictionary,
+                      const std::function< void(dict_t &, const dict_t &, const dict_t &) > &operation)
   {
     std::string newDictName, dictName1, dictName2;
     in >> newDictName >> dictName1 >> dictName2;
@@ -90,12 +90,12 @@ namespace romanovich
     {
       const auto &dict1 = dictionary[dictName1];
       const auto &dict2 = dictionary[dictName2];
-      dict_type newDict;
+      dict_t newDict;
       operation(newDict, dict1, dict2);
       dictionary[newDictName] = newDict;
     }
   }
-  void printCommand(std::istream &in, std::ostream &out, container_type &dictionary)
+  void printCommand(std::istream &in, std::ostream &out, container_t &dictionary)
   {
     std::string dictName;
     in >> dictName;
