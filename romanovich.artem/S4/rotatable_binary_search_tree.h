@@ -15,6 +15,7 @@ namespace romanovich
     using data_type = std::pair< Key, Value >;
     using iterator = BidirectionalIterator< Key, Value, Compare >;
     using const_iterator = ConstBidirectionalIterator< Key, Value, Compare >;
+    using tree_node_type = TreeNode< data_type, BinarySearchTree< Key, Value, Compare > >;
     RotatableBinarySearchTree();
     RotatableBinarySearchTree(const RotatableBinarySearchTree &other) = default;
     RotatableBinarySearchTree(RotatableBinarySearchTree &&other) noexcept;
@@ -69,14 +70,14 @@ namespace romanovich
     const_iterator upper_bound(const data_type &data) const;
     Compare data_comp() const;
     bool isEqual(const RotatableBinarySearchTree &rhs) const;
-    void rotateLeftLeft(TreeNode< data_type > *node);
-    void rotateRightRight(TreeNode< data_type > *node);
-    void printNode(const TreeNode< data_type > *node, bool isLeft, const std::string &prefix) const;
+    void rotateLeftLeft(tree_node_type *node);
+    void rotateRightRight(tree_node_type *node);
+    void printNode(const tree_node_type *node, bool isLeft, const std::string &prefix) const;
   private:
     BinarySearchTree< Key, Value, Compare > bst_;
   };
   template< typename Key, typename Value, typename Compare >
-  void RotatableBinarySearchTree< Key, Value, Compare >::printNode(const TreeNode< data_type > *node, bool isLeft,
+  void RotatableBinarySearchTree< Key, Value, Compare >::printNode(const tree_node_type *node, bool isLeft,
                                                                    const std::string &prefix) const
   {
     std::cout << prefix;
@@ -103,7 +104,7 @@ namespace romanovich
     printNode(node->right, false, newPrefix);
   }
   template< typename Key, typename Value, typename Compare >
-  void RotatableBinarySearchTree< Key, Value, Compare >::rotateLeftLeft(TreeNode< data_type > *node)
+  void RotatableBinarySearchTree< Key, Value, Compare >::rotateLeftLeft(tree_node_type *node)
   {
     auto rightChild = node->right;
     if (!rightChild)
@@ -132,7 +133,7 @@ namespace romanovich
     node->parent = rightChild;
   }
   template< typename Key, typename Value, typename Compare >
-  void RotatableBinarySearchTree< Key, Value, Compare >::rotateRightRight(TreeNode< data_type > *node)
+  void RotatableBinarySearchTree< Key, Value, Compare >::rotateRightRight(tree_node_type *node)
   {
     auto leftChild = node->left;
     node->left = leftChild->right;
