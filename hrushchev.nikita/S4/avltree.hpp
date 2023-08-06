@@ -14,7 +14,7 @@ class AVLTree
     void insert(Key key, Value value);
     Tree< data_t >* node_;
     Compare comp_;
-
+  private:
     Tree< data_t >* insert(Key key, Value value, Tree< data_t >* tree);
 };
 
@@ -32,19 +32,23 @@ Tree< typename AVLTree< Key, Value, Compare >::data_t >* AVLTree< Key, Value, Co
   {
     node_ = new Tree< data_t >();
     node_->data_ = data_t(key, value);
+    node_->height_ = 1;
     return node_;
   }
-
   if (comp_(tree->data_.first, key))
   {
     if (!tree->right_)
     {
       auto temp = new Tree< data_t >();
       temp->data_ = data_t(key, value);
+      temp->height_ = 1;
       tree->right_ = temp;
+      tree->height_ = 1 + std::max(getHeight(tree->left_), getHeight(tree->right_));
       return tree->right_;
     }
-    return insert(key, value, node_->right_);
+    auto temp = insert(key, value, tree->right_);
+    tree->height_ = 1 + std::max(getHeight(tree->left_), getHeight(tree->right_));
+    return temp;
   }
   else
   {
@@ -52,10 +56,14 @@ Tree< typename AVLTree< Key, Value, Compare >::data_t >* AVLTree< Key, Value, Co
     {
       auto temp = new Tree< data_t >();
       temp->data_ = data_t(key, value);
+      temp->height_ = 1;
       tree->left_ = temp;
+      tree->height_ = 1 + std::max(getHeight(tree->left_), getHeight(tree->right_));
       return tree->left_;
     }
-    return insert(key, value, node_->left_);
+    auto temp = insert(key, value, tree->left_);
+    tree->height_ = 1 + std::max(getHeight(tree->left_), getHeight(tree->right_));
+    return temp;
   }
 }
 
