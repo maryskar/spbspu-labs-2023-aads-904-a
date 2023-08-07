@@ -3,14 +3,25 @@
 
 #include "forwardList.h"
 
-class Dictionary
+namespace dmitriev
 {
-public:
-	Dictionary();
-	~Dictionary();
+	template< typename Key, typename Value, typename Compare >
+	class Dictionary
+	{
+	public:
+		using fList = ForwardList< Value >;
 
-private:
+	  Dictionary();
+		~Dictionary();
 
-};
+		void push(Key k, Value v);
+		Value get(Key k);
+		Value drop(Key k);
+
+	private:
+		fList m_fList;
+
+	};
+}
 
 #endif
