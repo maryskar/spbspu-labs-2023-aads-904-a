@@ -6,47 +6,41 @@ namespace
   using const_map_ref = const romanovich::map_t &;
   struct ComplementOperation
   {
-    void operator()(map_ref newDict,
-                    const std::pair< std::string, romanovich::map_t > &firstDict,
-                    const std::pair< std::string, romanovich::map_t > &secondDict) const
+    void operator()(map_ref newDict, const_map_ref firstDict, const_map_ref secondDict) const
     {
-      for (const auto &entry: firstDict.second)
+      for (const auto &entry: firstDict)
       {
-        if (secondDict.second.count(entry) == 0)
+        if (secondDict.count(entry.first) == 0)
         {
-          newDict[entry] = entry;
+          newDict[entry.first] = entry.second;
         }
       }
     }
   };
   struct IntersectOperation
   {
-    void operator()(map_ref newDict,
-                    const std::pair< std::string, romanovich::map_t > &firstDict,
-                    const std::pair< std::string, romanovich::map_t > &secondDict) const
+    void operator()(map_ref newDict, const_map_ref firstDict, const_map_ref secondDict) const
     {
-      for (const auto &entry: firstDict.second)
+      for (const auto &entry: firstDict)
       {
-        if (secondDict.second.count(entry) > 0)
+        if (secondDict.count(entry.first) > 0)
         {
-          newDict[entry] = entry;
+          newDict[entry.first] = entry.second;
         }
       }
     }
   };
   struct UnionOperation
   {
-    void operator()(map_ref newDict,
-                    const std::pair< std::string, romanovich::map_t > &firstDict,
-                    const std::pair< std::string, romanovich::map_t > &secondDict) const
+    void operator()(map_ref newDict, const_map_ref firstDict, const_map_ref secondDict) const
     {
-      for (auto &entry: secondDict.second)
+      for (auto &entry: secondDict)
       {
-        newDict[entry] = entry;
+        newDict[entry.first] = entry.second;
       }
-      for (auto &entry: firstDict.second)
+      for (auto &entry: firstDict)
       {
-        newDict[entry] = entry;
+        newDict[entry.first] = entry.second;
       }
     }
   };
@@ -71,9 +65,7 @@ namespace romanovich
     return commands;
   }
   void performCommand(std::istream &in, std::ostream &out, container_t &map,
-                      const std::function< void(map_t &,
-                                                const std::pair< std::string, map_t > &,
-                                                const std::pair< std::string, map_t > &) > &operation)
+                      const std::function< void(map_t &, const map_t &, const map_t &) > &operation)
   {
     std::string newDictName, mapName1, mapName2;
     in >> newDictName >> mapName1 >> mapName2;
@@ -81,15 +73,13 @@ namespace romanovich
     {
       throw std::runtime_error("Error while reading command arguments.");
     }
-    auto firstNodeValue = std::make_pair(mapName1, map_t());
-    auto secondNodeValue = std::make_pair(mapName2, map_t());
-    if (map.count(firstNodeValue) == 0 && map.count(secondNodeValue) == 0)
+    if (map.count(mapName1) == 0 && map.count(mapName2) == 0)
     {
-      throw std::runtime_error("Error: both maps not found.");
+      throw std::runtime_error("Error: both mapionaries not found.");
     }
-    if (map.count(firstNodeValue) == 0 || map.count(secondNodeValue) == 0)
+    if (map.count(mapName1) == 0 || map.count(mapName2) == 0)
     {
-      std::string errDictName = map.count(firstNodeValue) == 0 ? mapName1 : mapName2;
+      std::string errDictName = map.count(mapName1) == 0 ? mapName1 : mapName2;
       throw std::runtime_error("Error: map \"" + errDictName + "\" not found.");
     }
     if (map.empty())
@@ -98,11 +88,11 @@ namespace romanovich
     }
     else
     {
-      const auto &map1 = map[firstNodeValue];
-      const auto &map2 = map[secondNodeValue];
+      const auto &map1 = map[mapName1];
+      const auto &map2 = map[mapName2];
       map_t newDict;
       operation(newDict, map1, map2);
-      map[{newDictName, map_t()}].second = newDict;
+      map[newDictName] = newDict;
     }
   }
   void printCommand(std::istream &in, std::ostream &out, container_t &map)
@@ -113,22 +103,21 @@ namespace romanovich
     {
       throw std::runtime_error("Error while reading command arguments.");
     }
-    auto nodeValue = std::make_pair(mapName, map_t());
-    if (map.count(nodeValue) <= 0)
+    if (map.count(mapName) <= 0)
     {
       throw std::runtime_error("Error: map not found.");
     }
     else
     {
-      const auto &mapData = map[nodeValue];
-      if (mapData.second.empty())
+      const auto &mapData = map[mapName];
+      if (mapData.empty())
       {
         printEmptyDict(out) << "\n";
       }
       else
       {
         out << mapName;
-        for (const auto &item: mapData.second)
+        for (const auto &item: mapData)
         {
           out << " " << item.first << " " << item.second;
         }

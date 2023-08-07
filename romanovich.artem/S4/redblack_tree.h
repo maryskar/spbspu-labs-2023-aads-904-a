@@ -45,24 +45,24 @@ namespace romanovich
     void insert(std::initializer_list< data_t > init);
     template< typename... Args >
     std::pair< iterator, bool > emplace(Args &&... args);
-    data_t &at(const data_t &data);
-    const data_t &at(const data_t &data) const;
-    data_t &operator[](const data_t &data);
-    data_t &operator[](data_t &&data);
+    Value &at(const Key &key);
+    const Value &at(const Key &key) const;
+    Value &operator[](const Key &key);
+    Value &operator[](Key &&key);
     iterator erase(iterator pos);
     iterator erase(const_iterator pos);
     iterator erase(const_iterator first, const_iterator last);
-    size_t erase(const data_t &data);
+    size_t erase(const Key &key);
     void swap(RedBlackTree &other);
-    size_t count(const data_t &data) const;
-    iterator find(const data_t &data);
-    const_iterator find(const data_t &data) const;
-    std::pair< iterator, iterator > equal_range(const data_t &data);
-    std::pair< const_iterator, const_iterator > equal_range(const data_t &data) const;
-    iterator lower_bound(const data_t &data);
-    const_iterator lower_bound(const data_t &data) const;
-    iterator upper_bound(const data_t &data);
-    const_iterator upper_bound(const data_t &data) const;
+    size_t count(const Key &key) const;
+    iterator find(const Key &key);
+    const_iterator find(const Key &key) const;
+/*    std::pair< iterator, iterator > equal_range(const data_t &data);
+    std::pair< const_iterator, const_iterator > equal_range(const data_t &data) const;*/
+    iterator lower_bound(const Key &key);
+    const_iterator lower_bound(const Key &key) const;
+    iterator upper_bound(const Key &key);
+    const_iterator upper_bound(const Key &key) const;
     Compare value_comp() const;
     bool equal(const RedBlackTree &rhs) const;
     //void insert(const data_t &data);
@@ -84,55 +84,55 @@ namespace romanovich
     return rotBst_.value_comp();
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::const_iterator RedBlackTree< Key, Value, Compare >::upper_bound(const RedBlackTree::data_t &data) const
+  typename RedBlackTree< Key, Value, Compare >::const_iterator RedBlackTree< Key, Value, Compare >::upper_bound(const Key &key) const
   {
-    return rotBst_.upper_bound(data);
+    return rotBst_.upper_bound(key);
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::iterator RedBlackTree< Key, Value, Compare >::upper_bound(const RedBlackTree::data_t &data)
+  typename RedBlackTree< Key, Value, Compare >::iterator RedBlackTree< Key, Value, Compare >::upper_bound(const Key &key)
   {
-    return rotBst_.upper_bound(data);
+    return rotBst_.upper_bound(key);
   }
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::const_iterator RedBlackTree< Key, Value, Compare >::lower_bound(
-    const RedBlackTree::data_t &data) const
+    const Key &key) const
   {
-    return rotBst_.lower_bound(data);
+    return rotBst_.lower_bound(key);
   }
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::iterator RedBlackTree< Key, Value, Compare >::lower_bound(
-    const RedBlackTree::data_t &data)
+    const Key &key)
   {
-    return rotBst_.lower_bound(data);
+    return rotBst_.lower_bound(key);
   }
-  template< typename Key, typename Value, typename Compare >
+/*  template< typename Key, typename Value, typename Compare >
   std::pair< typename RedBlackTree< Key, Value, Compare >::const_iterator, typename RedBlackTree< Key, Value, Compare >::const_iterator >
-  RedBlackTree< Key, Value, Compare >::equal_range(const RedBlackTree::data_t &data) const
+  RedBlackTree< Key, Value, Compare >::equal_range(const data_t &data) const
   {
     return rotBst_.equal_range(data);
   }
   template< typename Key, typename Value, typename Compare >
   std::pair< typename RedBlackTree< Key, Value, Compare >::iterator, typename RedBlackTree< Key, Value, Compare >::iterator >
-  RedBlackTree< Key, Value, Compare >::equal_range(const RedBlackTree::data_t &data)
+  RedBlackTree< Key, Value, Compare >::equal_range(const data_t &data)
   {
     return rotBst_.equal_range(data);
-  }
+  }*/
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::const_iterator
-  RedBlackTree< Key, Value, Compare >::find(const RedBlackTree::data_t &data) const
+  RedBlackTree< Key, Value, Compare >::find(const Key &key) const
   {
-    return rotBst_.find(data);
+    return rotBst_.find(key);
   }
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::iterator
-  RedBlackTree< Key, Value, Compare >::find(const RedBlackTree::data_t &data)
+  RedBlackTree< Key, Value, Compare >::find(const Key &key)
   {
-    return rotBst_.find(data);
+    return rotBst_.find(key);
   }
   template< typename Key, typename Value, typename Compare >
-  size_t RedBlackTree< Key, Value, Compare >::count(const RedBlackTree::data_t &data) const
+  size_t RedBlackTree< Key, Value, Compare >::count(const Key &key) const
   {
-    return rotBst_.count(data);
+    return rotBst_.count(key);
   }
   template< typename Key, typename Value, typename Compare >
   void RedBlackTree< Key, Value, Compare >::swap(RedBlackTree &other)
@@ -140,9 +140,9 @@ namespace romanovich
     rotBst_.swap(other.rotBst_);
   }
   template< typename Key, typename Value, typename Compare >
-  size_t RedBlackTree< Key, Value, Compare >::erase(const RedBlackTree::data_t &data)
+  size_t RedBlackTree< Key, Value, Compare >::erase(const Key &key)
   {
-    const_iterator constIt = find(data);
+    const_iterator constIt = find(key);
     if (constIt != cend())
     {
       erase(constIt);
@@ -178,35 +178,36 @@ namespace romanovich
     return it;
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::data_t &
-  RedBlackTree< Key, Value, Compare >::operator[](RedBlackTree::data_t &&data)
+  Value &
+  RedBlackTree< Key, Value, Compare >::operator[](Key &&key)
   {
-    return (*this)[data];
+    return (*this)[key];
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::data_t &
-  RedBlackTree< Key, Value, Compare >::operator[](const RedBlackTree::data_t &data)
+  Value &
+  RedBlackTree< Key, Value, Compare >::operator[](const Key &key)
   {
-    try
-    {
-      return at(data);
-    }
-    catch (const std::out_of_range &)
-    {
-    }
-    return *(emplace(data).first);
+    return rotBst_[key];
+//    try
+//    {
+//      return at(key);
+//    }
+//    catch (const std::out_of_range &)
+//    {
+//    }
+//    return *(emplace(key).second);
   }
   template< typename Key, typename Value, typename Compare >
-  const typename RedBlackTree< Key, Value, Compare >::data_t &
-  RedBlackTree< Key, Value, Compare >::at(const RedBlackTree::data_t &data) const
+  const Value &
+  RedBlackTree< Key, Value, Compare >::at(const Key &key) const
   {
-    return rotBst_.at(data);
+    return rotBst_.at(key);
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::data_t &
-  RedBlackTree< Key, Value, Compare >::at(const RedBlackTree::data_t &data)
+  Value &
+  RedBlackTree< Key, Value, Compare >::at(const Key &key)
   {
-    return rotBst_.at(data);
+    return rotBst_.at(key);
   }
   template< typename Key, typename Value, typename Compare >
   template< typename... Args >
@@ -240,7 +241,7 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::iterator
-  RedBlackTree< Key, Value, Compare >::insert(RedBlackTree::const_iterator pos, const RedBlackTree::data_t &value)
+  RedBlackTree< Key, Value, Compare >::insert(RedBlackTree::const_iterator pos, const data_t &value)
   {
     auto insertionResult = rotBst_.insert(pos, value);
     if (!insertionResult.second)
@@ -266,7 +267,7 @@ namespace romanovich
   std::pair<
     typename RedBlackTree< Key, Value, Compare >::iterator,
     bool
-  > RedBlackTree< Key, Value, Compare >::insert(const RedBlackTree::data_t &data)
+  > RedBlackTree< Key, Value, Compare >::insert(const data_t &data)
   {
     // Insert the new node into the underlying binary search tree
     auto insertionResult = rotBst_.insert(data);

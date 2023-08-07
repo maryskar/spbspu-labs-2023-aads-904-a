@@ -33,7 +33,7 @@ namespace romanovich
     BinarySearchTree &operator=(const BinarySearchTree &other);
     BinarySearchTree &operator=(BinarySearchTree &&other) noexcept;
     void remove(const data_t &data);
-    iterator find(const data_t &data);
+    iterator find(const Key &key);
     iterator end() noexcept;
     const_iterator end() const noexcept;
     const_iterator cend() const noexcept;
@@ -47,10 +47,10 @@ namespace romanovich
     reverse_iterator rend();
     const_reverse_iterator crbegin() const;
     const_reverse_iterator crend() const;*/
-    data_t &at(const data_t &data);
-    const data_t &at(const data_t &data) const;
-    data_t &operator[](const data_t &data);
-    data_t &operator[](data_t &&data);
+    Value &at(const Key &key);
+    const Value &at(const Key &key) const;
+    Value &operator[](const Key &key);
+    Value &operator[](Key &&key);
     size_t size() const;
     bool empty() const;
     template< typename P >
@@ -66,13 +66,13 @@ namespace romanovich
     iterator erase(iterator pos);
     iterator erase(const_iterator pos);
     iterator erase(const_iterator first, const_iterator last);
-    size_t erase(const data_t &data);
-    size_t count(const data_t &data) const;
+    size_t erase(const Key &key);
+    size_t count(const Key &key) const;
     void swap(bst_t &other);
-    iterator lower_bound(const data_t &data);
-    const_iterator lower_bound(const data_t &data) const;
-    iterator upper_bound(const data_t &data);
-    const_iterator upper_bound(const data_t &data) const;
+    iterator lower_bound(const Key &key);
+    const_iterator lower_bound(const Key &key) const;
+    iterator upper_bound(const Key &key);
+    const_iterator upper_bound(const Key &key) const;
     Compare value_comp() const;
   private:
     tree_t *root_;
@@ -175,12 +175,11 @@ namespace romanovich
     swap(compare_, other.compare_);
   }
   template< typename Key, typename Value, typename Compare >
-  size_t BinarySearchTree< Key, Value, Compare >::count(const data_t &data) const
+  size_t BinarySearchTree< Key, Value, Compare >::count(const Key &key) const
   {
     size_t count = 0;
-    const_iterator it = lower_bound(data);
-    //while (it != end() && it.node_->data == data)
-    while (it != end() && it.node_->data.first == data.first)
+    const_iterator it = lower_bound(key);
+    while (it != end() && it.node_->data.first == key)
     {
       ++count;
       ++it;
@@ -189,16 +188,16 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   typename BinarySearchTree< Key, Value, Compare >::const_iterator
-  BinarySearchTree< Key, Value, Compare >::upper_bound(const data_t &data) const
+  BinarySearchTree< Key, Value, Compare >::upper_bound(const Key &key) const
   {
-    return const_iterator(upper_bound(data));
+    return const_iterator(upper_bound(key));
   }
   template< typename Key, typename Value, typename Compare >
   typename BinarySearchTree< Key, Value, Compare >::iterator
-  BinarySearchTree< Key, Value, Compare >::upper_bound(const data_t &data)
+  BinarySearchTree< Key, Value, Compare >::upper_bound(const Key &key)
   {
     iterator it = begin();
-    while (it != end() && compare_(data.first, it->first))
+    while (it != end() && compare_(key, it->first))
     {
       ++it;
     }
@@ -211,18 +210,18 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   typename BinarySearchTree< Key, Value, Compare >::const_iterator
-  BinarySearchTree< Key, Value, Compare >::lower_bound(const data_t &data) const
+  BinarySearchTree< Key, Value, Compare >::lower_bound(const Key &key) const
   {
-    return const_iterator(const_cast< BinarySearchTree * >(this)->lower_bound(data));
+    return const_iterator(const_cast< BinarySearchTree * >(this)->lower_bound(key));
   }
   template< typename Key, typename Value, typename Compare >
   typename BinarySearchTree< Key, Value, Compare >::iterator
-  BinarySearchTree< Key, Value, Compare >::lower_bound(const data_t &data)
+  BinarySearchTree< Key, Value, Compare >::lower_bound(const Key &key)
   {
     iterator it = begin();
     while (it != end())
     {
-      if (!compare_(data.first, it->first))
+      if (!compare_(key, it->first))
       {
         break;
       }
@@ -285,47 +284,47 @@ namespace romanovich
     return insert(newData);
   }
   template< typename Key, typename Value, typename Compare >
-  std::pair< Key, Value > &BinarySearchTree< Key, Value, Compare >::operator[](const data_t &data)
+  Value &BinarySearchTree< Key, Value, Compare >::operator[](const Key &key)
   {
     //std::pair< iterator, bool > result = insert(key, Value{});
     //return result.first->value;
-    return find(data).node_->data.second;
+    return find(key).node_->data.second;
   }
   template< typename Key, typename Value, typename Compare >
-  std::pair< Key, Value > &BinarySearchTree< Key, Value, Compare >::operator[](data_t &&data)
+  Value &BinarySearchTree< Key, Value, Compare >::operator[](Key &&key)
   {
     try
     {
-      return at(data);
+      return at(key);
     }
     catch (const std::out_of_range &)
     {
     }
-    return *(emplace(data).first);
+    return *(emplace(key).first);
   }
   template< typename Key, typename Value, typename Compare >
-  std::pair< Key, Value > &BinarySearchTree< Key, Value, Compare >::at(const data_t &data)
+  Value &BinarySearchTree< Key, Value, Compare >::at(const Key &key)
   {
     const BinarySearchTree *constThis = this;
-    return const_cast<data_t &>(constThis->at(data));
+    return const_cast<data_t &>(constThis->at(key));
   }
   template< typename Key, typename Value, typename Compare >
-  const std::pair< Key, Value > &BinarySearchTree< Key, Value, Compare >::at(const data_t &data) const
+  const Value &BinarySearchTree< Key, Value, Compare >::at(const Key &key) const
   {
     tree_t *node = root_;
     while (node)
     {
-      if (compare_(data.first, node->data.first))
+      if (compare_(key, node->data.first))
       {
         node = node->left;
       }
-      else if (compare_(node->data.first, data.first))
+      else if (compare_(node->data.first, key))
       {
         node = node->right;
       }
       else
       {
-        return node->data;
+        return node->data.second;
       }
     }
     throw std::out_of_range("Key not found.");
@@ -516,16 +515,16 @@ namespace romanovich
     return node;
   }
   template< typename Key, typename Value, typename Compare >
-  BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::find(const data_t &data)
+  BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::find(const Key &key)
   {
     tree_t *current = root_;
     while (current != nullptr)
     {
-      if (compare_(current->data.first, data.first))
+      if (compare_(current->data.first, key))
       {
         current = current->right;
       }
-      else if (compare_(data.first, current->data.first))
+      else if (compare_(key, current->data.first))
       {
         current = current->left;
       }
@@ -547,7 +546,7 @@ namespace romanovich
   {
     root_ = insertImpl(root_, nullptr, data.first, data.second);
     ++size_;
-    iterator it = find(data);
+    iterator it = find(data.first);
     if (it == end())
     {
       return std::make_pair(end(), false);
@@ -561,8 +560,6 @@ namespace romanovich
   BinarySearchTree< Key, Value, Compare >::BinarySearchTree():
     root_(nullptr),
     fakeNode_(initFake()),
-//  begin_(nullptr),
-//  end_(nullptr),
     size_(0),
     compare_()
   {
@@ -699,10 +696,10 @@ BinarySearchTree< Key, Value, Compare >::insert(const_iterator pos, InputIt firs
     return it_first;
   }
   template< typename Key, typename Value, typename Compare >
-  size_t BinarySearchTree< Key, Value, Compare >::erase(const data_t &data)
+  size_t BinarySearchTree< Key, Value, Compare >::erase(const Key &key)
   {
     //size_t count = 0;
-    iterator it = find(data);
+    iterator it = find(key);
     if (it != end())
     {
       //iterator next = it;
