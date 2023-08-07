@@ -282,7 +282,15 @@ namespace romanovich
   {
     //std::pair< iterator, bool > result = insert(key, Value{});
     //return result.first->value;
-    return find(key).node_->data.second;
+    //return find(key).node_->data.second;
+    try
+    {
+      return at(key);
+    }
+    catch (const std::out_of_range & e)
+    {}
+    return insert({key, Value{}}).first->second;
+    //return *(emplace(...).second);
   }
   template< typename Key, typename Value, typename Compare >
   Value &BinarySearchTree< Key, Value, Compare >::operator[](Key &&key)
@@ -300,7 +308,7 @@ namespace romanovich
   Value &BinarySearchTree< Key, Value, Compare >::at(const Key &key)
   {
     const BinarySearchTree *constThis = this;
-    return const_cast<data_t &>(constThis->at(key));
+    return const_cast<Value &>(constThis->at(key));
   }
   template< typename Key, typename Value, typename Compare >
   const Value &BinarySearchTree< Key, Value, Compare >::at(const Key &key) const
