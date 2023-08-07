@@ -74,8 +74,8 @@ namespace romanovich
     iterator upper_bound(const data_t &data);
     const_iterator upper_bound(const data_t &data) const;
     Compare value_comp() const;
-    tree_t *root_;
   private:
+    tree_t *root_;
     tree_t *fakeNode_;
     size_t size_;
     Compare compare_;
@@ -398,8 +398,8 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   BinarySearchTree< Key, Value, Compare >::BinarySearchTree(BinarySearchTree &&other) noexcept:
-    fakeNode_(other.fakeNode_),
     root_(other.root_),
+    fakeNode_(other.fakeNode_),
     size_(other.size_),
     compare_(other.compare_)
   {
@@ -419,12 +419,10 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   BinarySearchTree< Key, Value, Compare >::BinarySearchTree(const BinarySearchTree &other):
-    fakeNode_(initFake()),
     root_(nullptr),
-//  begin_(nullptr),
-//  end_(nullptr),
-    compare_(other.compare_),
-    size_(0)
+    fakeNode_(initFake()),
+    size_(0),
+    compare_(other.compare_)
   {
     try
     {
@@ -561,8 +559,8 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   BinarySearchTree< Key, Value, Compare >::BinarySearchTree():
-    fakeNode_(initFake()),
     root_(nullptr),
+    fakeNode_(initFake()),
 //  begin_(nullptr),
 //  end_(nullptr),
     size_(0),
