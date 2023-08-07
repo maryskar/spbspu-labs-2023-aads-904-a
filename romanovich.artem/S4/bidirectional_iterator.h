@@ -64,10 +64,6 @@ namespace romanovich
     fakeNode_(fakeNode),
     root_(root)
   {
-    if (!root || !fakeNode)
-    {
-      throw std::invalid_argument("Null pointer passed to iterator.");
-    }
   }
   template< typename Key, typename Value, typename Compare >
   bool BidirectionalIterator< Key, Value, Compare >::operator==(const BidirectionalIterator &other) const
