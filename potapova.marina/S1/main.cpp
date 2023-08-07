@@ -8,7 +8,6 @@
 #include "divideExpression.h"
 #include "getInputStream.h"
 #include "countPostfixExpression.h"
-#include "printAnswer.h"
 
 int main()
 {
@@ -49,7 +48,7 @@ int main()
   }
   while (!answer_stack.empty())
   {
-    std::cout << answer_stack.back() << ' ' << std::endl;
+    std::cout << answer_stack.back() << ' ';
     answer_stack.pop();
   }
   return 0;
