@@ -24,23 +24,23 @@ size_t getHeight(const Tree< T >* tree)
 }
 
 template< typename T >
-Tree< T >* getMax(const Tree< T >* tree)
+Tree< T >* getMax(Tree< T >* tree)
 {
-	if (!tree.right_)
+	if (!tree->right_)
 	{
 		return tree;
 	}
-	return getMax(tree.right_);
+	return getMax(tree->right_);
 }
 
 template< typename T >
-Tree< T >* getMin(const Tree< T >* tree)
+Tree< T >* getMin(Tree< T >* tree)
 {
-	if (!tree.left_)
+	if (!tree->left_)
 	{
 		return tree;
 	}
-	return getMax(tree.left_);
+	return getMax(tree->left_);
 }
 
 #endif

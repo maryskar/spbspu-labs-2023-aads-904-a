@@ -5,6 +5,7 @@
 #include <functional>
 #include "tree.hpp"
 
+#include <iostream>
 
 template< typename Key, typename Value, typename Compare = std::less< > >
 class AVLTree
@@ -17,6 +18,7 @@ class AVLTree
     Tree< data_t >* node_;
     Compare comp_;
   private:
+    void updateHeight(Tree< data_t >* tree);
     Tree< data_t >* insert(const Key& key, const Value& value, Tree< data_t >* tree);
     Tree< data_t >* find(const Key& key, Tree< data_t >* tree);
     void erase(Tree< data_t >* tree);
@@ -39,6 +41,16 @@ template< typename Key, typename Value, typename Compare >
 void AVLTree< Key, Value, Compare >::erase(const Key& key)
 {
   erase(find(key, node_));
+}
+
+template<typename Key, typename Value, typename Compare>
+void AVLTree<Key, Value, Compare>::updateHeight(Tree< data_t >* tree)
+{
+  if (!tree)
+  {
+    return;
+  }
+  tree->height_ = 1 + std::max(getHeight(tree->left_), getHeight(tree->right_));
 }
 
 template<typename Key, typename Value, typename Compare>
@@ -111,8 +123,8 @@ Tree< typename AVLTree< Key, Value, Compare >::data_t >* AVLTree< Key, Value, Co
   }
 }
 
-template< typename Key, typename Value, typename Compare >
-void AVLTree< Key, Value, Compare >::erase(Tree< typename AVLTree<Key, Value, Compare >::data_t >* tree)
+template<typename Key, typename Value, typename Compare>
+void AVLTree<Key, Value, Compare>::erase(Tree<typename AVLTree<Key, Value, Compare>::data_t>* tree)
 {
   if (!tree)
   {
@@ -120,6 +132,12 @@ void AVLTree< Key, Value, Compare >::erase(Tree< typename AVLTree<Key, Value, Co
   }
   if (!tree->right_ && !tree->left_)
   {
+    if (!tree->head_)
+    {
+      delete tree;
+      node_ = nullptr;
+      return;
+    }
     if (tree->head_->left_ == tree)
     {
       tree->head_->left_ = nullptr;
@@ -129,11 +147,37 @@ void AVLTree< Key, Value, Compare >::erase(Tree< typename AVLTree<Key, Value, Co
       tree->head_->right_ = nullptr;
     }
     delete tree;
+    //balance(tree->head_);
+    return;
   }
   if (!tree->right_ || !tree->left_)
   {
-    tree = (tree->left_ == nullptr) ? tree->right_ : tree->left_;
+    Tree<data_t>* child = (tree->left_ == nullptr) ? tree->right_ : tree->left_;
+    if (!tree->head_)
+    {
+      node_ = child;
+      node_->head_ = nullptr;
+    }
+    else if (tree->head_->left_ == tree)
+    {
+      tree->head_->left_ = child;
+      child->head_ = tree->head_;
+    }
+    else
+    {
+      tree->head_->right_ = child;
+      child->head_ = tree->head_;
+    }
+    delete tree;
+    //balance(child->head_);
+    return;
   }
+  
+  Tree<data_t>* maxNode = getMax(tree->left_);
+  tree->data_ = maxNode->data_;
+  erase(maxNode);
+  //balance(tree->head_);
 }
+
 
 #endif

@@ -33,9 +33,11 @@ int main() {
     avlTree.insert(8, "eight");
     avlTree.insert(10, "ten");
     avlTree.insert(9, "nine");
-    avlTree.erase(9);
     printTree(avlTree.node_);
-  
+    avlTree.erase(7);
+    std::cout << "\n\n\n\n";
+    printTree(avlTree.node_);
+    std::cout << "\n\n\n\n";
     inOrderTraversal(avlTree.node_);
     return 0;
 }
