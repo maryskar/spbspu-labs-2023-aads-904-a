@@ -426,7 +426,6 @@ namespace romanovich
         TreeNode< data_t > *sibling = operationNode->parent->right;
         if (sibling->color == Color::C_RED)
         {
-          // Case 1: Sibling is red
           sibling->color = Color::C_BLACK;
           operationNode->parent->color = Color::C_RED;
           rotBst_.rotateLeftLeft(operationNode->parent);
@@ -434,7 +433,6 @@ namespace romanovich
         }
         if (sibling->left->color == Color::C_BLACK && sibling->right->color == Color::C_BLACK)
         {
-          // Case 2: Sibling and its children are black
           sibling->color = Color::C_RED;
           operationNode = operationNode->parent;
         }
@@ -442,14 +440,11 @@ namespace romanovich
         {
           if (sibling->right->color == Color::C_BLACK)
           {
-            // Case 3: Sibling is black, sibling's left child is red, and sibling's right child is black
             sibling->left->color = Color::C_BLACK;
             sibling->color = Color::C_RED;
             rotBst_.rotateRightRight(sibling);
             sibling = operationNode->parent->right;
           }
-
-          // Case 4: Sibling is black, sibling's right child is red
           sibling->color = operationNode->parent->color;
           operationNode->parent->color = Color::C_BLACK;
           sibling->right->color = Color::C_BLACK;
@@ -459,7 +454,6 @@ namespace romanovich
       }
       else
       {
-        // Symmetric cases with "left" and "right" exchanged
         TreeNode< data_t > *sibling = operationNode->parent->left;
         if (sibling->color == Color::C_RED)
         {
@@ -495,7 +489,6 @@ namespace romanovich
   template< typename Key, typename Value, typename Compare >
   void RedBlackTree< Key, Value, Compare >::balanceAfterInsert(TreeNode< data_t > *operationNode)
   {
-    // Re-color and rotate as necessary to maintain Red-Black Tree properties
     while (operationNode->parent && operationNode->parent->color == Color::C_RED)
     {
       if (operationNode->parent == operationNode->parent->parent->left)
@@ -503,7 +496,6 @@ namespace romanovich
         TreeNode< data_t > *uncle = operationNode->parent->parent->right;
         if (uncle && uncle->color == Color::C_RED)
         {
-          // Case 1: Recolor
           operationNode->parent->color = Color::C_BLACK;
           uncle->color = Color::C_BLACK;
           operationNode->parent->parent->color = Color::C_RED;
@@ -513,11 +505,9 @@ namespace romanovich
         {
           if (operationNode == operationNode->parent->right)
           {
-            // Case 2: Left rotate and continue to case 3
             operationNode = operationNode->parent;
             rotBst_.rotateLeftLeft(operationNode);
           }
-          // Case 3: Right rotate
           operationNode->parent->color = Color::C_BLACK;
           operationNode->parent->parent->color = Color::C_RED;
           rotBst_.rotateRightRight(operationNode->parent->parent);
@@ -525,7 +515,6 @@ namespace romanovich
       }
       else
       {
-        // Symmetric cases with "left" and "right" exchanged
         TreeNode< data_t > *uncle = operationNode->parent->parent->left;
         if (uncle && uncle->color == Color::C_RED)
         {
@@ -547,8 +536,6 @@ namespace romanovich
         }
       }
     }
-
-    // Ensure the root node is black
     rotBst_.bst_.root_->color = Color::C_BLACK;
   }
   template< typename Key, typename Value, typename Compare >
