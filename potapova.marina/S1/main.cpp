@@ -9,15 +9,14 @@
 #include "getInputStream.h"
 #include "countPostfixExpression.h"
 
-int main()
+int main(int argc, char* argv[])
 {
-  const char* argv[]{"", "C:/Users/79213/Desktop/Marina/UniversitySPBSPU/aip_labs/spbspu-labs-2023-aads-904-a/potapova.marina/S1/in.txt"};
   std::istream* in_ptr;
   potapova::expr_queue infix_expr;
   potapova::Stack< std::int64_t > answer_stack;
   try
   {
-    in_ptr = potapova::getInputStream(2, argv);
+    in_ptr = potapova::getInputStream(argc, argv);
   }
   catch (const std::exception& e)
   {
