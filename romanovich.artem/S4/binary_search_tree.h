@@ -583,8 +583,6 @@ namespace romanovich
       delete node;
     }
     root_ = nullptr;
-//  begin_ = nullptr;
-//  end_ = nullptr;
   }
   template< typename Key, typename Value, typename Compare >
   typename BinarySearchTree< Key, Value, Compare >::iterator

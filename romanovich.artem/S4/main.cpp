@@ -62,14 +62,14 @@ int main(int argc, char *argv[])
     {
       break;
     }
-    try
-    {
+    //try
+    //{
       commandDictionary[command](std::cin, std::cout, map);
-    }
-    catch (...)
-    {
-      printError(std::cout) << '\n';
-      std::cin.ignore(maxLLSize, '\n');
-    }
+    //}
+    ////catch (...)
+    ////{
+    ////  printError(std::cout) << '\n';
+    ////  std::cin.ignore(maxLLSize, '\n');
+    //}
   }
 }
