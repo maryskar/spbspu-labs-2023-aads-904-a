@@ -9,35 +9,39 @@
 std::int64_t max_int = INT64_MAX;
 std::int64_t min_int = INT64_MIN;
 
-bool checkOverflowPlus(std::int64_t operand1, std::int64_t operand2)
+bool isOverflowPlus(std::int64_t operand1, std::int64_t operand2)
 {
   return operand1 > 0 && operand2 > 0 && operand2 > (max_int - operand1);
 }
     
-bool checkOverflowMinus(std::int64_t operand1, std::int64_t operand2)
+bool isOverflowMinus(std::int64_t operand1, std::int64_t operand2)
 {
-  return (operand1 < 0 && operand2 < 0 && operand1 < (min_int - operand2)) || (operand1 < 0 && operand2 > 0 && operand1 < (min_int + operand2)) || (operand1 > 0 && operand2 < 0 && operand1 < (min_int + operand2));
+  return (operand1 < 0 && operand2 > 0 && operand1 < (min_int + operand2));
 }
 
-bool checkOverflowMultiply(std::int64_t operand1, std::int64_t operand2)
+bool isOverflowMultiply(std::int64_t operand1, std::int64_t operand2)
 {
   return (operand1 > max_int / operand2) && ((operand1 > 0 && operand2 > 0) || (operand1 < 0 && operand2 < 0));
 }
 
-bool checkOverflowDivision(std::int64_t operand1, std::int64_t operand2)
+bool isOverflowDivision(std::int64_t operand1, std::int64_t operand2)
 {
   return (operand1 < min_int / operand2) && ((operand1 > 0 && operand2 < 0) || (operand1 < 0 && operand2 > 0));
 }
 
-bool isOverflowPlusMinus(std::int64_t operand1, std::int64_t operand2)
+void pushWithCheckOverflow(potapova::Stack< std::int64_t > operands_stack, std::int64_t operand1, std::int64_t operand2, potapova::expr_queue& postfix_queue)
 {
-  return checkOverflowPlus(operand1, operand2) || checkOverflowMinus(operand1, operand2);
+  if (isOverflowFunc(operand1, operand2)) 
+  {
+    throw std::overflow_error("Overflow while calculate");
+  }
+  else
+  {
+    operands_stack.push();
+  }
 }
 
-bool isOverflowMultiplyDivision(std::int64_t operand1, std::int64_t operand2)
-{
-  return checkOverflowMultiply(operand1, operand2) || checkOverflowDivision(operand1, operand2);
-}
+bool (*isOverflowFunc)(std::int64_t operand1, std::int64_t operand2);
 
 std::int64_t potapova::countPostfixExpression(expr_queue& postfix_queue)
 {
@@ -55,19 +59,29 @@ std::int64_t potapova::countPostfixExpression(expr_queue& postfix_queue)
       operands_stack.pop();
       std::int64_t operand1 = operands_stack.back();
       operands_stack.pop();
-      bool (*isOverflowFunc)(int64_t operand1, int64_t operand2);
+      //bool (*isOverflowFunc)(int64_t operand1, int64_t operand2);
+      if (postfix_queue.front().operation == '+' && operand2 < 0)
+      {
+        operand2 *= -1;
+        postfix_queue.front().operation = '-';
+      }
+      if (postfix_queue.front().operation == '-' && operand2 < 0)
+      {
+        operand2 *= -1;
+        postfix_queue.front().operation = '+';
+      }
       switch (postfix_queue.front().operation)
       {
         case '+':
-          isOverflowFunc = checkOverflowPlus;
+          isOverflowFunc = isOverflowPlus;
           operands_stack.push(operand1 + operand2);
           break;
         case '-':
-          isOverflowFunc = checkOverflowMinus;
+          isOverflowFunc = isOverflowMinus;
           operands_stack.push(operand1 - operand2);
           break;
         case '*':
-          isOverflowFunc = checkOverflowMultiply;
+          isOverflowFunc = isOverflowMultiply;
           operands_stack.push(operand1 * operand2);
           break;
         case '/':
@@ -75,29 +89,17 @@ std::int64_t potapova::countPostfixExpression(expr_queue& postfix_queue)
           {
             throw std::runtime_error("Division by zero");
           }
-          isOverflowFunc = checkOverflowDivision;
+          isOverflowFunc = isOverflowDivision;
           operands_stack.push(operand1 / operand2);
           break;
         case '%':
           operands_stack.push(operand1 % operand2);
           break;
       }
-      if (isOverflowFunc(operand1, operand2)) {
-        switch (postfix_queue.front().operation) {
-          case '+':
-            throw std::overflow_error("Overflow for plus");
-            break;
-          case '-':
-            throw std::overflow_error("Overflow for minus");
-            break;
-          case '*':
-            throw std::overflow_error("Overflow for multiply");
-            break;
-          case '/':
-            throw std::overflow_error("Overflow for division");
-            break;
-        }
-      }
+      /*if (isOverflowFunc(operand1, operand2)) 
+      {
+        throw std::overflow_error("Overflow while calculate");
+      }*/
       postfix_queue.pop();
     }
   }
