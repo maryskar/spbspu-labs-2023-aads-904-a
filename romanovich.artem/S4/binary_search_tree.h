@@ -287,8 +287,9 @@ namespace romanovich
     {
       return at(key);
     }
-    catch (const std::out_of_range & e)
-    {}
+    catch (const std::out_of_range &e)
+    {
+    }
     return insert({key, Value{}}).first->second;
     //return *(emplace(...).second);
   }
@@ -526,7 +527,7 @@ namespace romanovich
   BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::find(const Key &key)
   {
     tree_t *current = root_;
-    while (current != nullptr)
+    while (current)
     {
       if (compare_(current->data.first, key))
       {

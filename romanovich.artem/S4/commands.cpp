@@ -8,6 +8,10 @@ namespace
   {
     void operator()(map_ref newDict, const_map_ref firstDict, const_map_ref secondDict) const
     {
+      if (firstDict.empty() || secondDict.empty())
+      {
+        return;
+      }
       for (const auto &entry: firstDict)
       {
         if (secondDict.count(entry.first) == 0)
@@ -21,6 +25,10 @@ namespace
   {
     void operator()(map_ref newDict, const_map_ref firstDict, const_map_ref secondDict) const
     {
+      if (firstDict.empty() || secondDict.empty())
+      {
+        return;
+      }
       for (const auto &entry: firstDict)
       {
         if (secondDict.count(entry.first) > 0)
@@ -34,6 +42,10 @@ namespace
   {
     void operator()(map_ref newDict, const_map_ref firstDict, const_map_ref secondDict) const
     {
+      if (firstDict.empty() || secondDict.empty())
+      {
+        return;
+      }
       for (auto &entry: secondDict)
       {
         newDict[entry.first] = entry.second;
@@ -84,7 +96,7 @@ namespace romanovich
     }
     if (map.empty())
     {
-      printEmptyDict(out) << "\n";
+      printEmptyDict(out) << "!\n";
     }
     else
     {
