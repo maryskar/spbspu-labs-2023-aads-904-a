@@ -103,7 +103,7 @@ namespace romanovich
     {
       std::cout << "└── ";
     }
-    std::string color = (bool) (node->color == Color::C_RED) ? "◼" : "◻";
+    std::string color = static_cast<bool>(node->color == Color::C_RED) ? "◼" : "◻";
     std::cout << node->data.second << " " << color << "\n";
     std::string newPrefix = prefix + (isLeft ? "│   " : "    ");
     printNode(node->left, true, newPrefix);
