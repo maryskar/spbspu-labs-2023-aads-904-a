@@ -51,8 +51,6 @@ int main(int argc, char *argv[])
       std::string val = lineWords[i + 1];
       mapData.emplace(romanovich::map_value_t(key, val));
     }
-    mapData.rotBst_.printNode(mapData.rotBst_.bst_.root_, true, "");
-    std::cout << "---------\n";
     map.emplace(romanovich::container_value_t(mapName, mapData));
   }
   auto commandDictionary = romanovich::createCommandDictionary(map);
