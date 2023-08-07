@@ -42,8 +42,14 @@ namespace
   {
     void operator()(map_ref newDict, const_map_ref firstDict, const_map_ref secondDict) const
     {
-      if (firstDict.empty() || secondDict.empty())
+      if (firstDict.empty())
       {
+        newDict = secondDict;
+        return;
+      }
+      if (secondDict.empty())
+      {
+        newDict = firstDict;
         return;
       }
       for (auto &entry: secondDict)
