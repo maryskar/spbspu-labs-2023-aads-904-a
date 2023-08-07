@@ -259,7 +259,7 @@ namespace romanovich
   std::pair< typename RedBlackTree< Key, Value, Compare >::iterator,
     bool > RedBlackTree< Key, Value, Compare >::insert(P &&data)
   {
-    data_t tmp(data);
+    const data_t tmp(data);
     return insert(tmp);
   }
   template< typename Key, typename Value, typename Compare >

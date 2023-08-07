@@ -71,5 +71,11 @@ namespace romanovich
     RedBlackTree< Key, Value, Compare > rbBst;
     Compare compare_;
   };
+  template< typename Key, typename Value, typename Compare >
+  Map< Key, Value, Compare >::Map():
+  rbBst(),
+  compare_()
+  {
+  }
 }
 #endif

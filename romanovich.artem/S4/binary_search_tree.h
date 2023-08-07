@@ -86,8 +86,8 @@ namespace romanovich
     tree_t *initFake();
     TreeNode< data_t > *copyBegin(const TreeNode< data_t > *beginNode);
     TreeNode< data_t > *copyEnd(const TreeNode< data_t > *endNode);
-    TreeNode< data_t > *findMin(TreeNode< data_t > *node);
-    TreeNode< data_t > *findMax(TreeNode< data_t > *node);
+    TreeNode< data_t > *findMin(TreeNode< data_t > *node) const;
+    TreeNode< data_t > *findMax(TreeNode< data_t > *node) const;
     TreeNode< data_t > *copyTree(const TreeNode< data_t > *node);
   };
   template< typename Key, typename Value, typename Compare >
@@ -117,7 +117,7 @@ namespace romanovich
     return newNode;
   }
   template< typename Key, typename Value, typename Compare >
-  TreeNode< std::pair< Key, Value > > *BinarySearchTree< Key, Value, Compare >::findMin(TreeNode< data_t > *node)
+  TreeNode< std::pair< Key, Value > > *BinarySearchTree< Key, Value, Compare >::findMin(TreeNode< data_t > *node) const
   {
     if (!node)
     {
@@ -130,7 +130,7 @@ namespace romanovich
     return node;
   }
   template< typename Key, typename Value, typename Compare >
-  TreeNode< std::pair< Key, Value > > *BinarySearchTree< Key, Value, Compare >::findMax(TreeNode< data_t > *node)
+  TreeNode< std::pair< Key, Value > > *BinarySearchTree< Key, Value, Compare >::findMax(TreeNode< data_t > *node) const
   {
     if (!node)
     {
@@ -179,7 +179,8 @@ namespace romanovich
   {
     size_t count = 0;
     const_iterator it = lower_bound(data);
-    while (it != end() && it.node_->data == data)
+    //while (it != end() && it.node_->data == data)
+    while (it != end() && it.node_->data.first == data.first)
     {
       ++count;
       ++it;
@@ -399,15 +400,11 @@ namespace romanovich
   BinarySearchTree< Key, Value, Compare >::BinarySearchTree(BinarySearchTree &&other) noexcept:
     fakeNode_(other.fakeNode_),
     root_(other.root_),
-//  begin_(other.begin_),
-//  end_(other.end_),
     size_(other.size_),
     compare_(other.compare_)
   {
     other.fakeNode_ = nullptr;
     other.root_ = nullptr;
-    other.begin_ = nullptr;
-    other.end_ = nullptr;
     other.size_ = 0;
   }
   template< typename Key, typename Value, typename Compare >

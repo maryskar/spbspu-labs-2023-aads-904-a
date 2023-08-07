@@ -1,45 +1,75 @@
 #include <iostream>
-#include <random>
-#include <ctime>
-#include "redblack_tree.h"
-void fillArrayWithRandomNumbers(int arr[], int size, int minValue, int maxValue)
+#include <fstream>
+#include <string>
+#include <vector>
+#include <limits>
+#include "commands.h"
+std::ostream &printError(std::ostream &out)
 {
-  std::srand(static_cast<unsigned int>(std::time(nullptr)));
-  for (int i = 0; i < size; ++i)
-  {
-    arr[i] = std::rand() % (maxValue - minValue + 1) + minValue;
-  }
+  return out << "<INVALID COMMAND>";
 }
-void insertAndPrint(romanovich::RedBlackTree< int, int, std::less<> > &rbTree, int i)
+void splitString(std::vector< std::string > &elems, const std::string &line, char del)
 {
-  rbTree.insert({i,  i});
-  rbTree.rotBst_.printNode(rbTree.rotBst_.bst_.root_, false, "");
-  std::cout << "-------------\n";
+  std::string word;
+  size_t startPos = 0;
+  size_t endPos = line.find(del);
+  while (endPos != std::string::npos)
+  {
+    word = line.substr(startPos, endPos - startPos);
+    elems.push_back(word);
+    startPos = endPos + 1;
+    endPos = line.find(del, startPos);
+  }
+  word = line.substr(startPos, endPos);
+  elems.push_back(word);
 }
-int main()
+int main(int argc, char *argv[])
 {
-  // Создаем красно-черное дерево для целых чисел
-  romanovich::RedBlackTree< int, int, std::less<> > rbTree;
-//  insertAndPrint(rbTree, 24);
-//  insertAndPrint(rbTree, 5);
-//  insertAndPrint(rbTree, 1);
-
-  const int arraySize = 10;
-  int myArray[arraySize];
-  int minValue = 1;
-  int maxValue = 20;
-  fillArrayWithRandomNumbers(myArray, arraySize, minValue, maxValue);
-
-  // Выводим сгенерированный массив
-  for (int i: myArray)
+  constexpr auto maxLLSize = std::numeric_limits< std::streamsize >::max();
+  if (argc != 2)
   {
-    insertAndPrint(rbTree, i);
+    std::cerr << "No file provided.\n";
+    return 1;
   }
-
-// Выводим элементы дерева в возрастающем порядке
-  for (const auto &node: rbTree)
+  std::ifstream input(argv[1]);
+  if (!input)
   {
-    std::cout << "Key: " << node.first << ", Value: " << node.second << std::endl;
+    std::cerr << "Cannot open file.\n";
+    return 1;
   }
-  return 0;
+  romanovich::container_t map;
+  std::string line;
+  while (std::getline(input, line))
+  {
+    std::vector< std::string > lineWords;
+    splitString(lineWords, line, ' ');
+    std::string mapName = lineWords[0];
+    romanovich::map_t mapData;
+    for (size_t i = 1; i < lineWords.size(); i += 2)
+    {
+      int key = std::stoi(lineWords[i]);
+      std::string val = lineWords[i + 1];
+      mapData.emplace(romanovich::map_value_t(key, val));
+    }
+    map.emplace(romanovich::container_value_t(mapName, mapData));
+  }
+  auto commandDictionary = romanovich::createCommandDictionary(map);
+  while (std::cin)
+  {
+    std::string command;
+    std::cin >> command;
+    if (!std::cin)
+    {
+      break;
+    }
+    try
+    {
+      commandDictionary[command](std::cin, std::cout, map);
+    }
+    catch (...)
+    {
+      printError(std::cout) << '\n';
+      std::cin.ignore(maxLLSize, '\n');
+    }
+  }
 }
