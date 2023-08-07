@@ -34,6 +34,7 @@ namespace romanovich
     BinarySearchTree &operator=(BinarySearchTree &&other) noexcept;
     void remove(const data_t &data);
     iterator find(const Key &key);
+    const_iterator find(const Key &key) const;
     iterator end() noexcept;
     const_iterator end() const noexcept;
     const_iterator cend() const noexcept;
@@ -74,8 +75,8 @@ namespace romanovich
     iterator upper_bound(const Key &key);
     const_iterator upper_bound(const Key &key) const;
     Compare value_comp() const;
-  private:
     tree_t *root_;
+  private:
     tree_t *fakeNode_;
     size_t size_;
     Compare compare_;
@@ -177,14 +178,7 @@ namespace romanovich
   template< typename Key, typename Value, typename Compare >
   size_t BinarySearchTree< Key, Value, Compare >::count(const Key &key) const
   {
-    size_t count = 0;
-    const_iterator it = lower_bound(key);
-    while (it != end() && it.node_->data.first == key)
-    {
-      ++count;
-      ++it;
-    }
-    return count;
+    return (find(key) == end()) ? 0 : 1;
   }
   template< typename Key, typename Value, typename Compare >
   typename BinarySearchTree< Key, Value, Compare >::const_iterator
@@ -430,7 +424,7 @@ namespace romanovich
     catch (...)
     {
       clear();
-      delete fakeNode_;
+      ::operator delete(fakeNode_);
       throw;
     }
 //  begin_ = copyBegin(other.begin_);
@@ -515,6 +509,12 @@ namespace romanovich
     return node;
   }
   template< typename Key, typename Value, typename Compare >
+  ConstBidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::find(const Key &key) const
+  {
+    iterator it = const_cast<bst_t *>(this)->find(key);
+    return const_iterator(it);
+  }
+  template< typename Key, typename Value, typename Compare >
   BidirectionalIterator< Key, Value, Compare > BinarySearchTree< Key, Value, Compare >::find(const Key &key)
   {
     tree_t *current = root_;
@@ -567,7 +567,7 @@ namespace romanovich
   template< typename Key, typename Value, typename Compare >
   BinarySearchTree< Key, Value, Compare >::~BinarySearchTree()
   {
-    delete fakeNode_;
+    ::operator delete(fakeNode_);
     clear(root_);
   }
   template< typename Key, typename Value, typename Compare >
