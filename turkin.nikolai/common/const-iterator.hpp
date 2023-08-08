@@ -60,8 +60,8 @@ template< typename T >
 turkin::ConstIterator< T > turkin::ConstIterator< T >::operator++(int)
 {
   assert(cur_ != nullptr);
-  ConstIterator< T > result(* this);
-  ++(* this);
+  ConstIterator< T > result(*this);
+  ++(*this);
   return result;
 }
 
@@ -88,7 +88,7 @@ bool turkin::ConstIterator< T >::operator==(const ConstIterator< T > & rhs) cons
 template< typename T >
 bool turkin::ConstIterator< T >::operator!=(const ConstIterator< T > & rhs) const
 {
-  return !(rhs == * this);
+  return !(rhs == *this);
 }
 
 #endif
