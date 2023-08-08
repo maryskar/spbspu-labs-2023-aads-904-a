@@ -6,9 +6,9 @@ namespace fesenko
   struct Tree
   {
     T data;
-    Tree< T > *parent_;
-    Tree< T > *left_;
-    Tree< T > *right_;
+    Tree< T > *parent;
+    Tree< T > *left;
+    Tree< T > *right;
   };
 }
 #endif
