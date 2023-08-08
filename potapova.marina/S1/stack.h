@@ -2,6 +2,7 @@
 #define STACK_H
 
 #include <cstddef>
+#include <utility>
 
 namespace potapova
 {
