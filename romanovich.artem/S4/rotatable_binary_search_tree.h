@@ -74,9 +74,8 @@ namespace romanovich
     bool equal(const RotatableBinarySearchTree &rhs) const;
     void rotateLeftLeft(TreeNode< data_t > *node);
     void rotateRightRight(TreeNode< data_t > *node);
-    void printNode(const TreeNode< data_t > *node, bool isLeft, const std::string &prefix) const;
-    BinarySearchTree< Key, Value, Compare > bst_;
   private:
+    BinarySearchTree< Key, Value, Compare > bst_;
   };
   template< typename Key, typename Value, typename Compare >
   typename RotatableBinarySearchTree< Key, Value, Compare >::const_reverse_iterator
@@ -118,34 +117,6 @@ namespace romanovich
   RotatableBinarySearchTree< Key, Value, Compare >::RotatableBinarySearchTree(const Compare &compare):
     bst_(compare)
   {
-  }
-  template< typename Key, typename Value, typename Compare >
-  void RotatableBinarySearchTree< Key, Value, Compare >::printNode(const TreeNode< data_t > *node, bool isLeft,
-                                                                   const std::string &prefix) const
-  {
-    std::cout << prefix;
-    if (!node)
-    {
-      std::cout << "NULL\n";
-      return;
-    }
-    if (isLeft)
-    {
-      std::cout << "├── ";
-    }
-    else if (node == bst_.root_)
-    {
-      std::cout << "─── ";
-    }
-    else
-    {
-      std::cout << "└── ";
-    }
-    std::string color = static_cast<bool>(node->color == Color::C_RED) ? "◼" : "◻";
-    std::cout << node->data.second << " " << color << "\n";
-    std::string newPrefix = prefix + (isLeft ? "│   " : "    ");
-    printNode(node->left, true, newPrefix);
-    printNode(node->right, false, newPrefix);
   }
   template< typename Key, typename Value, typename Compare >
   void RotatableBinarySearchTree< Key, Value, Compare >::rotateLeftLeft(TreeNode< data_t > *node)

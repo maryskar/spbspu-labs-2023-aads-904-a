@@ -50,10 +50,6 @@ namespace romanovich
     reverse_iterator rend() noexcept;
     const_reverse_iterator rend() const noexcept;
     const_reverse_iterator crend() const noexcept;
-    /*reverse_iterator rbegin();
-    reverse_iterator rend();
-    const_reverse_iterator crbegin() const;
-    const_reverse_iterator crend() const;*/
     Value &at(const Key &key);
     const Value &at(const Key &key) const;
     Value &operator[](const Key &key);
@@ -79,21 +75,21 @@ namespace romanovich
     iterator upper_bound(const Key &key);
     const_iterator upper_bound(const Key &key) const;
     Compare value_comp() const;
-    tree_t *root_;
   private:
-    tree_t *fakeNode_;
-    size_t size_;
-    Compare compare_;
+    tree_t *initFake();
     void clear(TreeNode< data_t > *node);
     TreeNode< data_t > *insertImpl(TreeNode< data_t > *node, TreeNode< data_t > *parent,
                                    const Key &key, const Value &value);
     TreeNode< data_t > *removeImpl(TreeNode< data_t > *node, const data_t &data);
-    tree_t *initFake();
     TreeNode< data_t > *copyBegin(const TreeNode< data_t > *beginNode);
     TreeNode< data_t > *copyEnd(const TreeNode< data_t > *endNode);
     TreeNode< data_t > *findMin(TreeNode< data_t > *node) const;
     TreeNode< data_t > *findMax(TreeNode< data_t > *node) const;
     TreeNode< data_t > *copyTree(const TreeNode< data_t > *node);
+    tree_t *root_;
+    tree_t *fakeNode_;
+    size_t size_;
+    Compare compare_;
   };
   template< typename Key, typename Value, typename Compare >
   typename BinarySearchTree< Key, Value, Compare >::const_reverse_iterator

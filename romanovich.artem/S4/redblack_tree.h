@@ -72,11 +72,11 @@ namespace romanovich
     Compare value_comp() const;
     bool equal(const RedBlackTree &rhs) const;
     void remove(const data_t &data);
-    RotatableBinarySearchTree< Key, Value, Compare > rotBst_;
   private:
     void balanceAfterInsert(TreeNode< data_t > *operationNode);
     void balanceAfterRemove(TreeNode< data_t > *operationNode);
     void initColor();
+    RotatableBinarySearchTree< Key, Value, Compare > rotBst_;
   };
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::const_reverse_iterator
