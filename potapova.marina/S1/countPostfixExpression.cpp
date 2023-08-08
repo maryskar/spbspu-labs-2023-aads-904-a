@@ -13,7 +13,7 @@ bool isOverflowPlus(std::int64_t operand1, std::int64_t operand2)
 {
   return operand1 > 0 && operand2 > 0 && operand2 > (max_int - operand1);
 }
-    
+
 bool isOverflowMinus(std::int64_t operand1, std::int64_t operand2)
 {
   return (operand1 < 0 && operand2 > 0 && operand1 < (min_int + operand2));

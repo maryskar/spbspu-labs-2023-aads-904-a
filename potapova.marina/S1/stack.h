@@ -1,7 +1,7 @@
 #ifndef STACK_H
 #define STACK_H
 
-#include  <cstddef>
+#include <cstddef>
 
 namespace potapova
 {
@@ -121,7 +121,7 @@ namespace potapova
       {
 
       }
-      
+
       T data;
       Node* prev_node_ptr;
     };

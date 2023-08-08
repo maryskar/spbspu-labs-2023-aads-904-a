@@ -71,7 +71,7 @@ namespace potapova
       --size_;
     }
 
-    size_t size() 
+    size_t size()
     {
       return size_;
     }
