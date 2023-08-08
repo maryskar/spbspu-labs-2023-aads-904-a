@@ -2,77 +2,80 @@
 #define NODE_H
 #include <utility>
 #include <tuple>
-namespace details
+namespace romanovich
 {
-  template< typename T >
-  struct ListNode
+  namespace details
   {
-    T data_;
-    ListNode< T > *next_;
-    explicit ListNode(const T &value);
-    ListNode(const T &value, ListNode *next);
-    explicit ListNode(const T &&value);
-    ListNode(T &&value, ListNode *next);
-  };
-  template< typename T >
-  ListNode< T >::ListNode(const T &value):
-    data_(value),
-    next_(nullptr)
-  {
-  }
-  template< typename T >
-  ListNode< T >::ListNode(const T &value, ListNode *next):
-    data_(value),
-    next_(next)
-  {
-  }
-  template< typename T >
-  ListNode< T >::ListNode(const T &&value):
-    data_(std::move(value)),
-    next_(nullptr)
-  {
-  }
-  template< typename T >
-  ListNode< T >::ListNode(T &&value, ListNode *next):
-    data_(std::move(value)),
-    next_(next)
-  {
-  }
-  template< typename T >
-  void clear(ListNode< T > *node)
-  {
-    while (node)
+    template< typename T >
+    struct ListNode
     {
-      ListNode< T > *nextNode = node->next_;
-      delete node;
-      node = nextNode;
+      T data_;
+      ListNode< T > *next_;
+      explicit ListNode(const T &value);
+      ListNode(const T &value, ListNode *next);
+      explicit ListNode(const T &&value);
+      ListNode(T &&value, ListNode *next);
+    };
+    template< typename T >
+    ListNode< T >::ListNode(const T &value):
+      data_(value),
+      next_(nullptr)
+    {
     }
-  }
-  template< typename T >
-  std::tuple< ListNode< T > *, ListNode< T > * > copy(const ListNode< T > *listNode)
-  {
-    if (!listNode)
+    template< typename T >
+    ListNode< T >::ListNode(const T &value, ListNode *next):
+      data_(value),
+      next_(next)
     {
-      return {nullptr, nullptr};
     }
-    const ListNode< T > *node = listNode;
-    ListNode< T > *begin = new ListNode< T >{node->data_, nullptr};
-    ListNode< T > *end = begin;
-    try
+    template< typename T >
+    ListNode< T >::ListNode(const T &&value):
+      data_(std::move(value)),
+      next_(nullptr)
     {
-      while (node->next_)
+    }
+    template< typename T >
+    ListNode< T >::ListNode(T &&value, ListNode *next):
+      data_(std::move(value)),
+      next_(next)
+    {
+    }
+    template< typename T >
+    void clear(ListNode< T > *node)
+    {
+      while (node)
       {
-        node = node->next_;
-        end->next_ = new details::ListNode< T >{node->data_, nullptr};
-        end = end->next_;
+        ListNode< T > *nextNode = node->next_;
+        delete node;
+        node = nextNode;
       }
     }
-    catch (...)
+    template< typename T >
+    std::tuple< ListNode< T > *, ListNode< T > * > copy(const ListNode< T > *listNode)
     {
-      clear(begin);
-      throw;
+      if (!listNode)
+      {
+        return {nullptr, nullptr};
+      }
+      const ListNode< T > *node = listNode;
+      ListNode< T > *begin = new ListNode< T >{node->data_, nullptr};
+      ListNode< T > *end = begin;
+      try
+      {
+        while (node->next_)
+        {
+          node = node->next_;
+          end->next_ = new details::ListNode< T >{node->data_, nullptr};
+          end = end->next_;
+        }
+      }
+      catch (...)
+      {
+        clear(begin);
+        throw;
+      }
+      return {begin, end};
     }
-    return {begin, end};
   }
 }
 #endif

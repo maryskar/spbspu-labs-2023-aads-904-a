@@ -1,9 +1,9 @@
 #include "commands.h"
-using namespace std::placeholders;
+#include "printmessages.h"
 namespace
 {
-  using dict_ref = romanovich::dict_t &;
-  using const_dict_ref = const romanovich::dict_t &;
+  using dict_ref = romanovich::dict_type &;
+  using const_dict_ref = const romanovich::dict_type &;
   struct ComplementOperation
   {
     void operator()(dict_ref newDict, const_dict_ref firstDict, const_dict_ref secondDict) const
@@ -44,28 +44,27 @@ namespace
       }
     }
   };
-  std::ostream &printEmptyDict(std::ostream &out)
-  {
-    return out << "<EMPTY>";
-  }
 }
 namespace romanovich
 {
-  std::unordered_map< std::string, CommandHandler > createCommandDictionary(container_t &dictionary)
+  std::unordered_map< std::string, CommandHandler > createCommandDictionary(container_type &dictionary)
   {
     std::string printCall = "print";
     std::string complementCall = "complement";
     std::string intersectCall = "intersect";
     std::string unionCall = "union";
     std::unordered_map< std::string, CommandHandler > commands;
+    using namespace std::placeholders;
     commands[printCall] = std::bind(printCommand, _1, _2, std::ref(dictionary));
     commands[complementCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), ComplementOperation());
     commands[intersectCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), IntersectOperation());
     commands[unionCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), UnionOperation());
     return commands;
   }
-  void performCommand(std::istream &in, std::ostream &out, container_t &dictionary,
-                      const std::function< void(dict_t &, const dict_t &, const dict_t &) > &operation)
+  void performCommand(std::istream &in,
+                        std::ostream &out,
+                        container_type &dictionary,
+                        const std::function< void(dict_type &, const dict_type &, const dict_type &) > &operation)
   {
     std::string newDictName, dictName1, dictName2;
     in >> newDictName >> dictName1 >> dictName2;
@@ -84,18 +83,18 @@ namespace romanovich
     }
     if (dictionary.empty())
     {
-      printEmptyDict(out) << "\n";
+      printEmpty(out) << "\n";
     }
     else
     {
       const auto &dict1 = dictionary[dictName1];
       const auto &dict2 = dictionary[dictName2];
-      dict_t newDict;
+      dict_type newDict;
       operation(newDict, dict1, dict2);
       dictionary[newDictName] = newDict;
     }
   }
-  void printCommand(std::istream &in, std::ostream &out, container_t &dictionary)
+  void printCommand(std::istream &in, std::ostream &out, container_type &dictionary)
   {
     std::string dictName;
     in >> dictName;
@@ -112,7 +111,7 @@ namespace romanovich
       const auto &dictData = dictionary[dictName];
       if (dictData.empty())
       {
-        printEmptyDict(out) << "\n";
+        printEmpty(out) << "\n";
       }
       else
       {
