@@ -139,5 +139,17 @@ namespace fesenko
     assert(node_ != nullptr);
     return std::addressof(node_->data);
   }
+
+  template< typename Key, typename Value, typename Compare >
+  bool AVLIterator< Key, Value, Compare >::operator==(const this_t &rhs) const
+  {
+    return node_ == rhs.node_;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  bool AVLIterator< Key, Value, Compare >::operator!=(const this_t &rhs) const
+  {
+    return !(rhs == *this);
+  }
 }
 #endif
