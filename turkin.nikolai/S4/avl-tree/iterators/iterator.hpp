@@ -74,8 +74,8 @@ template< typename K, typename V, typename C >
 turkin::Iterator< K, V, C > turkin::Iterator< K, V, C >::operator++(int)
 {
   assert(cur_ != nullptr);
-  auto result(* this);
-  ++(* this);
+  auto result(*this);
+  ++(*this);
   return result;
 }
 
@@ -111,8 +111,8 @@ template< typename K, typename V, typename C >
 turkin::Iterator< K, V, C > turkin::Iterator< K, V, C >::operator--(int)
 {
   assert(cur_ != nullptr);
-  auto result(* this);
-  --(* this);
+  auto result(*this);
+  --(*this);
   return result;
 }
 
@@ -139,7 +139,7 @@ bool turkin::Iterator< K, V, C >::operator==(const Iterator< K, V, C > & rhs) co
 template< typename K, typename V, typename C >
 bool turkin::Iterator< K, V, C >::operator!=(const Iterator< K, V, C > & rhs) const
 {
-  return !(rhs == * this);
+  return !(rhs == *this);
 }
 
 #endif

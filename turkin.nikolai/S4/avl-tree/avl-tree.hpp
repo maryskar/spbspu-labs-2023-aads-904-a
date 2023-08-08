@@ -43,8 +43,7 @@ namespace turkin
       V & operator[](const K & key);
 
       it insert(const K & k, const V & v);
-      it insert(const tree_t & value); //base
-      it insert(tree_t && value);
+      it insert(const tree_t & value); //base //done
       template< class It >
       it insert(It first, It last);
 
@@ -65,7 +64,7 @@ namespace turkin
       bool empty() const noexcept; //done
       std::size_t size() const noexcept; //done
       void clear() noexcept; //done
-      void swap(tree & rhs) noexcept;
+      void swap(tree & rhs) noexcept; //done
       
     private:
       node_t root_;
@@ -77,8 +76,8 @@ namespace turkin
 
       void balanceDelete();
       void copy(const tree & rhs);
-      void free(node_t src);
-      void insert(node_t src, const tree_t & value);
+      void free(node_t src); //done
+      void insert(node_t src, const tree_t & value); //done
       void balance(node_t src); //done
       void increase(node_t src); //done
       int measure(node_t src); //done
@@ -201,13 +200,19 @@ turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::end() noexcept
 template< typename K, typename V, typename C >
 turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::end() const noexcept
 {
-  return cbegin();
+  return cend();
 }
 
 template< typename K, typename V, typename C >
 turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::cend() const noexcept
 {
-  return cit(begin());
+  return cit(end());
+}
+
+template< typename K, typename V, typename C >
+turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::insert(const K & k, const V & v)
+{
+  return insert(std::make_pair(k, v));
 }
 
 template< typename K, typename V, typename C >
@@ -257,10 +262,11 @@ void turkin::AVLtree< K, V, C >::slr(node_t src)
   auto head = src->right;
   if (src == root_)
   {
-    root_ = src->right;
+    root_ = head;
   }
   src->right = src->right->left;
   head->left = src;
+  src->parent = head;
   increase(src);
   increase(head);
 }
@@ -271,10 +277,11 @@ void turkin::AVLtree< K, V, C >::srr(node_t src)
   auto head = src->left;
   if (src == root_)
   {
-    root_ = src->left;
+    root_ = head;
   }
   src->left = src->left->right;
   head->right = src;
+  src->parent = head;
   increase(src);
   increase(head);
 }
