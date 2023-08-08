@@ -15,6 +15,8 @@ namespace romanovich
     using data_t = std::pair< Key, Value >;
     using iterator = BidirectionalIterator< Key, Value, Compare >;
     using const_iterator = ConstBidirectionalIterator< Key, Value, Compare >;
+    using reverse_iterator = std::reverse_iterator< iterator >;
+    using const_reverse_iterator = std::reverse_iterator< const_iterator >;
     RotatableBinarySearchTree();
     RotatableBinarySearchTree(const RotatableBinarySearchTree &other) = default;
     RotatableBinarySearchTree(RotatableBinarySearchTree &&other) noexcept;
@@ -26,12 +28,18 @@ namespace romanovich
     iterator begin() noexcept;
     const_iterator begin() const noexcept;
     const_iterator cbegin() const noexcept;
+    reverse_iterator rbegin() noexcept;
+    const_reverse_iterator rbegin() const noexcept;
+    const_reverse_iterator crbegin() const noexcept;
     iterator last() noexcept;
     const_iterator last() const noexcept;
     const_iterator clast() const noexcept;
     iterator end() noexcept;
     const_iterator end() const noexcept;
     const_iterator cend() const noexcept;
+    reverse_iterator rend() noexcept;
+    const_reverse_iterator rend() const noexcept;
+    const_reverse_iterator crend() const noexcept;
     bool empty() const noexcept;
     size_t size() const noexcept;
     void clear() noexcept;
@@ -70,6 +78,42 @@ namespace romanovich
     BinarySearchTree< Key, Value, Compare > bst_;
   private:
   };
+  template< typename Key, typename Value, typename Compare >
+  typename RotatableBinarySearchTree< Key, Value, Compare >::const_reverse_iterator
+  RotatableBinarySearchTree< Key, Value, Compare >::crend() const noexcept
+  {
+    return bst_.crend();
+  }
+  template< typename Key, typename Value, typename Compare >
+  typename RotatableBinarySearchTree< Key, Value, Compare >::const_reverse_iterator
+  RotatableBinarySearchTree< Key, Value, Compare >::rend() const noexcept
+  {
+    return bst_.rend();
+  }
+  template< typename Key, typename Value, typename Compare >
+  typename RotatableBinarySearchTree< Key, Value, Compare >::reverse_iterator
+  RotatableBinarySearchTree< Key, Value, Compare >::rend() noexcept
+  {
+    return bst_.rend();
+  }
+  template< typename Key, typename Value, typename Compare >
+  typename RotatableBinarySearchTree< Key, Value, Compare >::const_reverse_iterator
+  RotatableBinarySearchTree< Key, Value, Compare >::crbegin() const noexcept
+  {
+    return bst_.crbegin();
+  }
+  template< typename Key, typename Value, typename Compare >
+  typename RotatableBinarySearchTree< Key, Value, Compare >::const_reverse_iterator
+  RotatableBinarySearchTree< Key, Value, Compare >::rbegin() const noexcept
+  {
+    return bst_.rbegin();
+  }
+  template< typename Key, typename Value, typename Compare >
+  typename RotatableBinarySearchTree< Key, Value, Compare >::reverse_iterator
+  RotatableBinarySearchTree< Key, Value, Compare >::rbegin() noexcept
+  {
+    return bst_.rbegin();
+  }
   template< typename Key, typename Value, typename Compare >
   RotatableBinarySearchTree< Key, Value, Compare >::RotatableBinarySearchTree(const Compare &compare):
     bst_(compare)

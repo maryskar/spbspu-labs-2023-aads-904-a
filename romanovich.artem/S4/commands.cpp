@@ -1,5 +1,5 @@
 #include "commands.h"
-#include "../common//printmessages.h"//#include <printmessages.h>//
+#include <printmessages.h>
 namespace
 {
   using map_ref = romanovich::map_t &;
