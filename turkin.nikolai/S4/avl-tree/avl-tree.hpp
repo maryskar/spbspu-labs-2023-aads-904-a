@@ -267,14 +267,9 @@ std::size_t turkin::AVLtree< K, V, C >::count(const K & key) const
 template< typename K, typename V, typename C >
 turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::find(const K & key)
 {
-  for (auto ins = begin(); ins != end(); ins++)
-  {
-    if (eq< K, C >(key, ins->first))
-    {
-      return ins;
-    }
-  }
-  return end();
+  auto ins = begin();
+  for(; ins != end() && neq< K, C >(key, ins->first); ins++);
+  return ins;
 }
 
 template< typename K, typename V, typename C >
