@@ -250,6 +250,12 @@ std::size_t turkin::AVLtree< K, V, C >::count(const K & key) const
 }
 
 template< typename K, typename V, typename C >
+turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::find(const K & key)
+{
+  for (auto ins = begin(); ins != end())
+}
+
+template< typename K, typename V, typename C >
 bool turkin::AVLtree< K, V, C >::empty() const noexcept
 {
   return root_ == nullptr;
