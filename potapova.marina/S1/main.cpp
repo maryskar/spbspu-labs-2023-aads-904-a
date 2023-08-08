@@ -45,10 +45,16 @@ int main(int argc, char* argv[])
     }
     *in_ptr >> std::ws;
   }
+  bool first_answer = true;
   while (!answer_stack.empty())
   {
-    std::cout << answer_stack.back() << ' ';
+    if (!first_answer)
+    {
+      std::cout << ' ';
+    }
+    std::cout << answer_stack.back();
     answer_stack.pop();
+    first_answer = false;
   }
   return 0;
 }
