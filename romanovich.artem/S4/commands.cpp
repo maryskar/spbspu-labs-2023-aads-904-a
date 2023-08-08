@@ -1,4 +1,5 @@
 #include "commands.h"
+#include <printmessages.h>
 namespace
 {
   using map_ref = romanovich::map_t &;
@@ -61,10 +62,6 @@ namespace
       }
     }
   };
-  std::ostream &printEmptyDict(std::ostream &out)
-  {
-    return out << "<EMPTY>";
-  }
 }
 namespace romanovich
 {
@@ -102,7 +99,7 @@ namespace romanovich
     }
     if (map.empty())
     {
-      printEmptyDict(out) << "!\n";
+      printEmpty(out) << "!\n";
     }
     else
     {
@@ -130,7 +127,7 @@ namespace romanovich
       const auto &mapData = map[mapName];
       if (mapData.empty())
       {
-        printEmptyDict(out) << "\n";
+        printEmpty(out) << "\n";
       }
       else
       {
