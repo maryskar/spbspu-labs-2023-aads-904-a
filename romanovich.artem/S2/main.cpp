@@ -3,8 +3,8 @@
 #include <string>
 #include <vector>
 #include <limits>
+#include <printmessages.h>
 #include "commands.h"
-#include "printmessages.h"
 void splitString(std::vector< std::string > &elems, const std::string &line, char del)
 {
   std::string word;
@@ -34,21 +34,21 @@ int main(int argc, char *argv[])
     std::cerr << "Cannot open file.\n";
     return 1;
   }
-  romanovich::container_t dictionary;
+  romanovich::container_type dictionary;
   std::string line;
   while (std::getline(input, line))
   {
     std::vector< std::string > lineWords;
     splitString(lineWords, line, ' ');
     std::string dictName = lineWords[0];
-    romanovich::dict_t dictData;
+    romanovich::dict_type dictData;
     for (size_t i = 1; i < lineWords.size(); i += 2)
     {
       int key = std::stoi(lineWords[i]);
       std::string val = lineWords[i + 1];
-      dictData.emplace(romanovich::dict_value_t(key, val));
+      dictData.emplace(romanovich::dict_value_type(key, val));
     }
-    dictionary.emplace(romanovich::container_value_t(dictName, dictData));
+    dictionary.emplace(romanovich::container_value_type(dictName, dictData));
   }
   auto commandDictionary = romanovich::createCommandDictionary(dictionary);
   while (std::cin)
