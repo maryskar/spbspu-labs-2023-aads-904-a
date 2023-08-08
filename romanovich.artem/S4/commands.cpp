@@ -1,5 +1,5 @@
 #include "commands.h"
-#include <printmessages.h>
+#include "../common//printmessages.h"//#include <printmessages.h>//
 namespace
 {
   using map_ref = romanovich::map_t &;
@@ -8,10 +8,6 @@ namespace
   {
     void operator()(map_ref newDict, const_map_ref firstDict, const_map_ref secondDict) const
     {
-      if (firstDict.empty() || secondDict.empty())
-      {
-        return;
-      }
       for (const auto &entry: firstDict)
       {
         if (secondDict.count(entry.first) == 0)
@@ -25,15 +21,12 @@ namespace
   {
     void operator()(map_ref newDict, const_map_ref firstDict, const_map_ref secondDict) const
     {
-      if (firstDict.empty() || secondDict.empty())
-      {
-        return;
-      }
       for (const auto &entry: firstDict)
       {
-        if (secondDict.count(entry.first) > 0)
+        int i = entry.first;
+        if (secondDict.count(i) > 0)
         {
-          newDict[entry.first] = entry.second;
+          newDict[i] = entry.second;
         }
       }
     }
@@ -42,16 +35,6 @@ namespace
   {
     void operator()(map_ref newDict, const_map_ref firstDict, const_map_ref secondDict) const
     {
-      if (firstDict.empty())
-      {
-        newDict = secondDict;
-        return;
-      }
-      if (secondDict.empty())
-      {
-        newDict = firstDict;
-        return;
-      }
       for (auto &entry: secondDict)
       {
         newDict[entry.first] = entry.second;

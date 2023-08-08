@@ -120,7 +120,7 @@ namespace romanovich
   {
     if (!node)
     {
-      return nullptr;
+      return fakeNode_;
     }
     while (node->left)
     {
@@ -133,7 +133,7 @@ namespace romanovich
   {
     if (!node)
     {
-      return nullptr;
+      return fakeNode_;
     }
     while (node->right)
     {
