@@ -25,6 +25,7 @@ namespace fesenko
     using this_t = AVLIterator< Key, Value, Compare >;
     AVLIterator();
     AVLIterator(const this_t &) = default;
+    explicit AVLIterator(tree *);
     ~AVLIterator() = default;
     this_t &operator=(const this_t &) = default;
     this_t &operator++();
@@ -38,7 +39,6 @@ namespace fesenko
     bool operator!=(const this_t &) const;
     bool operator==(const this_t &) const;
    private:
-    explicit AVLIterator(tree *);
     tree *fake_;
     tree *node_;
     Compare comp_;
@@ -53,7 +53,7 @@ namespace fesenko
 
   template< typename Key, typename Value, typename Compare >
   AVLIterator< Key, Value, Compare >::AVLIterator(tree *rhs):
-    node_(nullptr),
+    node_(rhs),
     comp_()
   {
     auto temp = rhs->parent;
