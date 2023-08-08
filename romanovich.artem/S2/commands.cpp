@@ -1,5 +1,5 @@
 #include "commands.h"
-using namespace std::placeholders;
+#include "printmessages.h"
 namespace
 {
   using dict_ref = romanovich::dict_type &;
@@ -44,10 +44,6 @@ namespace
       }
     }
   };
-  std::ostream &printEmptyDict(std::ostream &out)
-  {
-    return out << "<EMPTY>";
-  }
 }
 namespace romanovich
 {
@@ -58,14 +54,17 @@ namespace romanovich
     std::string intersectCall = "intersect";
     std::string unionCall = "union";
     std::unordered_map< std::string, CommandHandler > commands;
+    using namespace std::placeholders;
     commands[printCall] = std::bind(printCommand, _1, _2, std::ref(dictionary));
     commands[complementCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), ComplementOperation());
     commands[intersectCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), IntersectOperation());
     commands[unionCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), UnionOperation());
     return commands;
   }
-  void performCommand(std::istream &in, std::ostream &out, container_type &dictionary,
-                      const std::function< void(dict_type &, const dict_type &, const dict_type &) > &operation)
+  void performCommand(std::istream &in,
+                        std::ostream &out,
+                        container_type &dictionary,
+                        const std::function< void(dict_type &, const dict_type &, const dict_type &) > &operation)
   {
     std::string newDictName, dictName1, dictName2;
     in >> newDictName >> dictName1 >> dictName2;
@@ -84,7 +83,7 @@ namespace romanovich
     }
     if (dictionary.empty())
     {
-      printEmptyDict(out) << "\n";
+      printEmpty(out) << "\n";
     }
     else
     {
@@ -112,7 +111,7 @@ namespace romanovich
       const auto &dictData = dictionary[dictName];
       if (dictData.empty())
       {
-        printEmptyDict(out) << "\n";
+        printEmpty(out) << "\n";
       }
       else
       {

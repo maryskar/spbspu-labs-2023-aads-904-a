@@ -2,7 +2,7 @@
 #define DICT_H
 #include <functional>
 #include "listnode.h"
-#include "forwardlist.h"
+#include <forwardlist.h>
 namespace romanovich
 {
   namespace details
@@ -105,10 +105,11 @@ namespace romanovich
     return iterator(prev);
   }
   template< typename Key, typename Value, typename Compare >
-  std::pair< typename ForwardList< std::pair< const Key, Value > >::iterator,
-    typename ForwardList< std::pair< const Key, Value > >::iterator >
-  Dictionary< Key, Value, Compare >::getFindRange(Dictionary::iterator start, const Key &key,
-                                                  std::function< bool(Key, Key) > function)
+  std::pair<
+      typename ForwardList< std::pair< const Key, Value > >::iterator,
+      typename ForwardList< std::pair< const Key, Value > >::iterator
+  > Dictionary< Key, Value, Compare >::getFindRange(Dictionary::iterator start,
+                                                      const Key &key, std::function< bool(Key, Key) > function)
   {
     {
       auto prev = start;
@@ -181,16 +182,20 @@ namespace romanovich
     return end();
   }
   template< typename Key, typename Value, typename Compare >
-  std::pair< typename Dictionary< Key, Value, Compare >::iterator, typename Dictionary< Key, Value, Compare >::iterator >
-  Dictionary< Key, Value, Compare >::equal_range(const Key &key)
+  std::pair<
+      typename Dictionary< Key, Value, Compare >::iterator,
+      typename Dictionary< Key, Value, Compare >::iterator
+  > Dictionary< Key, Value, Compare >::equal_range(const Key &key)
   {
     iterator lower = lower_bound(key);
     iterator upper = upper_bound(key);
     return std::pair< iterator, iterator >(lower, upper);
   }
   template< typename Key, typename Value, typename Compare >
-  std::pair< typename Dictionary< Key, Value, Compare >::const_iterator, typename Dictionary< Key, Value, Compare >::const_iterator >
-  Dictionary< Key, Value, Compare >::equal_range(const Key &key) const
+  std::pair<
+      typename Dictionary< Key, Value, Compare >::const_iterator,
+      typename Dictionary< Key, Value, Compare >::const_iterator
+  > Dictionary< Key, Value, Compare >::equal_range(const Key &key) const
   {
     const_iterator lower = lower_bound(key);
     const_iterator upper = upper_bound(key);
@@ -231,8 +236,9 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   template< typename... Args >
-  std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool >
-  Dictionary< Key, Value, Compare >::emplace(Args &&... args)
+  std::pair<
+      typename Dictionary< Key, Value, Compare >::iterator, bool
+  > Dictionary< Key, Value, Compare >::emplace(Args &&... args)
   {
     try
     {
@@ -327,8 +333,9 @@ namespace romanovich
     return comp_;
   }
   template< typename Key, typename Value, typename Compare >
-  std::pair< typename ForwardList< std::pair< const Key, Value > >::iterator, bool >
-  Dictionary< Key, Value, Compare >::insert(const Dictionary::value_type &value)
+  std::pair<
+      typename ForwardList< std::pair< const Key, Value > >::iterator, bool
+  > Dictionary< Key, Value, Compare >::insert(const Dictionary::value_type &value)
   {
     auto it = find(value.first);
     if (it != end())
