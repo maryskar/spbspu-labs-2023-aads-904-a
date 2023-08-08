@@ -73,11 +73,11 @@ Tree< typename AVLTree< Key, Value, Compare >::data_t >* AVLTree< Key, Value, Co
       temp->height_ = 1;
       tree->right_ = temp;
       temp->head_ = tree;
-      tree->height_ = 1 + std::max(getHeight(tree->left_), getHeight(tree->right_));
+      updateHeight(tree);
       return tree->right_;
     }
     auto temp = insert(key, value, tree->right_);
-    tree->height_ = 1 + std::max(getHeight(tree->left_), getHeight(tree->right_));
+    updateHeight(tree);
     return temp;
   }
   else
@@ -89,11 +89,11 @@ Tree< typename AVLTree< Key, Value, Compare >::data_t >* AVLTree< Key, Value, Co
       temp->height_ = 1;
       tree->left_ = temp;
       temp->head_ = tree;
-      tree->height_ = 1 + std::max(getHeight(tree->left_), getHeight(tree->right_));
+      updateHeight(tree);
       return tree->left_;
     }
     auto temp = insert(key, value, tree->left_);
-    tree->height_ = 1 + std::max(getHeight(tree->left_), getHeight(tree->right_));
+    updateHeight(tree);
     return temp;
   }
 }
@@ -147,6 +147,7 @@ void AVLTree<Key, Value, Compare>::erase(Tree<typename AVLTree<Key, Value, Compa
       tree->head_->right_ = nullptr;
     }
     delete tree;
+    updateHeight(tree->head_);
     //balance(tree->head_);
     return;
   }
@@ -169,6 +170,7 @@ void AVLTree<Key, Value, Compare>::erase(Tree<typename AVLTree<Key, Value, Compa
       child->head_ = tree->head_;
     }
     delete tree;
+    updateHeight(child->head_);
     //balance(child->head_);
     return;
   }
@@ -176,6 +178,7 @@ void AVLTree<Key, Value, Compare>::erase(Tree<typename AVLTree<Key, Value, Compa
   Tree<data_t>* maxNode = getMax(tree->left_);
   tree->data_ = maxNode->data_;
   erase(maxNode);
+  updateHeight(tree->head_);
   //balance(tree->head_);
 }
 
