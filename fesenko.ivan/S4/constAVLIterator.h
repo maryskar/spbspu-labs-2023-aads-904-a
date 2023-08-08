@@ -69,5 +69,33 @@ namespace fesenko
     node_(other.node_),
     comp_(other.comp_)
   {}
+
+  template< typename Key, typename Value, typename Compare >
+  ConstAVLIterator< Key, Value, Compare> &ConstAVLIterator< Key, Value, Compare >::operator++()
+  {
+    assert(node_ != nullptr);
+    if (node_->right) {
+      node_ = node_->right;
+      while (node_->left) {
+        node_ = node_->left;
+      }
+    } else {
+      const tree *prev;
+      do {
+        prev = node_;
+        node_ = node_->parent;
+      } while (node_ && prev == node_->right);
+    }
+    return *this;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  ConstAVLIterator< Key, Value, Compare > ConstAVLIterator< Key, Value, Compare >::operator++(int)
+  {
+    assert(node_ != nullptr);
+    auto res(*this);
+    ++(*this);
+    return res;
+  }
 }
 #endif
