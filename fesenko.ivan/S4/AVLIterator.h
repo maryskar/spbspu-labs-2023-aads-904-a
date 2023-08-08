@@ -120,6 +120,32 @@ namespace fesenko
   }
 
   template< typename Key, typename Value, typename Compare >
+  const typename AVLIterator< Key, Value, Compare >::value_type &AVLIterator< Key, Value, Compare >::operator*() const
+  {
+    assert(node_ != nullptr);
+    return node_->data;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename AVLIterator< Key, Value, Compare >::value_type &AVLIterator< Key, Value, Compare >::operator*()
+  {
+    return const_cast< value_type & >((static_cast< const this_t >(*this)).operator*());
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  const typename AVLIterator< Key, Value, Compare >::value_type *AVLIterator< Key, Value, Compare >::operator->() const
+  {
+    assert(node_ != nullptr);
+    return std::addressof(node_->data);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename AVLIterator< Key, Value, Compare >::value_type *AVLIterator< Key, Value, Compare >::operator->()
+  {
+    return const_cast< value_type * >((static_cast< const this_t >(*this)).operator->());
+  }
+
+  template< typename Key, typename Value, typename Compare >
   bool AVLIterator< Key, Value, Compare >::operator==(const this_t &rhs) const
   {
     return node_ == rhs.node_;
