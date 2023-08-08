@@ -15,10 +15,10 @@ namespace turkin
     friend class AVLtree< K, V, C >;
     using it = Iterator< K, V, C >;
     using tree_t = std::pair< K, V >;
-    using Node = TreeNode< tree_t > *;
+    using node_t = TreeNode< tree_t > *;
     public:
       Iterator();
-      explicit Iterator(Node rhs);
+      explicit Iterator(node_t rhs);
       it & operator=(const it & rhs) = default;
       ~Iterator() = default;
       it & operator++();
@@ -30,8 +30,7 @@ namespace turkin
       bool operator==(const it & rhs) const;
       bool operator!=(const it & rhs) const;
     private:
-      Node cur_;
-      C cmp_;
+      node_t cur_;
   };
 }
 
@@ -41,7 +40,7 @@ turkin::Iterator< K, V, C >::Iterator():
 {}
 
 template< typename K, typename V, typename C >
-turkin::Iterator< K, V, C >::Iterator(Node rhs):
+turkin::Iterator< K, V, C >::Iterator(node_t rhs):
   cur_(rhs)
 {}
 
@@ -59,7 +58,7 @@ turkin::Iterator< K, V, C > & turkin::Iterator< K, V, C >::operator++()
   }
   else
   {
-    Node parent = cur_->parent;
+    node_t parent = cur_->parent;
     while (parent != nullptr && cur_ == parent->right)
     {
       cur_ = parent;
@@ -93,7 +92,7 @@ turkin::Iterator< K, V, C > & turkin::Iterator< K, V, C >::operator--()
   }
   else
   {
-    Node parent = cur_->parent;
+    node_t parent = cur_->parent;
     if (cur_ != nullptr)
     {
       while (parent != nullptr && cur_ == parent->left)

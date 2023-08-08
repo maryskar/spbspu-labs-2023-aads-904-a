@@ -19,10 +19,10 @@ namespace turkin
     using it = Iterator< K, V, C >;
     using cit = ConstIterator< K, V, C >;
     using tree_t = std::pair< K, V >;
-    using Node = TreeNode< tree_t > *;
+    using node_t = TreeNode< tree_t > *;
     public:
       ConstIterator();
-      explicit ConstIterator(Node rhs);
+      explicit ConstIterator(node_t rhs);
       explicit ConstIterator(const it & rhs);
       cit & operator=(const cit & rhs) = default;
       ~ConstIterator() = default;
@@ -35,7 +35,7 @@ namespace turkin
       bool operator==(const cit & rhs) const;
       bool operator!=(const cit & rhs) const;
     private:
-      Node cur_;
+      node_t cur_;
   };
 }
 
@@ -45,7 +45,7 @@ turkin::ConstIterator< K, V, C >::ConstIterator():
 {}
 
 template< typename K, typename V, typename C >
-turkin::ConstIterator< K, V, C >::ConstIterator(Node rhs):
+turkin::ConstIterator< K, V, C >::ConstIterator(node_t rhs):
   cur_(rhs)
 {}
 
@@ -68,7 +68,7 @@ turkin::ConstIterator< K, V, C > & turkin::ConstIterator< K, V, C >::operator++(
   }
   else
   {
-    Node parent = cur_->parent;
+    node_t parent = cur_->parent;
     while (parent != nullptr && cur_ == parent->right)
     {
       cur_ = parent;
@@ -102,7 +102,7 @@ turkin::ConstIterator< K, V, C > & turkin::ConstIterator< K, V, C >::operator--(
   }
   else
   {
-    Node parent = cur_->parent;
+    node_t parent = cur_->parent;
     if (cur_ != nullptr)
     {
       while (parent != nullptr && cur_ == parent->left)

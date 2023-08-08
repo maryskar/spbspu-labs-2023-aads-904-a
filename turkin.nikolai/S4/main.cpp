@@ -23,10 +23,10 @@ int main(int argc, char * argv[])
   }
 
   turkin::AVLtree< int, int, std::less< int > > tree;
-  auto data1 = std::make_pair(1, 1);
-  auto data2 = std::make_pair(2, 2);
-  auto data3 = std::make_pair(3, 3);
-  auto data4 = std::make_pair(4, 4);
+  auto data1 = std::make_pair(1, 12);
+  auto data2 = std::make_pair(2, 22);
+  auto data3 = std::make_pair(3, 32);
+  auto data4 = std::make_pair(4, 42);
 
   tree.insert(data1); std::cout << "inserted 1\n";
   tree.insert(data2); std::cout << "inserted 2\n";
@@ -39,5 +39,13 @@ int main(int argc, char * argv[])
   }
   std::cout << "key: " << tree.end()->first << "\t data: " << tree.end()->second << "\n";
 
+  for (auto it : tree)
+  {
+    std::cout << "key: " << it.first << "\t data: " << it.second << "\n";
+  }
+  std::cout << "key: " << tree.end()->first << "\t data: " << tree.end()->second << "\n";
+
+  std::cout << "amount: " << tree.count(1) << "\n";
+  std::cout << "found: " << tree.find(1)->second << "\n";
   return 0;
 }

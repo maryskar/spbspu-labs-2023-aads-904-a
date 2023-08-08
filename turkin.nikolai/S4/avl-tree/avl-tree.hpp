@@ -7,6 +7,7 @@
 #include "iterators/iterator.hpp"
 #include "iterators/const-iterator.hpp"
 #include "tree-node.hpp"
+#include "comparator.hpp"
 
 namespace turkin
 {
@@ -57,8 +58,8 @@ namespace turkin
       it upper_bound(const K & key);
       cit upper_bound(const K & key) const;
 
-      std::size_t count(const K & key) const;
-      it find(const K & key);
+      std::size_t count(const K & key) const; //done
+      it find(const K & key); //done
       cit find(const K & key) const;
 
       bool empty() const noexcept; //done
@@ -183,7 +184,12 @@ turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::begin() const noexc
 template< typename K, typename V, typename C >
 turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::cbegin() const noexcept
 {
-  return cit(begin());
+  node_t temp = root_;
+  while (temp->left != nullptr)
+  {
+    temp = temp->left;
+  }
+  return cit(temp);
 }
 
 template< typename K, typename V, typename C >
@@ -206,7 +212,12 @@ turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::end() const noexcep
 template< typename K, typename V, typename C >
 turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::cend() const noexcept
 {
-  return cit(end());
+  node_t temp = root_;
+  while (temp->right != nullptr)
+  {
+    temp = temp->right;
+  }
+  return cit(temp);
 }
 
 template< typename K, typename V, typename C >
@@ -232,9 +243,9 @@ template< typename K, typename V, typename C >
 template< class It >
 It turkin::AVLtree< K, V, C >::insert(It first, It last)
 {
-  for (auto ins = first; ins != last; ins++)
+  for (auto it : *this)
   {
-    insert(*ins);
+    insert(it);
   }
   return last;
 }
@@ -243,16 +254,33 @@ template< typename K, typename V, typename C >
 std::size_t turkin::AVLtree< K, V, C >::count(const K & key) const
 {
   std::size_t amount = 0;
-  for (auto ins = cbegin(); ins != cend(); ins++)
+  for (auto ins : *this)
   {
-    
+    if (eq< K, C >(key, ins.first))
+    {
+      amount++;
+    }
   }
+  return amount;
 }
 
 template< typename K, typename V, typename C >
 turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::find(const K & key)
 {
-  for (auto ins = begin(); ins != end())
+  for (auto ins = begin(); ins != end(); ins++)
+  {
+    if (eq< K, C >(key, ins->first))
+    {
+      return ins;
+    }
+  }
+  return end();
+}
+
+template< typename K, typename V, typename C >
+turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::find(const K & key) const
+{
+  return cit(find(key));
 }
 
 template< typename K, typename V, typename C >
@@ -372,7 +400,7 @@ turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::erase(node_t src, const 
   {
     src->left = erase(src->left, k);
   }
-  else if (!cmp_(k, src->data.first))
+  //else if (!cmp_(k, src->data.first))
 }
 
 template< typename K, typename V, typename C >
