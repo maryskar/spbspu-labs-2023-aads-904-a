@@ -125,5 +125,19 @@ namespace fesenko
     --(*this);
     return res;
   }
+
+  template< typename Key, typename Value, typename Compare >
+  const typename ConstAVLIterator< Key, Value, Compare >::value_type &ConstAVLIterator< Key, Value, Compare >::operator*() const
+  {
+    assert(node_ != nullptr);
+    return node_->data;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  const typename ConstAVLIterator< Key, Value, Compare >::value_type *ConstAVLIterator< Key, Value, Compare >::operator->() const
+  {
+    assert(node_ != nullptr);
+    return std::addressof(node_->data);
+  }
 }
 #endif
