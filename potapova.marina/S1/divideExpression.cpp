@@ -47,13 +47,13 @@ potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
     {
       postfix_expr.push(cur_member);
     }
-    else if (isOpenBracket(cur_member.operation) || operators_stack.empty() || isOpenBracket(operators_stack.back()))
-    {
-      operators_stack.push(cur_member.operation);
-    }
     else if (isCloseBracket(cur_member.operation))
     {
       moveExprInBracketsToPostfix(operators_stack, postfix_expr);
+    }
+    else if (isOpenBracket(cur_member.operation) || operators_stack.empty() || isOpenBracket(operators_stack.back()))
+    {
+      operators_stack.push(cur_member.operation);
     }
     else if (!operators_stack.empty() && getPriority(cur_member.operation) <= getPriority(operators_stack.back()))
     {

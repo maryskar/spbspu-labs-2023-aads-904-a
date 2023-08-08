@@ -6,27 +6,27 @@
 #include "queue.h"
 #include "stack.h"
 
-std::int64_t max_int = INT64_MAX;
-std::int64_t min_int = INT64_MIN;
+constexpr std::int64_t MAX_INT = std::numeric_limits< std::int64_t >::max();
+constexpr std::int64_t MIN_INT = std::numeric_limits< std::int64_t >::min();
 
 bool isOverflowPlus(std::int64_t operand1, std::int64_t operand2)
 {
-  return operand1 > 0 && operand2 > 0 && operand2 > (max_int - operand1);
+  return operand1 > 0 && operand2 > 0 && operand2 > (MAX_INT - operand1);
 }
 
 bool isOverflowMinus(std::int64_t operand1, std::int64_t operand2)
 {
-  return (operand1 < 0 && operand2 > 0 && operand1 < (min_int + operand2));
+  return (operand1 < 0 && operand2 > 0 && operand1 < (MIN_INT + operand2));
 }
 
 bool isOverflowMultiply(std::int64_t operand1, std::int64_t operand2)
 {
-  return (operand1 > max_int / operand2);
+  return (operand1 > MAX_INT / operand2);
 }
 
 bool isOverflowDivision(std::int64_t operand1, std::int64_t operand2)
 {
-  return (operand1 < min_int / operand2) && ((operand1 > 0 && operand2 < 0) || (operand1 < 0 && operand2 > 0));
+  return (operand1 < MIN_INT / operand2) && ((operand1 > 0 && operand2 < 0) || (operand1 < 0 && operand2 > 0));
 }
 
 std::int64_t potapova::countPostfixExpression(expr_queue& postfix_queue)
