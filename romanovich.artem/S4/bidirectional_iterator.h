@@ -31,9 +31,9 @@ namespace romanovich
     data_t &operator*();
     data_t *operator->();
     BidirectionalIterator &operator++();
-    const BidirectionalIterator operator++(int);
+    BidirectionalIterator operator++(int);
     BidirectionalIterator &operator--();
-    const BidirectionalIterator operator--(int);
+    BidirectionalIterator operator--(int);
     bool operator!=(const BidirectionalIterator &other) const;
     bool operator==(const BidirectionalIterator &other) const;
   private:
@@ -80,7 +80,7 @@ namespace romanovich
     return !(*this == other);
   }
   template< typename Key, typename Value, typename Compare >
-  const BidirectionalIterator< Key, Value, Compare > BidirectionalIterator< Key, Value, Compare >::operator--(int)
+  BidirectionalIterator< Key, Value, Compare > BidirectionalIterator< Key, Value, Compare >::operator--(int)
   {
     BidirectionalIterator tmp(*this);
     --(*this);
@@ -131,7 +131,7 @@ namespace romanovich
     return node_->data;
   }
   template< typename Key, typename Value, typename Compare >
-  const BidirectionalIterator< Key, Value, Compare > BidirectionalIterator< Key, Value, Compare >::operator++(int)
+  BidirectionalIterator< Key, Value, Compare > BidirectionalIterator< Key, Value, Compare >::operator++(int)
   {
     BidirectionalIterator tmp(*this);
     ++(*this);

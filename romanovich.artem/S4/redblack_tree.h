@@ -57,15 +57,12 @@ namespace romanovich
     size_t count(const Key &key) const;
     iterator find(const Key &key);
     const_iterator find(const Key &key) const;
-/*    std::pair< iterator, iterator > equal_range(const data_t &data);
-    std::pair< const_iterator, const_iterator > equal_range(const data_t &data) const;*/
     iterator lower_bound(const Key &key);
     const_iterator lower_bound(const Key &key) const;
     iterator upper_bound(const Key &key);
     const_iterator upper_bound(const Key &key) const;
     Compare value_comp() const;
     bool equal(const RedBlackTree &rhs) const;
-    //void insert(const data_t &data);
     void remove(const data_t &data);
     RotatableBinarySearchTree< Key, Value, Compare > rotBst_;
   private:
@@ -105,18 +102,6 @@ namespace romanovich
   {
     return rotBst_.lower_bound(key);
   }
-/*  template< typename Key, typename Value, typename Compare >
-  std::pair< typename RedBlackTree< Key, Value, Compare >::const_iterator, typename RedBlackTree< Key, Value, Compare >::const_iterator >
-  RedBlackTree< Key, Value, Compare >::equal_range(const data_t &data) const
-  {
-    return rotBst_.equal_range(data);
-  }
-  template< typename Key, typename Value, typename Compare >
-  std::pair< typename RedBlackTree< Key, Value, Compare >::iterator, typename RedBlackTree< Key, Value, Compare >::iterator >
-  RedBlackTree< Key, Value, Compare >::equal_range(const data_t &data)
-  {
-    return rotBst_.equal_range(data);
-  }*/
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::const_iterator
   RedBlackTree< Key, Value, Compare >::find(const Key &key) const
@@ -188,14 +173,6 @@ namespace romanovich
   RedBlackTree< Key, Value, Compare >::operator[](const Key &key)
   {
     return rotBst_[key];
-//    try
-//    {
-//      return at(key);
-//    }
-//    catch (const std::out_of_range &)
-//    {
-//    }
-//    return *(emplace(key).second);
   }
   template< typename Key, typename Value, typename Compare >
   const Value &
@@ -269,15 +246,11 @@ namespace romanovich
     bool
   > RedBlackTree< Key, Value, Compare >::insert(const data_t &data)
   {
-    // Insert the new node into the underlying binary search tree
     auto insertionResult = rotBst_.insert(data);
     if (!insertionResult.second)
     {
-      // The value already exists in the tree, so clean up and return the existing node
       return std::make_pair(insertionResult.first, false);
     }
-
-    // Balance the tree after insert
     balanceAfterInsert(insertionResult.first.node_);
     return std::make_pair(insertionResult.first, true);
   }

@@ -1,5 +1,4 @@
 #include "commands.h"
-using namespace std::placeholders;
 namespace
 {
   using map_ref = romanovich::map_t &;
@@ -75,6 +74,7 @@ namespace romanovich
     std::string complementCall = "complement";
     std::string intersectCall = "intersect";
     std::string unionCall = "union";
+    using namespace std::placeholders;
     std::unordered_map< std::string, CommandHandler > commands;
     commands[printCall] = std::bind(printCommand, _1, _2, std::ref(map));
     commands[complementCall] = std::bind(performCommand, _1, _2, std::ref(map), ComplementOperation());

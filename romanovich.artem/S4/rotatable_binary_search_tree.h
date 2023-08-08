@@ -19,10 +19,6 @@ namespace romanovich
     RotatableBinarySearchTree(const RotatableBinarySearchTree &other) = default;
     RotatableBinarySearchTree(RotatableBinarySearchTree &&other) noexcept;
     explicit RotatableBinarySearchTree(const Compare &compare);
-    // explicit RotatableBinarySearchTree(const Compare &compare);
-    /*  template< typename InputIt >
-      RotatableBinarySearchTree(InputIt first, InputIt last, const Compare &comp = Compare());
-      RotatableBinarySearchTree(std::initializer_list< data_t > init, const Compare &comp = Compare());*/
     ~RotatableBinarySearchTree() = default;
     RotatableBinarySearchTree &operator=(const RotatableBinarySearchTree &other);
     RotatableBinarySearchTree &operator=(RotatableBinarySearchTree &&other) noexcept;
@@ -62,8 +58,6 @@ namespace romanovich
     size_t count(const Key &key) const;
     iterator find(const Key &key);
     const_iterator find(const Key &key) const;
-/*    std::pair< iterator, iterator > equal_range(const data_t &data);
-    std::pair< const_iterator, const_iterator > equal_range(const data_t &data) const;*/
     iterator lower_bound(const Key &key);
     const_iterator lower_bound(const Key &key) const;
     iterator upper_bound(const Key &key);
@@ -86,7 +80,7 @@ namespace romanovich
                                                                    const std::string &prefix) const
   {
     std::cout << prefix;
-    if (node == nullptr)
+    if (!node)
     {
       std::cout << "NULL\n";
       return;
@@ -192,18 +186,6 @@ namespace romanovich
   {
     return bst_.lower_bound(key);
   }
-/*  template< typename Key, typename Value, typename Compare >
-  std::pair< ConstBidirectionalIterator< Key, Value, Compare >, ConstBidirectionalIterator< Key, Value, Compare > >
-  RotatableBinarySearchTree< Key, Value, Compare >::equal_range(const data_t &data) const
-  {
-    return bst_.equal_range(data);
-  }
-  template< typename Key, typename Value, typename Compare >
-  std::pair< BidirectionalIterator< Key, Value, Compare >, BidirectionalIterator< Key, Value, Compare > >
-  RotatableBinarySearchTree< Key, Value, Compare >::equal_range(const data_t &data)
-  {
-    return bst_.equal_range(data);
-  }*/
   template< typename Key, typename Value, typename Compare >
   ConstBidirectionalIterator< Key, Value, Compare >
   RotatableBinarySearchTree< Key, Value, Compare >::find(const Key &key) const

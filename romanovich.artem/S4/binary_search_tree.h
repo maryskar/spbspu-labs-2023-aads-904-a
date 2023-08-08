@@ -59,8 +59,6 @@ namespace romanovich
     std::pair< iterator, bool > insert(const data_t &data);
     iterator insert(const_iterator pos, const data_t &data);
     iterator insert(const_iterator pos, data_t &&data);
-    /*template< class InputIt >
-    iterator insert(const_iterator pos, InputIt first, InputIt last);*/
     template< typename... Args >
     std::pair< iterator, bool > emplace(Args &&... args);
     void clear();
@@ -247,7 +245,6 @@ namespace romanovich
   bool BinarySearchTree< Key, Value, Compare >::empty() const
   {
     return root_ == nullptr;
-    //return size_ == 0;
   }
   template< typename Key, typename Value, typename Compare >
   size_t BinarySearchTree< Key, Value, Compare >::size() const
@@ -280,9 +277,6 @@ namespace romanovich
   template< typename Key, typename Value, typename Compare >
   Value &BinarySearchTree< Key, Value, Compare >::operator[](const Key &key)
   {
-    //std::pair< iterator, bool > result = insert(key, Value{});
-    //return result.first->value;
-    //return find(key).node_->data.second;
     try
     {
       return at(key);
@@ -291,7 +285,6 @@ namespace romanovich
     {
     }
     return insert({key, Value{}}).first->second;
-    //return *(emplace(...).second);
   }
   template< typename Key, typename Value, typename Compare >
   Value &BinarySearchTree< Key, Value, Compare >::operator[](Key &&key)
@@ -436,8 +429,6 @@ namespace romanovich
       ::operator delete(fakeNode_);
       throw;
     }
-//  begin_ = copyBegin(other.begin_);
-//  end_ = copyEnd(other.end_);
   }
   template< typename Key, typename Value, typename Compare >
   TreeNode< std::pair< Key, Value > > *
@@ -628,18 +619,6 @@ namespace romanovich
   {
     return insert(pos, std::forward< data_t >(data));
   }
-/*template< typename Key, typename Value, typename Compare >
-template< class InputIt >
-typename BinarySearchTree< Key, Value, Compare >::iterator
-BinarySearchTree< Key, Value, Compare >::insert(const_iterator pos, InputIt first, InputIt last)
-{
-  iterator result;
-  for (InputIt it = first; it != last; ++it)
-  {
-    result = insert(pos, it);
-  }
-  return result;
-}*/
   template< typename Key, typename Value, typename Compare >
   typename BinarySearchTree< Key, Value, Compare >::iterator
   BinarySearchTree< Key, Value, Compare >::erase(iterator pos)
@@ -707,18 +686,13 @@ BinarySearchTree< Key, Value, Compare >::insert(const_iterator pos, InputIt firs
   template< typename Key, typename Value, typename Compare >
   size_t BinarySearchTree< Key, Value, Compare >::erase(const Key &key)
   {
-    //size_t count = 0;
     iterator it = find(key);
     if (it != end())
     {
-      //iterator next = it;
-      //++next;
       erase(it);
       return 1;
-      //it = next;
-      //++count;
     }
-    return 0;//count;
+    return 0;
   }
 }
 #endif
