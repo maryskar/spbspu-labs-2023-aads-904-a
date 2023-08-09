@@ -76,12 +76,20 @@ namespace romanovich
     void traverseLnr(F &f) const;
     template< typename F >
     void traverseRnl(F &f) const;
+    template< typename F >
+    void traverseBreadth(F &f) const;
   private:
     void balanceAfterInsert(TreeNode< data_t > *operationNode);
     void balanceAfterRemove(TreeNode< data_t > *operationNode);
     void initColor();
     RotatableBinarySearchTree< Key, Value, Compare > rotBst_;
   };
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  void RedBlackTree< Key, Value, Compare >::traverseBreadth(F &f) const
+  {
+    rotBst_.traverseBreadth(f);
+  }
   template< typename Key, typename Value, typename Compare >
   template< typename F >
   void RedBlackTree< Key, Value, Compare >::traverseRnl(F &f) const
