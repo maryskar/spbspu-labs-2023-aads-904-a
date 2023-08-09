@@ -2,7 +2,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <limits>
 #include "commands.h"
 #include "../common/printmessages.h"
 void splitString(std::vector< std::string > &elems, const std::string &line, char del)
@@ -22,7 +21,6 @@ void splitString(std::vector< std::string > &elems, const std::string &line, cha
 }
 int main(int argc, char *argv[])
 {
-  constexpr auto maxLLSize = std::numeric_limits< std::streamsize >::max();
   if (argc != 3)
   {
     std::cerr << "Invalid arguments number.\n";
@@ -55,7 +53,7 @@ int main(int argc, char *argv[])
   }
   catch (...)
   {
-    printInvalidCommand(std::cout) << '\n';
-    std::cin.ignore(maxLLSize, '\n');
+    std::cerr << "Invalid arguments.";
+    return 2;
   }
 }
