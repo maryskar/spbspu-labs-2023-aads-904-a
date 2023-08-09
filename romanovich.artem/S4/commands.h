@@ -1,6 +1,5 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
-#include <unordered_map>
 #include <iomanip>
 #include <redblack_tree.h>
 namespace romanovich
