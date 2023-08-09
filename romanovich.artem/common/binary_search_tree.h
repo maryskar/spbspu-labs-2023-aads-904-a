@@ -106,7 +106,7 @@ namespace romanovich
   template< typename F >
   F BinarySearchTree< Key, Value, Compare >::traverseBreadth(F f) const
   {
-    if (!root_)
+    if (root_)
     {
       Queue< TreeNode< data_t > * > q;
       q.push(root_);

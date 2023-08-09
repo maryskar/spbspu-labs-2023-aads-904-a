@@ -46,6 +46,11 @@ int main(int argc, char *argv[])
     }
   }
   auto commandDictionary = romanovich::createCommandDictionary();
+  if (commandDictionary.empty())
+  {
+    printEmpty(std::cout);
+    return 0;
+  }
   try
   {
     std::string traversalType = argv[1];
