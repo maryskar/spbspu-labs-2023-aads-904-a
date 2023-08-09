@@ -53,7 +53,8 @@ int main(int argc, char* argv[])
   }
   if (answer_stack.size() == 1)
   {
-    std::cout << answer_stack.back() << '\n';
+    std::cout << answer_stack.back();
   }
+  std::cout << '\n';
   return 0;
 }

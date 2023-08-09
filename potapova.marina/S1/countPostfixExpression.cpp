@@ -21,7 +21,7 @@ bool isOverflowMinus(std::int64_t operand1, std::int64_t operand2)
 
 bool isOverflowMultiply(std::int64_t operand1, std::int64_t operand2)
 {
-  return (operand1 > MAX_INT / operand2);
+  return (operand1 > MAX_INT / operand2) || (operand2 > MAX_INT / operand1);
 }
 
 bool isOverflowDivision(std::int64_t operand1, std::int64_t operand2)
@@ -92,7 +92,7 @@ std::int64_t potapova::countPostfixExpression(expr_queue& postfix_queue)
         case '%':
           if (operand1 < 0)
           {
-            operands_stack.push(operand1 - operand2 * (operand1 / (operand2 - 1)));
+            operands_stack.push((operand1 % operand2 + operand2) % operand2);
           }
           else
           {
