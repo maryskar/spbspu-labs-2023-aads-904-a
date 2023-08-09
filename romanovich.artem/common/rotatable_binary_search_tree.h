@@ -74,9 +74,17 @@ namespace romanovich
     bool equal(const RotatableBinarySearchTree &rhs) const;
     void rotateLeftLeft(TreeNode< data_t > *node);
     void rotateRightRight(TreeNode< data_t > *node);
+    template< typename F >
+    F traverseLnr(F &f) const;
   private:
     BinarySearchTree< Key, Value, Compare > bst_;
   };
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F RotatableBinarySearchTree< Key, Value, Compare >::traverseLnr(F &f) const
+  {
+    return bst_.traverseLnr(f);
+  }
   template< typename Key, typename Value, typename Compare >
   typename RotatableBinarySearchTree< Key, Value, Compare >::const_reverse_iterator
   RotatableBinarySearchTree< Key, Value, Compare >::crend() const noexcept

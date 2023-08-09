@@ -75,6 +75,8 @@ namespace romanovich
     iterator upper_bound(const Key &key);
     const_iterator upper_bound(const Key &key) const;
     Compare value_comp() const;
+    template< typename F >
+    F traverseLnr(F f) const;
   private:
     tree_t *initFake();
     void clear(TreeNode< data_t > *node);
@@ -86,11 +88,33 @@ namespace romanovich
     TreeNode< data_t > *findMin(TreeNode< data_t > *node) const;
     TreeNode< data_t > *findMax(TreeNode< data_t > *node) const;
     TreeNode< data_t > *copyTree(const TreeNode< data_t > *node);
+    template< typename F >
+    F traverseLnrImpl(tree_t *node, F &f) const;
     tree_t *root_;
     tree_t *fakeNode_;
     size_t size_;
     Compare compare_;
   };
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F BinarySearchTree< Key, Value, Compare >::traverseLnrImpl(tree_t *node, F &f) const
+  {
+    if (!node)
+    {
+      return f;
+    }
+    traverseLnrImpl(node->left, f);
+    f(node->data);
+    std::cout << node->data << " \n";
+    traverseLnrImpl(node->right, f);
+  }
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F BinarySearchTree< Key, Value, Compare >::traverseLnr(F f) const
+  {
+    traverseLnrImpl(root_, f);
+    return f;
+  }
   template< typename Key, typename Value, typename Compare >
   typename BinarySearchTree< Key, Value, Compare >::const_reverse_iterator
   BinarySearchTree< Key, Value, Compare >::crend() const noexcept
