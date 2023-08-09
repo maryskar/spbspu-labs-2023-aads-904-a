@@ -89,7 +89,7 @@ namespace romanovich
     TreeNode< data_t > *findMax(TreeNode< data_t > *node) const;
     TreeNode< data_t > *copyTree(const TreeNode< data_t > *node);
     template< typename F >
-    F traverseLnrImpl(tree_t *node, F &f) const;
+    void traverseLnrImpl(tree_t *node, F &f) const;
     tree_t *root_;
     tree_t *fakeNode_;
     size_t size_;
@@ -97,11 +97,11 @@ namespace romanovich
   };
   template< typename Key, typename Value, typename Compare >
   template< typename F >
-  F BinarySearchTree< Key, Value, Compare >::traverseLnrImpl(tree_t *node, F &f) const
+  void BinarySearchTree< Key, Value, Compare >::traverseLnrImpl(tree_t *node, F &f) const
   {
     if (!node)
     {
-      return f;
+      return;
     }
     traverseLnrImpl(node->left, f);
     f(node->data);

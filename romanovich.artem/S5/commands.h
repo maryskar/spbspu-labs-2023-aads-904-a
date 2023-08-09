@@ -9,6 +9,6 @@ namespace romanovich
   using CommandHandler = std::function< void(std::ostream &, map_t &) >;
   using command_map_t = RedBlackTree< std::string, CommandHandler >;
   void performCommand(std::ostream &out, map_t &map, const CommandHandler &operation);
-  command_map_t createCommandDictionary(const map_t &map);
+  command_map_t createCommandDictionary();
 }
 #endif

@@ -73,7 +73,7 @@ namespace romanovich
     bool equal(const RedBlackTree &rhs) const;
     void remove(const data_t &data);
     template< typename F >
-    F traverseLnr(F &f) const;
+    void traverseLnr(F &f) const;
   private:
     void balanceAfterInsert(TreeNode< data_t > *operationNode);
     void balanceAfterRemove(TreeNode< data_t > *operationNode);
@@ -82,9 +82,9 @@ namespace romanovich
   };
   template< typename Key, typename Value, typename Compare >
   template< typename F >
-  F RedBlackTree< Key, Value, Compare >::traverseLnr(F &f) const
+  void RedBlackTree< Key, Value, Compare >::traverseLnr(F &f) const
   {
-    return rotBst_.traverseLnr(f);
+    rotBst_.traverseLnr(f);
   }
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::const_reverse_iterator

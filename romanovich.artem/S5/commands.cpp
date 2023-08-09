@@ -12,6 +12,7 @@ namespace
   {
     void operator()(std::ostream &out, romanovich::map_t &map) const
     {
+      out << "";
       TreePrinter treePrinter;
       map.traverseLnr(treePrinter);
     }
@@ -19,7 +20,7 @@ namespace
 }
 namespace romanovich
 {
-  command_map_t createCommandDictionary(const map_t &map)
+  command_map_t createCommandDictionary()
   {
     std::string breadthCall = "breadth";
     command_map_t commands;
