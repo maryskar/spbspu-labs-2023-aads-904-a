@@ -38,6 +38,10 @@ int main(int argc, char *argv[])
   {
     std::vector< std::string > lineWords;
     splitString(lineWords, line, ' ');
+    if (lineWords.empty())
+    {
+      printEmpty(std::cout);
+    }
     for (size_t i = 0; i < lineWords.size(); i += 2)
     {
       long long key = std::stoll(lineWords[i]);
