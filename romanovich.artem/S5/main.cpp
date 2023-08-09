@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include "commands.h"
-#include "../common/printmessages.h"
+#include <printmessages.h>
 void splitString(std::vector< std::string > &elems, const std::string &line, char del)
 {
   std::string word;
