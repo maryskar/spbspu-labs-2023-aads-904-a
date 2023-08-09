@@ -37,6 +37,9 @@ namespace fesenko
     ~AVL();
     this_t &operator=(const this_t &);
     this_t &operator=(this_t &&);
+    iterator begin() noexcept;
+    const_iterator begin() const noexcept;
+    const_iterator cbegin() const noexcept;
     void clear() noexcept;
    private:
     tree *root_;
@@ -84,6 +87,32 @@ namespace fesenko
   AVL< Key, Value, Compare >::~AVL()
   {
     clear();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename AVL< Key, Value, Compare >::iterator AVL< Key, Value, Compare >::begin() noexcept
+  {
+    tree *ptr = root_;
+    while (ptr->left) {
+      ptr = ptr->left;
+    }
+    return iterator(ptr);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename AVL< Key, Value, Compare >::const_iterator AVL< Key, Value, Compare >::begin() const noexcept
+  {
+    return cbegin();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename AVL< Key, Value, Compare >::const_iterator AVL< Key, Value, Compare >::cbegin() const noexcept
+  {
+    tree *ptr = root_;
+    while (ptr->left) {
+      ptr = ptr->left;
+    }
+    return const_iterator(ptr);
   }
 
   template< typename Key, typename Value, typename Compare >
