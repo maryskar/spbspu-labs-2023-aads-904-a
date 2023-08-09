@@ -10,7 +10,7 @@ namespace
   };
   struct KeySumCalc
   {
-    int operator()(const romanovich::map_t &map)
+    static int calculate(const romanovich::map_t &map)
     {
       int total = 0;
       for (auto &data: map)
@@ -24,10 +24,10 @@ namespace
   {
     void operator()(std::ostream &out, const romanovich::map_t &map) const
     {
-      KeySumCalc keySumCalc;
-      out << keySumCalc(map);
+      out << KeySumCalc::calculate(map);
       ValuePrinter valuePrinter;
       map.traverseLnr(valuePrinter);
+      out << "\n";
     }
   };
 }
