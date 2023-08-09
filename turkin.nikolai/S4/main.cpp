@@ -47,5 +47,7 @@ int main(int argc, char * argv[])
 
   std::cout << "amount: " << tree.count(1) << "\n";
   std::cout << "found: " << tree.find(1)->second << "\n";
+  std::cout << "at: " << tree.at(3) << "\n";
+  std::cout << "[]: " << tree[5] << "\n";
   return 0;
 }

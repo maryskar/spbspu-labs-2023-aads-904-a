@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <algorithm>
+#include <stdexcept>
 
 #include "iterators/iterator.hpp"
 #include "iterators/const-iterator.hpp"
@@ -60,7 +61,7 @@ namespace turkin
 
       std::size_t count(const K & key) const; //done
       it find(const K & key); //done
-      cit find(const K & key) const;
+      cit find(const K & key) const; //done
 
       bool empty() const noexcept; //done
       std::size_t size() const noexcept; //done
@@ -218,6 +219,35 @@ turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::cend() const noexce
     temp = temp->right;
   }
   return cit(temp);
+}
+
+template< typename K, typename V, typename C >
+V & turkin::AVLtree< K, V, C >::at(const K & key)
+{
+  auto ins = find(key);
+  if (neq< K, C >(ins->first, key))
+  {
+    throw std::out_of_range("out of range");
+  }
+  return ins->second;
+}
+
+template< typename K, typename V, typename C >
+const V & turkin::AVLtree< K, V, C >::at(const K & key) const
+{
+  auto ins = find(key);
+  if (neq< K, C >(ins->first, key))
+  {
+    throw std::out_of_range("out of range");
+  }
+  return ins->second;
+}
+
+template< typename K, typename V, typename C >
+V & turkin::AVLtree< K, V, C >::operator[](const K & key)
+{
+  it ins = find(key);
+  return (ins == end()) ? insert(tree_t(key, V()))->second : ins->second;
 }
 
 template< typename K, typename V, typename C >
