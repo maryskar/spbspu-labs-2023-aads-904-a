@@ -1,4 +1,5 @@
 #include "commands.h"
+#include "../S1/owerflowlongcheck.h"
 namespace
 {
   struct ValuePrinter
@@ -15,7 +16,15 @@ namespace
       int total = 0;
       for (auto &data: map)
       {
-        total += data.first;
+        if (!romanovich::overflowAdd(total, data.first)
+            && !romanovich::overflowSubt(total, data.first))
+        {
+          total += data.first;
+        }
+        else
+        {
+          throw std::overflow_error("Overflow.");
+        }
       }
       return total;
     }
