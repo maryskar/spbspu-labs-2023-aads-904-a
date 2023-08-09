@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
   }
   while (answer_stack.size() > 1)
   {
-    std::cout << answer_stack.back();
+    std::cout << answer_stack.back() << ' ';
     answer_stack.pop();
   }
   if (answer_stack.size() == 1)
