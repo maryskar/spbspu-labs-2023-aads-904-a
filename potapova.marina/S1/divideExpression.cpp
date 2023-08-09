@@ -40,6 +40,7 @@ potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
 {
   expr_queue postfix_expr;
   Stack< char > operators_stack;
+  Stack< char > brackets_stack;
   while (!infix_expr.empty())
   {
     ArithmExpMember& cur_member = infix_expr.front();
@@ -49,10 +50,19 @@ potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
     }
     else if (isCloseBracket(cur_member.operation))
     {
+      if (brackets_stack.empty() || brackets_stack.back() != '(')
+      {
+        throw std::runtime_error("Inappropriate closing bracket");
+      }
+      brackets_stack.pop();
       moveExprInBracketsToPostfix(operators_stack, postfix_expr);
     }
     else if (isOpenBracket(cur_member.operation) || operators_stack.empty() || isOpenBracket(operators_stack.back()))
     {
+      if (isOpenBracket(cur_member.operation))
+      {
+        brackets_stack.push(cur_member.operation);
+      }
       operators_stack.push(cur_member.operation);
     }
     else if (!operators_stack.empty() && getPriority(cur_member.operation) <= getPriority(operators_stack.back()))
@@ -66,6 +76,10 @@ potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
       operators_stack.push(cur_member.operation);
     }
     infix_expr.pop();
+  }
+  if (!brackets_stack.empty())
+  {
+    throw std::runtime_error("Inappropriate opening bracket");
   }
   while (!operators_stack.empty())
   {
