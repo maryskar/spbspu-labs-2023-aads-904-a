@@ -37,7 +37,9 @@ namespace fesenko
     ~AVL();
     this_t &operator=(const this_t &);
     this_t &operator=(this_t &&);
+    void clear() noexcept;
    private:
+    void deleteNode(tree *) noexcept;
     tree *root_;
     Compare comp_;
   };
@@ -62,6 +64,25 @@ namespace fesenko
       comp_ = std::move(other.comp_);
     }
     return *this;
+  }
+
+  void AVL< Key, Value, Compare >::clear() noexcept
+  {
+    if (!root) {
+      return;
+    }
+    deleteNode(root);
+  }
+
+  void AVL< Key, Value, Compare >::deleteNode(tree *node) noexcept
+  {
+    if (node->left) {
+      deleteNode(node->left);
+    }
+    if (node->right) {
+      deleteNode(node->right);
+    }
+    delete node;
   }
 }
 #endif
