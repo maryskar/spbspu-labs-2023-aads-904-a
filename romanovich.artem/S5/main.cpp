@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
       mapData.emplace(romanovich::map_value_t(key, val));
     }
   }
-  auto commandDictionary = romanovich::createCommandDictionary(mapData);
+  auto commandDictionary = romanovich::createCommandDictionary();
   try
   {
     std::string traversalType = argv[1];
