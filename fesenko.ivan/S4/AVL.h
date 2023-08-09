@@ -52,10 +52,23 @@ namespace fesenko
   {}
 
   template< typename Key, typename Value, typename Compare >
+  AVL< Key, Value, Compare >::AVL(const this_t &other):
+    root_(copy(other.root_)),
+    comp_(other.comp)
+  {}
+
+  template< typename Key, typename Value, typename Compare >
   AVL< Key, Value, Compare >::AVL(this_t &&other):
     root_(std::move(other.root_)),
     comp_(std::move(other.comp_))
   {}
+
+  template< typename Key, typename Value, typename Compare >
+  AVL< Key, Value, Compare > &AVL< Key, Value, Compare >::operator=(const this_t &other)
+  {
+    root_ = copy(other.root_);
+    return *this;
+  }
 
   template< typename Key, typename Value, typename Compare >
   AVL< Key, Value, Compare > &AVL< Key, Value, Compare >::operator=(this_t &&other)
@@ -67,19 +80,22 @@ namespace fesenko
     return *this;
   }
 
+  template< typename Key, typename Value, typename Compare >
   AVL< Key, Value, Compare >::~AVL()
   {
     clear();
   }
 
+  template< typename Key, typename Value, typename Compare >
   void AVL< Key, Value, Compare >::clear() noexcept
   {
-    if (!root) {
+    if (!root_) {
       return;
     }
-    deleteNode(root);
+    deleteNode(root_);
   }
 
+  template< typename Key, typename Value, typename Compare >
   void AVL< Key, Value, Compare >::deleteNode(tree *node) noexcept
   {
     if (node->left) {
@@ -91,7 +107,8 @@ namespace fesenko
     delete node;
   }
 
-  AVL< Key, Value, Compare >::tree *AVL< Key, Value, Compare >::copy(const tree *node)
+  template< typename Key, typename Value, typename Compare >
+  typename AVL< Key, Value, Compare >::tree *AVL< Key, Value, Compare >::copy(const tree *node)
   {
     tree *newNode = node;
     if (node->left) {
