@@ -23,6 +23,7 @@ int main(int argc, char* argv[])
     std::cerr << "Error: " << e.what() << '\n';
     return 1;
   }
+  *in_ptr >> std::ws;
   while (!in_ptr->eof())
   {
     if (!inputInfixQueue(infix_expr, *in_ptr))
@@ -45,16 +46,14 @@ int main(int argc, char* argv[])
     }
     *in_ptr >> std::ws;
   }
-  bool first_answer = true;
-  while (!answer_stack.empty())
+  while (answer_stack.size() > 1)
   {
-    if (!first_answer)
-    {
-      std::cout << ' ';
-    }
     std::cout << answer_stack.back();
     answer_stack.pop();
-    first_answer = false;
+  }
+  if (answer_stack.size() == 1)
+  {
+    std::cout << answer_stack.back() << '\n';
   }
   return 0;
 }
