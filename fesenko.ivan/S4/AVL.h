@@ -40,6 +40,9 @@ namespace fesenko
     iterator begin() noexcept;
     const_iterator begin() const noexcept;
     const_iterator cbegin() const noexcept;
+    iterator end() noexcept;
+    const_iterator end() const noexcept;
+    const_iterator cend() const noexcept;
     void clear() noexcept;
    private:
     tree *root_;
@@ -111,6 +114,32 @@ namespace fesenko
     tree *ptr = root_;
     while (ptr->left) {
       ptr = ptr->left;
+    }
+    return const_iterator(ptr);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename AVL< Key, Value, Compare >::iterator AVL< Key, Value, Compare >::end() noexcept
+  {
+    tree *ptr = root_;
+    while (ptr->right) {
+      ptr = ptr->right;
+    }
+    return iterator(ptr);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename AVL< Key, Value, Compare >::const_iterator AVL< Key, Value, Compare >::end() const noexcept
+  {
+    return cend();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename AVL< Key, Value, Compare >::const_iterator AVL< Key, Value, Compare >::cend() const noexcept
+  {
+    tree *ptr = root_;
+    while (ptr->right) {
+      ptr = ptr->right;
     }
     return const_iterator(ptr);
   }
