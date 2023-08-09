@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include "commands.h"
-#include <printmessages.h>
+#include "../common/printmessages.h"//#include <printmessages.h>
 void splitString(std::vector< std::string > &elems, const std::string &line, char del)
 {
   std::string word;
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     splitString(lineWords, line, ' ');
     for (size_t i = 0; i < lineWords.size(); i += 2)
     {
-      int key = std::stoi(lineWords[i]);
+      long long key = std::stoll(lineWords[i]);
       std::string val = lineWords[i + 1];
       mapData.emplace(romanovich::map_value_t(key, val));
     }
