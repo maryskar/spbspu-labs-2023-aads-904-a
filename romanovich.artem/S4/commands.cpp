@@ -48,7 +48,7 @@ namespace
 }
 namespace romanovich
 {
-  std::unordered_map< std::string, CommandHandler > createCommandDictionary(container_t &map)
+  command_map_t createCommandDictionary(container_t &map)
   {
     std::string printCall = "print";
     std::string complementCall = "complement";
