@@ -30,15 +30,26 @@ namespace
       out << "\n";
     }
   };
+  struct RnlTraverse
+  {
+    void operator()(std::ostream &out, const romanovich::map_t &map) const
+    {
+      out << KeySumCalc::calculate(map);
+      ValuePrinter valuePrinter;
+      map.traverseRnl(valuePrinter);
+      out << "\n";
+    }
+  };
 }
 namespace romanovich
 {
   command_map_t createCommandDictionary()
   {
     std::string lnrCall = "ascending";
+    std::string rnlCall = "descending";
     command_map_t commands;
-    using namespace std::placeholders;
     commands[lnrCall] = std::function< void(std::ostream &, map_t &) >(LnrTraverse());
+    commands[rnlCall] = std::function< void(std::ostream &, map_t &) >(RnlTraverse());
     return commands;
   }
 }

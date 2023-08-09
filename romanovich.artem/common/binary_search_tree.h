@@ -77,6 +77,8 @@ namespace romanovich
     Compare value_comp() const;
     template< typename F >
     F traverseLnr(F f) const;
+    template< typename F >
+    F traverseRnl(F f) const;
   private:
     tree_t *initFake();
     void clear(TreeNode< data_t > *node);
@@ -90,6 +92,8 @@ namespace romanovich
     TreeNode< data_t > *copyTree(const TreeNode< data_t > *node);
     template< typename F >
     void traverseLnrImpl(tree_t *node, F &f) const;
+    template< typename F >
+    void traverseRnlImpl(tree_t *node, F &f) const;
     tree_t *root_;
     tree_t *fakeNode_;
     size_t size_;
@@ -110,6 +114,25 @@ namespace romanovich
   template< typename Key, typename Value, typename Compare >
   template< typename F >
   F BinarySearchTree< Key, Value, Compare >::traverseLnr(F f) const
+  {
+    traverseLnrImpl(root_, f);
+    return f;
+  }
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  void BinarySearchTree< Key, Value, Compare >::traverseRnlImpl(tree_t *node, F &f) const
+  {
+    if (!node)
+    {
+      return;
+    }
+    traverseRnlImpl(node->right, f);
+    f(node->data);
+    traverseRnlImpl(node->left, f);
+  }
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F BinarySearchTree< Key, Value, Compare >::traverseRnl(F f) const
   {
     traverseLnrImpl(root_, f);
     return f;
