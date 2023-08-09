@@ -7,9 +7,6 @@
 namespace fesenko
 {
   template< typename Key, typename Value, typename Compare >
-  class AVLIterator;
-
-  template< typename Key, typename Value, typename Compare >
   class ConstAVLIterator
   {
    public:
@@ -39,14 +36,12 @@ namespace fesenko
     bool operator!=(const this_t &) const;
     bool operator==(const this_t &) const;
    private:
-    tree *fake_;
     tree *node_;
     Compare comp_;
   };
 
   template< typename Key, typename Value, typename Compare >
   ConstAVLIterator< Key, Value, Compare >::ConstAVLIterator():
-    fake_(nullptr),
     node_(nullptr),
     comp_()
   {}
@@ -55,17 +50,10 @@ namespace fesenko
   ConstAVLIterator< Key, Value, Compare >::ConstAVLIterator(tree *rhs):
     node_(rhs),
     comp_()
-  {
-    auto temp = rhs->parent;
-    while (temp->left || temp->right) {
-      temp = temp->parent;
-    }
-    fake_ = temp;
-  }
+  {}
 
   template< typename Key, typename Value, typename Compare >
   ConstAVLIterator< Key, Value, Compare >::ConstAVLIterator(const iterator &other):
-    fake_(other.fake_),
     node_(other.node_),
     comp_(other.comp_)
   {}

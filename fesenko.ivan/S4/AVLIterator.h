@@ -6,12 +6,8 @@
 namespace fesenko
 {
   template< typename Key, typename Value, typename Compare >
-  class AVL;
-
-  template< typename Key, typename Value, typename Compare = std::less< Key > >
   class AVLIterator
   {
-    friend class AVL< Key, Value, Compare >;
    public:
     using key_type = Key;
     using mapped_type = Value;
@@ -39,14 +35,12 @@ namespace fesenko
     bool operator!=(const this_t &) const;
     bool operator==(const this_t &) const;
    private:
-    tree *fake_;
     tree *node_;
     Compare comp_;
   };
 
   template< typename Key, typename Value, typename Compare >
   AVLIterator< Key, Value, Compare >::AVLIterator():
-    fake_(nullptr),
     node_(nullptr),
     comp_()
   {}
@@ -55,13 +49,7 @@ namespace fesenko
   AVLIterator< Key, Value, Compare >::AVLIterator(tree *rhs):
     node_(rhs),
     comp_()
-  {
-    auto temp = rhs->parent;
-    while (temp->left || temp->right) {
-      temp = temp->parent;
-    }
-    fake_ = temp;
-  }
+  {}
 
   template< typename Key, typename Value, typename Compare >
   AVLIterator< Key, Value, Compare> &AVLIterator< Key, Value, Compare >::operator++()
