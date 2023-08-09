@@ -9,8 +9,8 @@ namespace romanovich
   using map_value_t = std::pair< int, std::string >;
   using container_t = RedBlackTree< std::string, map_t >;
   using container_value_t = std::pair< std::string, map_t >;
-  using command_map_t = RedBlackTree< std::string, CommandHandler >;
   using CommandHandler = std::function< void(std::istream &, std::ostream &, container_t &) >;
+  using command_map_t = RedBlackTree< std::string, CommandHandler >;
   void printCommand(std::istream &in, std::ostream &out, container_t &map);
   void performCommand(std::istream &in, std::ostream &out, container_t &map,
                       const std::function< void(map_t &, const map_t &, const map_t &) > &operation);
