@@ -66,6 +66,11 @@ namespace fesenko
     return *this;
   }
 
+  AVL< Key, Value, Compare >::~AVL()
+  {
+    clear();
+  }
+
   void AVL< Key, Value, Compare >::clear() noexcept
   {
     if (!root) {
