@@ -105,7 +105,6 @@ namespace romanovich
     }
     traverseLnrImpl(node->left, f);
     f(node->data);
-    std::cout << node->data << " \n";
     traverseLnrImpl(node->right, f);
   }
   template< typename Key, typename Value, typename Compare >
