@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include "stack.h"
-#include "queue.h"
+#include <stack.h>
+#include <queue.h>
 #include "notations.h"
 #include "expressionpart.h"
 int main(int argc, char **argv)
