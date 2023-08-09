@@ -38,7 +38,11 @@ int main(int argc, char *argv[])
   {
     std::vector< std::string > lineWords;
     splitString(lineWords, line, ' ');
-    std::cout << "@" << line << "#";
+    if (line == "")
+    {
+      printEmpty(std::cout);
+      return 0;
+    }
     for (size_t i = 0; i < lineWords.size(); i += 2)
     {
       long long key = std::stoll(lineWords[i]);
