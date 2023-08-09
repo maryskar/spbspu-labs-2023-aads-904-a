@@ -90,7 +90,14 @@ std::int64_t potapova::countPostfixExpression(expr_queue& postfix_queue)
           operands_stack.push(operand1 / operand2);
           break;
         case '%':
-          operands_stack.push(operand1 % operand2);
+          if (operand1 < 0)
+          {
+            operands_stack.push(operand1 - operand2 * (operand1 / (operand2 - 1)));
+          }
+          else
+          {
+            operands_stack.push(operand1 % operand2);
+          }
           break;
       }
       postfix_queue.pop();
