@@ -1,20 +1,33 @@
 #include "commands.h"
 namespace
 {
-  struct TreePrinter
+  struct ValuePrinter
   {
-    void operator()(const romanovich::map_value_t data/*, std::ostream &out*/)
+    void operator()(const romanovich::map_value_t &data/*, std::ostream &out*/)
     {
-      std::cout << data.second << "\n";
+      std::cout << " " << data.second;
+    }
+  };
+  struct KeySumCalc
+  {
+    int operator()(const romanovich::map_t &map)
+    {
+      int total = 0;
+      for (auto &data: map)
+      {
+        total += data.first;
+      }
+      return total;
     }
   };
   struct LnrTraverse
   {
-    void operator()(std::ostream &out, romanovich::map_t &map) const
+    void operator()(std::ostream &out, const romanovich::map_t &map) const
     {
-      out << "";
-      TreePrinter treePrinter;
-      map.traverseLnr(treePrinter);
+      KeySumCalc keySumCalc;
+      out << keySumCalc(map);
+      ValuePrinter valuePrinter;
+      map.traverseLnr(valuePrinter);
     }
   };
 }
@@ -22,14 +35,10 @@ namespace romanovich
 {
   command_map_t createCommandDictionary()
   {
-    std::string breadthCall = "breadth";
+    std::string lnrCall = "ascending";
     command_map_t commands;
     using namespace std::placeholders;
-    commands[breadthCall] = std::function< void(std::ostream &, map_t &) >(LnrTraverse());
+    commands[lnrCall] = std::function< void(std::ostream &, map_t &) >(LnrTraverse());
     return commands;
-  }
-  void performCommand(std::ostream &out, map_t &map, const CommandHandler &operation)
-  {
-    operation(out, map);
   }
 }
