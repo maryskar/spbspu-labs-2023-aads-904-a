@@ -39,9 +39,10 @@ namespace fesenko
     this_t &operator=(this_t &&);
     void clear() noexcept;
    private:
-    void deleteNode(tree *) noexcept;
     tree *root_;
     Compare comp_;
+    void deleteNode(tree *) noexcept;
+    tree *copy(const tree *);
   };
 
   template< typename Key, typename Value, typename Compare >
@@ -88,6 +89,20 @@ namespace fesenko
       deleteNode(node->right);
     }
     delete node;
+  }
+
+  AVL< Key, Value, Compare >::tree *AVL< Key, Value, Compare >::copy(const tree *node)
+  {
+    tree *newNode = node;
+    if (node->left) {
+      newNode->left = copy(node->left);
+      newNode->left->parent = newNode;
+    }
+    if (node->right) {
+      newNode->right = copy(node->right);
+      newNode->right->parent = newNode;
+    }
+    return newNode;
   }
 }
 #endif
