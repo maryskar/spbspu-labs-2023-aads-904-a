@@ -55,7 +55,7 @@ namespace romanovich
     std::string intersectCall = "intersect";
     std::string unionCall = "union";
     using namespace std::placeholders;
-    std::unordered_map< std::string, CommandHandler > commands;
+    command_map_t commands;
     commands[printCall] = std::bind(printCommand, _1, _2, std::ref(map));
     commands[complementCall] = std::bind(performCommand, _1, _2, std::ref(map), ComplementOperation());
     commands[intersectCall] = std::bind(performCommand, _1, _2, std::ref(map), IntersectOperation());
