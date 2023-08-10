@@ -43,6 +43,8 @@ namespace fesenko
     iterator end() noexcept;
     const_iterator end() const noexcept;
     const_iterator cend() const noexcept;
+    iterator find(const key_type &);
+    const_iterator find(const key_type &) const;
     bool empty() const noexcept;
     void clear() noexcept;
     key_compare key_comp() const;
@@ -147,7 +149,26 @@ namespace fesenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  void AVL< Key, Value, Compare >::empty() const noexcept
+  typename AVL< Key, Value, Compare >::iterator AVL< Key, Value, Compare >::find(const key_type &key)
+  {
+    const_iterator cit = static_cast< const this_t & >(*this).find(key);
+    return iterator(cit.node_);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename AVL< Key, Value, Compare >::const_iterator AVL< Key, Value, Compare >::find(const key_type &key) const
+  {
+    const_iterator cur = cbegin();
+    while (cur != cend()) {
+      if (!comp(cur->first, key) && !comp(key, cur->first)) {
+        break;
+      }
+    }
+    return cur;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  bool AVL< Key, Value, Compare >::empty() const noexcept
   {
     return root_ == nullptr;
   }
@@ -189,7 +210,7 @@ namespace fesenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename AVL< Key, Value, Compare >::key_compare AVL< Key, Value, Compare >::key_comp()
+  typename AVL< Key, Value, Compare >::key_compare AVL< Key, Value, Compare >::key_comp() const
   {
     return comp_;
   }
