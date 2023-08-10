@@ -45,6 +45,7 @@ namespace fesenko
     const_iterator cend() const noexcept;
     bool empty() const noexcept;
     void clear() noexcept;
+    key_compare key_comp() const;
    private:
     tree *root_;
     Compare comp_;
@@ -185,6 +186,12 @@ namespace fesenko
       newNode->right->parent = newNode;
     }
     return newNode;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename AVL< Key, Value, Compare >::key_compare AVL< Key, Value, Compare >::key_comp()
+  {
+    return comp_;
   }
 }
 #endif
