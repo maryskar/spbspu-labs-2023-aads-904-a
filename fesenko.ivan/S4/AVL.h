@@ -43,6 +43,7 @@ namespace fesenko
     iterator end() noexcept;
     const_iterator end() const noexcept;
     const_iterator cend() const noexcept;
+    bool empty() const noexcept;
     void clear() noexcept;
    private:
     tree *root_;
@@ -142,6 +143,12 @@ namespace fesenko
       ptr = ptr->right;
     }
     return const_iterator(ptr);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  void AVL< Key, Value, Compare >::empty() const noexcept
+  {
+    return root_ == nullptr;
   }
 
   template< typename Key, typename Value, typename Compare >
