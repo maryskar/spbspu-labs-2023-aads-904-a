@@ -21,33 +21,33 @@ namespace turkin
     using it = Iterator< K, V, C >;
     using cit = ConstIterator< K, V, C >;
     public:
-      AVLtree(); //done
-      AVLtree(const tree & rhs); //done
-      AVLtree(tree && rhs); //done
-      tree operator=(const tree & rhs); //done
-      tree operator=(tree && rhs); //done
-      ~AVLtree(); //done
+      AVLtree();
+      AVLtree(const tree & rhs);
+      AVLtree(tree && rhs);
+      tree operator=(const tree & rhs);
+      tree operator=(tree && rhs);
+      ~AVLtree();
       
-      it root() noexcept; //done
-      cit root() const noexcept; //done
-      cit croot() const noexcept; //done
+      it root() noexcept;
+      cit root() const noexcept;
+      cit croot() const noexcept;
 
-      it begin() noexcept; //done
-      cit begin() const noexcept; //done
-      cit cbegin() const noexcept; //done
+      it begin() noexcept;
+      cit begin() const noexcept;
+      cit cbegin() const noexcept;
 
-      it end() noexcept; //done
-      cit end() const noexcept; //done
-      cit cend() const noexcept; //done
+      it end() noexcept;
+      cit end() const noexcept;
+      cit cend() const noexcept;
 
-      V & at(const K & key); //done
-      const V & at(const K & key) const; //done
-      V & operator[](const K & key); //done
+      V & at(const K & key);
+      const V & at(const K & key) const;
+      V & operator[](const K & key);
 
-      it insert(const K & k, const V & v); //done
-      it insert(const tree_t & value); //done
+      it insert(const K & k, const V & v);
+      it insert(const tree_t & value);
       template< class It >
-      It insert(It first, It last); //done
+      It insert(It first, It last);
 
       it erase(const K & k);
       it erase(it pos);
@@ -59,31 +59,31 @@ namespace turkin
       it upper_bound(const K & key);
       cit upper_bound(const K & key) const;
 
-      std::size_t count(const K & key) const; //done
-      it find(const K & key); //done
-      cit find(const K & key) const; //done
+      std::size_t count(const K & key) const;
+      it find(const K & key);
+      cit find(const K & key) const;
 
-      bool empty() const noexcept; //done
-      std::size_t size() const noexcept; //done
-      void clear() noexcept; //done
-      void swap(tree & rhs) noexcept; //done
+      bool empty() const noexcept;
+      std::size_t size() const noexcept;
+      void clear() noexcept;
+      void swap(tree & rhs) noexcept;
       
     private:
       node_t root_;
       C cmp_;
       std::size_t size_;
 
-      void slr(node_t src); //done
-      void srr(node_t src); //done
+      void slr(node_t src);
+      void srr(node_t src);
 
-      void copy(const tree & rhs); //done
-      void free(node_t src); //done
-      it insert(node_t src, const tree_t & value); //done
+      void copy(const tree & rhs);
+      void free(node_t src);
+      it insert(node_t src, const tree_t & value);
       node_t erase(node_t src, const K & k);
-      void balance(node_t src); //done
-      void increase(node_t src); //done
-      int measure(node_t src); //done
-      int discern(node_t src); //done
+      void balance(node_t src);
+      void increase(node_t src);
+      int measure(node_t src);
+      int discern(node_t src);
   };
 }
 
@@ -297,6 +297,7 @@ turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::erase(it pos)
   {
     return it(nullptr);
   }
+  size_--;
   return it(erase(pos.cur_, pos->first));
 }
 
