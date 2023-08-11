@@ -40,9 +40,9 @@ namespace turkin
       cit end() const noexcept; //done
       cit cend() const noexcept; //done
 
-      V & at(const K & key);
-      const V & at(const K & key) const;
-      V & operator[](const K & key);
+      V & at(const K & key); //done
+      const V & at(const K & key) const; //done
+      V & operator[](const K & key); //done
 
       it insert(const K & k, const V & v); //done
       it insert(const tree_t & value); //done
@@ -79,7 +79,7 @@ namespace turkin
       void copy(const tree & rhs); //done
       void free(node_t src); //done
       it insert(node_t src, const tree_t & value); //done
-      it erase(node_t src, const K & k);
+      node_t erase(node_t src, const K & k);
       void balance(node_t src); //done
       void increase(node_t src); //done
       int measure(node_t src); //done
@@ -273,11 +273,47 @@ template< typename K, typename V, typename C >
 template< class It >
 It turkin::AVLtree< K, V, C >::insert(It first, It last)
 {
-  for (auto it : *this)
+  for (auto it = first; it != last; it++)
   {
     insert(it);
   }
   return last;
+}
+
+template< typename K, typename V, typename C >
+turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::erase(const K & k)
+{
+  if (empty())
+  {
+    return it(nullptr);
+  }
+  return it(erase(root_, k));
+}
+
+template< typename K, typename V, typename C >
+turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::erase(it pos)
+{
+  if (empty())
+  {
+    return it(nullptr);
+  }
+  return it(erase(pos.cur_, pos->first));
+}
+
+template< typename K, typename V, typename C >
+turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::erase(cit pos)
+{
+  return cit(erase(it(pos.cur_)));
+}
+
+template< typename K, typename V, typename C >
+turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::erase(cit first, cit last)
+{
+  for (auto it = first; it != last; it++)
+  {
+    erase(it);
+  }
+  return it(last.cur_);
 }
 
 template< typename K, typename V, typename C >
@@ -415,17 +451,40 @@ turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::insert(node_t src, const
 }
 
 template< typename K, typename V, typename C >
-turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::erase(node_t src, const K & k)
+turkin::TreeNode< std::pair< K, V > > * turkin::AVLtree< K, V, C >::erase(node_t src, const K & k)
 {
   if (src == nullptr)
   {
-    return it(nullptr);
+    return nullptr;
   }
   else if (cmp_(k, src->data.first))
   {
     src->left = erase(src->left, k);
   }
-  //else if (!cmp_(k, src->data.first))
+  else if (!cmp_(k, src->data.first))
+  {
+    src->right = erase(src->right, k);
+  }
+  else
+  {
+    if (src->left == nullptr || src->right == nullptr)
+    {
+      src = (src->left == nullptr) ? src->right : src->left;
+    }
+    else
+    {
+      node_t temp = src;
+      for (;temp->right != nullptr; temp = temp->right);
+      src->data = temp->data;
+      src->right = erase(src->right, temp->data.first);
+    }
+  }
+  if (src != nullptr)
+  {
+    increase(src);
+    balance(src);
+  }
+  return src;
 }
 
 template< typename K, typename V, typename C >
