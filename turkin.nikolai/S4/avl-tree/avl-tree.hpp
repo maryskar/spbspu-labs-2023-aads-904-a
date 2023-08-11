@@ -50,7 +50,7 @@ namespace turkin
       It insert(It first, It last); //done
 
       it erase(const K & k);
-      it erase(it pos); //base
+      it erase(it pos);
       it erase(cit pos);
       it erase(cit first, cit last);
 
@@ -314,6 +314,51 @@ turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::erase(cit first, cit las
     erase(it);
   }
   return it(last.cur_);
+}
+
+template< typename K, typename V, typename C >
+turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::lower_bound(const K & key)
+{
+  auto ins = root();
+  while (ins != end())
+  {
+    if (eq< K, C >(key, ins->first))
+    {
+      return ins;
+    }
+    else if (cmp_(key, ins->first))
+    {
+      ins++;
+    }
+    else
+    {
+      ins--;
+    }
+  }
+  return end();
+}
+
+template< typename K, typename V, typename C >
+turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::lower_bound(const K & key) const
+{
+  return cit(lower_bound(key));
+}
+
+template< typename K, typename V, typename C >
+turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::upper_bound(const K & key)
+{
+  auto ins = lower_bound(key);
+  if (ins == end())
+  {
+    return end();
+  }
+  return (eq< K, V >(key, ins->first)) ? ins++ : ins;
+}
+
+template< typename K, typename V, typename C >
+turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::upper_bound(const K & key) const
+{
+  return cit(upper_bound(key));
 }
 
 template< typename K, typename V, typename C >

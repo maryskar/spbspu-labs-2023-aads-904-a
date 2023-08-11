@@ -38,7 +38,7 @@ int main(int argc, char * argv[])
     std::cout << "key: " << it.first << "\t data: " << it.second << "\n";
   }
   std::cout << "key: " << tree.end()->first << "\t data: " << tree.end()->second << "\n";
-
+  
   for (auto it : tree)
   {
     std::cout << "key: " << it.first << "\t data: " << it.second << "\n";
