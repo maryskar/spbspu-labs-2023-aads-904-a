@@ -36,7 +36,29 @@ namespace dmitriev
 
 			return m_fList.insertAfter(it, keyValue);
 		}
+		iterator insert(fListPair&& keyValue)
+		{
+			iterator it = beforeUpperBound(keyValue.first);
 
+			if (it->first == keyValue.first)
+			{
+				return it;
+			}
+
+			return m_fList.insertAfter(it, std::move(keyValue));
+		}
+		template< typename inputIterator >
+		void insert(inputIterator first, inputIterator last)
+		{
+			for (; first != last; first++)
+			{
+				insert(*first);
+			}
+		}
+		void insert(std::initializer_list< fListPair > initList)
+		{
+			insert(initList.begin(), initList.end());
+		}
 
 		Value& at(const Key& key)
 		{
