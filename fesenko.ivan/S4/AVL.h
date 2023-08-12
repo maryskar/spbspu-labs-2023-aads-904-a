@@ -43,6 +43,10 @@ namespace fesenko
     iterator end() noexcept;
     const_iterator end() const noexcept;
     const_iterator cend() const noexcept;
+    mapped_type &operator[](const key_type &);
+    mapped_type &operator[](key_type &&);
+    mapped_type &at(const key_type &);
+    const mapped_type &at(const key_type &) const;
     iterator find(const key_type &);
     const_iterator find(const key_type &) const;
     std::pair< iterator, bool > insert(const value_type &);
