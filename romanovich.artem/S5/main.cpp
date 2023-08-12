@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
   try
   {
     std::string traversalType = argv[1];
-    commandDictionary[traversalType](std::cout, mapData);
+    commandDictionary[traversalType](mapData);
   }
   catch (...)
   {
