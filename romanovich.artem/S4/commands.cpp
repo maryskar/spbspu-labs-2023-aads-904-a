@@ -62,8 +62,9 @@ namespace romanovich
     commands[unionCall] = std::bind(performCommand, _1, _2, std::ref(map), UnionOperation());
     return commands;
   }
-  void performCommand(std::istream &in, std::ostream &out, container_t &map,
-                      const std::function< void(map_t &, const map_t &, const map_t &) > &operation)
+  void performCommand(std::istream &in,
+                        std::ostream &out,
+                        container_t &map, const std::function< void(map_t &, const map_t &, const map_t &) > &operation)
   {
     std::string newDictName, mapName1, mapName2;
     in >> newDictName >> mapName1 >> mapName2;

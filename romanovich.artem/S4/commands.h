@@ -11,8 +11,9 @@ namespace romanovich
   using CommandHandler = std::function< void(std::istream &, std::ostream &, container_t &) >;
   using command_map_t = RedBlackTree< std::string, CommandHandler >;
   void printCommand(std::istream &in, std::ostream &out, container_t &map);
-  void performCommand(std::istream &in, std::ostream &out, container_t &map,
-                      const std::function< void(map_t &, const map_t &, const map_t &) > &operation);
-  command_map_t createCommandDictionary(container_t &map);
+  void performCommand(std::istream &in,
+                        std::ostream &out,
+                        container_t &map, const std::function< void(map_t &, const map_t &, const map_t &) > &operation);
+  std::unordered_map< std::string, CommandHandler > createCommandDictionary(container_t &map);
 }
 #endif
