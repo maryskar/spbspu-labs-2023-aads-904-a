@@ -2,8 +2,10 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <parsing.h>
-#include <printmessages.h>
+//#include <parsing.h>
+//#include <printmessages.h>
+#include "../common/parsing.h"
+#include "../common/printmessages.h"
 #include "commands.h"
 int main(int argc, char *argv[])
 {
