@@ -181,7 +181,7 @@ namespace fesenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename AVL< Key, Value, Compare >::iterator AVL< Key, Value, Compare >::find(const key_type &key)
+  typename AVL< Key, Value, Compare >::iterator AVL< Key, Value, Compare >::lower_bound(const key_type &key)
   {
     const_iterator cit = static_cast< const this_t & >(*this).lower_bound(key);
     return iterator(cit.node_);
