@@ -19,15 +19,47 @@ namespace dmitriev
 			m_fList(),
 			m_comp()
 		{}
-
 		Dictionary(std::initializer_list< fListPair >, const Compare& comp = Compare());//
-
 		Dictionary(const Dictionary& other) = default;
 		Dictionary(Dictionary&& other) = default;
 
 		~Dictionary() = default;
 
+		iterator find(const Key& key)
+		{
+			iterator result = begin();
 
+			for(; (result != end()) && (result->first =! key); key++)
+			{}
+
+			return result;
+		}
+
+		iterator beforeBegin()
+		{
+			return m_fList.beforeBegin();
+		}
+		iterator begin()
+		{
+			return m_fList.begin();
+		}
+		iterator end()
+		{
+			return m_fList.end();
+		}
+
+		constIterator constBeforeBegin()
+		{
+			return m_fList.constBeforeBegin();
+		}
+		constIterator constBegin()
+		{
+			return m_fList.constBegin();
+		}
+		constIterator constEnd()
+		{
+			return m_fList.constEnd();
+		}
 
 	private:
 		fList m_fList;
