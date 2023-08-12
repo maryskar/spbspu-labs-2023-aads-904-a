@@ -45,6 +45,14 @@ namespace fesenko
     const_iterator cend() const noexcept;
     iterator find(const key_type &);
     const_iterator find(const key_type &) const;
+    std::pair< iterator, bool > insert(const value_type &);
+    template< typename P >
+    std::pair< iterator, bool > insert(P &&);
+    iterator insert(const_iterator, const value_type &);
+    template< typename P >
+    iterator insert(const_iterator, P &&);
+    template< typename InputIterator >
+    void insert(InputIterator, InputIterator);
     bool empty() const noexcept;
     void clear() noexcept;
     key_compare key_comp() const;
@@ -160,7 +168,7 @@ namespace fesenko
   {
     const_iterator cur = cbegin();
     while (cur != cend()) {
-      if (!comp(cur->first, key) && !comp(key, cur->first)) {
+      if (!comp_(cur->first, key) && !comp_(key, cur->first)) {
         break;
       }
     }
