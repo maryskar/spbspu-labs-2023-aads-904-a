@@ -198,6 +198,22 @@ namespace fesenko
   }
 
   template< typename Key, typename Value, typename Compare >
+  typename AVL< Key, Value, Compare >::iterator AVL< Key, Value, Compare >::upper_bound(const key_type &key)
+  {
+    const_iterator cit = static_cast< const this_t & >(*this).upper_bound(key);
+    return iterator(cit.node_);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename AVL< Key, Value, Compare >::const_iterator AVL< Key, Value, Compare >::upper_bound(const key_type &key) c>  {
+    const_iterator cur = lower_bound(key);
+    if (!comp_(key, cur->first)) {
+      cur++;
+    }
+    return cur;
+  }
+
+  template< typename Key, typename Value, typename Compare >
   bool AVL< Key, Value, Compare >::empty() const noexcept
   {
     return root_ == nullptr;
