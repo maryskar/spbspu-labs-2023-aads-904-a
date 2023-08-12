@@ -175,6 +175,24 @@ namespace fesenko
       if (!comp_(cur->first, key) && !comp_(key, cur->first)) {
         break;
       }
+      cur++;
+    }
+    return cur;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename AVL< Key, Value, Compare >::iterator AVL< Key, Value, Compare >::find(const key_type &key)
+  {
+    const_iterator cit = static_cast< const this_t & >(*this).lower_bound(key);
+    return iterator(cit.node_);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename AVL< Key, Value, Compare >::const_iterator AVL< Key, Value, Compare >::lower_bound(const key_type &key) const
+  {
+    const_iterator cur = cbegin();
+    while (comp_(cur->first, key)) {
+      cur++;
     }
     return cur;
   }
