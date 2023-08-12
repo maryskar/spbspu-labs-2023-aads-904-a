@@ -48,14 +48,95 @@ namespace dmitriev
 				m_fList.insertAfter(it, std::pair< Key, Value >{k, v});
 			}
 		}
-		Value get(Key k)
+		iterator insert(Key k, const Value& v)
+		{
+			iterator it = lowerBound(k);
+			iterator movedIt = it;
+
+			movedIt++;
+
+			if (movedIt == end())
+			{
+				return m_fList.insertAfter(it, std::pair< Key, Value >{k, v});
+			}
+			else if (movedIt->first == k)
+			{
+				movedIt->second = v;
+				return movedIt;
+			}
+			else
+			{
+				return m_fList.insertAfter(it, std::pair< Key, Value >{k, v});
+			}
+		}
+		iterator insert(Key k, Value&& v)
+		{
+			iterator it = lowerBound(k);
+			iterator movedIt = it;
+
+			movedIt++;
+
+			if (movedIt == end())
+			{
+				return m_fList.insertAfter(it, std::pair< Key, Value >{k, std::move(v)});
+			}
+			else if (movedIt->first == k)
+			{
+				movedIt->second = std::move(v);
+				return movedIt;
+			}
+			else
+			{
+				return m_fList.insertAfter(it, std::pair< Key, Value >{k, std::move(v)});
+			}
+		}
+		template< class InputIt >
+		void insert(InputIt first, InputIt last)
+		{
+			for (; first != last; first++)
+			{
+				insert(first->first, first->second);
+			}
+		}
+
+		iterator erase(iterator pos)
+		{
+			return m_fList.eraseAfter(pos);
+		}
+		iterator erase(constIterator pos)
+		{
+			return m_fList.eraseAfter(pos);
+		}
+		iterator erase(constIterator first, constIterator last)
+		{
+			return m_fList.eraseAfter(first, last);
+		}
+		iterator erase(const Key& key)//
+		{
+			iterator it = lowerBound(key);
+
+
+			return m_fList.eraseAfter(it);
+		}
+
+		Value& at(Key k)
 		{
 			iterator it = find(k);
 
 			return it->second;
 		}
+		const Value& at(Key k) const
+		{
+			iterator it = find(k);
 
-		iterator slowerBound(const Key& key)
+			return it->second;
+		}
+		
+
+		iterator emplace();
+
+
+		iterator lowerBound(const Key& key)
 		{
 			iterator result = beforeBegin();
 
@@ -64,12 +145,7 @@ namespace dmitriev
 
 			return result;
 		}
-		constIterator lowerBound(const Key& key) const
-		{
-			constIterator result = const_cast< const Dictionary< Key, Value, Compare >* >(this)->slowerBound(key);
-			return result;
-		}
-
+		iterator upperBound();
 
 		iterator beforeBegin()
 		{
@@ -104,6 +180,10 @@ namespace dmitriev
 			{}
 			
 			return result;
+		}
+		bool isEmpty()
+		{
+			return m_fList.isEmtpy();
 		}
 
 	private:
