@@ -1,6 +1,5 @@
 #ifndef RED_BLACK_TREE_H
 #define RED_BLACK_TREE_H
-#include "tree_node.h"
 #include "rotatable_binary_search_tree.h"
 namespace romanovich
 {
@@ -80,37 +79,37 @@ namespace romanovich
   };
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::const_reverse_iterator
-  RedBlackTree< Key, Value, Compare >::crend() const noexcept
+    RedBlackTree< Key, Value, Compare >::crend() const noexcept
   {
     return rotBst_.crend();
   }
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::const_reverse_iterator
-  RedBlackTree< Key, Value, Compare >::rend() const noexcept
+    RedBlackTree< Key, Value, Compare >::rend() const noexcept
   {
     return rotBst_.rend();
   }
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::reverse_iterator
-  RedBlackTree< Key, Value, Compare >::rend() noexcept
+    RedBlackTree< Key, Value, Compare >::rend() noexcept
   {
     return rotBst_.rend();
   }
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::const_reverse_iterator
-  RedBlackTree< Key, Value, Compare >::crbegin() const noexcept
+    RedBlackTree< Key, Value, Compare >::crbegin() const noexcept
   {
     return rotBst_.crbegin();
   }
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::const_reverse_iterator
-  RedBlackTree< Key, Value, Compare >::rbegin() const noexcept
+    RedBlackTree< Key, Value, Compare >::rbegin() const noexcept
   {
     return rotBst_.rbegin();
   }
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::reverse_iterator
-  RedBlackTree< Key, Value, Compare >::rbegin() noexcept
+    RedBlackTree< Key, Value, Compare >::rbegin() noexcept
   {
     return rotBst_.rbegin();
   }
@@ -125,38 +124,32 @@ namespace romanovich
     return rotBst_.value_comp();
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::const_iterator
-  RedBlackTree< Key, Value, Compare >::upper_bound(const Key &key) const
+  typename RedBlackTree< Key, Value, Compare >::const_iterator RedBlackTree< Key, Value, Compare >::upper_bound(const Key &key) const
   {
     return rotBst_.upper_bound(key);
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::iterator
-  RedBlackTree< Key, Value, Compare >::upper_bound(const Key &key)
+  typename RedBlackTree< Key, Value, Compare >::iterator RedBlackTree< Key, Value, Compare >::upper_bound(const Key &key)
   {
     return rotBst_.upper_bound(key);
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::const_iterator RedBlackTree< Key, Value, Compare >::lower_bound(
-    const Key &key) const
+  typename RedBlackTree< Key, Value, Compare >::const_iterator RedBlackTree< Key, Value, Compare >::lower_bound(const Key &key) const
   {
     return rotBst_.lower_bound(key);
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::iterator RedBlackTree< Key, Value, Compare >::lower_bound(
-    const Key &key)
+  typename RedBlackTree< Key, Value, Compare >::iterator RedBlackTree< Key, Value, Compare >::lower_bound(const Key &key)
   {
     return rotBst_.lower_bound(key);
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::const_iterator
-  RedBlackTree< Key, Value, Compare >::find(const Key &key) const
+  typename RedBlackTree< Key, Value, Compare >::const_iterator RedBlackTree< Key, Value, Compare >::find(const Key &key) const
   {
     return rotBst_.find(key);
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::iterator
-  RedBlackTree< Key, Value, Compare >::find(const Key &key)
+  typename RedBlackTree< Key, Value, Compare >::iterator RedBlackTree< Key, Value, Compare >::find(const Key &key)
   {
     return rotBst_.find(key);
   }
@@ -182,8 +175,8 @@ namespace romanovich
     return 0;
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::iterator
-  RedBlackTree< Key, Value, Compare >::erase(RedBlackTree::const_iterator first, RedBlackTree::const_iterator last)
+  typename RedBlackTree< Key, Value, Compare >::iterator RedBlackTree< Key, Value, Compare >::erase(RedBlackTree::const_iterator first,
+                                                                                                      RedBlackTree::const_iterator last)
   {
     while (first != last)
     {
@@ -193,49 +186,45 @@ namespace romanovich
     return iterator(first.node_, rotBst_.bst_.fakeNode_);
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::iterator
-  RedBlackTree< Key, Value, Compare >::erase(RedBlackTree::const_iterator pos)
+  typename RedBlackTree< Key, Value, Compare >::iterator RedBlackTree< Key, Value, Compare >::erase(RedBlackTree::const_iterator pos)
   {
     iterator it = erase(pos);
     balanceAfterRemove(it.node_);
     return it;
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::iterator
-  RedBlackTree< Key, Value, Compare >::erase(RedBlackTree::iterator pos)
+  typename RedBlackTree< Key, Value, Compare >::iterator RedBlackTree< Key, Value, Compare >::erase(RedBlackTree::iterator pos)
   {
     iterator it = erase(const_iterator(pos));
     balanceAfterRemove(it.node_);
     return it;
   }
   template< typename Key, typename Value, typename Compare >
-  Value &
-  RedBlackTree< Key, Value, Compare >::operator[](Key &&key)
+  Value& RedBlackTree< Key, Value, Compare >::operator[](Key &&key)
   {
     return (*this)[key];
   }
   template< typename Key, typename Value, typename Compare >
-  Value &
-  RedBlackTree< Key, Value, Compare >::operator[](const Key &key)
+  Value& RedBlackTree< Key, Value, Compare >::operator[](const Key &key)
   {
     return rotBst_[key];
   }
   template< typename Key, typename Value, typename Compare >
-  const Value &
-  RedBlackTree< Key, Value, Compare >::at(const Key &key) const
+  const Value& RedBlackTree< Key, Value, Compare >::at(const Key &key) const
   {
     return rotBst_.at(key);
   }
   template< typename Key, typename Value, typename Compare >
-  Value &
-  RedBlackTree< Key, Value, Compare >::at(const Key &key)
+  Value& RedBlackTree< Key, Value, Compare >::at(const Key &key)
   {
     return rotBst_.at(key);
   }
   template< typename Key, typename Value, typename Compare >
   template< typename... Args >
-  std::pair< typename RedBlackTree< Key, Value, Compare >::iterator, bool >
-  RedBlackTree< Key, Value, Compare >::emplace(Args &&... args)
+  std::pair<
+      typename RedBlackTree< Key, Value, Compare >::iterator,
+      bool
+  > RedBlackTree< Key, Value, Compare >::emplace(Args &&... args)
   {
     data_t tmp(std::forward< Args >(args)...);
     return insert(tmp);
@@ -256,15 +245,15 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   template< typename P >
-  typename RedBlackTree< Key, Value, Compare >::iterator
-  RedBlackTree< Key, Value, Compare >::insert(RedBlackTree::const_iterator pos, P &&data)
+  typename RedBlackTree< Key, Value, Compare >::iterator RedBlackTree< Key, Value, Compare >::insert(RedBlackTree::const_iterator pos,
+                                                                                                       P &&data)
   {
     data_t tmp(data);
     return insert(pos, tmp);
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::iterator
-  RedBlackTree< Key, Value, Compare >::insert(RedBlackTree::const_iterator pos, const data_t &value)
+  typename RedBlackTree< Key, Value, Compare >::iterator RedBlackTree< Key, Value, Compare >::insert(RedBlackTree::const_iterator pos,
+                                                                                                       const data_t &value)
   {
     auto insertionResult = rotBst_.insert(pos, value);
     if (!insertionResult.second)
@@ -280,16 +269,18 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   template< typename P >
-  std::pair< typename RedBlackTree< Key, Value, Compare >::iterator,
-    bool > RedBlackTree< Key, Value, Compare >::insert(P &&data)
+  std::pair<
+      typename RedBlackTree< Key, Value, Compare >::iterator,
+      bool
+  > RedBlackTree< Key, Value, Compare >::insert(P &&data)
   {
     const data_t tmp(data);
     return insert(tmp);
   }
   template< typename Key, typename Value, typename Compare >
   std::pair<
-    typename RedBlackTree< Key, Value, Compare >::iterator,
-    bool
+      typename RedBlackTree< Key, Value, Compare >::iterator,
+      bool
   > RedBlackTree< Key, Value, Compare >::insert(const data_t &data)
   {
     auto insertionResult = rotBst_.insert(data);
@@ -316,8 +307,7 @@ namespace romanovich
     return rotBst_.empty();
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::const_iterator
-  RedBlackTree< Key, Value, Compare >::cend() const noexcept
+  typename RedBlackTree< Key, Value, Compare >::const_iterator RedBlackTree< Key, Value, Compare >::cend() const noexcept
   {
     return rotBst_.cend();
   }
@@ -332,14 +322,12 @@ namespace romanovich
     return rotBst_.end();
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::const_iterator
-  RedBlackTree< Key, Value, Compare >::clast() const noexcept
+  typename RedBlackTree< Key, Value, Compare >::const_iterator RedBlackTree< Key, Value, Compare >::clast() const noexcept
   {
     return rotBst_.clast();
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::const_iterator
-  RedBlackTree< Key, Value, Compare >::last() const noexcept
+  typename RedBlackTree< Key, Value, Compare >::const_iterator RedBlackTree< Key, Value, Compare >::last() const noexcept
   {
     return rotBst_.last();
   }
@@ -349,14 +337,12 @@ namespace romanovich
     return rotBst_.last();
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::const_iterator
-  RedBlackTree< Key, Value, Compare >::cbegin() const noexcept
+  typename RedBlackTree< Key, Value, Compare >::const_iterator RedBlackTree< Key, Value, Compare >::cbegin() const noexcept
   {
     return rotBst_.cbegin();
   }
   template< typename Key, typename Value, typename Compare >
-  typename RedBlackTree< Key, Value, Compare >::const_iterator
-  RedBlackTree< Key, Value, Compare >::begin() const noexcept
+  typename RedBlackTree< Key, Value, Compare >::const_iterator RedBlackTree< Key, Value, Compare >::begin() const noexcept
   {
     return rotBst_.begin();
   }
@@ -366,8 +352,7 @@ namespace romanovich
     return rotBst_.begin();
   }
   template< typename Key, typename Value, typename Compare >
-  RedBlackTree< Key, Value, Compare > &
-  RedBlackTree< Key, Value, Compare >::operator=(std::initializer_list< data_t > init)
+  RedBlackTree< Key, Value, Compare > & RedBlackTree< Key, Value, Compare >::operator=(std::initializer_list< data_t > init)
   {
     RedBlackTree< Key, Value, Compare > tmp(init);
     swap(tmp);
