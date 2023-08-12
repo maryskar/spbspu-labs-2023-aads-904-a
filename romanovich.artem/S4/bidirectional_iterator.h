@@ -27,7 +27,7 @@ namespace romanovich
     explicit BidirectionalIterator(TreeNode< data_t > *root,
                                      TreeNode< data_t > *node, TreeNode< data_t > *fakeNode);
     BidirectionalIterator< Key, Value, Compare > &
-    operator=(const BidirectionalIterator< Key, Value, Compare > &) = default;
+      operator=(const BidirectionalIterator< Key, Value, Compare > &) = default;
     data_t &operator*();
     data_t *operator->();
     BidirectionalIterator &operator++();
@@ -85,10 +85,6 @@ namespace romanovich
   template< typename Key, typename Value, typename Compare >
   BidirectionalIterator< Key, Value, Compare > &BidirectionalIterator< Key, Value, Compare >::operator--()
   {
-    if (!node_)
-    {
-      throw std::runtime_error("Decrementing null iterator.");
-    }
     if (node_ == fakeNode_)
     {
       return *this;

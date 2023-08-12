@@ -81,8 +81,6 @@ namespace romanovich
     TreeNode< data_t > *insertImpl(TreeNode< data_t > *node, TreeNode< data_t > *parent,
                                      const Key &key, const Value &value);
     TreeNode< data_t > *removeImpl(TreeNode< data_t > *node, const data_t &data);
-    TreeNode< data_t > *copyBegin(const TreeNode< data_t > *beginNode);
-    TreeNode< data_t > *copyEnd(const TreeNode< data_t > *endNode);
     TreeNode< data_t > *findMin(TreeNode< data_t > *node) const;
     TreeNode< data_t > *findMax(TreeNode< data_t > *node) const;
     TreeNode< data_t > *copyTree(const TreeNode< data_t > *node);
@@ -366,46 +364,6 @@ namespace romanovich
       }
     }
     throw std::out_of_range("Key not found.");
-  }
-  template< typename Key, typename Value, typename Compare >
-  TreeNode< std::pair< Key, Value > > * BinarySearchTree< Key, Value, Compare >::copyBegin(const TreeNode< data_t > *beginNode)
-  {
-    if (!beginNode)
-    {
-      return nullptr;
-    }
-    auto *newBegin = new TreeNode< data_t >(beginNode->key, beginNode->value);
-    newBegin->left = copyBegin(beginNode->left);
-    newBegin->right = copyBegin(beginNode->right);
-    if (newBegin->left)
-    {
-      newBegin->left->parent = newBegin;
-    }
-    if (newBegin->right)
-    {
-      newBegin->right->parent = newBegin;
-    }
-    return newBegin;
-  }
-  template< typename Key, typename Value, typename Compare >
-  TreeNode< std::pair< Key, Value > > * BinarySearchTree< Key, Value, Compare >::copyEnd(const TreeNode< data_t > *endNode)
-  {
-    if (!endNode)
-    {
-      return nullptr;
-    }
-    auto *newEnd = new TreeNode< data_t >(endNode->key, endNode->value);
-    newEnd->left = copyEnd(endNode->left);
-    newEnd->right = copyEnd(endNode->right);
-    if (newEnd->left)
-    {
-      newEnd->left->parent = newEnd;
-    }
-    if (newEnd->right)
-    {
-      newEnd->right->parent = newEnd;
-    }
-    return newEnd;
   }
   template< typename Key, typename Value, typename Compare >
   BinarySearchTree< Key, Value, Compare > & BinarySearchTree< Key, Value, Compare >::operator=(BinarySearchTree &&other) noexcept
