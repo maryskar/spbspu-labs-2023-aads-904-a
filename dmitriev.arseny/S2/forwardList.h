@@ -208,6 +208,11 @@ namespace dmitriev
     {
       other.m_beforeHead->otherList = nullptr;
     }
+    explicit ForwardList(std::initializer_list< T > initList):
+      ForwardList()
+    {
+      insertAfter(beforeBegin(), initList);
+    }
 
     ForwardList< T >& operator=(const ForwardList< T >& other)
     {

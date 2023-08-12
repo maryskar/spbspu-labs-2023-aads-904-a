@@ -18,12 +18,34 @@ namespace dmitriev
 			m_fList(),
 			m_comp()
 		{}
-		Dictionary(std::initializer_list< fListPair >, const Compare& comp = Compare());//
+		Dictionary(std::initializer_list< fListPair > initList, const Compare& comp = std::less< >):
+			m_fList(),
+			m_comp(comp)
+		{
+			insert(initList);
+		}
 		Dictionary(const Dictionary& other) = default;
 		Dictionary(Dictionary&& other) = default;
 
-		~Dictionary() = default;
+		Dictionary& operator=(const Dictionary& other) = default;
+		Dictionary& operator=(Dictionary && other) = default;
+		Dictionary& operator=(std::initializer_list< fListPair > initList)
+		{
+			m_fList.clear();
+			insert(initList);
+		}
+		Value& operator[](const Key& key)
+		{
+			iterator it = find(key);
+			if (isExist(it))
+			{
+				return it->second;
+			}
 
+			return insert({key, Value()})->second;
+		}
+
+		~Dictionary() = default;
 
 		iterator insert(const fListPair& keyValue)
 		{
@@ -153,7 +175,10 @@ namespace dmitriev
 		{
 			return isExist(find(key));
 		}
-
+		void clear()
+		{
+			m_fList.clear();
+		}
 
 	private:
 		fList m_fList;
