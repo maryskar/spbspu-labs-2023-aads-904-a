@@ -9,7 +9,6 @@ namespace dmitriev
 	class Dictionary
 	{
 	public:
-
 		using fListPair = std::pair< Key, Value >;
 		using fList = ForwardList< fListPair >;
 		using iterator = typename fList::iterator;
@@ -24,6 +23,32 @@ namespace dmitriev
 		Dictionary(Dictionary&& other) = default;
 
 		~Dictionary() = default;
+
+		Value at(const Key& key)
+		{
+			iterator it = find(key);
+			if (!isExist(it))
+			{
+				throw std::logic_error("no element with such key");
+			}
+		}
+
+		iterator lowerBound(const Key& key)
+		{
+			iterator result;
+			for(result = begin(); (result != end()) && m_comp(result->first, key); result++)
+			{}
+
+			return result;
+		}
+		iterator upperBound(const Key& key)
+		{
+			iterator result;
+			for (result = begin(); (result != end()) && !m_comp(key, result->first); result++)
+			{}
+
+			return result;
+		}
 
 		iterator find(const Key& key)
 		{
@@ -59,6 +84,24 @@ namespace dmitriev
 		constIterator constEnd()
 		{
 			return m_fList.constEnd();
+		}
+
+		bool isEmpty()
+		{
+			return m_fList.isEmtpy();
+		}
+		bool isExist(iterator it)
+		{
+			return it == end();
+		}
+		bool isExist(const Key& key)
+		{
+			return isExist(find(key));
+		}
+
+		void test()
+		{
+			std::cout << m_comp(2, 2);
 		}
 
 	private:
