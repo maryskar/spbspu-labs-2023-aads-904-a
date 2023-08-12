@@ -53,6 +53,10 @@ namespace fesenko
     iterator insert(const_iterator, P &&);
     template< typename InputIterator >
     void insert(InputIterator, InputIterator);
+    iterator lower_bound(const key_type &);
+    const_iterator lower_bound(const key_type &) const;
+    iterator upper_bound(const key_type &);
+    const_iterator upper_bound(const key_type &) const;
     bool empty() const noexcept;
     void clear() noexcept;
     key_compare key_comp() const;
