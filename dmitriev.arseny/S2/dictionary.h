@@ -24,37 +24,70 @@ namespace dmitriev
 
 		~Dictionary() = default;
 
-		Value at(const Key& key)
+
+		iterator insert(const fListPair& keyValue)
+		{
+			iterator it = beforeUpperBound(keyValue.first);
+
+			if (it->first == keyValue.first)
+			{
+				return it;
+			}
+
+			return m_fList.insertAfter(it, keyValue);
+		}
+
+
+		Value& at(const Key& key)
 		{
 			iterator it = find(key);
 			if (!isExist(it))
 			{
 				throw std::logic_error("no element with such key");
 			}
+			return it->second;
+		}
+		const Value& at(const Key& key) const
+		{
+			iterator it = find(key);
+			if (!isExist(it))
+			{
+				throw std::logic_error("no element with such key");
+			}
+			return it->second;
+		}
+
+		iterator beforeLowerBoard(const Key& key)
+		{
+			iterator result = beforeBegin();
+			for (iterator it = begin(); (it != end()) && m_comp(it->first, key); result++, it++)
+			{}
+
+			return result;
+		}
+		iterator beforeUpperBound(const Key& key)
+		{
+			iterator result = beforeBegin();
+			for (iterator it = begin(); (it != end()) && !m_comp(key, it->first); result++, it++)
+			{}
+
+			return result;
 		}
 
 		iterator lowerBound(const Key& key)
 		{
-			iterator result;
-			for(result = begin(); (result != end()) && m_comp(result->first, key); result++)
-			{}
-
-			return result;
+			return ++beforeLowerBoard(key);
 		}
 		iterator upperBound(const Key& key)
 		{
-			iterator result;
-			for (result = begin(); (result != end()) && !m_comp(key, result->first); result++)
-			{}
-
-			return result;
+			return ++beforeUpperBound();
 		}
 
 		iterator find(const Key& key)
 		{
 			iterator result = begin();
 
-			for(; (result != end()) && (result->first =! key); key++)
+			for(; isExist(result) && (result->first != key); result++)
 			{}
 
 			return result;
@@ -92,17 +125,13 @@ namespace dmitriev
 		}
 		bool isExist(iterator it)
 		{
-			return it == end();
+			return it != end();
 		}
 		bool isExist(const Key& key)
 		{
 			return isExist(find(key));
 		}
 
-		void test()
-		{
-			std::cout << m_comp(2, 2);
-		}
 
 	private:
 		fList m_fList;
