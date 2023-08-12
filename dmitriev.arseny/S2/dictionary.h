@@ -82,6 +82,34 @@ namespace dmitriev
 			insert(initList.begin(), initList.end());
 		}
 
+		template< typename... Args >
+		iterator emplace(Args&&... args)
+		{
+			return insert(std::make_pair(std::forward< Args >(args)...));
+		}
+
+		iterator eraseAfter(iterator pos)
+		{
+			m_fList.eraseAfter(pos);
+		}
+		iterator eraseAfter(iterator beforeFirst, iterator last)
+		{
+			return m_fList.eraseAfter(beforeFirst, last);
+		}
+
+		iterator erase(const Key& key)
+		{
+			iterator it = beforeFind(key);
+			iterator finded = it;
+			finded++;
+			if (!isExist(finded))
+			{
+				throw std::logic_error("no such element");
+			}
+
+			return m_fList.eraseAfter(it);
+		}
+
 		Value& at(const Key& key)
 		{
 			iterator it = find(key);
@@ -127,14 +155,18 @@ namespace dmitriev
 			return ++beforeUpperBound();
 		}
 
-		iterator find(const Key& key)
+		iterator beforeFind(const Key& key)
 		{
-			iterator result = begin();
+			iterator result = beforeBegin();
 
-			for(; isExist(result) && (result->first != key); result++)
+			for (iterator it = begin(); isExist(it) && (it->first != key); result++, it++)
 			{}
 
 			return result;
+		}
+		iterator find(const Key& key)
+		{
+			return ++beforeFind(key);
 		}
 
 		iterator beforeBegin()
@@ -179,6 +211,11 @@ namespace dmitriev
 		{
 			m_fList.clear();
 		}
+		void swap(Dictionary& other)
+		{
+			std::swap(m_fList, other.m_fList);
+		}
+
 
 	private:
 		fList m_fList;
