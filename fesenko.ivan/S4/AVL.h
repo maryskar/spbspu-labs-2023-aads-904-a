@@ -170,14 +170,11 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   typename AVL< Key, Value, Compare >::const_iterator AVL< Key, Value, Compare >::find(const key_type &key) const
   {
-    const_iterator cur = cbegin();
-    while (cur != cend()) {
-      if (!comp_(cur->first, key) && !comp_(key, cur->first)) {
-        break;
-      }
-      cur++;
+    const_iterator cur = lower_bound();
+    if (!comp_(key, cur->first)) {
+      return cur;
     }
-    return cur;
+    return cend();
   }
 
   template< typename Key, typename Value, typename Compare >
