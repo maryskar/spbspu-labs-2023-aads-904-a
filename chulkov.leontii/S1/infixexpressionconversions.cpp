@@ -31,7 +31,7 @@ namespace chulkov {
           post.push(str);
           str.clear();
         }
-        while (!oper.empty() && oper.top() != "(" && getPriority(oper.top()) >= getPriority(std::string(1, c))) {
+        while (!oper.empty() && oper.drop() != "(" && getPriority(oper.drop()) >= getPriority(std::string(1, c))) {
           post.push(oper.drop());
         }
         oper.push(std::string(1, c));
@@ -46,10 +46,10 @@ namespace chulkov {
           post.push(str);
           str.clear();
         }
-        while (!oper.empty() && oper.top() != "(") {
+        while (!oper.empty() && oper.drop() != "(") {
           post.push(oper.drop());
         }
-        if (!oper.empty() && oper.top() == "(") {
+        if (!oper.empty() && oper.drop() == "(") {
           oper.drop();
         } else {
           throw std::runtime_error("bruh, Error in expression");
@@ -63,7 +63,7 @@ namespace chulkov {
       str.clear();
     }
     while (!oper.empty()) {
-      if (oper.top() == "(") {
+      if (oper.drop() == "(") {
         throw std::runtime_error("Error in expression.");
       }
       post.push(oper.drop());
