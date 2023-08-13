@@ -36,7 +36,7 @@ namespace timofeev
         iter insert_after(constIter pos, T &&value );
         iter insert_after(constIter pos, size_t count, const T &value );
         iter insert_after(constIter pos, iter first, iter last );
-        iter insert_after( const_iterator pos, std::initializer_list<T> ilist );
+        //iter insert_after( const_iterator pos, std::initializer_list<T> ilist );
 
         iter erase_after(constIter pos);
         iter erase_after(constIter first, constIter last);
@@ -141,13 +141,14 @@ namespace timofeev
         iter insert_after( constIter pos, std::initializer_list<T> ilist )
         */
     template< typename T >
-    ForwardList< T >::iter ForwardList<T>::insert_after(int pos, T &&value)
+    ForwardList< T >::iter ForwardList<T>::insert_after(constIter pos, const T &value)
     {
         List< T > *node = new List< T >();
         node->data = value;
         node->next = pos->next;
         pos->next = node;
         size_++;
+        return pos->next;
     }
 
     template< typename  T >
@@ -176,9 +177,26 @@ namespace timofeev
             pos++;
             first++;
         }
-        return temp;
+        return pos;
+    }
+/*        iter erase_after(constIter pos);
+        iter erase_after(constIter first, constIter last);*/
+    template< typename  T >
+    ForwardList< T >::iter ForwardList<T>::erase_after(constIter pos)
+    {
+        if (next = nullptr)
+        {
+            return nullptr;
+        }
+        List< T > *tmp = pos;
+        tmp++;
+        List< T > *tmp_next = tmp->next;
+        delete tmp;
+        pos->next = tmp_next;
+        return pos;
     }
 
+    template< typename  T >
 
 }
 #endif
