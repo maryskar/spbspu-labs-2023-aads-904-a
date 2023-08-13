@@ -1,10 +1,13 @@
 #include <iostream>
-#include <cstddef>
+#include <fstream>
 #include <string>
+#include <cstddef>
 #include <functional>
-#include "avl-tree/avl-tree.hpp"
-#include "out-msg.hpp"
-
+#include <utility>
+#include <avl-tree/avl-tree.hpp>
+#include <out-msg.hpp>
+#include <cmd-work.hpp>
+#include <file-work.hpp>
 
 int main(int argc, char * argv[])
 {
@@ -22,32 +25,50 @@ int main(int argc, char * argv[])
     return 1;
   }
 
-  turkin::AVLtree< int, int, std::less< int > > tree;
-  auto data1 = std::make_pair(1, 12);
-  auto data2 = std::make_pair(2, 22);
-  auto data3 = std::make_pair(3, 32);
-  auto data4 = std::make_pair(4, 42);
+  using tree_t = turkin::AVLtree< std::size_t, std::string, std::less< > >;
+  using tree_a = turkin::AVLtree< std::string, tree_t, std::less< > >;
+  using tree_c = turkin::AVLtree< std::string, tree_t (*)(const tree_t &, const tree_t &), std::less< > >;
 
-  tree.insert(data1); std::cout << "inserted 1\n";
-  tree.insert(data2); std::cout << "inserted 2\n";
-  tree.insert(data3); std::cout << "inserted 3\n";
-  tree.insert(data4); std::cout << "inserted 4\n";
+  tree_c commands;
+  commands.insert("complement", turkin::to_complement< tree_t, std::less< > >);
+  commands.insert("intersect", turkin::to_intersect< tree_t >);
+  commands.insert("union", turkin::to_union< tree_t >);
 
-  for (auto it : tree)
+  auto dict = turkin::genDicts< tree_a, tree_t >(file);
+
+  while (std::cin)
   {
-    std::cout << "key: " << it.first << "\t data: " << it.second << "\n";
+    std::string cmd;
+    std::cin >> cmd;
+    if (!std::cin)
+    {
+      break;
+    }
+    try
+    {
+      if (cmd == "print")
+      {
+        std::string name;
+        std::cin >> name;
+        turkin::print(std::make_pair(name, dict.at(name)), std::cout);
+      }
+      else
+      {
+        std::string set0;
+        std::string set1;
+        std::string set2;
+        std::cin >> set0 >> set1 >> set2;
+        tree_t dict1 = dict.at(set1);
+        tree_t dict2 = dict.at(set2);
+        auto func = commands.at(cmd);
+        tree_t temp = func(dict1, dict2);
+        dict.insert(set0, temp);
+      }
+    }
+    catch (...)
+    {
+      turkin::outInvalidCMD(std::cout);
+    }
   }
-  std::cout << "key: " << tree.end()->first << "\t data: " << tree.end()->second << "\n";
-  
-  for (auto it : tree)
-  {
-    std::cout << "key: " << it.first << "\t data: " << it.second << "\n";
-  }
-  std::cout << "key: " << tree.end()->first << "\t data: " << tree.end()->second << "\n";
-
-  std::cout << "amount: " << tree.count(1) << "\n";
-  std::cout << "found: " << tree.find(1)->second << "\n";
-  std::cout << "at: " << tree.at(3) << "\n";
-  std::cout << "[]: " << tree[5] << "\n";
   return 0;
 }
