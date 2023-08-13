@@ -69,6 +69,7 @@ namespace fesenko
     tree *copy(const tree *);
     size_t checkHeight(tree *);
     size_t checkHeightSup(tree *, size_t);
+    void rotateLeft(tree *);
   };
 
   template< typename Key, typename Value, typename Compare >
@@ -366,6 +367,24 @@ namespace fesenko
       height = std::max(leftHeight, rightHeight);
     }
     return height;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  void AVL< Key, Value, Compare >::rotateLeft(tree *node)
+  {
+    tree *temp = node->right->left;
+    if (node == node->parent->left) {
+      node->parent->left = node->right;
+    } else {
+      node->parent->right = node->right;
+    }
+    node->right->parent = node->parent;
+    node->right->left = node;
+    node->parent = node->right;
+    node->right = temp;
+    if (temp) {
+       temp->parent = node;
+    }
   }
 }
 #endif
