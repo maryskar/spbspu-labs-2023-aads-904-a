@@ -71,6 +71,8 @@ namespace fesenko
     size_t checkHeightSup(tree *, size_t);
     void rotateLeft(tree *);
     void rotateRight(tree *);
+    void rotateLeftRight(tree *);
+    void rotateRightLeft(tree *);
   };
 
   template< typename Key, typename Value, typename Compare >
@@ -404,6 +406,20 @@ namespace fesenko
     if (temp) {
        temp->parent = node;
     }
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  void AVL< Key, Value, Compare >::rotateLeftRight(tree *node)
+  {
+    rotateLeft(node->right);
+    rotateRight(node->parent);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  void AVL< Key, Value, Compare >::rotateRightLeft(tree *node)
+  {
+    rotateRight(node->left);
+    rotateLeft(node->parent);
   }
 }
 #endif
