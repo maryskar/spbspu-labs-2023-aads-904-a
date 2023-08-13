@@ -51,7 +51,11 @@ namespace timofeev
         void push_front(T &&value);
         void pop_front();
 
-
+        void resize(size_t count);
+        void resize(size_t count, const T& value);
+        void swap(ForwardList< T >& other);
+        void splice_after(constIter pos, ForwardList< T > &other);
+        void splice_after(constIter pos, ForwardList< T > &&other);
     };
 
 }
