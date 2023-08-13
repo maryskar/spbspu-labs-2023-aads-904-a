@@ -49,6 +49,10 @@ namespace fesenko
     const mapped_type &at(const key_type &) const;
     iterator find(const key_type &);
     const_iterator find(const key_type &) const;
+    iterator lower_bound(const key_type &);
+    const_iterator lower_bound(const key_type &) const;
+    iterator upper_bound(const key_type &);
+    const_iterator upper_bound(const key_type &) const;
     std::pair< iterator, bool > insert(const value_type &);
     template< typename P >
     std::pair< iterator, bool > insert(P &&);
@@ -57,10 +61,6 @@ namespace fesenko
     iterator insert(const_iterator, P &&);
     template< typename InputIterator >
     void insert(InputIterator, InputIterator);
-    iterator lower_bound(const key_type &);
-    const_iterator lower_bound(const key_type &) const;
-    iterator upper_bound(const key_type &);
-    const_iterator upper_bound(const key_type &) const;
     bool empty() const noexcept;
     void clear() noexcept;
     key_compare key_comp() const;
@@ -238,12 +238,50 @@ namespace fesenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename AVL< Key, Value, Compare >::const_iterator AVL< Key, Value, Compare >::upper_bound(const key_type &key) c>  {
+  typename AVL< Key, Value, Compare >::const_iterator AVL< Key, Value, Compare >::upper_bound(const key_type &key) const  {
     const_iterator cur = lower_bound(key);
     if (!comp_(key, cur->first)) {
       cur++;
     }
     return cur;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  std::pair< typename AVL< Key, Value, Compare >::iterator, bool > AVL< Key, Value, Compare >::insert(const value_type &value)  {
+    auto *newTree = new tree{value, nullptr, nullptr, nullptr};
+    if (empty()) {
+      root_ = newTree;
+      return {iterator(root_), true};
+    } else {
+      iterator cur = begin();
+      while (comp_(cur->first, value.first)) {
+        cur++;
+      }
+      if (!comp_(value.first, cur->first)) {
+        return {end(), false};
+      } else {
+        iterator prev = cur;
+        prev--;
+        if (cur->left == nullptr) {
+          cur->left = newTree;
+          newTree->parent = cur;
+        } else if (prev->right == nullptr) {
+          prev->right = newTree;
+          newTree->parent = prev;
+        } else if (cur->parent == prev) {
+          newTree->right = prev->right;
+          prev->right = newTree;
+          newTree->right->parent = newTree;
+          newTree->parent = prev;
+        } else if (cur->left = prev) {
+          newTree->parent = prev->parent;
+          prev->parent = newTree;
+          newTree->left = prev;
+          cur->left = newTree;
+        }
+        return {iterator(newTree), true};
+      }
+    }
   }
 
   template< typename Key, typename Value, typename Compare >
