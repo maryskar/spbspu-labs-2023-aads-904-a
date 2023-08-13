@@ -49,6 +49,7 @@ namespace timofeev
 
         void push_front(const T &value);
         void push_front(T &&value);
+        void pop_front();
 
 
     };
