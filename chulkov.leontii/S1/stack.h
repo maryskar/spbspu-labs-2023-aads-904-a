@@ -15,7 +15,7 @@ namespace chulkov {
       top_(nullptr)
     {}
 
-    T& top() {
+    T& drop() {
       if (empty()) {
         throw std::runtime_error("Stack is empty.");
       }
@@ -76,8 +76,8 @@ namespace chulkov {
       top_ = newNode;
     }
 
-    const T& top() const {
-      return top();
+    const T& drop() const {
+      return drop();
     }
 
     bool empty() const {
