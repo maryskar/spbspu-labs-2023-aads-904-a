@@ -18,9 +18,8 @@ namespace timofeev
 
         ForwardList(const ForwardList< T > &lhs);
         ForwardList(ForwardList< T > &&rhs) noexcept;
-        ForwardList< T >& operator=(const ForwardList< T >& rhs);
-        ForwardList< T >& operator=(ForwardList< T >&& rhs);
-
+        ForwardList< T > &operator=(const ForwardList< T > &rhs);
+        ForwardList< T > &operator=(ForwardList< T > &&rhs);
 
         bool empty() const;
         void clear();
@@ -35,10 +34,18 @@ namespace timofeev
         constIter cend() const noexcept;
         constIter cbefore_begin() const noexcept;
 
-        iter insert_after(const_iterator pos, const T& value);
-        iter insert_after(const_iterator pos, T&& value );
-        iter insert_after(const_iterator pos, size_t count, const T& value );
-        iter insert_after(const_iterator pos, iter first, iter last );
+        iter insert_after(constIter pos, const T &value);
+        iter insert_after(constIter pos, T &&value );
+        iter insert_after(constIter pos, size_t count, const T &value );
+        iter insert_after(constIter pos, iter first, iter last );
+
+        iter erase_after(constIter pos);
+        iter erase_after(constIter first, constIter last);
+
+        template< typename ...Args >
+        iterator emplace_after(const_iterator pos, Args &&...args);
+        template< typename ...Args >
+        void emplace_front(Args &&...args);
 
     };
 
