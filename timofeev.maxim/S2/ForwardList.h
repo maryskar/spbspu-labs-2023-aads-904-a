@@ -36,6 +36,7 @@ namespace timofeev
         iter insert_after(constIter pos, T &&value );
         iter insert_after(constIter pos, size_t count, const T &value );
         iter insert_after(constIter pos, iter first, iter last );
+        iter insert_after( const_iterator pos, std::initializer_list<T> ilist );
 
         iter erase_after(constIter pos);
         iter erase_after(constIter first, constIter last);
@@ -71,7 +72,7 @@ namespace timofeev
       size_(0)
     {}
 
-    template< typename T>
+    template< typename T >
     void ForwardList< T >::clear()
     {
         List< T > *node = head_;
@@ -84,14 +85,14 @@ namespace timofeev
         size_ = 0;
     }
 
-    template< typename T>
+    template< typename T >
     ForwardList< T >::~ForwardList():
     {
         clear();
         ::operator delete(head_);
     }
 
-    template< typename T>
+    template< typename T >
     size_t ForwardList< T >::size()
     {
         return size;
@@ -109,13 +110,13 @@ namespace timofeev
         size_++:
     }
 
-    template< typename T>
+    template< typename T >
     void ForwardList< T >::push_front(T &&value)
     {
         push_front(value);
     }
 
-    template< typename T>
+    template< typename T >
     void ForwardList< T >::pop_front()
     {
         if (!head_)
@@ -128,10 +129,56 @@ namespace timofeev
         size_--;
     }
 
-    template< typename T>
+    template< typename T >
     bool ForwardList< T >::empty() const
     {
         return head_ == nullptr;
     }
+/* iter insert_after(constIter pos, const T &value);
+        iter insert_after(constIter pos, T &&value );
+        iter insert_after(constIter pos, size_t count, const T &value );
+        iter insert_after(constIter pos, iter first, iter last );
+        iter insert_after( constIter pos, std::initializer_list<T> ilist )
+        */
+    template< typename T >
+    ForwardList< T >::iter ForwardList<T>::insert_after(int pos, T &&value)
+    {
+        List< T > *node = new List< T >();
+        node->data = value;
+        node->next = pos->next;
+        pos->next = node;
+        size_++;
+    }
+
+    template< typename  T >
+    ForwardList< T >::iter ForwardList<T>::insert_after(constIter pos, T &&value )
+    {
+        return insert_after(pos, value);
+    }
+
+    template< typename  T >
+    ForwardList< T >::iter ForwardList<T>::insert_after(constIter pos, size_t count, const T &value )
+    {
+        for (size_t i = 0; i < count; i++)
+        {
+            pos = insert_after(pos, value);
+            pos++;
+        }
+        return pos;
+    }
+
+    template< typename  T >
+    ForwardList< T >::iter ForwardList<T>::insert_after(constIter pos, iter first, iter last )
+    {
+        while (first != last)
+        {
+            pos = insert_after(pos, *first);
+            pos++;
+            first++;
+        }
+        return temp;
+    }
+
+
 }
 #endif
