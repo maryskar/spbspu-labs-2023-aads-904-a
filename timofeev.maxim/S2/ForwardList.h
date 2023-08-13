@@ -1,7 +1,7 @@
-#include <List.h>
-
 #ifndef SPBSPU_LABS_2023_AADS_904_A_FORWARDLIST_H
 #define SPBSPU_LABS_2023_AADS_904_A_FORWARDLIST_H
+#include <List.h>
+#include <cstddef>
 namespace timofeev
 {
     template< typename T>
@@ -58,13 +58,17 @@ namespace timofeev
         void remove(const T& value);
         void remove_if(T p);
 
+        size_t size() const noexcept;
+
     private:
         List< T > *head_;
+        size_t size_;
     };
 
     template< typename T>
     ForwardList< T >::ForwardList():
-      head_()
+      head_(nullptr),
+      size_(0)
     {}
 
     template< typename T>
@@ -77,6 +81,7 @@ namespace timofeev
             delete node;
             node = tmp;
         }
+        size_ = 0;
     }
 
     template< typename T>
@@ -84,6 +89,12 @@ namespace timofeev
     {
         clear();
         ::operator delete(head_);
+    }
+
+    template< typename T>
+    size_t ForwardList< T >::size()
+    {
+        return size;
     }
 
     template< typename T>
