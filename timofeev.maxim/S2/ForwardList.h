@@ -1,6 +1,4 @@
-//
-// Created by makst on 13.08.2023.
-//
+#include <List.h>
 
 #ifndef SPBSPU_LABS_2023_AADS_904_A_FORWARDLIST_H
 #define SPBSPU_LABS_2023_AADS_904_A_FORWARDLIST_H
@@ -56,7 +54,37 @@ namespace timofeev
         void swap(ForwardList< T >& other);
         void splice_after(constIter pos, ForwardList< T > &other);
         void splice_after(constIter pos, ForwardList< T > &&other);
+
+    private:
+        List< T > *head_;
     };
+
+    template< typename T>
+    ForwardList< T >::ForwardList():
+      head_()
+    {}
+
+    template< typename T>
+    void ForwardList< T >::clear()
+    {
+        List< T > *node = head_;
+        while(node != nullptr)
+        {
+            List< T > *tmp = node->next;
+            delete node;
+            node = tmp;
+        }
+    }
+
+    template< typename T>
+    ForwardList< T >::~ForwardList():
+    {
+        clear();
+        ::operator delete(head_);
+    }
+
+    template< typename T>
+
 
 }
 #endif
