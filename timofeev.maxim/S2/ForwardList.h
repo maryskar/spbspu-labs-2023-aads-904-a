@@ -16,6 +16,12 @@ namespace timofeev
         ForwardList();
         ~ForwardList();
 
+        ForwardList(const ForwardList< T > &lhs);
+        ForwardList(ForwardList< T > &&rhs) noexcept;
+        ForwardList< T >& operator=(const ForwardList< T >& rhs);
+        ForwardList< T >& operator=(ForwardList< T >&& rhs);
+
+
         bool empty() const;
         void clear();
 
@@ -31,5 +37,6 @@ namespace timofeev
 
 
     };
+
 }
 #endif
