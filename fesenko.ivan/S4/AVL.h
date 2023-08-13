@@ -73,6 +73,7 @@ namespace fesenko
     void rotateRight(tree *);
     void rotateLeftRight(tree *);
     void rotateRightLeft(tree *);
+    void balnce(tree *);
   };
 
   template< typename Key, typename Value, typename Compare >
@@ -283,6 +284,7 @@ namespace fesenko
           newTree->left = prev;
           cur->left = newTree;
         }
+        balance(newNode);
         return {iterator(newTree), true};
       }
     }
@@ -420,6 +422,35 @@ namespace fesenko
   {
     rotateRight(node->left);
     rotateLeft(node->parent);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  void AVL< Key, Value, Compare >::balance(tree *node)
+  {
+    while (node->parent) {
+      size_t left = checkHeight(node->left_);
+      size_t right = checkHeight(node->right_);
+      if (right - left == 2) {
+        auto subTree = node->right_;
+        auto subLeft = checkHeight(subTree->left_);
+        auto subRight = checkHeight(subTree->right_);
+        if (subLeft <= subRight) {
+          rotate_left(subTree);
+        } else {
+          rotate_RightLeft(subTree);
+        }
+      } else if (left - right == 2) {
+        auto subTree = node->left_;
+        auto subLeft = checkHeight(subTree->left_);
+        auto subRight = checkHeight(subTree->right_);
+        if (subRight <= subLeft) {
+          rotate_right(subTree);
+        } else {
+          rotate_LeftRight(subTree);
+        }
+      }
+      node = node->parent_;
+    }
   }
 }
 #endif
