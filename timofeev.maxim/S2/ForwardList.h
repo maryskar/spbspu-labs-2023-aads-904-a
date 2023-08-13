@@ -19,15 +19,15 @@ namespace timofeev
         bool empty() const;
         void clear();
 
-        iter before_begin();
-        iter begin();
-        iter end();
+        iter before_begin() noexcept;
+        iter begin() noexcept;
+        iter end() noexcept;
 
-        constIter begin();//
-        constIter cbegin();
-        constIter end();//
-        constIter cend();
-        constIter cbefore_begin();
+        constIter begin()  noexcept;//
+        constIter cbegin() const noexcept;
+        constIter end()  noexcept;//
+        constIter cend() const noexcept;
+        constIter cbefore_begin() const noexcept;
 
 
     };
