@@ -96,9 +96,38 @@ namespace timofeev
     {
         return size;
     }
+/*void push_front(const T &value);
+        void push_front(T &&value);
+        void pop_front();*/
+    template< typename T>
+    void ForwardList< T >::push_front(const T &value)
+    {
+        List< T > *node = new List< T >();
+        node->data = value;
+        node->next = head_;
+        head_ = node;
+        size_++:
+    }
 
     template< typename T>
+    void ForwardList< T >::push_front(T &&value)
+    {
+        push_front(value);
+    }
 
+    template< typename T>
+    void ForwardList< T >::pop_front()
+    {
+        if (!head_)
+        {
+            return;
+        }
+        List< T > *tmp = head_->next;
+        delete head_;
+        head_ = tmp;
+        size_--;
+    }
 
+    template< typename T>
 }
 #endif
