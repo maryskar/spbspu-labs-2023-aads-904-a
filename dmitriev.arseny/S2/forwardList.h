@@ -267,7 +267,8 @@ namespace dmitriev
 
     ~ForwardList()
     {
-      dmitriev::clear(m_beforeHead);
+      clear();
+      ::operator delete(reinterpret_cast< void* >(m_beforeHead), sizeof(list));
     }
 
     void pushFront(const T& data)

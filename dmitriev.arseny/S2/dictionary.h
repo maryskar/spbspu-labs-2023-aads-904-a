@@ -88,11 +88,11 @@ namespace dmitriev
 			return insert(std::make_pair(std::forward< Args >(args)...));
 		}
 
-		iterator eraseAfter(iterator pos)
+		iterator eraseAfter(constIterator pos)
 		{
 			m_fList.eraseAfter(pos);
 		}
-		iterator eraseAfter(iterator beforeFirst, iterator last)
+		iterator eraseAfter(constIterator beforeFirst, constIterator last)
 		{
 			return m_fList.eraseAfter(beforeFirst, last);
 		}
@@ -199,7 +199,7 @@ namespace dmitriev
 		{
 			return m_fList.isEmtpy();
 		}
-		bool isExist(iterator it)
+		bool isExist(constIterator it)
 		{
 			return it != end();
 		}
