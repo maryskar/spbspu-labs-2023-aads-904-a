@@ -56,9 +56,6 @@ namespace fesenko
     std::pair< iterator, bool > insert(const value_type &);
     template< typename P >
     std::pair< iterator, bool > insert(P &&);
-    iterator insert(const_iterator, const value_type &);
-    template< typename P >
-    iterator insert(const_iterator, P &&);
     template< typename InputIterator >
     void insert(InputIterator, InputIterator);
     bool empty() const noexcept;
@@ -281,6 +278,24 @@ namespace fesenko
         }
         return {iterator(newTree), true};
       }
+    }
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename P >
+  std::pair< typename AVL< Key, Value, Compare >::iterator, bool > AVL< Key, Value, Compare >::insert(P &&value)
+  {
+    static_assert(std::is_constructible< value_type, P && >::value, "Can`t construct value type");
+    const value_type temp(std::forward< P >(value));
+    return insert(temp);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename InputIterator >
+  void AVL< Key, Value, Compare >::insert(InputIterator first, InputIterator last)
+  {
+    for (; first != last; first++) {
+      insert(*first);
     }
   }
 
