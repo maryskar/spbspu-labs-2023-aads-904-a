@@ -3,7 +3,6 @@
 
 #include "dictionary.h"
 #include <iostream>
-#include <fstream>
 #include <sstream>
 #include <string>
 
@@ -31,6 +30,59 @@ namespace dmitriev
 		{}
 
 		~DictionaryOfDictionary() = default;
+
+		void doTheTasksFromInp(std::istream& input, std::ostream& out)
+		{
+			std::string line;
+			while (std::getline(input, line))
+			{
+				if (line.find_first_not_of(" \n") == std::string::npos)
+				{
+					continue;
+				}
+				std::stringstream ss(line);
+				std::string command = "";
+				ss >> command;
+
+				if (command == "print")
+				{
+					std::string datasetName = "";
+					ss >> datasetName;
+					print(out, datasetName);
+				}
+				else if(command == "complement")
+				{
+					std::string newDatasetName = "";
+					std::string lhs = "";
+					std::string rhs = "";
+
+					ss >> newDatasetName >> lhs >> rhs;
+					complement(newDatasetName, lhs, rhs);
+				}
+				else if (command == "intersect")
+				{
+					std::string newDatasetName = "";
+					std::string lhs = "";
+					std::string rhs = "";
+
+					ss >> newDatasetName >> lhs >> rhs;
+					intersect(newDatasetName, lhs, rhs);
+				}
+				else if (command == "union")
+				{
+					std::string newDatasetName = "";
+					std::string lhs = "";
+					std::string rhs = "";
+
+					ss >> newDatasetName >> lhs >> rhs;
+					unionDictionary(newDatasetName, lhs, rhs);
+				}
+				else
+				{
+					out << "<INVALID COMMAND>" << '\n';
+				}
+			}
+		}
 
 		void print(std::ostream& out)
 		{
@@ -111,23 +163,22 @@ namespace dmitriev
 	private:
 		Dictionary< std::string, basicDic > m_dicOfDic;
 
-		Dictionary< std::string, basicDic >&& dicInit(std::istream& input)
+		Dictionary< std::string, basicDic > dicInit(std::istream& input)
 		{
 			Dictionary< std::string, basicDic > newDD;
 
 			std::string line;
 			while (std::getline(input, line))
 			{
+				if (line.find_first_not_of(" \n") == std::string::npos)
+				{
+					continue;
+				}
 				std::stringstream ss(line);
 				std::string datasetName;
 				ss >> datasetName;
-				if (datasetName == "end")
-				{
-					break;
-				}
-
+	
 				basicDic datasetDic;
-
 				Key key;
 				Value value;
 				while (ss >> key >> value)

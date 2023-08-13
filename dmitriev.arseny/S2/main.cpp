@@ -1,52 +1,27 @@
 #include <iostream>
+#include <fstream>
 #include "forwardList.h"
-#include <forward_list>
+#include "dictionary.h"
+#include "dictionaryOfdictionary.h"
 
-int main()
+int main(int argc, char** argv)
 {
-  //std::forward_list< int > f3 = {1, 2, 3, 4};
-  //std::forward_list< int > f4 = {7, 8, 9};
+  if (argc != 2)
+  {
+    std::cout << "no file was found" << '\n';
+    return 1;
+  }
 
-  //f3.splice_after(f3.before_begin(), f4, f4.begin());
-  //for (std::forward_list< int >::iterator it = f3.begin(); it != f3.end(); it++)
-  //{
-  //  std::cout << *it << '\n';
-  //}
-  //std::cout << '\n';
+  std::ifstream file(argv[1]);
+  if (!file.is_open())
+  {
+    std::cout << "problems while opening file" << '\n';
+    return 1;
+  }
 
+  dmitriev::DictionaryOfDictionary< int, std::string > dd(file);
 
-  dmitriev::ForwardList< int > f;
-
-  f.pushFront(1);
-  f.pushFront(2);
-  f.pushFront(3);
-  f.pushFront(4);
-
-  dmitriev::ForwardList< int > x(f);
-
-  std::cout << (x != f) << '\n';
-
-  f.popFront();
-  f.pushFront(5);
-
-  std::cout << (x != f) << '\n';
-
-  //for (dmitriev::ForwardIterator< int > it = x.begin(); it != x.end(); it++)
-  //{
-  //  std::cout << *it << '\n';
-  //}
-
-  //std::cout << '\n';
-
-  //f.reverse();
-
-  //for (dmitriev::ForwardIterator< int > it = x.begin(); it != x.end(); it++)
-  //{
-  //  std::cout << *it << '\n';
-  //}
-
-  //std::cout << '\n';
-
+  dd.doTheTasksFromInp(std::cin, std::cout);
 
   return 0;
 }
