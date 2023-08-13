@@ -35,6 +35,10 @@ namespace timofeev
         constIter cend() const noexcept;
         constIter cbefore_begin() const noexcept;
 
+        iter insert_after(const_iterator pos, const T& value);
+        iter insert_after(const_iterator pos, T&& value );
+        iter insert_after(const_iterator pos, size_t count, const T& value );
+        iter insert_after(const_iterator pos, iter first, iter last );
 
     };
 
