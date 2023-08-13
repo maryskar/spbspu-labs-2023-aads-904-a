@@ -47,6 +47,10 @@ namespace timofeev
         template< typename ...Args >
         void emplace_front(Args &&...args);
 
+        void push_front(const T &value);
+        void push_front(T &&value);
+
+
     };
 
 }
