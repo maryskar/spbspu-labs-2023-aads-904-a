@@ -10,6 +10,14 @@ namespace timofeev
     class ForwardList
     {
     public:
+        using inter = ForwardListIter< T >;
+        using constIter = ForwardListConstIter< T >;
+
+        ForwardList();
+        ~ForwardList();
+
+        bool empty() const;
+
 
     };
 }
