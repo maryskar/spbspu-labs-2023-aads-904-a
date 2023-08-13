@@ -24,11 +24,17 @@ namespace dmitriev
 		{
 			insert(initList);
 		}
-		Dictionary(const Dictionary& other) = default;
-		Dictionary(Dictionary&& other) = default;
+		Dictionary(const Dictionary& other):
+			m_fList(other.m_fList),
+			m_comp(other.m_comp)
+		{}
+		Dictionary(Dictionary&& other) noexcept:
+			m_fList(other.m_fList),
+			m_comp(other.m_comp)
+		{}
 
 		Dictionary& operator=(const Dictionary& other) = default;
-		Dictionary& operator=(Dictionary && other) = default;
+		Dictionary& operator=(Dictionary&& other) = default;
 		Dictionary& operator=(std::initializer_list< fListPair > initList)
 		{
 			m_fList.clear();
@@ -46,6 +52,64 @@ namespace dmitriev
 		}
 
 		~Dictionary() = default;
+		
+		void unionDictionary(Dictionary lhs, Dictionary rhs)
+		{
+			clear();
+
+			for (iterator itLhs = lhs.begin(); isExist(itLhs); itLhs++)
+			{
+				insert({itLhs->first, itLhs->second});
+			}
+
+			for (iterator itRhs = rhs.begin(); isExist(itRhs); itRhs++)
+			{
+				if (!isExist(lhs.find(itRhs->first)))
+				{
+					insert({itRhs->first, itRhs->second});
+				}
+			}
+		}
+		void intersect(Dictionary lhs, Dictionary rhs)
+		{
+			clear();
+
+			for (iterator itLhs = lhs.begin(); isExist(itLhs); itLhs++)
+			{
+				if (isExist(rhs.find(itLhs->first)))
+				{
+					insert({itLhs->first, itLhs->second});
+				}
+			}
+
+			for (iterator itRhs = rhs.begin(); isExist(itRhs); itRhs++)
+			{
+				if (isExist(lhs.find(itRhs->first)))
+				{
+					insert({itRhs->first, itRhs->second});
+				}
+			}
+		}
+		void complement(Dictionary lhs, Dictionary rhs)
+		{
+			clear();
+
+			for (iterator itLhs = lhs.begin(); isExist(itLhs); itLhs++)
+			{
+				if (!isExist(rhs.find(itLhs->first)))
+				{
+					insert({itLhs->first, itLhs->second});
+				}
+			}
+
+			for (iterator itRhs = rhs.begin(); isExist(itRhs); itRhs++)
+			{
+				if (!isExist(lhs.find(itRhs->first)))
+				{
+					insert({itRhs->first, itRhs->second});
+				}
+			}
+		}
 
 		iterator insert(const fListPair& keyValue)
 		{
@@ -169,6 +233,11 @@ namespace dmitriev
 			return ++beforeFind(key);
 		}
 
+		constIterator constFind(const Key& key) const
+		{
+			return ++beforeFind(key);
+		}
+
 		iterator beforeBegin()
 		{
 			return m_fList.beforeBegin();
@@ -182,15 +251,15 @@ namespace dmitriev
 			return m_fList.end();
 		}
 
-		constIterator constBeforeBegin()
+		constIterator constBeforeBegin() const
 		{
 			return m_fList.constBeforeBegin();
 		}
-		constIterator constBegin()
+		constIterator constBegin() const
 		{
 			return m_fList.constBegin();
 		}
-		constIterator constEnd()
+		constIterator constEnd() const
 		{
 			return m_fList.constEnd();
 		}

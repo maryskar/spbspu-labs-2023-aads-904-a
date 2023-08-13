@@ -318,6 +318,7 @@ namespace dmitriev
     void clear()
     {
       dmitriev::clear(m_beforeHead->otherList);
+      m_beforeHead->otherList = nullptr;
     }
 
     iterator beforeBegin()
