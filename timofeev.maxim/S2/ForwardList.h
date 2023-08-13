@@ -17,6 +17,17 @@ namespace timofeev
         ~ForwardList();
 
         bool empty() const;
+        void clear();
+
+        iter before_begin();
+        iter begin();
+        iter end();
+
+        constIter begin();//
+        constIter cbegin();
+        constIter end();//
+        constIter cend();
+        constIter cbefore_begin();
 
 
     };
