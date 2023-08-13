@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+
 #include "infixexpressionconversions.h"
 #include "postfixvaluecalculation.h"
 #include "queue.h"
