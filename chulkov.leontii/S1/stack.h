@@ -1,6 +1,7 @@
 #ifndef STACK_H
 #define STACK_H
 #include <stdexcept>
+
 #include "list.h"
 
 namespace chulkov {
@@ -14,7 +15,7 @@ namespace chulkov {
       top_(nullptr)
     {}
 
-    T top() const {
+    T& top() {
       if (empty()) {
         throw std::runtime_error("Stack is empty.");
       }
@@ -36,8 +37,7 @@ namespace chulkov {
           }
           top_ = prev;
         }
-      }
-      catch (...) {
+      } catch (...) {
         clear();
         top_ = nullptr;
         throw;
@@ -76,15 +76,8 @@ namespace chulkov {
       top_ = newNode;
     }
 
-    T drop() {
-      if (top_ == nullptr) {
-        throw std::out_of_range("Stack is empty");
-      }
-      T value = top_->data;
-      List< T >* top = top_;
-      top_ = top_->next;
-      delete top;
-      return value;
+    const T& top() const {
+      return top();
     }
 
     bool empty() const {
@@ -93,7 +86,13 @@ namespace chulkov {
 
     void clear() {
       while (!empty()) {
-        drop();
+        if (top_ == nullptr) {
+          throw std::out_of_range("Stack is empty");
+        }
+        T value = top_->data;
+        List< T >* top = top_;
+        top_ = top_->next;
+        delete top;
       }
       top_ = nullptr;
     }

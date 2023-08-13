@@ -4,8 +4,7 @@
 #include "list.h"
 
 namespace chulkov {
-  template < typename T >
-  class Queue {
+  template < typename T > class Queue {
   private:
     List< T >* front_;
     List< T >* back_;
@@ -28,8 +27,7 @@ namespace chulkov {
             tp = tp->next;
           }
         }
-      }
-      catch (...) {
+      } catch (...) {
         clear();
         front_ = nullptr;
         back_ = nullptr;
@@ -45,7 +43,8 @@ namespace chulkov {
       other.back_ = nullptr;
     }
 
-    Queue& operator=(const Queue< T >& other) {
+    Queue& operator=(const Queue< T >& other)
+    {
       if (this != &other) {
         Queue temp(other);
         std::swap(front_, temp.front_);
@@ -54,7 +53,8 @@ namespace chulkov {
       return *this;
     }
 
-    Queue& operator=(Queue< T >&& other) {
+    Queue& operator=(Queue< T >&& other)
+    {
       if (this != &other) {
         clear();
         front_ = other.front_;
@@ -65,11 +65,13 @@ namespace chulkov {
       return *this;
     }
 
-    ~Queue() {
+    ~Queue()
+    {
       clear();
     }
 
-    void push(const T& rhs) {
+    void push(const T& rhs)
+    {
       List< T >* node = new List< T >{rhs, nullptr};
       if (empty()) {
         front_ = back_ = node;
@@ -79,35 +81,27 @@ namespace chulkov {
       }
     }
 
-    T drop() {
-      if (empty()) {
-        throw std::out_of_range("Queue is empty");
-      }
-      T value = front_->data;
-      List< T >* node = front_;
-      front_ = front_->next;
-      if (front_ == nullptr) {
-        back_ = nullptr;
-      }
-      delete node;
-      return value;
+    const T& drop() const {
+      return drop();
     }
 
-    const T& drop() const {
+     T& drop()  {
       if (empty()) {
         throw std::out_of_range("Queue is empty");
       }
       return front_->data;
     }
 
-    bool empty() const {
+    bool empty() const
+    {
       return front_ == nullptr;
     }
 
-    void clear() {
-      List<T>* node = front_;
+    void clear()
+    {
+      List< T >* node = front_;
       while (node != nullptr) {
-        List<T>* next = node->next;
+        List< T >* next = node->next;
         delete node;
         node = next;
       }
