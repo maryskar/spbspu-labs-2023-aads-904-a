@@ -5,9 +5,9 @@
 #include <cstddef>
 #include <memory>
 #include <stdexcept>
-#include <forward-list.hpp>
-#include <iterator.hpp>
-#include <const-iterator.hpp>
+#include "forward-list/forward-list.hpp"
+#include "forward-list/iterators/iterator.hpp"
+#include "forward-list/iterators/const-iterator.hpp"
 #include <comparator.hpp>
 
 namespace turkin
