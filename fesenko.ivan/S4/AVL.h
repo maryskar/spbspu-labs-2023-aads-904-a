@@ -2,6 +2,7 @@
 #define AVL_H
 #include <utility>
 #include <functional>
+#include <algorithm>
 #include "tree.h"
 #include "AVLIterator.h"
 #include "constAVLIterator.h"
@@ -66,6 +67,8 @@ namespace fesenko
     Compare comp_;
     void deleteNode(tree *) noexcept;
     tree *copy(const tree *);
+    size_t checkHeight(tree *);
+    size_t checkHeightSup(tree *, size_t);
   };
 
   template< typename Key, typename Value, typename Compare >
@@ -345,6 +348,24 @@ namespace fesenko
   typename AVL< Key, Value, Compare >::key_compare AVL< Key, Value, Compare >::key_comp() const
   {
     return comp_;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  size_t AVL< Key, Value, Compare >::checkHeight(tree *head)
+  {
+    return checkHeightSup(head, 0);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  size_t AVL< Key, Value, Compare >::checkHeightSup(tree *head, size_t height)
+  {
+    if (head) {
+      height++;
+      size_t leftHeight = checkHeightSup(head->left_, height);
+      size_t rightHeight = checkHeightSup(head->right_, height);
+      height = std::max(leftHeight, rightHeight);
+    }
+    return height;
   }
 }
 #endif
