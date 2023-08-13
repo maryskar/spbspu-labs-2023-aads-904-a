@@ -1,7 +1,6 @@
 #ifndef STACK_H
 #define STACK_H
 #include <stdexcept>
-
 #include "list.h"
 
 namespace chulkov {
@@ -97,13 +96,7 @@ namespace chulkov {
 
     void clear() {
       while (!empty()) {
-        if (top_ == nullptr) {
-          throw std::out_of_range("Stack is empty");
-        }
-        T value = top_->data;
-        List< T >* top = top_;
-        top_ = top_->next;
-        delete top;
+        drop();
       }
       top_ = nullptr;
     }

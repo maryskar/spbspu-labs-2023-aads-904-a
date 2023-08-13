@@ -81,15 +81,30 @@ namespace chulkov {
       }
     }
 
-    const T& drop() const {
-      return drop();
+    T drop() {
+      if (empty()) {
+        throw std::out_of_range("Queue is empty");
+      }
+      T value = front_->data;
+      List< T >* node = front_;
+      front_ = front_->next;
+      if (front_ == nullptr) {
+        back_ = nullptr;
+      }
+      delete node;
+      return value;
     }
 
-     T& drop()  {
+    T& top() {
       if (empty()) {
         throw std::out_of_range("Queue is empty");
       }
       return front_->data;
+    }
+
+    const T& top() const
+    {
+      return top();
     }
 
     bool empty() const
