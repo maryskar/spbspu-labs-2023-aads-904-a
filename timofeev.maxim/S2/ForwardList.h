@@ -55,6 +55,9 @@ namespace timofeev
         void splice_after(constIter pos, ForwardList< T > &other);
         void splice_after(constIter pos, ForwardList< T > &&other);
 
+        void remove(const T& value);
+        void remove_if(T p);
+
     private:
         List< T > *head_;
     };
