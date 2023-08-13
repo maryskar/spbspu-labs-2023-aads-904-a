@@ -129,5 +129,9 @@ namespace timofeev
     }
 
     template< typename T>
+    bool ForwardList< T >::empty() const
+    {
+        return head_ == nullptr;
+    }
 }
 #endif
