@@ -184,6 +184,7 @@ namespace timofeev
     template< typename  T >
     ForwardList< T >::iter ForwardList<T>::erase_after(constIter pos)
     {
+        //чек проверку
         if (next = nullptr)
         {
             return nullptr;
@@ -197,6 +198,16 @@ namespace timofeev
     }
 
     template< typename  T >
+    ForwardList< T >::iter ForwardList<T>::erase_after(constIter first, constIter last)
+    {
+        //вопрос сработает ли!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size_t count = last - first;
+        for (size_t i = 0; i < count; i++)
+        {
+            erase_after(first);
+        }
+        return last;
+    }
 
 }
 #endif
