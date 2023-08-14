@@ -3,9 +3,12 @@
 #include <cctype>
 #include <string>
 
-bool isOperation(const char& sym)
+namespace
 {
-  return (sym == '+' || sym == '-' || sym == '*' || sym == '/' || sym == '%' || sym == '(' || sym == ')');
+  bool isOperation(const char& sym)
+  {
+    return (sym == '+' || sym == '-' || sym == '*' || sym == '/' || sym == '%' || sym == '(' || sym == ')');
+  }
 }
 
 std::istream& potapova::inputInfixQueue(expr_queue& dest, std::istream& in)

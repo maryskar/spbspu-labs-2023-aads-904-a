@@ -6,7 +6,7 @@
 
 namespace potapova
 {
-  std::istream& inputInfixQueue(expr_queue& dest, std::istream& in = std::cin);
+  std::istream& inputInfixQueue(expr_queue& dest, std::istream& in);
 }
 
 #endif

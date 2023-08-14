@@ -2,38 +2,41 @@
 #include <stdexcept>
 #include "stack.h"
 
-size_t getPriority(const char operation)
+namespace
 {
-  if (operation == '*' || operation == '/' || operation == '%')
+  size_t getPriority(const char operation)
   {
-    return 1;
-  }
-  return 0;
-}
-
-bool isOpenBracket(const char value)
-{
-  return (value == '(');
-}
-
-bool isCloseBracket(const char value)
-{
-  return value == ')';
-}
-
-void moveExprInBracketsToPostfix(potapova::Stack< char >& operators_stack,
-                                 potapova::expr_queue& postfix_expr)
-{
-  while (!isOpenBracket(operators_stack.back()))
-  {
-    postfix_expr.push(potapova::ArithmExpMember(operators_stack.back()));
-    operators_stack.pop();
-    if (operators_stack.empty())
+    if (operation == '*' || operation == '/' || operation == '%')
     {
-      throw std::logic_error("Was found close bracket without open bracket");
+      return 1;
     }
+    return 0;
   }
-  operators_stack.pop();
+
+  bool isOpenBracket(const char value)
+  {
+    return (value == '(');
+  }
+
+  bool isCloseBracket(const char value)
+  {
+    return value == ')';
+  }
+
+  void moveExprInBracketsToPostfix(potapova::Stack< char >& operators_stack,
+      potapova::expr_queue& postfix_expr)
+  {
+    while (!isOpenBracket(operators_stack.back()))
+    {
+      postfix_expr.push(potapova::ArithmExpMember(operators_stack.back()));
+      operators_stack.pop();
+      if (operators_stack.empty())
+      {
+        throw std::logic_error("Was found close bracket without open bracket");
+      }
+    }
+    operators_stack.pop();
+  }
 }
 
 potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
