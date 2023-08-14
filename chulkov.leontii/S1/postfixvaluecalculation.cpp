@@ -37,18 +37,18 @@ namespace chulkov {
     Stack< long long > op;
 
     while (!postfix.empty()) {
-      std::string c = postfix.drop();
+      std::string c = postfix.top();
       if (std::isdigit(c[0])) {
         op.push(std::stoll(c));
       } else if (isOperator(c)) {
         if (op.empty()) {
           throw std::runtime_error("Error in expression");
         }
-        long long operand2 = op.drop();
+        long long operand2 = op.top();
         if (op.empty()) {
           throw std::runtime_error("Error in expression");
         }
-        long long operand1 = op.drop();
+        long long operand1 = op.top();
         long long result;
         switch (c[0]) {
         case '+':
@@ -93,7 +93,7 @@ namespace chulkov {
     if (op.empty()) {
       throw std::runtime_error("Error in expression");
     }
-    long long finalResult = op.drop();
+    long long finalResult = op.top();
     if (!op.empty()) {
       throw std::runtime_error("Error in expression");
     }
