@@ -315,10 +315,12 @@ namespace tarasenko
     }
     else if (count > size_)
     {
-      while (size_ < count)
+      auto temp(*this);
+      while (temp.size_ < count)
       {
-        pushBack(value);
+        temp.pushBack(value);
       }
+      swap(temp);
     }
   }
 
