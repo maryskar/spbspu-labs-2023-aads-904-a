@@ -48,13 +48,13 @@ namespace
 }
 namespace romanovich
 {
-  std::unordered_map< std::string, CommandHandler > createCommandDictionary(container_type &dictionary)
+  Dictionary< std::string, CommandHandler > createCommandDictionary(container_type &dictionary)
   {
     std::string printCall = "print";
     std::string complementCall = "complement";
     std::string intersectCall = "intersect";
     std::string unionCall = "union";
-    std::unordered_map< std::string, CommandHandler > commands;
+    Dictionary< std::string, CommandHandler > commands;
     using namespace std::placeholders;
     commands[printCall] = std::bind(printCommand, _1, _2, std::ref(dictionary));
     commands[complementCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), ComplementOperation());

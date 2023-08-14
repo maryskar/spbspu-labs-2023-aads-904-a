@@ -1,6 +1,5 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
-#include <unordered_map>
 #include <string>
 #include "dict.h"
 namespace romanovich
@@ -13,6 +12,6 @@ namespace romanovich
   void printCommand(std::istream &in, std::ostream &out, container_type &dictionary);
   void performCommand(std::istream &in, std::ostream &out, container_type &dictionary,
                         const std::function< void(dict_type &, const dict_type &, const dict_type &) > &operation);
-  std::unordered_map< std::string, CommandHandler > createCommandDictionary(container_type &dictionary);
+  Dictionary< std::string, CommandHandler > createCommandDictionary(container_type &dictionary);
 }
 #endif
