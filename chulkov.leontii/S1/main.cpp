@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
       result.push(calculatePostfix(post));
     }
     while (!result.empty()) {
-      std::cout << result.top();
+      std::cout << result.drop();
       if (!result.empty()) {
         std::cout << " ";
       }
