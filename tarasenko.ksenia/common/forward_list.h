@@ -290,17 +290,9 @@ namespace tarasenko
     else if (count > size_)
     {
       auto temp(*this);
-      try
+      while (temp.size_ < count)
       {
-        while (temp.size_ < count)
-        {
-          temp.pushBack(value);
-        }
-      }
-      catch (const std::bad_alloc& e)
-      {
-        temp.clear();
-        throw;
+        temp.pushBack(value);
       }
       swap(temp);
     }

@@ -51,8 +51,7 @@ namespace tarasenko
        }
        else
        {
-         output << outMessageInvalidCommand << "\n";
-         readTrash(input);
+         throw std::out_of_range("Invalid command");
        }
      }
      catch (const std::out_of_range& e)
