@@ -86,11 +86,9 @@ namespace chulkov {
       if (top_ == nullptr) {
         throw std::out_of_range("Stack is empty");
       }
-      T value = top_->data;
-      List< T >* top = top_;
-      top_ = top_->next;
-      delete top;
-      return value;
+      List< T >* newhead = top_->next;
+      delete top_;
+      top_ = newhead;
     }
 
     void clear() {
