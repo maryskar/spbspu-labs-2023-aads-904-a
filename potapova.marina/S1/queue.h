@@ -25,7 +25,8 @@ namespace potapova
       }
     }
 
-    Queue(const Queue& other): Queue()
+    Queue(const Queue& other):
+      Queue()
     {
       Node* curr_node_ptr = other.begin_ptr_;
       while (curr_node_ptr != end_ptr_)
@@ -35,7 +36,8 @@ namespace potapova
       }
     }
 
-    Queue(Queue&& other): Queue()
+    Queue(Queue&& other):
+      Queue()
     {
       begin_ptr_ = other.begin_ptr_;
       end_ptr_ = other.end_ptr_;
@@ -71,12 +73,12 @@ namespace potapova
       --size_;
     }
 
-    size_t size()
+    size_t size() const
     {
       return size_;
     }
 
-    bool empty()
+    bool empty() const
     {
       return size_ == 0;
     }

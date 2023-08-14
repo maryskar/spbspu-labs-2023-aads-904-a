@@ -26,8 +26,8 @@ namespace potapova
     Type type;
 
     ArithmExpMember();
-    ArithmExpMember(std::int64_t num);
-    ArithmExpMember(char operation);
+    explicit ArithmExpMember(std::int64_t num);
+    explicit ArithmExpMember(char operation);
   };
 }
 
