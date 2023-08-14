@@ -77,8 +77,8 @@ namespace romanovich
     ForwardList< value_type > data_;
     Compare comp_;
     Value &insertValue(const Key &key);
-    std::pair< iterator, iterator >
-    getFindRange(iterator start, const Key &targetKey, std::function< bool(Key, Key) > function);
+    std::pair< iterator, iterator > getFindRange(iterator start,
+                                                   const Key &targetKey, std::function< bool(Key, Key) > func);
     iterator push(const value_type &value);
   };
   template< typename Key, typename Value, typename Compare >
@@ -107,7 +107,7 @@ namespace romanovich
   std::pair<
       typename ForwardList< std::pair< const Key, Value > >::iterator,
       typename ForwardList< std::pair< const Key, Value > >::iterator
-  > Dictionary< Key, Value, Compare >::getFindRange(iterator start, const Key &targetKey, std::function< bool(Key, Key) > function)
+  > Dictionary< Key, Value, Compare >::getFindRange(iterator start, const Key &targetKey, std::function< bool(Key, Key) > func)
   {
     {
       auto prev = start;
@@ -115,7 +115,7 @@ namespace romanovich
       auto curr = start;
       while (curr != end())
       {
-        if (function(curr->first, targetKey))
+        if (func(curr->first, targetKey))
         {
           return {prev, curr};
         }
