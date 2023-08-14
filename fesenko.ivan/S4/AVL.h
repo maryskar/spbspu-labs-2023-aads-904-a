@@ -73,7 +73,7 @@ namespace fesenko
     void rotateRight(tree *);
     void rotateLeftRight(tree *);
     void rotateRightLeft(tree *);
-    void balnce(tree *);
+    void balance(tree *);
   };
 
   template< typename Key, typename Value, typename Compare >
@@ -284,7 +284,7 @@ namespace fesenko
           newTree->left = prev;
           cur->left = newTree;
         }
-        balance(newNode);
+        balance(newTree);
         return {iterator(newTree), true};
       }
     }
