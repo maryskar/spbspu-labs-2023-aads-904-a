@@ -78,7 +78,7 @@ namespace romanovich
     Compare comp_;
     Value &insertValue(const Key &key);
     std::pair< iterator, iterator > getFindRange(iterator start,
-                                                   const Key &targetKey, std::function< bool(Key, Key) > func);
+        const Key &targetKey, std::function< bool(Key, Key) > func);
     iterator push(const value_type &value);
   };
   template< typename Key, typename Value, typename Compare >
@@ -107,7 +107,8 @@ namespace romanovich
   std::pair<
       typename ForwardList< std::pair< const Key, Value > >::iterator,
       typename ForwardList< std::pair< const Key, Value > >::iterator
-  > Dictionary< Key, Value, Compare >::getFindRange(iterator start, const Key &targetKey, std::function< bool(Key, Key) > func)
+  > Dictionary< Key, Value, Compare >::getFindRange(iterator start,
+      const Key &targetKey, std::function< bool(Key, Key) > func)
   {
     {
       auto prev = start;
@@ -132,8 +133,8 @@ namespace romanovich
   {
   }
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::erase_after(const_iterator first,
-                                                                                                        const_iterator last)
+  typename Dictionary< Key, Value, Compare >::iterator
+      Dictionary< Key, Value, Compare >::erase_after(const_iterator first, const_iterator last)
   {
     return data_.erase_after(first, last);
   }
@@ -160,7 +161,8 @@ namespace romanovich
     return count;
   }
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::erase_after(const_iterator pos)
+  typename Dictionary< Key, Value, Compare >::iterator
+      Dictionary< Key, Value, Compare >::erase_after(const_iterator pos)
   {
     return data_.erase_after(pos);
   }
@@ -199,7 +201,8 @@ namespace romanovich
     return std::pair< const_iterator, const_iterator >(lower, upper);
   }
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::find(const Key &key) const
+  typename Dictionary< Key, Value, Compare >::const_iterator
+      Dictionary< Key, Value, Compare >::find(const Key &key) const
   {
     for (const_iterator it = cbegin(); it != cend(); ++it)
     {
@@ -212,19 +215,22 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   template< typename... Args >
-  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::emplace(const_iterator pos, Args &&... args)
+  typename Dictionary< Key, Value, Compare >::iterator
+      Dictionary< Key, Value, Compare >::emplace(const_iterator pos, Args &&... args)
   {
     iterator it = data_.insert_after(pos.getIterator(), std::forward< Args >(args)...);
     return it;
   }
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::lower_bound(const Key &key)
+  typename Dictionary< Key, Value, Compare >::iterator
+      Dictionary< Key, Value, Compare >::lower_bound(const Key &key)
   {
     auto res = getFindRange(data_.before_begin(), key, !comp_);
     return res.second;
   }
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::lower_bound(const Key &key) const
+  typename Dictionary< Key, Value, Compare >::const_iterator
+      Dictionary< Key, Value, Compare >::lower_bound(const Key &key) const
   {
     return lower_bound(key);
   }
@@ -262,13 +268,14 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   template< typename P >
-  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::insert(const_iterator pos, P &&value)
+  typename Dictionary< Key, Value, Compare >::iterator
+      Dictionary< Key, Value, Compare >::insert(const_iterator pos, P &&value)
   {
     return data_.insert_after(pos, std::forward< P >(value));
   }
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::insert(const_iterator pos,
-                                                                                                   const value_type &value)
+      const value_type &value)
   {
     return data_.insert_after(pos, value);
   }
@@ -318,7 +325,8 @@ namespace romanovich
     return it;
   }
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::upper_bound(const Key &key) const
+  typename Dictionary< Key, Value, Compare >::const_iterator
+      Dictionary< Key, Value, Compare >::upper_bound(const Key &key) const
   {
     return upper_bound(key);
   }
@@ -398,7 +406,8 @@ namespace romanovich
     return data_.begin();
   }
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::cbefore_begin() const noexcept
+  typename Dictionary< Key, Value, Compare >::const_iterator
+      Dictionary< Key, Value, Compare >::cbefore_begin() const noexcept
   {
     return data_.cbefore_begin();
   }
@@ -449,14 +458,16 @@ namespace romanovich
     return insertValue(std::forward< Key >(key));
   }
   template< typename Key, typename Value, typename Compare >
-  Dictionary< Key, Value, Compare >& Dictionary< Key, Value, Compare >::operator=(std::initializer_list< value_type > init)
+  Dictionary< Key, Value, Compare >&
+      Dictionary< Key, Value, Compare >::operator=(std::initializer_list< value_type > init)
   {
     data_.clear();
     insert(init);
     return *this;
   }
   template< typename Key, typename Value, typename Compare >
-  Dictionary< Key, Value, Compare >& Dictionary< Key, Value, Compare >::operator=(Dictionary< Key, Value, Compare > &&other) noexcept
+  Dictionary< Key, Value, Compare >&
+      Dictionary< Key, Value, Compare >::operator=(Dictionary< Key, Value, Compare > &&other) noexcept
   {
     if (this != &other)
     {
@@ -466,7 +477,8 @@ namespace romanovich
     return *this;
   }
   template< typename Key, typename Value, typename Compare >
-  Dictionary< Key, Value, Compare >& Dictionary< Key, Value, Compare >::operator=(const Dictionary< Key, Value, Compare > &other)
+  Dictionary< Key, Value, Compare >&
+      Dictionary< Key, Value, Compare >::operator=(const Dictionary< Key, Value, Compare > &other)
   {
     if (this != std::addressof(other))
     {

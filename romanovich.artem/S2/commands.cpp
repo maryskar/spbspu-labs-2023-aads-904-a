@@ -63,9 +63,9 @@ namespace romanovich
     return commands;
   }
   void performCommand(std::istream &in,
-                        std::ostream &out,
-                        container_type &dictionary,
-                        const std::function< void(dict_type &, const dict_type &, const dict_type &) > &operation)
+      std::ostream &out,
+      container_type &dictionary,
+      const std::function< void(dict_type &, const dict_type &, const dict_type &) > &operation)
   {
     std::string newDictName, dictName1, dictName2;
     in >> newDictName >> dictName1 >> dictName2;
