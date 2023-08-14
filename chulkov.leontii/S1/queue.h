@@ -95,16 +95,16 @@ namespace chulkov {
       delete temp;
     }
 
-    T& top() {
+    T& getTop() {
       if (empty()) {
         throw std::out_of_range("Queue is empty");
       }
       return front_->data;
     }
 
-    const T& top() const
+    const T& getTop() const
     {
-      return top();
+      return getTop();
     }
 
     bool empty() const
