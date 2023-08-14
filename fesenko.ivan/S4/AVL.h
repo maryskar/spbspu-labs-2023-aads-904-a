@@ -304,7 +304,56 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   typename AVL< Key, Value, Compare >::iterator AVL< Key, Value, Compare >::erase(const_iterator pos)
   {
-    
+    auto del = pos.node_;
+    tree *res;
+    if (!del->left) {
+      del->right->parent = del->parent;
+      if (del->parent) {
+        if (del->parent->left == del) {
+          del->parent->left = del->right;
+        } else {
+          del->parent->right = del->right;
+        }
+      }
+      res = del->right;
+    } else if (!del->right) {
+      del->left->parent = del->parent;
+      if (del->parent) {
+        if (del->parent->left == del) {
+          del->parent->left = del->left;
+        } else {
+          del->parent->right = del->left;
+        }
+      }
+      res = del->left;
+    } else {
+      auto sup = pos;
+      sup++;
+      auto node = sup.node_;
+      if (node->parent != del) {
+        node->parent->left = nullptr;
+      } else {
+        del->right = nullptr;
+      }
+      node->parent = del->parent;
+      node->left = del->left;
+      node->right = del->right;
+      node->left->parent = node;
+      if (node->right) {
+        node->right->parent = node;
+      }
+      if (del->parent) {
+        if (del->parent->left == del) {
+          del->parent->left = node;
+        } else {
+          del->parent->right = node;
+        }
+      }
+      res = node;
+    }
+    delete del;
+    balance(res);
+    return iterator(res);
   }
 
   template< typename Key, typename Value, typename Compare >
