@@ -59,6 +59,7 @@ namespace fesenko
     std::pair< iterator, bool > insert(P &&);
     template< typename InputIterator >
     void insert(InputIterator, InputIterator);
+    iterator erase(const_iterator);
     bool empty() const noexcept;
     void clear() noexcept;
     key_compare key_comp() const;
@@ -146,11 +147,7 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   typename AVL< Key, Value, Compare >::iterator AVL< Key, Value, Compare >::end() noexcept
   {
-    tree *ptr = root_;
-    while (ptr->right) {
-      ptr = ptr->right;
-    }
-    return iterator(ptr);
+    return iterator(nullptr);
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -162,11 +159,7 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   typename AVL< Key, Value, Compare >::const_iterator AVL< Key, Value, Compare >::cend() const noexcept
   {
-    tree *ptr = root_;
-    while (ptr->right) {
-      ptr = ptr->right;
-    }
-    return const_iterator(ptr);
+    return const_iterator(nullptr);
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -306,6 +299,12 @@ namespace fesenko
     for (; first != last; first++) {
       insert(*first);
     }
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename AVL< Key, Value, Compare >::iterator AVL< Key, Value, Compare >::erase(const_iterator pos)
+  {
+    
   }
 
   template< typename Key, typename Value, typename Compare >
