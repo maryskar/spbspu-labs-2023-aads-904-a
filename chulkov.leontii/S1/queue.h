@@ -81,7 +81,7 @@ namespace chulkov {
       }
     }
 
-    T drop() {
+    void drop() {
       if (empty()) {
         throw std::out_of_range("Queue is empty");
       }

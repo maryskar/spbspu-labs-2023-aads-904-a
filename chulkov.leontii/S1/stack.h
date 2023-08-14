@@ -83,7 +83,7 @@ namespace chulkov {
       return top_ == nullptr;
     }
 
-    T drop () {
+    void drop () {
       if (top_ == nullptr) {
         throw std::out_of_range("Stack is empty");
       }
