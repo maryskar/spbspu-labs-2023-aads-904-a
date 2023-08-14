@@ -94,10 +94,7 @@ namespace chulkov {
 
     void clear() {
       while (!empty()) {
-        T value = top_->data;
-        List< T >* top = top_;
-        top_ = top_->next;
-        delete top;
+        drop();
       }
       top_ = nullptr;
     }
