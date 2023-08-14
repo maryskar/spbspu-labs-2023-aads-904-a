@@ -37,7 +37,7 @@ namespace chulkov {
     Stack< long long > op;
 
     while (!postfix.empty()) {
-      std::string c = postfix.top();
+      std::string c = postfix.getTop();
       if (std::isdigit(c[0])) {
         op.push(std::stoll(c));
       } else if (isOperator(c)) {
