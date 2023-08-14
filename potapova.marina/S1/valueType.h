@@ -19,14 +19,14 @@ namespace potapova
 
     union
     {
-      std::int64_t num;
+      long long num;
       char operation;
     };
 
     Type type;
 
     ArithmExpMember();
-    explicit ArithmExpMember(std::int64_t num);
+    explicit ArithmExpMember(long long num);
     explicit ArithmExpMember(char operation);
   };
 }

@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 {
   std::istream* in_ptr = nullptr;
   potapova::expr_queue infix_expr;
-  potapova::Stack< std::int64_t > answer_stack;
+  potapova::Stack< long long > answer_stack;
   try
   {
     in_ptr = potapova::getInputStream(argc, argv);

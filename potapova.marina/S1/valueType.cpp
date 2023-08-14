@@ -7,7 +7,7 @@ potapova::ArithmExpMember::ArithmExpMember():
 
 }
 
-potapova::ArithmExpMember::ArithmExpMember(std::int64_t num):
+potapova::ArithmExpMember::ArithmExpMember(long long num):
   num(num),
   type(Type::Num)
 {

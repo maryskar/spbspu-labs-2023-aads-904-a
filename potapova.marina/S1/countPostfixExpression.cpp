@@ -8,34 +8,34 @@
 
 namespace
 {
-  constexpr std::int64_t MAX_INT = std::numeric_limits< std::int64_t >::max();
-  constexpr std::int64_t MIN_INT = std::numeric_limits< std::int64_t >::min();
+  constexpr long long MAX_INT = std::numeric_limits< long long >::max();
+  constexpr long long MIN_INT = std::numeric_limits< long long >::min();
 
-  bool isOverflowPlus(std::int64_t operand1, std::int64_t operand2)
+  bool isOverflowPlus(long long operand1, long long operand2)
   {
     return operand1 > 0 && operand2 > 0 && operand2 > (MAX_INT - operand1);
   }
 
-  bool isOverflowMinus(std::int64_t operand1, std::int64_t operand2)
+  bool isOverflowMinus(long long operand1, long long operand2)
   {
     return (operand1 < 0 && operand2 > 0 && operand1 < (MIN_INT + operand2));
   }
 
-  bool isOverflowMultiply(std::int64_t operand1, std::int64_t operand2)
+  bool isOverflowMultiply(long long operand1, long long operand2)
   {
     return (operand1 > MAX_INT / operand2) || (operand2 > MAX_INT / operand1);
   }
 
-  bool isOverflowDivision(std::int64_t operand1, std::int64_t operand2)
+  bool isOverflowDivision(long long operand1, long long operand2)
   {
     return (operand1 < MIN_INT / operand2) && ((operand1 > 0 && operand2 < 0) || (operand1 < 0 && operand2 > 0));
   }
 
 }
 
-std::int64_t potapova::countPostfixExpression(expr_queue& postfix_queue)
+long long potapova::countPostfixExpression(expr_queue& postfix_queue)
 {
-  Stack< std::int64_t > operands_stack;
+  Stack< long long > operands_stack;
   while (!postfix_queue.empty())
   {
     if (postfix_queue.front().type == ArithmExpMember::Type::Num)
@@ -45,9 +45,9 @@ std::int64_t potapova::countPostfixExpression(expr_queue& postfix_queue)
     }
     else
     {
-      std::int64_t operand2 = operands_stack.back();
+      long long operand2 = operands_stack.back();
       operands_stack.pop();
-      std::int64_t operand1 = operands_stack.back();
+      long long operand1 = operands_stack.back();
       operands_stack.pop();
       if (postfix_queue.front().operation == '+' && operand2 < 0)
       {
