@@ -1,5 +1,4 @@
 #include "infixexpressionconversions.h"
-#include <string>
 #include "isoperator.h"
 #include "queue.h"
 #include "stack.h"

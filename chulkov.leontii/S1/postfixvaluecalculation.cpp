@@ -1,5 +1,4 @@
 #include "postfixvaluecalculation.h"
-#include <cmath>
 #include <limits>
 #include "isoperator.h"
 #include "stack.h"
