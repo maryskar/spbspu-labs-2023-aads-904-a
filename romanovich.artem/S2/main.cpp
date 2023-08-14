@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     }
     catch (...)
     {
-      printInvalidCommand(std::cout) << '\n';
+      romanovich::printInvalidCommand(std::cout) << '\n';
       std::cin.ignore(maxLLSize, '\n');
     }
   }

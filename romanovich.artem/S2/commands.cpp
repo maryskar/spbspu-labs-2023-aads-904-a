@@ -1,4 +1,5 @@
 #include "commands.h"
+#include <istream>
 #include "printmessages.h"
 namespace
 {
