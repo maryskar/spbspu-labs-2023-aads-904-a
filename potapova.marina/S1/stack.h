@@ -83,6 +83,11 @@ namespace potapova
       return end_ptr_->data;
     }
 
+    const T& back() const
+    {
+      return end_ptr_->data;
+    }
+
     void pop()
     {
       Node* prev_end_ptr = end_ptr_;

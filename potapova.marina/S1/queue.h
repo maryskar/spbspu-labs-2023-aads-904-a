@@ -65,6 +65,11 @@ namespace potapova
       return begin_ptr_->data;
     }
 
+    const T& front() const
+    {
+      return begin_ptr_->data;
+    }
+
     void pop()
     {
       Node* prev_begin_ptr = begin_ptr_;
