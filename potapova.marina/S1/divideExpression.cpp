@@ -1,18 +1,11 @@
 #include "divideExpression.h"
 #include <stdexcept>
 #include "stack.h"
+#include "valueType.h"
+#include "getPriority.h"
 
 namespace
 {
-  size_t getPriority(const char operation)
-  {
-    if (operation == '*' || operation == '/' || operation == '%')
-    {
-      return 1;
-    }
-    return 0;
-  }
-
   bool isOpenBracket(const char value)
   {
     return (value == '(');
@@ -70,7 +63,7 @@ potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
     }
     else if (!operators_stack.empty() && getPriority(cur_member.operation) <= getPriority(operators_stack.back()))
     {
-      postfix_expr.push(operators_stack.back());
+      postfix_expr.push(ArithmExpMember(operators_stack.back()));
       operators_stack.pop();
       operators_stack.push(cur_member.operation);
     }
@@ -86,7 +79,7 @@ potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
   }
   while (!operators_stack.empty())
   {
-    postfix_expr.push(operators_stack.back());
+    postfix_expr.push(ArithmExpMember(operators_stack.back()));
     operators_stack.pop();
   }
   if (!operators_stack.empty())
