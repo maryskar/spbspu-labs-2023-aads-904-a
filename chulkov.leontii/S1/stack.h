@@ -1,5 +1,6 @@
 #ifndef STACK_H
 #define STACK_H
+#include <stdexcept>
 #include "list.h"
 
 namespace chulkov {
@@ -93,7 +94,10 @@ namespace chulkov {
 
     void clear() {
       while (!empty()) {
-        drop();
+        T value = top_->data;
+        List< T >* top = top_;
+        top_ = top_->next;
+        delete top;
       }
       top_ = nullptr;
     }
