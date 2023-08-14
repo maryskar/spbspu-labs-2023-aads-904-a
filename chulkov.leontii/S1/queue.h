@@ -85,14 +85,14 @@ namespace chulkov {
       if (empty()) {
         throw std::out_of_range("Queue is empty");
       }
-      T value = front_->data;
-      List< T >* node = front_;
-      front_ = front_->next;
-      if (front_ == nullptr) {
+      List< T >* temp = front_;
+      if (front_ == back_) {
         back_ = nullptr;
+        front_ = nullptr;
+      } else {
+        front_ = front_->next;
       }
-      delete node;
-      return value;
+      delete temp;
     }
 
     T& top() {
