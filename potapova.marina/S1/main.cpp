@@ -9,14 +9,16 @@
 #include "getInputStream.h"
 #include "countPostfixExpression.h"
 
+using namespace potapova;
+
 int main(int argc, char* argv[])
 {
   std::istream* in_ptr = nullptr;
-  potapova::expr_queue infix_expr;
-  potapova::Stack< long long > answer_stack;
+  expr_queue infix_expr;
+  Stack< long long > answer_stack;
   try
   {
-    in_ptr = potapova::getInputStream(argc, argv);
+    in_ptr = getInputStream(argc, argv);
   }
   catch (const std::exception& e)
   {
@@ -33,10 +35,10 @@ int main(int argc, char* argv[])
     }
     try
     {
-      potapova::expr_queue postfix_queue(potapova::composePostfixQueue(infix_expr));
+      expr_queue postfix_queue(composePostfixQueue(infix_expr));
       if (!postfix_queue.empty())
       {
-        answer_stack.push(potapova::countPostfixExpression(postfix_queue));
+        answer_stack.push(countPostfixExpression(postfix_queue));
       }
     }
     catch (const std::exception& e)
