@@ -76,5 +76,62 @@ namespace aksenov {
     delete todel;
     size_--;
   }
+
+  template< typename T >
+  Stack< T >::Stack(const Stack< T > &other)
+  {
+    top_ = nullptr;
+    aksenov::List< T > *cur = other.top_;
+    while (cur)
+    {
+      push(cur->data);
+      cur = cur->next;
+    }
+  }
+
+  template < typename T >
+  Stack< T > &Stack< T >::operator=(const Stack< T > &other)
+  {
+    if (this == other)
+    {
+      return *this;
+    }
+    while (!isEmpty())
+    {
+      pop();
+    }
+    aksenov::List< T > cur = other.top_;
+    while (cur)
+    {
+      push(cur->data);
+      cur = cur.next;
+    }
+    return *this;
+  }
+
+  template < typename T >
+  Stack< T >::Stack(Stack< T > &&other) noexcept
+  {
+    top_ = other.top_;
+    other.top_ = nullptr;
+    other.size_ = 0;
+  }
+
+  template < typename T >
+  Stack< T > &Stack< T >::operator=(Stack< T > &&other) noexcept
+  {
+    if (this == &other)
+    {
+      return *this;
+    }
+    while (!isEmpty())
+    {
+      pop();
+    }
+    top_ = other.top_;
+    other.top_ = nullptr;
+    other.size_ = 0;
+    return *this;
+  }
 }
 #endif
