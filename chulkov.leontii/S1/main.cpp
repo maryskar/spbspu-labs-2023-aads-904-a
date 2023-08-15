@@ -31,6 +31,7 @@ int main(int argc, char* argv[]) {
     }
     while (!result.empty()) {
       std::cout << result.top();
+      result.drop();
       if (!result.empty()) {
         std::cout << " ";
       }
