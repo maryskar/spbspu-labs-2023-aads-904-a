@@ -18,6 +18,7 @@ namespace chulkov {
       if (empty()) {
         throw std::runtime_error("Stack is empty.");
       }
+      drop();
       return top_->data;
     }
 

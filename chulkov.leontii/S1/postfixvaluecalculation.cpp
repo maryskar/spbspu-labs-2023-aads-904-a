@@ -45,12 +45,10 @@ namespace chulkov {
           throw std::runtime_error("Error in expression");
         }
         long long operand2 = op.top();
-        op.drop();
         if (op.empty()) {
           throw std::runtime_error("Error in expression");
         }
         long long operand1 = op.top();
-        op.drop();
         long long result;
         switch (c[0]) {
         case '+':

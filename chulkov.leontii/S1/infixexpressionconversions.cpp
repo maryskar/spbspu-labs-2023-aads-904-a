@@ -32,7 +32,6 @@ namespace chulkov {
         }
         while (!oper.empty() && oper.top() != "(" && getPriority(oper.top()) >= getPriority(std::string(1, c))) {
           post.push(oper.top());
-          oper.drop();
         }
         oper.push(std::string(1, c));
       } else if (c == '(') {
@@ -48,7 +47,6 @@ namespace chulkov {
         }
         while (!oper.empty() && oper.top() != "(") {
           post.push(oper.top());
-          oper.drop();
         }
         if (!oper.empty() && oper.top() == "(") {
           oper.drop();
