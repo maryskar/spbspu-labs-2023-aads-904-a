@@ -34,9 +34,13 @@ void sortData(std::vector< T > &data, const std::string &sortOrder)
   {
     quickSort(data.begin(), data.size(), std::less<>());
   }
-  else
+  else if (sortOrder == "descending")
   {
     quickSort(data.begin(), data.size(), std::greater<>());
+  }
+  else
+  {
+    throw std::invalid_argument("Invalid sort order.");
   }
 }
 template< typename T >
@@ -55,46 +59,46 @@ int main(int argc, char *argv[])
     std::cerr << "Invalid arguments number.\n";
     return 1;
   }
+  size_t size = std::strtoull(argv[3], nullptr, 10);
+  if (size == 0)
+  {
+    std::cerr << "Empty sequence.";
+    return 2;
+  }
   std::string sortOrder = argv[1];
   std::string dataType = argv[2];
-  size_t size = std::strtoull(argv[3], nullptr, 10);
   if (dataType == "ints")
   {
     std::vector< int > dataInt = generateRandomData(size, 1, 10);
-    sortData(dataInt, sortOrder);
+    try
+    {
+      sortData(dataInt, sortOrder);
+    }
+    catch (...)
+    {
+      std::cerr << "Error while sorting ints.";
+      return 2;
+    }
     printData(dataInt);
   }
-  if (dataType == "floats")
+  else if (dataType == "floats")
   {
     std::vector< float > dataFloat = generateRandomData(size, 1.0f, 10.0f);
-    sortData(dataFloat, sortOrder);
+    try
+    {
+      sortData(dataFloat, sortOrder);
+    }
+    catch (...)
+    {
+      std::cerr << "Error while sorting ints.";
+      return 2;
+    }
     printData(dataFloat);
+  }
+  else
+  {
+    std::cerr << "Invalid data type.";
+    return 2;
   }
   return 0;
 }
-/*
- *
-void sortAscendingInts(size_t size, int min, int max, const std::string &sortOrder)
-{
-  std::vector< int > dataInt = generateRandomData(size, min, max);
-  sortData(dataInt, sortOrder);
-  printData(dataInt);
-}
-void sortAscendingFloats(size_t size, float min, float max, const std::string &sortOrder)
-{
-  std::vector< float > dataFloat = generateRandomData(size, min, max);
-  sortData(dataFloat, sortOrder);
-  printData(dataFloat);
-}
-void sortDescendingInts(size_t size, int min, int max, const std::string &sortOrder)
-{
-  std::vector< int > dataInt = generateRandomData(size, min, max);
-  sortData(dataInt, sortOrder);
-  printData(dataInt);
-}
-void sortDescendingFloats(size_t size, float min, float max, const std::string &sortOrder)
-{
-  std::vector< float > dataFloat = generateRandomData(size, min, max);
-  sortData(dataFloat, sortOrder);
-  printData(dataFloat);
-}*/
