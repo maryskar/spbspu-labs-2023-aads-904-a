@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     sortData(dataInt, sortOrder);
     printData(dataInt);
   }
-  else if (dataType == "floats")
+  if (dataType == "floats")
   {
     std::vector< float > dataFloat = generateRandomData(size, 1.0f, 10.0f);
     sortData(dataFloat, sortOrder);
@@ -72,3 +72,29 @@ int main(int argc, char *argv[])
   }
   return 0;
 }
+/*
+ *
+void sortAscendingInts(size_t size, int min, int max, const std::string &sortOrder)
+{
+  std::vector< int > dataInt = generateRandomData(size, min, max);
+  sortData(dataInt, sortOrder);
+  printData(dataInt);
+}
+void sortAscendingFloats(size_t size, float min, float max, const std::string &sortOrder)
+{
+  std::vector< float > dataFloat = generateRandomData(size, min, max);
+  sortData(dataFloat, sortOrder);
+  printData(dataFloat);
+}
+void sortDescendingInts(size_t size, int min, int max, const std::string &sortOrder)
+{
+  std::vector< int > dataInt = generateRandomData(size, min, max);
+  sortData(dataInt, sortOrder);
+  printData(dataInt);
+}
+void sortDescendingFloats(size_t size, float min, float max, const std::string &sortOrder)
+{
+  std::vector< float > dataFloat = generateRandomData(size, min, max);
+  sortData(dataFloat, sortOrder);
+  printData(dataFloat);
+}*/
