@@ -38,6 +38,7 @@ namespace chulkov {
 
     while (!postfix.empty()) {
       std::string c = postfix.getTop();
+      postfix.drop();
       if (std::isdigit(c[0])) {
         op.push(std::stoll(c));
       } else if (isOperator(c)) {
