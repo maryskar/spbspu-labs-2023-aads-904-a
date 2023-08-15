@@ -24,10 +24,32 @@ namespace kryuchkova
       ForwardIterator(const this_t&) = default;
       ~ForwardIterator() = default;
 
-      ForwardIterator& operator++();
-      ForwardIterator operator++(int);
-      bool operator!=(const this_t&) const;
-      bool operator==(const this_t&) const;
+      this_t& operator=(const this_t&) = default;
+      this_t& operator++()
+      {
+        if (node_ != nullptr)
+        {
+          node_ = node_->next;
+        }
+        return *this;
+      }
+      this_t operator++(int)
+      {
+        if (node_ != nullptr)
+        {
+          this_t temp(*this);
+          ++(*this);
+          return temp;
+        }
+      }
+      bool operator!=(const this_t& rhs) const
+      {
+        return !(node_ == rhs.node_);
+      }
+      bool operator==(const this_t& rhs) const
+      {
+        return node_ == rhs.node_;
+      }
 
     private:
       Node< T > * node_;
