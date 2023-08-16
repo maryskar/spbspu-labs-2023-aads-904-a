@@ -1,6 +1,6 @@
 #include <iostream>
 #include <algorithm>
-#include <vector>
+#include "sorttest.h"
 int main(int argc, char *argv[])
 {
   if (argc != 4)
@@ -18,21 +18,19 @@ int main(int argc, char *argv[])
   std::string dataType = argv[2];
   try
   {
-    if (dataType == "ints")
-    {
-      std::vector< int > dataInt = generateRandomData(size, 1, 10);
-      sortData(dataInt, sortOrder);
-    }
-    else if (dataType == "floats")
-    {
-      std::vector< float > dataFloat = generateRandomData(size, 1.0f, 10.0f);
-      sortData(dataFloat, sortOrder);
-    }
-    else
-    {
-      std::cerr << "Invalid data type.";
-      return 2;
-    }
+//    if (dataType == "ints")
+//    {
+      runTest(size);
+//    }
+//    else if (dataType == "floats")
+//    {
+//      //runTest< float >(size);
+//    }
+//    else
+//    {
+//      std::cerr << "Invalid data type.";
+//      return 2;
+//    }
   }
   catch (...)
   {
