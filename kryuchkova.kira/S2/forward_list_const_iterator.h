@@ -8,63 +8,79 @@ namespace kryuchkova
   template < typename T >
   class ForwardList;
   template < typename T >
-  class ForwardIteraator;
+  class ForwardIterator;
 
   template < typename T >
   class ConstForwardIterator: public std::iterator< std::forward_iterator_tag, const T >
   {
-    public:
-      using this_t = ConstForwardIterator< T >;
-      friend class ForwardList< T >;
-      friend class ForwardIterator< T >;
+    friend class ForwardList< T >;
+    friend class ForwardIterator< T >;
 
-      ConstForwardIterator():
-        node_(nullptr)
-      {}
-      explicit ConstForwardIterator(Node< T > * node):
-        node_(node)
-      {}
-      ConstForwardIterator(const ForwardIteraator< T >& temp):
-        node_(temp.node_)
-      {}
-      ConstForwardIterator(const this_t&) = default;
-      ~ConstForwardIterator() = default;
+  public:
+    using this_t = ConstForwardIterator< T >;
 
-      this_t& operator=(const this_t&) = default;
-      this_t& operator=(const ForwardIterator< T >& temp)
-      {
-        node_ = temp.node_;
-        return *this;
-      }
-      this_t& operator++()
-      {
-        if (node_ != nullptr)
-        {
-          node_ = node_->next;
-        }
-        return *this;
-      }
-      this_t operator++(int)
-      {
-        if (node_ != nullptr)
-        {
-          this_t temp(*this);
-          ++(*this);
-          return temp;
-        }
-      }
-      bool operator!=(const this_t& rhs) const
-      {
-        return !(node_ == rhs.node_);
-      }
-      bool operator==(const this_t& rhs) const
-      {
-        return node_ == rhs.node_;
-      }
+    ConstForwardIterator();
+    ConstForwardIterator(const ForwardIteraator< T > rhs);
+    ~ConstForwardIterator() = default;
 
-    private:
-      Node< T > * node_;
+    this_t& operator=(const this_t&) = default;
+    this_t& operator++();
+    this_t operator++(int);
+    bool operator!=(const this_t& rhs) const;
+    bool operator==(const this_t& rhs) const;
+
+  private:
+    Node< T > * node_;
+    explicit ConstForwardIterator(Node< T > * node);
   };
+
+  template < typename T >
+  ConstForwardIterator< T > & ConstForwardIterator< T >::operator++()
+  {
+    if (node_ != nullptr)
+    {
+      node_ = node_->next;
+    }
+    return *this;
+  }
+
+  template < typename T >
+  ConstForwardIterator< T > ConstForwardIterator< T >::operator++(int)
+  {
+    if (node_ != nullptr)
+    {
+      this_t temp(*this);
+      ++(*this);
+      return temp;
+    }
+  }
+
+  template < typename T >
+  bool ConstForwardIterator< T >::operator!=(const ConstForwardIterator< T > & rhs) const
+  {
+    return !(node_ == rhs.node_);
+  }
+
+  template < typename T >
+  bool ConstForwardIterator< T >::operator==(const ConstForwardIterator< T > & rhs) const
+  {
+    return node_ == rhs.node_;
+  }
+
+  template < typename T >
+  ConstForwardIterator< T >::ConstForwardIterator(const ForwardIteraator< T > rhs):
+    node_(rhs.node_)
+  {}
+  
+  template < typename T >
+  ConstForwardIterator< T >::ConstForwardIterator():
+    node_(nullptr)
+  {}
+
+  template < typename T >
+  ConstForwardIterator< T >::ConstForwardIterator(Node< T > * node):
+    node_(node)
+  {}
 }
 
 #endif

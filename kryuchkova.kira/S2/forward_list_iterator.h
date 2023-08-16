@@ -11,49 +11,69 @@ namespace kryuchkova
   template < typename T >
   class ForwardIterator: public std::iterator< std::forward_iterator_tag, T >
   {
-    public:
-      using this_t = ForwardIterator< T >;
-      friend class ForwardList< T >;
+    friend class ForwardList< T >;
+    friend class ConstForwardIterator< T >;
+  public:
+    using this_t = ForwardIterator< T >;
 
-      ForwardListIterator():
-        node_(nullptr)
-      {}
-      explicit ForwardIterator(Node< T > * node):
-        node_(node)
-      {}
-      ForwardIterator(const this_t&) = default;
-      ~ForwardIterator() = default;
+    ForwardIterator();
+    ForwardIterator(const this_t&) = default;
+    ~ForwardIterator() = default;
 
-      this_t& operator=(const this_t&) = default;
-      this_t& operator++()
-      {
-        if (node_ != nullptr)
-        {
-          node_ = node_->next;
-        }
-        return *this;
-      }
-      this_t operator++(int)
-      {
-        if (node_ != nullptr)
-        {
-          this_t temp(*this);
-          ++(*this);
-          return temp;
-        }
-      }
-      bool operator!=(const this_t& rhs) const
-      {
-        return !(node_ == rhs.node_);
-      }
-      bool operator==(const this_t& rhs) const
-      {
-        return node_ == rhs.node_;
-      }
+    this_t& operator=(const this_t&) = default;
+    this_t& operator++();
+    this_t operator++(int);
+    bool operator!=(const this_t& rhs) const;
+    bool operator==(const this_t& rhs) const;
 
-    private:
-      Node< T > * node_;
+  private:
+    explicit ForwardIterator(Node< T > * node);
+    Node< T > * node_;
   };
+
+  template < typename T >
+  ForwardIterator< T > & ForwardIterator< T >::operator++()
+  {
+    if (node_ != nullptr)
+    {
+      node_ = node_->next;
+    }
+    return *this;
+  }
+
+  template < typename T >
+  ForwardIterator< T > ForwardIterator< T >::operator++(int)
+  {
+    if (node_ != nullptr)
+    {
+      this_t temp(*this);
+      ++(*this);
+    }
+    return temp;
+  }
+
+  template < typename T >
+  bool ForwardIterator< T >::operator!=(const ForwardIterator< T > & rhs) const
+  {
+    return !(node_ == rhs.node_);
+  }
+
+  template < typename T >
+  bool ForwardIterator< T >::operator==(const ForwardIterator< T > & rhs) const
+  {
+    return node_ == rhs.node_;
+  }
+
+  template < typename T >
+  ForwardIterator< T >::ForwardIterator():
+    node_(nullptr)
+  {}
+
+  template< typename T >
+  ForwardIterator< T >::ForwardIterator(Node< T > * node):
+   node_(node)
+  {}
+
 }
 
 #endif
