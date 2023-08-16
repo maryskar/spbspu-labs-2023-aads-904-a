@@ -54,6 +54,7 @@ int main(int argc, char *argv[])
         std::string name;
         std::cin >> name;
         fesenko::print(dict_of_dict_elem(name, container.at(name)), std::cout);
+        std::cout << "\n";
       } else {
         std::string newDictName;
         std::string dictName1;

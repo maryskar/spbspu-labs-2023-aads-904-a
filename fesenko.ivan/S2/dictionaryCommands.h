@@ -21,7 +21,6 @@ namespace fesenko
       out << " " << cit->first << " " << cit->second;
       cit++;
     }
-    out << "\n";
   }
 
   template< typename Key, typename Value, typename Compare >
