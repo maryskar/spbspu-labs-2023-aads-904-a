@@ -32,7 +32,8 @@ namespace potapova
       class Iterator
       {
         public:
-          Iterator(): node(nullptr)
+          Iterator():
+            node(nullptr)
           {
 
           }
@@ -83,7 +84,8 @@ namespace potapova
       class ConstIterator
       {
         public:
-          ConstIterator(): node(nullptr)
+          ConstIterator():
+            node(nullptr)
           {
 
           }
