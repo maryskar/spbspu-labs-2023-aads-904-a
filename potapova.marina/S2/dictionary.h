@@ -19,6 +19,19 @@ namespace potapova
       void complement(const std::string& new_dataset, const std::string& dataset1, const std::string& dataset2);
       void intersect(const std::string& new_dataset, const std::string& dataset1, const std::string& dataset2);
       void join(const std::string& new_dataset, const std::string& dataset1, const std::string& dataset2);
+    private:
+      struct Node
+      {
+        Key key;
+        Value value;
+
+        Node(const Key& key, const Value& value):
+          key(key),
+          value(value)
+        {
+
+        }
+      };
   };
 }
 
