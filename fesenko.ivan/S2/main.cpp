@@ -71,6 +71,7 @@ int main(int argc, char *argv[])
           newDict = make_union(dict1, dict2);
         } else {
           fesenko::outInvalidCommandMessage(std::cout);
+          std::cout << "\n";
           continue;
         }
         if (container.insert(dict_of_dict_elem(newDictName, newDict)).second == false) {
@@ -81,5 +82,6 @@ int main(int argc, char *argv[])
     }
   } catch (...) {
     fesenko::outInvalidCommandMessage(std::cout);
+    std::cout << "\n";
   }
 }

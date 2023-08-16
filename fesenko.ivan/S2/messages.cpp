@@ -2,10 +2,10 @@
 
 void fesenko::outInvalidCommandMessage(std::ostream &out)
 {
-  out << "<INVALID COMMAND>\n";
+  out << "<INVALID COMMAND>";
 }
 
 void fesenko::outEmptyMessage(std::ostream &out)
 {
-  out << "<EMPTY>\n";
+  out << "<EMPTY>";
 }
