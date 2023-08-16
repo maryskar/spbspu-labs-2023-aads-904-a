@@ -4,6 +4,7 @@
 #include <vector>
 #include "quicksort.h"
 #include "shellsort.h"
+#include "oddevensort.h"
 std::vector< int > generateRandomData(size_t size, int min, int max)
 {
   std::random_device rd;
@@ -33,7 +34,7 @@ void sortData(std::vector< T > &data, const std::string &sortOrder)
 {
   if (sortOrder == "ascending")
   {
-    shellSort(data.begin(), data.size(), std::less<>());
+    oddEvenSort(data.begin(), data.size(), std::less<>());
   }
   else if (sortOrder == "descending")
   {
