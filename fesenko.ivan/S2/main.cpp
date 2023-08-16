@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
   using dictionary = fesenko::Dictionary< int, std::string, std::less< > >;
   using dictionary_elem = std::pair< int, std::string >;
   using dict_of_dict = fesenko::Dictionary< std::string, dictionary, std::less< std::string > >;
-  using dict_of_dict_elem = std::pair < std::string, dictionary >;
+  using dict_of_dict_elem = std::pair< std::string, dictionary >;
   dict_of_dict container;
   try {
     while (in) {
@@ -54,6 +54,7 @@ int main(int argc, char *argv[])
         std::string name;
         std::cin >> name;
         fesenko::print(dict_of_dict_elem(name, container.at(name)), std::cout);
+        std::cout << "\n";
       } else {
         std::string newDictName;
         std::string dictName1;
@@ -70,6 +71,7 @@ int main(int argc, char *argv[])
           newDict = make_union(dict1, dict2);
         } else {
           fesenko::outInvalidCommandMessage(std::cout);
+          std::cout << "\n";
           continue;
         }
         if (container.insert(dict_of_dict_elem(newDictName, newDict)).second == false) {
@@ -80,5 +82,6 @@ int main(int argc, char *argv[])
     }
   } catch (...) {
     fesenko::outInvalidCommandMessage(std::cout);
+    std::cout << "\n";
   }
 }

@@ -21,13 +21,11 @@ namespace fesenko
       out << " " << cit->first << " " << cit->second;
       cit++;
     }
-    out << "\n";
   }
 
   template< typename Key, typename Value, typename Compare >
-  Dictionary< Key, Value, Compare > make_complementation(
-      const Dictionary< Key, Value, Compare > &one,
-          const Dictionary< Key, Value, Compare > &two)
+  Dictionary< Key, Value, Compare > make_complementation(const Dictionary< Key, Value, Compare > &one,
+      const Dictionary< Key, Value, Compare > &two)
   {
     Dictionary< Key, Value, Compare > result;
     if (std::addressof(one) == std::addressof(two)) {
@@ -56,9 +54,8 @@ namespace fesenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  Dictionary< Key, Value, Compare > make_intersection(
-      const Dictionary< Key, Value, Compare > &one,
-          const Dictionary< Key, Value, Compare > &two)
+  Dictionary< Key, Value, Compare > make_intersection(const Dictionary< Key, Value, Compare > &one,
+      const Dictionary< Key, Value, Compare > &two)
   {
     Dictionary< Key, Value, Compare > result;
     Compare comp = Compare{};
@@ -78,9 +75,8 @@ namespace fesenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  Dictionary< Key, Value, Compare > make_union(
-      const Dictionary< Key, Value, Compare > &one,
-          const Dictionary< Key, Value, Compare > &two)
+  Dictionary< Key, Value, Compare > make_union(const Dictionary< Key, Value, Compare > &one,
+      const Dictionary< Key, Value, Compare > &two)
   {
     Dictionary< Key, Value, Compare > result(one);
     auto it = two.cbegin();
