@@ -1,6 +1,8 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 
+#include "forwardList.h"
+
 namespace potapova
 {
   template< typename Key, typename Value, typename Compare >
@@ -32,6 +34,25 @@ namespace potapova
 
         }
       };
+
+      class CompareWrapper
+      {
+        public:
+          CompareWrapper(const Compare& c):
+            comp(c)
+          {
+
+          }
+          bool operator()(const Node& lhs, const Node& rhs) const
+          {
+            return comp(lhs.key, rhs.key);
+          }
+        private:
+          Compare comp;
+      };
+
+      ForwardList< Node > data;
+      CompareWrapper compare;
   };
 }
 
