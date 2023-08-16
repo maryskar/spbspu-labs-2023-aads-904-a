@@ -3,6 +3,7 @@
 #include <random>
 #include <vector>
 #include "quicksort.h"
+#include "shellsort.h"
 std::vector< int > generateRandomData(size_t size, int min, int max)
 {
   std::random_device rd;
@@ -32,7 +33,7 @@ void sortData(std::vector< T > &data, const std::string &sortOrder)
 {
   if (sortOrder == "ascending")
   {
-    quickSort(data.begin(), data.size(), std::less<>());
+    shellSort(data.begin(), data.size(), std::less<>());
   }
   else if (sortOrder == "descending")
   {
