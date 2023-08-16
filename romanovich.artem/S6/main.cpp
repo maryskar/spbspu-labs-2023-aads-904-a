@@ -5,6 +5,7 @@
 #include "quicksort.h"
 #include "shellsort.h"
 #include "oddevensort.h"
+#include "../common/forwardlist.h"
 std::vector< int > generateRandomData(size_t size, int min, int max)
 {
   std::random_device rd;
@@ -46,13 +47,27 @@ void sortData(std::vector< T > &data, const std::string &sortOrder)
   }
 }
 template< typename T >
-void printData(const std::vector< T > &data)
+void lab(size_t size)
 {
-  for (const T &x: data)
+  std::vector< T > data = generateRandomData(size, 1, 10);
+  romanovich::ForwardList< T > forwardList;
+  for (size_t i = 0; i < size; ++i)
   {
-    std::cout << x << " ";
+    forwardList.push_front(data[i]);
   }
-  std::cout << "\n";
+  print(forwardList.begin(), forwardList.end());
+}
+template< typename InputIt >
+void printData(InputIt begin, InputIt end)
+{
+  for (auto it = begin; it != end; ++it)
+  {
+    if (it != begin)
+    {
+      std::cout << ' ';
+    }
+    std::cout << *it;
+  }
 }
 int main(int argc, char *argv[])
 {
@@ -69,37 +84,29 @@ int main(int argc, char *argv[])
   }
   std::string sortOrder = argv[1];
   std::string dataType = argv[2];
-  if (dataType == "ints")
+  try
   {
-    std::vector< int > dataInt = generateRandomData(size, 1, 10);
-    try
+    if (dataType == "ints")
     {
+      std::vector< int > dataInt = generateRandomData(size, 1, 10);
       sortData(dataInt, sortOrder);
+      printData(dataInt.begin(), dataInt.end());
     }
-    catch (...)
+    else if (dataType == "floats")
     {
-      std::cerr << "Error while sorting ints.";
-      return 2;
-    }
-    printData(dataInt);
-  }
-  else if (dataType == "floats")
-  {
-    std::vector< float > dataFloat = generateRandomData(size, 1.0f, 10.0f);
-    try
-    {
+      std::vector< float > dataFloat = generateRandomData(size, 1.0f, 10.0f);
       sortData(dataFloat, sortOrder);
+      printData(dataFloat.begin(), dataFloat.end());
     }
-    catch (...)
+    else
     {
-      std::cerr << "Error while sorting ints.";
+      std::cerr << "Invalid data type.";
       return 2;
     }
-    printData(dataFloat);
   }
-  else
+  catch (...)
   {
-    std::cerr << "Invalid data type.";
+    std::cerr << "Error while sorting ints.";
     return 2;
   }
   return 0;
