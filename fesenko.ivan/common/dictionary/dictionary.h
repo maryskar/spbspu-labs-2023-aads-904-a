@@ -1,7 +1,7 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 #include <stdexcept>
-#include "forwardList.h"
+#include "forward-list/forwardList.h"
 
 namespace fesenko
 {

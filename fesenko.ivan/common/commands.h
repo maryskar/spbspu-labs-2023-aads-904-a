@@ -2,7 +2,7 @@
 #define DICTIONARYCOMMANDS_H
 #include <fstream>
 #include <string>
-#include "dictionary.h"
+#include "dictionary/dictionary.h"
 #include "messages.h"
 
 namespace fesenko

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include "dictionary.h"
-#include "dictionaryCommands.h"
+#include <dictionary/dictionary.h>
+#include <commands.h>
 
 int main(int argc, char *argv[])
 {
