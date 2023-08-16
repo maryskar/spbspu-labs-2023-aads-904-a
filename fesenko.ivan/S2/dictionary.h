@@ -363,7 +363,6 @@ namespace fesenko
     };
    protected:
     Compare comp;
-    explicit value_compare(Compare c): comp(c) {};
   };
 
 }
