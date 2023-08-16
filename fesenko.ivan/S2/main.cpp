@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
   using dictionary = fesenko::Dictionary< int, std::string, std::less< > >;
   using dictionary_elem = std::pair< int, std::string >;
   using dict_of_dict = fesenko::Dictionary< std::string, dictionary, std::less< std::string > >;
-  using dict_of_dict_elem = std::pair < std::string, dictionary >;
+  using dict_of_dict_elem = std::pair< std::string, dictionary >;
   dict_of_dict container;
   try {
     while (in) {
