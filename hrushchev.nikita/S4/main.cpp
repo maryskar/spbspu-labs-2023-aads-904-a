@@ -25,17 +25,14 @@ void printTree(Tree<std::pair<Key, Value>>* node, int indent = 0)
 
 int main() {
     AVLTree<int, std::string> avlTree;
-    avlTree.insert(5, "five");
-    avlTree.insert(3, "three");
-    avlTree.insert(7, "seven");
-    avlTree.insert(2, "two");
-    avlTree.insert(4, "four");
-    avlTree.insert(8, "eight");
-    avlTree.insert(10, "ten");
-    avlTree.insert(9, "nine");
+    avlTree.insert(10, "10");
+    avlTree.insert(8, "8");
+    avlTree.insert(15, "15");
+    avlTree.insert(12, "12");
+    avlTree.insert(16, "16");
     printTree(avlTree.node_);
-    avlTree.erase(7);
     std::cout << "\n\n\n\n";
+    avlTree.rotateLeft(avlTree.node_);
     printTree(avlTree.node_);
     std::cout << "\n\n\n\n";
     inOrderTraversal(avlTree.node_);

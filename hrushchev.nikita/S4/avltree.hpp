@@ -17,6 +17,7 @@ class AVLTree
     void erase(const Key& key);
     Tree< data_t >* node_;
     Compare comp_;
+    void rotateLeft(Tree< data_t >* node);
   private:
     void updateHeight(Tree< data_t >* tree);
     Tree< data_t >* insert(const Key& key, const Value& value, Tree< data_t >* tree);
@@ -124,7 +125,7 @@ Tree< typename AVLTree< Key, Value, Compare >::data_t >* AVLTree< Key, Value, Co
 }
 
 template<typename Key, typename Value, typename Compare>
-void AVLTree<Key, Value, Compare>::erase(Tree<typename AVLTree<Key, Value, Compare>::data_t>* tree)
+void AVLTree< Key, Value, Compare >::erase(Tree< typename AVLTree< Key, Value, Compare >::data_t >* tree)
 {
   if (!tree)
   {
@@ -153,7 +154,7 @@ void AVLTree<Key, Value, Compare>::erase(Tree<typename AVLTree<Key, Value, Compa
   }
   if (!tree->right_ || !tree->left_)
   {
-    Tree<data_t>* child = (tree->left_ == nullptr) ? tree->right_ : tree->left_;
+    Tree< data_t >* child = (tree->left_ == nullptr) ? tree->right_ : tree->left_;
     if (!tree->head_)
     {
       node_ = child;
@@ -180,6 +181,37 @@ void AVLTree<Key, Value, Compare>::erase(Tree<typename AVLTree<Key, Value, Compa
   erase(maxNode);
   updateHeight(tree->head_);
   //balance(tree->head_);
+}
+
+template<typename Key, typename Value, typename Compare>
+void AVLTree< Key, Value, Compare >::rotateLeft(Tree< data_t >* node)
+{
+    Tree<data_t>* newRoot = node->right_;
+    node->right_ = newRoot->left_;
+    if (newRoot->left_)
+    {
+      newRoot->left_->head_ = node;
+    }
+    newRoot->head_ = node->head_;
+    if (node->head_)
+    {
+      if (node->head_->left_ == node)
+      {
+        node->head_->left_ = newRoot;
+      }
+      else
+      {
+        node->head_->right_ = newRoot;
+      }
+    }
+    else
+    {
+      node_ = newRoot;
+    }
+    newRoot->left_ = node;
+    node->head_ = newRoot;
+    updateHeight(node);
+    updateHeight(newRoot);
 }
 
 
