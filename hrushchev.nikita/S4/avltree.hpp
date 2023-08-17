@@ -3,9 +3,9 @@
 
 #include <utility>  
 #include <functional>
-#include "tree.hpp"
 
-#include <iostream>
+#include "tree.hpp"
+#include "avltreeiterator.hpp"
 
 template< typename Key, typename Value, typename Compare = std::less< > >
 class AVLTree
