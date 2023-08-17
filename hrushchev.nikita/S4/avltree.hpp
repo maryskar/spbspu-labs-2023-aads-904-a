@@ -17,6 +17,7 @@ class AVLTree
     void insert(const Key& key, const Value& value);
     void erase(const Key& key);
     iterator begin();
+    iterator end();
     Tree< data_t >* node_;
     Compare comp_;
     void rotateLeft(Tree< data_t >* node);
@@ -50,6 +51,12 @@ template< typename Key, typename Value, typename Compare >
 typename AVLTree< Key, Value, Compare >::iterator AVLTree< Key, Value, Compare >::begin()
 {
   return iterator(getMin(node_));
+}
+
+template< typename Key, typename Value, typename Compare >
+typename AVLTree< Key, Value, Compare >::iterator AVLTree< Key, Value, Compare >::end()
+{
+  return iterator(nullptr);
 }
 
 template<typename Key, typename Value, typename Compare>

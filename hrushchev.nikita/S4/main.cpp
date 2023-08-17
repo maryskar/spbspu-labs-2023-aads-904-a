@@ -36,24 +36,10 @@ int main() {
     printTree(avlTree.node_);
     std::cout << "\n\n\n\n";
     inOrderTraversal(avlTree.node_);
-    auto iter = avlTree.begin();
-    std::cout << *iter << "\n";
-    ++iter;
-    std::cout << *iter << "\n";
-    ++iter;
-    std::cout << *iter << "\n";
-    ++iter;
-    std::cout << *iter << "\n";
-    ++iter;
-    std::cout << *iter << "\n";
-    --iter;
-    std::cout << *iter << "\n";
-    --iter;
-    std::cout << *iter << "\n";
-    --iter;
-    std::cout << *iter << "\n";
-    --iter;
-    std::cout << *iter << "\n";
+    for (auto it = avlTree.begin(); it != avlTree.end(); ++it)
+    {
+      std::cout << *it  << "\n";
+    }
 
     return 0;
 }
