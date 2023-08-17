@@ -20,7 +20,7 @@ class AVLTreeIterator
     AVLTreeIterator();
     explicit AVLTreeIterator(Tree< data_t >* rhs);
     AVLTreeIterator< Key, Value, Compare >& operator++();
-    Key& operator*();
+    Value& operator*();
     ~AVLTreeIterator() = default;
   private:
     Tree< data_t >* ptr_;
@@ -59,7 +59,7 @@ AVLTreeIterator< Key, Value, Compare >& AVLTreeIterator< Key, Value, Compare >::
 }
 
 template< typename Key, typename Value, typename Compare >
-Key& AVLTreeIterator< Key, Value, Compare >::operator*()
+Value& AVLTreeIterator< Key, Value, Compare >::operator*()
 {
   return ptr_->data_.second;
 }

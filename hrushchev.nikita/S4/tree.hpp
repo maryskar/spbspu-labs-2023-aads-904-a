@@ -40,7 +40,7 @@ Tree< T >* getMin(Tree< T >* tree)
 	{
 		return tree;
 	}
-	return getMax(tree->left_);
+	return getMin(tree->left_);
 }
 
 #endif
