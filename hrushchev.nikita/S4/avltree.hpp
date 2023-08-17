@@ -56,7 +56,7 @@ typename AVLTree< Key, Value, Compare >::iterator AVLTree< Key, Value, Compare >
 template< typename Key, typename Value, typename Compare >
 typename AVLTree< Key, Value, Compare >::iterator AVLTree< Key, Value, Compare >::end()
 {
-  return iterator(nullptr);
+  return iterator(getMax(node_)->right_);
 }
 
 template<typename Key, typename Value, typename Compare>
