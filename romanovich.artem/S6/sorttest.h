@@ -7,6 +7,9 @@
 #include <iostream>
 #include <forwardlist.h>
 #include "randomdatagenerator.h"
+#include "oddevensort.h"
+#include "quicksort.h"
+#include "shellsort.h"
 namespace
 {
   template< typename InputIt >
