@@ -18,23 +18,25 @@ int main(int argc, char *argv[])
   std::string dataType = argv[2];
   try
   {
-//    if (dataType == "ints")
-//    {
-      runTest(size);
-//    }
-//    else if (dataType == "floats")
-//    {
-//      //runTest< float >(size);
-//    }
-//    else
-//    {
-//      std::cerr << "Invalid data type.";
-//      return 2;
-//    }
+    if (dataType != "ints" && dataType != "floats")
+    {
+      std::cerr << "Invalid data type.";
+      return 2;
+    }
+    if (dataType == "ints")
+    {
+      std::vector< int > data = romanovich::generateRandomInts(size, 1, 10);
+      romanovich::runTest< int >(data, size, sortOrder);
+    }
+    if (dataType == "floats")
+    {
+      std::vector< float > data = romanovich::generateRandomFloats(size, 1, 10);
+      romanovich::runTest< float >(data, size, sortOrder);
+    }
   }
   catch (...)
   {
-    std::cerr << "Error while sorting ints.";
+    std::cerr << "Error while sorting.";
     return 2;
   }
   return 0;
