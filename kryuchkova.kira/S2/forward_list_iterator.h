@@ -1,7 +1,8 @@
 #ifndef FORWARD_LIST_ITERATOR_H
 #define FORWARD_LIST_ITERATOR_H
 #include <iterator>
-#include "node.h"
+#include <cassert>
+#include "../common/node.h"
 
 namespace kryuchkova
 {
@@ -34,21 +35,17 @@ namespace kryuchkova
   template < typename T >
   ForwardIterator< T > & ForwardIterator< T >::operator++()
   {
-    if (node_ != nullptr)
-    {
-      node_ = node_->next;
-    }
+    assert(node_ != nullptr);
+    node_ = node_->next_;
     return *this;
   }
 
   template < typename T >
   ForwardIterator< T > ForwardIterator< T >::operator++(int)
   {
-    if (node_ != nullptr)
-    {
-      this_t temp(*this);
-      ++(*this);
-    }
+    assert(node_ != nullptr);
+    ForwardIterator< T > temp(*this);
+    ++(*this);
     return temp;
   }
 

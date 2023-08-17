@@ -1,7 +1,8 @@
 #ifndef FORWARD_LIST_CONST_ITERATOR_H
 #define FORWARD_LIST_CONST_ITERATOR_H
 #include <iterator>
-#include "node.h"
+#include <cassert>
+#include "../common/node.h"
 
 namespace kryuchkova
 {
@@ -20,7 +21,7 @@ namespace kryuchkova
     using this_t = ConstForwardIterator< T >;
 
     ConstForwardIterator();
-    ConstForwardIterator(const ForwardIteraator< T > rhs);
+    ConstForwardIterator(const ForwardIterator< T > rhs);
     ~ConstForwardIterator() = default;
 
     this_t& operator=(const this_t&) = default;
@@ -37,22 +38,18 @@ namespace kryuchkova
   template < typename T >
   ConstForwardIterator< T > & ConstForwardIterator< T >::operator++()
   {
-    if (node_ != nullptr)
-    {
-      node_ = node_->next;
-    }
+    assert(node_ != nullptr);
+    node_ = node_->next;
     return *this;
   }
 
   template < typename T >
   ConstForwardIterator< T > ConstForwardIterator< T >::operator++(int)
   {
-    if (node_ != nullptr)
-    {
-      this_t temp(*this);
-      ++(*this);
-      return temp;
-    }
+    assert(node_ != nullptr);
+    this_t temp(*this);
+    ++(*this);
+    return temp;
   }
 
   template < typename T >
@@ -68,7 +65,7 @@ namespace kryuchkova
   }
 
   template < typename T >
-  ConstForwardIterator< T >::ConstForwardIterator(const ForwardIteraator< T > rhs):
+  ConstForwardIterator< T >::ConstForwardIterator(const ForwardIterator< T > rhs):
     node_(rhs.node_)
   {}
   
