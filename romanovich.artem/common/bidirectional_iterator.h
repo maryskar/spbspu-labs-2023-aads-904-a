@@ -18,9 +18,12 @@ namespace romanovich
     friend class RedBlackTree< Key, Value, Compare >;
   public:
     BidirectionalIterator();
-    using iterator_category = std::bidirectional_iterator_tag;
-    using difference_t = std::ptrdiff_t;
     using data_t = std::pair< Key, Value >;
+    using iterator_category = std::bidirectional_iterator_tag;
+    using value_type = data_t;
+    using difference_type = std::ptrdiff_t;
+    using pointer = data_t *;
+    using reference = data_t &;
     ~BidirectionalIterator() = default;
     BidirectionalIterator(const BidirectionalIterator< Key, Value, Compare > &) = default;
     explicit BidirectionalIterator(ConstBidirectionalIterator< Key, Value, Compare > &);

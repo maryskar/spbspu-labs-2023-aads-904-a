@@ -3,6 +3,7 @@
 #include <functional>
 #include <stdexcept>
 #include <iostream>
+#include "queue.h"
 #include <cstddef>
 #include "const_bidirectional_iterator.h"
 namespace romanovich
@@ -75,6 +76,12 @@ namespace romanovich
     iterator upper_bound(const Key &key);
     const_iterator upper_bound(const Key &key) const;
     Compare value_comp() const;
+    template< typename F >
+    F traverseLnr(F f) const;
+    template< typename F >
+    F traverseRnl(F f) const;
+    template< typename F >
+    F traverseBreadth(F f) const;
   private:
     tree_t *initFake();
     void clear(TreeNode< data_t > *node);
@@ -84,11 +91,78 @@ namespace romanovich
     TreeNode< data_t > *findMin(TreeNode< data_t > *node) const;
     TreeNode< data_t > *findMax(TreeNode< data_t > *node) const;
     TreeNode< data_t > *copyTree(const TreeNode< data_t > *node);
+    template< typename F >
+    void traverseLnrImpl(tree_t *node, F &f) const;
+    template< typename F >
+    void traverseRnlImpl(tree_t *node, F &f) const;
     tree_t *root_;
     tree_t *fakeNode_;
     size_t size_;
     Compare compare_;
   };
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F BinarySearchTree< Key, Value, Compare >::traverseBreadth(F f) const
+  {
+    if (root_)
+    {
+      Queue< TreeNode< data_t > * > q;
+      q.push(root_);
+      while (!q.isEmpty())
+      {
+        TreeNode< data_t > *current = q.get();
+        q.pop();
+        f(current->data);
+        if (current->left)
+        {
+          q.push(current->left);
+        }
+        if (current->right)
+        {
+          q.push(current->right);
+        }
+      }
+    }
+    return f;
+  }
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  void BinarySearchTree< Key, Value, Compare >::traverseLnrImpl(tree_t *node, F &f) const
+  {
+    if (!node)
+    {
+      return;
+    }
+    traverseLnrImpl(node->left, f);
+    f(node->data);
+    traverseLnrImpl(node->right, f);
+  }
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F BinarySearchTree< Key, Value, Compare >::traverseLnr(F f) const
+  {
+    traverseLnrImpl(root_, f);
+    return f;
+  }
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  void BinarySearchTree< Key, Value, Compare >::traverseRnlImpl(tree_t *node, F &f) const
+  {
+    if (!node)
+    {
+      return;
+    }
+    traverseRnlImpl(node->right, f);
+    f(node->data);
+    traverseRnlImpl(node->left, f);
+  }
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F BinarySearchTree< Key, Value, Compare >::traverseRnl(F f) const
+  {
+    traverseRnlImpl(root_, f);
+    return f;
+  }
   template< typename Key, typename Value, typename Compare >
   typename BinarySearchTree< Key, Value, Compare >::const_reverse_iterator
     BinarySearchTree< Key, Value, Compare >::crend() const noexcept
