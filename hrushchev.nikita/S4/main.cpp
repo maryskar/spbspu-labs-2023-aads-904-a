@@ -46,5 +46,14 @@ int main() {
     std::cout << *iter << "\n";
     ++iter;
     std::cout << *iter << "\n";
+    --iter;
+    std::cout << *iter << "\n";
+    --iter;
+    std::cout << *iter << "\n";
+    --iter;
+    std::cout << *iter << "\n";
+    --iter;
+    std::cout << *iter << "\n";
+
     return 0;
 }
