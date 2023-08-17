@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include <deque>
+#include <iostream>
 #include <forwardlist.h>
 #include "randomdatagenerator.h"
 namespace
