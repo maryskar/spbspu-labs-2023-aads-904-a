@@ -135,7 +135,8 @@ namespace potapova
       };
 
     public:
-      ForwardList(): head(nullptr)
+      ForwardList():
+        head(nullptr)
       {
 
       }
