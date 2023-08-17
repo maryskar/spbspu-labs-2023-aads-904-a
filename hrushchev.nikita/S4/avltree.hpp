@@ -12,6 +12,7 @@ class AVLTree
 {
   public:
     using data_t = std::pair< Key, Value >;
+    using iterator = AVLTreeIterator< Key, Value, Compare >;
     AVLTree();
     void insert(const Key& key, const Value& value);
     void erase(const Key& key);
