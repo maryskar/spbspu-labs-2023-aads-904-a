@@ -2,27 +2,34 @@
 #define ODDEVENSORT_H
 #include <cstddef>
 #include <algorithm>
-template< typename RandomAccessIterator, typename Compare >
-void oddEvenSort(RandomAccessIterator begin, size_t size, Compare comp)
+namespace romanovich
 {
-  bool sorted = false;
-  while (!sorted)
+  template< typename BidirectionalIterator, typename Compare >
+  void oddEvenSort(BidirectionalIterator begin, size_t size, Compare comp)
   {
-    sorted = true;
-    for (size_t i = 1; i < size - 1; i += 2)
+    bool sorted = false;
+    while (!sorted)
     {
-      if (comp(*(begin + i + 1), *(begin + i)))
+      sorted = true;
+      for (size_t i = 1; i < size - 1; i += 2)
       {
-        std::swap(*(begin + i), *(begin + i + 1));
-        sorted = false;
+        auto current = std::next(begin, i);
+        auto next = std::next(current);
+        if (comp(*next, *current))
+        {
+          std::swap(*current, *next);
+          sorted = false;
+        }
       }
-    }
-    for (size_t i = 0; i < size - 1; i += 2)
-    {
-      if (comp(*(begin + i + 1), *(begin + i)))
+      for (size_t i = 0; i < size - 1; i += 2)
       {
-        std::swap(*(begin + i), *(begin + i + 1));
-        sorted = false;
+        auto current = std::next(begin, i);
+        auto next = std::next(current);
+        if (comp(*next, *current))
+        {
+          std::swap(*current, *next);
+          sorted = false;
+        }
       }
     }
   }
