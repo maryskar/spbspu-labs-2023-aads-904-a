@@ -1,13 +1,17 @@
 #ifndef AVLITERATOR
 #define AVLITERATOR
-#include "AVL.h"
+#include <cassert>
 #include <functional>
 
 namespace fesenko
 {
   template< typename Key, typename Value, typename Compare >
+  class AVL;
+
+  template< typename Key, typename Value, typename Compare >
   class AVLIterator
   {
+    friend class AVL< Key, Value, Compare >;
    public:
     using key_type = Key;
     using mapped_type = Value;

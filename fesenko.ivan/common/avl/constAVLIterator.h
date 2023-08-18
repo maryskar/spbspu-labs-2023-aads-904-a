@@ -1,14 +1,18 @@
 #ifndef CONSTAVLITERATOR
 #define CONSTAVLITERATOR
+#include <cassert>
 #include <functional>
-#include "AVL.h"
 #include "AVLIterator.h"
 
 namespace fesenko
 {
   template< typename Key, typename Value, typename Compare >
+  class AVL;
+
+  template< typename Key, typename Value, typename Compare >
   class ConstAVLIterator
   {
+    friend class AVL< Key, Value, Compare >;
    public:
     using key_type = Key;
     using mapped_type = Value;

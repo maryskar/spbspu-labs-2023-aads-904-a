@@ -86,7 +86,7 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   AVL< Key, Value, Compare >::AVL(const this_t &other):
     root_(copy(other.root_)),
-    comp_(other.comp)
+    comp_(other.comp_)
   {}
 
   template< typename Key, typename Value, typename Compare >
@@ -236,7 +236,8 @@ namespace fesenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename AVL< Key, Value, Compare >::const_iterator AVL< Key, Value, Compare >::upper_bound(const key_type &key) const  {
+  typename AVL< Key, Value, Compare >::const_iterator AVL< Key, Value, Compare >::upper_bound(const key_type &key) const
+  {
     const_iterator cur = lower_bound(key);
     if (!comp_(key, cur->first)) {
       cur++;
@@ -245,7 +246,8 @@ namespace fesenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  std::pair< typename AVL< Key, Value, Compare >::iterator, bool > AVL< Key, Value, Compare >::insert(const value_type &value)  {
+  std::pair< typename AVL< Key, Value, Compare >::iterator, bool > AVL< Key, Value, Compare >::insert(const value_type &value)
+  {
     auto *newTree = new tree{value, nullptr, nullptr, nullptr};
     if (empty()) {
       root_ = newTree;
@@ -260,22 +262,22 @@ namespace fesenko
       } else {
         iterator prev = cur;
         prev--;
-        if (cur->left == nullptr) {
-          cur->left = newTree;
-          newTree->parent = cur;
-        } else if (prev->right == nullptr) {
-          prev->right = newTree;
-          newTree->parent = prev;
-        } else if (cur->parent == prev) {
-          newTree->right = prev->right;
-          prev->right = newTree;
+        if (cur.node_->left == nullptr) {
+          cur.node_->left = newTree;
+          newTree->parent = cur.node_;
+        } else if (prev.node_->right == nullptr) {
+          prev.node_->right = newTree;
+          newTree->parent = prev.node_;
+        } else if (cur.node_->parent == prev.node_) {
+          newTree->right = prev.node_->right;
+          prev.node_->right = newTree;
           newTree->right->parent = newTree;
-          newTree->parent = prev;
-        } else if (cur->left = prev) {
-          newTree->parent = prev->parent;
-          prev->parent = newTree;
-          newTree->left = prev;
-          cur->left = newTree;
+          newTree->parent = prev.node_;
+        } else if (cur.node_->left == prev.node_) {
+          newTree->parent = prev.node_->parent;
+          prev.node_->parent = newTree;
+          newTree->left = prev.node_;
+          cur.node_->left = newTree;
         }
         balance(newTree);
         return {iterator(newTree), true};
@@ -386,7 +388,7 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   typename AVL< Key, Value, Compare >::tree *AVL< Key, Value, Compare >::copy(const tree *node)
   {
-    tree *newNode = node;
+    tree *newNode = new tree{node->data, nullptr, nullptr, nullptr};
     if (node->left) {
       newNode->left = copy(node->left);
       newNode->left->parent = newNode;
@@ -415,8 +417,8 @@ namespace fesenko
   {
     if (head) {
       height++;
-      size_t leftHeight = checkHeightSup(head->left_, height);
-      size_t rightHeight = checkHeightSup(head->right_, height);
+      size_t leftHeight = checkHeightSup(head->left, height);
+      size_t rightHeight = checkHeightSup(head->right, height);
       height = std::max(leftHeight, rightHeight);
     }
     return height;
@@ -436,7 +438,7 @@ namespace fesenko
     node->parent = node->right;
     node->right = temp;
     if (temp) {
-       temp->parent = node;
+      temp->parent = node;
     }
   }
 
@@ -454,7 +456,7 @@ namespace fesenko
     node->parent = node->left;
     node->left = temp;
     if (temp) {
-       temp->parent = node;
+      temp->parent = node;
     }
   }
 
@@ -476,28 +478,28 @@ namespace fesenko
   void AVL< Key, Value, Compare >::balance(tree *node)
   {
     while (node->parent) {
-      size_t left = checkHeight(node->left_);
-      size_t right = checkHeight(node->right_);
+      size_t left = checkHeight(node->left);
+      size_t right = checkHeight(node->right);
       if (right - left == 2) {
-        auto subTree = node->right_;
-        auto subLeft = checkHeight(subTree->left_);
-        auto subRight = checkHeight(subTree->right_);
+        auto subTree = node->right;
+        auto subLeft = checkHeight(subTree->left);
+        auto subRight = checkHeight(subTree->right);
         if (subLeft <= subRight) {
-          rotate_left(subTree);
+          rotateLeft(subTree);
         } else {
-          rotate_RightLeft(subTree);
+          rotateRightLeft(subTree);
         }
       } else if (left - right == 2) {
-        auto subTree = node->left_;
-        auto subLeft = checkHeight(subTree->left_);
-        auto subRight = checkHeight(subTree->right_);
+        auto subTree = node->left;
+        auto subLeft = checkHeight(subTree->left);
+        auto subRight = checkHeight(subTree->right);
         if (subRight <= subLeft) {
-          rotate_right(subTree);
+          rotateRight(subTree);
         } else {
-          rotate_LeftRight(subTree);
+          rotateLeftRight(subTree);
         }
       }
-      node = node->parent_;
+      node = node->parent;
     }
   }
 }
