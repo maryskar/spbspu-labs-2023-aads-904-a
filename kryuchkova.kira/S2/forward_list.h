@@ -19,6 +19,31 @@ namespace kryuchkova
     ForwardList(this_t && rhs);
     ForwardList(std::initializer_list< T > init);
     ~ForwardList();
+
+    this_t & operator=(const this_t & fwdlst);
+    this_t & operator=(this_t && fwdlst);
+    this_t & operator=(std::initializer_list< T > init);
+
+    iterator insert_after(const_iterator pos, const T & val);
+    iterator insert_after(const_iterator pos, T && val);
+    iterator insert_after(const_iterator pos, std::size_t n, const T & val);
+
+    iterator before_begin() noexcept;
+    const_iterator before_begin() const noexcept;
+    const_iterator cbefore_begin() const noexcept;
+    iterator begin() noexcept;
+    const_iterator begin() const noexcept;
+    const_iterator cbegin() const noecept;
+    iterator end() noexcept;
+    const_iterator end() const noexcept;
+    const_iterator cend() const noexcept;
+    iterator last() noexcept;
+    const_iterator last() const noexcept;
+    const_iterator clast() const noexcept;
+
+    bool IsEmpty() const noexcept;
+    void clear() noexcept;
+
   };
 }
 
