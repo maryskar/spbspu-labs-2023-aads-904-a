@@ -20,7 +20,8 @@ class AVLTreeConstIterator
   public:
     using data_t = std::pair< Key, Value >;
     AVLTreeConstIterator();
-    AVLTreeConstIterator(Tree< data_t >* rhs);
+    explicit AVLTreeConstIterator(Tree< data_t >* rhs);
+    AVLTreeConstIterator(const AVLTreeIterator< Key, Value, Compare >& rhs);
     ~AVLTreeConstIterator() = default;
   private:
     Tree< data_t >* ptr_;
@@ -35,6 +36,12 @@ AVLTreeConstIterator< Key, Value, Compare >::AVLTreeConstIterator():
 template< typename Key, typename Value, typename Compare >
 AVLTreeConstIterator< Key, Value, Compare >::AVLTreeConstIterator(Tree< data_t >* rhs):
   ptr_(rhs)
+{
+}
+
+template< typename Key, typename Value, typename Compare >
+AVLTreeConstIterator< Key, Value, Compare >::AVLTreeConstIterator(const AVLTreeIterator< Key, Value, Compare >& rhs):
+  ptr_(rhs.ptr_)
 {
 }
 
