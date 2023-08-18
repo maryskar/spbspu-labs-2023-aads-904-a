@@ -2,6 +2,7 @@
 #define FORWARD_LIST_ITERATOR_H
 #include <iterator>
 #include <cassert>
+#include <memory>
 #include "../common/node.h"
 
 namespace kryuchkova
@@ -27,10 +28,43 @@ namespace kryuchkova
     bool operator!=(const this_t& rhs) const;
     bool operator==(const this_t& rhs) const;
 
+    T & operator*();
+    const T & operator*() const;
+    T * operator->();
+    const T * operator->() const;
+
   private:
     explicit ForwardIterator(Node< T > * node);
     Node< T > * node_;
   };
+
+  template < typename T >
+  T & ForwardIterator< T >::operator*()
+  {
+    assert(node_ != nullptr);
+    return node_->data;
+  }
+
+  template < typename T >
+  const T & ForwardIterator< T >::operator*() const
+  {
+    assert(node_ != nullptr);
+    return node_->data;
+  }
+
+  template < typename T >
+  T * ForwardIterator< T >::operator->()
+  {
+    assert(node_ != nullptr);
+    return std::addressof(node_->data);
+  }
+
+  template < typename T >
+  const T * ForwardIterator< T >::operator->() const
+  {
+    assert(node_ != nullptr);
+    return std::addressof(node_->data);
+  }
 
   template < typename T >
   ForwardIterator< T > & ForwardIterator< T >::operator++()

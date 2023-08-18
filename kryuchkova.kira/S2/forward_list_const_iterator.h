@@ -2,6 +2,7 @@
 #define FORWARD_LIST_CONST_ITERATOR_H
 #include <iterator>
 #include <cassert>
+#include <memory>
 #include "../common/node.h"
 
 namespace kryuchkova
@@ -30,10 +31,27 @@ namespace kryuchkova
     bool operator!=(const this_t& rhs) const;
     bool operator==(const this_t& rhs) const;
 
+    const T & operator*() const;
+    const T * operator->() const;
+
   private:
     Node< T > * node_;
     explicit ConstForwardIterator(Node< T > * node);
   };
+
+  template < typename T >
+  const T & ConstForwardIterator< T >::operator*() const
+  {
+    assert(node_ != nullptr);
+    return node_->data;
+  }
+
+  template < typename T >
+  const T * ConstForwardIterator< T >::operator->() const
+  {
+    assert(node_ != nullptr);
+    return std::addressof(node_->data);
+  }
 
   template < typename T >
   ConstForwardIterator< T > & ConstForwardIterator< T >::operator++()
