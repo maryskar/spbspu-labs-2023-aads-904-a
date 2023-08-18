@@ -26,6 +26,8 @@ class AVLTree
     Compare comp_;
     void rotateLeft(Tree< data_t >* node);
     void rotateRight(Tree< data_t >* node);
+    void rotateRightLeft(Tree< data_t >* node);
+    void rotateLeftRight(Tree< data_t >* node);
   private:
     void updateHeight(Tree< data_t >* tree);
     Tree< data_t >* insert(const Key& key, const Value& value, Tree< data_t >* tree);
@@ -273,5 +275,19 @@ void AVLTree< Key, Value, Compare >::rotateRight(Tree< data_t >* node)
   node->head_ = new_root;
   updateHeight(node);
   updateHeight(new_root);
+}
+
+template< typename Key, typename Value, typename Compare >
+void AVLTree< Key, Value, Compare >::rotateRightLeft(Tree< data_t >* node)
+{
+  rotateRight(node);
+  rotateLeft(node);
+}
+
+template< typename Key, typename Value, typename Compare >
+void AVLTree< Key, Value, Compare >::rotateLeftRight(Tree< data_t >* node)
+{
+  rotateLeft(node);
+  rotateRight(node);
 }
 #endif
