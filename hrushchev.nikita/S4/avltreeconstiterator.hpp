@@ -2,6 +2,9 @@
 #define AVLTREECONSTITERATOR
 
 #include <utility>
+#include <memory>
+
+#include "tree.hpp"
 
 template< typename T >
 class Tree;
@@ -22,6 +25,14 @@ class AVLTreeConstIterator
     AVLTreeConstIterator();
     explicit AVLTreeConstIterator(Tree< data_t >* rhs);
     AVLTreeConstIterator(const AVLTreeIterator< Key, Value, Compare >& rhs);
+    AVLTreeConstIterator< Key, Value, Compare >& operator++();
+    AVLTreeConstIterator< Key, Value, Compare > operator++(int);
+    AVLTreeConstIterator< Key, Value, Compare >& operator--();
+    AVLTreeConstIterator< Key, Value, Compare > operator--(int);
+    const Value& operator*();
+    const Value* operator->();
+    bool operator==(const AVLTreeConstIterator< Key, Value, Compare >& rhs) const;
+    bool operator!=(const AVLTreeConstIterator< Key, Value, Compare >& rhs) const;
     ~AVLTreeConstIterator() = default;
   private:
     Tree< data_t >* ptr_;
@@ -43,6 +54,26 @@ template< typename Key, typename Value, typename Compare >
 AVLTreeConstIterator< Key, Value, Compare >::AVLTreeConstIterator(const AVLTreeIterator< Key, Value, Compare >& rhs):
   ptr_(rhs.ptr_)
 {
+}
+
+template< typename Key, typename Value, typename Compare >
+AVLTreeConstIterator< Key, Value, Compare >& AVLTreeConstIterator< Key, Value, Compare >::operator++()
+{
+  if (ptr_->right_)
+  {
+    ptr_ = getMin(ptr_->right_);
+  }
+  else
+  {
+    Tree< data_t >* parent = ptr_->head_;
+    while (parent && (ptr_ == parent->right_))
+    {
+      ptr_ = parent;
+      parent = parent->head_;
+    }
+    ptr_ = parent;
+  }
+  return *this;
 }
 
 #endif
