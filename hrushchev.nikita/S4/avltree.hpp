@@ -28,6 +28,7 @@ class AVLTree
     void rotateRight(Tree< data_t >* node);
     void rotateRightLeft(Tree< data_t >* node);
     void rotateLeftRight(Tree< data_t >* node);
+    void balance(Tree< data_t >* node);
   private:
     void updateHeight(Tree< data_t >* tree);
     Tree< data_t >* insert(const Key& key, const Value& value, Tree< data_t >* tree);
@@ -45,13 +46,15 @@ AVLTree< Key, Value, Compare >::AVLTree():
 template< typename Key, typename Value, typename Compare >
 void AVLTree< Key, Value, Compare >::insert(const Key& key, const Value& value)
 {
-  insert(key, value, node_);
+  auto to_balance = insert(key, value, node_);
+  balance(to_balance);
 }
 
 template< typename Key, typename Value, typename Compare >
 void AVLTree< Key, Value, Compare >::erase(const Key& key)
 {
   erase(find(key, node_));
+  balance(node_);
 }
 
 template< typename Key, typename Value, typename Compare >
@@ -182,7 +185,7 @@ void AVLTree< Key, Value, Compare >::erase(Tree< typename AVLTree< Key, Value, C
     }
     delete tree;
     updateHeight(tree->head_);
-    //balance(tree->head_);
+    balance(tree->head_);
     return;
   }
   if (!tree->right_ || !tree->left_)
@@ -205,14 +208,14 @@ void AVLTree< Key, Value, Compare >::erase(Tree< typename AVLTree< Key, Value, C
     }
     delete tree;
     updateHeight(child->head_);
-    //balance(child->head_);
+    balance(child->head_);
     return;
   }
   Tree<data_t>* maxNode = getMax(tree->left_);
   tree->data_ = maxNode->data_;
   erase(maxNode);
   updateHeight(tree->head_);
-  //balance(tree->head_);
+  balance(tree->head_);
 }
 
 template<typename Key, typename Value, typename Compare>
@@ -290,4 +293,39 @@ void AVLTree< Key, Value, Compare >::rotateLeftRight(Tree< data_t >* node)
   rotateLeft(node);
   rotateRight(node);
 }
+
+template< typename Key, typename Value, typename Compare >
+void AVLTree< Key, Value, Compare >::balance(Tree< data_t >* node)
+{
+  if (!node)
+  {
+    return;
+  }
+  int balanceFactor = getHeight(node->left_) - getHeight(node->right_);
+
+  if (balanceFactor > 1)
+  {
+    if (getHeight(node->left_->left_) >= getHeight(node->left_->right_))
+    {
+      rotateRight(node);
+    }
+    else
+    {
+      rotateLeftRight(node);
+    }
+  }
+  else if (balanceFactor < -1)
+  {
+    if (getHeight(node->right_->right_) >= getHeight(node->right_->left_))
+    {
+      rotateLeft(node);
+    }
+    else
+    {
+      rotateRightLeft(node);
+    }
+  }
+  balance(node->head_);
+}
+
 #endif
