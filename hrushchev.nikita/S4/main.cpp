@@ -38,6 +38,7 @@ int main() {
     inOrderTraversal(avlTree.node_);
     for (auto iter = avlTree.begin(); iter != avlTree.end(); iter++)
     {
+      *iter = *iter + "awd"; 
       std::cout << *iter << "\n";
     }
     return 0;

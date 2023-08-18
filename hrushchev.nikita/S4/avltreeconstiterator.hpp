@@ -112,4 +112,28 @@ AVLTreeConstIterator< Key, Value, Compare > AVLTreeConstIterator< Key, Value, Co
   return temp;
 }
 
+template< typename Key, typename Value, typename Compare >
+const Value& AVLTreeConstIterator< Key, Value, Compare >::operator*()
+{
+  return ptr_->data_.second;
+}
+
+template< typename Key, typename Value, typename Compare >
+const Value* AVLTreeConstIterator< Key, Value, Compare >::operator->()
+{
+  return std::addressof(ptr_->data_.second);
+}
+
+template< typename Key, typename Value, typename Compare >
+bool AVLTreeConstIterator< Key, Value, Compare >::operator==(const AVLTreeConstIterator< Key, Value, Compare >& rhs) const
+{
+  return ptr_ == rhs.ptr_;
+}
+template< typename Key, typename Value, typename Compare >
+bool AVLTreeConstIterator< Key, Value, Compare >::operator!=(const AVLTreeConstIterator< Key, Value, Compare >& rhs) const
+{
+  return ptr_ != rhs.ptr_;
+}
+
+
 #endif
