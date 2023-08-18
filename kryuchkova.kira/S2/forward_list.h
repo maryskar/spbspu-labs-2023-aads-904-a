@@ -27,6 +27,8 @@ namespace kryuchkova
     iterator insert_after(const_iterator pos, const T & val);
     iterator insert_after(const_iterator pos, T && val);
     iterator insert_after(const_iterator pos, std::size_t n, const T & val);
+    iterator erase_after(const_iterator pos);
+    iterator erase_after(const_iterator first, const_iterator last);
 
     iterator before_begin() noexcept;
     const_iterator before_begin() const noexcept;
@@ -43,7 +45,24 @@ namespace kryuchkova
 
     bool IsEmpty() const noexcept;
     void clear() noexcept;
+    void push_front(const T & val);
+    void push_front(T && val);
+    void pop_front() noexcept;
+    void resize(std::size_t count);
+    void resize(std::size_t count, const T & val);
+    void swap(this_t & other) noexcept;
+    void splice_after(const_iterator pos, this_t & other);
+    void splice_after(const_iterator pos, this_t && other);
+    void splice_after(const_iterator pos, this_t & other, const_iterator iter);
+    void splice_after(const_iterator pos, this_t && other, const_iterator iter);
+    void splice_after(const_iterator pos, this_t & other, const_iterator first, const_iterator last);
+    void splice_after(const_iterator pos, this_t && other, const_iterator first, const_iterator last);
+    void remove(const T & val);
+    void reverse() noexcept;
 
+  private:
+    iterator last_;
+    iterator first_;
   };
 }
 
