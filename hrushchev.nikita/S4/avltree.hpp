@@ -6,6 +6,7 @@
 
 #include "tree.hpp"
 #include "avltreeiterator.hpp"
+#include "avltreeconstiterator.hpp"
 
 template< typename Key, typename Value, typename Compare = std::less< > >
 class AVLTree
@@ -13,11 +14,14 @@ class AVLTree
   public:
     using data_t = std::pair< Key, Value >;
     using iterator = AVLTreeIterator< Key, Value, Compare >;
+    using const_iterator = AVLTreeConstIterator< Key, Value, Compare >;
     AVLTree();
     void insert(const Key& key, const Value& value);
     void erase(const Key& key);
     iterator begin();
+    const_iterator cbegin();
     iterator end();
+    const_iterator cend();
     Tree< data_t >* node_;
     Compare comp_;
     void rotateLeft(Tree< data_t >* node);
@@ -52,11 +56,22 @@ typename AVLTree< Key, Value, Compare >::iterator AVLTree< Key, Value, Compare >
 {
   return iterator(getMin(node_));
 }
+template< typename Key, typename Value, typename Compare >
+typename AVLTree< Key, Value, Compare >::const_iterator AVLTree< Key, Value, Compare >::cbegin()
+{
+  return const_iterator(getMin(node_));
+}
 
 template< typename Key, typename Value, typename Compare >
 typename AVLTree< Key, Value, Compare >::iterator AVLTree< Key, Value, Compare >::end()
 {
   return iterator(getMax(node_)->right_);
+}
+
+template< typename Key, typename Value, typename Compare >
+typename AVLTree< Key, Value, Compare >::const_iterator AVLTree< Key, Value, Compare >::cend()
+{
+  return const_iterator(getMax(node_)->right_);
 }
 
 template<typename Key, typename Value, typename Compare>
