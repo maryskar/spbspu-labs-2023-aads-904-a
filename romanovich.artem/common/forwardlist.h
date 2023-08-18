@@ -127,13 +127,13 @@ namespace romanovich
   }
   template< typename T >
   void ForwardList< T >::splice_after(const_iterator position,
-                                        ForwardList &source, const_iterator first, const_iterator last)
+      ForwardList &source, const_iterator first, const_iterator last)
   {
     splice_after(position, std::move(source), first, last);
   }
   template< typename T >
   void ForwardList< T >::splice_after(const_iterator position,
-                                        ForwardList &&source, const_iterator first, const_iterator last)
+      ForwardList &&source, const_iterator first, const_iterator last)
   {
     if (first == last)
     {
@@ -287,8 +287,8 @@ namespace romanovich
     }
   }
   template< typename T >
-  ForwardListIterator< T >
-  ForwardList< T >::erase_after(ConstForwardListIterator< T > first, ConstForwardListIterator< T > last)
+  ForwardListIterator< T > ForwardList< T >::erase_after(ConstForwardListIterator< T > first,
+      ConstForwardListIterator< T > last)
   {
     if (first == last || first == cend() || empty())
     {
@@ -371,8 +371,7 @@ namespace romanovich
     }
   }
   template< typename T >
-  ForwardListIterator< T >
-  ForwardList< T >::insert_after(ForwardListIterator< T > position, const T &value)
+  ForwardListIterator< T > ForwardList< T >::insert_after(ForwardListIterator< T > position, const T &value)
   {
     details::ListNode< T > *node = new details::ListNode< T >(value);
     node->next_ = position.head_->next_;
@@ -434,8 +433,7 @@ namespace romanovich
     return *this;
   }
   template< typename T >
-  ForwardList< T > &ForwardList< T >::operator=(ForwardList< T > &&other)
-  noexcept
+  ForwardList< T > &ForwardList< T >::operator=(ForwardList< T > &&other) noexcept
   {
     if (this != std::addressof(other))
     {
