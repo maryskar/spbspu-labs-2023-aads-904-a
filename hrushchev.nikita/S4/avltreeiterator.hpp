@@ -13,13 +13,18 @@ template< typename Key, typename Value, typename Compare >
 class AVLTree;
 
 template< typename Key, typename Value, typename Compare >
+class AVLTreeConstIterator;
+
+template< typename Key, typename Value, typename Compare >
 class AVLTreeIterator
 {
   friend class AVLTree< Key, Value, Compare >;
+  friend class AVLTreeConstIterator< Key, Value, Compare >;
   public:
     using data_t = std::pair< Key, Value >;
     AVLTreeIterator();
     explicit AVLTreeIterator(Tree< data_t >* rhs);
+    AVLTreeIterator(const AVLTreeConstIterator< Key, Value, Compare >& rhs);
     AVLTreeIterator< Key, Value, Compare >& operator++();
     AVLTreeIterator< Key, Value, Compare > operator++(int);
     AVLTreeIterator< Key, Value, Compare >& operator--();
@@ -42,6 +47,12 @@ AVLTreeIterator< Key, Value, Compare >::AVLTreeIterator():
 template< typename Key, typename Value, typename Compare >
 AVLTreeIterator< Key, Value, Compare >::AVLTreeIterator(Tree< data_t >* rhs):
   ptr_(rhs)
+{
+}
+
+template< typename Key, typename Value, typename Compare >
+AVLTreeIterator< Key, Value, Compare >::AVLTreeIterator(const AVLTreeConstIterator< Key, Value, Compare >& rhs):
+  ptr_(rhs.ptr_)
 {
 }
 
