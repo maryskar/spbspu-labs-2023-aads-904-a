@@ -2,6 +2,7 @@
 #define FORWARDLIST_H
 #include <stdexcept>
 #include "forwardlistiter.h"
+#include "constforwardlistiter.h"
 namespace romanovich
 {
   template< typename T >
