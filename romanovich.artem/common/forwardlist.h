@@ -1,5 +1,6 @@
 #ifndef FORWARDLIST_H
 #define FORWARDLIST_H
+#include <stdexcept>
 #include "forwardlistiter.h"
 namespace romanovich
 {
