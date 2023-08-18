@@ -1,8 +1,5 @@
 #ifndef FORWARDLISTITER_H
 #define FORWARDLISTITER_H
-#include <iterator>
-#include <cstddef>
-#include <memory>
 #include "listnode.h"
 namespace romanovich
 {

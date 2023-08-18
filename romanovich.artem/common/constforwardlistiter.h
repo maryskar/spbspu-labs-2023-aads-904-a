@@ -1,8 +1,5 @@
 #ifndef CONSTFORWARDLISTITER_H
 #define CONSTFORWARDLISTITER_H
-#include <iterator>
-#include <cstddef>
-#include <memory>
 #include "listnode.h"
 namespace romanovich
 {

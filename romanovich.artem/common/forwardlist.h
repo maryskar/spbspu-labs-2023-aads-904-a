@@ -1,11 +1,6 @@
 #ifndef FORWARDLIST_H
 #define FORWARDLIST_H
-#include <tuple>
-#include <cstddef>
-#include <stdexcept>
-#include "listnode.h"
 #include "forwardlistiter.h"
-#include "constforwardlistiter.h"
 namespace romanovich
 {
   template< typename T >
