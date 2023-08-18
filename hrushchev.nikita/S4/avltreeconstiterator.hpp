@@ -76,4 +76,12 @@ AVLTreeConstIterator< Key, Value, Compare >& AVLTreeConstIterator< Key, Value, C
   return *this;
 }
 
+template< typename Key, typename Value, typename Compare >
+AVLTreeConstIterator< Key, Value, Compare > AVLTreeConstIterator< Key, Value, Compare >::operator++(int)
+{
+  AVLTreeConstIterator< Key, Value, Compare > temp(*this);
+  ++(*this);
+  return temp;
+}
+
 #endif

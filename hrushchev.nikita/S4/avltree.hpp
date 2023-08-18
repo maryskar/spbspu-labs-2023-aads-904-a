@@ -1,7 +1,7 @@
 #ifndef AVLTREE_HPP
 #define AVLTREE_HPP
 
-#include <utility>  
+#include <utility>
 #include <functional>
 
 #include "tree.hpp"
@@ -190,7 +190,6 @@ void AVLTree< Key, Value, Compare >::erase(Tree< typename AVLTree< Key, Value, C
     //balance(child->head_);
     return;
   }
-  
   Tree<data_t>* maxNode = getMax(tree->left_);
   tree->data_ = maxNode->data_;
   erase(maxNode);
