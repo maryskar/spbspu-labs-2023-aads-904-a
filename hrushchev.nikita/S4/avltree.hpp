@@ -228,5 +228,4 @@ void AVLTree< Key, Value, Compare >::rotateLeft(Tree< data_t >* node)
     updateHeight(newRoot);
 }
 
-
 #endif

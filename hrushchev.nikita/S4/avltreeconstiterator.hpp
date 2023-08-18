@@ -84,4 +84,32 @@ AVLTreeConstIterator< Key, Value, Compare > AVLTreeConstIterator< Key, Value, Co
   return temp;
 }
 
+template< typename Key, typename Value, typename Compare >
+AVLTreeConstIterator< Key, Value, Compare >& AVLTreeConstIterator< Key, Value, Compare >::operator--()
+{
+  if (ptr_->left_)
+  {
+    ptr_ = getMax(ptr_->left_);
+  }
+  else
+  {
+    Tree< data_t >* parent = ptr_->head_;
+    while (parent && (ptr_ == parent->left_))
+    {
+      ptr_ = parent;
+      parent = parent->head_;
+    }
+    ptr_ = parent;
+  }
+  return *this;
+}
+
+template< typename Key, typename Value, typename Compare >
+AVLTreeConstIterator< Key, Value, Compare > AVLTreeConstIterator< Key, Value, Compare >::operator--(int)
+{
+  AVLTreeIterator< Key, Value, Compare > temp(*this);
+  --(*this);
+  return temp;
+}
+
 #endif
