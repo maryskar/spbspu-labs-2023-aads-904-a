@@ -25,6 +25,7 @@ class AVLTree
     Tree< data_t >* node_;
     Compare comp_;
     void rotateLeft(Tree< data_t >* node);
+    void rotateRight(Tree< data_t >* node);
   private:
     void updateHeight(Tree< data_t >* tree);
     Tree< data_t >* insert(const Key& key, const Value& value, Tree< data_t >* tree);
@@ -215,32 +216,62 @@ void AVLTree< Key, Value, Compare >::erase(Tree< typename AVLTree< Key, Value, C
 template<typename Key, typename Value, typename Compare>
 void AVLTree< Key, Value, Compare >::rotateLeft(Tree< data_t >* node)
 {
-    Tree<data_t>* newRoot = node->right_;
-    node->right_ = newRoot->left_;
-    if (newRoot->left_)
+  Tree< data_t >* new_root = node->right_;
+  node->right_ = new_root->left_;
+  if (new_root->left_)
+  {
+    new_root->left_->head_ = node;
+  }
+  new_root->head_ = node->head_;
+  if (node->head_)
+  {
+    if (node->head_->left_ == node)
     {
-      newRoot->left_->head_ = node;
-    }
-    newRoot->head_ = node->head_;
-    if (node->head_)
-    {
-      if (node->head_->left_ == node)
-      {
-        node->head_->left_ = newRoot;
-      }
-      else
-      {
-        node->head_->right_ = newRoot;
-      }
+      node->head_->left_ = new_root;
     }
     else
     {
-      node_ = newRoot;
+      node->head_->right_ = new_root;
     }
-    newRoot->left_ = node;
-    node->head_ = newRoot;
-    updateHeight(node);
-    updateHeight(newRoot);
+  }
+  else
+  {
+    node_ = new_root;
+  }
+  new_root->left_ = node;
+  node->head_ = new_root;
+  updateHeight(node);
+  updateHeight(new_root);
 }
 
+template< typename Key, typename Value, typename Compare >
+void AVLTree< Key, Value, Compare >::rotateRight(Tree< data_t >* node)
+{
+  Tree< data_t >* new_root = node->left_;
+  node->left_ = new_root->right_;
+  if (new_root->right_)
+  {
+    new_root->right_->head_ = node;
+  }
+  new_root->head_ = node->head_;
+  if (node->head_)
+  {
+    if (node->head_->left_ == node)
+    {
+      node->head_->left_ = new_root;
+    }
+    else
+    {
+      node->head_->right_ = new_root;
+    }
+  }
+  else
+  {
+    node_ = new_root;
+  }
+  new_root->right_ = node;
+  node->head_ = new_root;
+  updateHeight(node);
+  updateHeight(new_root);
+}
 #endif

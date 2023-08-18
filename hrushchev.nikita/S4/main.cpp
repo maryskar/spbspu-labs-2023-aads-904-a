@@ -33,6 +33,7 @@ int main() {
     printTree(avlTree.node_);
     std::cout << "\n\n\n\n";
     avlTree.rotateLeft(avlTree.node_);
+    avlTree.rotateRight(avlTree.node_);
     printTree(avlTree.node_);
     std::cout << "\n\n\n\n";
     inOrderTraversal(avlTree.node_);
