@@ -4,6 +4,7 @@
 #include <initializer_list>
 #include "forward_list_const_iterator.h"
 #include "forward_list_iterator.h"
+#include "../common/node.h"
 
 namespace kryuchkova
 {
@@ -61,9 +62,54 @@ namespace kryuchkova
     void reverse() noexcept;
 
   private:
+    iterator fake_;
     iterator last_;
-    iterator first_;
   };
+
+  template < typename T >
+  ForwardList< T >::ForwardList():
+    fake_(static_cast< Node< T > * >(::operator new (sizeof(Node< T >)))),
+    last_(iterator(nullptr))
+  {
+    fake_.node_->next_ = nullptr;
+  }
+
+  template < typename T >
+  bool ForwardList< T >::IsEmpty() const noexcept
+  {
+    return fake_.node_->next_ == nullptr;
+  }
+
+  template < typename T >
+  void ForwardList< T >::clear() noexcept
+  {
+    if (IsEmpty())
+    {
+      return;
+    }
+    while (fake_.node_->next_ != nullptr)
+    {
+      Node< T > * temp = fake_.node_->next_;
+      fake_.node_->next_ = temp->next_;
+      delete temp;
+    }
+    fake_.node_->next_ = nullptr;
+    last_.node_ = nullptr;
+  }
+
+  template < typename T >
+  ForwardList< T >::~ForwardList()
+  {
+    clear();
+    ::operator delete(fake_.node_);
+  }
+
+  template < typename T >
+  ForwardList< T >::ForwardList(const this_t & rhs):
+  {
+    //
+  }
+
 }
 
 #endif
