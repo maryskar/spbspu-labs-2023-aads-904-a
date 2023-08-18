@@ -2,6 +2,7 @@
 #define AVLTREEITERATOR_HPP
 
 #include <utility>
+#include <memory>
 
 #include "tree.hpp"
 
