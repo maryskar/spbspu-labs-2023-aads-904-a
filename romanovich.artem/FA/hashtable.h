@@ -9,8 +9,7 @@ public:
   HashTable();
   explicit HashTable(size_t size, size_t capacity = 100);
   void addWord(const std::string &word);
-  //сделать круче
-  void print() const;
+  std::ostream &print(std::ostream &out) const;
   void resize(size_t newCapacity);
 private:
   size_t size_;

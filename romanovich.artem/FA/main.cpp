@@ -10,7 +10,7 @@ int main()
     if (!line.empty())
     {
       table.addWord(line);
-      table.print();
+      table.print(std::cout) << "\n";
     }
   }
 }
