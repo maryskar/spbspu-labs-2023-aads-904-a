@@ -252,37 +252,36 @@ namespace fesenko
     if (empty()) {
       root_ = newTree;
       return {iterator(root_), true};
-    } else {
-      iterator cur = begin();
-      while (comp_(cur->first, value.first)) {
-        cur++;
-      }
-      if (!comp_(value.first, cur->first)) {
-        return {end(), false};
-      } else {
-        iterator prev = cur;
-        prev--;
-        if (cur.node_->left == nullptr) {
-          cur.node_->left = newTree;
-          newTree->parent = cur.node_;
-        } else if (prev.node_->right == nullptr) {
-          prev.node_->right = newTree;
-          newTree->parent = prev.node_;
-        } else if (cur.node_->parent == prev.node_) {
-          newTree->right = prev.node_->right;
-          prev.node_->right = newTree;
-          newTree->right->parent = newTree;
-          newTree->parent = prev.node_;
-        } else if (cur.node_->left == prev.node_) {
-          newTree->parent = prev.node_->parent;
-          prev.node_->parent = newTree;
-          newTree->left = prev.node_;
-          cur.node_->left = newTree;
+    }
+    iterator res = end();
+    auto *cur = root_;
+    while (true) {
+      if (comp_(value.first, cur->data.first)) {
+        if (cur->left) {
+          cur = cur->left;
+        } else {
+          cur->left = newTree;
+          newTree->parent = cur;
+          res = iterator(newTree);
+          break;
         }
-        balance(newTree);
-        return {iterator(newTree), true};
+      } else if (comp_(cur->data.first, value.first)) {
+        if (cur->right) {
+          cur = cur->right;
+        } else {
+          cur->right = newTree;
+          newTree->parent = cur;
+          res = iterator(newTree);
+          break;
+        }
+      } else {
+        break;
       }
     }
+    if (res != end()) {
+      balance(newTree);
+    }
+    return {res, res != end()};
   }
 
   template< typename Key, typename Value, typename Compare >
