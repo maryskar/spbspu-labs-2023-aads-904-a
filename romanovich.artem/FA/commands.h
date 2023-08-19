@@ -6,8 +6,8 @@
 #include "hashtable.h"
 namespace romanovich
 {
+  void addWordCommand(std::istream &in, HashTable &hashTable);
   using CommandHandler = std::function< void(std::istream &, std::ostream &, HashTable &) >;
-  void addWordCommand(std::istream &in, std::ostream &out, HashTable &hashTable);
   RedBlackTree< std::string, CommandHandler > createCommandDictionary(HashTable &hashTable);
 }
 #endif
