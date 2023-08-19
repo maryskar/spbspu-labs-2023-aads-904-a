@@ -1,5 +1,5 @@
 #include "murmurhash2.h"
-uint32_t romanovich::generateMurmurHash2(const std::string &key, uint32_t m, int r)
+uint32_t romanovich::generateMurmurHash2(const std::string &key, uint32_t maxValue, uint32_t m, int r)
 {
   size_t len = key.length();
   uint32_t h = 0;
@@ -31,5 +31,6 @@ uint32_t romanovich::generateMurmurHash2(const std::string &key, uint32_t m, int
   h ^= h >> 13;
   h *= m;
   h ^= h >> 15;
-  return h;
+  uint32_t boundedValue = h % maxValue + 1;
+  return boundedValue;
 }

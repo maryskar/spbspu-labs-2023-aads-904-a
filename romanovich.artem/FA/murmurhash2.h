@@ -3,6 +3,7 @@
 #include <string>
 namespace romanovich
 {
-  uint32_t generateMurmurHash2(const std::string &key, uint32_t m = 0x5bd1e995, int r = 24);
+  uint32_t generateMurmurHash2(const std::string &key, uint32_t maxValue = 4294967295,
+                               uint32_t m = 0x5bd1e995, int r = 24);
 }
 #endif
