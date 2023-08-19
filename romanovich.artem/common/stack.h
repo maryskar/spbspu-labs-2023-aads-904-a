@@ -1,8 +1,7 @@
 #ifndef STACK_H
 #define STACK_H
-#include <tuple>
 #include <stdexcept>
-#include "node.h"
+#include "listnode.h"
 namespace romanovich
 {
   template< typename T >

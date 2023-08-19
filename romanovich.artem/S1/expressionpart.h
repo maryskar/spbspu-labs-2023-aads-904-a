@@ -1,5 +1,6 @@
 #ifndef EXPRESSION_PART_H
 #define EXPRESSION_PART_H
+#include <string>
 #include "parenthesis.h"
 #include "operations.h"
 namespace romanovich

@@ -1,4 +1,5 @@
 #include "expressionpart.h"
+#include <stdexcept>
 namespace romanovich
 {
   ExpPart::ExpPart(parenthesis_t pr):
@@ -40,7 +41,7 @@ namespace romanovich
     {
       return content_.operation_;
     }
-    throw;
+    throw std::logic_error("Not operation.");
   }
   long long ExpPart::getOperand() const
   {
@@ -48,7 +49,7 @@ namespace romanovich
     {
       return content_.operand_;
     }
-    throw;
+    throw std::logic_error("Not operand.");
   }
   parenthesis_t ExpPart::getParenthesis() const
   {
@@ -56,15 +57,18 @@ namespace romanovich
     {
       return content_.parenthesis_;
     }
-    throw;
+    throw std::logic_error("Not parenthesis.");
   }
-  ExpPart::ExpContent::ExpContent(parenthesis_t pr): parenthesis_(pr)
+  ExpPart::ExpContent::ExpContent(parenthesis_t pr):
+    parenthesis_(pr)
   {
   }
-  ExpPart::ExpContent::ExpContent(operations_t op): operation_(op)
+  ExpPart::ExpContent::ExpContent(operations_t op):
+    operation_(op)
   {
   }
-  ExpPart::ExpContent::ExpContent(long long op): operand_(op)
+  ExpPart::ExpContent::ExpContent(long long op):
+    operand_(op)
   {
   }
 }
