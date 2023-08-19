@@ -99,6 +99,7 @@ namespace fesenko
   AVL< Key, Value, Compare > &AVL< Key, Value, Compare >::operator=(const this_t &other)
   {
     root_ = copy(other.root_);
+    comp_ = other.comp_;
     return *this;
   }
 
@@ -115,7 +116,7 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   AVL< Key, Value, Compare >::~AVL()
   {
-    clear();
+    deleteNode(root_);
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -366,21 +367,18 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   void AVL< Key, Value, Compare >::clear() noexcept
   {
-    if (!root_) {
-      return;
-    }
     deleteNode(root_);
+    root_ = nullptr;
   }
 
   template< typename Key, typename Value, typename Compare >
   void AVL< Key, Value, Compare >::deleteNode(tree *node) noexcept
   {
-    if (node->left) {
-      deleteNode(node->left);
+    if (!node) {
+      return;
     }
-    if (node->right) {
-      deleteNode(node->right);
-    }
+    deleteNode(node->left);
+    deleteNode(node->right);
     delete node;
   }
 
