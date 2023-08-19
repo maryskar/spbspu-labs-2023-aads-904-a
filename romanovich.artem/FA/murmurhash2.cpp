@@ -1,4 +1,13 @@
 #include "murmurhash2.h"
+namespace
+{
+  uint32_t projectHashToRange(uint32_t value, uint32_t maxValue)
+  {
+    uint64_t maxValue64 = static_cast< uint64_t >(maxValue);
+    uint64_t result = static_cast< uint64_t >(value) * maxValue64;
+    return static_cast< uint32_t >((result >> 32) + 1) - 1;
+  }
+}
 uint32_t romanovich::generateMurmurHash2(const std::string &key, uint32_t maxValue, uint32_t m, int r)
 {
   size_t len = key.length();
@@ -31,6 +40,5 @@ uint32_t romanovich::generateMurmurHash2(const std::string &key, uint32_t maxVal
   h ^= h >> 13;
   h *= m;
   h ^= h >> 15;
-  uint32_t boundedValue = h % maxValue + 1;
-  return boundedValue;
+  return projectHashToRange(h, maxValue);
 }

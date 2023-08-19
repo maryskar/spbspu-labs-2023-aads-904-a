@@ -9,6 +9,7 @@ HashTable::HashTable(size_t size, size_t capacity):
 }
 void HashTable::print() const
 {
+  std::cout << "---Hash data---";
   std::cout << "Size: " << size_ << "\n";
   for (size_t i = 0; i < size_; ++i)
   {
@@ -17,13 +18,14 @@ void HashTable::print() const
     {
       //continue;
     }
-    std::cout << "Key: " << entry.word << ", Value: " << entry.translations.size() << "\n";
+    std::cout << "Index: " << i << ", Key: " << entry.word << ", Value: " << entry.translations.size() << "\n";
   }
+  std::cout << "---------------\n";
 }
 void HashTable::addWord(const std::string &word)
 {
   uint32_t index = romanovich::generateMurmurHash2(word, capacity_);
-  std::cerr << index << "\n";
+  std::cerr << "Hash: " << index << "\n";
   if (data_[index].word.empty())
   {
     data_[index] = {word, {}};

@@ -4,9 +4,9 @@
 #include "hashtable.h"
 int main()
 {
+  HashTable table;
   for (std::string line; std::getline(std::cin, line);)
   {
-    HashTable table;
     if (!line.empty())
     {
       table.addWord(line);
