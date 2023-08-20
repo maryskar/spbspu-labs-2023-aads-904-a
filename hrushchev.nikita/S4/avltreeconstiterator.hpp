@@ -29,8 +29,8 @@ class AVLTreeConstIterator
     AVLTreeConstIterator< Key, Value, Compare > operator++(int);
     AVLTreeConstIterator< Key, Value, Compare >& operator--();
     AVLTreeConstIterator< Key, Value, Compare > operator--(int);
-    const Value& operator*();
-    const Value* operator->();
+    const data_t& operator*();
+    const data_t* operator->();
     bool operator==(const AVLTreeConstIterator< Key, Value, Compare >& rhs) const;
     bool operator!=(const AVLTreeConstIterator< Key, Value, Compare >& rhs) const;
     ~AVLTreeConstIterator() = default;
@@ -113,15 +113,15 @@ AVLTreeConstIterator< Key, Value, Compare > AVLTreeConstIterator< Key, Value, Co
 }
 
 template< typename Key, typename Value, typename Compare >
-const Value& AVLTreeConstIterator< Key, Value, Compare >::operator*()
+const typename AVLTreeConstIterator< Key, Value, Compare >::data_t& AVLTreeConstIterator< Key, Value, Compare >::operator*()
 {
-  return ptr_->data_.second;
+  return ptr_->data_;
 }
 
 template< typename Key, typename Value, typename Compare >
-const Value* AVLTreeConstIterator< Key, Value, Compare >::operator->()
+const typename AVLTreeConstIterator< Key, Value, Compare >::data_t* AVLTreeConstIterator< Key, Value, Compare >::operator->()
 {
-  return std::addressof(ptr_->data_.second);
+  return std::addressof(ptr_->data_);
 }
 
 template< typename Key, typename Value, typename Compare >
