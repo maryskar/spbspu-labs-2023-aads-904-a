@@ -158,6 +158,33 @@ namespace potapova
         head = new_node; 
       }
 
+      void clear()
+      {
+        while (head != nullptr)
+        {
+          Node* temp = head;
+          head = head->next_node_ptr;
+          delete temp;
+        }
+      }
+
+      bool empty() const
+      {
+        return head == nullptr;
+      }
+
+      size_t size() const
+      {
+        size_t counter = 0;
+        const Node* current = head;
+        while (current != nullptr)
+        {
+          ++counter;
+          current = current->next_node_ptr;
+        }
+        return counter;
+      }
+
       Iterator begin()
       {
         return Iterator(head);
@@ -166,6 +193,26 @@ namespace potapova
       ConstIterator begin() const
       {
         return ConstIterator(head);
+      }
+
+      Iterator end()
+      {
+        Node* last_node = head;
+        while (last_node != nullptr && last_node->next_node_ptr != nullptr)
+        {
+          last_node = last_node->next_node_ptr;
+        }
+        return Iterator(last_node);
+      }
+
+      ConstIterator end() const
+      {
+        Node* last_node = head;
+        while (last_node != nullptr || last_node->next_node_ptr != nullptr)
+        {
+          last_node = last_node->next_node_ptr;
+        }
+        return ConstIterator(last_node);
       }
     private:
       Node* head;
