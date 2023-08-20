@@ -118,44 +118,6 @@ namespace tarasenko
   }
 
   template< class Key, class Value, class Compare >
-  std::ostream& print(std::ostream& output, const std::string& name_of_dict,
-     const Dictionary< std::string, Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
-  {
-    Dictionary< Key, Value, Compare > given_dict = dict_of_dict.at(name_of_dict);
-    if (given_dict.isEmpty())
-    {
-      throw std::invalid_argument("Empty");
-    }
-    printDict(output, name_of_dict, given_dict) << "\n";
-    return output;
-  }
-
-  template< class Key, class Value, class Compare >
-  std::ostream& printIf(std::ostream& output, const std::string& key,
-     const Dictionary< std::string, Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
-  {
-    auto it = dict_of_dict.cbegin();
-    auto key_dict = std::stoll(key);
-    bool was_out = false;
-    for (; it != dict_of_dict.cend(); it++)
-    {
-      if (it->second.find(key_dict) != it->second.cend())
-      {
-        if (was_out)
-        {
-          output << " " << it->first;
-        }
-        else
-        {
-          output << it->first;
-          was_out = true;
-        }
-      }
-    }
-    return output << "\n";
-  }
-
-  template< class Key, class Value, class Compare >
   std::istream& operator>>(std::istream& input, Dictionary< Key, Value, Compare >& dict)
   {
     Key key;
@@ -230,36 +192,6 @@ namespace tarasenko
     }
   }
 
-  template< class Key, class Value, class Compare >
-  void deleteDicts(std::istream& input, Dictionary< std::string,
-     Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
-  {
-    ForwardList< std::string > keys = details::getKeys(input);
-    for (auto i: keys)
-    {
-      dict_of_dict.remove(i);
-    }
-  }
-
-  template< class Key, class Value, class Compare >
-  void writeDicts(std::istream& input, Dictionary< std::string,
-     Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
-  {
-    std::string filename = " ";
-    input >> filename;
-    std::ofstream out;
-    out.open(filename);
-    if (!out.is_open())
-    {
-      throw std::invalid_argument("File not found");
-    }
-    ForwardList< std::string > keys = details::getKeys(input);
-    for (auto i: keys)
-    {
-      printDict(out, i, dict_of_dict.at(i)) << "\n";
-    }
-  }
-
   namespace details
   {
     template< typename Key, typename Value, typename Compare >
@@ -275,66 +207,9 @@ namespace tarasenko
   }
 
   template< class Key, class Value, class Compare >
-  void resort(std::istream& input, Dictionary< std::string,
-     Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
-  {
-    std::string sort = " ";
-    input >> sort;
-    Comp comp;
-    if (sort == "ascending")
-    {
-      Comp ascending(std::less<>{});
-      comp = ascending;
-    }
-    else if (sort == "descending")
-    {
-      Comp descending(std::greater<>{});
-      comp = descending;
-    }
-    else
-    {
-      throw std::invalid_argument("Invalid command");
-    }
-    auto it = dict_of_dict.begin();
-    for (; it != dict_of_dict.end(); it++)
-    {
-      dict_of_dict[it->first] = details::resortDict(it->second, comp);
-    }
-  }
-
-  template< class Key, class Value, class Compare >
-  void put(std::istream& input, Dictionary< std::string,
-    Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
-  {
-    Key new_key;
-    Value new_val;
-    input >> new_key >> new_val;
-    if (!input)
-    {
-      throw std::invalid_argument("Incorrect data");
-    }
-    ForwardList< std::string > keys = details::getKeys(input);
-    for (auto i: keys)
-    {
-      dict_of_dict[i].push(new_key, new_val);
-    }
-  }
-
-  template< class Key, class Value, class Compare >
   void swap(Dictionary< Key, Value, Compare >& lhs, Dictionary< Key, Value, Compare >& rhs)
   {
     lhs.swap(rhs);
-  }
-
-  template< class Key, class Value, class Compare >
-  void copy(std::istream& input, Dictionary< std::string,
-     Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
-  {
-    std::string name_dict = " ";
-    std::string name_new_dict = " ";
-    input >> name_dict >> name_new_dict;
-    auto dict = dict_of_dict.at(name_dict);
-    dict_of_dict.push(name_new_dict, dict);
   }
 
   template< class Key, class Value, class Compare >
@@ -367,37 +242,6 @@ namespace tarasenko
       }
       return random_dict;
     }
-  }
-
-  template< class Key, class Value, class Compare >
-  void addRandomDict(std::istream& input, Dictionary< std::string,
-    Dictionary< Key, Value, Compare >, std::greater<> >& dict_of_dict)
-  {
-    std::string name_new_dict = " ";
-    size_t size = 0;
-    input >> name_new_dict >> size;
-    if (!input)
-    {
-      throw std::invalid_argument("Incorrect data");
-    }
-    ForwardList< std::string > names_of_dicts = details::getKeys(input);
-
-    Dictionary< Key, Value, Compare > dict_of_elems;
-    auto i = names_of_dicts.begin();
-    for (; i != names_of_dicts.end(); i++)
-    {
-      auto dict = dict_of_dict.at(*i);
-      for (auto j = dict.begin(); j != dict.end(); j++)
-      {
-        dict_of_elems.insert(*j);
-      }
-    }
-    if (dict_of_elems.size() < size)
-    {
-      throw std::invalid_argument("Not enough elements");
-    }
-
-    dict_of_dict.push(name_new_dict, details::createRandomDict(size, dict_of_elems));
   }
 
   template< class Key, class Value, class Compare >
