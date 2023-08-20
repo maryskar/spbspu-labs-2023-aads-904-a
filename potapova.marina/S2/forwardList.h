@@ -33,7 +33,7 @@ namespace potapova
       {
         public:
           Iterator():
-            node(nullptr)
+            node_(nullptr)
           {
 
           }
@@ -44,13 +44,13 @@ namespace potapova
 
           Iterator& operator++()
           {
-            assert(node != nullptr);
-            node = node->next;
+            assert(node_ != nullptr);
+            node_ = node_->next;
           }
 
           Iterator operator++(int)
           {
-            assert(node != nullptr);
+            assert(node_ != nullptr);
             Iterator result(*this);
             ++(*this);
             return result;
@@ -58,14 +58,14 @@ namespace potapova
 
           T& operator*()
           {
-            assert(node != nullptr);
-            return node->data;
+            assert(node_ != nullptr);
+            return node_->data;
           }
 
           T* operator->()
           {
-            assert(node != nullptr);
-            return std::addressof(node->data);
+            assert(node_ != nullptr);
+            return std::addressof(node_->data);
           }
 
           bool operator!=(const Iterator& rhs) const
@@ -75,17 +75,17 @@ namespace potapova
 
           bool operator==(const Iterator& rhs) const
           {
-            return node == rhs.node;
+            return node_ == rhs.node_;
           }
         private:
-          Node* node;
+          Node* node_;
       };
 
       class ConstIterator
       {
         public:
           ConstIterator():
-            node(nullptr)
+            node_(nullptr)
           {
 
           }
@@ -96,14 +96,14 @@ namespace potapova
 
           const ConstIterator& operator++() const
           {
-            assert(node != nullptr);
-            node = node->next;
+            assert(node_ != nullptr);
+            node_ = node_->next;
             return *this;
           }
 
           ConstIterator operator++(int) const
           {
-            assert(node != nullptr);
+            assert(node_ != nullptr);
             ConstIterator result(*this);
             ++(*this);
             return result;
@@ -111,14 +111,14 @@ namespace potapova
 
           const T& operator*() const
           {
-            assert(node != nullptr);
-            return node->data;
+            assert(node_ != nullptr);
+            return node_->data;
           }
 
           const T* operator->() const
           {
-            assert(node != nullptr);
-            return std::addressof(node->data);
+            assert(node_ != nullptr);
+            return std::addressof(node_->data);
           }
 
           bool operator!=(const ConstIterator& rhs) const
@@ -128,10 +128,10 @@ namespace potapova
 
           bool operator==(const ConstIterator& rhs) const
           {
-            return node == rhs.node;
+            return node_ == rhs.node_;
           }
         private:
-          const Node* node; 
+          const Node* node_; 
       };
 
     public:
