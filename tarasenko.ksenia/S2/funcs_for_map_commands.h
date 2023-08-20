@@ -10,12 +10,12 @@
 namespace tarasenko
 {
   template< class Key, class Value, class Compare >
-  using dict_tt = Dictionary< Key, Value, Compare >;
+  using dict_type = Dictionary< Key, Value, Compare >;
   template< class Key, class Value, class Compare >
-  using dict_of_dict_t = Dictionary< std::string, dict_tt< Key, Value, Compare >, std::greater<> >;
+  using dict_of_dict_t = Dictionary< std::string, dict_type< Key, Value, Compare >, std::greater<> >;
 
   template< typename Key, typename Value, typename Compare >
-  std::pair< dict_tt< Key, Value, Compare >, dict_tt< Key, Value, Compare > > getTwoDicts(std::istream& in,
+  std::pair< dict_type< Key, Value, Compare >, dict_type< Key, Value, Compare > > getTwoDicts(std::istream& in,
      const dict_of_dict_t< Key, Value, Compare >& dict_of_dict)
   {
     std::string name_dict1 = " ";
