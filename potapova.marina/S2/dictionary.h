@@ -20,7 +20,7 @@ namespace potapova
 
       Value& find(const Key& key)
       {
-        for (Node& node : data)
+        for (Node& node : data_)
         {
           if (node.key == key)
           {
@@ -32,7 +32,7 @@ namespace potapova
 
       const Value& find(const Key& key) const
       {
-        for (const Node& node : data)
+        for (const Node& node : data_)
         {
           if (node.key == key)
           {
@@ -44,12 +44,12 @@ namespace potapova
 
       void erase(const Key& key)
       {
-        auto it = data.begin();
-        while (it != data.end())
+        auto it = data_.begin();
+        while (it != data_.end())
         {
           if (it->key == key)
           {
-            it = data.erase(it);
+            it = data_.erase(it);
           }
           else
           {
@@ -60,8 +60,8 @@ namespace potapova
 
       bool contains(const Key& key) const
       {
-        auto it = data.begin();
-        while (it != data.end())
+        auto it = data_.begin();
+        while (it != data_.end())
         {
           if (it->key == key)
           {
@@ -74,28 +74,28 @@ namespace potapova
 
       size_t size() const
       {
-        return data.size();
+        return data_.size();
       }
       
       bool empty() const
       {
-        return data.empty();
+        return data_.empty();
       }
 
       void clear()
       {
-        return data.clear();
+        return data_.clear();
       }
       
       void print(const std::string& dataset) const
       {
-        if (data.empty())
+        if (data_.empty())
         {
           std::cout << "<EMPTY>" << '\n';
           return;
         }
-        auto it = data.lower_bound(dataset);
-        if (it == data.end() && it->key == dataset)
+        auto it = data_.lower_bound(dataset);
+        if (it == data_.end() && it->key == dataset)
         {
           std::cout << it->key << " " << it->value << " ";
           ++it;
@@ -112,7 +112,7 @@ namespace potapova
         {
           throw std::runtime_error("One or both datasets not found");
         }
-        for (auto it = ptr_dataset1->data.begin(); it != ptr_dataset1->data.end(); ++it)
+        for (auto it = ptr_dataset1->data_.begin(); it != ptr_dataset1->data_.end(); ++it)
         {
           const Key& key = it->key;
           const Value& value = it->value;
@@ -187,20 +187,20 @@ namespace potapova
       {
         public:
           CompareWrapper(const Compare& c):
-            comp(c)
+            comp_(c)
           {
 
           }
           bool operator()(const Node& lhs, const Node& rhs) const
           {
-            return comp(lhs.key, rhs.key);
+            return comp_(lhs.key, rhs.key);
           }
         private:
-          Compare comp;
+          Compare comp_;
       };
 
-      ForwardList< Node > data;
-      CompareWrapper compare;
+      ForwardList< Node > data_;
+      CompareWrapper compare_;
       std::unordered_map< std::string, std::string > dictionaries;
   };
 }
