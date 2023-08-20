@@ -13,14 +13,14 @@ namespace potapova
       {
         Node():
           data(),
-          prev_node_ptr(nullptr)
+          next_node_ptr(nullptr)
         {
 
         }
 
         Node(const T& data):
           data(data),
-          prev_node_ptr(nullptr)
+          next_node_ptr(nullptr)
         {
 
         }
@@ -136,17 +136,17 @@ namespace potapova
 
     public:
       ForwardList():
-        head(nullptr)
+        head_(nullptr)
       {
 
       }
 
       ~ForwardList()
       {
-        while (head != nullptr)
+        while (head_ != nullptr)
         {
-          Node* temp = head;
-          head = head->next_node_ptr;
+          Node* temp = head_;
+          head_ = head_->next_node_ptr;
           delete temp;
         }
       }
@@ -154,29 +154,29 @@ namespace potapova
       void push_front(const T& value)
       {
         Node* new_node = new Node(value);
-        new_node->next_node_ptr = head;
-        head = new_node; 
+        new_node->next_node_ptr = head_;
+        head_ = new_node; 
       }
 
       void clear()
       {
-        while (head != nullptr)
+        while (head_ != nullptr)
         {
-          Node* temp = head;
-          head = head->next_node_ptr;
+          Node* temp = head_;
+          head_ = head_->next_node_ptr;
           delete temp;
         }
       }
 
       bool empty() const
       {
-        return head == nullptr;
+        return head_ == nullptr;
       }
 
       size_t size() const
       {
         size_t counter = 0;
-        const Node* current = head;
+        const Node* current = head_;
         while (current != nullptr)
         {
           ++counter;
@@ -187,17 +187,17 @@ namespace potapova
 
       Iterator begin()
       {
-        return Iterator(head);
+        return Iterator(head_);
       }
 
       ConstIterator begin() const
       {
-        return ConstIterator(head);
+        return ConstIterator(head_);
       }
 
       Iterator end()
       {
-        Node* last_node = head;
+        Node* last_node = head_;
         while (last_node != nullptr && last_node->next_node_ptr != nullptr)
         {
           last_node = last_node->next_node_ptr;
@@ -207,7 +207,7 @@ namespace potapova
 
       ConstIterator end() const
       {
-        Node* last_node = head;
+        Node* last_node = head_;
         while (last_node != nullptr || last_node->next_node_ptr != nullptr)
         {
           last_node = last_node->next_node_ptr;
@@ -215,7 +215,7 @@ namespace potapova
         return ConstIterator(last_node);
       }
     private:
-      Node* head;
+      Node* head_;
   };
 }
 
