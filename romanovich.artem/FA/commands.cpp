@@ -80,6 +80,21 @@ void romanovich::CommandHandler::removeWord()
 }
 void romanovich::CommandHandler::removeTranslation()
 {
+  std::string word;
+  std::string dictName;
+  std::string translation;
+  in_ >> word;
+  in_ >> dictName;
+  in_ >> translation;
+  for (auto &pair: *dictionaries_)
+  {
+    if (pair.first == dictName)
+    {
+      pair.second.removeTranslation(word, translation);
+      pair.second.print(std::cout);
+      break;
+    }
+  }
 }
 void romanovich::CommandHandler::searchWord()
 {

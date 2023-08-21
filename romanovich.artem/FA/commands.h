@@ -21,7 +21,7 @@ namespace romanovich
     void addWordCommand();//
     void addDictCommand();//
     void addTranslation();//
-    void removeWord();
+    void removeWord();//
     void removeTranslation();
     void searchWord();
     void showAllWords();

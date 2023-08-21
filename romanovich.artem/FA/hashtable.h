@@ -19,6 +19,7 @@ namespace romanovich
     void addWord(const std::string &word);
     void removeWord(const std::string &word);
     void addTranslation(const std::string &word, const std::string &trans);
+    void removeTranslation(const std::string &word, const std::string &trans);
     std::ostream &print(std::ostream &out) const;
     void resize(size_t newCapacity);
   private:
