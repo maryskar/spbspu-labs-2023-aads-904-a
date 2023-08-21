@@ -1,7 +1,7 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 #include <string>
-#include "dict.h"
+#include <dict.h>
 namespace romanovich
 {
   using dict_type = Dictionary< int, std::string >;
