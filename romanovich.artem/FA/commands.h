@@ -11,7 +11,8 @@ namespace romanovich
   {
   public:
     CommandHandler(const HashTable *, std::istream &);
-    void operator()(const std::string& command);
+    CommandHandler &operator=(CommandHandler &&) = delete;
+    void operator()(const std::string &command);
   private:
     std::istream &in_;
     romanovich::HashTable *hashTablePtr_;
