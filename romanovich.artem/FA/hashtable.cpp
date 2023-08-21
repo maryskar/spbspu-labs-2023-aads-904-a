@@ -12,7 +12,7 @@ void romanovich::HashTable::addWord(const std::string &word)
 {
   uint32_t index = romanovich::generateMurmurHash2(word, capacity_);
   std::cerr << "Hash: " << index << "\n";
-  if (data_[index].word.empty())
+  if (data_[index].first.empty())
   {
     data_[index] = {word, {}};
     ++size_;
@@ -38,9 +38,9 @@ void romanovich::HashTable::resize(size_t newCapacity)
   data_t newData(newCapacity);
   for (auto const &entry: data_)
   {
-    if (!entry.word.empty())
+    if (!entry.first.empty())
     {
-      uint32_t newIndex = romanovich::generateMurmurHash2(entry.word, newCapacity);
+      uint32_t newIndex = romanovich::generateMurmurHash2(entry.first, newCapacity);
       newData[newIndex] = entry;
     }
   }
@@ -51,16 +51,17 @@ std::ostream &romanovich::HashTable::print(std::ostream &out) const
 {
   out << "---Hash data---\n";
   out << "Size: " << size_ << "\n";
-  for (size_t i = 0; i < size_; ++i)
+  for (size_t i = 0; i < capacity_; ++i)
   {
     const WordEntry &entry = data_[i];
-    if (entry.word.empty())
+    if (entry.first.empty())
     {
-      //continue;
+      continue;
     }
-    out << "Index: " << i << ", Key: " << entry.word << ", Value: " << entry.translations.size() << "\n";
+    out << "Index: " << i << ", Key: " << entry.first << ", Value: ";
+    out << (entry.second.empty() ? "EMPTY" : "size=" + std::to_string(entry.second.size())) << "\n";
   }
-  return out << "---------------";
+  return out << "---------------\n";
 }
 romanovich::HashTable::HashTable(romanovich::HashTable &&other) noexcept:
   size_(other.size_),
