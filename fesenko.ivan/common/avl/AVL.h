@@ -250,9 +250,8 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   std::pair< typename AVL< Key, Value, Compare >::iterator, bool > AVL< Key, Value, Compare >::insert(const value_type &value)
   {
-    auto *newTree = new tree{value, nullptr, nullptr, nullptr};
     if (empty()) {
-      root_ = newTree;
+      root_ = new tree{value, nullptr, nullptr, nullptr};
       return {iterator(root_), true};
     }
     iterator res = end();
@@ -262,8 +261,7 @@ namespace fesenko
         if (cur->left) {
           cur = cur->left;
         } else {
-          cur->left = newTree;
-          newTree->parent = cur;
+          cur->left = new tree{value, cur, nullptr, nullptr};
           res = iterator(newTree);
           break;
         }
@@ -271,8 +269,7 @@ namespace fesenko
         if (cur->right) {
           cur = cur->right;
         } else {
-          cur->right = newTree;
-          newTree->parent = cur;
+          cur->right = new tree{value, cur, nullptr, nullptr};
           res = iterator(newTree);
           break;
         }
