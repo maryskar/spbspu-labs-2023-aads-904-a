@@ -14,6 +14,7 @@ namespace romanovich
 {
   void addWordCommand(std::istream &in);
   void addDictCommand(std::istream &in);
+  void addTranslation(std::istream &in);
   using CommandHandler = std::function< void(std::istream &, std::ostream &) >;
   RedBlackTree< std::string, CommandHandler > createCommandDictionary(const HashTable *hashTable);
 }

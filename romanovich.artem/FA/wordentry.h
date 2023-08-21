@@ -2,5 +2,9 @@
 #define WORDENTRY_H
 #include <string>
 #include <vector>
-using WordEntry = std::pair< std::string, std::vector< std::string > >;
+struct WordEntry
+{
+  std::string word;
+  std::vector< std::string > translations;
+};
 #endif
