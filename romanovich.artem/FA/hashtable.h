@@ -17,6 +17,7 @@ namespace romanovich
     HashTable &operator=(HashTable &&other) noexcept;
     explicit HashTable(size_t size, size_t capacity = 100);
     void addWord(const std::string &word);
+    void removeWord(const std::string &word);
     void addTranslation(const std::string &word, const std::string &trans);
     std::ostream &print(std::ostream &out) const;
     void resize(size_t newCapacity);

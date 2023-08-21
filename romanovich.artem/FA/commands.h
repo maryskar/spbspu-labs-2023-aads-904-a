@@ -16,12 +16,11 @@ namespace romanovich
     void operator()(const std::string &command);
   private:
     std::istream &in_;
-    romanovich::HashTable *hashTablePtr_;
-    std::vector< std::pair< std::string, romanovich::HashTable > > *langDicts_;
     RedBlackTree< std::string, std::function< void() > > processor_;
-    void addWordCommand();
-    void addDictCommand();
-    void addTranslation();
+    std::vector< std::pair< std::string, romanovich::HashTable > > *dictionaries_;
+    void addWordCommand();//
+    void addDictCommand();//
+    void addTranslation();//
     void removeWord();
     void removeTranslation();
     void searchWord();

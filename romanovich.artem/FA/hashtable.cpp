@@ -1,5 +1,6 @@
 #include <ostream>
-#include <iostream>//
+#include <algorithm>
+#include <iostream>
 #include "hashtable.h"
 #include "murmurhash2.h"
 romanovich::HashTable::HashTable(size_t size, size_t capacity):
@@ -107,4 +108,19 @@ void romanovich::HashTable::addTranslation(const std::string &word, const std::s
   {
     resize(capacity_ * 2);
   }
+}
+void romanovich::HashTable::removeWord(const std::string &word)
+{
+  uint32_t index = romanovich::generateMurmurHash2(word, capacity_);
+  if (data_[index].word != word)
+  {
+    return;
+  }
+  auto &trans = data_[index].translations;
+  trans.erase(std::remove(trans.begin(), trans.end(), word), trans.end());
+  if (trans.empty())
+  {
+    data_[index].word.clear();
+  }
+  --size_;
 }

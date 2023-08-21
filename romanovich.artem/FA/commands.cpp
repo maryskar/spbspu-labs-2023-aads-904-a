@@ -2,8 +2,7 @@
 #include "commands.h"
 #include "../common/printmessages.h"
 romanovich::CommandHandler::CommandHandler(std::istream &in):
-  hashTablePtr_(new HashTable),
-  langDicts_(new std::vector< std::pair< std::string, romanovich::HashTable >>),
+  dictionaries_(new std::vector< std::pair< std::string, romanovich::HashTable >>),
   in_(in)
 {
   using namespace std::placeholders;
@@ -28,13 +27,13 @@ void romanovich::CommandHandler::addWordCommand()
   std::string dictName;
   in_ >> word;
   in_ >> dictName;
-  for (auto &pair: *langDicts_)
+  for (auto &pair: *dictionaries_)
   {
     if (pair.first == dictName)
     {
       pair.second.addWord(word);
       pair.second.print(std::cout);
-      return;
+      break;
     }
   }
 }
@@ -42,7 +41,7 @@ void romanovich::CommandHandler::addDictCommand()
 {
   std::string dictName;
   in_ >> dictName;
-  langDicts_->emplace_back(dictName, HashTable());
+  dictionaries_->emplace_back(dictName, HashTable());
   printDicts();
 }
 void romanovich::CommandHandler::addTranslation()
@@ -53,7 +52,7 @@ void romanovich::CommandHandler::addTranslation()
   in_ >> word;
   in_ >> dictName;
   in_ >> translation;
-  for (auto &pair: *langDicts_)
+  for (auto &pair: *dictionaries_)
   {
     if (pair.first == dictName)
     {
@@ -65,6 +64,19 @@ void romanovich::CommandHandler::addTranslation()
 }
 void romanovich::CommandHandler::removeWord()
 {
+  std::string word;
+  std::string dictName;
+  in_ >> word;
+  in_ >> dictName;
+  for (auto &pair: *dictionaries_)
+  {
+    if (pair.first == dictName)
+    {
+      pair.second.removeWord(word);
+      pair.second.print(std::cout);
+      break;
+    }
+  }
 }
 void romanovich::CommandHandler::removeTranslation()
 {
@@ -98,7 +110,7 @@ void romanovich::CommandHandler::mergeDicts()
 }
 void romanovich::CommandHandler::printDicts()
 {
-  for (const auto &pair: *langDicts_)
+  for (const auto &pair: *dictionaries_)
   {
     std::cout << "Dict " << pair.first << ":\n";
     pair.second.print(std::cout);
@@ -119,5 +131,5 @@ void romanovich::CommandHandler::operator()(const std::string &command)
 }
 romanovich::CommandHandler::~CommandHandler()
 {
-  delete langDicts_;
+  delete dictionaries_;
 }
