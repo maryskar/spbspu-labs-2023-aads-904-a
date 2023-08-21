@@ -121,6 +121,41 @@ namespace kryuchkova
    ForwardList(init.begin(), init.end())
   {}
 
+
+  template< typename T >
+  ForwardList< T > & ForwardList< T >::operator=(const this_t & fwdlst)
+  {
+    if (this == std::addressof(fwdlst))
+    {
+      return *this;
+    }
+    this_t temp(fwdlst);
+    clear();
+    swap(temp);
+    return *this;
+  }
+
+  template< typename T >
+  ForwardList< T > & ForwardList< T >::operator=(this_t && fwdlst)
+  {
+    if (this == std::addressof(fwdlst))
+    {
+      return *this;
+    }
+    clear();
+    swap(fwdlst);
+    return *this;
+  }
+
+  template< typename T >
+  ForwardList< T > & ForwardList< T >::operator=(std::initializer_list< T > init)
+  {
+    this_t temp(init);
+    clear();
+    swap(temp);
+    return *this;
+  }
+
   template< typename T >
   ForwardIterator< T > ForwardList< T >::before_begin() noexcept
   {

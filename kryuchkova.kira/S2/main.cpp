@@ -6,7 +6,7 @@
 int main()
 {
   kryuchkova::ForwardIterator< int > it;
-  it++;
+  //it++;
   kryuchkova::ForwardList< int > List;
   List.IsEmpty();
 }
