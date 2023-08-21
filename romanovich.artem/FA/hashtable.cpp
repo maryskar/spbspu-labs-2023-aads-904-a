@@ -2,13 +2,13 @@
 #include <iostream>//
 #include "hashtable.h"
 #include "murmurhash2.h"
-HashTable::HashTable(size_t size, size_t capacity):
+romanovich::HashTable::HashTable(size_t size, size_t capacity):
   size_(size),
   capacity_(capacity),
-  data_(std::vector< WordEntry >(capacity))
+  data_(data_t(capacity))
 {
 }
-void HashTable::addWord(const std::string &word)
+void romanovich::HashTable::addWord(const std::string &word)
 {
   uint32_t index = romanovich::generateMurmurHash2(word, capacity_);
   std::cerr << "Hash: " << index << "\n";
@@ -22,20 +22,20 @@ void HashTable::addWord(const std::string &word)
     }
   }
 }
-HashTable::HashTable():
+romanovich::HashTable::HashTable():
   size_(0),
   capacity_(10),
-  data_(std::vector< WordEntry >(10))
+  data_(data_t(10))
 {
 }
-bool HashTable::shouldResize() const
+bool romanovich::HashTable::shouldResize() const
 {
   double loadFactor = static_cast< double >(size_) / capacity_;
   return loadFactor > 0.7;
 }
-void HashTable::resize(size_t newCapacity)
+void romanovich::HashTable::resize(size_t newCapacity)
 {
-  std::vector< WordEntry > newData(newCapacity);
+  data_t newData(newCapacity);
   for (auto const &entry: data_)
   {
     if (!entry.word.empty())
@@ -47,7 +47,7 @@ void HashTable::resize(size_t newCapacity)
   capacity_ = newCapacity;
   data_ = std::move(newData);
 }
-std::ostream &HashTable::print(std::ostream &out) const
+std::ostream &romanovich::HashTable::print(std::ostream &out) const
 {
   out << "---Hash data---";
   out << "Size: " << size_ << "\n";
