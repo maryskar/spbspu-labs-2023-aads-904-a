@@ -1,31 +1,20 @@
 #include <iostream>
-#include <limits>
 #include "murmurhash2.h"
 #include "hashtable.h"
 #include "commands.h"
-#include "../common/printmessages.h"
 int main()
 {
-  constexpr auto maxLLSize = std::numeric_limits< std::streamsize >::max();
-  //std::vector< std::shared_ptr< romanovich::Dictionary< std::string, std::string>> > dicts;
   romanovich::HashTable table;
-  auto commandDictionary = romanovich::createCommandDictionary(&table);
-  while (std::cin)
+  std::istream &in = std::cin;
+  auto commandHandler = romanovich::CommandHandler(&table, in);
+  while (in)
   {
     std::string command;
     std::cin >> command;
-    if (!std::cin)
+    if (!in)
     {
       break;
     }
-    try
-    {
-      commandDictionary[command](std::cin, std::cout);
-    }
-    catch (...)
-    {
-      printInvalidCommand(std::cout) << '\n';
-      std::cin.ignore(maxLLSize, '\n');
-    }
+    commandHandler(command);
   }
 }

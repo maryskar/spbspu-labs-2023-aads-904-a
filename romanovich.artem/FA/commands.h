@@ -5,17 +5,33 @@
 #include <memory>
 #include "../common/redblack_tree.h"
 #include "hashtable.h"
-namespace
-{
-  romanovich::HashTable *hashTablePtr_;
-  std::vector< std::pair< std::string, romanovich::HashTable > > *langDicts_;
-}
 namespace romanovich
 {
-  void addWordCommand(std::istream &in);
-  void addDictCommand(std::istream &in);
-  void addTranslation(std::istream &in);
-  using CommandHandler = std::function< void(std::istream &, std::ostream &) >;
-  RedBlackTree< std::string, CommandHandler > createCommandDictionary(const HashTable *hashTable);
+  class CommandHandler
+  {
+  public:
+    CommandHandler(const HashTable *, std::istream &);
+    void operator()(const std::string& command);
+  private:
+    std::istream &in_;
+    romanovich::HashTable *hashTablePtr_;
+    std::vector< std::pair< std::string, romanovich::HashTable > > *langDicts_;
+    RedBlackTree< std::string, std::function< void() > > processor_;
+    void addWordCommand();
+    void addDictCommand();
+    void addTranslation();
+    void removeWord();
+    void removeTranslation();
+    void searchWord();
+    void showAllWords();
+    void countWords();
+    void countTranslations();
+    void exportToFile();
+    void help();
+    void addMissingWords();
+    void createLevelDict();
+    void mergeDicts();
+    void printDicts();
+  };
 }
 #endif
