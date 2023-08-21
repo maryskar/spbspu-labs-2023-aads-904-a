@@ -10,7 +10,8 @@ namespace romanovich
   class CommandHandler
   {
   public:
-    CommandHandler(const HashTable *, std::istream &);
+    explicit CommandHandler(std::istream &);
+    ~CommandHandler();
     CommandHandler &operator=(CommandHandler &&) = delete;
     void operator()(const std::string &command);
   private:

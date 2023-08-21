@@ -1,6 +1,27 @@
 #include <limits>
 #include "commands.h"
 #include "../common/printmessages.h"
+romanovich::CommandHandler::CommandHandler(std::istream &in):
+  hashTablePtr_(new HashTable),
+  langDicts_(new std::vector< std::pair< std::string, romanovich::HashTable >>),
+  in_(in)
+{
+  using namespace std::placeholders;
+  processor_["ad"] = std::bind(&CommandHandler::addDictCommand, this);
+  processor_["aw"] = std::bind(&CommandHandler::addWordCommand, this);
+  processor_["at"] = std::bind(&CommandHandler::addTranslation, this);
+  processor_["rmw"] = std::bind(&CommandHandler::removeWord, this);
+  processor_["rmt"] = std::bind(&CommandHandler::removeTranslation, this);
+  processor_["w"] = std::bind(&CommandHandler::searchWord, this);
+  processor_["words"] = std::bind(&CommandHandler::showAllWords, this);
+  processor_["cw"] = std::bind(&CommandHandler::countWords, this);
+  processor_["ct"] = std::bind(&CommandHandler::countTranslations, this);
+  processor_["export"] = std::bind(&CommandHandler::exportToFile, this);
+  processor_["help"] = std::bind(&CommandHandler::help, this);
+  processor_["amw"] = std::bind(&CommandHandler::addMissingWords, this);
+  processor_["cld"] = std::bind(&CommandHandler::createLevelDict, this);
+  processor_["md"] = std::bind(&CommandHandler::mergeDicts, this);
+}
 void romanovich::CommandHandler::addWordCommand()
 {
   std::string word;
@@ -41,27 +62,6 @@ void romanovich::CommandHandler::addTranslation()
       return;
     }
   }
-}
-romanovich::CommandHandler::CommandHandler(const romanovich::HashTable *hashTable, std::istream &in):
-  hashTablePtr_(const_cast<HashTable *>(hashTable)),
-  langDicts_(new std::vector< std::pair< std::string, romanovich::HashTable >>),
-  in_(in)
-{
-  using namespace std::placeholders;
-  processor_["ad"] = std::bind(&CommandHandler::addDictCommand, this);
-  processor_["aw"] = std::bind(&CommandHandler::addWordCommand, this);
-  processor_["at"] = std::bind(&CommandHandler::addTranslation, this);
-  processor_["rmw"] = std::bind(&CommandHandler::removeWord, this);
-  processor_["rmt"] = std::bind(&CommandHandler::removeTranslation, this);
-  processor_["w"] = std::bind(&CommandHandler::searchWord, this);
-  processor_["words"] = std::bind(&CommandHandler::showAllWords, this);
-  processor_["cw"] = std::bind(&CommandHandler::countWords, this);
-  processor_["ct"] = std::bind(&CommandHandler::countTranslations, this);
-  processor_["export"] = std::bind(&CommandHandler::exportToFile, this);
-  processor_["help"] = std::bind(&CommandHandler::help, this);
-  processor_["amw"] = std::bind(&CommandHandler::addMissingWords, this);
-  processor_["cld"] = std::bind(&CommandHandler::createLevelDict, this);
-  processor_["md"] = std::bind(&CommandHandler::mergeDicts, this);
 }
 void romanovich::CommandHandler::removeWord()
 {
@@ -116,4 +116,8 @@ void romanovich::CommandHandler::operator()(const std::string &command)
     printInvalidCommand(std::cout) << '\n';
     in_.ignore(maxLLSize, '\n');
   }
+}
+romanovich::CommandHandler::~CommandHandler()
+{
+  delete langDicts_;
 }
