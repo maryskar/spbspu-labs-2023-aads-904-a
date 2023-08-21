@@ -27,9 +27,9 @@ int main(int argc, char *argv[])
         break;
       }
       tree tr;
-      int key = 0;
-      std::string value;
       while (in) {
+        int key = 0;
+        std::string value;
         in >> key >> value;
         if (!in) {
           break;
