@@ -1,54 +1,68 @@
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <list.hpp>
 #include "avltree.hpp"
+#include "avltreeiterator.hpp"
+#include "avltreeconstiterator.hpp"
+#include "inputdict.hpp"
+#include "commands.hpp"
 
-template<typename Key, typename Value>
-void inOrderTraversal(Tree<std::pair<Key, Value>>* node)
+int main(int argc, char* argv[])
 {
-  if (node)
+  if (argc != 2)
   {
-    inOrderTraversal(node->left_);
-    std::cout << node->data_.first << " " << node->data_.second << " " << node->height_ << "\n";
-    inOrderTraversal(node->right_);
+    std::cout << "Error arg\n";
+    return 1;
   }
-}
-
-template<typename Key, typename Value>
-void printTree(Tree<std::pair<Key, Value>>* node, int indent = 0)
-{
-  if (node)
+  std::ifstream input(argv[1]);
+  if (!input.is_open())
   {
-    printTree(node->right_, indent + 4);
-    std::cout << std::string(indent, ' ') << node->data_.first << "\n";
-    printTree(node->left_, indent + 4);
+    std::cout << "Error file\n";
+    return 1;
   }
-}
-
-int main() {
-    AVLTree< size_t, std::string> avlTree;
-    avlTree.insert(1, "1");
-    avlTree.insert(2, "2");
-    avlTree.insert(3, "3");
-    avlTree.insert(4, "4");
-    avlTree.insert(5, "5");
-    avlTree.insert(6, "6");
-    avlTree.insert(7, "7");
-    avlTree.insert(8, "8");
-    avlTree.insert(9, "9");
-    avlTree.insert(10, "10");
-    printTree(avlTree.node_);
-    std::cout << "\n\n\n\n";
-    avlTree.erase(10);
-    avlTree.erase(9);
-    avlTree.erase(8);
-    printTree(avlTree.node_);
-    std::cout << "\n\n\n\n";
-    inOrderTraversal(avlTree.node_);
-    for (auto iter = avlTree.cbegin(); iter != avlTree.cend(); iter++)
+  using dict_t = AVLTree< size_t, std::string >;
+  AVLTree< std::string, dict_t > dict_of_dict;
+  hrushchev::inputDict(input, dict_of_dict);
+  std::string command = "";
+  while (std::cin >> command)
+  {
+    try
     {
-      std::cout << avlTree.at((*iter).first) << "\n";
+      if (command == "print")
+      {
+        std::string dict_name = "";
+        std::cin >> dict_name;
+        hrushchev::printDict(dict_name, dict_of_dict, std::cout);
+        std::cout << "\n";
+      }
+      else
+      {
+        std::string res_dict_name = "";
+        std::string first_dict_name = "";
+        std::string second_dict_name = "";
+        std::cin >> res_dict_name >> first_dict_name >> second_dict_name;
+        if (command == "complement")
+        {
+          hrushchev::complementDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
+        }
+        else if (command == "intersect")
+        {
+          hrushchev::intersectDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
+        }
+        else if (command == "union")
+        {
+          hrushchev::unionDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
+        }
+        else
+        {
+          std::cout << "<INVALID COMMAND>\n";
+        }
+      }
     }
-    using dict_t = AVLTree< size_t, std::string >;
-    AVLTree< std::string, dict_t > dict_of_dict; 
-    dict_of_dict.insert("test", avlTree);
-    return 0;
+    catch (...)
+    {
+      std::cout << "<INVALID COMMAND>\n";
+    }
+  }
 }

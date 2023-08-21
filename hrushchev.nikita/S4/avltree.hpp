@@ -311,7 +311,6 @@ void AVLTree<Key, Value, Compare>::erase(Tree<typename AVLTree<Key, Value, Compa
   }
 }
 
-
 template<typename Key, typename Value, typename Compare>
 void AVLTree< Key, Value, Compare >::rotateLeft(Tree< data_t >* node)
 {
@@ -374,17 +373,17 @@ void AVLTree< Key, Value, Compare >::rotateRight(Tree< data_t >* node)
   updateHeight(new_root);
 }
 
-template< typename Key, typename Value, typename Compare >
-void AVLTree< Key, Value, Compare >::rotateRightLeft(Tree< data_t >* node)
+template<typename Key, typename Value, typename Compare>
+void AVLTree<Key, Value, Compare>::rotateRightLeft(Tree<data_t>* node)
 {
-  rotateRight(node);
+  rotateRight(node->right_);
   rotateLeft(node);
 }
 
-template< typename Key, typename Value, typename Compare >
-void AVLTree< Key, Value, Compare >::rotateLeftRight(Tree< data_t >* node)
+template<typename Key, typename Value, typename Compare>
+void AVLTree<Key, Value, Compare>::rotateLeftRight(Tree<data_t>* node)
 {
-  rotateLeft(node);
+  rotateLeft(node->left_);
   rotateRight(node);
 }
 
