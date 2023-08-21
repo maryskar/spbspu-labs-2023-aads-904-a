@@ -1,7 +1,5 @@
 #include <iostream>
-#include <memory>
 #include <limits>
-#include "../S2/dict.h"
 #include "murmurhash2.h"
 #include "hashtable.h"
 #include "commands.h"
