@@ -9,7 +9,6 @@
 
 namespace fesenko
 {
-
   template< typename Key, typename Value, typename Compare >
   class AVLIterator;
 
@@ -67,7 +66,7 @@ namespace fesenko
     tree *root_;
     Compare comp_;
     void deleteNode(tree *) noexcept;
-    tree *copy(const tree *);
+    void copy(const this_t &);
     size_t checkHeight(tree *);
     size_t checkHeightSup(tree *, size_t);
     void rotateLeft(tree *);
@@ -85,9 +84,10 @@ namespace fesenko
 
   template< typename Key, typename Value, typename Compare >
   AVL< Key, Value, Compare >::AVL(const this_t &other):
-    root_(copy(other.root_)),
     comp_(other.comp_)
-  {}
+  {
+    copy(other);
+  }
 
   template< typename Key, typename Value, typename Compare >
   AVL< Key, Value, Compare >::AVL(this_t &&other):
@@ -98,7 +98,8 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   AVL< Key, Value, Compare > &AVL< Key, Value, Compare >::operator=(const this_t &other)
   {
-    root_ = copy(other.root_);
+    clear();
+    copy(other);
     comp_ = other.comp_;
     return *this;
   }
@@ -116,7 +117,7 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   AVL< Key, Value, Compare >::~AVL()
   {
-    deleteNode(root_);
+    clear();
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -383,18 +384,9 @@ namespace fesenko
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename AVL< Key, Value, Compare >::tree *AVL< Key, Value, Compare >::copy(const tree *node)
+  void AVL< Key, Value, Compare >::copy(const this_t &other)
   {
-    tree *newNode = new tree{node->data, nullptr, nullptr, nullptr};
-    if (node->left) {
-      newNode->left = copy(node->left);
-      newNode->left->parent = newNode;
-    }
-    if (node->right) {
-      newNode->right = copy(node->right);
-      newNode->right->parent = newNode;
-    }
-    return newNode;
+    insert(other.begin(), other.end());
   }
 
   template< typename Key, typename Value, typename Compare >
