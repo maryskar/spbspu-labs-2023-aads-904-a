@@ -123,6 +123,9 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   typename AVL< Key, Value, Compare >::iterator AVL< Key, Value, Compare >::begin() noexcept
   {
+    if (!root_) {
+      return iterator(nullptr);
+    }
     tree *ptr = root_;
     while (ptr->left) {
       ptr = ptr->left;
@@ -139,11 +142,7 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   typename AVL< Key, Value, Compare >::const_iterator AVL< Key, Value, Compare >::cbegin() const noexcept
   {
-    tree *ptr = root_;
-    while (ptr->left) {
-      ptr = ptr->left;
-    }
-    return const_iterator(ptr);
+    return const_iterator(begin());
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -262,7 +261,7 @@ namespace fesenko
           cur = cur->left;
         } else {
           cur->left = new tree{value, cur, nullptr, nullptr};
-          res = iterator(newTree);
+          res = iterator(cur);
           break;
         }
       } else if (comp_(cur->data.first, value.first)) {
@@ -270,7 +269,7 @@ namespace fesenko
           cur = cur->right;
         } else {
           cur->right = new tree{value, cur, nullptr, nullptr};
-          res = iterator(newTree);
+          res = iterator(cur);
           break;
         }
       } else {
@@ -278,7 +277,7 @@ namespace fesenko
       }
     }
     if (res != end()) {
-      balance(newTree);
+      balance(cur);
     }
     return {res, res != end()};
   }
