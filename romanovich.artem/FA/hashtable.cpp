@@ -102,8 +102,8 @@ void romanovich::HashTable::addValue(const std::string &key, const std::string &
   else
   {
     data_[index].translations.push_back(trans);
+    ++size_;
   }
-  ++size_;
   if (shouldResize())
   {
     resize(capacity_ * 2);

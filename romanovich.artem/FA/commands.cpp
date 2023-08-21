@@ -160,6 +160,19 @@ void romanovich::CommandHandler::searchWords()
 }
 void romanovich::CommandHandler::countWords()
 {
+  std::string dictName;
+  in_ >> dictName;
+  out_ << "Words count in dictionary \"" << dictName << "\": ";
+  size_t count = 0;
+  for (auto &pair: *dictionaries_)
+  {
+    auto data = pair.second.getData();
+    for (size_t j = 1; j < data.size(); ++j)
+    {
+      count += !data[j].word.empty();
+    }
+  }
+  out_ << count << "\n";
 }
 void romanovich::CommandHandler::countTranslations()
 {
