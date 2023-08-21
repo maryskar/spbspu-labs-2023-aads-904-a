@@ -1,18 +1,33 @@
 #include <iostream>
 #include <memory>
+#include <limits>
 #include "../S2/dict.h"
 #include "murmurhash2.h"
 #include "hashtable.h"
+#include "commands.h"
+#include "../common/printmessages.h"
 int main()
 {
-  std::vector< std::shared_ptr< romanovich::Dictionary< std::string, std::string>> > dicts;
+  constexpr auto maxLLSize = std::numeric_limits< std::streamsize >::max();
+  //std::vector< std::shared_ptr< romanovich::Dictionary< std::string, std::string>> > dicts;
   romanovich::HashTable table;
-  for (std::string line; std::getline(std::cin, line);)
+  auto commandDictionary = romanovich::createCommandDictionary(&table);
+  while (std::cin)
   {
-    if (!line.empty())
+    std::string command;
+    std::cin >> command;
+    if (!std::cin)
     {
-      table.addWord(line);
-      table.print(std::cout) << "\n";
+      break;
+    }
+    try
+    {
+      commandDictionary[command](std::cin, std::cout);
+    }
+    catch (...)
+    {
+      printInvalidCommand(std::cout) << '\n';
+      std::cin.ignore(maxLLSize, '\n');
     }
   }
 }
