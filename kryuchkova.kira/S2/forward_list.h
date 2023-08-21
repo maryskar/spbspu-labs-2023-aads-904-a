@@ -15,6 +15,7 @@ namespace kryuchkova
     using iterator = ForwardIterator< T >;
     using const_iterator = ConstForwardIterator< T >;
     using this_t = ForwardList< T >;
+
     ForwardList();
     ForwardList(const this_t & rhs);
     ForwardList(this_t && rhs);
@@ -28,6 +29,7 @@ namespace kryuchkova
     iterator insert_after(const_iterator pos, const T & val);
     iterator insert_after(const_iterator pos, T && val);
     iterator insert_after(const_iterator pos, std::size_t n, const T & val);
+    iterator insert_after(const_iterator pos, std::initializer_list< T > init);
     iterator erase_after(const_iterator pos);
     iterator erase_after(const_iterator first, const_iterator last);
 
@@ -157,6 +159,36 @@ namespace kryuchkova
   }
 
   template< typename T >
+  ForwardIterator< T > ForwardList< T >::insert_after(const_iterator pos, const T & val)
+  {
+    pos.node_->next_ = new Node< T >{val, pos.node_->next_};
+    ++pos;
+    return iterator(pos.node_);
+  }
+
+  template< typename T >
+  ForwardIterator< T > ForwardList< T >::insert_after(const_iterator pos, T && val)
+  {
+    return insert_after(pos, val);
+  }
+
+  template< typename T >
+  ForwardIterator< T > ForwardList< T >::insert_after(const_iterator pos, std::size_t n, const T & val)
+  {
+    for (std::size_t i = 0; i < n; ++i)
+    {
+      pos = insert_after(pos, val);
+    }
+    return iterator(pos.node_);
+  }
+
+  template< typename T >
+  ForwardIterator< T > ForwardList< T >::insert_after(const_iterator pos, std::initializer_list< T > init)
+  {
+    return insert_after(pos, init.begin(), init.end());
+  }
+
+  template< typename T >
   ForwardIterator< T > ForwardList< T >::before_begin() noexcept
   {
     return fake_;
@@ -227,7 +259,6 @@ namespace kryuchkova
   {
     return const_iterator(last_);
   }
-
 
 }
 
