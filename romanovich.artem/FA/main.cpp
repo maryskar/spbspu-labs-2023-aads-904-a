@@ -3,7 +3,8 @@
 int main()
 {
   std::istream &in = std::cin;
-  romanovich::CommandHandler commandHandler(in);
+  std::ostream &out = std::cout;
+  romanovich::CommandHandler commandHandler(in, out);
   while (in)
   {
     std::string command;

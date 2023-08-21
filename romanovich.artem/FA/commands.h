@@ -10,21 +10,22 @@ namespace romanovich
   class CommandHandler
   {
   public:
-    explicit CommandHandler(std::istream &);
+    explicit CommandHandler(std::istream &, std::ostream &);
     ~CommandHandler();
     CommandHandler &operator=(CommandHandler &&) = delete;
     void operator()(const std::string &command);
   private:
     std::istream &in_;
+    std::ostream &out_;
     RedBlackTree< std::string, std::function< void() > > processor_;
     std::vector< std::pair< std::string, romanovich::HashTable > > *dictionaries_;
-    void addWordCommand();//
-    void addDictCommand();//
+    void addWordToDict();//
+    void addDict();//
     void addTranslation();//
     void removeWord();//
-    void removeTranslation();
-    void searchWord();
-    void showAllWords();
+    void removeTranslation();//
+    void searchTranslations();
+    void searchWords();
     void countWords();
     void countTranslations();
     void exportToFile();

@@ -8,7 +8,6 @@ namespace romanovich
   class HashTable
   {
   public:
-    //using data_t = std::vector< Dictionary< std::string, std::string > >;
     using data_t = std::vector< WordEntry >;
     HashTable();
     HashTable(const HashTable &other) = default;
@@ -16,10 +15,14 @@ namespace romanovich
     HashTable &operator=(const HashTable &other);
     HashTable &operator=(HashTable &&other) noexcept;
     explicit HashTable(size_t size, size_t capacity = 100);
-    void addWord(const std::string &word);
-    void removeWord(const std::string &word);
-    void addTranslation(const std::string &word, const std::string &trans);
-    void removeTranslation(const std::string &word, const std::string &trans);
+    size_t getSize() const;
+    size_t getCapacity() const;
+    const data_t &getData() const;
+    WordEntry &operator[](const std::string &key);
+    void addKey(const std::string &key);
+    void removeKey(const std::string &key);
+    void addValue(const std::string &key, const std::string &trans);
+    void removeValue(const std::string &key, const std::string &trans);
     std::ostream &print(std::ostream &out) const;
     void resize(size_t newCapacity);
   private:

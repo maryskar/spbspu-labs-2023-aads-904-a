@@ -9,13 +9,13 @@ romanovich::HashTable::HashTable(size_t size, size_t capacity):
   data_(data_t(capacity))
 {
 }
-void romanovich::HashTable::addWord(const std::string &word)
+void romanovich::HashTable::addKey(const std::string &key)
 {
-  uint32_t index = romanovich::generateMurmurHash2(word, capacity_);
+  uint32_t index = romanovich::generateMurmurHash2(key, capacity_);
   std::cerr << "Hash: " << index << "\n";
   if (data_[index].word.empty())
   {
-    data_[index] = {word, {}};
+    data_[index] = {key, {}};
     ++size_;
     if (shouldResize())
     {
@@ -92,12 +92,12 @@ romanovich::HashTable &romanovich::HashTable::operator=(romanovich::HashTable &&
   }
   return *this;
 }
-void romanovich::HashTable::addTranslation(const std::string &word, const std::string &trans)
+void romanovich::HashTable::addValue(const std::string &key, const std::string &trans)
 {
-  uint32_t index = romanovich::generateMurmurHash2(word, capacity_);
+  uint32_t index = romanovich::generateMurmurHash2(key, capacity_);
   if (data_[index].word.empty())
   {
-    data_[index] = {word, {trans}};
+    data_[index] = {key, {trans}};
   }
   else
   {
@@ -109,10 +109,10 @@ void romanovich::HashTable::addTranslation(const std::string &word, const std::s
     resize(capacity_ * 2);
   }
 }
-void romanovich::HashTable::removeWord(const std::string &word)
+void romanovich::HashTable::removeKey(const std::string &key)
 {
-  uint32_t index = romanovich::generateMurmurHash2(word, capacity_);
-  if (data_[index].word != word)
+  uint32_t index = romanovich::generateMurmurHash2(key, capacity_);
+  if (data_[index].word != key)
   {
     return;
   }
@@ -120,7 +120,7 @@ void romanovich::HashTable::removeWord(const std::string &word)
   data_[index].word.clear();
   --size_;
 }
-void romanovich::HashTable::removeTranslation(const std::string &word, const std::string &trans)
+void romanovich::HashTable::removeValue(const std::string &word, const std::string &trans)
 {
   uint32_t index = romanovich::generateMurmurHash2(word, capacity_);
   if (data_[index].word != word)
@@ -132,4 +132,21 @@ void romanovich::HashTable::removeTranslation(const std::string &word, const std
     std::remove(translations.begin(), translations.end(), trans),
     translations.end()
   );
+}
+size_t romanovich::HashTable::getSize() const
+{
+  return size_;
+}
+size_t romanovich::HashTable::getCapacity() const
+{
+  return capacity_;
+}
+const romanovich::HashTable::data_t &romanovich::HashTable::getData() const
+{
+  return data_;
+}
+WordEntry &romanovich::HashTable::operator[](const std::string &key)
+{
+  uint32_t index = romanovich::generateMurmurHash2(key, capacity_);
+  return data_[index];
 }
