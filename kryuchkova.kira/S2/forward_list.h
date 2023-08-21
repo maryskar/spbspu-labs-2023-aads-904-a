@@ -36,7 +36,7 @@ namespace kryuchkova
     const_iterator cbefore_begin() const noexcept;
     iterator begin() noexcept;
     const_iterator begin() const noexcept;
-    const_iterator cbegin() const noecept;
+    const_iterator cbegin() const noexcept;
     iterator end() noexcept;
     const_iterator end() const noexcept;
     const_iterator cend() const noexcept;
@@ -104,11 +104,95 @@ namespace kryuchkova
     ::operator delete(fake_.node_);
   }
 
-  template < typename T >
+  template< typename T >
   ForwardList< T >::ForwardList(const this_t & rhs):
+   ForwardList(rhs.begin(), rhs.end())
+  {}
+
+  template< typename T >
+  ForwardList< T >::ForwardList(this_t && rhs):
+   ForwardList()
   {
-    //
+    swap(rhs);
   }
+
+  template< typename T >
+  ForwardList< T >::ForwardList(std::initializer_list< T > init):
+   ForwardList(init.begin(), init.end())
+  {}
+
+  template< typename T >
+  ForwardIterator< T > ForwardList< T >::before_begin() noexcept
+  {
+    return fake_;
+  }
+
+  template< typename T >
+  ConstForwardIterator< T > ForwardList< T >::before_begin() const noexcept
+  {
+    return cbefore_begin();
+  }
+
+  template< typename T >
+  ConstForwardIterator< T > ForwardList< T >::cbefore_begin() const noexcept
+  {
+    return const_iterator(fake_);
+  }
+
+  template< typename T >
+  ForwardIterator< T > ForwardList< T >::begin() noexcept
+  {
+    return iterator(fake_.node_->next);
+  }
+
+  template< typename T >
+  ConstForwardIterator< T > ForwardList< T >::begin() const noexcept
+  {
+    return cbegin();
+  }
+
+  template< typename T >
+  ConstForwardIterator< T > ForwardList< T >::cbegin() const noexcept
+  {
+    return const_iterator(fake_.node_->next);
+  }
+
+  template< typename T >
+  ForwardIterator< T > ForwardList< T >::end() noexcept
+  {
+    return fake_;
+  }
+
+  template< typename T >
+  ConstForwardIterator< T > ForwardList< T >::end() const noexcept
+  {
+    return cend();
+  }
+
+  template< typename T >
+  ConstForwardIterator< T > ForwardList< T >::cend() const noexcept
+  {
+    return const_iterator(fake_);
+  }
+
+  template< typename T >
+  ForwardIterator< T > ForwardList< T >::last() noexcept
+  {
+    return last_;
+  }
+
+  template< typename T >
+  ConstForwardIterator< T > ForwardList< T >::last() const noexcept
+  {
+    return clast();
+  }
+
+  template< typename T >
+  ConstForwardIterator< T > ForwardList< T >::clast() const noexcept
+  {
+    return const_iterator(last_);
+  }
+
 
 }
 
