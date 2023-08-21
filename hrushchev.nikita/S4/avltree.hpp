@@ -16,10 +16,16 @@ class AVLTree
     using iterator = AVLTreeIterator< Key, Value, Compare >;
     using const_iterator = AVLTreeConstIterator< Key, Value, Compare >;
     AVLTree();
+    ~AVLTree();
+    AVLTree(const AVLTree& other);
+    AVLTree(AVLTree&& other) noexcept;
+    AVLTree& operator=(const AVLTree& other);
+    AVLTree& operator=(AVLTree&& other) noexcept;
     void insert(const Key& key, const Value& value);
     void erase(const Key& key);
+    void clear();
     Value& at(const Key& key);
-    bool empty();
+    bool empty() const;
     iterator begin();
     const_iterator cbegin();
     iterator end();
@@ -36,6 +42,8 @@ class AVLTree
     void rotateRightLeft(Tree< data_t >* node);
     void rotateLeftRight(Tree< data_t >* node);
     void balance(Tree< data_t >* node);
+    void clear(Tree< data_t >* node);
+    void copyNodes(const Tree< data_t >* source_node, Tree< data_t >* destination_node);
 };
 
 template< typename Key, typename Value, typename Compare >
@@ -44,6 +52,74 @@ AVLTree< Key, Value, Compare >::AVLTree():
   comp_()
 {
 }
+
+template< typename Key, typename Value, typename Compare >
+AVLTree< Key, Value, Compare >::~AVLTree()
+{
+  clear(node_);
+  delete node_;
+}
+
+template< typename Key, typename Value, typename Compare >
+AVLTree< Key, Value, Compare >::AVLTree(const AVLTree& other):
+comp_(other.comp_)
+{
+  if (other.node_)
+  {
+    node_ = new Tree< data_t >();
+    copyNodes(other.node_, node_);
+  }
+  else
+  {
+    node_ = nullptr;
+  }
+}
+
+template< typename Key, typename Value, typename Compare >
+AVLTree< Key, Value, Compare >::AVLTree(AVLTree&& other) noexcept:
+  node_(other.node_),
+  comp_(std::move(other.comp_))
+{
+  other.node_ = nullptr;
+}
+
+template< typename Key, typename Value, typename Compare >
+AVLTree< Key, Value, Compare >& AVLTree< Key, Value, Compare >::operator=(const AVLTree& other)
+{
+  if (this != &other)
+  {
+    clear(node_);
+    delete node_;
+
+    if (other.node_)
+    {
+      node_ = new Tree< data_t >();
+      copyNodes(other.node_, node_);
+    }
+    else
+    {
+      node_ = nullptr;
+    }
+
+    comp_ = other.comp_;
+  }
+  return *this;
+}
+
+template< typename Key, typename Value, typename Compare >
+AVLTree< Key, Value, Compare >& AVLTree< Key, Value, Compare >::operator=(AVLTree&& other) noexcept
+{
+  if (this != &other)
+  {
+    clear(node_);
+    delete node_;
+    node_ = other.node_;
+    comp_ = std::move(other.comp_);
+    other.node_ = nullptr;
+  }
+  return *this;
+}
+
 
 template< typename Key, typename Value, typename Compare >
 void AVLTree< Key, Value, Compare >::insert(const Key& key, const Value& value)
@@ -60,6 +136,12 @@ void AVLTree< Key, Value, Compare >::erase(const Key& key)
 }
 
 template< typename Key, typename Value, typename Compare >
+void AVLTree< Key, Value, Compare >::clear()
+{
+  clear(node_);
+}
+
+template< typename Key, typename Value, typename Compare >
 Value& AVLTree< Key, Value, Compare >::at(const Key& key)
 {
   for (auto cur = begin(); cur != end(); cur++)
@@ -73,7 +155,7 @@ Value& AVLTree< Key, Value, Compare >::at(const Key& key)
 }
 
 template< typename Key, typename Value, typename Compare >
-bool AVLTree< Key, Value, Compare >::empty()
+bool AVLTree< Key, Value, Compare >::empty() const
 {
   return node_ == nullptr;
 }
@@ -170,12 +252,13 @@ Tree< typename AVLTree< Key, Value, Compare >::data_t >* AVLTree< Key, Value, Co
 }
 
 template<typename Key, typename Value, typename Compare>
-void AVLTree< Key, Value, Compare >::erase(Tree< typename AVLTree< Key, Value, Compare >::data_t >* tree)
+void AVLTree<Key, Value, Compare>::erase(Tree<typename AVLTree<Key, Value, Compare>::data_t>* tree)
 {
   if (!tree)
   {
     return;
   }
+  Tree< data_t >* parent = tree->head_;
   if (!tree->right_ && !tree->left_)
   {
     if (!tree->head_)
@@ -193,11 +276,10 @@ void AVLTree< Key, Value, Compare >::erase(Tree< typename AVLTree< Key, Value, C
       tree->head_->right_ = nullptr;
     }
     delete tree;
-    updateHeight(tree->head_);
-    balance(tree->head_);
-    return;
+    updateHeight(parent);
+    balance(parent);
   }
-  if (!tree->right_ || !tree->left_)
+  else if (!tree->right_ || !tree->left_)
   {
     Tree< data_t >* child = (tree->left_ == nullptr) ? tree->right_ : tree->left_;
     if (!tree->head_)
@@ -216,16 +298,19 @@ void AVLTree< Key, Value, Compare >::erase(Tree< typename AVLTree< Key, Value, C
       child->head_ = tree->head_;
     }
     delete tree;
-    updateHeight(child->head_);
-    balance(child->head_);
-    return;
+    updateHeight(parent);
+    balance(parent);
   }
-  Tree<data_t>* maxNode = getMax(tree->left_);
-  tree->data_ = maxNode->data_;
-  erase(maxNode);
-  updateHeight(tree->head_);
-  balance(tree->head_);
+  else
+  {
+    Tree< data_t >* max_node = getMax(tree->left_);
+    tree->data_ = max_node->data_;
+    erase(max_node);
+    updateHeight(parent);
+    balance(parent);
+  }
 }
+
 
 template<typename Key, typename Value, typename Compare>
 void AVLTree< Key, Value, Compare >::rotateLeft(Tree< data_t >* node)
@@ -335,6 +420,45 @@ void AVLTree< Key, Value, Compare >::balance(Tree< data_t >* node)
     }
   }
   balance(node->head_);
+}
+
+template < typename Key, typename Value, typename Compare >
+void AVLTree< Key, Value, Compare >::clear(Tree< data_t >* node)
+{
+  if (node)
+  {
+    clear(node->left_);
+    clear(node->right_);
+    delete node;
+    node = nullptr;
+  }
+  node_ = nullptr;
+}
+
+template< typename Key, typename Value, typename Compare >
+void AVLTree< Key, Value, Compare >::copyNodes(const Tree< data_t >* source_node, Tree< data_t >* destination_node)
+{
+  if (!source_node)
+  {
+    return;
+  }
+
+  destination_node->data_ = source_node->data_;
+  destination_node->height_ = source_node->height_;
+
+  if (source_node->left_)
+  {
+    destination_node->left_ = new Tree< data_t >();
+    destination_node->left_->head_ = destination_node;
+    copyNodes(source_node->left_, destination_node->left_);
+  }
+
+  if (source_node->right_)
+  {
+    destination_node->right_ = new Tree< data_t >();
+    destination_node->right_->head_ = destination_node;
+    copyNodes(source_node->right_, destination_node->right_);
+  }
 }
 
 #endif

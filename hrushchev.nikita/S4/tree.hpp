@@ -7,9 +7,9 @@ template< typename T >
 struct Tree
 {
   T data_;
-  Tree< T >* left_;
-  Tree< T >* head_;
-  Tree< T >* right_;
+  Tree< T >* left_ = nullptr;
+  Tree< T >* head_ = nullptr;
+  Tree< T >* right_ = nullptr;
   size_t height_ = 0;
 };
 

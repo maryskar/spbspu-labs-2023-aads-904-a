@@ -1,5 +1,5 @@
 #include "inputdict.hpp"
-#include <istream>
+#include <iostream>
 #include <string>
 #include "avltree.hpp"
 
