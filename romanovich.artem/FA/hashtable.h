@@ -11,7 +11,10 @@ namespace romanovich
     //using data_t = std::vector< Dictionary< std::string, std::string > >;
     using data_t = std::vector< WordEntry >;
     HashTable();
-
+    HashTable(const HashTable &other) = default;
+    HashTable(HashTable &&other) noexcept;
+    HashTable &operator=(const HashTable &other);
+    HashTable &operator=(HashTable &&other) noexcept;
     explicit HashTable(size_t size, size_t capacity = 100);
     void addWord(const std::string &word);
     std::ostream &print(std::ostream &out) const;

@@ -49,7 +49,7 @@ void romanovich::HashTable::resize(size_t newCapacity)
 }
 std::ostream &romanovich::HashTable::print(std::ostream &out) const
 {
-  out << "---Hash data---";
+  out << "---Hash data---\n";
   out << "Size: " << size_ << "\n";
   for (size_t i = 0; i < size_; ++i)
   {
@@ -60,5 +60,33 @@ std::ostream &romanovich::HashTable::print(std::ostream &out) const
     }
     out << "Index: " << i << ", Key: " << entry.word << ", Value: " << entry.translations.size() << "\n";
   }
-  out << "---------------";
+  return out << "---------------";
+}
+romanovich::HashTable::HashTable(romanovich::HashTable &&other) noexcept:
+  size_(other.size_),
+  capacity_(other.capacity_),
+  data_(std::move(other.data_))
+{
+}
+romanovich::HashTable &romanovich::HashTable::operator=(const romanovich::HashTable &other)
+{
+  if (this != std::addressof(other))
+  {
+    size_ = other.size_;
+    capacity_ = other.capacity_;
+    data_ = other.data_;
+  }
+  return *this;
+}
+romanovich::HashTable &romanovich::HashTable::operator=(romanovich::HashTable &&other) noexcept
+{
+  if (this != std::addressof(other))
+  {
+    size_ = other.size_;
+    capacity_ = other.capacity_;
+    data_ = std::move(other.data_);
+    other.size_ = 0;
+    other.capacity_ = 0;
+  }
+  return *this;
 }

@@ -8,7 +8,7 @@
 namespace
 {
   romanovich::HashTable *hashTablePtr_;
-  std::shared_ptr< std::vector< std::pair< std::string, romanovich::HashTable > > > langDicts_;
+  std::vector< std::pair< std::string, romanovich::HashTable > > *langDicts_;
 }
 namespace romanovich
 {
