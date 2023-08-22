@@ -1,7 +1,7 @@
 #ifndef FORWARDLIST_H
 #define FORWARDLIST_H
 
-#include "list.h"
+#include <list.h>
 #include <iterator>
 
 namespace
