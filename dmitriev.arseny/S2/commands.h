@@ -5,11 +5,15 @@
 
 namespace dmitriev
 {
-  void printDataset(const dmitriev::Dictionary< std::string, dmitriev::Dictionary< int, std::string > >& dicOfDic, std::istream& inp, std::ostream& out);
+  void printDataset(const Dictionary< std::string, Dictionary< int, std::string > >& dicOfDic,
+    std::istream& inp, std::ostream& out);
 
-  void complementDataset(dmitriev::Dictionary< std::string, dmitriev::Dictionary< int, std::string > >& dicOfDic, std::istream& inp);
-  void intersectDataset(dmitriev::Dictionary< std::string, dmitriev::Dictionary< int, std::string > >& dicOfDic, std::istream& inp);
-  void unionDataset(dmitriev::Dictionary< std::string, dmitriev::Dictionary< int, std::string > >& dicOfDic, std::istream& inp);
+  void complementDataset(Dictionary< std::string, Dictionary< int, std::string > >& dicOfDic,
+    std::istream& inp);
+  void intersectDataset(Dictionary< std::string, Dictionary< int, std::string > >& dicOfDic,
+    std::istream& inp);
+  void unionDataset(Dictionary< std::string, Dictionary< int, std::string > >& dicOfDic,
+    std::istream& inp);
 }
 
 #endif
