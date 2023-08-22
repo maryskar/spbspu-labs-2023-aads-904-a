@@ -339,6 +339,134 @@ namespace kryuchkova
     splice_after(pos, other, first, last);
   }
 
+  template< typename T >
+  ForwardIterator< T > ForwardList< T >::erase_after(const_iterator pos)
+  {
+    if (IsEmpty())
+    {
+      return end();
+    }
+    if (pos == last_)
+    {
+      erase_after(fake_);
+    }
+    Node< T > * temp = pos.node_->next_->next_;
+    if (pos.node_->next_ == last_.node_)
+    {
+      last_ = iterator(pos.node_);
+    }
+    delete pos.node_->next_;
+    pos.node_->next_ = temp;
+    if (IsEmpty())
+    {
+      last_.node_ = nullptr;
+    }
+    return iterator(temp);
+  }
+
+  template< typename T >
+  ForwardIterator< T > ForwardList< T >::erase_after(const_iterator first, const_iterator last)
+  {
+    while (first != last)
+    {
+      erase_after(first);
+    }
+    return iterator(last.node_);
+  }
+
+  template< typename T >
+  void ForwardList< T >::push_front(const T & val)
+  {
+    insert_after(cbefore_begin(), val);
+  }
+
+  template< typename T >
+  void ForwardList< T >::push_front(T && val)
+  {
+    insert_after(cbefore_begin(), std::move(val));
+  }
+
+  template< typename T >
+  void ForwardList< T >::pop_front() noexcept
+  {
+    if (IsEmpty())
+    {
+      throw std::invalid_argument("Nothing to pop.");
+    }
+    erase_after(cbefore_begin());
+  }
+
+  template< typename T >
+  void ForwardList< T >::resize(std::size_t count, const T & val)
+  {
+    iterator iter = begin();
+    std::size_t size = 0;
+    while (size < count && iter != end())
+    {
+      ++size;
+      ++iter;
+    }
+    if (size == count && iter == end())
+    {
+      return;
+    }
+    else if (size == count && iter != end())
+    {
+      last_.node_->next_ = nullptr;
+      deleteNode(it.node_);
+    }
+    else
+    {
+      last_ = insert_after(last_, count - size, val);
+    }
+  }
+
+  template< typename T >
+  void ForwardList< T >::resize(std::size_t count)
+  {
+    resize(count, T{});
+  }
+
+  template< typename T >
+  void ForwardList< T >::swap(this_t & other) noexcept
+  {
+    std::swap(fake_, other.fake_);
+    std::swap(last_, other.last_);
+  }
+
+  template< typename T >
+  void ForwardList< T >::remove(const T & val)
+  {
+    iterator first = before_begin();
+    iterator last = end();
+    while(first.node_->next_ != last.node_)
+    {
+      if (first.node_->next_->data_ == val)
+      {
+        auto toDel = first.node_->next_;
+        first.node_->next_ = first.node_->next_->next_;
+        delete toDel;
+      }
+      ++first;
+    }
+  }
+
+  template< typename T >
+  void ForwardList< T >::reverse() noexcept
+  {
+    iterator begin_ = begin();
+    iterator reversed = begin_;
+    iterator end_ = end();
+    for (iterator i = begin_, j = ++(begin()); j != end_; i = j, ++j)
+    {
+      i.node_->next_ = reversed.node_;
+      reversed = i;
+    }
+    last_.node_->next_ = reversed.node_;
+    fake_.node_->next_ = last_.node_;
+    last_ = begin_;
+  }
+
 }
 
 #endif
