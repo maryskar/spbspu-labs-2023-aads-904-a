@@ -21,6 +21,7 @@ int main(int argc, char* argv[])
     std::cout << "Error file\n";
     return 1;
   }
+
   using dict_t = hrushchev::AVLTree< size_t, std::string >;
   hrushchev::AVLTree< std::string, dict_t > dict_of_dict;
   hrushchev::inputDict(input, dict_of_dict);
