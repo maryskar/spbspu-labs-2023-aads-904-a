@@ -1,58 +1,62 @@
 #ifndef LIST_H
 #define LIST_H
 
-#include <stdexcept>
+#include<stdexcept>
 
 namespace dmitriev
 {
-  template< typename T >
-  struct List
-  {
-    T data;
-    List< T >* otherList;
-  };
+	template< typename T >
+	struct List
+	{
+		T data;
+		List< T >* next;
+	};
 
-  template< typename T >
-  void clear(List< T >* topAdress)
-  {
-    while (topAdress != nullptr)
-    {
-      List< T >* currentList = topAdress;
-      topAdress = topAdress->otherList;
+	template< typename T >
+	bool isEmpty(const List< T >* list) noexcept
+	{
+		return list == nullptr;
+	}
 
-      delete currentList;
-    }
-  }
+	template< typename T >
+	void clear(List< T >* head) noexcept
+	{
+		while (!isEmpty(head))
+		{
+			List< T >* newHead = head->next;
+			delete head;
 
-  template< typename T >
-  std::pair< List< T >*, List< T >* > copy(List< T >* otherHead)
-  {
-    if (otherHead == nullptr)
-    {
-      return std::pair< List< T >*, List< T >* >{nullptr, nullptr};
-    }
-    List< T >* newHead = new dmitriev::List< T >{otherHead->data};
-    List< T >* newTail = newHead;
-    otherHead = otherHead->otherList;
+			head = newHead;
+		}
+	}
 
-    while (otherHead != nullptr)
-    {
-      try
-      {
-        newTail->otherList = new dmitriev::List< T >{otherHead->data};
-      }
-      catch (const std::exception&)
-      {
-        clear(newHead);
-        throw;
-      }
+	template< typename T >
+	std::pair< List< T >*, List< T >* > copy(List< T >* otherHead)
+	{
+		if (isEmpty(otherHead))
+		{
+			return std::pair< List< T >*, List< T >* >{nullptr, nullptr};
+		}
 
-      newTail = newTail->otherList;
-      otherHead = otherHead->otherList;
-    }
+		List< T >* newHead = new List< T >{otherHead->data};
+		List< T >* newTail = newHead;
 
-    return std::pair< List< T >*, List< T >* >{newHead, newTail};
-  }
+		while (!isEmpty(otherHead = otherHead->next))
+		{
+			try
+			{
+				newTail->next = new List< T >{otherHead->data};
+			}
+			catch (const std::exception&)
+			{
+				clear(newHead);
+				throw;
+			}
+			newTail = newTail->next;
+		}
+
+		return std::pair< List< T >*, List< T >* >{newHead, newTail};
+	}
 }
 
 #endif

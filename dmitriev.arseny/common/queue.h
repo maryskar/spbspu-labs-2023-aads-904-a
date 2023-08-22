@@ -97,8 +97,8 @@ void dmitriev::Queue< T >::push(const T& rhs)
   }
   else
   {
-    m_ptrPairHT.second->otherList = new List< T >(rhs);
-    m_ptrPairHT.second = m_ptrPairHT.second->otherList;
+    m_ptrPairHT.second->next = new List< T >(rhs);
+    m_ptrPairHT.second = m_ptrPairHT.second->next;
   }
 }
 
@@ -112,8 +112,8 @@ void dmitriev::Queue< T >::push(T&& inp)
   }
   else
   {
-    m_ptrPairHT.second->otherList = new List< T >{std::move(inp), nullptr};
-    m_ptrPairHT.second = m_ptrPairHT.second->otherList;
+    m_ptrPairHT.second->next = new List< T >{std::move(inp), nullptr};
+    m_ptrPairHT.second = m_ptrPairHT.second->next;
   }
 }
 
@@ -124,7 +124,7 @@ void dmitriev::Queue< T >::popBack()
   {
     throw std::runtime_error("runtime_error");
   }
-  List< T >* newHead = m_ptrPairHT.first->otherList;
+  List< T >* newHead = m_ptrPairHT.first->next;
   delete m_ptrPairHT.first;
 
   m_ptrPairHT.first = newHead;

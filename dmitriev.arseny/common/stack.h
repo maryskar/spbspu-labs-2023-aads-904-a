@@ -116,7 +116,7 @@ void dmitriev::Stack< T >::popBack()
     throw std::runtime_error("runtime_error");
   }
   List< T >* currentList = m_top;
-  m_top = m_top->otherList;
+  m_top = m_top->next;
 
   delete currentList;
 }
