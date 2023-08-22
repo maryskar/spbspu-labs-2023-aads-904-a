@@ -189,6 +189,33 @@ namespace kryuchkova
   }
 
   template< typename T >
+  ForwardIterator< T > ForwardList< T >::erase_after(const_iterator pos)
+  {
+    if (pos == last_)
+    {
+      erase_after(fake_);
+    }
+    Node< T > * temp = pos.node_->next_->next_;
+    if (pos.node_->next_ == last_.node_)
+    {
+      last_ = iterator(pos.node_);
+    }
+    delete pos.node_->next_;
+    pos.node_->next_ = temp;
+    return iterator(temp);
+  }
+
+  template< typename T >
+  ForwardIterator< T > ForwardList< T >::erase_after(const_iterator first, const_iterator last)
+  {
+    while (first != last)
+    {
+      erase_after(first);
+    }
+    return iterator(last.node_);
+  }
+
+  template< typename T >
   ForwardIterator< T > ForwardList< T >::before_begin() noexcept
   {
     return fake_;
@@ -258,6 +285,58 @@ namespace kryuchkova
   ConstForwardIterator< T > ForwardList< T >::clast() const noexcept
   {
     return const_iterator(last_);
+  }
+
+  template< typename T >
+  void ForwardList< T >::splice_after(const_iterator pos, this_t & other)
+  {
+    splice_after(pos, other, other.before_begin());
+  }
+
+  template< typename T >
+  void ForwardList< T >::splice_after(const_iterator pos, this_t && other)
+  {
+    splice_after(pos, other);
+  }
+
+  template< typename T >
+  void ForwardList< T >::splice_after(const_iterator pos, this_t & other, const_iterator iter)
+  {
+    const_iterator moved = pos;
+    ++moved;
+    if (pos == iter && moved == iter)
+    {
+      return;
+    }
+    Node< T > * temp = pos.node_->next_;
+    pos.node_->next_ = iter.node_->next_;
+    other.last_.node_->next_ = temp;
+    iter.node_->next_ = other.fake_.node_;
+    other.last_.node_ = iter.node_;
+  }
+
+  template< typename T >
+  void ForwardList< T >::splice_after(const_iterator pos, this_t && other, const_iterator iter)
+  {
+    splice_after(pos, other, iter);
+  }
+
+  template< typename T >
+  void ForwardList< T >::splice_after(const_iterator pos, this_t & other, const_iterator first, const_iterator last)
+  {
+    Node< T > * temp = pos.node_->next_;
+    iterator moved_first;
+    moved_first.node_ = first.node_;
+    ++moved_first;
+    iterator iter = insert_after(pos, moved_first, last);
+    iter.node_->next_ = temp;
+    first.node_->next_ = last.node_;
+  }
+
+  template< typename T >
+  void ForwardList< T >::splice_after(const_iterator pos, this_t && other, const_iterator first, const_iterator last)
+  {
+    splice_after(pos, other, first, last);
   }
 
 }
