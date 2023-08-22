@@ -52,25 +52,25 @@ void callCommand(const std::string& direct, const std::string& value_type, const
   std::string command = direct + " " + value_type;
   if (command == "ascending ints")
   {
-    std::list< int > data;
+    tarasenko::ForwardList< int > data;
     tarasenko::fillRandom(data, num_of_val);
     printSorts(data.begin(), data.end(), std::less<>{}, out);
   }
   else if (command == "descending ints")
   {
-    std::list< int > data;
+    tarasenko::ForwardList< int > data;
     tarasenko::fillRandom(data, num_of_val);
     printSorts(data.begin(), data.end(), std::greater<>{}, out);
   }
   else if (command == "ascending floats")
   {
-    std::list< float > data;
+    tarasenko::ForwardList< float > data;
     tarasenko::fillRandom(data, num_of_val);
     printSorts(data.begin(), data.end(), std::less<>{}, out);
   }
   else if (command == "descending floats")
   {
-    std::list< float > data;
+    tarasenko::ForwardList< float > data;
     tarasenko::fillRandom(data, num_of_val);
     printSorts(data.begin(), data.end(), std::greater<>{}, out);
   }

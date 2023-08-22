@@ -15,6 +15,7 @@ namespace tarasenko
    using iterator = ForwardListIterator< T >;
    using const_iterator = ConstForwardListIterator< T >;
   public:
+   using value_type = T;
    ForwardList():
      null_(static_cast< details::NodeOfList< T >* >(::operator new (sizeof(details::NodeOfList< T >)))),
      first_(nullptr),
