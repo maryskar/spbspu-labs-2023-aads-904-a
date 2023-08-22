@@ -10,7 +10,7 @@ namespace dmitriev
 	{
 	public:
 		using fListPair = std::pair< Key, Value >;
-		using fList = ForwardList< fListPair >;
+		using fList = dmitriev::ForwardList< fListPair >;
 		using iterator = typename fList::iterator;
 		using constIterator = typename fList::constIterator;
 
@@ -18,23 +18,13 @@ namespace dmitriev
 			m_fList(),
 			m_comp()
 		{}
-		Dictionary(std::initializer_list< fListPair > initList, const Compare& comp = std::less< >):
+		explicit Dictionary(std::initializer_list< fListPair > initList, const Compare& comp = std::less< >):
 			m_fList(),
 			m_comp(comp)
 		{
 			insert(initList);
 		}
-		Dictionary(const Dictionary& other):
-			m_fList(other.m_fList),
-			m_comp(other.m_comp)
-		{}
-		Dictionary(Dictionary&& other) noexcept:
-			m_fList(other.m_fList),
-			m_comp(other.m_comp)
-		{}
 
-		Dictionary& operator=(const Dictionary& other) = default;
-		Dictionary& operator=(Dictionary&& other) = default;
 		Dictionary& operator=(std::initializer_list< fListPair > initList)
 		{
 			m_fList.clear();
@@ -43,7 +33,7 @@ namespace dmitriev
 		Value& operator[](const Key& key)
 		{
 			iterator it = find(key);
-			if (isExist(it))
+			if (!isEmpty(it))
 			{
 				return it->second;
 			}
@@ -51,69 +41,37 @@ namespace dmitriev
 			return insert({key, Value()})->second;
 		}
 
-		~Dictionary() = default;
-		
-		void unionDictionary(Dictionary lhs, Dictionary rhs)
+		iterator erase(const Key& key)
 		{
-			clear();
-
-			for (iterator itLhs = lhs.begin(); isExist(itLhs); itLhs++)
+			iterator it = findBefore(key);
+			iterator finded = it;
+			finded++;
+			if (isEmpty(finded))
 			{
-				insert({itLhs->first, itLhs->second});
+				throw std::out_of_range("no reseults with such key");
 			}
 
-			for (iterator itRhs = rhs.begin(); isExist(itRhs); itRhs++)
-			{
-				if (!isExist(lhs.find(itRhs->first)))
-				{
-					insert({itRhs->first, itRhs->second});
-				}
-			}
+			return m_fList.eraseAfter(it);
 		}
-		void intersect(Dictionary lhs, Dictionary rhs)
+
+		iterator eraseAfter(constIterator pos)
 		{
-			clear();
-
-			for (iterator itLhs = lhs.begin(); isExist(itLhs); itLhs++)
-			{
-				if (isExist(rhs.find(itLhs->first)))
-				{
-					insert({itLhs->first, itLhs->second});
-				}
-			}
-
-			for (iterator itRhs = rhs.begin(); isExist(itRhs); itRhs++)
-			{
-				if (isExist(lhs.find(itRhs->first)))
-				{
-					insert({itRhs->first, itRhs->second});
-				}
-			}
+			return m_fList.eraseAfter(pos);
 		}
-		void complement(Dictionary lhs, Dictionary rhs)
+		iterator eraseAfter(constIterator first, constIterator last)
 		{
-			clear();
+			return m_fList.eraseAfter(first, last);
+		}
 
-			for (iterator itLhs = lhs.begin(); isExist(itLhs); itLhs++)
-			{
-				if (!isExist(rhs.find(itLhs->first)))
-				{
-					insert({itLhs->first, itLhs->second});
-				}
-			}
-
-			for (iterator itRhs = rhs.begin(); isExist(itRhs); itRhs++)
-			{
-				if (!isExist(lhs.find(itRhs->first)))
-				{
-					insert({itRhs->first, itRhs->second});
-				}
-			}
+		template< typename... Args >
+		iterator emplace(Args... args)
+		{
+			return insert(std::forward< Args >(args)...);
 		}
 
 		iterator insert(const fListPair& keyValue)
 		{
-			iterator it = beforeUpperBound(keyValue.first);
+			iterator it = upperBoundBefore(keyValue.first);
 
 			if (it->first == keyValue.first)
 			{
@@ -124,7 +82,7 @@ namespace dmitriev
 		}
 		iterator insert(fListPair&& keyValue)
 		{
-			iterator it = beforeUpperBound(keyValue.first);
+			iterator it = upperBoundBefore(keyValue.first);
 
 			if (it->first == keyValue.first)
 			{
@@ -146,151 +104,195 @@ namespace dmitriev
 			insert(initList.begin(), initList.end());
 		}
 
-		template< typename... Args >
-		iterator emplace(Args&&... args)
-		{
-			return insert(std::make_pair(std::forward< Args >(args)...));
-		}
-
-		iterator eraseAfter(constIterator pos)
-		{
-			m_fList.eraseAfter(pos);
-		}
-		iterator eraseAfter(constIterator beforeFirst, constIterator last)
-		{
-			return m_fList.eraseAfter(beforeFirst, last);
-		}
-
-		iterator erase(const Key& key)
-		{
-			iterator it = beforeFind(key);
-			iterator finded = it;
-			finded++;
-			if (!isExist(finded))
-			{
-				throw std::logic_error("no such element");
-			}
-
-			return m_fList.eraseAfter(it);
-		}
-
 		Value& at(const Key& key)
 		{
 			iterator it = find(key);
-			if (!isExist(it))
+			if (isEmpty(it))
 			{
-				throw std::logic_error("no element with such key");
+				throw std::out_of_range("no reseults with such key");
 			}
+
 			return it->second;
 		}
 		const Value& at(const Key& key) const
 		{
-			iterator it = find(key);
-			if (!isExist(it))
+			constIterator it = constFind(key);
+			if (isEmpty(it))
 			{
-				throw std::logic_error("no element with such key");
+				throw std::out_of_range("no reseults with such key");
 			}
+
 			return it->second;
 		}
 
-		iterator beforeLowerBoard(const Key& key)
+		iterator lowerBoundBefore(const Key& key)
 		{
 			iterator result = beforeBegin();
-			for (iterator it = begin(); (it != end()) && m_comp(it->first, key); result++, it++)
-			{}
+
+			for (iterator it = begin(); (!isEmpty(it)) && m_comp(it->first, key); result++, it++)
+			{
+			}
 
 			return result;
 		}
-		iterator beforeUpperBound(const Key& key)
-		{
-			iterator result = beforeBegin();
-			for (iterator it = begin(); (it != end()) && !m_comp(key, it->first); result++, it++)
-			{}
-
-			return result;
-		}
-
 		iterator lowerBound(const Key& key)
 		{
-			return ++beforeLowerBoard(key);
+			return ++lowerBoundBefore(key);
+		}
+
+		iterator upperBoundBefore(const Key& key)
+		{
+			iterator result = beforeBegin();
+
+			for (iterator it = begin(); (!isEmpty(it)) && !m_comp(key, it->first); result++, it++)
+			{
+			}
+
+			return result;
 		}
 		iterator upperBound(const Key& key)
 		{
-			return ++beforeUpperBound();
+			return ++upperBoundBefore(key);
 		}
 
-		iterator beforeFind(const Key& key)
+		iterator findBefore(const Key& key)
 		{
 			iterator result = beforeBegin();
 
-			for (iterator it = begin(); isExist(it) && (it->first != key); result++, it++)
-			{}
+			for (iterator it = begin(); (!isEmpty(it)) && (it->first != key); result++, it++)
+			{
+			}
 
 			return result;
 		}
 		iterator find(const Key& key)
 		{
-			return ++beforeFind(key);
+			return ++findBefore(key);
 		}
 
+		constIterator constFindBefore(const Key& key) const
+		{
+			constIterator result = constBeforeBegin();
+
+			for (constIterator it = constBegin(); (!isEmpty(it)) && (it->first != key); result++, it++)
+			{
+			}
+
+			return result;
+		}
 		constIterator constFind(const Key& key) const
 		{
-			return ++beforeFind(key);
+			return ++constFindBefore(key);
 		}
 
-		iterator beforeBegin()
+		iterator beforeBegin() noexcept
 		{
 			return m_fList.beforeBegin();
 		}
-		iterator begin()
+		iterator begin() noexcept
 		{
 			return m_fList.begin();
 		}
-		iterator end()
+		iterator end() noexcept
 		{
 			return m_fList.end();
 		}
 
-		constIterator constBeforeBegin() const
+		constIterator constBeforeBegin() const noexcept
 		{
 			return m_fList.constBeforeBegin();
 		}
-		constIterator constBegin() const
+		constIterator constBegin() const noexcept
 		{
 			return m_fList.constBegin();
 		}
-		constIterator constEnd() const
+		constIterator constEnd() const noexcept
 		{
 			return m_fList.constEnd();
 		}
 
-		bool isEmpty()
+		bool isEmpty(constIterator it) const noexcept
 		{
-			return m_fList.isEmtpy();
+			return it == constEnd();
 		}
-		bool isExist(constIterator it)
+		bool isEmpty() const noexcept
 		{
-			return it != end();
+			return m_fList.isEmpty();
 		}
-		bool isExist(const Key& key)
+		void swap(Dictionary& other) noexcept
 		{
-			return isExist(find(key));
+			m_fList.swap(other.m_fList);
 		}
-		void clear()
+		void clear() noexcept
 		{
 			m_fList.clear();
 		}
-		void swap(Dictionary& other)
-		{
-			std::swap(m_fList, other.m_fList);
-		}
-
 
 	private:
 		fList m_fList;
 		Compare m_comp;
 
 	};
+
+	template< typename Key, typename Value, typename Compare = std::less< > >
+	Dictionary< Key, Value, Compare > complementDictionary(const Dictionary< Key, Value, Compare >& lhs, const Dictionary< Key, Value, Compare > rhs)
+	{
+		Dictionary< Key, Value, Compare > newDic;
+
+		for (typename Dictionary< Key, Value, Compare >::constIterator it = lhs.constBegin(); !newDic.isEmpty(it); it++)
+		{
+			if (newDic.isEmpty(rhs.constFind(it->first)))
+			{
+				newDic.insert(*it);
+			}
+		}
+		for (typename Dictionary< Key, Value, Compare >::constIterator it = rhs.constBegin(); !newDic.isEmpty(it); it++)
+		{
+			if (newDic.isEmpty(lhs.constFind(it->first)))
+			{
+				newDic.insert(*it);
+			}
+		}
+
+		return newDic;
+	}
+
+	template< typename Key, typename Value, typename Compare = std::less< > >
+	Dictionary< Key, Value, Compare > intersectDictionary(const Dictionary< Key, Value, Compare >& lhs, const Dictionary< Key, Value, Compare > rhs)
+	{
+		Dictionary< Key, Value, Compare > newDic;
+
+		for (typename Dictionary< Key, Value, Compare >::constIterator it = lhs.constBegin(); !newDic.isEmpty(it); it++)
+		{
+			if (!newDic.isEmpty(lhs.constFind(it->first)))
+			{
+				newDic.insert(*it);
+			}
+		}
+
+		return newDic;
+	}
+
+	template< typename Key, typename Value, typename Compare = std::less< > >
+	Dictionary< Key, Value, Compare > unionDictionary(const Dictionary< Key, Value, Compare >& lhs, const Dictionary< Key, Value, Compare > rhs)
+	{
+		Dictionary< Key, Value, Compare > newDic;
+
+		for (typename Dictionary< Key, Value, Compare >::constIterator it = lhs.constBegin(); !newDic.isEmpty(it); it++)
+		{
+			newDic.insert(*it);
+		}
+		for (typename Dictionary< Key, Value, Compare >::constIterator it = rhs.constBegin(); !newDic.isEmpty(it); it++)
+		{
+			if (newDic.isEmpty(lhs.constFind(it->first)))
+			{
+				newDic.insert(*it);
+			}
+		}
+
+		return newDic;
+	}
+
 }
 
 #endif
