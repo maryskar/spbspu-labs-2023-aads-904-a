@@ -3,6 +3,7 @@
 
 #include <utility>
 #include <functional>
+#include <stdexcept>
 
 #include "tree.hpp"
 #include "avltreeiterator.hpp"
@@ -176,13 +177,13 @@ namespace hrushchev
   template< typename Key, typename Value, typename Compare >
   typename AVLTree< Key, Value, Compare >::iterator AVLTree< Key, Value, Compare >::end()
   {
-    return iterator(getMax(node_)->right_);
+    return iterator(nullptr);
   }
 
   template< typename Key, typename Value, typename Compare >
   typename AVLTree< Key, Value, Compare >::const_iterator AVLTree< Key, Value, Compare >::cend()
   {
-    return const_iterator(getMax(node_)->right_);
+    return const_iterator(nullptr);
   }
 
   template<typename Key, typename Value, typename Compare>
@@ -205,6 +206,13 @@ namespace hrushchev
       node_->data_ = data_t(key, value);
       node_->height_ = 1;
       return node_;
+    }
+
+    if (!comp_(tree->data_.first, key) && !comp_(key, tree->data_.first))
+    {
+      auto temp = find(key);
+      temp->data_.second = value;
+      return temp;
     }
     if (comp_(tree->data_.first, key))
     {

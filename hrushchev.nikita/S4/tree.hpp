@@ -28,6 +28,11 @@ namespace hrushchev
   template< typename T >
   Tree< T >* getMax(Tree< T >* tree)
   {
+    if (!tree)
+    {
+      return nullptr;
+    }
+
     if (!tree->right_)
     {
       return tree;
@@ -38,6 +43,11 @@ namespace hrushchev
   template< typename T >
   Tree< T >* getMin(Tree< T >* tree)
   {
+    if (!tree)
+    {
+      return nullptr;
+    }
+
     if (!tree->left_)
     {
       return tree;
