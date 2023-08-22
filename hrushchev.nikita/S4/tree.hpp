@@ -3,44 +3,47 @@
 
 #include <cstddef>
 
-template< typename T >
-struct Tree
+namespace hrushchev
 {
-  T data_;
-  Tree< T >* left_ = nullptr;
-  Tree< T >* head_ = nullptr;
-  Tree< T >* right_ = nullptr;
-  size_t height_ = 0;
-};
-
-template< typename T >
-size_t getHeight(const Tree< T >* tree)
-{
-  if (tree)
+  template< typename T >
+  struct Tree
   {
-    return tree->height_;
-  }
-  return 0ull;
-}
+    T data_;
+    Tree< T >* left_ = nullptr;
+    Tree< T >* head_ = nullptr;
+    Tree< T >* right_ = nullptr;
+    size_t height_ = 0;
+  };
 
-template< typename T >
-Tree< T >* getMax(Tree< T >* tree)
-{
-  if (!tree->right_)
+  template< typename T >
+  size_t getHeight(const Tree< T >* tree)
   {
-    return tree;
+    if (tree)
+    {
+      return tree->height_;
+    }
+    return 0ull;
   }
-  return getMax(tree->right_);
-}
 
-template< typename T >
-Tree< T >* getMin(Tree< T >* tree)
-{
-  if (!tree->left_)
+  template< typename T >
+  Tree< T >* getMax(Tree< T >* tree)
   {
-    return tree;
+    if (!tree->right_)
+    {
+      return tree;
+    }
+    return getMax(tree->right_);
   }
-  return getMin(tree->left_);
+
+  template< typename T >
+  Tree< T >* getMin(Tree< T >* tree)
+  {
+    if (!tree->left_)
+    {
+      return tree;
+    }
+    return getMin(tree->left_);
+  }
 }
 
 #endif

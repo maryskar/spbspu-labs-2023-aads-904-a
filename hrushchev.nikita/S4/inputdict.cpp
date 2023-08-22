@@ -3,9 +3,9 @@
 #include <string>
 #include "avltree.hpp"
 
-using dict_t = AVLTree< size_t, std::string >;
+using dict_t = hrushchev::AVLTree< size_t, std::string >;
 
-void hrushchev::inputDict(std::istream& input, AVLTree< std::string, dict_t >& dict_of_dict)
+void hrushchev::inputDict(std::istream& input, hrushchev::AVLTree< std::string, dict_t >& dict_of_dict)
 {
   while (input)
   {
