@@ -40,6 +40,12 @@ namespace potapova
 
           }
 
+          ConstIterator(const Node* const node_ptr):
+            node_ptr_(node_ptr)
+          {
+
+          }
+
           ~ConstIterator() = default;
           ConstIterator(const ConstIterator&) = default;
           ConstIterator& operator=(const ConstIterator&) = default;
@@ -92,6 +98,12 @@ namespace potapova
             node_ptr_(nullptr)
           {
 
+          }
+
+          Iterator(Node* const node_ptr):
+            node_ptr_(node_ptr)
+          {
+            
           }
 
           ~Iterator() = default;
