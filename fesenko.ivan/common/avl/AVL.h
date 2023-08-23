@@ -84,6 +84,7 @@ namespace fesenko
 
   template< typename Key, typename Value, typename Compare >
   AVL< Key, Value, Compare >::AVL(const this_t &other):
+    root_(nullptr),
     comp_(other.comp_)
   {
     copy(other);
@@ -117,7 +118,7 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   AVL< Key, Value, Compare >::~AVL()
   {
-    clear();
+    deleteNode(root_);
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -463,6 +464,7 @@ namespace fesenko
   void AVL< Key, Value, Compare >::balance(tree *node)
   {
     while (node->parent) {
+      node = node->parent;
       size_t left = checkHeight(node->left);
       size_t right = checkHeight(node->right);
       if (right - left == 2) {
@@ -484,7 +486,6 @@ namespace fesenko
           rotateLeftRight(subTree);
         }
       }
-      node = node->parent;
     }
   }
 }
