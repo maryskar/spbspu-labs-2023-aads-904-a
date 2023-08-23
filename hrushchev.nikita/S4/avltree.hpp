@@ -33,8 +33,6 @@ namespace hrushchev
       const_iterator cbegin();
       iterator end();
       const_iterator cend();
-      Tree< data_t >* node_;
-      Compare comp_;
     private:
       void updateHeight(Tree< data_t >* tree);
       Tree< data_t >* insert(const Key& key, const Value& value, Tree< data_t >* tree);
@@ -47,6 +45,8 @@ namespace hrushchev
       void balance(Tree< data_t >* node);
       void clear(Tree< data_t >* node);
       void copyNodes(const Tree< data_t >* source_node, Tree< data_t >* destination_node);
+      Tree< data_t >* node_;
+      Compare comp_;
   };
 
   template< typename Key, typename Value, typename Compare >
