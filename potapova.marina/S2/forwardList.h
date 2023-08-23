@@ -50,17 +50,17 @@ namespace potapova
           ConstIterator(const ConstIterator&) = default;
           ConstIterator& operator=(const ConstIterator&) = default;
 
-          const ConstIterator& operator++() const
+          const ConstIterator& operator++()
           {
             assert(node_ptr_ != nullptr);
             node_ptr_ = node_ptr_->next_node_ptr;
             return *this;
           }
 
-          ConstIterator operator++(int) const
+          ConstIterator operator++(int)
           {
             assert(node_ptr_ != nullptr);
-            ConstIterator result(*this);
+            const ConstIterator result(*this);
             ++(*this);
             return result;
           }
@@ -84,7 +84,7 @@ namespace potapova
 
           bool operator==(const ConstIterator& rhs) const
           {
-            return node_ptr_ == rhs.node_;
+            return node_ptr_ == rhs.node_ptr_;
           }
         private:
           const Node* node_ptr_; 
@@ -114,12 +114,13 @@ namespace potapova
           {
             assert(node_ptr_ != nullptr);
             node_ptr_ = node_ptr_->next_node_ptr;
+            return *this;
           }
 
           Iterator operator++(int)
           {
             assert(node_ptr_ != nullptr);
-            Iterator result(*this);
+            const Iterator result(*this);
             ++(*this);
             return result;
           }
