@@ -45,30 +45,21 @@ int main(int argc, char** argv)
     std::string value = "";
     dicVal datasetDic;
 
+    if (file.peek() == '\n')
+    {
+      dicOfdic.insert({dicName, datasetDic});
+      continue;
+    }
     while (file >> key >> value)
     {
       datasetDic.insert({key, value});
+      if (file.peek() == '\n')
+      {
+        break;
+      }
     }
     dicOfdic.insert({dicName, datasetDic});
   }
-
-  //while (std::getline(file, line))
-  //{
-  //  std::stringstream ss(line);
-  //  std::string datasetName = "";
-  //  ss >> datasetName;
-
-  //  dicVal datasetDic;
-
-  //  int key = 0;
-  //  std::string value = "";
-  //  while (ss >> key >> value)
-  //  {
-  //    datasetDic.insert({key, value});
-  //  }
-
-  //  dicOfdic.insert({datasetName, datasetDic});
-  //}
 
 
   std::string cmdName = "";
