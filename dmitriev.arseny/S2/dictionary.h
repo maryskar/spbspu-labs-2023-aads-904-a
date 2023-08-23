@@ -73,7 +73,7 @@ namespace dmitriev
     {
       if (constBegin() == constEnd())
       {
-        return m_fList.pushFront(keyValue);
+        return m_fList.insertAfter(constBeforeBegin(), keyValue);
       }
 
       iterator it = upperBoundBefore(keyValue.first);
@@ -88,7 +88,7 @@ namespace dmitriev
     {
       if (constBegin() == constEnd())
       {
-        return m_fList.pushFront(std::move(keyValue));
+        return m_fList.insertAfter(constBeforeBegin(), std::move(keyValue));
       }
 
       iterator it = upperBoundBefore(keyValue.first);
