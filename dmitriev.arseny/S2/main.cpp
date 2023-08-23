@@ -9,6 +9,10 @@
 
 int main(int argc, char** argv)
 {
+  dmitriev::Dictionary< int, std::string > d;
+  d.insert({1, "test"});
+  d.insert({2, "test2"});
+
   using dicVal = dmitriev::Dictionary< int, std::string >;
   using dataset = dmitriev::Dictionary< std::string, dicVal >;
   using comand = std::function< void(dataset& dicOfDic, std::istream& inp) >;
