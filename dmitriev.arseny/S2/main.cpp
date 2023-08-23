@@ -27,10 +27,10 @@ int main(int argc, char** argv)
   }
 
 
-  dmitriev::Dictionary< std::string, comand > ñomands;
-  ñomands["complement"] = dmitriev::complementDataset;
-  ñomands["intersect"] = dmitriev::intersectDataset;
-  ñomands["union"] = dmitriev::unionDataset;
+  dmitriev::Dictionary< std::string, comand > comands;
+  comands["complement"] = dmitriev::complementDataset;
+  comands["intersect"] = dmitriev::intersectDataset;
+  comands["union"] = dmitriev::unionDataset;
 
 
   dmitriev::Dictionary< std::string, constComand > constComands;
@@ -67,9 +67,9 @@ int main(int argc, char** argv)
       {
         break;
       }
-      if (!ñomands.isEmpty(ñomands.find(cmdName)))
+      if (!comands.isEmpty(comands.find(cmdName)))
       {
-        auto cmd = ñomands[cmdName];
+        auto cmd = comands[cmdName];
         cmd(dicOfdic, std::cin);
       }
       else if (!constComands.isEmpty(constComands.find(cmdName)))
