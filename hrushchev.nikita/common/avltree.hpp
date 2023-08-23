@@ -35,6 +35,8 @@ namespace hrushchev
       const_iterator cend();
       Tree< data_t >* node_;
       Compare comp_;
+      template< typename F >
+      F traverse_lnr(F f) const;
     private:
       void updateHeight(Tree< data_t >* tree);
       Tree< data_t >* insert(const Key& key, const Value& value, Tree< data_t >* tree);
