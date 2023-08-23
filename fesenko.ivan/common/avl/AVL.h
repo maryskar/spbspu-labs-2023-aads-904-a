@@ -416,8 +416,17 @@ namespace fesenko
     auto head = node->right;
     if (node == root_) {
       root_ = head;
+      head->parent = nullptr;
+    } else {
+      head->parent = node->parent;
+      if (node->parent->left == node) {
+        head->parent->left = head;
+      } else {
+        head->parent->right = head;
+      }
     }
-    node->right = node->right->left;
+    node->right = head->left;
+    node->right->parent = node;
     head->left = node;
     node->parent = head;
   }
@@ -428,8 +437,17 @@ namespace fesenko
     auto head = node->left;
     if (node == root_) {
       root_ = head;
+      head->parent = nullptr;
+    } else {
+      head->parent = node->parent;
+      if (node->parent->left == node) {
+        head->parent->left = head;
+      } else {
+        head->parent->right = head;
+      }
     }
-    node->left = node->left->right;
+    node->left = head->right;
+    node->left->parent = node;
     head->right = node;
     node->parent = head;
   }
