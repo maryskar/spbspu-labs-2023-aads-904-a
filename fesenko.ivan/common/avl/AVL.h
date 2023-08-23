@@ -413,37 +413,25 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   void AVL< Key, Value, Compare >::rotateLeft(tree *node)
   {
-    tree *temp = node->right->left;
-    if (node == node->parent->left) {
-      node->parent->left = node->right;
-    } else {
-      node->parent->right = node->right;
+    auto head = node->right;
+    if (node == root_) {
+      root_ = head;
     }
-    node->right->parent = node->parent;
-    node->right->left = node;
-    node->parent = node->right;
-    node->right = temp;
-    if (temp) {
-      temp->parent = node;
-    }
+    node->right = node->right->left;
+    head->left = node;
+    node->parent = head;
   }
 
   template< typename Key, typename Value, typename Compare >
   void AVL< Key, Value, Compare >::rotateRight(tree *node)
   {
-    tree *temp = node->left->right;
-    if (node == node->parent->left) {
-      node->parent->left = node->left;
-    } else {
-      node->parent->right = node->left;
+    auto head = node->left;
+    if (node == root_) {
+      root_ = head;
     }
-    node->left->parent = node->parent;
-    node->left->right = node;
-    node->parent = node->left;
-    node->left = temp;
-    if (temp) {
-      temp->parent = node;
-    }
+    node->left = node->left->right;
+    head->right = node;
+    node->parent = head;
   }
 
   template< typename Key, typename Value, typename Compare >
