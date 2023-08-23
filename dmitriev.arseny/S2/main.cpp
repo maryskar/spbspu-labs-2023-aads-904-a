@@ -28,19 +28,14 @@ int main(int argc, char** argv)
 
 
   dmitriev::Dictionary< std::string, comand > comands;
-  std::string testCompl = "complement";
-  std::string testInter = "intersect";
-  std::string testUnion = "union";
-
-  comands.insert({testCompl, dmitriev::complementDataset});
-  comands.insert({testInter, dmitriev::intersectDataset});
-  comands.insert({testUnion, dmitriev::unionDataset});
+  comands["complement"] = dmitriev::complementDataset;
+  comands["intersect"] = dmitriev::intersectDataset;
+  comands["union"] = dmitriev::unionDataset;
 
 
   dmitriev::Dictionary< std::string, constComand > constComands;
-  std::string testPrint = "print";
+  constComands["print"] = dmitriev::printDataset;
 
-  constComands.insert({testPrint, dmitriev::printDataset});
 
   dataset dicOfdic;
   std::string line = "";
