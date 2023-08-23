@@ -25,7 +25,8 @@ namespace romanovich
     void removeValue(const std::string &key, const std::string &trans);
     std::ostream &print(std::ostream &out) const;
     void resize(size_t newCapacity);
-    void addWordsFromAnother(romanovich::HashTable &table);
+    void addWordsFromAnother(const romanovich::HashTable &table);
+    void addLevelWordsFromAnother(const romanovich::HashTable &table);
   private:
     size_t size_;
     size_t capacity_;

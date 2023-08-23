@@ -4,8 +4,15 @@
 #include <vector>
 struct WordEntry
 {
+  enum class Level
+  {
+    beginner,
+    intermediate,
+    advanced
+  };
   std::string word;
   std::vector< std::string > translations;
+  Level level;
   bool operator==(const WordEntry &rhs) const;
 };
 #endif

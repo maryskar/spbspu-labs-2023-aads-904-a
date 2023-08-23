@@ -245,6 +245,23 @@ void romanovich::CommandHandler::addMissingWords()
 }
 void romanovich::CommandHandler::createLevelDict()
 {
+  std::string dict;
+  std::string newDictName;
+  in_ >> dict;
+  in_ >> newDictName;
+  std::pair< std::string, romanovich::HashTable > newDict;
+  newDict.first = newDictName;
+  for (auto &pair: *dictionaries_)
+  {
+    if (pair.first == dict)
+    {
+      newDict.second.addLevelWordsFromAnother(pair.second);
+      out_ << "Added level words from dictionary '" << dict << "'\n";
+      dictionaries_->push_back(newDict);
+      return;
+    }
+  }
+  out_ << "Dictionary '" << dict << "' not found.\n";
 }
 void romanovich::CommandHandler::mergeDicts()
 {
@@ -262,9 +279,9 @@ void romanovich::CommandHandler::mergeDicts()
     {
       newDict.second.addWordsFromAnother(pair1.second);
       out_ << "Added missing words from dictionary '" << dict1 << "'\n";
+      dictionaries_->push_back(newDict);
     }
     out_ << "Dictionary '" << dict1 << "' not found.\n";
-    return;
   }
   for (auto &pair2: *dictionaries_)
   {
@@ -272,9 +289,9 @@ void romanovich::CommandHandler::mergeDicts()
     {
       newDict.second.addWordsFromAnother(pair2.second);
       out_ << "Added missing words from dictionary '" << dict2 << "'\n";
+      return;
     }
     out_ << "Dictionary '" << dict2 << "' not found.\n";
-    return;
   }
 }
 void romanovich::CommandHandler::printDicts(std::ostream &out)
