@@ -36,31 +36,31 @@ int main(int argc, char** argv)
   dmitriev::Dictionary< std::string, constComand > constComands;
   constComands["print"] = dmitriev::printDataset;
 
+
   dataset dicOfdic;
-  std::string dicName = "";
-
-  while (file >> dicName)
+  while (file)
   {
-    int key = 0;
-    std::string value = "";
-    dicVal datasetDic;
-
-    if (file.peek() == '\n')
+    std::string name;
+    file >> name;
+    if (!file)
     {
-      dicOfdic.insert({dicName, datasetDic});
-      continue;
+      break;
     }
-    while (file >> key >> value)
+    dicVal datasetDic;
+    std::size_t key = 0;
+    std::string value;
+    while (file)
     {
-      datasetDic.insert({key, value});
-      if (file.peek() == '\n')
+      file >> key >> value;
+      if (!file)
       {
         break;
       }
+      datasetDic.emplace(key, value);
     }
-    dicOfdic.insert({dicName, datasetDic});
+    file.clear();
+    dicOfdic.emplace(name, datasetDic);
   }
-
 
   std::string cmdName = "";
   try
