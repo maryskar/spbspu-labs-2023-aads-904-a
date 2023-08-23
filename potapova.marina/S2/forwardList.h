@@ -201,38 +201,52 @@ namespace potapova
         return *cbegin();
       }
 
+      void insert_after(const Iterator place_ptr, const T& value)
+      {
+        Node* const new_node_ptr = new Node(value);
+        Node** new_elem_place_ptr = place_ptr.node_ptr_->next_node_ptr;
+        new_node_ptr->next_node_ptr = new_elem_place_ptr;
+        new_elem_place_ptr = new_node_ptr;
+        ++size_;
+      }
+
       void push_front(const T& value)
       {
-        Node* new_node = new Node(value);
-        new_node->next_node_ptr = head_;
-        head_ = new_node; 
+        insert_after(before_begin(), value); 
+      }
+
+      void erase_after(const Iterator place_ptr)
+      {
+        Node* const deleted_node_ptr = place_ptr.node_ptr_->next_node_ptr;
+        place_ptr.node_ptr_->next_node_ptr = deleted_node_ptr->next_node_ptr;
+        delete deleted_node_ptr;
+        --size_;
+      }
+
+      void pop_front(const T& value)
+      {
+        erase_after(before_begin(), value);
       }
 
       void clear()
       {
-        while (head_ != nullptr)
+        Node* cur_deleted_node_ptr = head_.next_node_ptr;
+        while (cur_deleted_node_ptr != nullptr)
         {
-          Node* temp = head_;
-          head_ = head_->next_node_ptr;
+          const Node* const temp = cur_deleted_node_ptr;
+          cur_deleted_node_ptr = cur_deleted_node_ptr->next_node_ptr;
           delete temp;
         }
       }
 
       bool empty() const
       {
-        return head_ == nullptr;
+        return size_ == 0;
       }
 
       size_t size() const
       {
-        size_t counter = 0;
-        const Node* current = head_;
-        while (current != nullptr)
-        {
-          ++counter;
-          current = current->next_node_ptr;
-        }
-        return counter;
+        return size_;
       }
     private:
       Node head_;
