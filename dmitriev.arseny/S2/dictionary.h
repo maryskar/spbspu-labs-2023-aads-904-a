@@ -72,15 +72,11 @@ namespace dmitriev
     iterator insert(const fListPair& keyValue)
     {
       iterator it = upperBoundBefore(keyValue.first);
-      if (isEmpty(it))
-      {
-        return m_fList.insertAfter(it, keyValue);
-      }
 
-      if (it->first == keyValue.first)
-      {
-        return it;
-      }
+      //if (it->first == keyValue.first)
+      //{
+      //  return it;
+      //}
 
       return m_fList.insertAfter(it, keyValue);
     }
@@ -88,14 +84,10 @@ namespace dmitriev
     {
       iterator it = upperBoundBefore(keyValue.first);
 
-      if (isEmpty(it))
-      {
-        return m_fList.insertAfter(it, keyValue);
-      }
-      if (it->first == keyValue.first)
-      {
-        return it;
-      }
+      //if (it->first == keyValue.first)
+      //{
+      //  return it;
+      //}
 
       return m_fList.insertAfter(it, std::move(keyValue));
     }
