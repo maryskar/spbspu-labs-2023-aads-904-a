@@ -51,7 +51,7 @@ namespace dmitriev
       m_ptr = m_ptr->next;
       return *this;
     }
-    ForwardIterator& operator++(int) noexcept
+    ForwardIterator operator++(int) noexcept
     {
       if (isEmpty(m_ptr))
       {
@@ -126,7 +126,7 @@ namespace dmitriev
       m_ptr = m_ptr->next;
       return *this;
     }
-    ConstForwardIterator& operator++(int) noexcept
+    ConstForwardIterator operator++(int) noexcept
     {
       if (isEmpty(m_ptr))
       {
