@@ -266,7 +266,7 @@ namespace dmitriev
 
     for (typename Dictionary< Key, Value, Compare >::constIterator it = lhs.constBegin(); !newDic.isEmpty(it); it++)
     {
-      if (!newDic.isEmpty(lhs.constFind(it->first)))
+      if (!newDic.isEmpty(rhs.constFind(it->first)))
       {
         newDic.insert(*it);
       }
