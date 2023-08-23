@@ -196,7 +196,9 @@ void romanovich::CommandHandler::countTranslations()
 }
 void romanovich::CommandHandler::exportToFile()
 {
-  std::ofstream file("output.txt");
+  std::string fileName;
+  in_ >> fileName;
+  std::ofstream file(fileName + ".txt");
   printDicts(file);
   file.close();
 }
