@@ -133,8 +133,8 @@ namespace dmitriev
         return *this;
       }
 
-      ConstForwardIterator< T > currPtr = *this;
-      m_ptr = m_ptr->next;
+      ConstForwardIterator< T > currPtr(*this);
+      ++(*this);
       return currPtr;
     }
 

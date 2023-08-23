@@ -22,7 +22,7 @@ namespace dmitriev
       return;
     }
 
-    std::cout << name;
+    out << name;
     typename  Dictionary< int, std::string >::constIterator it;
     for (it = dicOfDic.at(name).constBegin(); it != dicOfDic.at(name).constEnd(); it++)
     {
