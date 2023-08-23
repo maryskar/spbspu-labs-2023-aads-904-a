@@ -2,6 +2,7 @@
 #define COMMANDS_H
 
 #include "dictionary.h"
+#include <sstream>
 
 namespace dmitriev
 {
