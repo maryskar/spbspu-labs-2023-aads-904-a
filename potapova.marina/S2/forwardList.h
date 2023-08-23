@@ -151,19 +151,54 @@ namespace potapova
       };
     public:
       ForwardList():
-        head_(nullptr)
+        size_(0)
       {
 
       }
 
       ~ForwardList()
       {
-        while (head_ != nullptr)
-        {
-          Node* temp = head_;
-          head_ = head_->next_node_ptr;
-          delete temp;
-        }
+        clear();
+      }
+
+      Iterator before_begin()
+      {
+        return Iterator(&head);
+      }
+
+      ConstIterator before_begin() const
+      {
+        return ConstIterator(&head);
+      }
+
+      Iterator begin()
+      {
+        return Iterator(head_.next_node_ptr);
+      }
+
+      ConstIterator begin() const
+      {
+        return ConstIterator(head_.next_node_ptr);
+      }
+
+      Iterator end()
+      {
+        return Iterator();
+      }
+
+      ConstIterator end() const
+      {
+        return ConstIterator();
+      }
+
+      T& front()
+      {
+        return *begin();
+      }
+
+      const T& front() const
+      {
+        return *cbegin();
       }
 
       void push_front(const T& value)
@@ -199,38 +234,9 @@ namespace potapova
         }
         return counter;
       }
-
-      Iterator begin()
-      {
-        return Iterator(head_);
-      }
-
-      ConstIterator begin() const
-      {
-        return ConstIterator(head_);
-      }
-
-      Iterator end()
-      {
-        Node* last_node = head_;
-        while (last_node != nullptr && last_node->next_node_ptr != nullptr)
-        {
-          last_node = last_node->next_node_ptr;
-        }
-        return Iterator(last_node);
-      }
-
-      ConstIterator end() const
-      {
-        Node* last_node = head_;
-        while (last_node != nullptr || last_node->next_node_ptr != nullptr)
-        {
-          last_node = last_node->next_node_ptr;
-        }
-        return ConstIterator(last_node);
-      }
     private:
-      Node* head_;
+      Node head_;
+      size_t size_;
   };
 }
 
