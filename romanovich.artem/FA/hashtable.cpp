@@ -150,3 +150,16 @@ WordEntry &romanovich::HashTable::operator[](const std::string &key)
   uint32_t index = romanovich::generateMurmurHash2(key, capacity_);
   return data_[index];
 }
+void romanovich::HashTable::addWordsFromAnother(romanovich::HashTable &table)
+{
+  for (size_t i = 0; i < capacity_; ++i)
+  {
+    const WordEntry &entry = table.data_[i];
+    auto it = std::find(data_.begin(), data_.end(), entry);
+    if (entry.word.empty() || it != data_.end())
+    {
+      continue;
+    }
+    addKey(it->word);
+  }
+}

@@ -6,5 +6,6 @@ struct WordEntry
 {
   std::string word;
   std::vector< std::string > translations;
+  bool operator==(const WordEntry &rhs) const;
 };
 #endif

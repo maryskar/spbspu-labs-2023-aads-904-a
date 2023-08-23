@@ -33,7 +33,7 @@ namespace romanovich
     void addMissingWords();
     void createLevelDict();
     void mergeDicts();
-    void printDicts();
+    void printDicts(std::ostream &out);
   };
 }
 #endif

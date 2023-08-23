@@ -1,4 +1,5 @@
 #include <limits>
+#include <fstream>
 #include "commands.h"
 #include "../common/printmessages.h"
 romanovich::CommandHandler::CommandHandler(std::istream &in, std::ostream &out_):
@@ -43,7 +44,7 @@ void romanovich::CommandHandler::addDict()
   std::string dictName;
   in_ >> dictName;
   dictionaries_->emplace_back(dictName, HashTable());
-  printDicts();
+  printDicts(out_);
 }
 void romanovich::CommandHandler::addTranslation()
 {
@@ -169,35 +170,119 @@ void romanovich::CommandHandler::countWords()
     auto data = pair.second.getData();
     for (size_t j = 1; j < data.size(); ++j)
     {
-      count += !data[j].word.empty();
+      if (!data[j].word.empty())
+      {
+        ++count;
+      }
     }
   }
   out_ << count << "\n";
 }
 void romanovich::CommandHandler::countTranslations()
 {
+  std::string dictName;
+  in_ >> dictName;
+  out_ << "Words count in dictionary \"" << dictName << "\": ";
+  size_t count = 0;
+  for (auto &pair: *dictionaries_)
+  {
+    auto data = pair.second.getData();
+    for (size_t j = 1; j < data.size(); ++j)
+    {
+      count += data[j].translations.size();
+    }
+  }
+  out_ << count << "\n";
 }
 void romanovich::CommandHandler::exportToFile()
 {
+  std::ofstream file("output.txt");
+  printDicts(file);
+  file.close();
 }
 void romanovich::CommandHandler::help()
 {
+  out_ << "Available commands:\n";
+  out_ << "ad <dict> - add a new dictionary\n";
+  out_ << "aw <word> <dict> - add a new word to dictionaries\n";
+  out_ << "at <word> <dict> <translation> - add a new translation to a word\n";
+  out_ << "rmw <word> <dict> - remove a word from dictionaries\n";
+  out_ << "rmt <word> <dict> <translation> - remove a translation from a word\n";
+  out_ << "w <word> <dict> - search for a word in a dictionary\n";
+  out_ << "words <dict> - show all words in a dictionary\n";
+  out_ << "cw <dict> - count the number of words in dictionaries\n";
+  out_ << "ct <word> <dict> - count the number of translations for a word\n";
+  out_ << "export <dict> <file> - export dictionary to a file\n";
+  out_ << "help - display available commands\n";
+  out_ << "amw <dict-from> <dict-to> - add all missing words from one dictionary to another\n";
+  out_ << "cld <level> <dict> - create/update level dictionary\n";
+  out_ << "md <dict> - merge dictionaries\n";
 }
 void romanovich::CommandHandler::addMissingWords()
 {
+  std::string dictFrom;
+  std::string dictTo;
+  in_ >> dictFrom;
+  in_ >> dictTo;
+  for (auto &pair1: *dictionaries_)
+  {
+    if (pair1.first == dictFrom)
+    {
+      for (auto &pair2: *dictionaries_)
+      {
+        if (pair2.first == dictTo)
+        {
+          pair2.second.addWordsFromAnother(pair1.second);
+          out_ << "Added missing words from dictionary '" << dictFrom << "' to dictionary '" << dictTo << "'\n";
+          return;
+        }
+      }
+      out_ << "Dictionary '" << dictTo << "' not found.\n";
+      return;
+    }
+  }
+  out_ << "Dictionary '" << dictFrom << "' not found.\n";
 }
 void romanovich::CommandHandler::createLevelDict()
 {
 }
 void romanovich::CommandHandler::mergeDicts()
 {
+  std::string dict1;
+  std::string dict2;
+  std::string newDictName;
+  in_ >> dict1;
+  in_ >> dict2;
+  in_ >> newDictName;
+  std::pair< std::string, romanovich::HashTable > newDict;
+  newDict.first = newDictName;
+  for (auto &pair1: *dictionaries_)
+  {
+    if (pair1.first == dict1)
+    {
+      newDict.second.addWordsFromAnother(pair1.second);
+      out_ << "Added missing words from dictionary '" << dict1 << "'\n";
+    }
+    out_ << "Dictionary '" << dict1 << "' not found.\n";
+    return;
+  }
+  for (auto &pair2: *dictionaries_)
+  {
+    if (pair2.first == dict2)
+    {
+      newDict.second.addWordsFromAnother(pair2.second);
+      out_ << "Added missing words from dictionary '" << dict2 << "'\n";
+    }
+    out_ << "Dictionary '" << dict2 << "' not found.\n";
+    return;
+  }
 }
-void romanovich::CommandHandler::printDicts()
+void romanovich::CommandHandler::printDicts(std::ostream &out)
 {
   for (const auto &pair: *dictionaries_)
   {
-    out_ << "Dict " << pair.first << ":\n";
-    pair.second.print(out_);
+    out << "Dict " << pair.first << ":\n";
+    pair.second.print(out);
   }
 }
 void romanovich::CommandHandler::operator()(const std::string &command)
