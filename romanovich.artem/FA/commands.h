@@ -5,6 +5,7 @@
 #include <memory>
 #include "../common/redblack_tree.h"
 #include "hashtable.h"
+#include "dictionariesvault.h"
 namespace romanovich
 {
   class CommandHandler
@@ -18,7 +19,7 @@ namespace romanovich
     std::istream &in_;
     std::ostream &out_;
     RedBlackTree< std::string, std::function< void() > > processor_;
-    std::vector< std::pair< std::string, romanovich::HashTable > > *dictionaries_;
+    DictionariesVault::value_t *dictionaries_;
     void addWordToDict();//
     void addDict();//
     void addTranslation();//

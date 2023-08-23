@@ -3,7 +3,7 @@
 #include "commands.h"
 #include "../common/printmessages.h"
 romanovich::CommandHandler::CommandHandler(std::istream &in, std::ostream &out_):
-  dictionaries_(new std::vector< std::pair< std::string, romanovich::HashTable >>),
+  dictionaries_(DictionariesVault::instance()),
   in_(in),
   out_(out_)
 {
