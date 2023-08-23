@@ -71,23 +71,31 @@ namespace dmitriev
 
     iterator insert(const fListPair& keyValue)
     {
-      iterator it = upperBoundBefore(keyValue.first);
+      if (constBegin() == constEnd())
+      {
+        return m_fList.pushFront(keyValue);
+      }
 
-      //if (it->first == keyValue.first)
-      //{
-      //  return it;
-      //}
+      iterator it = upperBoundBefore(keyValue.first);
+      if (it->first == keyValue.first)
+      {
+        return it;
+      }
 
       return m_fList.insertAfter(it, keyValue);
     }
     iterator insert(fListPair&& keyValue)
     {
-      iterator it = upperBoundBefore(keyValue.first);
+      if (constBegin() == constEnd())
+      {
+        return m_fList.pushFront(std::move(keyValue));
+      }
 
-      //if (it->first == keyValue.first)
-      //{
-      //  return it;
-      //}
+      iterator it = upperBoundBefore(keyValue.first);
+      if (it->first == keyValue.first)
+      {
+        return it;
+      }
 
       return m_fList.insertAfter(it, std::move(keyValue));
     }
