@@ -9,10 +9,6 @@
 
 int main(int argc, char** argv)
 {
-  dmitriev::Dictionary< int, std::string > d;
-  d.insert({1, "test"});
-  d.insert({2, "test2"});
-
   using dicVal = dmitriev::Dictionary< int, std::string >;
   using dataset = dmitriev::Dictionary< std::string, dicVal >;
   using comand = std::function< void(dataset& dicOfDic, std::istream& inp) >;
@@ -40,26 +36,39 @@ int main(int argc, char** argv)
   dmitriev::Dictionary< std::string, constComand > constComands;
   constComands["print"] = dmitriev::printDataset;
 
-
   dataset dicOfdic;
-  std::string line = "";
-  while (std::getline(file, line))
+  std::string dicName = "";
+
+  while (file >> dicName)
   {
-    std::stringstream ss(line);
-    std::string datasetName = "";
-    ss >> datasetName;
-
-    dicVal datasetDic;
-
     int key = 0;
     std::string value = "";
-    while (ss >> key >> value)
+    dicVal datasetDic;
+
+    while (file >> key >> value)
     {
       datasetDic.insert({key, value});
     }
-
-    dicOfdic.insert({datasetName, datasetDic});
+    dicOfdic.insert({dicName, datasetDic});
   }
+
+  //while (std::getline(file, line))
+  //{
+  //  std::stringstream ss(line);
+  //  std::string datasetName = "";
+  //  ss >> datasetName;
+
+  //  dicVal datasetDic;
+
+  //  int key = 0;
+  //  std::string value = "";
+  //  while (ss >> key >> value)
+  //  {
+  //    datasetDic.insert({key, value});
+  //  }
+
+  //  dicOfdic.insert({datasetName, datasetDic});
+  //}
 
 
   std::string cmdName = "";
