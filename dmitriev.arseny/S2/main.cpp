@@ -56,10 +56,10 @@ int main(int argc, char** argv)
       {
         break;
       }
-      datasetDic.emplace(key, value);
+      datasetDic.insert({key, value});
     }
     file.clear();
-    dicOfdic.emplace(name, datasetDic);
+    dicOfdic.insert({name, datasetDic});
   }
 
   std::string cmdName = "";
