@@ -1,6 +1,7 @@
 #ifndef FORWARDLIST_H
 #define FORWARDLIST_H
 
+#include <cassert>
 #include <memory>
 
 namespace potapova
@@ -29,60 +30,9 @@ namespace potapova
         Node* next_node_ptr;
       };
     public:
-      class Iterator
-      {
-        public:
-          Iterator():
-            node_(nullptr)
-          {
-
-          }
-
-          ~Iterator() = default;
-          Iterator(const Iterator&) = default;
-          Iterator& operator=(const Iterator&) = default;
-
-          Iterator& operator++()
-          {
-            assert(node_ != nullptr);
-            node_ = node_->next;
-          }
-
-          Iterator operator++(int)
-          {
-            assert(node_ != nullptr);
-            Iterator result(*this);
-            ++(*this);
-            return result;
-          }
-
-          T& operator*()
-          {
-            assert(node_ != nullptr);
-            return node_->data;
-          }
-
-          T* operator->()
-          {
-            assert(node_ != nullptr);
-            return std::addressof(node_->data);
-          }
-
-          bool operator!=(const Iterator& rhs) const
-          {
-            return !(rhs == *this);
-          }
-
-          bool operator==(const Iterator& rhs) const
-          {
-            return node_ == rhs.node_;
-          }
-        private:
-          Node* node_;
-      };
-
       class ConstIterator
       {
+        friend ForwardList;
         public:
           ConstIterator():
             node_(nullptr)
@@ -133,7 +83,59 @@ namespace potapova
         private:
           const Node* node_; 
       };
+      
+      class Iterator
+      {
+        friend ForwardList;
+        public:
+          Iterator():
+            node_(nullptr)
+          {
 
+          }
+
+          ~Iterator() = default;
+          Iterator(const Iterator&) = default;
+          Iterator& operator=(const Iterator&) = default;
+
+          Iterator& operator++()
+          {
+            assert(node_ != nullptr);
+            node_ = node_->next;
+          }
+
+          Iterator operator++(int)
+          {
+            assert(node_ != nullptr);
+            Iterator result(*this);
+            ++(*this);
+            return result;
+          }
+
+          T& operator*()
+          {
+            assert(node_ != nullptr);
+            return node_->data;
+          }
+
+          T* operator->()
+          {
+            assert(node_ != nullptr);
+            return std::addressof(node_->data);
+          }
+
+          bool operator!=(const Iterator& rhs) const
+          {
+            return !(rhs == *this);
+          }
+
+          bool operator==(const Iterator& rhs) const
+          {
+            return node_ == rhs.node_;
+          }
+        private:
+          Node* node_;
+      };
     public:
       ForwardList():
         head_(nullptr)
