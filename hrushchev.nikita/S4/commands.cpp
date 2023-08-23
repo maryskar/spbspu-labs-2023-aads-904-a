@@ -1,7 +1,7 @@
 #include "commands.hpp"
 #include <string>
 #include <ostream>
-#include "avltree.hpp"
+#include <avltree.hpp>
 
 using dict_t = hrushchev::AVLTree< size_t, std::string >;
 using main_dict = hrushchev::AVLTree< std::string, dict_t >;

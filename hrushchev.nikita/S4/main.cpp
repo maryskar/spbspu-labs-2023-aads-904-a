@@ -2,9 +2,9 @@
 #include <fstream>
 #include <string>
 #include <list.hpp>
-#include "avltree.hpp"
-#include "avltreeiterator.hpp"
-#include "avltreeconstiterator.hpp"
+#include <avltree.hpp>
+#include <avltreeiterator.hpp>
+#include <avltreeconstiterator.hpp>
 #include "inputdict.hpp"
 #include "commands.hpp"
 

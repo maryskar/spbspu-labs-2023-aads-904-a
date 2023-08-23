@@ -1,7 +1,7 @@
 #include "calcucalepostfix.hpp"
 #include <string>
-#include "queue.hpp"
-#include "stack.hpp"
+#include <queue.hpp>
+#include <stack.hpp>
 #include "arithmetic.hpp"
 
 long long hrushchev::calculatePostfix(hrushchev::Queue< std::string >& postfixQueue)
