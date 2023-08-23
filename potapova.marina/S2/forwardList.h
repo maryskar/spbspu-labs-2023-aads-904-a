@@ -35,7 +35,7 @@ namespace potapova
         friend ForwardList;
         public:
           ConstIterator():
-            node_(nullptr)
+            node_ptr_(nullptr)
           {
 
           }
@@ -46,14 +46,14 @@ namespace potapova
 
           const ConstIterator& operator++() const
           {
-            assert(node_ != nullptr);
-            node_ = node_->next;
+            assert(node_ptr_ != nullptr);
+            node_ptr_ = node_ptr_->next_node_ptr;
             return *this;
           }
 
           ConstIterator operator++(int) const
           {
-            assert(node_ != nullptr);
+            assert(node_ptr_ != nullptr);
             ConstIterator result(*this);
             ++(*this);
             return result;
@@ -61,14 +61,14 @@ namespace potapova
 
           const T& operator*() const
           {
-            assert(node_ != nullptr);
-            return node_->data;
+            assert(node_ptr_ != nullptr);
+            return node_ptr_->data;
           }
 
           const T* operator->() const
           {
-            assert(node_ != nullptr);
-            return std::addressof(node_->data);
+            assert(node_ptr_ != nullptr);
+            return std::addressof(node_ptr_->data);
           }
 
           bool operator!=(const ConstIterator& rhs) const
@@ -78,10 +78,10 @@ namespace potapova
 
           bool operator==(const ConstIterator& rhs) const
           {
-            return node_ == rhs.node_;
+            return node_ptr_ == rhs.node_;
           }
         private:
-          const Node* node_; 
+          const Node* node_ptr_; 
       };
       
       class Iterator
@@ -89,7 +89,7 @@ namespace potapova
         friend ForwardList;
         public:
           Iterator():
-            node_(nullptr)
+            node_ptr_(nullptr)
           {
 
           }
@@ -100,13 +100,13 @@ namespace potapova
 
           Iterator& operator++()
           {
-            assert(node_ != nullptr);
-            node_ = node_->next;
+            assert(node_ptr_ != nullptr);
+            node_ptr_ = node_ptr_->next_node_ptr;
           }
 
           Iterator operator++(int)
           {
-            assert(node_ != nullptr);
+            assert(node_ptr_ != nullptr);
             Iterator result(*this);
             ++(*this);
             return result;
@@ -114,14 +114,14 @@ namespace potapova
 
           T& operator*()
           {
-            assert(node_ != nullptr);
-            return node_->data;
+            assert(node_ptr_ != nullptr);
+            return node_ptr_->data;
           }
 
           T* operator->()
           {
-            assert(node_ != nullptr);
-            return std::addressof(node_->data);
+            assert(node_ptr_ != nullptr);
+            return std::addressof(node_ptr_->data);
           }
 
           bool operator!=(const Iterator& rhs) const
@@ -131,10 +131,10 @@ namespace potapova
 
           bool operator==(const Iterator& rhs) const
           {
-            return node_ == rhs.node_;
+            return node_ptr_ == rhs.node_;
           }
         private:
-          Node* node_;
+          Node* node_ptr_;
       };
     public:
       ForwardList():
