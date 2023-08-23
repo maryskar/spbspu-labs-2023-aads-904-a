@@ -38,17 +38,17 @@ int main(int argc, char** argv)
 
 
   dataset dicOfdic;
-  std::string line;
+  std::string line = "";
   while (std::getline(file, line))
   {
     std::stringstream ss(line);
-    std::string datasetName;
+    std::string datasetName = "";
     ss >> datasetName;
 
     dicVal datasetDic;
 
-    int key;
-    std::string value;
+    int key = 0;
+    std::string value = "";
     while (ss >> key >> value)
     {
       datasetDic.insert({key, value});
@@ -63,10 +63,6 @@ int main(int argc, char** argv)
   {
     while (std::cin >> cmdName)
     {
-      if (cmdName == "end")//шакаладки компилятора студии
-      {
-        break;
-      }
       if (!comands.isEmpty(comands.find(cmdName)))
       {
         auto cmd = comands[cmdName];
