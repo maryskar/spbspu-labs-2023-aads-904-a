@@ -5,7 +5,7 @@
 
 namespace dmitriev
 {
-  template< typename Key, typename Value, typename Compare = std::less< > >
+  template< typename Key, typename Value, typename Compare = std::less< Key > >
   class Dictionary
   {
   public:
