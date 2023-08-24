@@ -144,7 +144,12 @@ namespace potapova
 
           bool operator==(const Iterator& rhs) const
           {
-            return node_ptr_ == rhs.node_;
+            return node_ptr_ == rhs.node_ptr_;
+          }
+
+          operator ConstIterator() const
+          {
+            return ConstIterator(node_ptr_);
           }
         private:
           Node* node_ptr_;
@@ -171,6 +176,11 @@ namespace potapova
         return ConstIterator(&head);
       }
 
+      ConstIterator cbefore_begin() const
+      {
+        return ConstIterator(&head);
+      }
+
       Iterator begin()
       {
         return Iterator(head_.next_node_ptr);
@@ -181,12 +191,22 @@ namespace potapova
         return ConstIterator(head_.next_node_ptr);
       }
 
+      ConstIterator cbegin() const
+      {
+        return ConstIterator(head_.next_node_ptr);
+      }
+
       Iterator end()
       {
         return Iterator();
       }
 
       ConstIterator end() const
+      {
+        return ConstIterator();
+      }
+
+      ConstIterator cend() const
       {
         return ConstIterator();
       }
@@ -204,7 +224,7 @@ namespace potapova
       void insert_after(const Iterator place_ptr, const T& value)
       {
         Node* const new_node_ptr = new Node(value);
-        Node** new_elem_place_ptr = place_ptr.node_ptr_->next_node_ptr;
+        Node*& new_elem_place_ptr = place_ptr.node_ptr_.next_node_ptr;
         new_node_ptr->next_node_ptr = new_elem_place_ptr;
         new_elem_place_ptr = new_node_ptr;
         ++size_;
