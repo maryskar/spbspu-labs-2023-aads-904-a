@@ -63,9 +63,10 @@ int main(int argc, char** argv)
   }
 
   std::string cmdName = "";
-  try
+
+  while (std::cin >> cmdName)
   {
-    while (std::cin >> cmdName)
+    try
     {
       if (!comands.isEmpty(comands.find(cmdName)))
       {
@@ -83,11 +84,20 @@ int main(int argc, char** argv)
         std::cout << "<INVALID COMMAND>" << '\n';
       }
     }
+    catch (const std::runtime_error&)
+    {
+      std::cout << "<INVALID COMMAND>" << '\n';
+    }
+    catch (const std::out_of_range&)
+    {
+      std::cout << "<INVALID COMMAND>" << '\n';
+    }
+    catch (const std::exception& e)
+    {
+      std::cout << e.what() << '\n';
+    }
   }
-  catch (const std::exception& e)
-  {
-    std::cout << e.what() << '\n';
-  }
+
 
   return 0;
 }
