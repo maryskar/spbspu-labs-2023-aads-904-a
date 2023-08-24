@@ -237,25 +237,7 @@ namespace potapova
         }
       };
 
-      class CompareWrapper
-      {
-        public:
-          CompareWrapper(const Compare& c):
-            comp_(c)
-          {
-
-          }
-          bool operator()(const Node& lhs, const Node& rhs) const
-          {
-            return comp_(lhs.key, rhs.key);
-          }
-        private:
-          Compare comp_;
-      };
-
       ForwardList< Node > data_;
-      CompareWrapper compare_;
-      std::unordered_map< std::string, std::string > dictionaries;
   };
 }
 
