@@ -77,6 +77,10 @@ namespace dmitriev
       }
 
       iterator it = upperBoundBefore(keyValue.first);
+      if (isEmpty(it))
+      {
+        throw std::logic_error("unpredictable behaviour");
+      }
       if (it->first == keyValue.first)
       {
         return it;
