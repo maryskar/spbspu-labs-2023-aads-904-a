@@ -108,32 +108,21 @@ namespace potapova
 
       void erase(const Key& key)
       {
-        auto it = data_.begin();
-        while (it != data_.end())
+        Iterator prev_node_ptr = data_.before_begin();
+        for (Node& node : data_)
         {
-          if (it->key == key)
+          if (node.key == key)
           {
-            it = data_.erase(it);
+            data_.erase_after(prev_node_ptr);
+            return;
           }
-          else
-          {
-            ++it;
-          }
+          prev_node_ptr = Iterator(&node);
         }
       }
 
       bool contains(const Key& key) const
       {
-        auto it = data_.begin();
-        while (it != data_.end())
-        {
-          if (it->key == key)
-          {
-            return true;
-          }
-          ++it;
-        }
-        return false;
+        return find(key) == cend();
       }
 
       size_t size() const
@@ -148,7 +137,7 @@ namespace potapova
 
       void clear()
       {
-        return data_.clear();
+        data_.clear();
       }
       
       void print(const std::string& dataset) const
