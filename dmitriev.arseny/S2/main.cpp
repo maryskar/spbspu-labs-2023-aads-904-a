@@ -37,7 +37,7 @@ int main(int argc, char** argv)
   constComands["print"] = dmitriev::printDataset;
 
 
-  dataset dicOfdic;
+  dataset dicOfDic;
   while (file)
   {
     std::string name;
@@ -56,10 +56,11 @@ int main(int argc, char** argv)
       {
         break;
       }
-      datasetDic.insert({key, value});
+      dicVal::fListPair fP = std::make_pair(key, value);
+      datasetDic.insert(fP);
     }
     file.clear();
-    dicOfdic.insert({name, datasetDic});
+    dicOfDic.insert({name, datasetDic});
   }
 
   std::string cmdName = "";
@@ -70,12 +71,12 @@ int main(int argc, char** argv)
       if (!comands.isEmpty(comands.find(cmdName)))
       {
         auto cmd = comands[cmdName];
-        cmd(dicOfdic, std::cin);
+        cmd(dicOfDic, std::cin);
       }
       else if (!constComands.isEmpty(constComands.find(cmdName)))
       {
         auto constCmd = constComands[cmdName];
-        constCmd(dicOfdic, std::cin, std::cout);
+        constCmd(dicOfDic, std::cin, std::cout);
         std::cout << '\n';
       }
       else
