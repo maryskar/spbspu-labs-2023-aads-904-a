@@ -36,11 +36,13 @@ namespace hrushchev
       const_iterator cend();
       template< typename F >
       F traverse_lnr(F f) const;
-      Tree< data_t >* node_;
-      Compare comp_;
+      template< typename F >
+      F traverse_rnl(F f) const;
     private:
       template< typename F >
       F traverse_lnr(F f);
+      template< typename F >
+      F traverse_rnl(F f);
       void updateHeight(Tree< data_t >* tree);
       Tree< data_t >* insert(const Key& key, const Value& value, Tree< data_t >* tree);
       Tree< data_t >* find(const Key& key);
@@ -52,6 +54,8 @@ namespace hrushchev
       void balance(Tree< data_t >* node);
       void clear(Tree< data_t >* node);
       void copyNodes(const Tree< data_t >* source_node, Tree< data_t >* destination_node);
+      Tree< data_t >* node_;
+      Compare comp_;
   };
 
   template< typename Key, typename Value, typename Compare >
@@ -218,6 +222,38 @@ namespace hrushchev
         stack.pop();
         f(current->data_);
         current = current->right_;
+      }
+    }
+    return f;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVLTree< Key, Value, Compare >::traverse_rnl(F f) const
+  {
+    return traverse_lnr(f);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVLTree< Key, Value, Compare >::traverse_rnl(F f)
+  {
+    Stack< Tree< data_t >* > stack;
+    Tree< data_t >* current = node_;
+
+    while (!stack.empty() || current != nullptr)
+    {
+      if (current != nullptr)
+      {
+        stack.push(current);
+        current = current->right_;
+      }
+      else
+      {
+        current = stack.get();
+        stack.pop();
+        f(current->data_);
+        current = current->left_;
       }
     }
     return f;
