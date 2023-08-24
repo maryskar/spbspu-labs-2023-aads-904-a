@@ -86,6 +86,26 @@ namespace potapova
         return cend();
       }
 
+      Value& at(const Key& key)
+      {
+        const Iterator result_ptr = find(key);
+        if (result_ptr == data_.end())
+        {
+          throw std::out_of_range("Key was not found in dictionary");
+        }
+        return *result_ptr;
+      }
+
+      const Value& at(const Key& key) const
+      {
+        const ConstIterator result_ptr = find(key);
+        if (result_ptr == data_.end())
+        {
+          throw std::out_of_range("Key was not found in dictionary");
+        }
+        return *result_ptr;
+      }
+
       void erase(const Key& key)
       {
         auto it = data_.begin();
