@@ -71,15 +71,10 @@ namespace dmitriev
 
     iterator insert(const fListPair& keyValue)
     {
-      if (constBegin() == constEnd())
+      iterator it = upperBoundBefore(keyValue.first);
+      if (it == beforeBegin())
       {
         return m_fList.insertAfter(constBeforeBegin(), keyValue);
-      }
-
-      iterator it = upperBoundBefore(keyValue.first);
-      if (isEmpty(it))
-      {
-        throw std::logic_error("unpredictable behaviour");
       }
       if (it->first == keyValue.first)
       {
@@ -90,12 +85,11 @@ namespace dmitriev
     }
     iterator insert(fListPair&& keyValue)
     {
-      if (constBegin() == constEnd())
+      iterator it = upperBoundBefore(keyValue.first);
+      if (it == beforeBegin())
       {
         return m_fList.insertAfter(constBeforeBegin(), std::move(keyValue));
       }
-
-      iterator it = upperBoundBefore(keyValue.first);
       if (it->first == keyValue.first)
       {
         return it;
