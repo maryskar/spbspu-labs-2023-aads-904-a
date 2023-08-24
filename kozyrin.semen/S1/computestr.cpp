@@ -7,17 +7,13 @@ using namespace bowlstalls;
 Queue< std::string > split(const std::string& in)
 {
   Queue< std::string > res;
-  std::string elem;
-  for (size_t i = 0; i < in.length(); ++i) {
-    if (in[i] == ' ') {
-      res.push(elem);
-      elem = "";
-    } else {
-      elem.push_back(in[i]);
-    }
-  }
-  if (!elem.empty()) {
-    res.push(elem);
+  size_t lb = 0;
+  size_t rb = 0;
+  size_t len = in.length();
+  while (rb < len) {
+    rb = in.find(' ', lb);
+    res.push(in.substr(lb, rb - lb));
+    lb = rb + 1;
   }
   return res;
 }
@@ -27,13 +23,9 @@ long long mod(long long a, long long b)
   return (a > 0) == (b > 0) ? a - b * (a / b) : a - b * (a / b - 1);
 }
 
-bool isNeg(long long n) {
-  return n == std::abs(n);
-}
-
 bool addOverflow(long long a, long long b)
 {
-  if (isNeg(a) == isNeg(b)) {
+  if (a / b >= 0) {
     return std::numeric_limits< long long >::max() - std::abs(a) < std::abs(b);
   }
   return false;
@@ -41,7 +33,7 @@ bool addOverflow(long long a, long long b)
 
 bool subOverflow(long long a, long long b)
 {
-  if (isNeg(a) != isNeg(b)) {
+  if (a / b < 0) {
     return std::numeric_limits< long long >::min() + std::abs(a) > -std::abs(b);
   }
   return false;
@@ -81,7 +73,7 @@ long long calcBinary(long long a, long long b, char op)
   throw std::logic_error("Incorrect operator");
 }
 
-long long computeString(const std::string& str)
+long long bowlstalls::computeString(const std::string& str)
 {
   Queue< std::string > queue;
   Queue< std::string > input = split(str);

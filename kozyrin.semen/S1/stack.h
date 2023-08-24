@@ -1,7 +1,7 @@
 #ifndef STACK_H
 #define STACK_H
 #include <stdexcept>
-#include "box.h"
+#include "node.h"
 
 namespace bowlstalls {
   template< typename T >
@@ -16,7 +16,7 @@ namespace bowlstalls {
     bool isEmpty();
   private:
     T value_;
-    box_t< T >* top_;
+    node_t< T >* top_;
   };
 
   template< typename T >
@@ -38,7 +38,7 @@ namespace bowlstalls {
   Stack< T >::~Stack()
   {
     while (top_ != nullptr) {
-      box_t< T >* next = top_->prev_;
+      node_t< T >* next = top_->next_;
       delete top_;
       top_ = next;
     }
@@ -47,7 +47,7 @@ namespace bowlstalls {
   template< typename T >
   void Stack< T >::push(const T rhs)
   {
-    top_ = new box_t< T >{rhs, top_};
+    top_ = new node_t< T >{rhs, top_};
   }
 
   template< typename T >
@@ -57,7 +57,7 @@ namespace bowlstalls {
       throw std::length_error("Nothing to drop");
     }
 
-    box_t< T >* top = top_->prev_;
+    node_t< T >* top = top_->next_;
     value_ = top_->value_;
     delete top_;
     top_ = top;

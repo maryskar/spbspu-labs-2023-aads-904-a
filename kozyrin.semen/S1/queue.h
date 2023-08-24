@@ -1,7 +1,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 #include <stdexcept>
-#include "box.h"
+#include "node.h"
 
 namespace bowlstalls {
   template< typename T >
@@ -16,8 +16,8 @@ namespace bowlstalls {
     bool isEmpty();
   private:
     T value_;
-    box_t< T >* head_ = nullptr;
-    box_t< T >* tail_ = nullptr;
+    node_t< T >* head_ = nullptr;
+    node_t< T >* tail_ = nullptr;
   };
 
   template< typename T >
@@ -42,7 +42,7 @@ namespace bowlstalls {
   Queue< T >::~Queue()
   {
     while (head_ != nullptr) {
-      box_t< T >* next = head_->prev_;
+      node_t< T >* next = head_->prev_;
       delete head_;
       head_ = next;
     }
@@ -51,7 +51,7 @@ namespace bowlstalls {
   template< typename T >
   void Queue< T >::push(const T rhs)
   {
-    box_t< T >* head = new box_t<T>{rhs, head_, nullptr};
+    node_t< T >* head = new node_t<T>{rhs, head_, nullptr};
     if (head_ == nullptr) {
       head_ = head;
       tail_ = head;
@@ -68,7 +68,7 @@ namespace bowlstalls {
       throw std::length_error("Nothing to drop");
     }
 
-    box_t< T >* next = tail_->next_;
+    node_t< T >* next = tail_->next_;
     value_ = tail_->value_;
     delete tail_;
     tail_ = next;

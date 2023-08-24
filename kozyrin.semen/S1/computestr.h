@@ -2,6 +2,8 @@
 #define COMPUTESTR_H
 #include "notation.h"
 
-long long computeString(const std::string& str);
+namespace bowlstalls {
+  long long computeString(const std::string& str);
+}
 
 #endif
