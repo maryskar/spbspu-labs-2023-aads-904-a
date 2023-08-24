@@ -5,6 +5,7 @@
 #include <functional>
 #include <stdexcept>
 
+#include <stack.hpp>
 #include "tree.hpp"
 #include "avltreeiterator.hpp"
 #include "avltreeconstiterator.hpp"
@@ -33,11 +34,13 @@ namespace hrushchev
       const_iterator cbegin();
       iterator end();
       const_iterator cend();
-      Tree< data_t >* node_;
-      Compare comp_;
       template< typename F >
       F traverse_lnr(F f) const;
+      Tree< data_t >* node_;
+      Compare comp_;
     private:
+      template< typename F >
+      F traverse_lnr(F f);
       void updateHeight(Tree< data_t >* tree);
       Tree< data_t >* insert(const Key& key, const Value& value, Tree< data_t >* tree);
       Tree< data_t >* find(const Key& key);
@@ -186,6 +189,38 @@ namespace hrushchev
   typename AVLTree< Key, Value, Compare >::const_iterator AVLTree< Key, Value, Compare >::cend()
   {
     return const_iterator(nullptr);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVLTree< Key, Value, Compare >::traverse_lnr(F f) const
+  {
+    return traverse_lnr(f);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVLTree< Key, Value, Compare >::traverse_lnr(F f)
+  {
+    Stack< Tree< data_t >* > stack;
+    Tree< data_t >* current = node_;
+
+    while (!stack.empty() || current != nullptr)
+    {
+      if (current != nullptr)
+      {
+        stack.push(current);
+        current = current->left_;
+      }
+      else
+      {
+        current = stack.get();
+        stack.pop();
+        f(current->data_);
+        current = current->right_;
+      }
+    }
+    return f;
   }
 
   template<typename Key, typename Value, typename Compare>
