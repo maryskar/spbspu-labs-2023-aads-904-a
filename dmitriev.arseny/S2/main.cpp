@@ -82,6 +82,11 @@ int main(int argc, char** argv)
       else
       {
         std::cout << "<INVALID COMMAND>" << '\n';
+        std::string temp = "";
+        while (std::cin.peek() != '\n')
+        {
+          std::cin >> temp;
+        }
       }
     }
     catch (const std::runtime_error&)
