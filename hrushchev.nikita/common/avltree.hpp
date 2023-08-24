@@ -38,11 +38,11 @@ namespace hrushchev
       F traverse_lnr(F f) const;
       template< typename F >
       F traverse_rnl(F f) const;
-    private:
       template< typename F >
       F traverse_lnr(F f);
       template< typename F >
       F traverse_rnl(F f);
+    private:
       void updateHeight(Tree< data_t >* tree);
       Tree< data_t >* insert(const Key& key, const Value& value, Tree< data_t >* tree);
       Tree< data_t >* find(const Key& key);
@@ -209,7 +209,7 @@ namespace hrushchev
     Stack< Tree< data_t >* > stack;
     Tree< data_t >* current = node_;
 
-    while (!stack.empty() || current != nullptr)
+    while (!stack.isEmpty() || current != nullptr)
     {
       if (current != nullptr)
       {
@@ -241,7 +241,7 @@ namespace hrushchev
     Stack< Tree< data_t >* > stack;
     Tree< data_t >* current = node_;
 
-    while (!stack.empty() || current != nullptr)
+    while (!stack.isEmpty() || current != nullptr)
     {
       if (current != nullptr)
       {
