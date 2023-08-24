@@ -6,7 +6,7 @@
 
 namespace potapova
 {
-  template< typename Key, typename Value, typename Compare >
+  template< typename Key, typename Value, bool (*Compare)(const Key&, const Key&) >
   class Dictionary 
   {
     public:
@@ -43,10 +43,23 @@ namespace potapova
         return data_.cend();
       }
       
-      void push(const Key& key, const Value& value)
+      void insert(const Key& key, const Value& value)
       {
-        Node new_node(key, value);
-        data.push_front(new_node);
+        Iterator prev_node_ptr = data_.before_begin();
+        for (Node& cur_node : data_)
+        {
+          if (cur_node->key == key)
+          {
+            cur_node->value = value;
+            return;
+          }
+          if (Compare(cur_node->key, key))
+          {
+            data_.insert_after(prev_node_ptr, Node(key, value));
+            return;
+          }
+          prev_node_ptr = Iterator(&cur_node);
+        }
       }
 
       Value& find(const Key& key)
