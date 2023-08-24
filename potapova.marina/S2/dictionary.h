@@ -62,28 +62,28 @@ namespace potapova
         }
       }
 
-      Value& find(const Key& key)
+      Iterator find(const Key& key)
       {
-        for (Node& node : data_)
+        for (Node& cur_node : data_)
         {
-          if (node.key == key)
+          if (cur_node.key == key)
           {
-            return node.value;
+            return Iterator(&cur_node);
           }
         }
-        throw std::out_of_range("Key was not found in dictionary");
+        return data_.end();
       }
 
-      const Value& find(const Key& key) const
+      ConstIterator find(const Key& key) const
       {
-        for (const Node& node : data_)
+        for (const Node& cur_node : data_)
         {
-          if (node.key == key)
+          if (cur_node.key == key)
           {
-            return node.value;
+            return ConstIterator(&cur_node);
           }
         }
-        throw std::out_of_range("Key was not found in dictionary");
+        return cend();
       }
 
       void erase(const Key& key)
