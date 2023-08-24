@@ -56,8 +56,7 @@ int main(int argc, char** argv)
       {
         break;
       }
-      dicVal::fListPair fP = std::make_pair(key, value);
-      datasetDic.insert(fP);
+      datasetDic.insert({key, value});
     }
     file.clear();
     dicOfDic.insert({name, datasetDic});

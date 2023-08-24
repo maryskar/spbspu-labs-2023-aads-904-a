@@ -37,18 +37,18 @@ namespace dmitriev
     std::getline(inp, line);
     std::stringstream ss(line);
 
-    std::string newName = "";
+    std::string name = "";
     std::string lhsName = "";
     std::string rhsName = "";
 
-    ss >> newName >> lhsName >> rhsName;
+    ss >> name >> lhsName >> rhsName;
 
     if (!ss)
     {
       throw std::out_of_range("incorrect inp");
     }
 
-    dicOfDic.insert({newName, complementDictionary(dicOfDic.at(lhsName), dicOfDic.at(rhsName))});
+    dicOfDic[name] = complementDictionary(dicOfDic.at(lhsName), dicOfDic.at(rhsName));
   }
   void intersectDataset(Dictionary< std::string, Dictionary< int, std::string > >& dicOfDic,
     std::istream& inp)
@@ -57,18 +57,18 @@ namespace dmitriev
     std::getline(inp, line);
     std::stringstream ss(line);
 
-    std::string newName = "";
+    std::string name = "";
     std::string lhsName = "";
     std::string rhsName = "";
 
-    ss >> newName >> lhsName >> rhsName;
+    ss >> name >> lhsName >> rhsName;
 
     if (!ss)
     {
       throw std::out_of_range("incorrect inp");
     }
 
-    dicOfDic.insert({newName, intersectDictionary(dicOfDic.at(lhsName), dicOfDic.at(rhsName))});
+    dicOfDic[name] = intersectDictionary(dicOfDic.at(lhsName), dicOfDic.at(rhsName));
   }
   void unionDataset(Dictionary< std::string, Dictionary< int, std::string > >& dicOfDic,
     std::istream& inp)
@@ -77,18 +77,17 @@ namespace dmitriev
     std::getline(inp, line);
     std::stringstream ss(line);
 
-    std::string newName = "";
+    std::string name = "";
     std::string lhsName = "";
     std::string rhsName = "";
 
-    ss >> newName >> lhsName >> rhsName;
+    ss >> name >> lhsName >> rhsName;
 
     if (!ss)
     {
       throw std::out_of_range("incorrect inp");
     }
 
-    dicOfDic.insert({newName, unionDictionary(dicOfDic.at(lhsName), dicOfDic.at(rhsName))});
+    dicOfDic[name] = unionDictionary(dicOfDic.at(lhsName), dicOfDic.at(rhsName));
   }
 }
-
