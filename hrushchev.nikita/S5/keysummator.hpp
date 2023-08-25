@@ -1,7 +1,7 @@
 #ifndef KEYSUMMATOR_HPP
 #define KEYSUMMATOR_HPP
 
-#include <utility> 
+#include <utility>
 #include <string>
 
 struct KeySummator

@@ -1,6 +1,6 @@
 #include "stringcreator.hpp"
 
-#include <utility> 
+#include <utility>
 #include <string>
 
 void StringCreator::operator()(const std::pair< const long long, std::string >& key_value)

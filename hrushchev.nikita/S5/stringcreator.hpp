@@ -1,7 +1,7 @@
 #ifndef STRINGCREATOR_HPP
 #define STRINGCREATOR_HPP
 
-#include <utility> 
+#include <utility>
 #include <string>
 
 struct StringCreator

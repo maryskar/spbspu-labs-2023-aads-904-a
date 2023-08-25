@@ -25,8 +25,8 @@ int main(int argc, char* argv[])
   inputTree(input, avlTree);
   if (avlTree.empty())
   {
-    std::cerr << "<EMPTY>";
-    return 1;
+    std::cout << "<EMPTY>" << "\n";
+    return 0;
   }
 
   std::string traverse = argv[1];

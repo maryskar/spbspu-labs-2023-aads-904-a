@@ -1,18 +1,24 @@
 #include "keysummator.hpp"
 
-#include <utility> 
+#include <utility>
 #include <string>
 
 #include <arithmetic.hpp>
 
 void KeySummator::operator()(const std::pair< const long long, std::string >& key_value)
 {
-	if (result_ >= 0)
-	{
-		result_ = hrushchev::sum(result_, key_value.first);
-	}
-	else
-	{
-		result_ = hrushchev::sum(key_value.first, result_);
-	}
+  long long key = key_value.first;
+  if ((result_ >= 0) && (key > 0))
+  {
+    result_ = hrushchev::sum(result_, key);
+  }
+  else if ((result_ < 0) && (key > 0))
+  {
+    result_ = hrushchev::sum(key, result_);
+  }
+  else
+  {
+    result_ = hrushchev::subtract(result_, -1ll * key);
+  }
 }
+
