@@ -16,8 +16,14 @@ int main()
       std::cout << "(" << data.first << ", " << data.second << ") ";
   });
   std::cout << "\n";
-  
+
   avlTree.traverse_rnl([](const auto& data)
+  {
+      std::cout << "(" << data.first << ", " << data.second << ") ";
+  });
+  std::cout << "\n";
+
+  avlTree.traverse_breadth([](const auto& data)
   {
       std::cout << "(" << data.first << ", " << data.second << ") ";
   });
