@@ -3,7 +3,7 @@
 #include <string>
 #include <avltree.hpp>
 
-void inputTree(std::istream& input, hrushchev::AVLTree< long long, std::string >& tree)
+void hrushchev::inputTree(std::istream& input, hrushchev::AVLTree< long long, std::string >& tree)
 {
   size_t key;
   std::string value;

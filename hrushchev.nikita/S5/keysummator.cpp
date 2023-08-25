@@ -5,7 +5,7 @@
 
 #include <arithmetic.hpp>
 
-void KeySummator::operator()(const std::pair< const long long, std::string >& key_value)
+void hrushchev::KeySummator::operator()(const std::pair< const long long, std::string >& key_value)
 {
   long long key = key_value.first;
   if ((result_ >= 0) && (key > 0))

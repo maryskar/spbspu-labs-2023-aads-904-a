@@ -4,10 +4,13 @@
 #include <utility>
 #include <string>
 
-struct KeySummator
+namespace hrushchev
 {
-  void operator()(const std::pair< const long long, std::string >& key_value);
-  long long result_ = 0;
-};
+  struct KeySummator
+  {
+    void operator()(const std::pair< const long long, std::string >& key_value);
+    long long result_ = 0;
+  };
+}
 
 #endif

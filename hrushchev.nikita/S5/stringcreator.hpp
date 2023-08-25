@@ -4,10 +4,13 @@
 #include <utility>
 #include <string>
 
-struct StringCreator
+namespace hrushchev
 {
-  void operator()(const std::pair< const long long, std::string >& key_value);
-  std::string result_ = "";
-};
+  struct StringCreator
+  {
+    void operator()(const std::pair< const long long, std::string >& key_value);
+    std::string result_ = "";
+  };
+}
 
 #endif

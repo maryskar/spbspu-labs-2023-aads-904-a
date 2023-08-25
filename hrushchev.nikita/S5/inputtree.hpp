@@ -4,6 +4,9 @@
 #include <string>
 #include <avltree.hpp>
 
-void inputTree(std::istream& input, hrushchev::AVLTree< long long, std::string >& tree);
+namespace hrushchev
+{
+ void inputTree(std::istream& input, hrushchev::AVLTree< long long, std::string >& tree);
+}
 
 #endif

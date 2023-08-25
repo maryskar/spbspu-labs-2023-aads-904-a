@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
   }
 
   hrushchev::AVLTree< long long, std::string > avlTree;
-  inputTree(input, avlTree);
+  hrushchev::inputTree(input, avlTree);
   if (avlTree.empty())
   {
     std::cout << "<EMPTY>" << "\n";
@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
   {
     try
     {
-      KeySummator summator;
+      hrushchev::KeySummator summator;
       summator = avlTree.traverse_lnr(summator);
       std::cout << summator.result_;
     }
@@ -43,21 +43,19 @@ int main(int argc, char* argv[])
       std::cerr << e.what() << "\n";
       return 1;
     }
+    hrushchev::StringCreator creator;
     if ((traverse == "ascending"))
     {
-      StringCreator creator;
       creator = avlTree.traverse_lnr(creator);
       std::cout << creator.result_ << "\n";
     }
     if ((traverse == "descending"))
     {
-      StringCreator creator;
       creator = avlTree.traverse_rnl(creator);
       std::cout << creator.result_ << "\n";
     }
     if ((traverse == "breadth"))
     {
-      StringCreator creator;
       creator = avlTree.traverse_breadth(creator);
       std::cout << creator.result_ << "\n";
     }
