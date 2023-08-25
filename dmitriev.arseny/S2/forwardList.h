@@ -85,10 +85,10 @@ namespace dmitriev
     list* m_ptr;
 
     ForwardIterator(const constIterator& other):
-      m_ptr(const_cast<list*>(other.m_ptr))
+      m_ptr(const_cast< list* >(other.m_ptr))
     {}
     ForwardIterator(constIterator&& other):
-      m_ptr(const_cast<list*>(other.m_ptr))
+      m_ptr(const_cast< list* >(other.m_ptr))
     {}
   };
 
@@ -188,7 +188,7 @@ namespace dmitriev
     ~ForwardList()
     {
       clear();
-      ::operator delete(reinterpret_cast<void*>(m_beforeHead), sizeof(list));
+      ::operator delete(reinterpret_cast< void* >(m_beforeHead), sizeof(list));
     }
 
     ForwardList& operator=(const ForwardList& other)

@@ -9,10 +9,10 @@
 
 int main(int argc, char** argv)
 {
-  using dicVal = dmitriev::Dictionary< int, std::string >;
-  using dataset = dmitriev::Dictionary< std::string, dicVal >;
-  using comand = std::function< void(dataset& dicOfDic, std::istream& inp) >;
-  using constComand = std::function< void(dataset& dicOfDic, std::istream& inp, std::ostream& out) >;
+  using dictionary = dmitriev::Dictionary< int, std::string >;
+  using dataset = dmitriev::Dictionary< std::string, dictionary >;
+  using comand = std::function< void(dataset& dataSet, std::string name, std::string lhsName, std::string rhsName) >;
+  using constComand = std::function< void(const dataset& dataSet, std::string name, std::ostream& out) >;
 
   if (argc != 2)
   {
@@ -32,61 +32,79 @@ int main(int argc, char** argv)
   comands["intersect"] = dmitriev::intersectDataset;
   comands["union"] = dmitriev::unionDataset;
 
-
   dmitriev::Dictionary< std::string, constComand > constComands;
   constComands["print"] = dmitriev::printDataset;
 
 
-  dataset dicOfDic;
-  while (file)
+  dataset dataSet;
+  std::string line = "";
+  while (std::getline(file, line))
   {
-    std::string name;
-    file >> name;
-    if (!file)
+    std::stringstream strStream(line);
+    std::string name = "";
+
+    strStream >> name;
+    if (!strStream)
     {
-      break;
+      std::cout << "problems while reading file";
+      return 1;
     }
-    dicVal datasetDic;
+
+    dictionary dict;
     std::size_t key = 0;
-    std::string value;
-    while (file)
+    std::string value = "";
+
+    while (strStream >> key >> value)
     {
-      file >> key >> value;
-      if (!file)
-      {
-        break;
-      }
-      datasetDic.insert({key, value});
+      dict.insert({key, value});
     }
-    file.clear();
-    dicOfDic.insert({name, datasetDic});
+    dataSet.insert({name, dict});
   }
 
-  std::string cmdName = "";
-
-  while (std::cin >> cmdName)
+  while (std::getline(std::cin, line))
   {
+    std::stringstream strStream(line);
+    std::string cmdName = "";
+
     try
     {
+      strStream >> cmdName;
+      if (!strStream)
+      {
+        throw std::runtime_error("incorrect args");
+      }
+
       if (!comands.isEmpty(comands.find(cmdName)))
       {
+        std::string newName = "";
+        std::string lhsName = "";
+        std::string rhsName = "";
+        strStream >> newName >> lhsName >> rhsName;
+        if (!strStream)
+        {
+          throw std::runtime_error("incorrect args");
+        }
+
         auto cmd = comands[cmdName];
-        cmd(dicOfDic, std::cin);
+        cmd(dataSet, newName, lhsName, rhsName);
       }
-      else if (!constComands.isEmpty(constComands.find(cmdName)))
+      else if(!constComands.isEmpty(constComands.find(cmdName)))
       {
+        std::string name = "";
+        strStream >> name;
+        if (!strStream)
+        {
+          throw std::runtime_error("incorrect args");
+        }
+
         auto constCmd = constComands[cmdName];
-        constCmd(dicOfDic, std::cin, std::cout);
+        constCmd(dataSet, name, std::cout);
+
         std::cout << '\n';
       }
       else
       {
-        std::cout << "<INVALID COMMAND>" << '\n';
-        std::string temp = "";
-        while (std::cin.peek() != '\n')
-        {
-          std::cin >> temp;
-        }
+        throw std::runtime_error("incorrect args");
       }
     }
     catch (const std::runtime_error&)
@@ -102,7 +120,6 @@ int main(int argc, char** argv)
       std::cout << e.what() << '\n';
     }
   }
-
 
   return 0;
 }

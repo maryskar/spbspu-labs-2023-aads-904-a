@@ -136,8 +136,7 @@ namespace dmitriev
       iterator result = beforeBegin();
 
       for (iterator it = begin(); (!isEmpty(it)) && m_comp(it->first, key); result++, it++)
-      {
-      }
+      {}
 
       return result;
     }
@@ -151,8 +150,7 @@ namespace dmitriev
       iterator result = beforeBegin();
 
       for (iterator it = begin(); (!isEmpty(it)) && !m_comp(key, it->first); result++, it++)
-      {
-      }
+      {}
 
       return result;
     }
@@ -166,8 +164,7 @@ namespace dmitriev
       iterator result = beforeBegin();
 
       for (iterator it = begin(); (!isEmpty(it)) && (it->first != key); result++, it++)
-      {
-      }
+      {}
 
       return result;
     }
@@ -181,8 +178,7 @@ namespace dmitriev
       constIterator result = constBeforeBegin();
 
       for (constIterator it = constBegin(); (!isEmpty(it)) && (it->first != key); result++, it++)
-      {
-      }
+      {}
 
       return result;
     }

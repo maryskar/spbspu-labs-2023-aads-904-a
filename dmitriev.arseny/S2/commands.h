@@ -3,19 +3,18 @@
 
 #include "dictionary.h"
 #include <iostream>
-#include <sstream>
 
 namespace dmitriev
 {
-  void printDataset(const Dictionary< std::string, Dictionary< int, std::string > >& dicOfDic,
-    std::istream& inp, std::ostream& out);
+  void printDataset(const Dictionary< std::string, Dictionary< int, std::string > >& dataSet,
+    std::string name, std::ostream& out);
 
-  void complementDataset(Dictionary< std::string, Dictionary< int, std::string > >& dicOfDic,
-    std::istream& inp);
-  void intersectDataset(Dictionary< std::string, Dictionary< int, std::string > >& dicOfDic,
-    std::istream& inp);
-  void unionDataset(Dictionary< std::string, Dictionary< int, std::string > >& dicOfDic,
-    std::istream& inp);
+  void complementDataset(Dictionary< std::string, Dictionary< int, std::string > >& dataSet,
+    std::string name, std::string lhsName, std::string rhsName);
+  void intersectDataset(Dictionary< std::string, Dictionary< int, std::string > >& dataSet,
+    std::string name, std::string lhsName, std::string rhsName);
+  void unionDataset(Dictionary< std::string, Dictionary< int, std::string > >& dataSet,
+    std::string name, std::string lhsName, std::string rhsName);
 }
 
 #endif
