@@ -340,41 +340,6 @@ namespace kryuchkova
   }
 
   template< typename T >
-  ForwardIterator< T > ForwardList< T >::erase_after(const_iterator pos)
-  {
-    if (IsEmpty())
-    {
-      return end();
-    }
-    if (pos == last_)
-    {
-      erase_after(fake_);
-    }
-    Node< T > * temp = pos.node_->next_->next_;
-    if (pos.node_->next_ == last_.node_)
-    {
-      last_ = iterator(pos.node_);
-    }
-    delete pos.node_->next_;
-    pos.node_->next_ = temp;
-    if (IsEmpty())
-    {
-      last_.node_ = nullptr;
-    }
-    return iterator(temp);
-  }
-
-  template< typename T >
-  ForwardIterator< T > ForwardList< T >::erase_after(const_iterator first, const_iterator last)
-  {
-    while (first != last)
-    {
-      erase_after(first);
-    }
-    return iterator(last.node_);
-  }
-
-  template< typename T >
   void ForwardList< T >::push_front(const T & val)
   {
     insert_after(cbefore_begin(), val);
@@ -413,7 +378,7 @@ namespace kryuchkova
     else if (size == count && iter != end())
     {
       last_.node_->next_ = nullptr;
-      deleteNode(it.node_);
+      deleteNode(iter.node_);
     }
     else
     {
