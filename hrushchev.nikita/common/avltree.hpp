@@ -199,45 +199,38 @@ namespace hrushchev
   template< typename F >
   F AVLTree< Key, Value, Compare >::traverse_lnr(F f) const
   {
-    return traverse_lnr(f);
+    Stack< Tree< data_t >* > stack;
+    Tree< data_t >* current = node_;
+
+    while (!stack.isEmpty() || current != nullptr)
+    {
+      if (current != nullptr)
+      {
+        stack.push(current);
+        current = current->left_;
+      }
+      else
+      {
+        current = stack.get();
+        stack.pop();
+        f(current->data_);
+        current = current->right_;
+      }
+    }
+    return f;
   }
 
   template< typename Key, typename Value, typename Compare >
   template< typename F >
   F AVLTree< Key, Value, Compare >::traverse_lnr(F f)
   {
-    Stack< Tree< data_t >* > stack;
-    Tree< data_t >* current = node_;
-
-    while (!stack.isEmpty() || current != nullptr)
-    {
-      if (current != nullptr)
-      {
-        stack.push(current);
-        current = current->left_;
-      }
-      else
-      {
-        current = stack.get();
-        stack.pop();
-        f(current->data_);
-        current = current->right_;
-      }
-    }
-    return f;
+     return static_cast< const AVLTree< Key, Value, Compare >& >(*this).traverse_lnr(f);
   }
 
   template< typename Key, typename Value, typename Compare >
   template< typename F >
   F AVLTree< Key, Value, Compare >::traverse_rnl(F f) const
   {
-    return traverse_lnr(f);
-  }
-
-  template< typename Key, typename Value, typename Compare >
-  template< typename F >
-  F AVLTree< Key, Value, Compare >::traverse_rnl(F f)
-  {
     Stack< Tree< data_t >* > stack;
     Tree< data_t >* current = node_;
 
@@ -257,6 +250,13 @@ namespace hrushchev
       }
     }
     return f;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVLTree< Key, Value, Compare >::traverse_rnl(F f)
+  {
+    return static_cast< const AVLTree< Key, Value, Compare >& >(*this).traverse_rnl(f);
   }
 
   template<typename Key, typename Value, typename Compare>
