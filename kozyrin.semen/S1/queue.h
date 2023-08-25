@@ -29,15 +29,25 @@ namespace bowlstalls {
 
   template< typename T >
   Queue< T >::Queue(const Queue< T >& origin):
-    head_(origin.head_),
-    tail_(origin.tail_)
-  {}
+    head_(copy(origin.head_))
+  {
+    node_t< T >* curr = head_;
+    while (curr->next_) {
+      curr = curr->next_;
+    }
+    tail_ = curr;
+  }
 
   template< typename T >
   Queue< T >::Queue(const Queue< T >&& origin) noexcept:
-    head_(origin.head_),
-    tail_(origin.tail_)
-  {}
+    head_(copy(origin.head_))
+  {
+    node_t< T >* curr = head_;
+    while (curr->next_) {
+      curr = curr->next_;
+    }
+    tail_ = curr;
+  }
 
   template< typename T >
   Queue< T >::~Queue()

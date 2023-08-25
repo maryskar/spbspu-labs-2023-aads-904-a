@@ -7,6 +7,15 @@ namespace bowlstalls {
     T value_ = 0;
     node_t< T >* next_ = nullptr;
   };
+
+  template< typename T >
+  node_t< T >* copy(const node_t< T >* src)
+  {
+    if (!src->next_) {
+      return new node_t< T >{src->value_};
+    }
+    return new node_t< T >{src->value_, copy(src->next_)};
+  }
 }
 
 #endif
