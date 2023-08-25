@@ -75,9 +75,8 @@ long long calcBinary(long long a, long long b, char op)
 
 long long bowlstalls::computeString(const std::string& str)
 {
-  Queue< std::string > queue;
   Queue< std::string > input = split(str);
-  getPostfix(input, queue);
+  Queue< std::string > queue = getPostfix(input);
   Stack< long long > stack;
 
   while (!queue.isEmpty()) {

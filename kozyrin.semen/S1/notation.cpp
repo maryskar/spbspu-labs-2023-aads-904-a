@@ -4,8 +4,9 @@
 
 using namespace bowlstalls;
 
-void bowlstalls::getPostfix(Queue< std::string >& src, Queue< std::string >& dest)
+Queue< std::string > bowlstalls::getPostfix(Queue< std::string >& src)
 {
+  Queue< std::string > dest;
   Stack< std::string > stack;
   std::string chr = " ";
 
