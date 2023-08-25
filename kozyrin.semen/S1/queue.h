@@ -12,9 +12,11 @@ namespace bowlstalls {
     Queue(const Queue< T >&& origin) noexcept;
     ~Queue();
     void push(T rhs);
-    T drop();
+    T& drop();
+    void clearBin();
     bool isEmpty();
   private:
+    node_t< T >* bin_ = nullptr;
     node_t< T >* head_ = nullptr;
     node_t< T >* tail_ = nullptr;
   };
@@ -45,6 +47,7 @@ namespace bowlstalls {
       delete head_;
       head_ = next;
     }
+    clearBin();
   }
 
   template< typename T >
@@ -61,17 +64,27 @@ namespace bowlstalls {
   }
 
   template<typename T >
-  T Queue< T >::drop()
+  T& Queue< T >::drop()
   {
     if (head_ == nullptr) {
       throw std::length_error("Nothing to drop");
     }
 
     node_t< T >* head = head_->next_;
-    T res = head_->value_;
-    delete head_;
+    head_->next_ = bin_;
+    bin_ = head_;
     head_ = head;
-    return res;
+    return bin_->value_;
+  }
+
+  template< typename T >
+  void Queue< T >::clearBin()
+  {
+    while (bin_ != nullptr) {
+      node_t< T >* next = bin_->next_;
+      delete bin_;
+      bin_ = next;
+    }
   }
 
   template< typename T >
