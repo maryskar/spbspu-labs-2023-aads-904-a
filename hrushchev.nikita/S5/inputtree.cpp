@@ -1,14 +1,10 @@
 #include "inputtree.hpp"
-#include <ostream>
+#include <istream>
 #include <string>
 #include <avltree.hpp>
 
-void inputTree(std::istream& input, hrushchev::AVLTree< size_t, std::string >& tree)
+void inputTree(std::istream& input, hrushchev::AVLTree< long long, std::string >& tree)
 {
-	if (!input)
-	{
-		return;
-	}
   size_t key;
   std::string value;
   while (input >> key >> value)

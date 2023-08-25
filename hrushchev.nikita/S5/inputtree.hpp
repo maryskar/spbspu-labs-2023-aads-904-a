@@ -4,6 +4,6 @@
 #include <string>
 #include <avltree.hpp>
 
-void inputTree(std::istream& input, hrushchev::AVLTree< size_t, std::string >& tree);
+void inputTree(std::istream& input, hrushchev::AVLTree< long long, std::string >& tree);
 
 #endif
