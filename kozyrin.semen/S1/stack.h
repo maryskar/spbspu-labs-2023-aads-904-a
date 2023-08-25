@@ -10,6 +10,8 @@ namespace bowlstalls {
     Stack();
     Stack(const Stack< T >& origin);
     Stack(const Stack< T >&& origin) noexcept;
+    Stack< T >& operator=(const Stack< T >& other);
+    Stack< T >& operator=(Stack< T >&& other) noexcept;
     ~Stack();
     void push(T rhs);
     T& drop();
@@ -27,13 +29,33 @@ namespace bowlstalls {
 
   template< typename T >
   Stack< T >::Stack(const Stack< T >& origin):
-    top_(origin.top_)
+    top_(copy(origin.top_))
   {}
 
   template< typename T >
   Stack< T >::Stack(const Stack< T >&& origin) noexcept:
-    top_(origin.top_)
+    top_(copy(origin.top_))
   {}
+
+  template< typename T >
+  Stack< T >& Stack< T >::operator=(const Stack< T >& other)
+  {
+    if (this == other) {
+      return *this;
+    }
+    top_ = copy(other.top_);
+    return *this;
+  }
+
+  template< typename T >
+  Stack< T >& Stack< T >::operator=(Stack< T >&& other) noexcept
+  {
+    if (this == other) {
+      return *this;
+    }
+    top_ = copy(other.top_);
+    return *this;
+  }
 
   template< typename T >
   Stack< T >::~Stack()
