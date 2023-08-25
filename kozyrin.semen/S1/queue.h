@@ -2,7 +2,6 @@
 #define QUEUE_H
 #include <stdexcept>
 #include "node.h"
-#include <iostream>
 
 namespace kozyrin {
   template< typename T >

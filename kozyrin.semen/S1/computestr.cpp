@@ -1,7 +1,6 @@
 #include "computestr.h"
 #include <limits>
 #include "operations.h"
-#include <iostream>
 
 using namespace kozyrin;
 
