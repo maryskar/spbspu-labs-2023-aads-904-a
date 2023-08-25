@@ -1,33 +1,28 @@
 #include <iostream>
+#include <fstream>
 #include <avltree.hpp>
 #include <string>
+#include "inputtree.hpp"
 #include "keysummator.hpp"
 
-int main()
+int main(int argc, char* argv[])
 {
-  hrushchev::AVLTree<int, std::string> avlTree;
-
-  avlTree.insert(1, "one");
-  avlTree.insert(2, "two");
-  avlTree.insert(3, "free");
-  avlTree.insert(4, "four");
-  avlTree.insert(5, "five");
-
-  avlTree.traverse_lnr([](const auto& data)
+  if (argc != 3)
   {
-      std::cout << "(" << data.first << ", " << data.second << ") ";
-  });
-  std::cout << "\n";
-
-  avlTree.traverse_rnl([](const auto& data)
+    std::cout << "Error arg\n";
+    return 1;
+  }
+  std::ifstream input(argv[2]);
+  if (!input.is_open())
   {
-      std::cout << "(" << data.first << ", " << data.second << ") ";
-  });
-  std::cout << "\n";
+    std::cout << "Error file\n";
+    return 1;
+  }
 
-  avlTree.traverse_breadth([](const auto& data)
-  {
-      std::cout << "(" << data.first << ", " << data.second << ") ";
-  });
-  std::cout << "\n";
+  hrushchev::AVLTree< size_t, std::string > avlTree;
+  inputTree(input, avlTree);
+  std::string traverse = argv[1];
+
+  std::cout << traverse;
+
 }
