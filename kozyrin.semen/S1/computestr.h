@@ -2,7 +2,7 @@
 #define COMPUTESTR_H
 #include "notation.h"
 
-namespace bowlstalls {
+namespace kozyrin {
   long long computeString(const std::string& str);
 }
 

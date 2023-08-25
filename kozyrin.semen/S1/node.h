@@ -1,7 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 
-namespace bowlstalls {
+namespace kozyrin {
   template< typename T >
   struct node_t {
     T value_ = 0;

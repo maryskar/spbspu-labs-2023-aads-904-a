@@ -4,7 +4,7 @@
 
 int main(int argc, char** argv)
 {
-  using namespace bowlstalls;
+  using namespace kozyrin;
 
   std::ifstream fin;
   if (argc == 2) {

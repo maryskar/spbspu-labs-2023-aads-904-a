@@ -3,7 +3,7 @@
 #include "operations.h"
 #include <iostream>
 
-using namespace bowlstalls;
+using namespace kozyrin;
 
 Queue< std::string > split(const std::string& in)
 {
@@ -74,7 +74,7 @@ long long calcBinary(long long a, long long b, char op)
   throw std::logic_error("Incorrect operator");
 }
 
-long long bowlstalls::computeString(const std::string& str)
+long long kozyrin::computeString(const std::string& str)
 {
   Queue< std::string > input = split(str);
   Queue< std::string > queue = getPostfix(input);

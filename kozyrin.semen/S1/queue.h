@@ -4,7 +4,7 @@
 #include "node.h"
 #include <iostream>
 
-namespace bowlstalls {
+namespace kozyrin {
   template< typename T >
   class Queue {
   public:

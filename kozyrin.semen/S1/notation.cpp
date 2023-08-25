@@ -2,9 +2,9 @@
 #include <string>
 #include "operations.h"
 
-using namespace bowlstalls;
+using namespace kozyrin;
 
-Queue< std::string > bowlstalls::getPostfix(Queue< std::string >& src)
+Queue< std::string > kozyrin::getPostfix(Queue< std::string >& src)
 {
   Queue< std::string > dest;
   Stack< std::string > stack;

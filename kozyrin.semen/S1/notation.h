@@ -3,7 +3,7 @@
 #include "queue.h"
 #include "stack.h"
 
-namespace bowlstalls {
+namespace kozyrin {
   Queue< std::string > getPostfix(Queue< std::string >& src);
 }
 

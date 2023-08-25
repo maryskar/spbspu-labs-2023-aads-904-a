@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include "node.h"
 
-namespace bowlstalls {
+namespace kozyrin {
   template< typename T >
   class Stack {
   public:
