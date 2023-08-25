@@ -5,6 +5,7 @@
 #include <exception>
 #include "inputtree.hpp"
 #include "keysummator.hpp"
+#include "stringcreator.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -35,12 +36,30 @@ int main(int argc, char* argv[])
     {
       KeySummator summator;
       summator = avlTree.traverse_lnr(summator);
-      std::cout << summator.result_ << " ";
+      std::cout << summator.result_;
     }
     catch (const std::exception& e)
     {
       std::cerr << e.what() << "\n";
       return 1;
+    }
+    if ((traverse == "ascending"))
+    {
+      StringCreator creator;
+      creator = avlTree.traverse_lnr(creator);
+      std::cout << creator.result_ << "\n";
+    }
+    if ((traverse == "descending"))
+    {
+      StringCreator creator;
+      creator = avlTree.traverse_rnl(creator);
+      std::cout << creator.result_ << "\n";
+    }
+    if ((traverse == "breadth"))
+    {
+      StringCreator creator;
+      creator = avlTree.traverse_breadth(creator);
+      std::cout << creator.result_ << "\n";
     }
   }
   else
