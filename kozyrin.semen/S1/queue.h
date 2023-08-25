@@ -2,6 +2,7 @@
 #define QUEUE_H
 #include <stdexcept>
 #include "node.h"
+#include <iostream>
 
 namespace bowlstalls {
   template< typename T >
@@ -10,6 +11,8 @@ namespace bowlstalls {
     Queue();
     Queue(const Queue< T >& origin);
     Queue(const Queue< T >&& origin) noexcept;
+    Queue< T >& operator=(const Queue< T >& other);
+    Queue< T >& operator=(Queue< T >&& other) noexcept;
     ~Queue();
     void push(T rhs);
     T& drop();
@@ -50,6 +53,36 @@ namespace bowlstalls {
   }
 
   template< typename T >
+  Queue< T >& Queue< T >::operator=(const Queue< T >& other)
+  {
+    if (this == other) {
+      return *this;
+    }
+    head_ = copy(other.head_);
+    node_t< T >* curr = head_;
+    while (curr->next_) {
+      curr = curr->next_;
+    }
+    tail_ = curr;
+    return *this;
+  }
+
+  template< typename T >
+  Queue< T >& Queue< T >::operator=(Queue< T >&& other) noexcept
+  {
+    if (this == other) {
+      return *this;
+    }
+    head_ = copy(other.head_);
+    node_t< T >* curr = head_;
+    while (curr->next_) {
+      curr = curr->next_;
+    }
+    tail_ = curr;
+    return *this;
+  }
+
+  template< typename T >
   Queue< T >::~Queue()
   {
     while (head_ != nullptr) {
@@ -63,7 +96,7 @@ namespace bowlstalls {
   template< typename T >
   void Queue< T >::push(const T rhs)
   {
-    node_t< T >* tail = new node_t<T>{rhs};
+    node_t< T >* tail = new node_t< T >{rhs};
     if (head_ == nullptr) {
       head_ = tail;
       tail_ = tail;

@@ -46,4 +46,5 @@ Queue< std::string > bowlstalls::getPostfix(Queue< std::string >& src)
   while (!stack.isEmpty()) {
     dest.push(stack.drop());
   }
+  return dest;
 }
