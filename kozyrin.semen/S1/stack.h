@@ -8,15 +8,16 @@ namespace bowlstalls {
   class Stack {
   public:
     Stack();
-    Stack(const Stack<T>& origin);
-    Stack(const Stack<T>&& origin) noexcept;
+    Stack(const Stack< T >& origin);
+    Stack(const Stack< T >&& origin) noexcept;
     ~Stack();
     void push(T rhs);
     T& drop();
+    void clearBin();
     bool isEmpty();
   private:
-    T value_;
-    node_t< T >* top_;
+    node_t< T >* bin_ = nullptr;
+    node_t< T >* top_ = nullptr;
   };
 
   template< typename T >
@@ -25,12 +26,12 @@ namespace bowlstalls {
   {}
 
   template< typename T >
-  Stack< T >::Stack(const Stack<T>& origin):
+  Stack< T >::Stack(const Stack< T >& origin):
     top_(origin.top_)
   {}
 
   template< typename T >
-  Stack< T >::Stack(const Stack<T>&& origin) noexcept:
+  Stack< T >::Stack(const Stack< T >&& origin) noexcept:
     top_(origin.top_)
   {}
 
@@ -42,6 +43,7 @@ namespace bowlstalls {
       delete top_;
       top_ = next;
     }
+    clearBin();
   }
 
   template< typename T >
@@ -58,10 +60,20 @@ namespace bowlstalls {
     }
 
     node_t< T >* top = top_->next_;
-    value_ = top_->value_;
-    delete top_;
+    top_->next_ = bin_;
+    bin_ = top_;
     top_ = top;
-    return value_;
+    return bin_->value_;
+  }
+
+  template< typename T >
+  void Stack< T >::clearBin()
+  {
+    while (bin_ != nullptr) {
+      node_t< T >* next = bin_->next_;
+      delete bin_;
+      bin_ = next;
+    }
   }
 
   template< typename T >
