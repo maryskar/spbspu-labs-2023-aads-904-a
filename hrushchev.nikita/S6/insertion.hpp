@@ -3,16 +3,16 @@
 
 #include <functional>
 
-template<typename RandomIt, typename Compare = std::less<>>
+template< typename RandomIt, typename Compare = std::less< > >
 void insertionSort(RandomIt begin, RandomIt end, Compare comp = Compare{})
 {
-  for (auto it = begin + 1; it != end; ++it)
+  for (auto it = std::next(begin); it != end; ++it)
   {
     auto current = *it;
     auto j = it;
-    while (j != begin && comp(current, *(j - 1)))
+    while (j != begin && comp(current, *(std::prev(j))))
     {
-      *j = *(j - 1);
+      *j = *(std::prev(j));
       --j;
     }
     *j = current;

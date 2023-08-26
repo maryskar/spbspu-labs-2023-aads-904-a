@@ -3,30 +3,58 @@
 
 #include <functional>
 
-template<typename ForwardIt, typename Compare = std::less<>>
+template< typename ForwardIt >
+size_t getDistanse(const ForwardIt begin, const ForwardIt end)
+{
+  size_t res = 0;
+  auto copy_begin = begin;
+  auto copy_end = end;
+  while (copy_begin != copy_end)
+  {
+    res++;
+    copy_begin++;
+  }
+  return res;
+}
+
+template< typename ForwardIt, typename Compare = std::less< > >
 void oddEvenSort(ForwardIt begin, ForwardIt end, Compare comp = Compare{})
 {
+  size_t size = getDistanse(begin, end);
   bool sorted = false;
   while (!sorted)
   {
     sorted = true;
-    for (auto it = begin + 1; it < end - 1; it += 2)
+    for (size_t i = 1; i < size - 1; i += 2)
     {
-      if (comp(*(it + 1), *it))
+      auto current = begin;
+      for (size_t j = 0; j != i; j++)
       {
-        std::swap(*it, *(it + 1));
+        ++current;
+      }
+      auto next = current;
+      next++;
+      if (comp(*next, *current))
+      {
+        std::swap(*current, *next);
         sorted = false;
       }
     }
-    for (auto it = begin; it < end - 1; it += 2)
+    for (size_t i = 0; i < size - 1; i += 2)
     {
-      if (comp(*(it + 1), *it))
+      auto current = begin;
+      for (size_t j = 0; j != i; j++)
       {
-        std::swap(*it, *(it + 1));
+        ++current;
+      }
+      auto next = current;
+      next++;
+      if (comp(*next, *current))
+      {
+        std::swap(*current, *next);
         sorted = false;
       }
     }
   }
 }
-
 #endif

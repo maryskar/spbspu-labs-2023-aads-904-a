@@ -3,26 +3,26 @@
 
 #include <functional>
 
-template<typename BidirectionalIt, typename Compare = std::less<>>
+template< typename BidirectionalIt, typename Compare = std::less< > >
 void shakerSort(BidirectionalIt begin, BidirectionalIt end, Compare comp = Compare{})
 {
   auto left = begin;
-  auto right = end - 1;
+  auto right = std::prev(end);
   while (left < right)
   {
     for (auto it = left; it < right; ++it)
     {
-      if (comp(*(it + 1), *it))
+      if (comp(*(std::next(it)), *it))
       {
-        std::swap(*it, *(it + 1));
+        std::swap(*it, *(std::next(it)));
       }
     }
     --right;
     for (auto it = right; it > left; --it)
     {
-      if (comp(*it, *(it - 1)))
+      if (comp(*it, *(std::prev(it))))
       {
-        std::swap(*it, *(it - 1));
+        std::swap(*it, *(std::prev(it)));
       }
     }
     ++left;

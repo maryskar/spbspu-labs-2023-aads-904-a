@@ -1,5 +1,6 @@
 #include <iostream>
 #include <deque>
+#include <list>
 #include <algorithm>
 #include <random>
 #include "insertion.hpp"
@@ -8,7 +9,7 @@
 
 int main()
 {
-    std::deque<int> data = {5, 2, 9, 1, 5, 6, 3, 8, 7, 4};
+    std::deque< int > data = {5, 2, 9, 1, 5, 6, 3, 8, 7, 4};
 
     std::cout << "Original data: ";
     for (const auto& num : data)
