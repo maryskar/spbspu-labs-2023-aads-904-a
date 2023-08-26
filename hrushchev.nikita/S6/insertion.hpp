@@ -3,19 +3,22 @@
 
 #include <functional>
 
-template< typename BidirectionalIt, typename Compare = std::less< > >
-void insertionSort(BidirectionalIt begin, BidirectionalIt end, Compare comp = Compare{})
+namespace hrushchev
 {
-  for (auto it = std::next(begin); it != end; ++it)
+  template< typename BidirectionalIt, typename Compare = std::less< > >
+  void insertionSort(BidirectionalIt begin, BidirectionalIt end, Compare comp = Compare{})
   {
-    auto current = *it;
-    auto j = it;
-    while (j != begin && comp(current, *(std::prev(j))))
+    for (auto it = std::next(begin); it != end; ++it)
     {
-      *j = *(std::prev(j));
-      --j;
+      auto current = *it;
+      auto j = it;
+      while (j != begin && comp(current, *(std::prev(j))))
+      {
+        *j = *(std::prev(j));
+        --j;
+      }
+      *j = current;
     }
-    *j = current;
   }
 }
 

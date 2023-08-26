@@ -1,14 +1,8 @@
 #include <iostream>
-#include <deque>
-#include <list>
 #include <algorithm>
-#include <functional>
-#include <random>
-#include "insertion.hpp"
-#include "oddeven.hpp"
-#include "shaker.hpp"
-#include "filllist.hpp"
 #include <forwardlist.hpp>
+#include <functional>
+#include "filllist.hpp"
 #include "sortandprint.hpp"
 
 int main(int argc, char* argv[])

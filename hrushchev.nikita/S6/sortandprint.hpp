@@ -3,7 +3,6 @@
 
 #include <ostream>
 #include <string>
-#include <stdexcept>
 #include <deque>
 #include <list>
 #include <forwardlist.hpp>

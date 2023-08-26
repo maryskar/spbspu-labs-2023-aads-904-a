@@ -3,30 +3,32 @@
 
 #include <functional>
 
-template< typename RandomIt, typename Compare = std::less< > >
-void shakerSort(RandomIt begin, RandomIt end, Compare comp = Compare{})
+namespace hrushchev
 {
-  auto left = begin;
-  auto right = std::prev(end);
-  while (left < right)
+  template< typename RandomIt, typename Compare = std::less< > >
+  void shakerSort(RandomIt begin, RandomIt end, Compare comp = Compare{})
   {
-    for (auto it = left; it != right; ++it)
+    auto left = begin;
+    auto right = std::prev(end);
+    while (left < right)
     {
-      if (comp(*(std::next(it)), *it))
+      for (auto it = left; it != right; ++it)
       {
-        std::swap(*it, *(std::next(it)));
+        if (comp(*(std::next(it)), *it))
+        {
+          std::swap(*it, *(std::next(it)));
+        }
       }
-    }
-    --right;
-    for (auto it = right; it != left; --it)
-    {
-      if (comp(*it, *(std::prev(it))))
+      --right;
+      for (auto it = right; it != left; --it)
       {
-        std::swap(*it, *(std::prev(it)));
+        if (comp(*it, *(std::prev(it))))
+        {
+          std::swap(*it, *(std::prev(it)));
+        }
       }
+      ++left;
     }
-    ++left;
   }
 }
-
 #endif
