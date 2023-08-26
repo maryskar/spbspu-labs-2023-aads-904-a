@@ -11,10 +11,23 @@
 #include <forwardlist.hpp>
 #include "sortandprint.hpp"
 
-int main()
+int main(int argc, char* argv[])
 {
+  if (argc != 4)
+  {
+    std::cout << "Error arg\n";
+    return 1;
+  }
+
+  size_t size = std::stoull((argv[3]));
+  if (size < 1)
+  {
+    std::cerr << "Invalid size";
+    return 1;
+  }
+
   hrushchev::ForwardList < int > my_list;
-  hrushchev::fillRandomInts(my_list, 10);
+  hrushchev::fillRandomInts(my_list, size);
   hrushchev::sortAndPrint(std::cout, my_list, std::less< >());
 
 }
