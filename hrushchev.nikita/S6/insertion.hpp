@@ -3,8 +3,8 @@
 
 #include <functional>
 
-template< typename RandomIt, typename Compare = std::less< > >
-void insertionSort(RandomIt begin, RandomIt end, Compare comp = Compare{})
+template< typename BidirectionalIt, typename Compare = std::less< > >
+void insertionSort(BidirectionalIt begin, BidirectionalIt end, Compare comp = Compare{})
 {
   for (auto it = std::next(begin); it != end; ++it)
   {
