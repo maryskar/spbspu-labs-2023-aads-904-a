@@ -38,8 +38,16 @@ int main(int argc, char* argv[])
     return 1;
   }
 
-  hrushchev::ForwardList < int > my_list;
-  hrushchev::fillRandomInts(my_list, size);
-  hrushchev::sortAndPrint(std::cout, my_list, comp);
-
+  if (std::string(argv[2]) == "ints")
+  {
+    hrushchev::ForwardList < int > my_list;
+    hrushchev::fillRandomInts(my_list, size);
+    hrushchev::sortAndPrint(std::cout, my_list, comp);
+  }
+  else if ((std::string(argv[2]) == "floats"))
+  {
+    hrushchev::ForwardList < float > my_list;
+    hrushchev::fillRandomFloats(my_list, size);
+    hrushchev::sortAndPrint(std::cout, my_list, comp);
+  }
 }
