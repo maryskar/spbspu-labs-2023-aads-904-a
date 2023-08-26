@@ -13,22 +13,21 @@ int main(int argc, char* argv[])
     return 1;
   }
 
+  std::function< bool(int, int) > comp = std::less< >();
+  if (std::string(argv[1]) == "descending")
+  {
+    comp = std::greater< >();
+  }
+  else if (std::string(argv[1]) != "ascending")
+  {
+    std::cerr << "Invalid compare\n";
+    return 1;
+  }
+
   size_t size = std::stoull((argv[3]));
   if (size < 1)
   {
     std::cerr << "Invalid size\n";
-    return 1;
-  }
-
-  std::function< bool(int, int) > comp = std::less< >();
-
-  if (std::string(argv[1]) == "descending")
-  {
-    comp = std::greater< >();
-  } 
-  else if (std::string(argv[1]) != "ascending")
-  {
-    std::cerr << "Invalid compare\n";
     return 1;
   }
 

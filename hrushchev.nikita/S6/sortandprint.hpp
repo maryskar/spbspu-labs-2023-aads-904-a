@@ -15,9 +15,19 @@ namespace hrushchev
   template< typename Container >
   void printContainer(std::ostream& out, Container contain)
   {
-    for (const auto& num : contain)
+    auto begin = contain.begin();
+    auto end = contain.end();
+
+    if (begin == end)
     {
-      out << num << " ";
+      return;
+    }
+    out << *begin;
+    begin++;
+
+    for (; begin != end; begin++)
+    {
+      out << " " << *begin;
     }
     out << "\n";
   }
