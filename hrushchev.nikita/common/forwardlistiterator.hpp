@@ -4,7 +4,6 @@
 #include <memory>
 #include <list.hpp>
 
-
 namespace hrushchev
 {
   template< typename T >
@@ -19,6 +18,11 @@ namespace hrushchev
   friend class ForwardList< T >;
   friend class ForwardListConstIterator< T >;
   public:
+    using value_type = T;
+    using difference_type = std::ptrdiff_t;
+    using pointer = T*;
+    using reference = T&;
+    using iterator_category = std::forward_iterator_tag;
     ForwardListIterator();
     ~ForwardListIterator() = default;
     explicit ForwardListIterator(details::List< T >* rhs);

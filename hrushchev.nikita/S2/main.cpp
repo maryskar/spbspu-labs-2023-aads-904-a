@@ -2,9 +2,9 @@
 #include <fstream>
 #include <string>
 #include <list.hpp>
-#include "forwardlist.hpp"
-#include "forwardlistiterator.hpp"
-#include "forwardlistconstiterator.hpp"
+#include <forwardlist.hpp>
+#include <forwardlistiterator.hpp>
+#include <forwardlistconstiterator.hpp>
 #include "dictionary.hpp"
 #include "inputdict.hpp"
 #include "commands.hpp"
