@@ -4,8 +4,7 @@
 #include <fstream>
 #include <functional>
 
-#include "dictionary.h"
-#include "commands.h"
+#include "datasetCommands.h"
 
 int main(int argc, char** argv)
 {
