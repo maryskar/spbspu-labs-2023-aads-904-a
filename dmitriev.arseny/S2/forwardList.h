@@ -9,7 +9,7 @@ namespace
   template< typename T >
   dmitriev::List< T >* initFakeNode(dmitriev::List< T >* otherHead = nullptr)
   {
-    dmitriev::List< T >* fakeNode = static_cast<dmitriev::List< T >*>(::operator new(sizeof(dmitriev::List< T >)));
+    dmitriev::List< T >* fakeNode = static_cast< dmitriev::List< T >* >(::operator new(sizeof(dmitriev::List< T >)));
 
     fakeNode->next = otherHead;
     return fakeNode;
