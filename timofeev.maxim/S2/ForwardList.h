@@ -44,8 +44,7 @@ namespace timofeev
 
     template< typename ...Args >
     iter emplace_after(constIter pos, Args &&...args);
-    template< typename ...Args >
-    void emplace_front(Args &&...args);
+    iter emplace_front(constIter pos);
 
     void push_front(const T &value);
     void push_front(T &&value);
@@ -58,7 +57,6 @@ namespace timofeev
     void splice_after(constIter pos, ForwardList< T > &&other);
 
     void remove(const T& value);
-
     template< typename Comparator>
     void remove_if(Comparator p);
 
@@ -353,8 +351,8 @@ namespace timofeev
     head_ = previous;
   }
 
-  template<class T>
-  template<class Comparator>
+  template< typename T >
+  template< typename Comparator >
   void ForwardList<T>::remove_if(Comparator p)
   {
     List< T >* previous = &head_;
@@ -374,5 +372,38 @@ namespace timofeev
     }
     head_ = previous;
   }
+  /*
+  template< typename ...Args >
+  iter emplace_after(constIter pos, Args &&...args);
+  iter emplace_front(constIter pos);*/
+  template< typename T >
+  template< typename ...Args >
+  ForwardListIterator< T > ForwardList< T >::emplace_after(constIter pos, Args &&...args)
+  {
+    auto newNode = new List< T >(std::forward<Args>(args)...);
+    if (!newNode)
+    {
+      throw std::bad_alloc();
+    }
+    newNode->next = pos.node_->next;
+    pos.node_->next = newNode;
+    ++size_;
+    return iter(newNode);
+  }
+
+  template< typename T >
+  ForwardListIterator< T > ForwardList< T >::emplace_front(constIter pos)
+  {
+    auto newNode = new List< T >();
+    if (!newNode)
+    {
+      throw std::bad_alloc();
+    }
+    newNode->next = pos.node_;
+    pos.node_ = newNode;
+    ++size_;
+    return iter(newNode);
+  }
+
 }
 #endif
