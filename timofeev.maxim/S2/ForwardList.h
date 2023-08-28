@@ -28,9 +28,7 @@ namespace timofeev
     iter begin() noexcept;
     iter end() noexcept;
 
-    constIter begin()  noexcept;
     constIter cbegin() const noexcept;
-    constIter end()  noexcept;//
     constIter cend() const noexcept;
     constIter cbefore_begin() const noexcept;
 
@@ -265,13 +263,70 @@ namespace timofeev
   {
     return iter(nullptr);
   }
-  /*//constIter begin()  noexcept;//
+  /*
   constIter cbegin() const noexcept;
-  //constIter end()  noexcept;//
   constIter cend() const noexcept;
   constIter cbefore_begin() const noexcept;*/
   template< typename T >
+  ForwardListConstIterator< T > ForwardList< T >::cbegin() const noexcept
+  {
+    return begin();
+  }
 
+  template< typename T >
+  ForwardListConstIterator< T > ForwardList< T >::cbefore_begin() const noexcept
+  {
+    return before_begin();
+  }
 
+  template< typename T >
+  ForwardListConstIterator< T > ForwardList< T >::cend() const noexcept
+  {
+    return end();
+  }
+
+  template< typename T >
+  void ForwardList< T >::resize(size_t count, const T& value)
+  {
+    size_t cur = size();
+    if (count == cur )
+    {
+      return;
+    }
+    else if (cur > count)
+    {
+      auto erase = cbegin();
+      size_t tmp = cur;
+      while (tmp != count )
+      {
+        erase++;
+        tmp--;
+      }
+      erase_after(erase, cend());
+    }
+    else
+    {
+      auto insert = cbegin();
+      size_t tmp = cur;
+      while (tmp != count )
+      {
+        insert++;
+        tmp--;
+      }
+      insert_after(insert, count - cur, value);
+    }
+  }
+
+  template< typename T >
+  void ForwardList< T >::resize(size_t count)
+  {
+    resize(count, T());
+  }
+
+  template< typename T >
+  void ForwardList< T >::swap(ForwardList< T >& other)
+  {
+    std::swap(head_, other.head_);
+  }
 }
 #endif
