@@ -58,7 +58,9 @@ namespace timofeev
     void splice_after(constIter pos, ForwardList< T > &&other);
 
     void remove(const T& value);
-    void remove_if(T p);
+
+    template< typename Comparator>
+    void remove_if(Comparator p);
 
     size_t size() const noexcept;
 
@@ -328,6 +330,49 @@ namespace timofeev
   void ForwardList< T >::swap(ForwardList< T >& other)
   {
     std::swap(head_, other.head_);
+  }
+
+  template< typename T>
+  void ForwardList<T>::remove(const T& value)
+  {
+    List< T >* previous = &head_;
+    while (previous->next != nullptr)
+    {
+      List< T >* current = static_cast<List< T >*>(previous->next);
+      if (current->data == value)
+      {
+        previous->next = current->next;
+        delete current;
+        current = nullptr;
+      }
+      else
+      {
+        previous = current;
+      }
+    }
+    head_ = previous;
+  }
+
+  template<class T>
+  template<class Comparator>
+  void ForwardList<T>::remove_if(Comparator p)
+  {
+    List< T >* previous = &head_;
+    while (previous->next != nullptr)
+    {
+      List< T >* current = static_cast< List< T >* >(previous->next);
+      if (p(current->data))
+      {
+        previous->next = current->next;
+        delete current;
+        current = nullptr;
+      }
+      else
+      {
+        previous = current;
+      }
+    }
+    head_ = previous;
   }
 }
 #endif
