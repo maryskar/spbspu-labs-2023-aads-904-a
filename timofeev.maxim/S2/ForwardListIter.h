@@ -1,5 +1,6 @@
 #ifndef FORWARDLISTITER_H
 #define FORWARDLISTITER_H
+#include <cassert>
 #include <List.h>
 namespace timofeev
 {
@@ -13,7 +14,8 @@ namespace timofeev
     ~ForwardListIterator() = default;
 
     ForwardListIterator(timofeev::List<T> *other);
-    ForwardListIterator(const ForwardListConstIterator <T> &other) noexcept;
+    ForwardListIterator(const ForwardListIterator <T> &other) = default;
+    //ForwardListIterator(const ForwardListIterator &&other) noexcept;
 
     bool operator!=(ForwardListIterator<T> &other) const
     bool operator==(ForwardListIterator<T> &other) const
@@ -42,9 +44,45 @@ namespace timofeev
   {}
 
   template< typename T >
-  timofeev::ForwardListIterator< T >::ForwardListIterator(timofeev::List< T >* other);
+  timofeev::ForwardListIterator< T >::ForwardListIterator(timofeev::List< T >* other)
   {
     node = other;
   }
+
+ /* template< typename T >
+  timofeev::ForwardListIterator< T >::ForwardListIterator(const ForwardListIterator &&other) noexcept:
+    node_(other.node_)
+  {
+    other.node_ = nullptr;
+  }*/
+
+  template< typename T >
+  bool timofeev::ForwardListIterator< T >::operator==(ForwardListIterator<T> &other) const
+  {
+    return node_ == other.node_;
+  }
+
+  template< typename T >
+  bool timofeev::ForwardListIterator< T >::operator!=(ForwardListIterator<T> &other) const
+  {
+    return !(*this == other);
+  }
+
+  template< typename T >
+  T& timofeev::ForwardListIterator< T >::operator*()
+  {
+  assert(node_ != nullptr);
+  return node_->data;
+  }
+
+  template< typename T >
+  T* timofeev::ForwardListIterator< T >::operator->()
+  {
+    assert(node_ != nullptr);
+    return std::addressof(node_->data);
+  }
+
+  template< typename T >
+
 
 #endif //SPBSPU_LABS_2023_AADS_904_A_FORWARDLISTITER_H
