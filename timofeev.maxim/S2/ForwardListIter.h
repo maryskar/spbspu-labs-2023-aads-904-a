@@ -83,6 +83,20 @@ namespace timofeev
   }
 
   template< typename T >
+  timofeev::ForwardListIterator< T >&timofeev::ForwardListIterator< T >::operator++()
+  {
+    assert(node_ != nullptr);
+    node_ = node_->next;
+    return *this;
+  }
 
+  template< typename T >
+  timofeev::ForwardListIterator< T >&timofeev::ForwardListIterator< T >::operator++(int)
+  {
+    ForwardListIterator< T > tmp(*this);
+    assert(node_ != nullptr)
+    node_ = node_->next;
+    return tmp;
+  }
 
 #endif //SPBSPU_LABS_2023_AADS_904_A_FORWARDLISTITER_H
