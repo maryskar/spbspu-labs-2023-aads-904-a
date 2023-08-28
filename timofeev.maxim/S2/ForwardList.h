@@ -1,6 +1,7 @@
 #ifndef FORWARDLIST_H
 #define FORWARDLIST_H
 #include <cstddef>
+#include <stdexcept>
 #include "ForwardListIter.h"
 #include "ForwardListConstIter.h"
 #include "../common/List.h"
@@ -127,7 +128,7 @@ namespace timofeev
     {
         if (!head_)
         {
-            return;
+          throw std::out_of_range("out of range");
         }
         List< T > *tmp = head_->next;
         delete head_;
