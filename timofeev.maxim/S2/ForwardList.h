@@ -1,7 +1,8 @@
 #ifndef SPBSPU_LABS_2023_AADS_904_A_FORWARDLIST_H
 #define SPBSPU_LABS_2023_AADS_904_A_FORWARDLIST_H
-#include <List.h>
 #include <cstddef>
+#include "ForwardListIter.h"
+#include <List.h>
 namespace timofeev
 {
     template< typename T>
@@ -14,13 +15,13 @@ namespace timofeev
         ForwardList();
         ~ForwardList();
 
-        ForwardList(const ForwardList< T > &lhs);
+        ForwardList(const ForwardList< T > &lhs);  //
         ForwardList(ForwardList< T > &&rhs) noexcept;
         ForwardList< T > &operator=(const ForwardList< T > &rhs);
         ForwardList< T > &operator=(ForwardList< T > &&rhs);
 
-        bool empty() const;
-        void clear();
+        bool empty() const;  //
+        void clear();  //
 
         iter before_begin() noexcept;
         iter begin() noexcept;
@@ -32,23 +33,23 @@ namespace timofeev
         constIter cend() const noexcept;
         constIter cbefore_begin() const noexcept;
 
-        iter insert_after(constIter pos, const T &value);
-        iter insert_after(constIter pos, T &&value );
-        iter insert_after(constIter pos, size_t count, const T &value );
-        iter insert_after(constIter pos, iter first, iter last );
+        iter insert_after(constIter pos, const T &value);  //
+        iter insert_after(constIter pos, T &&value );   //
+        iter insert_after(constIter pos, size_t count, const T &value );  //
+        iter insert_after(constIter pos, iter first, iter last );  //
         //iter insert_after( const_iterator pos, std::initializer_list<T> ilist );
 
-        iter erase_after(constIter pos);
-        iter erase_after(constIter first, constIter last);
+        iter erase_after(constIter pos);  //
+        iter erase_after(constIter first, constIter last);  //
 
         template< typename ...Args >
         iterator emplace_after(const_iterator pos, Args &&...args);
         template< typename ...Args >
         void emplace_front(Args &&...args);
 
-        void push_front(const T &value);
-        void push_front(T &&value);
-        void pop_front();
+        void push_front(const T &value); //
+        void push_front(T &&value); //
+        void pop_front(); //
 
         void resize(size_t count);
         void resize(size_t count, const T& value);
@@ -93,7 +94,7 @@ namespace timofeev
     }
 
     template< typename T >
-    size_t ForwardList< T >::size()
+    size_t ForwardList< T >::size() const noexcept
     {
         return size;
     }
@@ -169,7 +170,7 @@ namespace timofeev
     }
 
     template< typename  T >
-    ForwardList< T >::iter ForwardList<T>::insert_after(constIter pos, iter first, iter last )
+    ForwardList< T >::iter ForwardList<T>::insert_after(constIter pos, iter first, iter last ):
     {
         while (first != last)
         {
@@ -207,6 +208,18 @@ namespace timofeev
             erase_after(first);
         }
         return last;
+    }
+
+
+    template< typename T >
+    ForwardList< T >::ForwardList(const ForwardList< T > &lhs):
+      ForwardList()
+    {
+      if (lhs.empty())
+      {
+        return;
+      }
+      insert_after(before_begin(), lhs.cbegin(), lhs.cend());
     }
 
 }
