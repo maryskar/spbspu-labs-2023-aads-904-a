@@ -15,7 +15,7 @@ namespace timofeev
 
     ForwardListIterator(timofeev::List<T> *other);
     ForwardListIterator(const ForwardListIterator <T> &other) = default;
-    //ForwardListIterator(const ForwardListIterator &&other) noexcept;
+    ForwardListIterator(const ForwardListIterator <T> &&other) = default;
 
     bool operator!=(ForwardListIterator<T> &other) const
     bool operator==(ForwardListIterator<T> &other) const
@@ -48,13 +48,6 @@ namespace timofeev
   {
     node = other;
   }
-
- /* template< typename T >
-  timofeev::ForwardListIterator< T >::ForwardListIterator(const ForwardListIterator &&other) noexcept:
-    node_(other.node_)
-  {
-    other.node_ = nullptr;
-  }*/
 
   template< typename T >
   bool timofeev::ForwardListIterator< T >::operator==(ForwardListIterator<T> &other) const
