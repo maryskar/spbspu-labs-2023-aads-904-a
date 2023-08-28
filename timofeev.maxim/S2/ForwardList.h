@@ -28,29 +28,29 @@ namespace timofeev
     iter begin() noexcept;
     iter end() noexcept;
 
-    //constIter begin()  noexcept;//
+    constIter begin()  noexcept;
     constIter cbegin() const noexcept;
-    //constIter end()  noexcept;//
+    constIter end()  noexcept;//
     constIter cend() const noexcept;
     constIter cbefore_begin() const noexcept;
 
-    iter insert_after(constIter pos, const T &value);  //
-    iter insert_after(constIter pos, T &&value );   //
-    iter insert_after(constIter pos, size_t count, const T &value );  //
-    iter insert_after(constIter pos, iter first, iter last );  //
+    iter insert_after(constIter pos, const T &value);
+    iter insert_after(constIter pos, T &&value );
+    iter insert_after(constIter pos, size_t count, const T &value );
+    iter insert_after(constIter pos, iter first, iter last );
     //iter insert_after( const_iterator pos, std::initializer_list<T> ilist );
 
-    iter erase_after(constIter pos);  //
-    iter erase_after(constIter first, constIter last);  //
+    iter erase_after(constIter pos);
+    iter erase_after(constIter first, constIter last);
 
     template< typename ...Args >
     iter emplace_after(constIter pos, Args &&...args);
     template< typename ...Args >
     void emplace_front(Args &&...args);
 
-    void push_front(const T &value); //
-    void push_front(T &&value); //
-    void pop_front(); //
+    void push_front(const T &value);
+    void push_front(T &&value);
+    void pop_front();
 
     void resize(size_t count);
     void resize(size_t count, const T& value);
@@ -68,7 +68,11 @@ namespace timofeev
     size_t size_;
   };
 
-
+  template< typename T>
+  ForwardList< T >::ForwardList(ForwardList< T > &&rhs) noexcept:
+    head_(rhs.head_),
+    size_(rhs.size_)
+  {}
 
   template< typename T>
   ForwardList< T >::ForwardList():
@@ -224,6 +228,49 @@ namespace timofeev
       }
       insert_after(before_begin(), lhs.cbegin(), lhs.cend());
     }
+
+
+  template< typename T >
+  ForwardList< T >& ForwardList< T >::operator=(ForwardList< T >&& rhs)
+  {
+    insert_after(before_begin(), rhs.begin(), rhs.end());
+    return *this;
+  }
+
+  template< typename T >
+  ForwardList< T >& ForwardList< T >::operator=(const ForwardList< T >& rhs)
+  {
+    *this = std::move(rhs);
+    return *this;
+  }
+
+ /* iter before_begin() noexcept;
+  iter begin() noexcept;
+  iter end() noexcept;*/
+
+  template< typename T >
+  ForwardListIterator< T > ForwardList< T >::before_begin() noexcept
+  {
+    return iter(head_);
+  }
+
+  template< typename T >
+  ForwardListIterator< T > ForwardList< T >::begin() noexcept
+  {
+    return before_begin();
+  }
+
+  template< typename T >
+  ForwardListIterator< T > ForwardList< T >::end() noexcept
+  {
+    return iter(nullptr);
+  }
+  /*//constIter begin()  noexcept;//
+  constIter cbegin() const noexcept;
+  //constIter end()  noexcept;//
+  constIter cend() const noexcept;
+  constIter cbefore_begin() const noexcept;*/
+  template< typename T >
 
 
 }
