@@ -405,5 +405,31 @@ namespace timofeev
     return iter(newNode);
   }
 
-}
+ /* void splice_after(constIter pos, ForwardList< T > &other);
+  void splice_after(constIter pos, ForwardList< T > &&other);*/
+ template< typename T >
+ void ForwardList< T >::splice_after(constIter pos, ForwardList< T > &other)
+ {
+   if (other.empty())
+   {
+     return;
+   }
+   constIter lastElemInOther = other.cend();
+   while (lastElemInOther.node_->next != nullptr)
+   {
+     ++lastElemInOther;
+   }
+   size_ += other.size();
+   other.size_ = 0;
+   lastElemInOther.node_->next = pos.node_->next;
+   pos.node_->next = other.head_->next;
+   other.head_->next = nullptr;
+ }
+
+  template< typename T >
+  void ForwardList< T >::splice_after(constIter pos, ForwardList< T >&& other)
+  {
+    splice_after(pos, other);
+  }
+
 #endif
