@@ -1,7 +1,7 @@
-#include "dictionary.h"
+#include "commandSet.h"
 namespace timofeev
 {
-  void dictionary()
+  void cmdSet()
   {
     command["print"] = Print;
     command["complement"] = Complement;

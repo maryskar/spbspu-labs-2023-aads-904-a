@@ -1,6 +1,6 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
-#include "dictionary.h"
+#include "commandSet.h"
 namespace timofeev
 {
   void Print(std::istream& in );
