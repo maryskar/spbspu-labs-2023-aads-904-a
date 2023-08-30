@@ -18,11 +18,11 @@ namespace kryuchkova
   {
   public:
     using key_type = Key;
-    using val = value;
+    using val = Value;
     using this_t = Dictionary< Key, Value, Compare >;
     using val_type = std::pair< const Key, Value >;
-    using iterator = ForwardIterator< T >;
-    using const_iterator = ConstForwardIterator< T >;
+    using iterator = ForwardIterator< val_type >;
+    using const_iterator = ConstForwardIterator< val_type >;
 
     Dictionary();
     Dictionary(const this_t & other);
@@ -64,7 +64,7 @@ namespace kryuchkova
     bool IsEmpty() const noexcept;
     bool isEqualTo(const this_t & other) const noexcept;
     void clear() noexcept;
-    void insert(std::initializer_list< value_type > init);
+    void insert(std::initializer_list< val_type > init);
     void swap(this_t & other);
     std::size_t size() const noexcept;
     std::size_t erase(const key_type & key);
@@ -73,9 +73,48 @@ namespace kryuchkova
   
   private:
     ForwardList< val_type > data_;
-    std::size_t size_;
     Compare comp_;
+    std::size_t size_;
   };
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare >::Dictionary():
+   data_(),
+   comp_(),
+   size_(0)
+  {}
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare >::Dictionary(const this_t & other):
+   data_(other.data_),
+   comp_(other.comp_),
+   size_(other.size_)
+  {}
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare >::Dictionary(this_t && other):
+   data_(std::move(other.data_)),
+   comp_(std::move(other.comp_)),
+   size_(other.size_)
+  {
+    other.size_ = 0;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare >::Dictionary(const Compare & comp):
+   data_(),
+   comp_(comp),
+   size_(0)
+  {}
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare >::Dictionary(std::initializer_list< val_type > init, const Compare & comp):
+   data_(init),
+   comp_(comp),
+   size_(init.size())
+  {}
+
+
 }
 
 #endif
