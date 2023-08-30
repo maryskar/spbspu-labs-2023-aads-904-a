@@ -68,7 +68,6 @@ namespace fesenko
     void deleteNode(tree *) noexcept;
     void copy(const this_t &);
     size_t checkHeight(tree *);
-    size_t checkHeightSup(tree *, size_t);
     void rotateLeft(tree *);
     void rotateRight(tree *);
     void rotateLeftRight(tree *);
@@ -255,7 +254,7 @@ namespace fesenko
       return {iterator(root_), true};
     }
     iterator res = end();
-    auto *cur = root_;
+    auto cur = root_;
     while (true) {
       if (comp_(value.first, cur->data.first)) {
         if (cur->left) {
@@ -395,17 +394,12 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   size_t AVL< Key, Value, Compare >::checkHeight(tree *head)
   {
-    return checkHeightSup(head, 0);
-  }
-
-  template< typename Key, typename Value, typename Compare >
-  size_t AVL< Key, Value, Compare >::checkHeightSup(tree *head, size_t height)
-  {
+    size_t height = 0;
     if (head) {
       height++;
-      size_t leftHeight = checkHeightSup(head->left, height);
-      size_t rightHeight = checkHeightSup(head->right, height);
-      height = std::max(leftHeight, rightHeight);
+      size_t leftHeight = checkHeight(head->left);
+      size_t rightHeight = checkHeight(head->right);
+      height += std::max(leftHeight, rightHeight);
     }
     return height;
   }
@@ -418,15 +412,17 @@ namespace fesenko
       root_ = head;
       head->parent = nullptr;
     } else {
-      head->parent = node->parent;
       if (node->parent->left == node) {
-        head->parent->left = head;
+        node->parent->left = head;
       } else {
-        head->parent->right = head;
+        node->parent->right = head;
       }
+      head->parent = node->parent;
     }
     node->right = head->left;
-    node->right->parent = node;
+    if (head->left) {
+      node->right->parent = node;
+    }
     head->left = node;
     node->parent = head;
   }
@@ -439,15 +435,17 @@ namespace fesenko
       root_ = head;
       head->parent = nullptr;
     } else {
-      head->parent = node->parent;
       if (node->parent->left == node) {
-        head->parent->left = head;
+        node->parent->left = head;
       } else {
-        head->parent->right = head;
+        node->parent->right = head;
       }
+      head->parent = node->parent;
     }
     node->left = head->right;
-    node->left->parent = node;
+    if (head->right) {
+      node->left->parent = node;
+    }
     head->right = node;
     node->parent = head;
   }
@@ -455,14 +453,14 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   void AVL< Key, Value, Compare >::rotateLeftRight(tree *node)
   {
-    rotateLeft(node->right);
+    rotateLeft(node);
     rotateRight(node->parent);
   }
 
   template< typename Key, typename Value, typename Compare >
   void AVL< Key, Value, Compare >::rotateRightLeft(tree *node)
   {
-    rotateRight(node->left);
+    rotateRight(node);
     rotateLeft(node->parent);
   }
 
@@ -478,18 +476,19 @@ namespace fesenko
         auto subLeft = checkHeight(subTree->left);
         auto subRight = checkHeight(subTree->right);
         if (subLeft <= subRight) {
-          rotateLeft(subTree);
+          //rotateLeft(subTree);
+          rotateLeft(node);
         } else {
-          rotateRightLeft(subTree);
+          rotateRightLeft(node);
         }
       } else if (left - right == 2) {
         auto subTree = node->left;
         auto subLeft = checkHeight(subTree->left);
         auto subRight = checkHeight(subTree->right);
         if (subRight <= subLeft) {
-          rotateRight(subTree);
+          rotateRight(node);
         } else {
-          rotateLeftRight(subTree);
+          rotateLeftRight(node);
         }
       }
     }
