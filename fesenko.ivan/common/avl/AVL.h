@@ -453,15 +453,15 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   void AVL< Key, Value, Compare >::rotateLeftRight(tree *node)
   {
-    rotateLeft(node);
-    rotateRight(node->parent);
+    rotateLeft(node->left);
+    rotateRight(node);
   }
 
   template< typename Key, typename Value, typename Compare >
   void AVL< Key, Value, Compare >::rotateRightLeft(tree *node)
   {
-    rotateRight(node);
-    rotateLeft(node->parent);
+    rotateRight(node->right);
+    rotateLeft(node);
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -476,7 +476,6 @@ namespace fesenko
         auto subLeft = checkHeight(subTree->left);
         auto subRight = checkHeight(subTree->right);
         if (subLeft <= subRight) {
-          //rotateLeft(subTree);
           rotateLeft(node);
         } else {
           rotateRightLeft(node);
