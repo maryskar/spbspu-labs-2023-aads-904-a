@@ -420,7 +420,7 @@ namespace fesenko
       head->parent = node->parent;
     }
     node->right = head->left;
-    if (head->left) {
+    if (node->right) {
       node->right->parent = node;
     }
     head->left = node;
@@ -443,7 +443,7 @@ namespace fesenko
       head->parent = node->parent;
     }
     node->left = head->right;
-    if (head->right) {
+    if (node->left) {
       node->left->parent = node;
     }
     head->right = node;
