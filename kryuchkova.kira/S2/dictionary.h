@@ -36,13 +36,45 @@ namespace kryuchkova
     this_t & operator=(std::initializer_list< val_type > init);
     val & operator[](const key_type & key);
     val & operator[](key_type && key);
+    const val & at(const key_type & key) const;
 
+    iterator before_begin() noexcept;
+    const_iterator before_begin() const noexcept;
+    const_iterator cbefore_begin() const noexcept;
+    iterator begin() noexcept;
+    const_iterator begin() const noexcept;
+    const_iterator cbegin() const noexcept;
+    iterator end() noexcept;
+    const_iterator end() const noexcept;
+    const_iterator cend() const noexcept;
+    iterator last() noexcept;
+    const_iterator last() const noexcept;
+    const_iterator clast() const noexcept;
 
+    iterator insert(const_iterator pos, const val_type & val);
+    iterator erase_after(const_iterator pos);
+    iterator erase_after(const_iterator first, const_iterator last);
+    iterator find(const key_type & key);
+    const_iterator find(const key_type & key) const;
 
-    void push(Key k, Value v);
-    Value get(Key k);
-    Value drop(Key k);
+    std::pair< iterator, bool > insert(const val_type & val);
+    std::pair< iterator, iterator > equal_range(const key_type & key);
+    std::pair< const_iterator, const_iterator > equal_range(const key_type & key) const;
 
+    bool IsEmpty() const noexcept;
+    bool isEqualTo(const this_t & other) const noexcept;
+    void clear() noexcept;
+    void insert(std::initializer_list< value_type > init);
+    void swap(this_t & other);
+    std::size_t size() const noexcept;
+    std::size_t erase(const key_type & key);
+    std::size_t count(const key_type & key) const;
+    Compare key_comp() const;
+  
+  private:
+    ForwardList< val_type > data_;
+    std::size_t size_;
+    Compare comp_;
   };
 }
 
