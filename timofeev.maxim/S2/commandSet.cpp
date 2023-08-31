@@ -1,7 +1,10 @@
 #include "commandSet.h"
+#include "Dictionary.h"
+#include "Commands.h"
 namespace timofeev
 {
-  void cmdSet()
+  //no overload oper[]
+  void cmdSet(Dictionary< std::string, void (*)(std::istream&, dictOfDicts& dict, std::ostream&) >& command)
   {
     command["print"] = Print;
     command["complement"] = Complement;
