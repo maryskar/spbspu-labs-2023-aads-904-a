@@ -26,9 +26,12 @@ namespace timofeev
     //insert
     //erase
     void swap(Dictionary< Key, Value, Compare >& other);
-    //count
-    //find
-    //contains
+
+    size_t count(const Key& key);
+    iter find(const Key& key );
+    constIter find(const Key& key ) const;
+    bool contains(const Key& key) const;
+
     bool empty() const noexcept;
     size_t size() const noexcept;
 
@@ -98,6 +101,44 @@ namespace timofeev
     std::swap(size_, other.size_);
     std::swap(compare_, other.compare_);
   }
+
+  /* size_t count(const Key& key);
+    iter find(const Key& key );
+    constIter find(const Key& key ) const;
+    bool contains(const Key& key) const;*/
+  template< typename Key, typename Value, typename Compare >
+  size_t Dictionary< Key, Value, Compare >::count(const Key& key)
+  {
+    //чек зис
+    size_t couner = 0;
+    for(auto i = begin(); i != end(); i++)
+    {
+      if (auto cur == key)
+      {
+        couner++;
+      }
+    }
+    return couner;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare >::iter Dictionary< Key, Value, Compare >::find(const Key& key )
+  {
+
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare >::constIter Dictionary< Key, Value, Compare >::find(const Key& key ) const
+  {
+    return constIter(find(key));
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  bool Dictionary< Key, Value, Compare >::contains(const Key& key) const
+  {
+     
+  }
+
 
 }
 
