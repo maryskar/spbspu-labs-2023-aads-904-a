@@ -1,6 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <limits>
+#include "Dictionary.h"
+#include "commandSet.h"
+#include "ForwardList.h"
+
 int main(int argc, char **argv)
 {
   if (argc != 2)
@@ -18,33 +22,32 @@ int main(int argc, char **argv)
       return 1;
     }
   }
-  std::vector< timofeev::Polygon > polygon;
-  using inIter = std::istream_iterator< timofeev::Polygon >;
+
   constexpr auto maxSize = std::numeric_limits< std::streamsize >::max();
   while (!inFile.eof())
   {
-    std::copy(inIter(inFile), inIter(), std::back_inserter(polygon));
+
     if (inFile.fail())
     {
       inFile.clear();
       inFile.ignore(maxSize, '\n');
     }
   }
-  std::map< std::string, void (*)(std::istream&, const std::vector< timofeev::Polygon >&) > commands;
+  timofeev::Dictionary< std::string, void (*)(std::istream&,) > commands;
   std::string firstPart;
-  timofeev::dictionary(commands);
+  timofeev::cmdSet(commands);
   while (!std::cin.eof())
   {
     try
     {
       std::cin >> firstPart;
-      if (commands.count(firstPart) == 0)
+      if (commands.contains(firstPart))
       {
-        timofeev::printError(std::cout);
+        commands[firstPart](std::cin, )
       }
       else
       {
-        commands[firstPart](std::cin, polygon);
+        commands[firstPart](std::cin, );
       }
     }
     catch (std::logic_error &e)
