@@ -4,7 +4,7 @@
 #include "Dictionary.h"
 #include "commandSet.h"
 #include "ForwardList.h"
-
+#include "Errors.h"
 int main(int argc, char **argv)
 {
   if (argc != 2)
@@ -49,13 +49,13 @@ int main(int argc, char **argv)
     }
     catch (std::logic_error &e)
     {
-      errors::printError(std::cout);
+      errors::printInvalid(std::cout);
       std::cin.ignore(maxSize, '\n');
     }
     catch (std::error &e)
     {
       errors::printEmpty(std::cout);
-      std::cin.ignore(maxSize, '\n')
+      std::cin.ignore(maxSize, '\n');
     }
   }
   if (std::cin.fail())
