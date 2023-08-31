@@ -42,9 +42,13 @@ int main(int argc, char **argv)
     try
     {
       std::cin >> firstPart;
-      if (commands.contains(firstPart))
+      if (firstPart == "print")
       {
-        commands[firstPart](std::cin, dict, std::cout);
+        timofeev::Print(std::cin, dict, std::cout);
+      }
+      else if (commands.contains(firstPart))
+      {
+        commands[firstPart](std::cin, dict, std::cout)
       }
     }
     catch (std::logic_error &e)
@@ -56,6 +60,12 @@ int main(int argc, char **argv)
     catch (std::error &e)
     {
       errors::printEmpty(std::cout);
+      std::cin.ignore(maxSize, '\n');
+      break;
+    }
+    catch (...)
+    {
+      errors::printError(std::cout);
       std::cin.ignore(maxSize, '\n');
       break;
     }

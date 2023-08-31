@@ -9,4 +9,8 @@ namespace errors
   {
     out << "<EMPTY>" << '\n';
   }
+  void printError(std::ostream& out)
+  {
+    out << "<ERROR>" << '\n';
+  }
 }
