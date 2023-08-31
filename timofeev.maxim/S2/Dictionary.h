@@ -25,7 +25,7 @@ namespace timofeev
     constIter cend() const noexcept;
     //insert
     //erase
-    //swap
+    void swap(Dictionary< Key, Value, Compare >& other);
     //count
     //find
     //contains
@@ -91,6 +91,13 @@ namespace timofeev
     return data_.end();
   }
 
+  template< typename Key, typename Value, typename Compare >
+  void Dictionary< Key, Value, Compare >::swap(Dictionary< Key, Value, Compare >& other)
+  {
+    data_.swap(other);
+    std::swap(size_, other.size_);
+    std::swap(compare_, other.compare_);
+  }
 
 }
 
