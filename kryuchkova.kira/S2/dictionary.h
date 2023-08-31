@@ -114,6 +114,67 @@ namespace kryuchkova
    size_(init.size())
   {}
 
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare > & Dictionary< Key, Value, Compare >::operator=(const this_t & other)
+  {
+    if (this == std::addressof(other))
+    {
+      return *this;
+    }
+    Compare temp = other.comp_;
+    data_ = other.data_;
+    comp_ = std::move(temp);
+    size_ = other.size_;
+    return *this;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare > & Dictionary< Key, Value, Compare >::operator=(this_t && other)
+  {
+    if (this == std::addressof(other))
+    {
+      return *this;
+    }
+    data_ = std::move(other.data_);
+    comp_ = std::move(other.comp_);
+    size_ = other.size_;
+    other.size_ = 0;
+    return *this;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare > & Dictionary< Key, Value, Compare >::operator=(std::initializer_list< val_type > init)
+  {
+    clear();
+    data_ = init;
+    comp_ = Compare();
+    size_ = init.size();
+    return *this;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  const Value & Dictionary< Key, Value, Compare >::at(const key_type & key) const
+  {
+    return const_cast< Value & >((static_cast< const this_t & >(*this)).at(key));
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Value & Dictionary< Key, Value, Compare >::operator[](const key_type & key)
+  {
+    try
+    {
+      return at(key);
+    }
+    catch (const std::out_of_range & e)
+    {}
+    return (*(emplace(key, Value{}).first)).second;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Value & Dictionary< Key, Value, Compare >::operator[](key_type && key)
+  {
+    return (*this)[key];
+  }
 
 }
 
