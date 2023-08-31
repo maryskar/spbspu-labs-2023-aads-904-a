@@ -24,6 +24,8 @@ namespace kryuchkova
     using iterator = ForwardIterator< val_type >;
     using const_iterator = ConstForwardIterator< val_type >;
 
+    class value_compare;
+
     Dictionary();
     Dictionary(const this_t & other);
     Dictionary(this_t && other);
@@ -65,12 +67,25 @@ namespace kryuchkova
     std::size_t size() const noexcept;
     std::size_t erase(const key_type & key);
     std::size_t count(const key_type & key) const;
+    value_compare value_comp() const;
     Compare key_comp() const;
   
   private:
     ForwardList< val_type > data_;
     Compare comp_;
     std::size_t size_;
+  };
+
+  template< typename Key, typename Value, typename Compare >
+  class Dictionary< Key, Value, Compare >::value_compare
+  {
+   public:
+    bool operator()(const val_type &lhs, const val_type &rhs) const
+    {
+      return comp(lhs.first, rhs.first);
+    };
+   protected:
+    Compare comp;
   };
 
   template< typename Key, typename Value, typename Compare >
@@ -344,6 +359,18 @@ namespace kryuchkova
   bool Dictionary< Key, Value, Compare >::IsEmpty() const noexcept
   {
     return cbegin() == cend();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Compare Dictionary< Key, Value, Compare >::key_comp() const
+  {
+    return comp_;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::value_compare Dictionary< Key, Value, Compare >::value_comp() const
+  {
+    return value_compare(comp_);
   }
 
 }
