@@ -7,9 +7,9 @@ namespace timofeev
   using dictionary = timofeev::Dictionary< size_t, std::string >;
   using dictOfDicts = timofeev::Dictionary< std::string, dictionary >;
   void Print(std::istream& in, dictOfDicts& dict, std::ostream& out);
-  void Complement(std::istream& in, dictOfDicts& dict, std::ostream& out);
-  void Intersect(std::istream& in, dictOfDicts& dict, std::ostream& out);
-  void Union(std::istream& in, dictOfDicts& dict, std::ostream& out);
+  void Complement(std::istream& in, dictOfDicts& dict);
+  void Intersect(std::istream& in, dictOfDicts& dict);
+  void Union(std::istream& in, dictOfDicts& dict;
 }
 
 #endif //S2_COMMANDS_H

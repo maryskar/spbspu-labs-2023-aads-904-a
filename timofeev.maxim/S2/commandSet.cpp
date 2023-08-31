@@ -4,9 +4,8 @@
 namespace timofeev
 {
   //no overload oper[]
-  void cmdSet(Dictionary< std::string, void (*)(std::istream&, dictOfDicts& dict, std::ostream&) >& command)
+  void cmdSet(Dictionary< std::string, void (*)(std::istream&, dictOfDicts& dict) >& command)
   {
-    command["print"] = Print;
     command["complement"] = Complement;
     command["intersect"] = Intersect;
     command["union"] = Union;
