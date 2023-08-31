@@ -51,11 +51,13 @@ int main(int argc, char **argv)
     {
       errors::printInvalid(std::cout);
       std::cin.ignore(maxSize, '\n');
+      break;
     }
     catch (std::error &e)
     {
       errors::printEmpty(std::cout);
       std::cin.ignore(maxSize, '\n');
+      break;
     }
   }
   if (std::cin.fail())
