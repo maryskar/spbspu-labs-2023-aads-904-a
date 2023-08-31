@@ -22,20 +22,21 @@ int main(int argc, char **argv)
       return 1;
     }
   }
-
+  using dictionary = timofeev::Dictionary< size_t, std::string >;
+  using dictOfDicts = timofeev::Dictionary< std::string, dictionary >;
   constexpr auto maxSize = std::numeric_limits< std::streamsize >::max();
+  dictOfDicts dict;
   while (!inFile.eof())
   {
-
+    inFile >> dict;
     if (inFile.fail())
     {
       inFile.clear();
       inFile.ignore(maxSize, '\n');
     }
   }
-  timofeev::Dictionary< std::string, void (*)(std::istream&,) > commands;
+  timofeev::Dictionary< std::string, void (*)(std::istream&, dictOfDicts, std::ostream&) > commands;
   std::string firstPart;
-  timofeev::cmdSet(commands);
   while (!std::cin.eof())
   {
     try
@@ -43,21 +44,18 @@ int main(int argc, char **argv)
       std::cin >> firstPart;
       if (commands.contains(firstPart))
       {
-        commands[firstPart](std::cin, )
-      }
-      else
-      {
-        commands[firstPart](std::cin, );
+        commands[firstPart](std::cin, dict, std::cout);
       }
     }
     catch (std::logic_error &e)
     {
-      timofeev::printError(std::cout);
+      errors::printError(std::cout);
       std::cin.ignore(maxSize, '\n');
     }
-    catch (const std::runtime_error & e)
+    catch (std::error &e)
     {
-      break;
+      errors::printEmpty(std::cout);
+      std::cin.ignore(maxSize, '\n')
     }
   }
   if (std::cin.fail())
