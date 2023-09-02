@@ -18,7 +18,7 @@ namespace turkin
     using node_t = TreeNode< tree_t > *;
     public:
       Iterator();
-      explicit Iterator(node_t rhs);
+      explicit Iterator(node_t rhs, node_t tail);
       it & operator=(const it & rhs) = default;
       ~Iterator() = default;
       it & operator++();
@@ -31,27 +31,30 @@ namespace turkin
       bool operator!=(const it & rhs) const;
     private:
       node_t cur_;
+      node_t tail_;
   };
 }
 
 template< typename K, typename V, typename C >
 turkin::Iterator< K, V, C >::Iterator():
-  cur_(nullptr)
+  cur_(nullptr),
+  tail_(nullptr)
 {}
 
 template< typename K, typename V, typename C >
-turkin::Iterator< K, V, C >::Iterator(node_t rhs):
-  cur_(rhs)
+turkin::Iterator< K, V, C >::Iterator(node_t rhs, node_t tail):
+  cur_(rhs),
+  tail_(tail)
 {}
 
 template< typename K, typename V, typename C >
 turkin::Iterator< K, V, C > & turkin::Iterator< K, V, C >::operator++()
 {
   assert(cur_ != nullptr);
-  if (cur_->right != nullptr)
+  if (cur_->right != tail_)
   {
     cur_ = cur_->right;
-    while (cur_->left != nullptr)
+    while (cur_->left != tail_)
     {
       cur_ = cur_->left;
     }
@@ -59,7 +62,7 @@ turkin::Iterator< K, V, C > & turkin::Iterator< K, V, C >::operator++()
   else
   {
     node_t parent = cur_->parent;
-    while (parent != nullptr && cur_ == parent->right)
+    while (parent != tail_ && cur_ == parent->right)
     {
       cur_ = parent;
       parent = parent->parent;
@@ -82,10 +85,10 @@ template< typename K, typename V, typename C >
 turkin::Iterator< K, V, C > & turkin::Iterator< K, V, C >::operator--()
 {
   assert(cur_ != nullptr);
-  if (cur_->left != nullptr)
+  if (cur_->left != tail_)
   {
     cur_ = cur_->left;
-    while (cur_->right != nullptr)
+    while (cur_->right != tail_)
     {
       cur_ = cur_->right;
     }
@@ -93,9 +96,9 @@ turkin::Iterator< K, V, C > & turkin::Iterator< K, V, C >::operator--()
   else
   {
     node_t parent = cur_->parent;
-    if (cur_ != nullptr)
+    if (cur_ != tail_)
     {
-      while (parent != nullptr && cur_ == parent->left)
+      while (parent != tail_ && cur_ == parent->left)
       {
         cur_ = parent;
         parent = parent->parent;

@@ -4,6 +4,7 @@
 #include <fstream>
 #include <functional>
 #include <out-msg.hpp>
+#include <comparator.hpp>
 
 namespace turkin
 {
