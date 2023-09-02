@@ -1,12 +1,20 @@
-#include "forward_list.h"
-#include "forward_list_const_iterator.h"
-#include "forward_list_iterator.h"
 #include <iostream>
+#include <fstream>
+#include "dictionary.h"
+#include "dict_command.h"
 
-int main()
+int main(int argc, char *argv[])
 {
-  kryuchkova::ForwardIterator< int > it;
-  //it++;
-  kryuchkova::ForwardList< int > List;
-  List.IsEmpty();
+  if (argc != 2)
+  {
+    std::cerr << "invalid number of args\n";
+    return 2;
+  }
+  std::ifstream in(argv[1]);
+  if (!in.is_open())
+  {
+    std::cerr << "file open error\n";
+    return 2;
+  }
+  
 }
