@@ -60,6 +60,40 @@ namespace kryuchkova
     return res;
   }
 
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare > make_intersection(const Dictionary< Key, Value, Compare > & first_, const Dictionary< Key, Value, Compare > & second_)
+  {
+    Dictionary< Key, Value, Compare > result;
+    Compare comp = Compare{};
+    for (auto i = second_.cbegin(); i != second_.cend(); i++)
+    {
+      auto res = second_.cend();
+      for (auto j = first_.cbegin(); j != first_.cend(); j++)
+      {
+        if (!comp(i->first, j->first) && !comp(j->first, i->first)) {
+          res = j;
+          break;
+        }
+      }
+      if (res != second_.cend()) {
+        result.insert(*res);
+      }
+    }
+    return result;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Dictionary< Key, Value, Compare > make_union(const Dictionary< Key, Value, Compare > & first, const Dictionary< Key, Value, Compare > & second)
+  {
+    Dictionary< Key, Value, Compare > res(first);
+    auto it = second.cbegin();
+    while (it != second.cend()) {
+      res.insert(*it);
+      it++;
+    }
+    return res;
+  }
+
 }
 
 #endif
