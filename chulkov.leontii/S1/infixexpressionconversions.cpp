@@ -1,10 +1,12 @@
 #include "infixexpressionconversions.h"
+
 #include "isoperator.h"
 #include "queue.h"
 #include "stack.h"
 
 namespace chulkov {
-  int getPriority(std::string c) {
+  int getPriority(std::string c)
+  {
     if (c == "+" || c == "-") {
       return 1;
     } else if (c == "*" || c == "/" || c == "%") {
@@ -13,7 +15,8 @@ namespace chulkov {
     return 0;
   }
 
-  chulkov::Queue< std::string > infixToPostfix(std::string& infix) {
+  chulkov::Queue< std::string > infixToPostfix(std::string& infix)
+  {
     Queue< std::string > post;
     Stack< std::string > oper;
     std::string str;

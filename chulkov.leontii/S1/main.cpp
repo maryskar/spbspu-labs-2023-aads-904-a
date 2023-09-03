@@ -1,11 +1,13 @@
 #include <fstream>
 #include <iostream>
+
 #include "infixexpressionconversions.h"
 #include "postfixvaluecalculation.h"
 #include "queue.h"
 #include "stack.h"
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
   if (argc > 2) {
     std::cerr << "Error argv\n";
     return 1;

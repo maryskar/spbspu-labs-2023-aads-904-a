@@ -1,5 +1,7 @@
 #include "postfixvaluecalculation.h"
+
 #include <limits>
+
 #include "isoperator.h"
 #include "stack.h"
 
@@ -7,22 +9,26 @@ namespace chulkov {
   long long max = std::numeric_limits< long long >::max();
   long long min = std::numeric_limits< long long >::min();
 
-  bool isAddOverflow(long long frst, long long sec) {
+  bool isAddOverflow(long long frst, long long sec)
+  {
     return (sec > 0 && frst > max - sec) || (sec < 0 && frst < min - sec);
   }
 
-  bool isSubOverflow(long long frst, long long sec) {
+  bool isSubOverflow(long long frst, long long sec)
+  {
     return (sec < 0 && frst > max + sec) || (sec > 0 && frst < min + sec);
   }
 
-  bool isMultOverflow(long long frst, long long sec) {
+  bool isMultOverflow(long long frst, long long sec)
+  {
     if (frst == 0 || sec == 0) {
       return false;
     }
     return frst > max / sec || frst < min / sec;
   }
 
-  bool isOverflow(long long frst, long long sec, char op) {
+  bool isOverflow(long long frst, long long sec, char op)
+  {
     if (op == '+') {
       return isAddOverflow(frst, sec);
     } else if (op == '-') {
@@ -33,7 +39,8 @@ namespace chulkov {
     return false;
   }
 
-  long long calculatePostfix(Queue< std::string > postfix) {
+  long long calculatePostfix(Queue< std::string > postfix)
+  {
     Stack< long long > op;
 
     while (!postfix.empty()) {
