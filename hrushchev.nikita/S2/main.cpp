@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
         }
         else
         {
-          throw;
+          throw std::logic_error("invalig arg");
         }
       }
     }
