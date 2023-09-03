@@ -27,7 +27,7 @@ namespace turkin
       tree operator=(const tree & rhs);
       tree operator=(tree && rhs);
       ~AVLtree();
-      
+
       it root() noexcept;
       cit root() const noexcept;
       cit croot() const noexcept;
@@ -67,7 +67,7 @@ namespace turkin
       std::size_t size() const noexcept;
       void clear() noexcept;
       void swap(tree & rhs) noexcept;
-      
+
     private:
       node_t root_;
       node_t tail_;

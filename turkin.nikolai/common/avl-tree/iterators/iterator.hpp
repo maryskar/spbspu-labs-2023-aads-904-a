@@ -145,4 +145,3 @@ bool turkin::Iterator< K, V, C >::operator!=(const Iterator< K, V, C > & rhs) co
 }
 
 #endif
-  

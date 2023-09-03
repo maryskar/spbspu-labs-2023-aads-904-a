@@ -2,7 +2,7 @@
 #define TREE_NODE
 
 namespace turkin
-{ 
+{
   template< typename T >
   struct TreeNode
   {
