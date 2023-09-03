@@ -142,7 +142,14 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   typename AVL< Key, Value, Compare >::const_iterator AVL< Key, Value, Compare >::cbegin() const noexcept
   {
-    return const_iterator(begin());
+    if (!root_) {
+      return const_iterator(nullptr);
+    }
+    tree *ptr = root_;
+    while (ptr->left) {
+      ptr = ptr->left;
+    }
+    return const_iterator(ptr);
   }
 
   template< typename Key, typename Value, typename Compare >
