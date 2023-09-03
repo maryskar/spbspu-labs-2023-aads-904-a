@@ -1,7 +1,6 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 #include <stdexcept>
-
 #include "list.h"
 
 namespace chulkov {
@@ -82,8 +81,7 @@ namespace chulkov {
       }
     }
 
-    void drop()
-    {
+    void drop() {
       if (empty()) {
         throw std::out_of_range("Queue is empty");
       }
@@ -97,8 +95,7 @@ namespace chulkov {
       delete temp;
     }
 
-    T& getTop()
-    {
+    T& getTop() {
       if (empty()) {
         throw std::out_of_range("Queue is empty");
       }

@@ -2,8 +2,7 @@
 #define INFIXEXPRESSIONCONVERSIONS_H
 #include "queue.h"
 
-namespace chulkov
-{
+namespace chulkov {
   Queue< std::string > infixToPostfix(std::string& infix);
 }
 

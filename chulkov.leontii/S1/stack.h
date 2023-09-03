@@ -1,11 +1,11 @@
 #ifndef STACK_H
 #define STACK_H
 #include <stdexcept>
-
 #include "list.h"
 
 namespace chulkov {
-  template < typename T > class Stack {
+  template < typename T >
+  class Stack {
   private:
     List< T >* top_;
 
@@ -14,8 +14,7 @@ namespace chulkov {
       top_(nullptr)
     {}
 
-    T& top()
-    {
+    T& top() {
       if (empty()) {
         throw std::runtime_error("Stack is empty.");
       }
@@ -44,8 +43,7 @@ namespace chulkov {
       }
     }
 
-    Stack& operator=(const Stack< T >& other)
-    {
+    Stack& operator=(const Stack< T >& other) {
       if (this != &other) {
         Stack tp(other);
         std::swap(top_, tp.top_);
@@ -53,8 +51,7 @@ namespace chulkov {
       return *this;
     }
 
-    Stack& operator=(Stack< T >&& other)
-    {
+    Stack& operator=(Stack< T >&& other) {
       if (this != &other) {
         clear();
         top_ = other.top_;
@@ -69,29 +66,24 @@ namespace chulkov {
       other.top_ = nullptr;
     }
 
-    ~Stack()
-    {
+    ~Stack() {
       clear();
     }
 
-    void push(const T& rhs)
-    {
+    void push(const T& rhs) {
       List< T >* newNode = new List< T >{rhs, top_};
       top_ = newNode;
     }
 
-    const T& top() const
-    {
+    const T& top() const {
       return top();
     }
 
-    bool empty() const
-    {
+    bool empty() const {
       return top_ == nullptr;
     }
 
-    void drop()
-    {
+    void drop () {
       if (top_ == nullptr) {
         throw std::out_of_range("Stack is empty");
       }
@@ -100,8 +92,7 @@ namespace chulkov {
       top_ = newhead;
     }
 
-    void clear()
-    {
+    void clear() {
       while (!empty()) {
         drop();
       }
