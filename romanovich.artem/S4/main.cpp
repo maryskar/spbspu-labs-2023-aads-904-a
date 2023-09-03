@@ -1,57 +1,58 @@
-#include "binary_search_tree.h"
 #include <iostream>
-int main()
+#include <fstream>
+#include <string>
+#include <vector>
+#include <limits>
+#include <printmessages.h>
+#include <parsing.h>
+#include "commands.h"
+int main(int argc, char *argv[])
 {
-  using Key = int;
-  using Value = int;
-  using Compare = std::less< int >;
-  // using data_type = std::pair< Key, Value >;
-  using bst_t = BinarySearchTree< Key, Value, Compare >;
-  // using tree_t = TreeNode< data_type >;
-  using iterator = BidirectionalIterator< Key, Value, Compare >;
-  using const_iterator = ConstBidirectionalIterator< Key, Value, Compare >;
-
-  // Test BinarySearchTree constructor, insert, and size
-  bst_t bst;
-  bst.insert(5, 5);
-  bst.insert(3, 3);
-  bst.insert(7, 7);
-  std::cout << "Size of BST: " << bst.size() << std::endl; // Expected output: 3
-
-  // Test find
-  iterator it_find_5 = bst.find(5);
-  if (it_find_5 == bst.end() || it_find_5->second != 5)
+  constexpr auto maxLLSize = std::numeric_limits< std::streamsize >::max();
+  if (argc != 2)
   {
-    std::cout << "Test find - FAIL" << std::endl;
+    std::cerr << "No file provided.\n";
     return 1;
   }
-
-  // Test const_iterator and cend
-  const_iterator cit = bst.cbegin();
-  const_iterator cit_end = bst.cend();
-  if (cit != cit_end)
+  std::ifstream input(argv[1]);
+  if (!input)
   {
-    std::cout
-      << cit->first << ": "
-      << cit->second << std::endl;
-    ++cit;
+    std::cerr << "Cannot open file.\n";
+    return 1;
   }
-
-  // Test operator[]
-  bst[10] = 10;
-  std::cout << "Size of BST after operator[]: " << bst.size() << std::endl; // Expected output: 4
-
-  // Test at
-  std::cout << "Value at key 10: " << bst.at(10) << std::endl; // Expected output: 10
-
-  // Test remove
-  bst.remove(10);
-  std::cout << "Size of BST after remove: " << bst.size() << std::endl; // Expected output: 3
-
-  // Test clear and isEmpty
-  bst.clear();
-  std::cout << "Is BST empty? " << (bst.isEmpty() ? "Yes" : "No") << std::endl; // Expected output: Yes
-
-  std::cout << "Tests OK" << std::endl;
-  return 0;
+  romanovich::container_t map;
+  std::string line;
+  while (std::getline(input, line))
+  {
+    std::vector< std::string > lineWords;
+    splitString(lineWords, line, ' ');
+    std::string mapName = lineWords[0];
+    romanovich::map_t mapData;
+    for (size_t i = 1; i < lineWords.size(); i += 2)
+    {
+      int key = std::stoi(lineWords[i]);
+      std::string val = lineWords[i + 1];
+      mapData.emplace(romanovich::map_value_t(key, val));
+    }
+    map.emplace(romanovich::container_value_t(mapName, mapData));
+  }
+  auto commandDictionary = romanovich::createCommandDictionary(map);
+  while (std::cin)
+  {
+    std::string command;
+    std::cin >> command;
+    if (!std::cin)
+    {
+      break;
+    }
+    try
+    {
+      commandDictionary[command](std::cin, std::cout, map);
+    }
+    catch (...)
+    {
+      printInvalidCommand(std::cout) << '\n';
+      std::cin.ignore(maxLLSize, '\n');
+    }
+  }
 }

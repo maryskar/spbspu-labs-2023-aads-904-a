@@ -3,26 +3,9 @@
 #include <string>
 #include <vector>
 #include <limits>
+#include <printmessages.h>
+#include <parsing.h>
 #include "commands.h"
-std::ostream &printError(std::ostream &out)
-{
-  return out << "<INVALID COMMAND>";
-}
-void splitString(std::vector< std::string > &elems, const std::string &line, char del)
-{
-  std::string word;
-  size_t startPos = 0;
-  size_t endPos = line.find(del);
-  while (endPos != std::string::npos)
-  {
-    word = line.substr(startPos, endPos - startPos);
-    elems.push_back(word);
-    startPos = endPos + 1;
-    endPos = line.find(del, startPos);
-  }
-  word = line.substr(startPos, endPos);
-  elems.push_back(word);
-}
 int main(int argc, char *argv[])
 {
   constexpr auto maxLLSize = std::numeric_limits< std::streamsize >::max();
@@ -42,7 +25,7 @@ int main(int argc, char *argv[])
   while (std::getline(input, line))
   {
     std::vector< std::string > lineWords;
-    splitString(lineWords, line, ' ');
+    romanovich::splitString(lineWords, line, ' ');
     std::string dictName = lineWords[0];
     romanovich::dict_type dictData;
     for (size_t i = 1; i < lineWords.size(); i += 2)
@@ -68,7 +51,7 @@ int main(int argc, char *argv[])
     }
     catch (...)
     {
-      printError(std::cout) << '\n';
+      romanovich::printInvalidCommand(std::cout) << '\n';
       std::cin.ignore(maxLLSize, '\n');
     }
   }
