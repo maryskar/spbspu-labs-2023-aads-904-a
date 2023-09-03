@@ -130,7 +130,7 @@ namespace hrushchev
     auto prev = begin();
     auto cur = ++begin();
 
-    if (prev->first == value.first)
+    if (!compare_(prev->first, value.first) && !compare_(value.first, prev->first))
     {
       prev->second = value.second;
       return prev;
