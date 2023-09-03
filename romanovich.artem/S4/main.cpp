@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
   while (std::getline(input, line))
   {
     std::vector< std::string > lineWords;
-    splitString(lineWords, line, ' ');
+    romanovich::splitString(lineWords, line, ' ');
     std::string mapName = lineWords[0];
     romanovich::map_t mapData;
     for (size_t i = 1; i < lineWords.size(); i += 2)
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     }
     catch (...)
     {
-      printInvalidCommand(std::cout) << '\n';
+      romanovich::printInvalidCommand(std::cout) << '\n';
       std::cin.ignore(maxLLSize, '\n');
     }
   }
