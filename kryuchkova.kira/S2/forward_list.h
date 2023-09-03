@@ -20,6 +20,8 @@ namespace kryuchkova
     ForwardList(const this_t & rhs);
     ForwardList(this_t && rhs);
     ForwardList(std::initializer_list< T > init);
+    template< typename InputIt >
+    ForwardList(InputIt first, InputIt last);
     ~ForwardList();
 
     this_t & operator=(const this_t & fwdlst);
@@ -30,6 +32,8 @@ namespace kryuchkova
     iterator insert_after(const_iterator pos, T && val);
     iterator insert_after(const_iterator pos, std::size_t n, const T & val);
     iterator insert_after(const_iterator pos, std::initializer_list< T > init);
+    template< typename InputIt >
+    iterator insert_after(const_iterator pos, InputIt first, InputIt last);
     iterator erase_after(const_iterator pos);
     iterator erase_after(const_iterator first, const_iterator last);
 
@@ -97,6 +101,18 @@ namespace kryuchkova
     }
     fake_.node_->next_ = nullptr;
     last_.node_ = nullptr;
+  }
+
+  template< typename T >
+  template< typename InputIt >
+  ForwardList< T >::ForwardList(InputIt first, InputIt last):
+   ForwardList()
+  {
+    iterator it = before_begin();
+    while (first != last)
+    {
+      it = insert_after(it, *(first++));
+    }
   }
 
   template < typename T >
@@ -186,6 +202,17 @@ namespace kryuchkova
   ForwardIterator< T > ForwardList< T >::insert_after(const_iterator pos, std::initializer_list< T > init)
   {
     return insert_after(pos, init.begin(), init.end());
+  }
+
+  template< typename T >
+  template< typename InputIt >
+  typename ForwardList< T >::iterator ForwardList< T >::insert_after(const_iterator pos, InputIt first, InputIt last)
+  {
+    for (first; first != last; ++first)
+    {
+      pos = insert_after(pos, *first);
+    }
+    return iterator(pos.node_);
   }
 
   template< typename T >

@@ -16,5 +16,5 @@ int main(int argc, char *argv[])
     std::cerr << "file open error\n";
     return 2;
   }
-  
+
 }
