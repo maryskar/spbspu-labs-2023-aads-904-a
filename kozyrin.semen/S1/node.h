@@ -4,7 +4,7 @@
 namespace kozyrin {
   template< typename T >
   struct node_t {
-    T value_ = 0;
+    T value_;
     node_t< T >* next_ = nullptr;
   };
 
