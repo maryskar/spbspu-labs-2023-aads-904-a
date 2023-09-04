@@ -175,6 +175,10 @@ turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::croot() const noexc
 template< typename K, typename V, typename C >
 turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::begin() noexcept
 {
+  if (root_ == nullptr)
+  {
+    return it(tail_, tail_);
+  }
   node_t temp = root_;
   while (temp->left != tail_)
   {
@@ -192,6 +196,10 @@ turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::begin() const noexc
 template< typename K, typename V, typename C >
 turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::cbegin() const noexcept
 {
+  if (root_ == nullptr)
+  {
+    return cit(tail_, tail_);
+  }
   node_t temp = root_;
   while (temp->left != tail_)
   {
