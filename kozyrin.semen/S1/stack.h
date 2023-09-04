@@ -9,7 +9,7 @@ namespace kozyrin {
   public:
     Stack();
     Stack(const Stack< T >& origin);
-    Stack(const Stack< T >&& origin) noexcept;
+    Stack(Stack< T >&& origin) noexcept;
     Stack< T >& operator=(const Stack< T >& other);
     Stack< T >& operator=(Stack< T >&& other) noexcept;
     ~Stack();
@@ -34,9 +34,11 @@ namespace kozyrin {
   {}
 
   template< typename T >
-  Stack< T >::Stack(const Stack< T >&& origin) noexcept:
-    top_(copy(origin.top_))
-  {}
+  Stack< T >::Stack(Stack< T >&& origin) noexcept:
+    top_(origin.top_)
+  {
+    origin.top_ = nullptr;
+  }
 
   template< typename T >
   Stack< T >& Stack< T >::operator=(const Stack< T >& other)

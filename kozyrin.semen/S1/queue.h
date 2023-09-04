@@ -9,7 +9,7 @@ namespace kozyrin {
   public:
     Queue();
     Queue(const Queue< T >& origin);
-    Queue(const Queue< T >&& origin) noexcept;
+    Queue(Queue< T >&& origin) noexcept;
     Queue< T >& operator=(const Queue< T >& other);
     Queue< T >& operator=(Queue< T >&& other) noexcept;
     ~Queue();
@@ -42,14 +42,12 @@ namespace kozyrin {
   }
 
   template< typename T >
-  Queue< T >::Queue(const Queue< T >&& origin) noexcept:
-    head_(copy(origin.head_))
+  Queue< T >::Queue(Queue< T >&& origin) noexcept:
+    head_(origin.head_),
+    tail_(origin.tail_)
   {
-    node_t< T >* curr = head_;
-    while (curr->next_) {
-      curr = curr->next_;
-    }
-    tail_ = curr;
+    origin.head_ = nullptr;
+    origin.tail_ = nullptr;
   }
 
   template< typename T >
