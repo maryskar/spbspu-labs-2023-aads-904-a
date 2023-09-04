@@ -6,9 +6,9 @@
 #include <string>
 #include <functional>
 #include <message.h>
+#include <read_trash.h>
 #include "dictionary.h"
 #include "funcs_for_commands.h"
-#include "read_trash.h"
 
 namespace tarasenko
 {
