@@ -23,7 +23,7 @@ namespace tarasenko
    {}
 
    explicit Comp(std::less<> less):
-     comp_{std::less<>{}},
+     comp_{less},
      is_less(true)
    {}
 
