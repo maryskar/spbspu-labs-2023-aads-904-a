@@ -13,7 +13,7 @@ namespace kozyrin {
     Stack< T >& operator=(const Stack< T >& other);
     Stack< T >& operator=(Stack< T >&& other) noexcept;
     ~Stack();
-    void push(T rhs);
+    void push(const T& rhs);
     T& drop();
     void clearBin();
     bool isEmpty();
@@ -69,7 +69,7 @@ namespace kozyrin {
   }
 
   template< typename T >
-  void Stack< T >::push(const T rhs)
+  void Stack< T >::push(const T& rhs)
   {
     top_ = new node_t< T >{rhs, top_};
   }

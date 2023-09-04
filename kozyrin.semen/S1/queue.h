@@ -13,7 +13,7 @@ namespace kozyrin {
     Queue< T >& operator=(const Queue< T >& other);
     Queue< T >& operator=(Queue< T >&& other) noexcept;
     ~Queue();
-    void push(T rhs);
+    void push(const T& rhs);
     T& drop();
     void clearBin();
     bool isEmpty();
@@ -93,7 +93,7 @@ namespace kozyrin {
   }
 
   template< typename T >
-  void Queue< T >::push(const T rhs)
+  void Queue< T >::push(const T& rhs)
   {
     node_t< T >* tail = new node_t< T >{rhs};
     if (head_ == nullptr) {
