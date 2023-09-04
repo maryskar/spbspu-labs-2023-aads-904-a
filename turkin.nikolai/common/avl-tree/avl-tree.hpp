@@ -264,6 +264,11 @@ turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::insert(const K & k, cons
 template< typename K, typename V, typename C >
 turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::insert(const tree_t & value)
 {
+  auto result = find(value.first);
+  if (result != end())
+  {
+    result.cur_->data.second = std::move(value.second);
+  }
   size_++;
   if (empty())
   {
