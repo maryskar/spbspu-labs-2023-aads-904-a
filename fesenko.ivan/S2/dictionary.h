@@ -361,7 +361,7 @@ namespace fesenko
     {
       return comp(lhs.first, rhs.first);
     };
-   protected:
+   private:
     Compare comp;
   };
 
