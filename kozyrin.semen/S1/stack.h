@@ -15,8 +15,9 @@ namespace kozyrin {
     ~Stack();
     void push(const T& rhs);
     T& drop();
+    T& getFront() const;
     void clearBin();
-    bool isEmpty();
+    bool isEmpty() const;
   private:
     node_t< T >* bin_ = nullptr;
     node_t< T >* top_ = nullptr;
@@ -89,6 +90,12 @@ namespace kozyrin {
   }
 
   template< typename T >
+  T& Stack< T >::getFront() const
+  {
+    return bin_->value_;
+  }
+
+  template< typename T >
   void Stack< T >::clearBin()
   {
     while (bin_ != nullptr) {
@@ -99,7 +106,7 @@ namespace kozyrin {
   }
 
   template< typename T >
-  bool Stack< T >::isEmpty()
+  bool Stack< T >::isEmpty() const
   {
     return top_ == nullptr;
   }

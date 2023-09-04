@@ -15,8 +15,9 @@ namespace kozyrin {
     ~Queue();
     void push(const T& rhs);
     T& drop();
+    T& getFront() const;
     void clearBin();
-    bool isEmpty();
+    bool isEmpty() const;
   private:
     node_t< T >* bin_ = nullptr;
     node_t< T >* head_ = nullptr;
@@ -120,6 +121,12 @@ namespace kozyrin {
   }
 
   template< typename T >
+  T& Queue< T >::getFront() const
+  {
+    return head_->value_;
+  }
+
+  template< typename T >
   void Queue< T >::clearBin()
   {
     while (bin_ != nullptr) {
@@ -130,7 +137,7 @@ namespace kozyrin {
   }
 
   template< typename T >
-  bool Queue< T >::isEmpty()
+  bool Queue< T >::isEmpty() const
   {
     return head_ == nullptr;
   }
