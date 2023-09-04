@@ -22,7 +22,7 @@ int main(int argc, char** argv)
   std::string str = "";
 
   while (!input.eof()) {
-    getline(input, str);
+    std::getline(input, str);
     if (str.empty()) {
       continue;
     }
