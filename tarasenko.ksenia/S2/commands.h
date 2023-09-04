@@ -8,17 +8,10 @@
 #include <message.h>
 #include "dictionary.h"
 #include "funcs_for_commands.h"
+#include "read_trash.h"
 
 namespace tarasenko
 {
-  std::istream& readTrash(std::istream& input)
-  {
-    input.clear();
-    std::string trash = " ";
-    getline(input, trash);
-    return input;
-  }
-
   template< typename Key, typename Value, typename Compare >
   class Commands
   {
