@@ -5,7 +5,7 @@
 
 namespace kryuchkova
 {
-  Dictionary< std::string, Dictionary< int, std::string, std::less< > >, std::less< > > readDictOfDict(std::istream & in);
+  Dictionary< std::string, Dictionary< int, std::string, std::less< > >, std::less< std::string > > readDictOfDict(std::istream & in);
 }
 
 #endif

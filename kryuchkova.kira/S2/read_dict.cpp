@@ -3,7 +3,7 @@
 
 namespace kryuchkova
 {
-  Dictionary< std::string, Dictionary< int, std::string, std::less< > >, std::less< > > readDictOfDict(std::istream & in)
+  Dictionary< std::string, Dictionary< int, std::string, std::less< > >, std::less< std:: string> > readDictOfDict(std::istream & in)
   {
     using dictionary = Dictionary< int, std::string, std::less< > >;
     using dict_of_dict = Dictionary< std::string, dictionary, std::less< std::string > >;
@@ -40,5 +40,6 @@ namespace kryuchkova
     {
       std::cerr << e.what() << '\n';
     }
+    return container;
   }
 }
