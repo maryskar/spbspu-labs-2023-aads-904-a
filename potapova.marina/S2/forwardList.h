@@ -77,14 +77,14 @@ namespace potapova
             return std::addressof(node_ptr_->data);
           }
 
-          bool operator!=(const ConstIterator& rhs) const
-          {
-            return !(rhs == *this);
-          }
-
           bool operator==(const ConstIterator& rhs) const
           {
             return node_ptr_ == rhs.node_ptr_;
+          }
+
+          bool operator!=(const ConstIterator& rhs) const
+          {
+            return !(rhs == *this);
           }
         private:
           const Node* node_ptr_; 
@@ -137,14 +137,14 @@ namespace potapova
             return std::addressof(node_ptr_->data);
           }
 
-          bool operator!=(const Iterator& rhs) const
-          {
-            return !(rhs == *this);
-          }
-
           bool operator==(const Iterator& rhs) const
           {
             return node_ptr_ == rhs.node_ptr_;
+          }
+
+          bool operator!=(const Iterator& rhs) const
+          {
+            return !(rhs == *this);
           }
 
           operator ConstIterator() const
@@ -161,6 +161,43 @@ namespace potapova
 
       }
 
+      ForwardList(const ForwardList& other)
+      {
+        *this = other;
+      }
+
+      ForwardList(ForwardList&& other)
+      {
+        *this = std::move(other);
+      }
+
+      ForwardList< T >& operator=(const ForwardList< T >& other)
+      {
+        if (!empty())
+        {
+          clear();
+        }
+        Iterator last_elem_ptr = before_begin();
+        for (const T& cur_elem : other)
+        {
+          last_elem_ptr = insert_after(last_elem_ptr, cur_elem);
+        }
+        return *this;
+      }
+
+      ForwardList< T >& operator=(ForwardList< T >&& other)
+      {
+        if (!empty())
+        {
+          clear();
+        }
+        head_.data = std::move(other.head_.data);
+        head_.next_node_ptr = other.head_.next_node_ptr;
+        other.head_.next_node_ptr = nullptr;
+        size_ = other.size_;
+        return *this;
+      }
+
       ~ForwardList()
       {
         clear();
@@ -168,17 +205,17 @@ namespace potapova
 
       Iterator before_begin()
       {
-        return Iterator(&head);
+        return Iterator(&head_);
       }
 
       ConstIterator before_begin() const
       {
-        return ConstIterator(&head);
+        return ConstIterator(&head_);
       }
 
       ConstIterator cbefore_begin() const
       {
-        return ConstIterator(&head);
+        return ConstIterator(&head_);
       }
 
       Iterator begin()
@@ -221,13 +258,13 @@ namespace potapova
         return *cbegin();
       }
 
-      void insert_after(const Iterator place_ptr, const T& value)
+      Iterator insert_after(const Iterator place_ptr, const T& value)
       {
         Node* const new_node_ptr = new Node(value);
-        Node*& new_elem_place_ptr = place_ptr.node_ptr_.next_node_ptr;
-        new_node_ptr->next_node_ptr = new_elem_place_ptr;
-        new_elem_place_ptr = new_node_ptr;
+	      new_node_ptr->next_node_ptr = place_ptr.node_ptr_->next_node_ptr;
+	      place_ptr.node_ptr_->next_node_ptr = new_node_ptr;
         ++size_;
+        return Iterator(new_node_ptr);
       }
 
       void push_front(const T& value)
@@ -235,12 +272,13 @@ namespace potapova
         insert_after(before_begin(), value); 
       }
 
-      void erase_after(const Iterator place_ptr)
+      Iterator erase_after(const Iterator place_ptr)
       {
         Node* const deleted_node_ptr = place_ptr.node_ptr_->next_node_ptr;
         place_ptr.node_ptr_->next_node_ptr = deleted_node_ptr->next_node_ptr;
         delete deleted_node_ptr;
         --size_;
+        return Iterator(place_ptr.node_ptr_->next_node_ptr);
       }
 
       void pop_front(const T& value)
