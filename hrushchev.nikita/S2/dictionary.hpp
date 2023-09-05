@@ -174,7 +174,7 @@ namespace hrushchev
   {
     for (auto cur = begin(); cur != end(); cur++)
     {
-      if (cur->first == key)
+      if (!compare_(prev->first, value.first) && !compare_(value.first, prev->first))
       {
         return cur->second;
       }
@@ -188,7 +188,7 @@ namespace hrushchev
   {
     for (auto cur = begin(); cur != end(); cur++)
     {
-      if (cur->first == key)
+      if (!compare_(cur->first, key) && !!compare_(key, cur->first))
       {
         return cur;
       }
@@ -207,7 +207,7 @@ namespace hrushchev
   {
     for (auto cur = begin(); cur != end(); cur++)
     {
-      if (cur->first == key)
+      if (!compare_(cur->first, key) && !!compare_(key, cur->first))
       {
         return cur->second;
       }
