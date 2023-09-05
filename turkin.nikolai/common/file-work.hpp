@@ -1,5 +1,5 @@
-#ifndef FILE_HPP
-#define FILE_HPP
+#ifndef FILE_WORK_HPP
+#define FILE_WORK_HPP
 
 #include <fstream>
 #include <string>

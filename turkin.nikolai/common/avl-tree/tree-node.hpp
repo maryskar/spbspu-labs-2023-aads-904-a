@@ -1,5 +1,5 @@
-#ifndef TREE_NODE
-#define TREE_NODE
+#ifndef TREE_NODE_HPP
+#define TREE_NODE_HPP
 
 namespace turkin
 {

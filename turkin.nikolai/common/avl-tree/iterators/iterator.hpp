@@ -1,9 +1,9 @@
-#ifndef DIRECT_ITERATOR_HPP
-#define DIRECT_ITERATOR_HPP
+#ifndef ITERATOR_HPP
+#define ITERATOR_HPP
 
 #include <utility>
 #include <cassert>
-#include "../tree-node.hpp"
+#include "avl-tree/tree-node.hpp"
 
 namespace turkin
 {
