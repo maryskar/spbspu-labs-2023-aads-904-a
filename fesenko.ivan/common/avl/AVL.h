@@ -91,16 +91,20 @@ namespace fesenko
 
   template< typename Key, typename Value, typename Compare >
   AVL< Key, Value, Compare >::AVL(this_t &&other):
-    root_(std::move(other.root_)),
-    comp_(std::move(other.comp_))
-  {}
+    root_(other.root_),
+    comp_(other.comp_)
+  {
+    other.root_ = nullptr;
+  }
 
   template< typename Key, typename Value, typename Compare >
   AVL< Key, Value, Compare > &AVL< Key, Value, Compare >::operator=(const this_t &other)
   {
-    clear();
-    copy(other);
-    comp_ = other.comp_;
+    if (std::addressof(other) != this) {
+      clear();
+      copy(other);
+      comp_ = other.comp_;
+    }
     return *this;
   }
 
@@ -108,8 +112,10 @@ namespace fesenko
   AVL< Key, Value, Compare > &AVL< Key, Value, Compare >::operator=(this_t &&other)
   {
     if (std::addressof(other) != this) {
-      root_ = std::move(other.root_);
-      comp_ = std::move(other.comp_);
+      clear();
+      root_ = other.root_;
+      comp_ = other.comp_;
+      other.root_ = nullptr;
     }
     return *this;
   }
