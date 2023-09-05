@@ -2,6 +2,7 @@
 #define DICTIONARY_H
 
 #include <stdexcept>
+#include <iostream>
 #include "forwardList.h"
 
 namespace potapova
@@ -10,8 +11,26 @@ namespace potapova
   class Dictionary 
   {
     public:
-      using Iterator = ForwardList::Iterator;
-      using ConstIterator = ForwardList::ConstIterator;
+      struct Node
+      {
+        Key key;
+        Value value;
+
+        Node(const Key& key, const Value& value):
+          key(key),
+          value(value)
+        {
+
+        }
+
+        operator std::pair< Key, Value >()
+        {
+          return std::make_pair(key, value);
+        }
+      };
+
+      using Iterator = typename ForwardList< Node >::Iterator;
+      using ConstIterator = typename ForwardList< Node >::ConstIterator;
 
       Iterator begin()
       {
@@ -43,23 +62,22 @@ namespace potapova
         return data_.cend();
       }
       
-      void insert(const Key& key, const Value& value)
+      std::pair<Iterator, bool> insert(const Key& key, const Value& value)
       {
-        Iterator prev_node_ptr = data_.before_begin();
-        for (Node& cur_node : data_)
+        Iterator prev_node_ptr = data.before_begin();
+        for (Node& cur_node : data)
         {
-          if (cur_node->key == key)
+          if (cur_node.key == key)
           {
-            cur_node->value = value;
-            return;
+            return std::make_pair(Iterator(&cur_node), false);
           }
-          if (Compare(cur_node->key, key))
+          if (Compare(cur_node.key, key))
           {
-            data_.insert_after(prev_node_ptr, Node(key, value));
-            return;
+            break;
           }
           prev_node_ptr = Iterator(&cur_node);
         }
+        return std::make_pair(data.insert_after(prev_node_ptr, Node(key, value)), true);
       }
 
       Iterator find(const Key& key)
@@ -106,15 +124,19 @@ namespace potapova
         return *result_ptr;
       }
 
-      void erase(const Key& key)
+      Value& operator[](const Key& key)
       {
-        Iterator prev_node_ptr = data_.before_begin();
-        for (Node& node : data_)
+        return *insert(key, Value()).first;
+      }
+
+      Iterator erase(const Key& key)
+      {
+        Iterator prev_node_ptr = data.before_begin();
+        for (Node& node : data)
         {
           if (node.key == key)
           {
-            data_.erase_after(prev_node_ptr);
-            return;
+            return data.erase_after(prev_node_ptr);
           }
           prev_node_ptr = Iterator(&node);
         }
@@ -139,19 +161,19 @@ namespace potapova
       {
         data_.clear();
       }
-    private:
-      struct Node
+
+      void complement(const Dictionary< Key, Value, Compare >& other)
       {
-        Key key;
-        Value value;
-
-        Node(const Key& key, const Value& value):
-          key(key),
-          value(value)
+        Dictionary< Key, Value, Compare > result;
+        for (const Node& cur_node : *this)
         {
-
+          if (!other.contains(cur_node))
+          {
+            result.insert(cur_node.key, cur_node.value);
+          }
         }
-      };
+      }
+    private:
 
       ForwardList< Node > data_;
   };
