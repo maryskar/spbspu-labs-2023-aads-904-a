@@ -26,8 +26,8 @@ namespace tarasenko
      root_(nullptr),
      begin_(nullptr),
      end_(nullptr),
-     compare_(),
-     size_(0)
+     size_(0),
+     compare_()
    {
      fake_->left_ = fake_;
      fake_->right_ = fake_;
@@ -39,8 +39,8 @@ namespace tarasenko
      root_(nullptr),
      begin_(nullptr),
      end_(nullptr),
-     compare_(other.compare_),
-     size_(0)
+     size_(0),
+     compare_(other.compare_)
    {
      try
      {
@@ -61,8 +61,8 @@ namespace tarasenko
      root_(other.root_),
      begin_(other.begin_),
      end_(other.end_),
-     compare_(other.compare_),
-     size_(other.size_)
+     size_(other.size_),
+     compare_(other.compare_)
    {
      other.fake_ = nullptr;
      other.root_ = nullptr;
