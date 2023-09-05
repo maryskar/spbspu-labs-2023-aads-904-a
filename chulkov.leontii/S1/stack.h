@@ -5,7 +5,8 @@
 
 namespace chulkov {
   template < typename T >
-  class Stack {
+  class Stack
+  {
   private:
     List< T >* top_;
 

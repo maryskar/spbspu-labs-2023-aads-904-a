@@ -3,7 +3,8 @@
 
 namespace chulkov {
   template < typename T >
-  struct List {
+  struct List
+  {
     T data;
     List< T >* next;
   };

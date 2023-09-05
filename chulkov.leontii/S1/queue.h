@@ -5,7 +5,8 @@
 
 namespace chulkov {
   template < typename T >
-  class Queue {
+  class Queue
+  {
   private:
     List< T >* front_;
     List< T >* back_;
@@ -56,7 +57,7 @@ namespace chulkov {
 
     Queue& operator=(Queue< T >&& other)
     {
-      if (this != &other) {
+      if (this != std::addressof(other)) {
         clear();
         front_ = other.front_;
         back_ = other.back_;

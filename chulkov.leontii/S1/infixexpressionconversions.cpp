@@ -14,13 +14,13 @@ namespace chulkov {
     return 0;
   }
 
-  chulkov::Queue< std::string > infixToPostfix(std::string& infix)
+  Queue< std::string > infixToPostfix(std::string& infix)
   {
     Queue< std::string > post;
     Stack< std::string > oper;
     std::string str;
 
-    for (char c : infix) {
+    for (char c: infix) {
       if (c == ' ') {
         continue;
       }
@@ -32,7 +32,8 @@ namespace chulkov {
           post.push(str);
           str.clear();
         }
-        while (!oper.empty() && oper.top() != "(" && getPriority(oper.top()) >= getPriority(std::string(1, c))) {
+        while (!oper.empty() && oper.top() != "(" &&
+               getPriority(oper.top()) >= getPriority(std::string(1, c))) {
           post.push(oper.top());
           oper.drop();
         }
