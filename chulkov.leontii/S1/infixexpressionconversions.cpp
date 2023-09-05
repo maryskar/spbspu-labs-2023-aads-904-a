@@ -32,10 +32,13 @@ namespace chulkov {
           post.push(str);
           str.clear();
         }
-        while (!oper.empty() && oper.top() != "(" &&
-               getPriority(oper.top()) >= getPriority(std::string(1, c))) {
-          post.push(oper.top());
-          oper.drop();
+        while (!oper.empty() && oper.top() != "(") {
+          int topPriority = getPriority(oper.top());
+          int currentPriority = getPriority(std::string(1, c));
+          if (topPriority >= currentPriority) {
+            post.push(oper.top());
+            oper.drop();
+          }
         }
         oper.push(std::string(1, c));
       } else if (c == '(') {
