@@ -3,14 +3,14 @@
 #include <utility>
 namespace fesenko
 {
-  template < typename T >
+  template< typename T >
   struct List
   {
     T data;
     List< T > *next;
   };
 
-  template < typename T >
+  template< typename T >
   void deleteList(List< T > *head)
   {
     while (head) {
@@ -45,3 +45,4 @@ namespace fesenko
   }
 }
 #endif
+
