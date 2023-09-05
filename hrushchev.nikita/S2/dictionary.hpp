@@ -149,7 +149,7 @@ namespace hrushchev
       cur++;
     }
 
-    if (cur == end() || !(compare_(cur->first, value.first) || compare_(value.first, cur->first)))
+    if (cur == end() || (cur->first != value.first))
     {
       data_.insert_after(prev, value);
       size_++;
