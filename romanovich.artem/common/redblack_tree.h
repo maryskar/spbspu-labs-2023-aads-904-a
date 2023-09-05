@@ -74,7 +74,7 @@ namespace romanovich
   private:
     void balanceAfterInsert(TreeNode< data_t > *operationNode);
     void balanceAfterRemove(TreeNode< data_t > *operationNode);
-    void initdetails::Color();
+    void initColor();
     RotatableBinarySearchTree< Key, Value, Compare > rotBst_;
   };
   template< typename Key, typename Value, typename Compare >
@@ -389,7 +389,7 @@ namespace romanovich
   RedBlackTree< Key, Value, Compare >::RedBlackTree(const Compare &compare):
     rotBst_(compare)
   {
-    initdetails::Color();
+    initColor();
   }
   template< typename Key, typename Value, typename Compare >
   template< typename InputIt >
@@ -402,10 +402,10 @@ namespace romanovich
   RedBlackTree< Key, Value, Compare >::RedBlackTree(RedBlackTree &&other) noexcept:
     rotBst_(std::move(other.rotBst_))
   {
-    initdetails::Color();
+    initColor();
   }
   template< typename Key, typename Value, typename Compare >
-  void RedBlackTree< Key, Value, Compare >::initdetails::Color()
+  void RedBlackTree< Key, Value, Compare >::initColor()
   {
     rotBst_.bst_.fakeNode_->color = details::Color::black;
   }
@@ -413,13 +413,13 @@ namespace romanovich
   RedBlackTree< Key, Value, Compare >::RedBlackTree():
     rotBst_()
   {
-    initdetails::Color();
+    initColor();
   }
   template< typename Key, typename Value, typename Compare >
   RedBlackTree< Key, Value, Compare >::RedBlackTree(const RedBlackTree &other):
     rotBst_(other.rotBst_)
   {
-    initdetails::Color();
+    initColor();
   }
   template< typename Key, typename Value, typename Compare >
   void RedBlackTree< Key, Value, Compare >::balanceAfterRemove(TreeNode< data_t > *operationNode)
