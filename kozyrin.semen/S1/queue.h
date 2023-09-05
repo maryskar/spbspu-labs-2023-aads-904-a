@@ -15,7 +15,7 @@ namespace kozyrin {
     ~Queue();
     void push(const T& rhs);
     T& drop();
-    T& getFront() const;
+    const T& getFront() const;
     void clear();
     void clearBin();
     bool isEmpty() const;
@@ -115,7 +115,7 @@ namespace kozyrin {
   }
 
   template< typename T >
-  T& Queue< T >::getFront() const
+  const T& Queue< T >::getFront() const
   {
     return head_->value_;
   }

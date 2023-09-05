@@ -15,7 +15,7 @@ namespace kozyrin {
     ~Stack();
     void push(const T& rhs);
     T& drop();
-    T& getFront() const;
+    const T& getFront() const;
     void clear();
     void clearBin();
     bool isEmpty() const;
@@ -91,7 +91,7 @@ namespace kozyrin {
   }
 
   template< typename T >
-  T& Stack< T >::getFront() const
+  const T& Stack< T >::getFront() const
   {
     return bin_->value_;
   }
