@@ -45,7 +45,7 @@ namespace potapova
           *cur_node_ptr_ptr = new Node();
         }
         (*cur_node_ptr_ptr)->data = cur_other_node_ptr->data;
-        cur_node_ptr_ptr = &(*cur_node_ptr_ptr)->prev_node_ptr;
+        cur_node_ptr_ptr = &((*cur_node_ptr_ptr)->prev_node_ptr);
         cur_other_node_ptr = cur_other_node_ptr->prev_node_ptr;
       }
       Node* extra_node_ptr = *cur_node_ptr_ptr;
