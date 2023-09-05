@@ -1,7 +1,5 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
-#include <unordered_map>
-#include <iomanip>
 #include <redblack_tree.h>
 namespace romanovich
 {
@@ -14,6 +12,6 @@ namespace romanovich
   void performCommand(std::istream &in,
       std::ostream &out,
       container_t &map, const std::function< void(map_t &, const map_t &, const map_t &) > &operation);
-  std::unordered_map< std::string, CommandHandler > createCommandDictionary(container_t &map);
+  RedBlackTree< std::string, CommandHandler > createCommandDictionary(container_t &map);
 }
 #endif

@@ -48,14 +48,14 @@ namespace
 }
 namespace romanovich
 {
-  std::unordered_map< std::string, CommandHandler > createCommandDictionary(container_t &map)
+  RedBlackTree< std::string, CommandHandler > createCommandDictionary(container_t &map)
   {
     std::string printCall = "print";
     std::string complementCall = "complement";
     std::string intersectCall = "intersect";
     std::string unionCall = "union";
     using namespace std::placeholders;
-    std::unordered_map< std::string, CommandHandler > commands;
+    RedBlackTree< std::string, CommandHandler > commands;
     commands[printCall] = std::bind(printCommand, _1, _2, std::ref(map));
     commands[complementCall] = std::bind(performCommand, _1, _2, std::ref(map), ComplementOperation());
     commands[intersectCall] = std::bind(performCommand, _1, _2, std::ref(map), IntersectOperation());
