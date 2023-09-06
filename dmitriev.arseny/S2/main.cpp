@@ -87,7 +87,7 @@ int main(int argc, char** argv)
         auto cmd = comands[cmdName];
         cmd(dataSet, newName, lhsName, rhsName);
       }
-      else if(!constComands.isEmpty(constComands.find(cmdName)))
+      else if (!constComands.isEmpty(constComands.find(cmdName)))
       {
         std::string name = "";
         strStream >> name;
@@ -106,17 +106,17 @@ int main(int argc, char** argv)
         throw std::runtime_error("incorrect args");
       }
     }
-    catch (const std::runtime_error&)
-    {
-      std::cout << "<INVALID COMMAND>" << '\n';
-    }
-    catch (const std::out_of_range&)
-    {
-      std::cout << "<INVALID COMMAND>" << '\n';
-    }
+
     catch (const std::exception& e)
     {
-      std::cout << e.what() << '\n';
+      if (typeid(e) == typeid(std::runtime_error) || typeid(e) == typeid(std::out_of_range))
+      {
+        std::cout << "<INVALID COMMAND>" << '\n';
+      }
+      else
+      {
+        std::cout << e.what() << '\n';
+      }
     }
   }
 
