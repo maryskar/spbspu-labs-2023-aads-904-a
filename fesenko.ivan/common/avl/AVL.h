@@ -219,10 +219,10 @@ namespace fesenko
   typename AVL< Key, Value, Compare >::const_iterator AVL< Key, Value, Compare >::find(const key_type &key) const
   {
     const_iterator cur = lower_bound(key);
-    if (!comp_(key, cur->first)) {
+    if (cur != cend() && !comp_(key, cur->first)) {
       return cur;
     }
-   return cend();
+    return cend();
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -236,7 +236,7 @@ namespace fesenko
   typename AVL< Key, Value, Compare >::const_iterator AVL< Key, Value, Compare >::lower_bound(const key_type &key) const
   {
     const_iterator cur = cbegin();
-    while (comp_(cur->first, key)) {
+    while (cur != cend() && comp_(cur->first, key)) {
       cur++;
     }
     return cur;
@@ -253,7 +253,7 @@ namespace fesenko
   typename AVL< Key, Value, Compare >::const_iterator AVL< Key, Value, Compare >::upper_bound(const key_type &key) const
   {
     const_iterator cur = lower_bound(key);
-    if (!comp_(key, cur->first)) {
+    if (cur != cend() && !comp_(key, cur->first)) {
       cur++;
     }
     return cur;
