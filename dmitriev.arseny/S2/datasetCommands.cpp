@@ -1,4 +1,5 @@
 #include "datasetCommands.h"
+#include "outputOfSpecialMessages.h"
 
 namespace dmitriev
 {
@@ -7,7 +8,7 @@ namespace dmitriev
   {
     if (dataSet.at(name).isEmpty())
     {
-      out << "<EMPTY>";
+      outOfEmptyDataMsg(out);
       return;
     }
 

@@ -5,6 +5,7 @@
 #include <functional>
 
 #include "datasetCommands.h"
+#include "outputOfSpecialMessages.h"
 
 int main(int argc, char** argv)
 {
@@ -111,7 +112,7 @@ int main(int argc, char** argv)
     {
       if (typeid(e) == typeid(std::runtime_error) || typeid(e) == typeid(std::out_of_range))
       {
-        std::cout << "<INVALID COMMAND>" << '\n';
+        dmitriev::outOfInvalivdComandMsg(std::cout);
       }
       else
       {
