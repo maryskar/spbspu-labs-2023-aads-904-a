@@ -3,6 +3,15 @@
 
 #include "forwardList.h"
 
+namespace
+{
+  template< typename Key, typename Compare >
+  bool isEqual(const Key& rhs, const Key& lhs)
+  {
+    return !(Compare{}(rhs, lhs) || Compare{}(lhs, rhs));
+  }
+}
+
 namespace dmitriev
 {
   template< typename Key, typename Value, typename Compare = std::less< Key > >
@@ -76,7 +85,7 @@ namespace dmitriev
       {
         return m_fList.insertAfter(constBeforeBegin(), keyValue);
       }
-      if (it->first == keyValue.first)
+      if (::isEqual< Key, Compare >(it->first, keyValue.first))
       {
         return it;
       }
@@ -90,7 +99,7 @@ namespace dmitriev
       {
         return m_fList.insertAfter(constBeforeBegin(), std::move(keyValue));
       }
-      if (it->first == keyValue.first)
+      if (::isEqual< Key, Compare >(it->first, keyValue.first))
       {
         return it;
       }
