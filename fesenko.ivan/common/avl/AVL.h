@@ -195,11 +195,11 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   Value &AVL< Key, Value, Compare >::operator[](const key_type &key)
   {
-    try {
-      return at(key);
-    } catch (const std::out_of_range &e) {
+    const_iterator cit = find(key);
+    if (cit == cend()) {
+      return (*((this->insert(std::make_pair(key, mapped_type()))).first));
     }
-    return (*((this->insert(std::make_pair(key, mapped_type()))).first));
+    return cit->second;
   }
 
   template< typename Key, typename Value, typename Compare >
