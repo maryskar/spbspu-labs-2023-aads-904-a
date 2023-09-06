@@ -88,7 +88,7 @@ namespace turkin
 template< typename K, typename V, typename C >
 turkin::AVLtree< K, V, C >::AVLtree():
   root_(nullptr),
-  end_(new TreeNode< tree_t >),
+  end_(nullptr),
   cmp_(),
   size_(0)
 {}
@@ -251,6 +251,7 @@ turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::insert(const tree_t & va
   size_++;
   if (empty())
   {
+    end_ = new TreeNode< tree_t >;
     root_ = new TreeNode< tree_t > {value, end_, end_, end_, 0};
     increase(root_);
     return it(root_, end_);
@@ -355,7 +356,7 @@ template< typename K, typename V, typename C >
 std::size_t turkin::AVLtree< K, V, C >::count(const K & key) const
 {
   std::size_t amount = 0;
-  for (auto ins : *this)
+  for (auto ins: *this)
   {
     if (eq< K, C >(key, ins.first))
     {
@@ -442,10 +443,6 @@ void turkin::AVLtree< K, V, C >::srr(node_t src)
 template< typename K, typename V, typename C >
 void turkin::AVLtree< K, V, C >::copy(const tree & rhs)
 {
-  if (end_ == nullptr)
-  {
-    end_ = new TreeNode< tree_t >;
-  }
   insert(rhs.begin(), rhs.end());
 }
 
