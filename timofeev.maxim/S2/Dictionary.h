@@ -27,7 +27,7 @@ namespace timofeev
     //erase
     void swap(Dictionary< Key, Value, Compare >& other);
 
-    size_t count(const Key& key);
+    size_t count(const Key& key); //
     iter find(const Key& key );
     constIter find(const Key& key ) const;
     bool contains(const Key& key) const;
@@ -136,7 +136,7 @@ namespace timofeev
   template< typename Key, typename Value, typename Compare >
   bool Dictionary< Key, Value, Compare >::contains(const Key& key) const
   {
-     
+
   }
 
 

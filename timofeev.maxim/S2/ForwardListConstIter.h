@@ -6,19 +6,19 @@
 namespace timofeev
 {
 
-  template<typename T>
+  template< typename T >
   class ForwardListConstIterator
   {
-    friend class ForwardList< T >;
+    //friend class ForwardList< T >;
     friend class ForwardListIterator< T >;
 
   public:
     ForwardListConstIterator();
     ~ForwardListConstIterator() = default;
 
-    ForwardListConstIterator(List<T> *other);
-    ForwardListConstIterator(const ForwardListConstIterator <T> &other) = default;
-    ForwardListConstIterator(const ForwardListConstIterator <T> &&other) = default;
+    ForwardListConstIterator(List< T > *other);
+    ForwardListConstIterator(const ForwardListConstIterator < T > &other) = default;
+    ForwardListConstIterator(const ForwardListConstIterator < T > &&other) = default;
 
     bool operator!=(ForwardListConstIterator<T> &other) const;
     bool operator==(ForwardListConstIterator<T> &other) const;
@@ -26,8 +26,8 @@ namespace timofeev
     const T &operator*();
     const T *operator->();
 
-    ForwardListConstIterator<T> &operator++();
-    ForwardListConstIterator<T> operator++(int);
+    ForwardListConstIterator< T > &operator++();
+    ForwardListConstIterator< T > operator++(int);
 
   private:
     List<T> *node_;
@@ -46,13 +46,13 @@ timofeev::ForwardListConstIterator< T >::ForwardListConstIterator(List< T >* oth
 }
 
 template< typename T >
-bool timofeev::ForwardListConstIterator< T >::operator==(ForwardListConstIterator<T> &other) const
+bool timofeev::ForwardListConstIterator< T >::operator==(ForwardListConstIterator< T > &other) const
 {
   return node_ == other.node_;
 }
 
 template< typename T >
-bool timofeev::ForwardListConstIterator< T >::operator!=(ForwardListConstIterator<T> &other) const
+bool timofeev::ForwardListConstIterator< T >::operator!=(ForwardListConstIterator< T > &other) const
 {
   return !(*this == other);
 }

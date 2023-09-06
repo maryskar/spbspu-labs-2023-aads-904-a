@@ -7,10 +7,10 @@
 #include "../common/List.h"
 namespace timofeev
 {
-  template<typename T>
+  template< typename T >
   class ForwardListIterator
   {
-    friend class ForwardList< T >;
+    //friend class ForwardList< T >;
     friend class ForwardListConstIterator< T >;
 
   public:
@@ -53,19 +53,7 @@ timofeev::ForwardListIterator< T >::ForwardListIterator(List< T >* other)
 {
   node_ = other;
 }
-/*
-  template< typename T >
-  timofeev::ForwardListIterator< T >::ForwardListIterator(const ForwardListIterator &&other) noexcept:
-    node_(other.node_)
-  {
-    other.node_ = nullptr;
-  }
 
-  template< typename T >
-  timofeev::ForwardListIterator< T >::ForwardListIterator(const ForwardListIterator< T >& other) noexcept:
-  node_(const_cast< timofeev::List< T > * >(other.node_))
-  {}
-*/
 template< typename T >
 bool timofeev::ForwardListIterator< T >::operator==(ForwardListIterator<T> &other) const
 {
