@@ -180,7 +180,7 @@ namespace dmitriev
     {
       other.m_beforeHead->next = nullptr;
     }
-    explicit ForwardList(std::initializer_list< T > iList):
+    ForwardList(std::initializer_list< T > iList):
       ForwardList()
     {
       insertAfter(constBeforeBegin(), iList);

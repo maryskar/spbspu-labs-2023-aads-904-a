@@ -18,7 +18,7 @@ namespace dmitriev
       m_fList(),
       m_comp()
     {}
-    explicit Dictionary(std::initializer_list< fListPair > initList, const Compare& comp = Compare()):
+    Dictionary(std::initializer_list< fListPair > initList, const Compare& comp = Compare()):
       m_fList(),
       m_comp(comp)
     {
