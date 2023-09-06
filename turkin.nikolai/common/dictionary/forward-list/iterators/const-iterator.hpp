@@ -5,7 +5,7 @@
 #include <memory>
 #include <utility>
 #include "iterator.hpp"
-#include "forward-list/oneway-list.hpp"
+#include "dictionary/forward-list/oneway-list.hpp"
 
 namespace turkin
 {
