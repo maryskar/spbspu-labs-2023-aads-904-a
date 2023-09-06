@@ -1,8 +1,8 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-#include "dictionary.h"
 #include <iostream>
+#include "dictionary.h"
 
 namespace dmitriev
 {
