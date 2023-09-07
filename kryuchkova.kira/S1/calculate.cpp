@@ -4,6 +4,10 @@
 
 namespace kryuchkova
 {
+
+  constexpr long long max = std::numeric_limits< long long >::max();
+  constexpr long long min = std::numeric_limits< long long >::min();
+
   bool isSameSign(long long lhs, long long rhs)
   {
     return ((lhs < 0 && rhs < 0) || (lhs > 0 && rhs > 0));
@@ -11,8 +15,6 @@ namespace kryuchkova
 
   long long calcSum(long long lhs, long long rhs)
   {
-    long long max = std::numeric_limits< long long >::max();
-    long long min = std::numeric_limits< long long >::min();
     if (isSameSign(lhs, rhs) && rhs > 0 && max - rhs < lhs)
     {
       throw std::overflow_error("Overflow");
@@ -26,8 +28,6 @@ namespace kryuchkova
 
   long long calcDiff(long long lhs, long long rhs)
   {
-    long long max = std::numeric_limits< long long >::max();
-    long long min = std::numeric_limits< long long >::min();
     if (!isSameSign(lhs, rhs) && lhs > 0 && max + rhs < lhs)
     {
       throw std::overflow_error("Overflow");
@@ -41,8 +41,6 @@ namespace kryuchkova
 
   long long calcMulti(long long lhs, long long rhs)
   {
-    long long max = std::numeric_limits< long long >::max();
-    long long min = std::numeric_limits< long long >::min();
     if (isSameSign(lhs, rhs) && lhs > 0 && max / lhs < rhs)
     {
       throw std::overflow_error("Overflow");

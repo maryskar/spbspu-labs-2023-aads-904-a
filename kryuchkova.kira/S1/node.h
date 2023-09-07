@@ -40,7 +40,7 @@ namespace kryuchkova
     Node< T > *to_head = temp;
     try
     {
-      while(from->next_)
+      while (from->next_)
       {
         from = from->next_;
         to_head = temp;
