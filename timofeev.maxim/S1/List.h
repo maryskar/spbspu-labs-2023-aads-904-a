@@ -12,7 +12,7 @@ namespace timofeev
     template< typename T >
     void clear(List< T >* top)
     {
-      while(top_)
+      while(top)
       {
         auto tmp = top;
         top = top->next;
