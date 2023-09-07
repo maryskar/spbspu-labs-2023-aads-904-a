@@ -21,10 +21,10 @@ int getPriority(char op)
 }
 namespace timofeev
 {
-  Queue<std::string> getPostfixForm(std::string infix)
+  Queue< std::string > getPostfixForm(std::string infix)
   {
-    Queue<std::string> postfix;
-    Stack<char> opStack;
+    Queue< std::string > postfix;
+    Stack< char > opStack;
     timofeev::Splitter split(infix);
     while (!split.empty())
     {
