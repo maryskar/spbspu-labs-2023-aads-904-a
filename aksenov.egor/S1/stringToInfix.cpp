@@ -1,6 +1,6 @@
 #include "stringToInfix.h"
-#include "queue.h"
 #include <stdexcept>
+#include "queue.h"
 
 aksenov::Queue< std::string > aksenov::convertToInfix(std::string line)
 {

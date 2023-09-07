@@ -3,10 +3,10 @@
 #include "stack.h"
 #include "details.h"
 
-aksenov::Queue <std::string> aksenov::getPostfixQueue(aksenov::Queue< std::string > &infQueue)
+aksenov::Queue< std::string > aksenov::getPostfixQueue(aksenov::Queue< std::string > &infQueue)
 {
-  aksenov::Queue< std::string > postfixQueue;
-  aksenov::Stack< std::string > stack;
+  Queue< std::string > postfixQueue;
+  Stack< std::string > stack;
   while (!infQueue.isEmpty())
   {
     std::string elem = infQueue.drop();
@@ -15,7 +15,7 @@ aksenov::Queue <std::string> aksenov::getPostfixQueue(aksenov::Queue< std::strin
     {
       stack.push(elem);
     }
-    else if(isNumeric(elem))
+    else if (isNumeric(elem))
     {
       postfixQueue.push(elem);
     }
@@ -24,7 +24,7 @@ aksenov::Queue <std::string> aksenov::getPostfixQueue(aksenov::Queue< std::strin
         postfixQueue.push(stack.drop());
         stack.pop();
       }
-      if( !stack.isEmpty() && stack.drop() == "(")
+      if (!stack.isEmpty() && stack.drop() == "(")
       {
         stack.pop();
       }
@@ -40,7 +40,8 @@ aksenov::Queue <std::string> aksenov::getPostfixQueue(aksenov::Queue< std::strin
       }
       stack.push(elem);
     }
-    else {
+    else
+    {
       throw std::invalid_argument("wrong input");
     }
   }

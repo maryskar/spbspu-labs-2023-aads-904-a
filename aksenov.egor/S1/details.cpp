@@ -1,8 +1,8 @@
 #include "details.h"
 bool isNumeric(std::string const &str)
 {
-  char* p;
-  strtol(str.c_str(), &p, 10);
+  char* p = nullptr;
+  std::strtol(str.c_str(), &p, 10);
   return *p == 0;
 }
 bool isOperator(std::string oper)

@@ -7,7 +7,7 @@
 
 long long aksenov::solvePostfixExpr(aksenov::Queue<std::string>& queue)
 {
-  aksenov::Stack<long long> stack;
+  aksenov::Stack< long long > stack;
 
   while (!queue.isEmpty())
   {
