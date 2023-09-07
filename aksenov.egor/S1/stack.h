@@ -15,6 +15,7 @@ namespace aksenov {
       ~Stack();
       void push(const T &val);
       void pop();
+      void clear(Stack< T > &other);
       T drop();
       bool isEmpty() const;
       size_t size();
@@ -39,6 +40,17 @@ namespace aksenov {
   size_t Stack< T >::size()
   {
     return size_;
+  }
+
+  template< typename T >
+  void Stack< T >::clear(Stack< T > &other)
+  {
+    while(!isEmpty())
+    {
+      pop();
+    }
+    std::swap(top_, other.top_);
+    std::swap(size_, other.size_);
   }
   template< typename T >
   bool Stack< T >::isEmpty() const
@@ -96,10 +108,7 @@ namespace aksenov {
     {
       return *this;
     }
-    while (!isEmpty())
-    {
-      pop();
-    }
+    clear(other);
     aksenov::List< T > cur = other.top_;
     while (cur)
     {
@@ -124,13 +133,7 @@ namespace aksenov {
     {
       return *this;
     }
-    while (!isEmpty())
-    {
-      pop();
-    }
-    top_ = other.top_;
-    other.top_ = nullptr;
-    other.size_ = 0;
+    clear(other);
     return *this;
   }
 }
