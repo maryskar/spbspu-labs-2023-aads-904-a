@@ -10,35 +10,28 @@ namespace kryuchkova
     using dictionary_elem = std::pair< int, std::string >;
     using dict_of_dict_elem = std::pair< std::string, dictionary >;
     dict_of_dict container;
-    try
+    while (in)
     {
+      std::string name;
+      in >> name;
+      if (!in)
+      {
+        throw;
+      }
+      dictionary dict;
+      int key = 0;
+      std::string val;
       while (in)
       {
-        std::string name;
-        in >> name;
+        in >> key >> val;
         if (!in)
         {
-          break;
+          throw;
         }
-        dictionary dict;
-        int key = 0;
-        std::string val;
-        while (in)
-        {
-          in >> key >> val;
-          if (!in)
-          {
-            break;
-          }
-          dict.insert(dictionary_elem(key, val));
-        }
-        in.clear();
-        container.insert(dict_of_dict_elem(name, dict));
-        }
-    }
-    catch(const std::exception & e)
-    {
-      std::cerr << e.what() << '\n';
+        dict.insert(dictionary_elem(key, val));
+      }
+      in.clear();
+      container.insert(dict_of_dict_elem(name, dict));
     }
     return container;
   }
