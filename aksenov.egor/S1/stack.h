@@ -34,6 +34,7 @@ namespace aksenov {
   Stack< T >::~Stack()
   {
     deleteList(top_);
+    size_ = 0;
   }
 
   template< typename T>
@@ -90,9 +91,10 @@ namespace aksenov {
   }
 
   template< typename T >
-  Stack< T >::Stack(const Stack< T > &other)
+  Stack< T >::Stack(const Stack< T > &other):
+    top_(nullptr),
+    size_(0)
   {
-    top_ = nullptr;
     aksenov::List< T > *cur = other.top_;
     while (cur)
     {
@@ -119,9 +121,10 @@ namespace aksenov {
   }
 
   template < typename T >
-  Stack< T >::Stack(Stack< T > &&other) noexcept
+  Stack< T >::Stack(Stack< T > &&other) noexcept:
+    top_(other.top_),
+    size_(other.size_)
   {
-    top_ = other.top_;
     other.top_ = nullptr;
     other.size_ = 0;
   }
