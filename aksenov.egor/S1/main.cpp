@@ -1,12 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "queue.h"
 #include "stack.h"
-#include "stringToInfix.h"
-#include "convertToPostfix.h"
-#include "solvePostfixExpr.h"
-#include "out.h"
 #include "details.h"
 
 int main(int argc, char *argv[])
@@ -48,6 +43,6 @@ int main(int argc, char *argv[])
       return 1;
     }
   }
-  out(result);
+  out(std::cout, result);
   std::cout << "\n";
 }

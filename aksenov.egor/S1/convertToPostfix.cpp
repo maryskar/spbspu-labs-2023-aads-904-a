@@ -15,7 +15,7 @@ aksenov::Queue< std::string > aksenov::getPostfixQueue(aksenov::Queue< std::stri
     {
       stack.push(elem);
     }
-    else if (isNumeric(elem))
+    else if (aksenov::isNumeric(elem))
     {
       postfixQueue.push(elem);
     }
@@ -33,8 +33,8 @@ aksenov::Queue< std::string > aksenov::getPostfixQueue(aksenov::Queue< std::stri
         throw std::invalid_argument("wrong brackets");
       }
     }
-    else if (isOperator(elem)) {
-      while (!stack.isEmpty() && isOperator(stack.drop()) && getPriority(elem) <= getPriority(stack.drop())) {
+    else if (aksenov::isOperator(elem)) {
+      while (!stack.isEmpty() && aksenov::isOperator(stack.drop()) && aksenov::getPriority(elem) <= aksenov::getPriority(stack.drop())) {
         postfixQueue.push(stack.drop());
         stack.pop();
       }

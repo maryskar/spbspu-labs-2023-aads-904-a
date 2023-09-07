@@ -48,3 +48,16 @@ void processInput(std::istream &in, aksenov::Stack< long long > &res)
     res.push(aksenov::solvePostfixExpr(postfixQueue));
   }
 }
+
+void out(std::ostream &out, aksenov::Stack< long long > &result)
+{
+  while (!result.isEmpty())
+  {
+    out << result.drop();
+    result.pop();
+    if (!result.isEmpty())
+    {
+      out << " ";
+    }
+  }
+}
