@@ -11,5 +11,6 @@ namespace aksenov
   bool isWhiteSpaceOrEmpty(const std::string &str);
   void processInput(std::istream &in, Stack< long long > &res);
   void out(std::ostream &out, Stack< long long > &result);
+  bool isloverOrSamePriority(std::string lhs, std::string rhs);
 }
 #endif

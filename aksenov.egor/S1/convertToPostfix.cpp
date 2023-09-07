@@ -34,7 +34,8 @@ aksenov::Queue< std::string > aksenov::getPostfixQueue(aksenov::Queue< std::stri
       }
     }
     else if (aksenov::isOperator(elem)) {
-      while (!stack.isEmpty() && aksenov::isOperator(stack.get()) && aksenov::getPriority(elem) <= aksenov::getPriority(stack.get())) {
+      while (!stack.isEmpty() && aksenov::isOperator(stack.get()) && aksenov::isloverOrSamePriority(elem,stack.get()))
+      {
         postfixQueue.push(stack.get());
         stack.pop();
       }

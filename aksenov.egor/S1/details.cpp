@@ -29,6 +29,11 @@ int aksenov::getPriority(std::string operation)
     return 0;
   }
 }
+
+bool aksenov::isloverOrSamePriority(std::string lhs, std::string rhs)
+{
+  return aksenov::getPriority(lhs) <= getPriority(rhs);
+}
 bool aksenov::isWhiteSpaceOrEmpty(const std::string &str)
 {
   return str.find_first_not_of(" \n") == std::string::npos;
