@@ -4,7 +4,7 @@
 #include "List.h"
 namespace timofeev
 {
-  template <typename T>
+  template < typename T >
   class Stack
   {
   public:
@@ -12,32 +12,28 @@ namespace timofeev
     ~Stack();
     void push(const T& rhs);
     void pop();
-    T& drop();
-    const T& drop() const;
+    T& get();
+    const T& get() const;
     bool isEmpty() const;
   private:
     List< T >* top_;
   };
 }
-template <typename T>
-timofeev::Stack<T>::Stack():
+template < typename T >
+timofeev::Stack< T >::Stack():
         top_(nullptr)
 {}
-template <typename T>
-bool timofeev::Stack<T>::isEmpty() const
+template < typename T >
+bool timofeev::Stack< T >::isEmpty() const
 {
   return top_ == nullptr;
 }
-template <typename T>
-timofeev::Stack<T>::~Stack() {
-  while (!isEmpty()) {
-    List<T> *temp = top_;
-    top_ = top_->next;
-    delete temp;
-  }
+template < typename T >
+timofeev::Stack< T >::~Stack() {
+  clear(top_);
 }
-template <typename T>
-void timofeev::Stack<T>::pop()
+template < typename T >
+void timofeev::Stack< T >::pop()
 {
   if (isEmpty())
   {
@@ -50,16 +46,16 @@ void timofeev::Stack<T>::pop()
     delete temp;
   }
 }
-template <typename T>
-void timofeev::Stack<T>::push(const T& rhs)
+template < typename T >
+void timofeev::Stack< T >::push(const T& rhs)
 {
-  List<T>* newTop = new List<T>;
+  List< T >* newTop = new List< T >;
   newTop->data = rhs;
   newTop->next = top_;
   top_ = newTop;
 }
-template <typename T>
-T& timofeev::Stack<T>::drop()
+template < typename T >
+T& timofeev::Stack< T >::get()
 {
   if (isEmpty())
   {
@@ -67,8 +63,8 @@ T& timofeev::Stack<T>::drop()
   }
   return top_->data;
 }
-template <typename T>
-const T& timofeev::Stack<T>::drop() const
+template < typename T >
+const T& timofeev::Stack< T >::get() const
 {
   if (isEmpty())
   {

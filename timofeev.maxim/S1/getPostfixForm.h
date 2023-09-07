@@ -5,6 +5,6 @@
 #include "stack.h"
 namespace timofeev
 {
-    Queue<std::string> getPostfixForm(std::string infix);
+  Queue< std::string > getPostfixForm(std::string infix);
 }
 #endif

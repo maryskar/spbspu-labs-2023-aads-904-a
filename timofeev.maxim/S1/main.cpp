@@ -9,7 +9,7 @@ void out(timofeev::Stack< long long >& res)
 {
   while (!res.isEmpty())
   {
-    std::cout << res.drop();
+    std::cout << res.get();
     res.pop();
     if (!res.isEmpty())
     {

@@ -15,7 +15,7 @@ namespace timofeev
     Stack< std::string > result;
     while (!postfix.isEmpty())
     {
-      std::string c = postfix.drop();
+      std::string c = postfix.get();
       postfix.pop();
       try
       {
@@ -24,9 +24,9 @@ namespace timofeev
       }
       catch (const std::invalid_argument &)
       {
-        long long int first = std::stoll(result.drop());
+        long long int first = std::stoll(result.get());
         result.pop();
-        long long int second = std::stoll(result.drop());
+        long long int second = std::stoll(result.get());
         result.pop();
         switch (c[0])
         {
@@ -50,7 +50,7 @@ namespace timofeev
         }
       }
     }
-    long long res = std::stoll(result.drop());
+    long long res = std::stoll(result.get());
     result.pop();
     if (!result.isEmpty())
     {
