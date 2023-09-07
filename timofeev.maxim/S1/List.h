@@ -8,5 +8,17 @@ namespace timofeev
       T data;
       List< T >* next;
     };
+
+    template< typename T >
+    void clear(List< T >* top)
+    {
+      while(top_)
+      {
+        auto tmp = top;
+        top = top->next;
+        delete tmp;
+      }
+    }
+
 }
 #endif

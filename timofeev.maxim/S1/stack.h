@@ -12,8 +12,8 @@ namespace timofeev
     ~Stack();
     void push(const T& rhs);
     void pop();
-    T& drop();
-    const T& drop() const;
+    T& get();
+    const T& get() const;
     bool isEmpty() const;
   private:
     List< T >* top_;
@@ -30,11 +30,7 @@ bool timofeev::Stack<T>::isEmpty() const
 }
 template <typename T>
 timofeev::Stack<T>::~Stack() {
-  while (!isEmpty()) {
-    List<T> *temp = top_;
-    top_ = top_->next;
-    delete temp;
-  }
+  clear(top_);
 }
 template <typename T>
 void timofeev::Stack<T>::pop()
@@ -59,7 +55,7 @@ void timofeev::Stack<T>::push(const T& rhs)
   top_ = newTop;
 }
 template <typename T>
-T& timofeev::Stack<T>::drop()
+T& timofeev::Stack<T>::get()
 {
   if (isEmpty())
   {
@@ -68,7 +64,7 @@ T& timofeev::Stack<T>::drop()
   return top_->data;
 }
 template <typename T>
-const T& timofeev::Stack<T>::drop() const
+const T& timofeev::Stack<T>::get() const
 {
   if (isEmpty())
   {

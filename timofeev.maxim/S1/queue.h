@@ -30,13 +30,7 @@ timofeev::Queue<T>::Queue():
 template <typename T>
 timofeev::Queue<T>::~Queue()
 {
-  List<T>* current = head_;
-  while (current != nullptr)
-  {
-    List<T>* next = current->next;
-    delete current;
-    current = next;
-  }
+  clear(head_);
   head_ = tail_ = nullptr;
 }
 template <typename T>
