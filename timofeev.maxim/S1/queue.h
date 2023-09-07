@@ -8,11 +8,11 @@ namespace timofeev
   class Queue
   {
   public:
-    explicit Queue();
+     Queue();
     ~Queue();
 
-    T& drop();
-    const T& drop() const;
+    T& get();
+    const T& get() const;
     void push(const T  & rhs);
     void pop();
     bool isEmpty() const;
@@ -46,7 +46,7 @@ bool timofeev::Queue<T>::isEmpty() const
 }
 
 template <typename T>
-T& timofeev::Queue<T>::drop()
+T& timofeev::Queue<T>::get()
 {
   if (isEmpty())
   {
@@ -90,7 +90,7 @@ void timofeev::Queue<T>::push(const T& rhs)
   }
 }
 template <typename T>
-const T& timofeev::Queue<T>::drop() const
+const T& timofeev::Queue<T>::get() const
 {
   if (isEmpty())
   {
