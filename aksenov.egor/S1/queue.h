@@ -2,7 +2,8 @@
 #define QUEUE_H
 #include <stdexcept>
 #include "list.h"
-namespace aksenov {
+namespace aksenov
+{
   template< typename T >
   class Queue
   {
@@ -86,10 +87,10 @@ namespace aksenov {
   }
 
   template< typename T>
-  Queue< T >::Queue(const Queue< T > &otherQ)
+  Queue< T >::Queue(const Queue< T > &otherQ) :
+    tail_(nullptr),
+    front_(nullptr)
   {
-    tail_ = nullptr;
-    front_ = nullptr;
     aksenov::List< T > *cur = otherQ.front_;
     while (cur)
     {
@@ -99,10 +100,10 @@ namespace aksenov {
   }
 
   template< typename T >
-  Queue< T >::Queue(Queue< T > &&otherQ) noexcept
+  Queue< T >::Queue(Queue< T > &&otherQ) noexcept :
+    front_(otherQ.front_),
+    tail_(otherQ.tail_)
   {
-    front_ = otherQ.front_;
-    tail_ = otherQ.tail_;
     otherQ.front_ = nullptr;
     otherQ.tail_ = nullptr;
   }

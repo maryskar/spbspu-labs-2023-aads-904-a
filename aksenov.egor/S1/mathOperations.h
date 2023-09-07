@@ -1,6 +1,7 @@
 #ifndef MATHOPERATIONS_H
 #define MATHOPERATIONS_H
-namespace aksenov {
+namespace aksenov
+{
   long long sum(long long lhs, long long rhs);
   long long substract(long long lhs, long long rhs);
   long long multiply(long long lhs, long long rhs);
