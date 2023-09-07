@@ -53,7 +53,7 @@ void aksenov::out(std::ostream &out, aksenov::Stack< long long > &result)
 {
   while (!result.isEmpty())
   {
-    out << result.drop();
+    out << result.get();
     result.pop();
     if (!result.isEmpty())
     {

@@ -15,7 +15,7 @@ namespace aksenov {
       ~Queue();
       void push(const T &val);
       void pop();
-      T drop();
+      T get() const;
       bool isEmpty() const;
     private:
       aksenov::List< T > *front_;
@@ -50,7 +50,7 @@ namespace aksenov {
   }
 
   template< typename T >
-  T Queue< T >::drop()
+  T Queue< T >::get() const
   {
     if (isEmpty())
     {

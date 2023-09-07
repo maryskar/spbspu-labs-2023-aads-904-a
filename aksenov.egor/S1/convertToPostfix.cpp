@@ -9,7 +9,7 @@ aksenov::Queue< std::string > aksenov::getPostfixQueue(aksenov::Queue< std::stri
   Stack< std::string > stack;
   while (!infQueue.isEmpty())
   {
-    std::string elem = infQueue.drop();
+    std::string elem = infQueue.get();
     infQueue.pop();
     if (elem == "(")
     {
@@ -20,11 +20,11 @@ aksenov::Queue< std::string > aksenov::getPostfixQueue(aksenov::Queue< std::stri
       postfixQueue.push(elem);
     }
     else if (elem == ")") {
-      while (!stack.isEmpty() && stack.drop() != "(") {
-        postfixQueue.push(stack.drop());
+      while (!stack.isEmpty() && stack.get() != "(") {
+        postfixQueue.push(stack.get());
         stack.pop();
       }
-      if (!stack.isEmpty() && stack.drop() == "(")
+      if (!stack.isEmpty() && stack.get() == "(")
       {
         stack.pop();
       }
@@ -34,8 +34,8 @@ aksenov::Queue< std::string > aksenov::getPostfixQueue(aksenov::Queue< std::stri
       }
     }
     else if (aksenov::isOperator(elem)) {
-      while (!stack.isEmpty() && aksenov::isOperator(stack.drop()) && aksenov::getPriority(elem) <= aksenov::getPriority(stack.drop())) {
-        postfixQueue.push(stack.drop());
+      while (!stack.isEmpty() && aksenov::isOperator(stack.get()) && aksenov::getPriority(elem) <= aksenov::getPriority(stack.get())) {
+        postfixQueue.push(stack.get());
         stack.pop();
       }
       stack.push(elem);
@@ -47,11 +47,11 @@ aksenov::Queue< std::string > aksenov::getPostfixQueue(aksenov::Queue< std::stri
   }
   while ( !stack.isEmpty())
   {
-    if(stack.drop() == "(" || stack.drop() == ")")
+    if(stack.get() == "(" || stack.get() == ")")
     {
       throw std::invalid_argument("wrong brackets");
     }
-    postfixQueue.push(stack.drop());
+    postfixQueue.push(stack.get());
     stack.pop();
   }
   return postfixQueue;

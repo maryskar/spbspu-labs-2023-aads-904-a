@@ -16,9 +16,9 @@ namespace aksenov {
       void push(const T &val);
       void pop();
       void clear(Stack< T > &other);
-      T drop();
+      T get() const;
       bool isEmpty() const;
-      size_t size();
+      size_t size() const;
     private:
       List< T > *top_;
       size_t size_;
@@ -37,7 +37,7 @@ namespace aksenov {
   }
 
   template< typename T>
-  size_t Stack< T >::size()
+  size_t Stack< T >::size() const
   {
     return size_;
   }
@@ -67,7 +67,7 @@ namespace aksenov {
   }
 
   template< typename T >
-  T Stack< T >::drop()
+  T Stack< T >::get() const
   {
     if (isEmpty())
     {

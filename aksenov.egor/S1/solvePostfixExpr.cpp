@@ -11,7 +11,7 @@ long long aksenov::solvePostfixExpr(aksenov::Queue<std::string>& queue)
 
   while (!queue.isEmpty())
   {
-    std::string elem = queue.drop();
+    std::string elem = queue.get();
     queue.pop();
 
     if (isNumeric(elem))
@@ -25,10 +25,10 @@ long long aksenov::solvePostfixExpr(aksenov::Queue<std::string>& queue)
         throw std::invalid_argument("Invalid postfix expression");
       }
 
-      long long operand2 = stack.drop();
+      long long operand2 = stack.get();
       stack.pop();
 
-      long long operand1 = stack.drop();
+      long long operand1 = stack.get();
       stack.pop();
 
       long long result = 0;
@@ -60,7 +60,7 @@ long long aksenov::solvePostfixExpr(aksenov::Queue<std::string>& queue)
       throw std::invalid_argument("Invalid input");
     }
   }
-  long long outRes = stack.drop();
+  long long outRes = stack.get();
   if (stack.isEmpty() || stack.size() > 1)
   {
     throw std::invalid_argument("Invalid postfix expression");
