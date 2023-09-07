@@ -4,7 +4,7 @@
 #include "List.h"
 namespace timofeev
 {
-  template <typename T>
+  template < typename T >
   class Queue
   {
   public:
@@ -22,25 +22,25 @@ namespace timofeev
     List< T >* head_;
   };
 }
-template <typename T>
-timofeev::Queue<T>::Queue():
+template < typename T >
+timofeev::Queue< T >::Queue():
   tail_(nullptr),
   head_(nullptr)
 {}
-template <typename T>
-timofeev::Queue<T>::~Queue()
+template < typename T >
+timofeev::Queue< T >::~Queue()
 {
   clear(head_);
   head_ = tail_ = nullptr;
 }
-template <typename T>
-bool timofeev::Queue<T>::isEmpty() const
+template < typename T >
+bool timofeev::Queue< T >::isEmpty() const
 {
   return head_ == nullptr;
 }
 
-template <typename T>
-T& timofeev::Queue<T>::get()
+template < typename T >
+T& timofeev::Queue< T >::get()
 {
   if (isEmpty())
   {
@@ -49,8 +49,8 @@ T& timofeev::Queue<T>::get()
   return head_->data;
 }
 
-template <typename T>
-void timofeev::Queue<T>::pop()
+template < typename T >
+void timofeev::Queue< T >::pop()
 {
   if (isEmpty())
   {
@@ -64,15 +64,15 @@ void timofeev::Queue<T>::pop()
   }
   else
   {
-    List<T>* temp = head_->next;
+    List< T >* temp = head_->next;
     delete head_;
     head_ = temp;
   }
 }
-template <typename T>
-void timofeev::Queue<T>::push(const T& rhs)
+template < typename T >
+void timofeev::Queue< T >::push(const T& rhs)
 {
-  List<T>* newNode = new List<T>{rhs, nullptr};
+  List< T >* newNode = new List< T >{rhs, nullptr};
   if (isEmpty())
   {
     head_ = tail_ = newNode;
@@ -83,8 +83,8 @@ void timofeev::Queue<T>::push(const T& rhs)
     tail_ = newNode;
   }
 }
-template <typename T>
-const T& timofeev::Queue<T>::get() const
+template < typename T >
+const T& timofeev::Queue< T >::get() const
 {
   if (isEmpty())
   {

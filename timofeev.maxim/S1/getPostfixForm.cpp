@@ -43,9 +43,9 @@ namespace timofeev
         else if (c == ")")
         {
 
-          while (!opStack.isEmpty() && opStack.drop() != '(')
+          while (!opStack.isEmpty() && opStack.get() != '(')
           {
-            postfix.push(std::string(1, opStack.drop()));
+            postfix.push(std::string(1, opStack.get()));
             opStack.pop();
           }
           opStack.pop();
@@ -54,7 +54,7 @@ namespace timofeev
         {
           if (!opStack.isEmpty())
           {
-            char p = opStack.drop();
+            char p = opStack.get();
             while (p != '(' && getPriority(p) >= getPriority(c[0]))
             {
               postfix.push(std::string(1, p));
@@ -63,7 +63,7 @@ namespace timofeev
               {
                 break;
               }
-              p = opStack.drop();
+              p = opStack.get();
             }
           }
           opStack.push(c[0]);
@@ -72,7 +72,7 @@ namespace timofeev
     }
     while (!opStack.isEmpty())
     {
-      postfix.push(std::string(1, opStack.drop()));
+      postfix.push(std::string(1, opStack.get()));
       opStack.pop();
     }
     return postfix;
