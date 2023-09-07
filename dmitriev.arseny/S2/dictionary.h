@@ -172,7 +172,7 @@ namespace dmitriev
     {
       iterator result = beforeBegin();
 
-      for (iterator it = begin(); (!isEmpty(it)) && (it->first != key); result++, it++)
+      for (iterator it = begin(); !isEmpty(it) && !::isEqual< Key, Compare >(it->first, key); result++, it++)
       {}
 
       return result;
@@ -186,7 +186,7 @@ namespace dmitriev
     {
       constIterator result = constBeforeBegin();
 
-      for (constIterator it = constBegin(); (!isEmpty(it)) && (it->first != key); result++, it++)
+      for (constIterator it = constBegin(); !isEmpty(it) && !::isEqual< Key, Compare >(it->first, key); result++, it++)
       {}
 
       return result;
