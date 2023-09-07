@@ -227,7 +227,7 @@ namespace fesenko
     }
     size_--;
     if (size_ == 1) {
-      end_ = nullptr;
+      end_ = begin_;
     } else if (size_ == 0) {
       begin_ = nullptr;
       end_ = nullptr;
