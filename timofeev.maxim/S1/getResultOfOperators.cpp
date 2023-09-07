@@ -1,11 +1,11 @@
 #include "getResultOfOperators.h"
 #include <stdexcept>
 #include <limits>
-ll Max = std::numeric_limits<ll>::max();
-ll Min = std::numeric_limits<ll>::min();
+long long Max = std::numeric_limits< long long >::max();
+long long Min = std::numeric_limits< long long >::min();
 namespace timofeev
 {
-  ll getSum(ll one, ll two)
+  long long getSum(long long one, long long two)
   {
     if (one > 0 && two > 0 && one > Max - two)
     {
@@ -20,7 +20,7 @@ namespace timofeev
       return one + two;
     }
   }
-  ll getMinus(ll one, ll two)
+    long long getMinus(long long one, long long two)
   {
     if (one < 0 && two > 0 && one < Min + two)
     {
@@ -35,7 +35,7 @@ namespace timofeev
       return one - two;
     }
   }
-  ll getDiv(ll one, ll two)
+    long long getDiv(long long one, long long two)
   {
     if (two == 0)
     {
@@ -50,7 +50,7 @@ namespace timofeev
       return one / two;
     }
   }
-  ll getMultip(ll one, ll two)
+    long long getMultip(long long one, long long two)
   {
     if (one > 0 && two > 0 && one > Max / two)
     {
@@ -73,7 +73,7 @@ namespace timofeev
       return one * two;
     }
   }
-  ll getRemander(ll one, ll two)
+    long long getRemander(long long one, long long two)
   {
     if (two == 0)
     {
