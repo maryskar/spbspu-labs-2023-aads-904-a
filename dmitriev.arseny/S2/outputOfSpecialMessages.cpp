@@ -2,10 +2,10 @@
 
 void dmitriev::outOfInvalivdComandMsg(std::ostream& out)
 {
-  out << "<INVALID COMMAND>" << '\n';
+  out << "<INVALID COMMAND>";
 }
 
 void dmitriev::outOfEmptyDataMsg(std::ostream& out)
 {
-  out << "<EMPTY" << '\n';
+  out << "<EMPTY>";
 }

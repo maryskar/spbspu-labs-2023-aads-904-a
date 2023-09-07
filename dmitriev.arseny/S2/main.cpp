@@ -7,6 +7,31 @@
 #include "datasetCommands.h"
 #include "outputOfSpecialMessages.h"
 
+std::string makeSubStr(std::string& line)
+{
+  std::string res = "";
+  std::size_t pos = line.find(' ');
+
+  if (pos != std::string::npos)
+  {
+    res = line.substr(0, pos);
+    line.erase(0, pos + 1);
+
+    return res;
+  }
+  else if (line != "")
+  {
+    res = line;
+    line = "";
+
+    return res;
+  }
+  else
+  {
+    throw std::runtime_error("incorrect args");
+  }
+}
+
 int main(int argc, char** argv)
 {
   using dictionary = dmitriev::Dictionary< int, std::string >;
@@ -38,64 +63,60 @@ int main(int argc, char** argv)
 
   dataset dataSet;
   std::string line = "";
+  std::string name = "";
+
   while (std::getline(file, line))
   {
-    std::stringstream strStream(line);
-    std::string name = "";
-
-    strStream >> name;
-    if (!strStream)
+    try
     {
-      std::cout << "problems while reading file";
-      return 1;
+      name = makeSubStr(line);
+    }
+    catch (const std::exception&)
+    {
+      continue;
     }
 
     dictionary dict;
     std::size_t key = 0;
     std::string value = "";
 
-    while (strStream >> key >> value)
+    while (line != "")
     {
+      try
+      {
+        key = std::stoul(makeSubStr(line));
+        value = makeSubStr(line);
+      }
+      catch (const std::exception&)
+      {
+        std::cout << "problems while reading file" << '\n';
+        return 1;
+      }
+
       dict.insert({key, value});
     }
     dataSet.insert({name, dict});
   }
 
+  std::string cmdName = "";
   while (std::getline(std::cin, line))
   {
-    std::stringstream strStream(line);
-    std::string cmdName = "";
-
     try
     {
-      strStream >> cmdName;
-      if (!strStream)
-      {
-        throw std::runtime_error("incorrect args");
-      }
+      cmdName = makeSubStr(line);
 
       if (!comands.isEmpty(comands.find(cmdName)))
       {
-        std::string newName = "";
-        std::string lhsName = "";
-        std::string rhsName = "";
-        strStream >> newName >> lhsName >> rhsName;
-        if (!strStream)
-        {
-          throw std::runtime_error("incorrect args");
-        }
+        std::string newName = makeSubStr(line);
+        std::string lhsName = makeSubStr(line);
+        std::string rhsName = makeSubStr(line);
 
         auto cmd = comands[cmdName];
         cmd(dataSet, newName, lhsName, rhsName);
       }
       else if (!constComands.isEmpty(constComands.find(cmdName)))
       {
-        std::string name = "";
-        strStream >> name;
-        if (!strStream)
-        {
-          throw std::runtime_error("incorrect args");
-        }
+        std::string name = makeSubStr(line);
 
         auto constCmd = constComands[cmdName];
         constCmd(dataSet, name, std::cout);
@@ -113,6 +134,7 @@ int main(int argc, char** argv)
       if (typeid(e) == typeid(std::runtime_error) || typeid(e) == typeid(std::out_of_range))
       {
         dmitriev::outOfInvalivdComandMsg(std::cout);
+        std::cout << '\n';
       }
       else
       {
