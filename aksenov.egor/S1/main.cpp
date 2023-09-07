@@ -7,10 +7,8 @@
 #include "convertToPostfix.h"
 #include "solvePostfixExpr.h"
 #include "out.h"
-bool isWhiteSpaceOrEmpty(const std::string &str)
-{
-  return str.find_first_not_of(" \n") == std::string::npos;
-}
+#include "details.h"
+
 int main(int argc, char *argv[])
 {
   if (argc > 2)
@@ -18,27 +16,12 @@ int main(int argc, char *argv[])
     std::cerr << "err" << "\n";
     return 1;
   }
-  std::string str = "";
   aksenov::Stack< long long > result;
   if (argc == 1)
   {
     try
     {
-      while (std::getline(std::cin, str))
-      {
-        if (!std::cin)
-        {
-          std::cerr << "input Error" << "\n";
-          return 1;
-        }
-        if (isWhiteSpaceOrEmpty(str))
-        {
-          continue;
-        }
-        aksenov::Queue< std::string > infixQueue = aksenov::convertToInfix(str);
-        aksenov::Queue< std::string > postfixQueue = aksenov::getPostfixQueue(infixQueue);
-        result.push(aksenov::solvePostfixExpr(postfixQueue));
-      }
+      aksenov::processInput(std::cin, result);
     }
     catch (const std::exception &e)
     {
@@ -57,16 +40,7 @@ int main(int argc, char *argv[])
         std::cerr << "cant open file" << "\n";
         return 2;
       }
-      while (std::getline(f, str))
-      {
-        if (isWhiteSpaceOrEmpty(str))
-        {
-          continue;
-        }
-        aksenov::Queue< std::string > infixQueue = aksenov::convertToInfix(str);
-        aksenov::Queue< std::string > postfixQueue = aksenov::getPostfixQueue(infixQueue);
-        result.push(aksenov::solvePostfixExpr(postfixQueue));
-      }
+      aksenov::processInput(f, result);
     }
     catch (const std::exception &e)
     {
