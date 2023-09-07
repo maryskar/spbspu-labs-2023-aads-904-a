@@ -43,6 +43,6 @@ int main(int argc, char *argv[])
       return 1;
     }
   }
-  out(std::cout, result);
+  aksenov::out(std::cout, result);
   std::cout << "\n";
 }

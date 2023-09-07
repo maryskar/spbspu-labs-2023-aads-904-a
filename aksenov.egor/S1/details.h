@@ -10,6 +10,6 @@ namespace aksenov
   int getPriority(std::string operation);
   bool isWhiteSpaceOrEmpty(const std::string &str);
   void processInput(std::istream &in, Stack< long long > &res);
-  void out(std::ostream &out, aksenov::Stack< long long > &result);
+  void out(std::ostream &out, Stack< long long > &result);
 }
 #endif

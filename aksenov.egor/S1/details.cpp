@@ -4,17 +4,17 @@
 #include "stringToInfix.h"
 #include "convertToPostfix.h"
 #include "solvePostfixExpr.h"
-bool isNumeric(std::string const &str)
+bool aksenov::isNumeric(std::string const &str)
 {
   char* p = nullptr;
   std::strtol(str.c_str(), &p, 10);
   return *p == 0;
 }
-bool isOperator(std::string oper)
+bool aksenov::isOperator(std::string oper)
 {
   return oper == "+" || oper == "-" || oper == "*" || oper == "/" || oper == "%";
 }
-int getPriority(std::string operation)
+int aksenov::getPriority(std::string operation)
 {
   if (operation == "+" || operation == "-")
   {
@@ -29,17 +29,17 @@ int getPriority(std::string operation)
     return 0;
   }
 }
-bool isWhiteSpaceOrEmpty(const std::string &str)
+bool aksenov::isWhiteSpaceOrEmpty(const std::string &str)
 {
   return str.find_first_not_of(" \n") == std::string::npos;
 }
 
-void processInput(std::istream &in, aksenov::Stack< long long > &res)
+void aksenov::processInput(std::istream &in, aksenov::Stack< long long > &res)
 {
   std::string str;
   while (std::getline(in, str))
   {
-    if (isWhiteSpaceOrEmpty(str))
+    if (aksenov::isWhiteSpaceOrEmpty(str))
     {
       continue;
     }
@@ -49,7 +49,7 @@ void processInput(std::istream &in, aksenov::Stack< long long > &res)
   }
 }
 
-void out(std::ostream &out, aksenov::Stack< long long > &result)
+void aksenov::out(std::ostream &out, aksenov::Stack< long long > &result)
 {
   while (!result.isEmpty())
   {
