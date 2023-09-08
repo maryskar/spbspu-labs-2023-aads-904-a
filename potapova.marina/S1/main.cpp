@@ -6,7 +6,6 @@
 #include "stack.h"
 #include "inputInfixQueue.h"
 #include "divideExpression.h"
-#include "getInputStream.h"
 #include "countPostfixExpression.h"
 
 using namespace potapova;
@@ -14,17 +13,28 @@ using namespace potapova;
 int main(int argc, char* argv[])
 {
   std::istream* in_ptr = nullptr;
-  expr_queue infix_expr;
-  Stack< long long > answer_stack;
-  try
+  if (argc == 2)
   {
-    in_ptr = getInputStream(argc, argv);
+    std::ifstream input_file;
+    input_file.open(argv[1]);
+    if (!input_file.is_open())
+    {
+      std::cerr << "Failed to open file\n";
+      return 1;
+    }
+    in_ptr = &input_file;
   }
-  catch (const std::exception& e)
+  else if (argc > 2)
   {
-    std::cerr << "Error: " << e.what() << '\n';
+    std::cerr << "Incorrect number of arguments\n";
     return 1;
   }
+  else
+  {
+    in_ptr = &std::cin;
+  }
+  expr_queue infix_expr;
+  Stack< long long > answer_stack;
   *in_ptr >> std::ws;
   while (!in_ptr->eof())
   {
@@ -50,12 +60,12 @@ int main(int argc, char* argv[])
   }
   while (answer_stack.size() > 1)
   {
-    std::cout << answer_stack.back() << ' ';
+    std::cout << answer_stack.top() << ' ';
     answer_stack.pop();
   }
   if (answer_stack.size() == 1)
   {
-    std::cout << answer_stack.back();
+    std::cout << answer_stack.top();
   }
   std::cout << '\n';
   return 0;
