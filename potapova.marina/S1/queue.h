@@ -1,108 +1,46 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-#include  <cstddef>
+#include <cstddef>
+#include "forwardList.h"
 
 namespace potapova
 {
   template< typename T >
   class Queue
   {
-  public:
-    Queue():
-      begin_ptr_(nullptr),
-      end_ptr_(nullptr),
-      size_(0)
-    {
-
-    }
-
-    ~Queue()
-    {
-      while (!empty())
+    public:
+      void push(const T& elem)
       {
-        pop();
-      }
-    }
-
-    Queue(const Queue& other):
-      Queue()
-    {
-      Node* curr_node_ptr = other.begin_ptr_;
-      while (curr_node_ptr != end_ptr_)
-      {
-        push(curr_node_ptr->data);
-        curr_node_ptr = curr_node_ptr->next_node_ptr;
-      }
-    }
-
-    Queue(Queue&& other):
-      Queue()
-    {
-      begin_ptr_ = other.begin_ptr_;
-      end_ptr_ = other.end_ptr_;
-      size_ = other.size_;
-      other.begin_ptr_ = nullptr;
-      other.end_ptr_ = nullptr;
-      other.size_ = 0;
-    }
-
-    void push(const T& elem)
-    {
-      if (begin_ptr_ == nullptr)
-      {
-        begin_ptr_ = end_ptr_ = new Node(elem);
-      }
-      else
-      {
-        end_ptr_ = end_ptr_->next_node_ptr = new Node(elem);
-      }
-      ++size_;
-    }
-
-    T& front()
-    {
-      return begin_ptr_->data;
-    }
-
-    const T& front() const
-    {
-      return begin_ptr_->data;
-    }
-
-    void pop()
-    {
-      Node* prev_begin_ptr = begin_ptr_;
-      begin_ptr_ = begin_ptr_->next_node_ptr;
-      delete prev_begin_ptr;
-      --size_;
-    }
-
-    size_t size() const
-    {
-      return size_;
-    }
-
-    bool empty() const
-    {
-      return size_ == 0;
-    }
-  private:
-    struct Node
-    {
-      Node(const T& data):
-        data(data),
-        next_node_ptr(nullptr)
-      {
-
+        data_.push_front(elem);
       }
 
-      T data;
-      Node* next_node_ptr;
-    };
-    Node* begin_ptr_;
-    Node* end_ptr_;
-    size_t size_;
+      T& front()
+      {
+        return data_.front();
+      }
+
+      const T& front() const
+      {
+        return data_.front();
+      }
+
+      void pop()
+      {
+        data_.pop_front();
+      }
+
+      size_t size() const
+      {
+        return data_.size();
+      }
+
+      bool empty() const
+      {
+        return data_.empty();
+      }
+    private:
+      ForwardList< T > data_;
   };
 }
 

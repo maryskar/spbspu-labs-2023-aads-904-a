@@ -13,21 +13,21 @@ namespace potapova
       struct Node
       {
         Node():
-          data(),
-          next_node_ptr(nullptr)
+          data_(),
+          next_node_ptr_(nullptr)
         {
 
         }
 
         Node(const T& data):
-          data(data),
-          next_node_ptr(nullptr)
+          data_(data),
+          next_node_ptr_(nullptr)
         {
 
         }
 
-        T data;
-        Node* next_node_ptr;
+        T data_;
+        Node* next_node_ptr_;
       };
     public:
       class ConstIterator
