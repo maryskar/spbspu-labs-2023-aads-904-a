@@ -67,21 +67,6 @@ namespace mashkin
     return inp;
   }
 
-  iofmtguard::iofmtguard(std::basic_ios< char >& s):
-    s_(s),
-    fill_(s.fill()),
-    precision_(s.precision()),
-    fmt_(s.flags())
-  {
-  }
-
-  iofmtguard::~iofmtguard()
-  {
-    s_.fill(fill_);
-    s_.precision(precision_);
-    s_.flags(fmt_);
-  }
-
   std::ostream& operator<<(std::ostream& out, const dictionary& dicts)
   {
     std::ostream::sentry sentry(out);
@@ -89,7 +74,6 @@ namespace mashkin
     {
       return out;
     }
-    iofmtguard fmtguard(out);
     for (auto it = dicts.begin(); it != dicts.end(); it++)
     {
       out << " " << it->first << " " << it->second;
