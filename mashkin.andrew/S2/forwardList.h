@@ -4,7 +4,7 @@
 #include <utility>
 #include "ForwardConstIterator.h"
 #include "ForwardIterator.h"
-#include "nodeList.h"
+#include <list.h>
 
 namespace mashkin
 {
@@ -65,13 +65,13 @@ namespace mashkin
     void remove_if(UnaryPredicate p);
 
   private:
-    NodeList< T >* fake_;
-    NodeList< T >* tail_;
+    list_t< T >* fake_;
+    list_t< T >* tail_;
   };
 
   template< class T >
   ForwardList< T >::ForwardList():
-    fake_(static_cast< NodeList< T >* >(::operator new(sizeof(NodeList< T >)))),
+    fake_(static_cast< list_t< T >* >(::operator new(sizeof(list_t< T >)))),
     tail_(nullptr)
   {
     fake_->next = tail_;
@@ -117,12 +117,12 @@ namespace mashkin
   {
     if (empty())
     {
-      fake_->next = new NodeList< T >{value, nullptr};
+      fake_->next = new list_t< T >{value, nullptr};
       tail_ = fake_->next->next;
     }
     else
     {
-      auto var = new NodeList< T >{value, fake_->next};
+      auto var = new list_t< T >{value, fake_->next};
       fake_->next = var;
     }
   }
@@ -178,7 +178,7 @@ namespace mashkin
   template< class T >
   ForwardIterator< T > ForwardList< T >::insert_after(citer position, const T& val)
   {
-    position.node->next = new NodeList< T >{val, position.node->next};
+    position.node->next = new list_t< T >{val, position.node->next};
     ++position;
     return iter(position.node);
   }

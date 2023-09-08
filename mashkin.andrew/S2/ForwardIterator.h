@@ -4,7 +4,7 @@
 #include <memory>
 #include "ForwardConstIterator.h"
 #include "dictionary.h"
-#include "nodeList.h"
+#include <list.h>
 
 namespace mashkin
 {
@@ -15,7 +15,7 @@ namespace mashkin
     ForwardIterator();
     ~ForwardIterator() = default;
     ForwardIterator(const ForwardIterator< T >&) = default;
-    ForwardIterator(NodeList< T >* rhs);
+    ForwardIterator(list_t< T >* rhs);
 
     ForwardIterator< T >& operator=(const ForwardIterator< T >&) = default;
     ForwardIterator< T >& operator++();
@@ -34,7 +34,7 @@ namespace mashkin
     friend class ForwardConstIterator;
     template< typename K, typename V, typename C >
     friend class Dictionary;
-    NodeList< T >* node;
+    list_t< T >* node;
   };
 }
 
@@ -45,7 +45,7 @@ mashkin::ForwardIterator< T >::ForwardIterator():
 }
 
 template< class T >
-mashkin::ForwardIterator< T >::ForwardIterator(NodeList< T >* lhs)
+mashkin::ForwardIterator< T >::ForwardIterator(list_t< T >* lhs)
 {
   node = lhs;
 }
