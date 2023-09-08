@@ -7,6 +7,6 @@ namespace mashkin
 {
   using dict = mashkin::Dictionary< int, std::string >;
   using dictionaries = mashkin::Dictionary< std::string, dict >;
-  void createDictWithCommnads(Dictionary< std::string, void (*)(std::istream&, dictionaries&) >& dict);
+  Dictionary< std::string, void (*)(std::istream&, dictionaries&) > createDictWithCommnads();
 }
 #endif

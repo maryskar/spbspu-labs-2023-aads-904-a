@@ -39,7 +39,7 @@ int main(int argc, char** argv)
       }
     }
     mashkin::Dictionary< std::string, void (*)(std::istream&, dictionaries&) > commands;
-    mashkin::createDictWithCommnads(commands);
+    commands = mashkin::createDictWithCommnads();
     std::string command;
     while (!std::cin.eof())
     {
