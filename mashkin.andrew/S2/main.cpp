@@ -48,13 +48,20 @@ int main(int argc, char** argv)
       {
         break;
       }
-      if (commands.contains(command))
+      try
       {
-        commands[command](std::cin, dicts);
+        if (commands.contains(command))
+        {
+          commands[command](std::cin, dicts);
+        }
+        else
+        {
+          throw std::logic_error("Logic error");
+        }
       }
-      else
+      catch (const std::logic_error& ex)
       {
-        std::cout << "<INVALID COMMAND>\n";
+        std::cout << "INVALID COMMAND\n";
         std::cin.setstate(std::ios::failbit);
       }
       if (std::cin.fail())

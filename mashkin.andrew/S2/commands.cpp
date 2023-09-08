@@ -23,7 +23,7 @@ namespace mashkin
     }
     else
     {
-      std::cout << "<INVALID COMMAND>\n";
+      throw std::logic_error("Logic error");
     }
   }
 
@@ -37,9 +37,7 @@ namespace mashkin
     inp >> second;
     if (!dicts.contains(second) || !dicts.contains(first))
     {
-      std::cout << "<INVALID COMMAND>\n";
-      inp.setstate(std::ios::failbit);
-      return;
+      throw std::logic_error("Logic error");
     }
     dict newDictionary;
     auto firstDict = dicts.find(first);
@@ -94,9 +92,7 @@ namespace mashkin
     }
     if (!dicts.contains(second) || !dicts.contains(first))
     {
-      std::cout << "<INVALID COMMAND>\n";
-      inp.setstate(std::ios::failbit);
-      return;
+      throw std::logic_error("Logic error");
     }
     dict newDictionary;
     auto firstDict = dicts.find(first);
@@ -137,9 +133,7 @@ namespace mashkin
     inp >> second;
     if (!dicts.contains(second) || !dicts.contains(first))
     {
-      std::cout << "<INVALID COMMAND>\n";
-      inp.setstate(std::ios::failbit);
-      return;
+      throw std::logic_error("Logic error");
     }
     dict newDictionary = dicts.find(first)->second;
     auto secondDict = dicts.find(second);
