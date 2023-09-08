@@ -11,26 +11,24 @@ namespace potapova
 
   struct ArithmExpMember
   {
-    private:
-      enum class Type:
-        std::uint8_t
-      {
-        Num,
-        Operation
-      };
+    enum class Type:
+      std::uint8_t
+    {
+      Num,
+      Operation
+    };
 
-      union
-      {
-        long long num;
-        char operation;
-      };
+    union
+    {
+      long long num;
+      char operation;
+    };
 
-      Type type;
+    Type type;
 
-    public:
-      ArithmExpMember();
-      explicit ArithmExpMember(long long num);
-      explicit ArithmExpMember(char operation);
+    ArithmExpMember();
+    explicit ArithmExpMember(long long num);
+    explicit ArithmExpMember(char operation);
   };
 }
 
