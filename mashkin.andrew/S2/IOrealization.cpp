@@ -13,7 +13,7 @@ namespace mashkin
     {
       return inp;
     }
-    int key;
+    int key = 0;
     std::string value;
     inp >> key;
     if (inp.peek() == '\n')
