@@ -61,7 +61,7 @@ int main(int argc, char** argv)
       }
       catch (const std::logic_error& ex)
       {
-        std::cout << "<INVALID COMMAND>\n";
+        std::cout << "INVALID COMMAND\n";
         std::cin.setstate(std::ios::failbit);
       }
       if (std::cin.fail())
