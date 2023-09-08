@@ -12,17 +12,22 @@ namespace potapova
     public:
       void push(const T& elem)
       {
-        data_.push_front(elem);
+        if (end_ptr_ == nullptr)
+        {
+          end_ptr_ = data_.begin();
+        }
+        data_.insert_after(end_ptr_, elem);
+        ++end_ptr_;
       }
 
       T& front()
       {
-        return data_.front();
+        return data_.end();
       }
 
       const T& front() const
       {
-        return data_.front();
+        return data_.cend();
       }
 
       void pop()
@@ -41,6 +46,7 @@ namespace potapova
       }
     private:
       ForwardList< T > data_;
+      ForwardList< T >::Iterator end_ptr_;
   };
 }
 
