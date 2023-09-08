@@ -19,9 +19,9 @@ namespace
   void moveExprInBracketsToPostfix(potapova::Stack< char >& operators_stack,
       potapova::expr_queue& postfix_expr)
   {
-    while (!isOpenBracket(operators_stack.back()))
+    while (!isOpenBracket(operators_stack.top()))
     {
-      postfix_expr.push(potapova::ArithmExpMember(operators_stack.back()));
+      postfix_expr.push(potapova::ArithmExpMember(operators_stack.top()));
       operators_stack.pop();
       if (operators_stack.empty())
       {
@@ -46,14 +46,14 @@ potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
     }
     else if (isCloseBracket(cur_member.operation))
     {
-      if (brackets_stack.empty() || brackets_stack.back() != '(')
+      if (brackets_stack.empty() || brackets_stack.top() != '(')
       {
         throw std::runtime_error("Inappropriate closing bracket");
       }
       brackets_stack.pop();
       moveExprInBracketsToPostfix(operators_stack, postfix_expr);
     }
-    else if (isOpenBracket(cur_member.operation) || operators_stack.empty() || isOpenBracket(operators_stack.back()))
+    else if (isOpenBracket(cur_member.operation) || operators_stack.empty() || isOpenBracket(operators_stack.top()))
     {
       if (isOpenBracket(cur_member.operation))
       {
@@ -61,9 +61,9 @@ potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
       }
       operators_stack.push(cur_member.operation);
     }
-    else if (!operators_stack.empty() && getPriority(cur_member.operation) <= getPriority(operators_stack.back()))
+    else if (!operators_stack.empty() && getPriority(cur_member.operation) <= getPriority(operators_stack.top()))
     {
-      postfix_expr.push(ArithmExpMember(operators_stack.back()));
+      postfix_expr.push(ArithmExpMember(operators_stack.top()));
       operators_stack.pop();
       operators_stack.push(cur_member.operation);
     }
@@ -79,7 +79,7 @@ potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
   }
   while (!operators_stack.empty())
   {
-    postfix_expr.push(ArithmExpMember(operators_stack.back()));
+    postfix_expr.push(ArithmExpMember(operators_stack.top()));
     operators_stack.pop();
   }
   if (!operators_stack.empty())

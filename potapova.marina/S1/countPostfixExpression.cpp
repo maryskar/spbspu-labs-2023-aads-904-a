@@ -45,9 +45,9 @@ long long potapova::countPostfixExpression(expr_queue& postfix_queue)
     }
     else
     {
-      long long operand2 = operands_stack.back();
+      long long operand2 = operands_stack.top();
       operands_stack.pop();
-      long long operand1 = operands_stack.back();
+      long long operand1 = operands_stack.top();
       operands_stack.pop();
       if (postfix_queue.front().operation == '+' && operand2 < 0)
       {
@@ -107,5 +107,5 @@ long long potapova::countPostfixExpression(expr_queue& postfix_queue)
       postfix_queue.pop();
     }
   }
-  return operands_stack.back();
+  return operands_stack.top();
 }

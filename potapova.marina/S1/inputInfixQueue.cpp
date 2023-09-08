@@ -1,4 +1,5 @@
 #include "inputInfixQueue.h"
+#include "valueType.h"
 #include <cstring>
 #include <cctype>
 #include <string>
