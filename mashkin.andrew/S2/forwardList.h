@@ -259,12 +259,8 @@ namespace mashkin
   template< class T >
   void ForwardList< T >::swap(ForwardList< T >& list)
   {
-    ForwardList< T > var;
-    var.insert_after(var.before_begin(), list.begin(), list.end());
-    list.clear();
-    list.insert_after(list.before_begin(), begin(), end());
-    clear();
-    isert_after(before_begin(), var.begin(), var.end());
+    std::swap(this->fake_, list.fake_);
+    std::swap(this->tail_, list.tail_);
   }
 
   template< class T >
