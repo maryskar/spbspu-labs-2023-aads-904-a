@@ -49,7 +49,7 @@ namespace mashkin
     iter erase_after(citer pos, citer last);
     void clear() noexcept;
 
-    void swap(ForwardList< T >& list);
+    void swap(ForwardList< T >& list) noexcept;
     void reverse() noexcept;
 
     void splice_after(citer pos, ForwardList< T >& other);
@@ -257,7 +257,7 @@ namespace mashkin
   }
 
   template< class T >
-  void ForwardList< T >::swap(ForwardList< T >& list)
+  void ForwardList< T >::swap(ForwardList< T >& list) noexcept
   {
     std::swap(this->fake_, list.fake_);
     std::swap(this->tail_, list.tail_);
