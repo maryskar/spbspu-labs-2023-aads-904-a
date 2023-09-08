@@ -2,16 +2,16 @@
 #define S2_DICTIONARY_H
 #include <stdexcept>
 #include <utility>
-#include "forwardConstIterator.h"
-#include "forwardIterator.h"
+#include "ForwardConstIterator.h"
+#include "ForwardIterator.h"
 #include "forwardList.h"
 
 namespace mashkin
 {
   template< typename T >
-  class forwardConstIterator;
+  class ForwardConstIterator;
   template< typename T >
-  class forwardIterator;
+  class ForwardIterator;
   template< typename T >
   class ForwardList;
 
@@ -23,8 +23,8 @@ namespace mashkin
     using key_type = Key;
     using val = Value;
     using value_type = std::pair< const Key, Value >;
-    using iter = forwardIterator< value_type >;
-    using const_iter = forwardConstIterator< value_type >;
+    using iter = ForwardIterator< value_type >;
+    using const_iter = ForwardConstIterator< value_type >;
 
     Dictionary();
     explicit Dictionary(const Compare& comp);

@@ -3,10 +3,10 @@
 #include <iostream>
 #include <limits>
 #include "DictWithCommands.h"
-#include "dictionary.h"
-#include "forwardConstIterator.h"
-#include "forwardIterator.h"
+#include "ForwardConstIterator.h"
+#include "ForwardIterator.h"
 #include "IOrealization.h"
+#include "dictionary.h"
 #include "forwardList.h"
 
 int main(int argc, char** argv)
