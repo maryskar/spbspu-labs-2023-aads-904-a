@@ -25,10 +25,6 @@ namespace mashkin
     {
       return inp;
     }
-    if (inp.peek() == '\n')
-    {
-      inp.setstate(std::ios::eofbit);
-    }
     dict.insert({key, value});
     return inp;
   }
