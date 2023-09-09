@@ -53,7 +53,7 @@ namespace potapova
           const ConstIterator& operator++()
           {
             assert(node_ptr_ != nullptr);
-            node_ptr_ = node_ptr_->next_node_ptr;
+            node_ptr_ = node_ptr_->next_node_ptr_;
             return *this;
           }
 
@@ -113,7 +113,7 @@ namespace potapova
           Iterator& operator++()
           {
             assert(node_ptr_ != nullptr);
-            node_ptr_ = node_ptr_->next_node_ptr;
+            node_ptr_ = node_ptr_->next_node_ptr_;
             return *this;
           }
 
@@ -192,8 +192,8 @@ namespace potapova
           clear();
         }
         head_.data = std::move(other.head_.data);
-        head_.next_node_ptr = other.head_.next_node_ptr;
-        other.head_.next_node_ptr = nullptr;
+        head_.next_node_ptr_ = other.head_.next_node_ptr_;
+        other.head_.next_node_ptr_ = nullptr;
         size_ = other.size_;
         return *this;
       }
@@ -220,17 +220,17 @@ namespace potapova
 
       Iterator begin()
       {
-        return Iterator(head_.next_node_ptr);
+        return Iterator(head_.next_node_ptr_);
       }
 
       ConstIterator begin() const
       {
-        return ConstIterator(head_.next_node_ptr);
+        return ConstIterator(head_.next_node_ptr_);
       }
 
       ConstIterator cbegin() const
       {
-        return ConstIterator(head_.next_node_ptr);
+        return ConstIterator(head_.next_node_ptr_);
       }
 
       Iterator end()
@@ -261,8 +261,8 @@ namespace potapova
       Iterator insert_after(const Iterator place_ptr, const T& value)
       {
         Node* const new_node_ptr = new Node(value);
-        new_node_ptr->next_node_ptr = place_ptr.node_ptr_->next_node_ptr;
-        place_ptr.node_ptr_->next_node_ptr = new_node_ptr;
+        new_node_ptr->next_node_ptr_ = place_ptr.node_ptr_->next_node_ptr_;
+        place_ptr.node_ptr_->next_node_ptr_ = new_node_ptr;
         ++size_;
         return Iterator(new_node_ptr);
       }
@@ -274,11 +274,11 @@ namespace potapova
 
       Iterator erase_after(const Iterator place_ptr)
       {
-        Node* const deleted_node_ptr = place_ptr.node_ptr_->next_node_ptr;
-        place_ptr.node_ptr_->next_node_ptr = deleted_node_ptr->next_node_ptr;
+        Node* const deleted_node_ptr = place_ptr.node_ptr_->next_node_ptr_;
+        place_ptr.node_ptr_->next_node_ptr_ = deleted_node_ptr->next_node_ptr_;
         delete deleted_node_ptr;
         --size_;
-        return Iterator(place_ptr.node_ptr_->next_node_ptr);
+        return Iterator(place_ptr.node_ptr_->next_node_ptr_);
       }
 
       void pop_front(const T& value)
@@ -288,11 +288,11 @@ namespace potapova
 
       void clear()
       {
-        Node* cur_deleted_node_ptr = head_.next_node_ptr;
+        Node* cur_deleted_node_ptr = head_.next_node_ptr_;
         while (cur_deleted_node_ptr != nullptr)
         {
           const Node* const temp = cur_deleted_node_ptr;
-          cur_deleted_node_ptr = cur_deleted_node_ptr->next_node_ptr;
+          cur_deleted_node_ptr = cur_deleted_node_ptr->next_node_ptr_;
           delete temp;
         }
       }

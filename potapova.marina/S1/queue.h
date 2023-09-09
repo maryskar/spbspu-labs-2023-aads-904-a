@@ -46,7 +46,7 @@ namespace potapova
       }
     private:
       ForwardList< T > data_;
-      ForwardList< T >::Iterator end_ptr_;
+      typename ForwardList< T >::Iterator end_ptr_;
   };
 }
 
