@@ -68,13 +68,13 @@ namespace potapova
           const T& operator*() const
           {
             assert(node_ptr_ != nullptr);
-            return node_ptr_->data;
+            return node_ptr_->data_;
           }
 
           const T* operator->() const
           {
             assert(node_ptr_ != nullptr);
-            return std::addressof(node_ptr_->data);
+            return std::addressof(node_ptr_->data_);
           }
 
           bool operator==(const ConstIterator& rhs) const
@@ -128,13 +128,13 @@ namespace potapova
           T& operator*()
           {
             assert(node_ptr_ != nullptr);
-            return node_ptr_->data;
+            return node_ptr_->data_;
           }
 
           T* operator->()
           {
             assert(node_ptr_ != nullptr);
-            return std::addressof(node_ptr_->data);
+            return std::addressof(node_ptr_->data_);
           }
 
           bool operator==(const Iterator& rhs) const
@@ -191,7 +191,7 @@ namespace potapova
         {
           clear();
         }
-        head_.data = std::move(other.head_.data);
+        head_.data_ = std::move(other.head_.data_);
         head_.next_node_ptr_ = other.head_.next_node_ptr_;
         other.head_.next_node_ptr_ = nullptr;
         size_ = other.size_;
@@ -281,9 +281,9 @@ namespace potapova
         return Iterator(place_ptr.node_ptr_->next_node_ptr_);
       }
 
-      void pop_front(const T& value)
+      void pop_front()
       {
-        erase_after(before_begin(), value);
+        erase_after(before_begin());
       }
 
       void clear()
