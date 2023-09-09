@@ -16,7 +16,7 @@ namespace mashkin
     int key = 0;
     std::string value;
     inp >> key;
-    if (inp)
+    if (!inp)
     {
       return inp;
     }
