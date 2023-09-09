@@ -22,12 +22,12 @@ namespace potapova
 
       T& front()
       {
-        return data_.end();
+        return data_.front();
       }
 
       const T& front() const
       {
-        return data_.cend();
+        return data_.front();
       }
 
       void pop()
