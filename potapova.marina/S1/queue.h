@@ -10,12 +10,14 @@ namespace potapova
   class Queue
   {
     public:
+      Queue:
+        end_ptr_(data_.before_begin())
+      {
+
+      }
+
       void push(const T& elem)
       {
-        if (end_ptr_ == nullptr)
-        {
-          end_ptr_ = data_.begin();
-        }
         data_.insert_after(end_ptr_, elem);
         ++end_ptr_;
       }
