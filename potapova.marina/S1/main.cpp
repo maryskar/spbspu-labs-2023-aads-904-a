@@ -13,9 +13,14 @@ using namespace potapova;
 int main(int argc, char* argv[])
 {
   std::istream* in_ptr = nullptr;
-  if (argc == 2)
+  std::ifstream input_file;
+  if (argc > 2)
   {
-    std::ifstream input_file;
+    std::cerr << "Incorrect number of arguments\n";
+    return 1;
+  }
+  else if (argc == 2)
+  {
     input_file.open(argv[1]);
     if (!input_file.is_open())
     {
@@ -23,11 +28,6 @@ int main(int argc, char* argv[])
       return 1;
     }
     in_ptr = &input_file;
-  }
-  else if (argc > 2)
-  {
-    std::cerr << "Incorrect number of arguments\n";
-    return 1;
   }
   else
   {
