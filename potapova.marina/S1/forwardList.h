@@ -89,7 +89,7 @@ namespace potapova
         private:
           const Node* node_ptr_;
       };
-      
+
       class Iterator
       {
         friend ForwardList;
