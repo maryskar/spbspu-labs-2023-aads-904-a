@@ -87,7 +87,7 @@ namespace potapova
             return !(rhs == *this);
           }
         private:
-          const Node* node_ptr_; 
+          const Node* node_ptr_;
       };
       
       class Iterator
@@ -103,7 +103,7 @@ namespace potapova
           Iterator(Node* const node_ptr):
             node_ptr_(node_ptr)
           {
-            
+
           }
 
           ~Iterator() = default;
@@ -261,15 +261,15 @@ namespace potapova
       Iterator insert_after(const Iterator place_ptr, const T& value)
       {
         Node* const new_node_ptr = new Node(value);
-	      new_node_ptr->next_node_ptr = place_ptr.node_ptr_->next_node_ptr;
-	      place_ptr.node_ptr_->next_node_ptr = new_node_ptr;
+        new_node_ptr->next_node_ptr = place_ptr.node_ptr_->next_node_ptr;
+        place_ptr.node_ptr_->next_node_ptr = new_node_ptr;
         ++size_;
         return Iterator(new_node_ptr);
       }
 
       void push_front(const T& value)
       {
-        insert_after(before_begin(), value); 
+        insert_after(before_begin(), value);
       }
 
       Iterator erase_after(const Iterator place_ptr)
