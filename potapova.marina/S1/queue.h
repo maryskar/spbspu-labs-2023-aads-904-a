@@ -10,7 +10,7 @@ namespace potapova
   class Queue
   {
     public:
-      Queue:
+      Queue():
         end_ptr_(data_.before_begin())
       {
 
