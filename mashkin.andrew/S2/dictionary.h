@@ -269,17 +269,12 @@ namespace mashkin
   const typename Dictionary< K, V, C >::val& Dictionary< K, V, C >::at(const key_type& k) const
   {
     auto i = cbegin();
-    for (; i != cend(); i++)
-    {
-      if (i->first == k)
-      {
-        return i->second;
-      }
-    }
+    i = find(k);
     if (i == cend())
     {
       throw std::out_of_range("Out of range");
     }
+    return i->second;
   }
 
   template< class K, class V, class C >
