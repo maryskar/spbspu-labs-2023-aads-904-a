@@ -35,7 +35,6 @@ int main(int argc, char** argv)
       if (input.fail())
       {
         input.clear();
-        input.ignore(maxSize, '\n');
       }
     }
     mashkin::Dictionary< std::string, void (*)(std::istream&, dictionaries&) > commands;
