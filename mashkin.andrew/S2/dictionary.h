@@ -145,7 +145,7 @@ namespace mashkin
   {
     for (auto i = cbegin(); i != cend(); i++)
     {
-      if (!comp_(i->first, key));
+      if (!comp_(i->first, key))
       {
         return i;
       }
