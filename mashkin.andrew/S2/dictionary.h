@@ -131,13 +131,7 @@ namespace mashkin
   typename Dictionary< K, V, C >::val& Dictionary< K, V, C >::operator[](const key_type& k)
   {
     auto i = cbegin();
-    for (; i != cend(); i++)
-    {
-      if (i->first == k)
-      {
-        break;
-      }
-    }
+    i = find(k);
     if (i == cend())
     {
       insert(std::pair< K, V >(k, V()));
