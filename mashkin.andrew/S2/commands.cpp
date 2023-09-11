@@ -39,7 +39,7 @@ namespace mashkin
     {
       throw std::logic_error("Logic error");
     }
-    dict newDictionary;
+    dictionary newDictionary;
     auto firstDict = dicts.find(first);
     auto firstBegin = firstDict->second.begin();
     auto firstEnd = firstDict->second.end();
@@ -94,7 +94,7 @@ namespace mashkin
     {
       throw std::logic_error("Logic error");
     }
-    dict newDictionary;
+    dictionary newDictionary;
     auto firstDict = dicts.find(first);
     auto firstBegin = firstDict->second.begin();
     auto firstEnd = firstDict->second.end();
@@ -135,7 +135,7 @@ namespace mashkin
     {
       throw std::logic_error("Logic error");
     }
-    dict newDictionary = dicts.find(first)->second;
+    dictionary newDictionary = dicts.find(first)->second;
     auto secondDict = dicts.find(second);
     auto secondBegin = secondDict->second.begin();
     auto secondEnd = secondDict->second.end();

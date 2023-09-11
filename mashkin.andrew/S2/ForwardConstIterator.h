@@ -16,7 +16,6 @@ namespace mashkin
     ForwardConstIterator();
     ~ForwardConstIterator() = default;
     ForwardConstIterator(const ForwardConstIterator< T >&) = default;
-    ForwardConstIterator(list_t< T >* rhs);
     ForwardConstIterator(const ForwardIterator< T >& rhs);
 
     ForwardConstIterator< T >& operator=(const ForwardConstIterator< T >&) = default;
@@ -35,6 +34,7 @@ namespace mashkin
     template< typename K, typename V, typename C >
     friend class Dictionary;
     list_t< T >* node;
+    ForwardConstIterator(list_t< T >* rhs);
   };
 }
 
