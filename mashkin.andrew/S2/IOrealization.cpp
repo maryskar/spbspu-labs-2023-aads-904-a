@@ -38,10 +38,6 @@ namespace mashkin
     }
     std::string key;
     inp >> key;
-    if (inp.peek() == '\n')
-    {
-      inp.setstate(std::ios::eofbit);
-    }
     if (!inp)
     {
       return inp;
