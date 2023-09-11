@@ -31,11 +31,11 @@ int main(int argc, char** argv)
     dictionaries dicts;
     while (!input.eof())
     {
-      input >> dicts;
       if (input.fail())
       {
         input.clear();
       }
+      input >> dicts;
     }
     mashkin::Dictionary< std::string, void (*)(std::istream&, dictionaries&) > commands;
     commands = mashkin::createDictWithCommnads();
