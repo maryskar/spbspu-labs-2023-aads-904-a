@@ -145,7 +145,7 @@ namespace mashkin
   {
     for (auto i = cbegin(); i != cend(); i++)
     {
-      if (!comp_(i->first, key))
+      if (i->first == key)
       {
         return i;
       }
@@ -229,13 +229,7 @@ namespace mashkin
     {
       for (auto i = pair_.before_begin(); i != end(); i++)
       {
-        if (next == end())
-        {
-          pair_.insert_after(i, value);
-          size_++;
-          break;
-        }
-        if (comp_(value.first, next->first))
+        if (next == end() || comp_(value.first, next->first))
         {
           pair_.insert_after(i, value);
           size_++;
