@@ -25,10 +25,8 @@ int main(int argc, char** argv)
       std::cerr << "Can't open file\n";
       return 1;
     }
-    using dict = mashkin::Dictionary< int, std::string >;
-    using dictionaries = mashkin::Dictionary< std::string, dict >;
     constexpr auto maxSize = std::numeric_limits< std::streamsize >::max();
-    dictionaries dicts;
+    mashkin::dictionaries dicts;
     while (!input.eof())
     {
       if (input.fail())
@@ -37,7 +35,7 @@ int main(int argc, char** argv)
       }
       input >> dicts;
     }
-    mashkin::Dictionary< std::string, void (*)(std::istream&, dictionaries&) > commands;
+    mashkin::Dictionary< std::string, void (*)(std::istream&, mashkin::dictionaries&) > commands;
     commands = mashkin::createDictWithCommnads();
     std::string command;
     while (!std::cin.eof())
