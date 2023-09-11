@@ -143,14 +143,19 @@ namespace mashkin
   template< class K, class V, class C >
   typename Dictionary< K, V, C >::const_iter Dictionary< K, V, C >::find(const key_type& key) const
   {
-    for (auto i = cbegin(); i != cend(); i++)
+    auto i = cbegin();
+    for (; i != cend(); i++)
     {
-      if (i->first == key)
+      if (!comp_(i->first, key))
       {
-        return i;
+        break;
       }
     }
-    return cend();
+    if (i == cend() || comp_(key, i->first))
+    {
+      return cend();
+    }
+    return i;
   }
 
   template< class K, class V, class C >
