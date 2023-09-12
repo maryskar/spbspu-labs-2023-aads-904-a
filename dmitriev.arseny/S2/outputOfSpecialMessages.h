@@ -5,8 +5,8 @@
 
 namespace dmitriev
 {
-  void outOfInvalivdComandMsg(std::ostream& out);
-  void outOfEmptyDataMsg(std::ostream& out);
+  std::ostream& outOfInvalivdComandMsg(std::ostream& out);
+  std::ostream& outOfEmptyDataMsg(std::ostream& out);
 }
 
 #endif

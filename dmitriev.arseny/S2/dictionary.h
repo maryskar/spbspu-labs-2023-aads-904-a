@@ -3,15 +3,6 @@
 
 #include "forwardList.h"
 
-namespace
-{
-  template< typename Key, typename Compare >
-  bool isEqual(const Key& rhs, const Key& lhs)
-  {
-    return !(Compare{}(rhs, lhs) || Compare{}(lhs, rhs));
-  }
-}
-
 namespace dmitriev
 {
   template< typename Key, typename Value, typename Compare = std::less< Key > >
@@ -85,7 +76,7 @@ namespace dmitriev
       {
         return m_fList.insertAfter(constBeforeBegin(), keyValue);
       }
-      if (::isEqual< Key, Compare >(it->first, keyValue.first))
+      if (isEqual(it->first, keyValue.first))
       {
         return it;
       }
@@ -99,7 +90,7 @@ namespace dmitriev
       {
         return m_fList.insertAfter(constBeforeBegin(), std::move(keyValue));
       }
-      if (::isEqual< Key, Compare >(it->first, keyValue.first))
+      if (isEqual(it->first, keyValue.first))
       {
         return it;
       }
@@ -172,7 +163,7 @@ namespace dmitriev
     {
       iterator result = beforeBegin();
 
-      for (iterator it = begin(); !isEmpty(it) && !::isEqual< Key, Compare >(it->first, key); result++, it++)
+      for (iterator it = begin(); !isEmpty(it) && !isEqual(it->first, key); result++, it++)
       {}
 
       return result;
@@ -186,7 +177,7 @@ namespace dmitriev
     {
       constIterator result = constBeforeBegin();
 
-      for (constIterator it = constBegin(); !isEmpty(it) && !::isEqual< Key, Compare >(it->first, key); result++, it++)
+      for (constIterator it = constBegin(); !isEmpty(it) && !isEqual(it->first, key); result++, it++)
       {}
 
       return result;
@@ -237,6 +228,10 @@ namespace dmitriev
     void clear() noexcept
     {
       m_fList.clear();
+    }
+    bool isEqual(const Key& rhs, const Key& lhs) const
+    {
+      return !(Compare{}(rhs, lhs) || Compare{}(lhs, rhs));
     }
 
   private:

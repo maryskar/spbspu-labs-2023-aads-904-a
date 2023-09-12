@@ -1,11 +1,11 @@
 #include "outputOfSpecialMessages.h"
 
-void dmitriev::outOfInvalivdComandMsg(std::ostream& out)
+std::ostream& dmitriev::outOfInvalivdComandMsg(std::ostream& out)
 {
-  out << "<INVALID COMMAND>";
+  return out << "<INVALID COMMAND>";
 }
 
-void dmitriev::outOfEmptyDataMsg(std::ostream& out)
+std::ostream& dmitriev::outOfEmptyDataMsg(std::ostream& out)
 {
-  out << "<EMPTY>";
+  return out << "<EMPTY>";
 }
