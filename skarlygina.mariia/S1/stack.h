@@ -18,11 +18,13 @@ public:
   ~Stack();
 private:
   List< T >* root_;
+  size_t size;
 };
 
 template< typename T >
 Stack< T >::Stack() :
-  root_(nullptr)
+  root_(nullptr),
+  size(0)
 {}
 
 template< typename T >
@@ -50,10 +52,15 @@ const T& Stack< T >::top() const
 template< typename T>
 void Stack< T >::push(const T& rhs)
 {
-  List< T >* new_node = new List< T >{rhs, nullptr};
+  const int MAX_SIZE = 100;
+  if (size >= MAX_SIZE) {
+    throw std::overflow_error("Stack is full");
+  }
+  List< T >* new_node = new List< T >{ rhs, nullptr };
   new_node->data = rhs;
   new_node->next = root_;
   root_ = new_node;
+  size++;
 }
 
 template< typename T >
