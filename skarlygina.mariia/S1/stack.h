@@ -110,7 +110,6 @@ Stack< T >::~Stack()
     List< T >* node_temp = root_;
     root_ = root_->next;
     delete node_temp;
-    size--;
   }
 }
 #endif
