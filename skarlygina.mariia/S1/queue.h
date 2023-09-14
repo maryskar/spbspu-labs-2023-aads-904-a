@@ -12,8 +12,7 @@ public:
   Queue(Queue< T >& other);
   Queue(Queue< T >&& other);
   void push(const T& rhs);
-  T top() const;
-  T& get() const;
+  const T& top() const;
   void pop();
   bool isEmpty() const;
   ~Queue();
@@ -46,50 +45,40 @@ Queue< T >::Queue(Queue< T >&& other) :
 template< typename T >
 void Queue< T >::push(const T& rhs)
 {
-  List< T >* new_node = new List< T >{rhs, nullptr, tail_};
-  if (tail_ != nullptr)
+  List< T >* new_node = new List< T >{rhs, nullptr};
+  if (isEmpty())
+  {
+    tail_ = head_ = new_node;
+  }
+  else
   {
     tail_->next = new_node;
-  }
-  tail_ = new_node;
-  if (head_ == nullptr)
-  {
-    head_ = tail_;
+    tail_ = tail_->next;
   }
 }
 
 template< typename T >
 void Queue< T >::pop()
 {
-  if (head_ == nullptr)
+  if (isEmpty())
   {
     throw std::out_of_range("Queue is empty");
   }
   List< T >* head_temp = head_;
   head_ = head_->next;
-  if (head_ != nullptr)
+  if (head_ == tail_)
   {
-    head_->prev = nullptr;
+    head_ = tail_ = nullptr;
   }
   else
   {
-    tail_ = nullptr;
+    head_ = head_->next;
   }
   delete head_temp;
 }
 
-template< typename T >
-T& Queue< T >::get() const
-{
-  if (head_ == nullptr)
-  {
-    throw std::out_of_range("Queue is empty");
-  }
-  return head_->data;
-}
-
 template <class T>
-T Queue< T >::top() const
+const T& Queue< T >::top() const
 {
   if (isEmpty()) {
     throw std::runtime_error("Queue is empty");
@@ -100,7 +89,7 @@ T Queue< T >::top() const
 template< typename T >
 bool Queue< T >::isEmpty() const
 {
-  return head_ == nullptr;
+  return tail_ == nullptr;
 }
 
 template< typename T >
