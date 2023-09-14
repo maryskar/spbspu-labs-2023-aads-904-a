@@ -8,32 +8,53 @@
 
 int main(int argc, char* argv[])
 {
-  if (argc > 1)
-  {
-    std::ifstream fin(argv[1]);
-    if (!fin.is_open())
-    {
-      std::cerr << "Reading File could not be opened\n";
-      return 1;
-    }
-  }
+  Queue< std::string > queue;
+  Stack< long long > stack;
 
-  std::istream* input = nullptr;
-  if (argc > 1)
+  std::ifstream infile;
+  if (argc == 2)
   {
-    try
+    infile.open(argv[1]);
+    if (!infile.good())
     {
-      input = new std::ifstream(argv[1]);
-    }
-    catch (const std::bad_alloc& e)
-    {
-      e.what();
-      delete input;
+      std::cerr << "File could not be opened";
       return 1;
     }
   }
-  else
+  if (argc > 2)
   {
-    input = &std::cin;
+    std::cerr << "Many argc";
+    return 1;
   }
+  std::istream& file = (argc == 1) ? std::cin : infile;
+  try
+  {
+    while (!file.eof())
+    {
+      std::string math_string;
+      std::getline(file, math_string);
+      if (!math_string[0])
+      {
+        continue;
+      }
+      skarlygina::formatToPostfix(math_string, queue);
+      skarlygina::countPostfix(queue, stack);
+    }
+  }
+  catch (const std::exception& e)
+  {
+    std::cerr << e.what() << "/n";
+    return 2;
+  }
+  while (!stack.isEmpty())
+  {
+    std::cout << stack.top();
+    stack.pop();
+    if (!stack.isEmpty())
+    {
+      std::cout << " ";
+    }
+  }
+  std::cout << "\n";
+  return 0;
 }

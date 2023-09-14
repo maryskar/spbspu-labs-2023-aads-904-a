@@ -6,7 +6,7 @@
 constexpr long long limit_min = std::numeric_limits< long long >::min();
 constexpr long long limit_max = std::numeric_limits< long long >::max();
 
-long long calculator::sum(long long a, long long b)
+long long skarlygina::sum(long long a, long long b)
 {
   if (limit_max - a < b)
   {
@@ -15,7 +15,7 @@ long long calculator::sum(long long a, long long b)
   return a + b;
 }
 
-long long calculator::substraction(long long a, long long b)
+long long skarlygina::substraction(long long a, long long b)
 {
   if (limit_min + b > a)
   {
@@ -24,7 +24,7 @@ long long calculator::substraction(long long a, long long b)
   return a - b;
 }
 
-long long calculator::multiplication(long long a, long long b)
+long long skarlygina::multiplication(long long a, long long b)
 {
   if ((b > 0 && a > limit_max / b) || (b < 0 && a < limit_min / b))
   {
@@ -33,7 +33,7 @@ long long calculator::multiplication(long long a, long long b)
   return a * b;
 }
 
-long long calculator::division(long long a, long long b)
+long long skarlygina::division(long long a, long long b)
 {
   if (b == 0)
   {
@@ -46,7 +46,7 @@ long long calculator::division(long long a, long long b)
   return a / b;
 }
 
-long long calculator::remainder(long long a, long long b)
+long long skarlygina::remainder(long long a, long long b)
 {
   if (b == 0)
   {
@@ -59,7 +59,21 @@ long long calculator::remainder(long long a, long long b)
   return a % b;
 }
 
-bool calculator::isOperation(std::string op)
+bool skarlygina::isOperation(char op)
 {
-  return (op == "+") || (op == "-") || (op == "*") || (op == "/") || (op == "%");
+  return (op == '+') || (op == '-') || (op == '*') || (op == '/') || (op == '%');
+}
+
+bool skarlygina::isGreaterPriority(char op1, char op2)
+{
+  return (op1 == '+' || op1 == '-') && (op2 == '%' || op2 == '*' || op2 == '/');
+}
+
+bool skarlygina::checkString(const std::string& op)
+{
+  if (op.length() == 1)
+  {
+    return isOperation(op[0]);
+  }
+  return false;
 }

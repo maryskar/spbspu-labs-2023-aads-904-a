@@ -1,20 +1,27 @@
 #include "count.h"
 #include "calculator.h"
-long long switchSymbol(char operation, long long a, long long b)
+long long switchSymbol(const std::string& operation, long long a, long long b)
 {
-  switch (operation)
+  long long result;
+  if (operation == "-")
   {
-  case '+':
-    return calculator::sum(a, b);
-  case '-':
-    return calculator::substraction(a, b);
-  case '*':
-    return calculator::multiplication(a, b);
-  case '/':
-    return calculator::division(a, b);
-  case '%':
-    return calculator::remainder(a, b);
-  default:
-    throw;
+    result = skarlygina::substraction(a, b);
   }
+  if (operation == "+")
+  {
+    result = skarlygina::sum(a, b);
+  }
+  if (operation == "*")
+  {
+    result = skarlygina::multiplication(a, b);
+  }
+  if (operation == "/")
+  {
+    result = skarlygina::division(a, b);
+  }
+  if (operation == "%")
+  {
+    result = skarlygina::remainder(a, b);
+  }
+  return result;
 }

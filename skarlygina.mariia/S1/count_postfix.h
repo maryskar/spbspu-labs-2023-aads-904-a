@@ -3,7 +3,7 @@
 #include <string>
 #include "queue.h"
 #include "stack.h"
-#include "count.h"
+
 namespace skarlygina
 {
   void formatToPostfix(std::string& str, Queue< std::string >& queue);
