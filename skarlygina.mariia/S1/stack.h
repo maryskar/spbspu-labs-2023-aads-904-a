@@ -93,7 +93,7 @@ bool Stack< T >::isEmpty() const
 template< typename T>
 Stack< T >::~Stack()
 {
-  while (head_ != nullptr)
+  while (root_ != nullptr)
   {
     pop();
   }
