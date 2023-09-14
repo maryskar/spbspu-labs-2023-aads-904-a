@@ -95,7 +95,9 @@ Stack< T >::~Stack()
 {
   while (root_ != nullptr)
   {
-    delete root_;
+    List< T >* node_temp = root_;
+    root_ = root_->next;
+    delete node_temp;
   }
 }
 #endif

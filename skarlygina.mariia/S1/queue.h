@@ -105,7 +105,9 @@ Queue< T >::~Queue()
 {
   while (head_ != nullptr)
   {
-    delete head_;
+    List< T >* head_temp = head_;
+    head_ = head_->next;
+    delete head_temp;
   }
 }
 #endif
