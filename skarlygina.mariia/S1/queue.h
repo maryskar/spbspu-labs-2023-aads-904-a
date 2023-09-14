@@ -24,14 +24,25 @@ private:
 template< typename T >
 Queue< T >::Queue():
   head_(nullptr),
-  tail_(head_)
+  tail_(nullptr)
 {}
 
 template< typename T >
 Queue< T >::Queue(Queue< T >& other):
     head_(other.head_),
     tail_(other.tail_)
-{}
+{
+  if(!other.isEmpty())
+  {
+    head_ = new List< T >(*other.head_);
+    List< T >* current = head_;
+    while (current->next != nullptr)
+    {
+      current = current->next;
+    }
+    tail_ = current;
+  }
+}
 
 template< typename T >
 Queue< T >::Queue(Queue< T >&& other) noexcept:
@@ -70,17 +81,14 @@ void Queue< T >::pop()
   {
     head_ = tail_ = nullptr;
   }
-  else
-  {
-    head_ = head_->next;
-  }
   delete head_temp;
 }
 
 template <class T>
 const T& Queue< T >::top() const
 {
-  if (isEmpty()) {
+  if (isEmpty())
+  {
     throw std::runtime_error("Queue is empty");
   }
   return head_->data;
@@ -89,7 +97,7 @@ const T& Queue< T >::top() const
 template< typename T >
 bool Queue< T >::isEmpty() const
 {
-  return tail_ == nullptr;
+  return head_ == nullptr;
 }
 
 template< typename T >
@@ -97,7 +105,7 @@ Queue< T >::~Queue()
 {
   while (head_ != nullptr)
   {
-    pop();
+    delete head_;
   }
 }
 #endif

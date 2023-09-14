@@ -95,7 +95,7 @@ Stack< T >::~Stack()
 {
   while (root_ != nullptr)
   {
-    pop();
+    delete root_;
   }
 }
 #endif

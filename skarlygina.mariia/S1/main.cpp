@@ -10,7 +10,6 @@ int main(int argc, char* argv[])
 {
   Queue< std::string > queue;
   Stack< long long > stack;
-
   std::ifstream infile;
   if (argc == 2)
   {
@@ -27,6 +26,7 @@ int main(int argc, char* argv[])
     return 1;
   }
   std::istream& file = (argc == 1) ? std::cin : infile;
+  
   try
   {
     while (!file.eof())
