@@ -26,7 +26,6 @@ int main(int argc, char* argv[])
     return 1;
   }
   std::istream& file = (argc == 1) ? std::cin : infile;
-  
   try
   {
     while (!file.eof())
