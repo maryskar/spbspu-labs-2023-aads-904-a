@@ -73,7 +73,7 @@ const T& Stack< T >::deep() const
 {
   if (isEmpty())
   {
-    throw std::logic_error("Empty");
+    throw std::logic_error("Stack is empty");
   }
   List< T >* current = this->root_;
   while (current->next != nullptr)
