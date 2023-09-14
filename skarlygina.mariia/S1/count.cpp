@@ -1,27 +1,31 @@
 #include "count.h"
+#include <stdexcept>
 #include "calculator.h"
 long long switchSymbol(const std::string& operation, long long a, long long b)
 {
   long long result;
   if (operation == "-")
   {
-    result = skarlygina::substraction(a, b);
+    return skarlygina::substraction(a, b);
   }
   if (operation == "+")
   {
-    result = skarlygina::sum(a, b);
+    return skarlygina::sum(a, b);
   }
   if (operation == "*")
   {
-    result = skarlygina::multiplication(a, b);
+    return skarlygina::multiplication(a, b);
   }
   if (operation == "/")
   {
-    result = skarlygina::division(a, b);
+    return skarlygina::division(a, b);
   }
   if (operation == "%")
   {
-    result = skarlygina::remainder(a, b);
+    return skarlygina::remainder(a, b);
   }
-  return result;
+  else
+  {
+    throw std::runtime_error("Unknown operator");
+  }
 }
