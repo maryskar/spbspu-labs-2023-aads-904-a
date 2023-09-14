@@ -10,7 +10,7 @@ class Queue
 public:
   Queue();
   Queue(Queue< T >& other);
-  Queue(Queue< T >&& other);
+  Queue(Queue< T >&& other) noexcept;
   void push(const T& rhs);
   const T& top() const;
   void pop();
@@ -24,7 +24,7 @@ private:
 template< typename T >
 Queue< T >::Queue():
   head_(nullptr),
-  tail_(nullptr)
+  tail_(head_)
 {}
 
 template< typename T >
@@ -34,7 +34,7 @@ Queue< T >::Queue(Queue< T >& other):
 {}
 
 template< typename T >
-Queue< T >::Queue(Queue< T >&& other) :
+Queue< T >::Queue(Queue< T >&& other) noexcept:
   head_(other.head_),
   tail_(other.tail_)
 {
