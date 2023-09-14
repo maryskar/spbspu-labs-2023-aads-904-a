@@ -8,55 +8,80 @@ constexpr long long limit_max = std::numeric_limits< long long >::max();
 
 long long skarlygina::sum(long long a, long long b)
 {
-  if (limit_max - a < b)
+  if (a < 0 && b < 0)
   {
-    throw std::overflow_error("Overflow numbers");
+    if (a < limit_min - b)
+    {
+      throw std::overflow_error("Overflow");
+    }
+  }
+  if (a >= 0 && b > 0)
+  {
+    if (limit_max - a < b)
+    {
+      throw std::overflow_error("Overflow");
+    }
   }
   return a + b;
 }
 
 long long skarlygina::substraction(long long a, long long b)
 {
-  if (limit_min + b > a)
+  if ((b < limit_min + a && a > 0) || (b > limit_max + a && a < 0))
   {
-    throw std::overflow_error("Overflow numbers");
+    throw std::overflow_error("Overflow");
   }
-  return a - b;
+  return b - a;
 }
 
 long long skarlygina::multiplication(long long a, long long b)
 {
-  if ((b > 0 && a > limit_max / b) || (b < 0 && a < limit_min / b))
+  if ((a > 0 && b > 0) || (a < 0 && b < 0))
   {
-    throw std::overflow_error("Multiplication overflow");
+    if (a > limit_max / b)
+    {
+      throw std::overflow_error("Overflow");
+    }
+  }
+  else
+  {
+    if (a < 0 && b > 0)
+    {
+      if (a < limit_min / b)
+      {
+        throw std::overflow_error("Overflow");
+      }
+    }
+    if (a > 0 && b < 0)
+    {
+      if (b < limit_min / a)
+      {
+        throw std::overflow_error("Overflow");
+      }
+    }
   }
   return a * b;
 }
 
 long long skarlygina::division(long long a, long long b)
 {
-  if (b == 0)
+  if (a == 0)
   {
-    throw std::invalid_argument("Division by zero");
+    throw std::overflow_error("div by 0");
   }
-  if ((b > 0 && a > limit_max / b) || (b < 0 && a < limit_min / b))
-  {
-    throw std::overflow_error("Division overflow");
-  }
-  return a / b;
+  return b / a;
 }
 
 long long skarlygina::remainder(long long a, long long b)
 {
-  if (b == 0)
+  if (b > 0)
   {
-    throw std::invalid_argument("Division by zero");
+    return b % a;
   }
-  if (a == limit_min && b == -1)
+  else
   {
-    throw std::overflow_error("Modulo overflow");
+    return (b + a * (std::abs(b) / a + 1));
   }
-  return a % b;
 }
 
 bool skarlygina::isOperation(char op)
