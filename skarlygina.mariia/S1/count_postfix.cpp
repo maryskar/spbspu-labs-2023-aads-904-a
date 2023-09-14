@@ -103,7 +103,7 @@ void skarlygina::formatToPostfix(std::string& str, Queue< std::string >& queue)
   }
 }
 
-void skarlygina::countPostfix(Queue< std::string >& queue, Stack< long long > res)
+void skarlygina::countPostfix(Queue< std::string >& queue, Stack< long long >& res)
 {
   Stack< long long > stack;
   while (!queue.isEmpty())

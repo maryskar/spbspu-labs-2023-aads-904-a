@@ -53,8 +53,13 @@ template< typename T>
 void Stack< T >::push(const T& rhs)
 {
   const int MAX_SIZE = 100;
-  if (size >= MAX_SIZE) {
+  if (size >= MAX_SIZE)
+  {
     throw std::overflow_error("Stack is full");
+  }
+  if (new_node == nullptr)
+  {
+    throw std::bad_alloc();
   }
   List< T >* new_node = new List< T >{ rhs, nullptr };
   new_node->data = rhs;

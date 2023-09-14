@@ -7,6 +7,6 @@
 namespace skarlygina
 {
   void formatToPostfix(std::string& str, Queue< std::string >& queue);
-  void countPostfix(Queue< std::string >& queue, Stack< long long > res);
+  void countPostfix(Queue< std::string >& queue, Stack< long long >& res);
 }
 #endif
