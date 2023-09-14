@@ -57,11 +57,11 @@ void Stack< T >::push(const T& rhs)
   {
     throw std::overflow_error("Stack is full");
   }
+  List< T >* new_node = new List< T >{rhs, nullptr};
   if (new_node == nullptr)
   {
     throw std::bad_alloc();
   }
-  List< T >* new_node = new List< T >{ rhs, nullptr };
   new_node->data = rhs;
   new_node->next = root_;
   root_ = new_node;
@@ -110,6 +110,7 @@ Stack< T >::~Stack()
     List< T >* node_temp = root_;
     root_ = root_->next;
     delete node_temp;
+    size--;
   }
 }
 #endif
