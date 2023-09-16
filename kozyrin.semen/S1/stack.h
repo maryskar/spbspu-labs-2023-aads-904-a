@@ -47,6 +47,7 @@ namespace kozyrin {
     if (this == other) {
       return *this;
     }
+    clear();
     top_ = copy(other.top_);
     return *this;
   }
