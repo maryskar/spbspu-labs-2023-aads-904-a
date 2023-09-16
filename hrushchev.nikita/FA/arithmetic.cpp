@@ -4,7 +4,7 @@
 #include <limits>
 
 constexpr long double max = std::numeric_limits< long double >::max();
-constexpr long double min = std::numeric_limits< long double >::min();
+constexpr long double min = std::numeric_limits< long double >::lowest();
 
 long double hrushchev::sum(long double a, long double b)
 {

@@ -13,6 +13,7 @@ hrushchev::Queue<std::string> hrushchev::convertStringToInfix(std::string str)
   hrn::Queue< std::string > infix_queue;
   std::string cur_token;
 
+  infix_queue.push("(");
   for (char c : str)
   {
     if (isOperator(c))
@@ -34,7 +35,7 @@ hrushchev::Queue<std::string> hrushchev::convertStringToInfix(std::string str)
   {
     infix_queue.push(cur_token);
   }
-
+  infix_queue.push(")");
   return infix_queue;
 }
 
