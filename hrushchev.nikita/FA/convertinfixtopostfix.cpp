@@ -8,7 +8,7 @@ namespace hrushchev
 {
   int getOperatorPriority(std::string op)
   {
-    if (op == "*" || op == "/" || op == "%")
+    if (op == "*" || op == "/" || op == "%" || op == "sin" || op == "cos")
     {
       return 2;
     }
