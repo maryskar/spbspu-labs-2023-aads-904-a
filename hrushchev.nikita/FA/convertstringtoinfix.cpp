@@ -2,23 +2,38 @@
 #include <string>
 #include "queue.hpp"
 
+bool isOperator(char c)
+{
+    return c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')';
+}
+
 hrushchev::Queue<std::string> hrushchev::convertStringToInfix(std::string str)
 {
   namespace hrn = hrushchev;
   hrn::Queue< std::string > infix_queue;
+  std::string cur_token;
 
-  std::string delimiter = " ";
-  size_t pos = 0;
-  std::string token;
-
-  while ((pos = str.find(delimiter)) != std::string::npos)
+  for (char c : str)
   {
-    token = str.substr(0, pos);
-    infix_queue.push(token);
-    str.erase(0, pos + 1);
+    if (isOperator(c))
+    {
+      if (!cur_token.empty())
+      {
+        infix_queue.push(cur_token);
+        cur_token.clear();
+      }
+      infix_queue.push(std::string(1, c));
+    }
+    else
+    {
+      cur_token += c;
+    }
   }
 
-  infix_queue.push(str);
+  if (!cur_token.empty())
+  {
+    infix_queue.push(cur_token);
+  }
 
   return infix_queue;
 }

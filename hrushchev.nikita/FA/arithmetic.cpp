@@ -3,10 +3,10 @@
 #include <stdexcept>
 #include <limits>
 
-constexpr long long max = std::numeric_limits< long long >::max();
-constexpr long long min = std::numeric_limits< long long >::min();
+constexpr long double max = std::numeric_limits< long double >::max();
+constexpr long double min = std::numeric_limits< long double >::min();
 
-long double hrushchev::sum(long long a, long long b)
+long double hrushchev::sum(long double a, long double b)
 {
   if (max - a < b)
   {
@@ -15,7 +15,7 @@ long double hrushchev::sum(long long a, long long b)
   return a + b;
 }
 
-long double hrushchev::subtract(long long a, long long b)
+long double hrushchev::subtract(long double a, long double b)
 {
   if ((b > 0) && (min + b > a))
   {
@@ -24,7 +24,7 @@ long double hrushchev::subtract(long long a, long long b)
   return a - b;
 }
 
-long double hrushchev::multiply(long long a, long long b)
+long double hrushchev::multiply(long double a, long double b)
 {
   if ((a > 0) && ((max / a) < b))
   {
@@ -45,7 +45,7 @@ long double hrushchev::multiply(long long a, long long b)
   return a * b;
 }
 
-long double hrushchev::division(long long a, long long b)
+long double hrushchev::division(long double a, long double b)
 {
   if (b == 0)
   {
@@ -54,7 +54,7 @@ long double hrushchev::division(long long a, long long b)
   return a / b;
 }
 
-long double hrushchev::remaind(long long a, long long b)
+long long hrushchev::remaind(long long a, long long b)
 {
   if (b == 0)
   {
