@@ -33,7 +33,7 @@ namespace hrushchev
 
   bool isOperator(std::string op)
   {
-    return op == "*" || op == "/" || op == "+" || op == "-" || op == "(" || op == ")" || op == "%" || op == "!";
+    return op == "*" || op == "/" || op == "+" || op == "-" || op == "(" || op == ")" || op == "%";
   }
 }
 
@@ -81,6 +81,10 @@ hrushchev::Queue< std::string > hrushchev::convertInfixToPostfix(hrushchev::Queu
         stack.push(token);
       }
     }
+    else if (token == "sin" || token == "cos")
+    {
+      stack.push(token);
+    }
     else
     {
       throw std::logic_error("Invalid token");
@@ -100,4 +104,3 @@ hrushchev::Queue< std::string > hrushchev::convertInfixToPostfix(hrushchev::Queu
 
   return postfixQueue;
 }
-

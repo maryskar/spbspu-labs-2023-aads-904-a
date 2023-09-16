@@ -1,11 +1,12 @@
 #include "arithmetic.hpp"
+#include <cmath>
 #include <stdexcept>
 #include <limits>
 
 constexpr long long max = std::numeric_limits< long long >::max();
 constexpr long long min = std::numeric_limits< long long >::min();
 
-long long hrushchev::sum(long long a, long long b)
+long double hrushchev::sum(long long a, long long b)
 {
   if (max - a < b)
   {
@@ -14,7 +15,7 @@ long long hrushchev::sum(long long a, long long b)
   return a + b;
 }
 
-long long hrushchev::subtract(long long a, long long b)
+long double hrushchev::subtract(long long a, long long b)
 {
   if ((b > 0) && (min + b > a))
   {
@@ -23,7 +24,7 @@ long long hrushchev::subtract(long long a, long long b)
   return a - b;
 }
 
-long long hrushchev::multiply(long long a, long long b)
+long double hrushchev::multiply(long long a, long long b)
 {
   if ((a > 0) && ((max / a) < b))
   {
@@ -44,7 +45,7 @@ long long hrushchev::multiply(long long a, long long b)
   return a * b;
 }
 
-long long hrushchev::division(long long a, long long b)
+long double hrushchev::division(long long a, long long b)
 {
   if (b == 0)
   {
@@ -53,7 +54,7 @@ long long hrushchev::division(long long a, long long b)
   return a / b;
 }
 
-long long hrushchev::remaind(long long a, long long b)
+long double hrushchev::remaind(long long a, long long b)
 {
   if (b == 0)
   {
@@ -66,3 +67,12 @@ long long hrushchev::remaind(long long a, long long b)
   return a % b;
 }
 
+long double hrushchev::sin(double a)
+{
+  return std::sin(a);
+}
+
+long double hrushchev::cos(double a)
+{
+  return std::cos(a);
+}

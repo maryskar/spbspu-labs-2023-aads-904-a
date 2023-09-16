@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
   std::istream& input = (argc == 2) ? file_input : std::cin;
 
   std::string line;
-  hrn::Stack< long long > results;
+  hrn::Stack< long double > results;
   while (std::getline(input, line))
   {
     if (!input)
@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
     try
     {
       hrn::Queue< std::string > postfix = hrn::convertInfixToPostfix(infix);
-      long long result = hrn::calculatePostfix(postfix);
+      long double result = hrn::calculatePostfix(postfix);
       results.push(result);
     }
     catch (const std::exception& e)
