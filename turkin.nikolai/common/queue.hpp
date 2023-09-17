@@ -4,7 +4,7 @@
 #include <cstring>
 #include <stdexcept>
 #include <utility>
-#include "oneway-list.hpp"
+#include <dictionary/forward-list/oneway-list.hpp>
 
 namespace turkin
 {

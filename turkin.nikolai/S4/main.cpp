@@ -1,9 +1,11 @@
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <cstddef>
 #include <functional>
 #include <utility>
-#include <dictionary/dictionary.hpp>
-#include <dictionary/forward-list/forward-list.hpp>
+#include <avl-tree/avl-tree.hpp>
+#include <out-msg.hpp>
 #include <cmd-work.hpp>
 #include <file-work.hpp>
 
@@ -23,16 +25,16 @@ int main(int argc, char * argv[])
     return 1;
   }
 
-  using dict_t = turkin::Dictionary< std::size_t, std::string, std::less< > >;
-  using dict_a = turkin::Dictionary< std::string, dict_t, std::less< > >;
-  using dict_c = turkin::Dictionary< std::string, dict_t (*)(const dict_t &, const dict_t &), std::less< > >;
+  using tree_t = turkin::AVLtree< std::size_t, std::string, std::less< > >;
+  using tree_a = turkin::AVLtree< std::string, tree_t, std::less< > >;
+  using tree_c = turkin::AVLtree< std::string, tree_t (*)(const tree_t &, const tree_t &), std::less< > >;
 
-  dict_c commands;
-  commands.insert("complement", turkin::to_complement< dict_t, std::less< > >);
-  commands.insert("intersect", turkin::to_intersect< dict_t >);
-  commands.insert("union", turkin::to_union< dict_t >);
+  tree_c commands;
+  commands.insert("complement", turkin::to_complement< tree_t, std::less< > >);
+  commands.insert("intersect", turkin::to_intersect< tree_t >);
+  commands.insert("union", turkin::to_union< tree_t >);
 
-  dict_a dict = turkin::genDicts< dict_a, dict_t >(file);
+  auto dict = turkin::genDicts< tree_a, tree_t >(file);
 
   while (std::cin)
   {
@@ -56,11 +58,11 @@ int main(int argc, char * argv[])
         std::string set1;
         std::string set2;
         std::cin >> set0 >> set1 >> set2;
-        dict_t dict1 = dict.at(set1);
-        dict_t dict2 = dict.at(set2);
+        tree_t dict1 = dict.at(set1);
+        tree_t dict2 = dict.at(set2);
         auto func = commands.at(cmd);
-        dict_t temp = func(dict1, dict2);
-        dict.emplace(set0, temp);
+        tree_t temp = func(dict1, dict2);
+        dict.insert(set0, temp);
       }
     }
     catch (...)
