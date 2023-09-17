@@ -7,10 +7,6 @@ namespace chulkov {
   template < typename T >
   class Queue
   {
-  private:
-    List< T >* front_;
-    List< T >* back_;
-
   public:
     Queue():
       front_(nullptr),
@@ -126,7 +122,11 @@ namespace chulkov {
       }
       front_ = back_ = nullptr;
     }
+  private:
+    List< T >* front_;
+    List< T >* back_;
   };
+
 }
 
 #endif
