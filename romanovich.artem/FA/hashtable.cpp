@@ -145,7 +145,7 @@ const romanovich::HashTable::data_t &romanovich::HashTable::getData() const
 {
   return data_;
 }
-WordEntry &romanovich::HashTable::operator[](const std::string &key)
+romanovich::WordEntry &romanovich::HashTable::operator[](const std::string &key)
 {
   uint32_t index = romanovich::generateMurmurHash2(key, capacity_);
   return data_[index];

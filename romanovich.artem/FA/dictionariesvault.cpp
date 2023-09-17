@@ -1,10 +1,10 @@
 #include "dictionariesvault.h"
-DictionariesVault *DictionariesVault::instance()
+romanovich::DictionariesVault::value_t *romanovich::DictionariesVault::instance()
 {
-  static DictionariesVault* ptrVault_ = nullptr;
+  static value_t *ptrVault_ = nullptr;
   if (!ptrVault_)
   {
-    ptrVault_ = new DictionariesVault();
+    ptrVault_ = new DictionariesVault::value_t;
   }
   return ptrVault_;
 }

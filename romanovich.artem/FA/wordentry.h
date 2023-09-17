@@ -2,17 +2,20 @@
 #define WORDENTRY_H
 #include <string>
 #include <vector>
-struct WordEntry
+namespace romanovich
 {
-  enum class Level
+  struct WordEntry
   {
-    beginner,
-    intermediate,
-    advanced
+    enum class Level
+    {
+      beginner,
+      intermediate,
+      advanced
+    };
+    std::string word;
+    std::vector< std::string > translations;
+    Level level;
+    bool operator==(const WordEntry &rhs) const;
   };
-  std::string word;
-  std::vector< std::string > translations;
-  Level level;
-  bool operator==(const WordEntry &rhs) const;
-};
+}
 #endif
