@@ -5,7 +5,7 @@
 #include <memory>
 #include <utility>
 #include "iterator.hpp"
-#include "../oneway-list.hpp"
+#include "dictionary/forward-list/oneway-list.hpp"
 
 namespace turkin
 {
@@ -15,10 +15,9 @@ namespace turkin
   class ConstIterator
   {
     friend class ForwardList< T >;
+    using ListNode = OneWayNode< T > *;
     public:
-      using List = OneWayNode< T > *;
       ConstIterator();
-      explicit ConstIterator(List rhs);
       explicit ConstIterator(const Iterator< T > & rhs);
       ConstIterator< T > & operator=(const ConstIterator< T > & rhs) = default;
       ~ConstIterator() = default;
@@ -29,7 +28,8 @@ namespace turkin
       bool operator==(const ConstIterator< T > & rhs) const;
       bool operator!=(const ConstIterator< T > & rhs) const;
     private:
-      List cur_;
+      explicit ConstIterator(ListNode rhs);
+      ListNode cur_;
   };
 }
 
@@ -39,7 +39,7 @@ turkin::ConstIterator< T >::ConstIterator():
 {}
 
 template< typename T >
-turkin::ConstIterator< T >::ConstIterator(List rhs):
+turkin::ConstIterator< T >::ConstIterator(ListNode rhs):
   cur_(rhs)
 {}
 

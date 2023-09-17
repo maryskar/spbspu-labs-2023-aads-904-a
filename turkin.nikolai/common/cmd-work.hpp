@@ -4,6 +4,7 @@
 #include <fstream>
 #include <functional>
 #include <out-msg.hpp>
+#include <comparator.hpp>
 
 namespace turkin
 {
@@ -18,7 +19,7 @@ namespace turkin
       return;
     }
     out << name;
-    for (auto ins : ret)
+    for (auto ins: ret)
     {
       out << " " << ins.first << " " << ins.second;
     }
@@ -66,10 +67,10 @@ namespace turkin
   Storage to_intersect(const Storage & one, const Storage & two)
   {
     Storage result;
-    for (auto ins : two)
+    for (auto ins: two)
     {
       auto res = *two.cend();
-      for (auto i : one)
+      for (auto i: one)
       {
         if (ins.first == i.first)
         {
@@ -89,7 +90,7 @@ namespace turkin
   Storage to_union(const Storage & one, const Storage & two)
   {
     Storage result(one);
-    for (auto ins : two)
+    for (auto ins: two)
     {
       if (result.find(ins.first)->first != ins.first)
       {

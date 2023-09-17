@@ -1,9 +1,9 @@
-#ifndef DIRECT_CONST_ITERATOR_HPP
-#define DIRECT_CONST_ITERATOR_HPP
+#ifndef CONST_ITERATOR_HPP
+#define CONST_ITERATOR_HPP
 
 #include <utility>
 #include <cassert>
-#include "../tree-node.hpp"
+#include "avl-tree/tree-node.hpp"
 
 namespace turkin
 {
@@ -22,8 +22,6 @@ namespace turkin
     using node_t = TreeNode< tree_t > *;
     public:
       ConstIterator();
-      explicit ConstIterator(node_t rhs);
-      explicit ConstIterator(const it & rhs);
       cit & operator=(const cit & rhs) = default;
       ~ConstIterator() = default;
       cit & operator++();
@@ -35,33 +33,39 @@ namespace turkin
       bool operator==(const cit & rhs) const;
       bool operator!=(const cit & rhs) const;
     private:
+      explicit ConstIterator(node_t rhs, node_t end);
+      explicit ConstIterator(const it & rhs);
       node_t cur_;
+      node_t end_;
   };
 }
 
 template< typename K, typename V, typename C >
 turkin::ConstIterator< K, V, C >::ConstIterator():
-  cur_(nullptr)
+  cur_(nullptr),
+  end_(nullptr)
 {}
 
 template< typename K, typename V, typename C >
-turkin::ConstIterator< K, V, C >::ConstIterator(node_t rhs):
-  cur_(rhs)
+turkin::ConstIterator< K, V, C >::ConstIterator(node_t rhs, node_t end):
+  cur_(rhs),
+  end_(end)
 {}
 
 template< typename K, typename V, typename C >
 turkin::ConstIterator< K, V, C >::ConstIterator(const it & rhs):
-  cur_(rhs.cur_)
+  cur_(rhs.cur_),
+  end_(rhs.end_)
 {}
 
 template< typename K, typename V, typename C >
 turkin::ConstIterator< K, V, C > & turkin::ConstIterator< K, V, C >::operator++()
 {
   assert(cur_ != nullptr);
-  if (cur_->right != nullptr)
+  if (cur_->right != end_)
   {
     cur_ = cur_->right;
-    while (cur_->left != nullptr)
+    while (cur_->left != end_)
     {
       cur_ = cur_->left;
     }
@@ -69,7 +73,7 @@ turkin::ConstIterator< K, V, C > & turkin::ConstIterator< K, V, C >::operator++(
   else
   {
     node_t parent = cur_->parent;
-    while (parent != nullptr && cur_ == parent->right)
+    while (parent != end_ && cur_ == parent->right)
     {
       cur_ = parent;
       parent = parent->parent;
@@ -92,10 +96,10 @@ template< typename K, typename V, typename C >
 turkin::ConstIterator< K, V, C > & turkin::ConstIterator< K, V, C >::operator--()
 {
   assert(cur_ != nullptr);
-  if (cur_->left != nullptr)
+  if (cur_->left != end_)
   {
     cur_ = cur_->left;
-    while (cur_->right != nullptr)
+    while (cur_->right != end_)
     {
       cur_ = cur_->right;
     }
@@ -103,9 +107,9 @@ turkin::ConstIterator< K, V, C > & turkin::ConstIterator< K, V, C >::operator--(
   else
   {
     node_t parent = cur_->parent;
-    if (cur_ != nullptr)
+    if (cur_ != end_)
     {
-      while (parent != nullptr && cur_ == parent->left)
+      while (parent != end_ && cur_ == parent->left)
       {
         cur_ = parent;
         parent = parent->parent;
