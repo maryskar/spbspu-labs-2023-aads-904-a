@@ -100,7 +100,7 @@ namespace chulkov {
 
     T& getTop()
     {
-      return static_cast< const Queue& >(*this).getTop();
+      return const_cast< T& >(static_cast< const Queue& >(*this).getTop());
     }
 
     const T& getTop() const

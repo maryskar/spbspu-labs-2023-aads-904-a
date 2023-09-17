@@ -75,7 +75,7 @@ namespace chulkov {
 
     T& top()
     {
-      return static_cast< const Stack& >(*this).top();
+      return const_cast< T& >(static_cast< const Stack& >(*this).top());
     }
 
     const T& top() const
