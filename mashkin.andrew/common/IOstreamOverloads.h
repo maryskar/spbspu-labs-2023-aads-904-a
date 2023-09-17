@@ -3,8 +3,8 @@
 #include <ios>
 #include <iostream>
 #include <string>
-#include <dictionary.h>
 #include <AVL.h>
+#include "../S2/dictionary.h"
 
 namespace mashkin
 {
