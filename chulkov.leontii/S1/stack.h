@@ -15,14 +15,6 @@ namespace chulkov {
       top_(nullptr)
     {}
 
-    T& top()
-    {
-      if (empty()) {
-        throw std::runtime_error("Stack is empty.");
-      }
-      return top_->data;
-    }
-
     Stack(const Stack< T >& other):
       top_(nullptr)
     {
@@ -47,7 +39,7 @@ namespace chulkov {
 
     Stack& operator=(const Stack< T >& other)
     {
-      if (this != &other) {
+      if (this != std::addressof(other)) {
         Stack tp(other);
         std::swap(top_, tp.top_);
       }
@@ -56,7 +48,7 @@ namespace chulkov {
 
     Stack& operator=(Stack< T >&& other)
     {
-      if (this != &other) {
+      if (this != std::addressof(other)) {
         clear();
         top_ = other.top_;
         other.top_ = nullptr;
@@ -81,9 +73,17 @@ namespace chulkov {
       top_ = newNode;
     }
 
+    T& top()
+    {
+      return const_cast< const Stack* >(this)->top();
+    }
+
     const T& top() const
     {
-      return top();
+      if (empty()) {
+        throw std::runtime_error("Stack is empty.");
+      }
+      return top_->data;
     }
 
     bool empty() const

@@ -47,7 +47,7 @@ namespace chulkov {
 
     Queue& operator=(const Queue< T >& other)
     {
-      if (this != &other) {
+      if (this != std::addressof(other)) {
         Queue temp(other);
         std::swap(front_, temp.front_);
         std::swap(back_, temp.back_);
@@ -100,15 +100,15 @@ namespace chulkov {
 
     T& getTop()
     {
-      if (empty()) {
-        throw std::out_of_range("Queue is empty");
-      }
-      return front_->data;
+      return const_cast< const Queue* >(this)->getTop();
     }
 
     const T& getTop() const
     {
-      return getTop();
+      if (empty()) {
+        throw std::out_of_range("Queue is empty");
+      }
+      return front_->data;
     }
 
     bool empty() const
