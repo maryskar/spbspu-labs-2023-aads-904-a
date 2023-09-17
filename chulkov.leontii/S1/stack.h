@@ -3,8 +3,7 @@
 #include <stdexcept>
 #include "list.h"
 
-namespace chulkov
-{
+namespace chulkov {
   template < typename T >
   class Stack
   {
@@ -106,6 +105,7 @@ namespace chulkov
       }
       top_ = nullptr;
     }
+
   private:
     List< T >* top_;
   };

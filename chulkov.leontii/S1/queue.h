@@ -122,6 +122,7 @@ namespace chulkov {
       }
       front_ = back_ = nullptr;
     }
+
   private:
     List< T >* front_;
     List< T >* back_;
