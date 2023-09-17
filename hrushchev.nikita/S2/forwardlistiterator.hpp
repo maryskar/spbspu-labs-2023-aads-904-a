@@ -4,7 +4,6 @@
 #include <memory>
 #include <list.hpp>
 
-
 namespace hrushchev
 {
   template< typename T >
