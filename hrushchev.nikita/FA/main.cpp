@@ -19,8 +19,9 @@ int main()
   hrn::set(dict_with_vars, "pi", "3.1415");
 
   hrn::addToInfixDict(dict_with_infix, "1", "sin(pi)");
-  hrn::addToPostfixDict(dict_with_postfix, dict_with_infix, dict_with_vars, "p1", "1", 7);
+  hrn::addToPostfixDict(dict_with_postfix, dict_with_infix, dict_with_vars, "p1", "1", 1);
   hrn::calculate(dict_with_postfix, "p1", std::cout);
-  printInfix(dict_with_infix, std::cout);
-  printPostfix(dict_with_postfix, std::cout);
+  hrn::printInfix(dict_with_infix, std::cout);
+  hrn::printPostfix(dict_with_postfix, std::cout);
+  hrn::printVariables(dict_with_vars, std::cout);
 }

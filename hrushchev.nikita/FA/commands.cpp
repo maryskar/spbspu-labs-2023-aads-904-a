@@ -146,6 +146,52 @@ void hrushchev::printPostfix(postfix_dict& dict, std::ostream& out)
   }
 }
 
+void hrushchev::help(std::ostream& out)
+{
+  out << "1) infix - command that takes the name and the infix expression as input. ";
+  out << "It adds the infix expression to the dictionary under the given name." << "\n";
+
+  out << "2) postfix - command that takes the name for the postfix expression, the name of the ";
+  out << "infix expression from the dictionary, and an integer for precision of calculations. ";
+  out << "It adds the postfix expression to the dictionary under the given name." << "\n";
+
+  out << "3) sum_postfix - command that creates and adds a new postfix expression to the dictionary, ";
+  out << "which is the sum of two given expressions. It takes the name for the result, inputs of ";
+  out << "two existing expressions, and a number for precision of calculations." << "\n";
+
+  out << "4) subtract_postfix - command that creates and adds a new postfix expression to the dictionary, ";
+  out << "which is the difference of two given expressions. It takes the name for the result, inputs of ";
+  out << "two existing expressions, and a number for precision of calculations." << "\n";
+
+  out << "5) multiply_postfix - command that creates and adds a new postfix expression to the dictionary, ";
+  out << "which is the product of two given expressions. It takes the name for the result, inputs of ";
+  out << "two existing expressions, and a number for precision of calculations." << "\n";
+
+  out << "6) division_postfix - command that creates and adds a new postfix expression to the dictionary, ";
+  out << "which is the quotient of two given expressions. It takes the name for the result, inputs of ";
+  out << "two existing expressions, and a number for precision of calculations." << "\n";
+
+  out << "7) print_infix - command that prints the data in the dictionary with infix expressions." << "\n";
+
+  out << "8) print_postfix - command that prints the data in the dictionary with postfix expressions." << "\n";
+
+  out << "9) help - command that displays a list of all available commands and their descriptions." << "\n";
+
+  out << "10) calculate - command that takes the name of a postfix expression from the dictionary and ";
+  out << "outputs the result of evaluating that expression." << "\n";
+
+  out << "11) history - command that displays a list of the last 3 executed expressions and their results." << "\n";
+
+  out << "12) clear - command that clears the history of executed expressions." << "\n";
+
+  out << "13) set - command that allows you to create and add a real variable to the dictionary under a given name." << "\n";
+
+  out << "14) variable - command that outputs the value of a variable from the dictionary." << "\n";
+
+  out << "15) variables - command that displays a list of variables." << "\n";
+
+}
+
 void hrushchev::calculate(postfix_dict& dict, str& name, std::ostream& out)
 {
   postfix_data data = dict.at(name);
@@ -172,3 +218,12 @@ void hrushchev::printVariable(variables_dict& dict, str& name, std::ostream& out
     out << "This variable dont exist\n";
   }
 }
+
+void hrushchev::printVariables(variables_dict& dict, std::ostream& out)
+{
+  for (auto it = dict.begin(); it != dict.end(); ++it)
+  {
+    out << it->first << "=" << it->second << "\n";
+  }
+}
+

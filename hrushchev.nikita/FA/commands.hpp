@@ -28,9 +28,11 @@ namespace hrushchev
   void divisionPostfix(postfix_dict& dict, str& res, str& name1, str& name2, int accuracy);
   void printInfix(infix_dict& dict, std::ostream& out);
   void printPostfix(postfix_dict& dict, std::ostream& out);
+  void help(std::ostream& out);
   void calculate(postfix_dict& dict, str& name, std::ostream& out);
   void set(variables_dict& dict, str& name, str& value);
   void printVariable(variables_dict& dict, str& name, std::ostream& out);
+  void printVariables(variables_dict& dict, std::ostream& out);
 }
 
 #endif
