@@ -126,7 +126,6 @@ namespace chulkov {
     List< T >* front_;
     List< T >* back_;
   };
-
 }
 
 #endif
