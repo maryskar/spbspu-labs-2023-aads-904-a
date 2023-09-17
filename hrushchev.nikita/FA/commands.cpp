@@ -25,15 +25,6 @@ void hrushchev::addToPostfixDict(postfix_dict& post_dict,
   post_dict.insert(post_name, postfix_data(postfix_queue, accuracy));
 }
 
-void hrushchev::calculate(postfix_dict& dict, str& name, std::ostream& out)
-{
-  postfix_data data = dict.at(name);
-  Queue< std::string > postfix_queue = data.first;
-  int accuracy = data.second;
-  long double res = calculatePostfix(postfix_queue);
-  out << std::setprecision(accuracy) << res << "\n";
-}
-
 void hrushchev::sumPostfix(postfix_dict& dict, str& res, str& name1, str& name2, int accuracy)
 {
   postfix_data data1(dict.at(name1));
@@ -154,3 +145,18 @@ void hrushchev::printPostfix(postfix_dict& dict, std::ostream& out)
     out << "\n";
   }
 }
+
+void hrushchev::calculate(postfix_dict& dict, str& name, std::ostream& out)
+{
+  postfix_data data = dict.at(name);
+  Queue< std::string > postfix_queue = data.first;
+  int accuracy = data.second;
+  long double res = calculatePostfix(postfix_queue);
+  out << std::setprecision(accuracy) << res << "\n";
+}
+
+void hrushchev::set(variables_dict& dict, str& name, str& value)
+{
+  dict.insert(name, value);
+}
+

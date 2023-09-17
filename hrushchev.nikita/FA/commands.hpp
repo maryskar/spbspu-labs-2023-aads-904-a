@@ -22,13 +22,14 @@ namespace hrushchev
       str& post_name,
       str& in_name,
       int accuracy);
-  void calculate(postfix_dict& dict, str& name, std::ostream& out);
   void sumPostfix(postfix_dict& dict, str& res, str& name1, str& name2, int accuracy);
   void subtractPostfix(postfix_dict& dict, str& res, str& name1, str& name2, int accuracy);
   void multiplyPostfix(postfix_dict& dict, str& res, str& name1, str& name2, int accuracy);
   void divisionPostfix(postfix_dict& dict, str& res, str& name1, str& name2, int accuracy);
   void printInfix(infix_dict& dict, std::ostream& out);
   void printPostfix(postfix_dict& dict, std::ostream& out);
+  void calculate(postfix_dict& dict, str& name, std::ostream& out);
+  void set(variables_dict& dict, str& name, str& value);
 }
 
 #endif
