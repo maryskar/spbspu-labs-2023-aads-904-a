@@ -30,6 +30,7 @@ namespace hrushchev
   void printPostfix(postfix_dict& dict, std::ostream& out);
   void calculate(postfix_dict& dict, str& name, std::ostream& out);
   void set(variables_dict& dict, str& name, str& value);
+  void printVariable(variables_dict& dict, str& name, std::ostream& out);
 }
 
 #endif

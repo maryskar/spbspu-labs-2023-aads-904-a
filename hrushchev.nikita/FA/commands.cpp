@@ -160,3 +160,15 @@ void hrushchev::set(variables_dict& dict, str& name, str& value)
   dict.insert(name, value);
 }
 
+void hrushchev::printVariable(variables_dict& dict, str& name, std::ostream& out)
+{
+  try
+  {
+    auto var = dict.at(name);
+    out << var;
+  }
+  catch(...)
+  {
+    out << "This variable dont exist\n";
+  }
+}

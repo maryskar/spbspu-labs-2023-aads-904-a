@@ -16,7 +16,7 @@ int main()
   hrn::AVLTree< std::string, hrn::Queue< std::string > > dict_with_infix;
   hrn::AVLTree< std::string, std::pair< hrn::Queue< std::string >, int > > dict_with_postfix;
   hrn::AVLTree< std::string, std::string > dict_with_vars;
-  dict_with_vars.insert("pi", "3.1415");
+  hrn::set(dict_with_vars, "pi", "3.1415");
 
   hrn::addToInfixDict(dict_with_infix, "1", "sin(pi)");
   hrn::addToPostfixDict(dict_with_postfix, dict_with_infix, dict_with_vars, "p1", "1", 7);
