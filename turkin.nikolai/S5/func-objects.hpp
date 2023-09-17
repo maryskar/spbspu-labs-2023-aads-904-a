@@ -15,7 +15,7 @@ namespace turkin
     private:
       int sum_;
   };
-  
+
   class StrSum
   {
     public:
