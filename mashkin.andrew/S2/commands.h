@@ -2,8 +2,8 @@
 #define S2_COMMANDS_H
 #include <iostream>
 #include <string>
+#include "IO.h"
 #include "dictionary.h"
-#include "IOrealization.h"
 
 namespace mashkin
 {

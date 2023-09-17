@@ -282,7 +282,8 @@ namespace mashkin
             var1 = var2;
             var2 = var3;
             var3 = var3->next;
-          } while (var3 != nullptr);
+          }
+          while (var3 != nullptr);
           var2->next = var1;
           var1 = var2;
           var2 = var3;
@@ -379,7 +380,7 @@ namespace mashkin
     }
   }
 
-  template< class T>
+  template< class T >
   template< class UnaryPredicate >
   void ForwardList< T >::remove_if(UnaryPredicate p)
   {

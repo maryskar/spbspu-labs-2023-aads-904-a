@@ -1,7 +1,7 @@
-#include "IOrealization.h"
 #include <iostream>
 #include <iterator>
 #include <string>
+#include "IO.h"
 #include "dictionary.h"
 
 namespace mashkin

@@ -2,9 +2,9 @@
 #define ITERATOR_H
 #include <cassert>
 #include <memory>
+#include <list.h>
 #include "ForwardConstIterator.h"
 #include "dictionary.h"
-#include <list.h>
 
 namespace mashkin
 {

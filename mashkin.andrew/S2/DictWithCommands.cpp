@@ -1,6 +1,5 @@
 #include "DictWithCommands.h"
 #include <string>
-#include <map>
 #include "commands.h"
 #include "dictionary.h"
 

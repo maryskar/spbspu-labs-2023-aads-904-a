@@ -181,9 +181,9 @@ namespace mashkin
   template< class K, class V, class C >
   void Dictionary< K, V, C >::swap(Dictionary& other) noexcept
   {
-    auto var = other;
-    other = *this;
-    *this = var;
+    pair_.swap(other.pair_);
+    std::swap(comp_, other.comp_);
+    std::swap(size_, other.size_);
   }
 
   template< class K, class V, class C >
