@@ -34,22 +34,27 @@ int main(int argc, char * argv[])
 
   try
   {
-    turkin::StrSum ks;
-    auto result = ks.get();
+    turkin::KeySum key;
+    turkin::StrSum str;
+    auto key_result = key.get();
+    auto str_result = str.get();
     std::string type = argv[1];
     if (type == "ascending")
     {
-      result = dict.traverse_lnr(ks).get();
+      key_result = dict.traverse_lnr(key).get();
+      str_result = dict.traverse_lnr(str).get();
     }
     if (type == "descending")
     {
-      result = dict.traverse_lnr(ks).get();
+      key_result = dict.traverse_lnr(key).get();
+      str_result = dict.traverse_lnr(str).get();
     }
     if (type == "breadth")
     {
-      result = dict.traverse_breadth(ks).get();
+      key_result = dict.traverse_lnr(key).get();
+      str_result = dict.traverse_lnr(str).get();
     }
-    std::cout << "\b" << result << "\n";
+    std::cout << key_result << str_result << "\n";
   }
   catch (...)
   {
