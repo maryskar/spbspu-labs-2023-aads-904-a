@@ -189,7 +189,6 @@ void hrushchev::help(std::ostream& out)
   out << "14) variable - command that outputs the value of a variable from the dictionary." << "\n";
 
   out << "15) variables - command that displays a list of variables." << "\n";
-
 }
 
 void hrushchev::calculate(postfix_dict& dict, str& name, std::ostream& out)
