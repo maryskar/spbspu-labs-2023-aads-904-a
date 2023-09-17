@@ -465,7 +465,7 @@ F turkin::AVLtree< K, V, C >::traverse_rnl(F f)
 
   while (!stack.isEmpty() || cur != end_)
   {
-    if (cur != nullptr)
+    if (cur != end_)
     {
       stack.push(cur);
       cur = cur->right;

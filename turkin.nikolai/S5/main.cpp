@@ -7,8 +7,6 @@
 
 #include "func-objects.hpp"
 
-using tree_t = turkin::AVLtree< int, std::string, std::less< > >;
-
 int main(int argc, char * argv[])
 {
   if (argc != 3)
@@ -25,6 +23,7 @@ int main(int argc, char * argv[])
     return 1;
   }
 
+  using tree_t = turkin::AVLtree< int, std::string, std::less< > >;
   auto dict = turkin::genDict< tree_t >(file);
   if (dict.empty())
   {
@@ -32,28 +31,31 @@ int main(int argc, char * argv[])
     return 0;
   }
 
+  turkin::KeySum key;
+  auto lnr_key = dict.traverse_lnr(key);
+  auto rnl_key = dict.traverse_rnl(key);
+  auto brh_key = dict.traverse_breadth(key);
+  turkin::AVLtree< std::string, decltype(lnr_key), std::less< > > traverse_key;
+  traverse_key.insert("ascending", lnr_key);
+  traverse_key.insert("descending", rnl_key);
+  traverse_key.insert("breadth", brh_key);
+
+  turkin::StrSum str;
+  auto lnr_str = dict.traverse_lnr(str);
+  auto rnl_str = dict.traverse_rnl(str);
+  auto brh_str = dict.traverse_breadth(str);
+  turkin::AVLtree< std::string, decltype(lnr_str), std::less< > > traverse_str;
+  traverse_str.insert("ascending", lnr_str);
+  traverse_str.insert("descending", rnl_str);
+  traverse_str.insert("breadth", brh_str);
+
   try
   {
-    turkin::KeySum key;
-    turkin::StrSum str;
     auto key_result = key.get();
     auto str_result = str.get();
     std::string type = argv[1];
-    if (type == "ascending")
-    {
-      key_result = dict.traverse_lnr(key).get();
-      str_result = dict.traverse_lnr(str).get();
-    }
-    if (type == "descending")
-    {
-      key_result = dict.traverse_lnr(key).get();
-      str_result = dict.traverse_lnr(str).get();
-    }
-    if (type == "breadth")
-    {
-      key_result = dict.traverse_lnr(key).get();
-      str_result = dict.traverse_lnr(str).get();
-    }
+    key_result = traverse_key.at(type).get();
+    str_result = traverse_str.at(type).get();
     std::cout << key_result << str_result << "\n";
   }
   catch (...)
