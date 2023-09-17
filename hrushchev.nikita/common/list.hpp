@@ -6,10 +6,9 @@ namespace details
   template < typename T >
   struct List
   {
-    T data;
-    List< T >* next;
+    T data_;
+    List< T >* next_;
   };
 }
 
 #endif
-
