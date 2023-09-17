@@ -9,7 +9,6 @@ romanovich::HashTable::HashTable(size_t size, size_t capacity):
   data_(data_t(capacity))
 {
 }
-
 void romanovich::HashTable::addKey(const std::string &key)
 {
   uint32_t index = romanovich::generateMurmurHash2(key, capacity_);

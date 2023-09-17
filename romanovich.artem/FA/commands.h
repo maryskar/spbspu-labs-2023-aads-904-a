@@ -6,7 +6,6 @@
 #include "../common/redblack_tree.h"
 #include "hashtable.h"
 #include "dictionariesvault.h"
-
 namespace romanovich
 {
   class CommandHandler

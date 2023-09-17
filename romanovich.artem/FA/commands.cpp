@@ -6,7 +6,6 @@ romanovich::CommandHandler::CommandHandler(std::istream &in, std::ostream &out_)
   dictionaries_(DictionariesVault::instance()),
   in_(in),
   out_(out_)
-
 {
   using namespace std::placeholders;
   processor_["ad"] = std::bind(&CommandHandler::addDict, this);

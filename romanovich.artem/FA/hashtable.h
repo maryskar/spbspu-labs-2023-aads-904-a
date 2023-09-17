@@ -10,7 +10,6 @@ namespace romanovich
   public:
     using data_t = std::vector< WordEntry >;
     HashTable();
-
     HashTable(const HashTable &other) = default;
     HashTable(HashTable &&other) noexcept;
     HashTable &operator=(const HashTable &other);
