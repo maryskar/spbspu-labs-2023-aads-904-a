@@ -2,69 +2,20 @@
 #include <fstream>
 #include <string>
 #include <stdexcept>
+#include <avltree.hpp>
 #include "convertstringtoinfix.hpp"
 #include "convertinfixtopostfix.hpp"
 #include "calcucalepostfix.hpp"
+#include "commands.hpp"
 #include "queue.hpp"
 #include "stack.hpp"
 
-int main(int argc, char* argv[])
+int main()
 {
   namespace hrn = hrushchev;
-
-  if (argc > 2)
-  {
-    std::cerr << "Error arg\n";
-    return 1;
-  }
-
-  std::ifstream file_input;
-  if (argc == 2)
-  {
-    file_input.open(argv[1]);
-    if (!file_input)
-    {
-      std::cerr << "Unable to open file: " << argv[1] << "\n";
-      return 1;
-    }
-  }
-  std::istream& input = (argc == 2) ? file_input : std::cin;
-
-  std::string line;
-  hrn::Stack< long double > results;
-  while (std::getline(input, line))
-  {
-    if (!input)
-    {
-      break;
-    }
-    if (line.empty())
-    {
-      continue;
-    }
-    hrn::Queue< std::string > infix = hrn::convertStringToInfix(line);
-    try
-    {
-      hrn::Queue< std::string > postfix = hrn::convertInfixToPostfix(infix);
-      long double result = hrn::calculatePostfix(postfix);
-      results.push(result);
-    }
-    catch (const std::exception& e)
-    {
-      std::cerr << "Error: " << e.what() << "\n";
-      return 2;
-    }
-  }
-  if (!results.isEmpty())
-  {
-    std::cout << results.get();
-    results.pop();
-    while (!results.isEmpty())
-    {
-      std::cout << " " << results.get();
-      results.pop();
-    }
-  }
-  std::cout << "\n";
+  hrn::AVLTree< std::string, hrn::Queue< std::string > > dict_with_infix;
+  hrn::AVLTree< std::string, std::pair< hrn::Queue< std::string >, int > > dict_with_postfix;
+  hrn::addToInfixDict(dict_with_infix, "first", "123+123-sin(1)");
+  hrn::addToPostfixDict(dict_with_postfix, dict_with_infix, "second", "first", 4);
+  hrn::calculate(dict_with_postfix, "second", std::cout);
 }
-

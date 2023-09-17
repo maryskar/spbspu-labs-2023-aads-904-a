@@ -2,13 +2,21 @@
 #define COMMANDS_HPP
 
 #include <string>
+#include <utility>
+#include <ostream>
 #include <avltree.hpp>
 #include "queue.hpp"
 
 namespace hrushchev
 {
-  void addToInfixDict(AVLTree< std::string, Queue< std::string > >& dict, const std::string& name, const std::string& expr);
-  void addToPostfixDict
+  using infix_dict = AVLTree< std::string, Queue< std::string > >;
+  using str = const std::string;
+  using postfix_data = std::pair< Queue< std::string >, int >;
+  using postfix_dict = AVLTree< std::string, postfix_data >;
+
+  void addToInfixDict(infix_dict& dict, str& name, str& expr);
+  void addToPostfixDict(postfix_dict& post_dict, infix_dict& in_dict, str& post_name, str& in_name, int accuracy);
+  void calculate(postfix_dict& dict, str& name, std::ostream& out);
 }
 
 #endif
