@@ -47,8 +47,9 @@ namespace kozyrin {
     if (this == other) {
       return *this;
     }
+    node_t< T >* data = copy(other.top_);
     clear();
-    top_ = copy(other.top_);
+    top_ = data;
     return *this;
   }
 
