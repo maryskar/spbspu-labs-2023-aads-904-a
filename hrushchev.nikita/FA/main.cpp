@@ -22,4 +22,5 @@ int main()
   hrn::addToPostfixDict(dict_with_postfix, dict_with_infix, dict_with_vars, "p1", "1", 7);
   hrn::calculate(dict_with_postfix, "p1", std::cout);
   printInfix(dict_with_infix, std::cout);
+  printPostfix(dict_with_postfix, std::cout);
 }

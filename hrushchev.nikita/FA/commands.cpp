@@ -142,5 +142,15 @@ void hrushchev::printInfix(infix_dict& dict, std::ostream& out)
     out << it->first << " ";
     printQueue(it->second, out);
     out << "\n";
-} 
+  }
+}
+
+void hrushchev::printPostfix(postfix_dict& dict, std::ostream& out)
+{
+  for (auto it = dict.begin(); it != dict.end(); ++it)
+  {
+    out << it->first << " ";
+    printQueue(it->second.first, out);
+    out << "\n";
+  }
 }
