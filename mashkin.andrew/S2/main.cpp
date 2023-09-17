@@ -2,10 +2,10 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
+#include <IOstreamOverloads.h>
 #include "DictWithCommands.h"
 #include "ForwardConstIterator.h"
 #include "ForwardIterator.h"
-#include "IOstreamOverloads.h"
 #include "dictionary.h"
 #include "forwardList.h"
 

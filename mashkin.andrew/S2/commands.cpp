@@ -1,11 +1,11 @@
 #include "commands.h"
 #include <iostream>
 #include <stdexcept>
-#include "IOstreamOverloads.h"
+#include <IOstreamOverloads.h>
 
 namespace mashkin
 {
-  void print(std::istream& inp, dictionaries& dicts)
+  void print(std::istream& inp, Dictionary< std::string, Dictionary< int, std::string > >& dicts)
   {
     std::string dictionary;
     inp >> dictionary;
@@ -27,7 +27,7 @@ namespace mashkin
     }
   }
 
-  void complement(std::istream& inp, dictionaries& dicts)
+  void complement(std::istream& inp, Dictionary< std::string, Dictionary< int, std::string > >& dicts)
   {
     std::string newDict;
     inp >> newDict;
@@ -39,7 +39,7 @@ namespace mashkin
     {
       throw std::logic_error("Logic error");
     }
-    dictionary newDictionary;
+    Dictionary< int, std::string > newDictionary;
     auto firstDict = dicts.find(first);
     auto firstBegin = firstDict->second.begin();
     auto firstEnd = firstDict->second.end();
@@ -78,7 +78,7 @@ namespace mashkin
     }
   }
 
-  void intersect(std::istream& inp, dictionaries& dicts)
+  void intersect(std::istream& inp, Dictionary< std::string, Dictionary< int, std::string > >& dicts)
   {
     std::string newDict;
     inp >> newDict;
@@ -94,7 +94,7 @@ namespace mashkin
     {
       throw std::logic_error("Logic error");
     }
-    dictionary newDictionary;
+    Dictionary< int, std::string > newDictionary;
     auto firstDict = dicts.find(first);
     auto firstBegin = firstDict->second.begin();
     auto firstEnd = firstDict->second.end();
@@ -123,7 +123,7 @@ namespace mashkin
     }
   }
 
-  void unionDicts(std::istream& inp, dictionaries& dicts)
+  void unionDicts(std::istream& inp, Dictionary< std::string, Dictionary< int, std::string > >& dicts)
   {
     std::string newDict;
     inp >> newDict;
@@ -135,7 +135,7 @@ namespace mashkin
     {
       throw std::logic_error("Logic error");
     }
-    dictionary newDictionary = dicts.find(first)->second;
+    Dictionary< int, std::string > newDictionary = dicts.find(first)->second;
     auto secondDict = dicts.find(second);
     auto secondBegin = secondDict->second.begin();
     auto secondEnd = secondDict->second.end();
