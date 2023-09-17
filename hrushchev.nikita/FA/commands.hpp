@@ -8,6 +8,7 @@
 namespace hrushchev
 {
   void addToInfixDict(AVLTree< std::string, Queue< std::string > >& dict, const std::string& name, const std::string& expr);
+  void addToPostfixDict
 }
 
 #endif
