@@ -4,7 +4,7 @@
 
 bool isOperator(char c)
 {
-    return c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')';
+  return c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')';
 }
 
 hrushchev::Queue< std::string > hrushchev::convertStringToInfix(std::string str)

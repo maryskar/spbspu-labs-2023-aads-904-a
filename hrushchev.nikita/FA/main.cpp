@@ -15,10 +15,10 @@ int main()
   namespace hrn = hrushchev;
   hrn::AVLTree< std::string, hrn::Queue< std::string > > dict_with_infix;
   hrn::AVLTree< std::string, std::pair< hrn::Queue< std::string >, int > > dict_with_postfix;
-  hrn::addToInfixDict(dict_with_infix, "1", "5");
-  hrn::addToInfixDict(dict_with_infix, "2", "3");
-  hrn::addToPostfixDict(dict_with_postfix, dict_with_infix, "p1", "1", 4);
-  hrn::addToPostfixDict(dict_with_postfix, dict_with_infix, "p2", "2", 4);
-  hrn::sumPostfix(dict_with_postfix, "res", "p1", "p2", 5);
-  hrn::calculate(dict_with_postfix, "res", std::cout);
+  hrn::AVLTree< std::string, std::string > dict_with_vars;
+  dict_with_vars.insert("pi", "3.1415");
+
+  hrn::addToInfixDict(dict_with_infix, "1", "pi");
+  hrn::addToPostfixDict(dict_with_postfix, dict_with_infix, dict_with_vars, "p1", "1", 7);
+  hrn::calculate(dict_with_postfix, "p1", std::cout);
 }

@@ -1,12 +1,13 @@
 #include "convertinfixtopostfix.hpp"
 #include <string>
 #include <stdexcept>
+#include <avltree.hpp>
 #include "queue.hpp"
 #include "stack.hpp"
 
 namespace hrushchev
 {
-  int getOperatorPriority(std::string op)
+  int getOperatorPriority(const std::string& op)
   {
     if (op == "*" || op == "/" || op == "%" || op == "sin" || op == "cos")
     {
@@ -26,23 +27,37 @@ namespace hrushchev
     }
   }
 
-  bool isHigherPriority(std::string op1, std::string op2)
+  bool isHigherPriority(const std::string& op1, const std::string& op2)
   {
     return getOperatorPriority(op1) >= getOperatorPriority(op2);
   }
 
-  bool isOperator(std::string op)
+  bool isOperator(const std::string& op)
   {
     return op == "*" || op == "/" || op == "+" || op == "-" || op == "(" || op == ")" || op == "%";
   }
 
-  bool isUnaryOperator(std::string op)
+  bool isUnaryOperator(const std::string& op)
   {
     return op == "sin" || op == "cos";
   }
+
+  bool isVariable(const std::string& op, AVLTree< std::string, std::string >& variables)
+  {
+    try
+    {
+      variables.at(op);
+      return true;
+    }
+    catch(...)
+    {
+      return false;
+    }
+  }
 }
 
-hrushchev::Queue< std::string > hrushchev::convertInfixToPostfix(hrushchev::Queue< std::string >& infixQueue)
+hrushchev::Queue< std::string > hrushchev::convertInfixToPostfix(Queue< std::string >& infixQueue,
+    AVLTree< std::string, std::string >& variables)
 {
   namespace hrn = hrushchev;
   hrn::Queue< std::string > postfixQueue;
@@ -52,7 +67,6 @@ hrushchev::Queue< std::string > hrushchev::convertInfixToPostfix(hrushchev::Queu
   {
     std::string token = infixQueue.get();
     infixQueue.pop();
-
     if (std::isdigit(token[0]))
     {
       postfixQueue.push(token);
@@ -89,6 +103,10 @@ hrushchev::Queue< std::string > hrushchev::convertInfixToPostfix(hrushchev::Queu
     else if (isUnaryOperator(token))
     {
       stack.push(token);
+    }
+    else if (isVariable(token, variables))
+    {
+      stack.push(variables.at(token));
     }
     else
     {
