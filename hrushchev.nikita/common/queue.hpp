@@ -118,7 +118,7 @@ namespace hrushchev
     {
       Queue< T > temp(other);
       std::swap(begin_, temp.begin_);
-      std::swap(end_, temp,end_);
+      std::swap(end_, temp.end_);
     }
     return *this;
   }
@@ -143,6 +143,7 @@ namespace hrushchev
       end_ = other.end_;
       other.end_ = nullptr;
     }
+    return *this;
   }
 
   template < typename T >
