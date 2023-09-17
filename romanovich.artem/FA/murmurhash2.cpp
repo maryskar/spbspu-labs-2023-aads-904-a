@@ -8,6 +8,7 @@ namespace
     return static_cast< uint32_t >((result >> 32) + 1) - 1;
   }
 }
+
 uint32_t romanovich::generateMurmurHash2(const std::string &key, uint32_t maxValue, uint32_t m, int r)
 {
   size_t len = key.length();

@@ -9,6 +9,7 @@ int main()
   {
     std::string command;
     std::cin >> command;
+
     if (!in)
     {
       break;

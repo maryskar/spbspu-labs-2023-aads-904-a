@@ -9,6 +9,7 @@ struct WordEntry
     beginner,
     intermediate,
     advanced
+
   };
   std::string word;
   std::vector< std::string > translations;
