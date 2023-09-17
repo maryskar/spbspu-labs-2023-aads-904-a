@@ -1,7 +1,7 @@
 #include "commands.h"
 #include <iostream>
 #include <stdexcept>
-#include "IO.h"
+#include "IOstreamOverloads.h"
 
 namespace mashkin
 {

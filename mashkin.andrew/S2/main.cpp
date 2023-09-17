@@ -5,7 +5,7 @@
 #include "DictWithCommands.h"
 #include "ForwardConstIterator.h"
 #include "ForwardIterator.h"
-#include "IO.h"
+#include "IOstreamOverloads.h"
 #include "dictionary.h"
 #include "forwardList.h"
 

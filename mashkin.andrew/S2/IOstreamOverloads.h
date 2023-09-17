@@ -1,5 +1,5 @@
-#ifndef S2_IOREALIZATION_H
-#define S2_IOREALIZATION_H
+#ifndef IOSTREAMOVERLOADS_H
+#define IOSTREAMOVERLOADS_H
 #include <iostream>
 #include <string>
 #include <ios>
