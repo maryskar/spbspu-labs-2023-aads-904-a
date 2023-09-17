@@ -28,3 +28,26 @@ void hrushchev::calculate(postfix_dict& dict, str& name, std::ostream& out)
   long double res = calculatePostfix(postfix_queue);
   out << std::setprecision(accuracy) << res << "\n";
 }
+
+void hrushchev::sumPostfix(postfix_dict& dict, str& res, str& name1, str& name2, int accuracy)
+{
+  postfix_data data1(dict.at(name1));
+  postfix_data data2(dict.at(name2));
+  Queue< std::string > postfix_queue1 = data1.first;
+  Queue< std::string > postfix_queue2 = data2.first;
+  Queue< std::string > res_queue;
+  while(!postfix_queue1.isEmpty())
+  {
+    auto temp = postfix_queue1.get();
+    postfix_queue1.pop();
+    res_queue.push(temp);
+  }
+  while(!postfix_queue2.isEmpty())
+  {
+    auto temp = postfix_queue2.get();
+    postfix_queue2.pop();
+    res_queue.push(temp);
+  }
+  res_queue.push("+");
+  dict.insert(res, postfix_data(res_queue, accuracy));
+}

@@ -17,6 +17,7 @@ namespace hrushchev
   void addToInfixDict(infix_dict& dict, str& name, str& expr);
   void addToPostfixDict(postfix_dict& post_dict, infix_dict& in_dict, str& post_name, str& in_name, int accuracy);
   void calculate(postfix_dict& dict, str& name, std::ostream& out);
+  void sumPostfix(postfix_dict& dict, str& res, str& name1, str& name2, int accuracy);
 }
 
 #endif
