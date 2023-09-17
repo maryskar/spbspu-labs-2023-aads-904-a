@@ -6,6 +6,9 @@
 #include <stdexcept>
 #include <cassert>
 
+#include <stack.hpp>
+#include <queue.hpp>
+
 #include "iterators/iterator.hpp"
 #include "iterators/const-iterator.hpp"
 #include "tree-node.hpp"
@@ -64,6 +67,19 @@ namespace turkin
       std::size_t size() const noexcept;
       void clear() noexcept;
       void swap(tree & rhs) noexcept;
+
+      template< typename F >
+      F traverse_lnr(F f);
+      template< typename F >
+      F traverse_lnr(F f) const;
+      template< typename F >
+      F traverse_rnl(F f);
+      template< typename F >
+      F traverse_rnl(F f) const;
+      template< typename F >
+      F traverse_breadth(F f);
+      template< typename F >
+      F traverse_breadth(F f) const;
 
     private:
       node_t root_;
@@ -407,6 +423,97 @@ void turkin::AVLtree< K, V, C >::swap(tree & rhs) noexcept
   std::swap(root_, rhs.root_);
   std::swap(cmp_, rhs.cmp_);
 }
+
+template< typename K, typename V, typename C>
+template< typename F >
+F turkin::AVLtree< K, V, C >::traverse_lnr(F f)
+{
+  Stack< node_t > stack;
+  node_t cur = root_;
+
+  while (!stack.isEmpty() || cur != end_)
+  {
+    if (cur != end_)
+    {
+      stack.push(cur);
+      cur = cur->left;
+    }
+    else
+    {
+      cur = stack.get();
+      stack.pop();
+      f(cur->data);
+      cur = cur->right;
+    }
+  }
+  return f;
+}
+
+template< typename K, typename V, typename C>
+template< typename F >
+F turkin::AVLtree< K, V, C >::traverse_lnr(F f) const{}
+
+template< typename K, typename V, typename C>
+template< typename F >
+F turkin::AVLtree< K, V, C >::traverse_rnl(F f)
+{
+  Stack< node_t > stack;
+  node_t cur = root_;
+
+  while (!stack.isEmpty() || cur != end_)
+  {
+    if (cur != nullptr)
+    {
+      stack.push(cur);
+      cur = cur->right;
+    }
+    else
+    {
+      cur = stack.get();
+      stack.pop();
+      f(cur->data);
+      cur = cur->left;
+    }
+  }
+  return f;
+}
+
+template< typename K, typename V, typename C>
+template< typename F >
+F turkin::AVLtree< K, V, C >::traverse_rnl(F f) const{}
+
+template< typename K, typename V, typename C>
+template< typename F >
+F turkin::AVLtree< K, V, C >::traverse_breadth(F f)
+{
+  if (root_ == nullptr)
+  {
+    return f;
+  }
+  Queue< node_t > queue;
+  queue.push(root_);
+
+  while (!queue.isEmpty())
+  {
+    node_t cur = queue.get();
+    queue.pop();
+    f(cur->data);
+
+    if (cur->left != end_)
+    {
+      queue.push(cur->left);
+    }
+    if (cur->right != end_)
+    {
+      queue.push(cur->right);
+    }
+  }
+  return f;
+}
+
+template< typename K, typename V, typename C>
+template< typename F >
+F turkin::AVLtree< K, V, C >::traverse_breadth(F f) const{}
 
 template< typename K, typename V, typename C >
 void turkin::AVLtree< K, V, C >::slr(node_t src)
