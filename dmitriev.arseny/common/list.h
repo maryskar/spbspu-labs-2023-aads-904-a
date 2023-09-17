@@ -9,46 +9,50 @@ namespace dmitriev
   struct List
   {
     T data;
-    List< T >* otherList;
+    List< T >* next;
   };
 
   template< typename T >
-  void clear(List< T >* topAdress)
+  bool isEmpty(const List< T >* list) noexcept
   {
-    while (topAdress != nullptr)
-    {
-      List< T >* currentList = topAdress;
-      topAdress = topAdress->otherList;
+    return list == nullptr;
+  }
 
-      delete currentList;
+  template< typename T >
+  void clear(List< T >* head) noexcept
+  {
+    while (!isEmpty(head))
+    {
+      List< T >* newHead = head->next;
+      delete head;
+
+      head = newHead;
     }
   }
 
   template< typename T >
   std::pair< List< T >*, List< T >* > copy(List< T >* otherHead)
   {
-    if (otherHead == nullptr)
+    if (isEmpty(otherHead))
     {
       return std::pair< List< T >*, List< T >* >{nullptr, nullptr};
     }
-    List< T >* newHead = new dmitriev::List< T >{otherHead->data};
-    List< T >* newTail = newHead;
-    otherHead = otherHead->otherList;
 
-    while (otherHead != nullptr)
+    List< T >* newHead = new List< T >{otherHead->data};
+    List< T >* newTail = newHead;
+
+    while (!isEmpty(otherHead = otherHead->next))
     {
       try
       {
-        newTail->otherList = new dmitriev::List< T >{otherHead->data};
+        newTail->next = new List< T >{otherHead->data};
       }
       catch (const std::exception&)
       {
         clear(newHead);
         throw;
       }
-
-      newTail = newTail->otherList;
-      otherHead = otherHead->otherList;
+      newTail = newTail->next;
     }
 
     return std::pair< List< T >*, List< T >* >{newHead, newTail};
