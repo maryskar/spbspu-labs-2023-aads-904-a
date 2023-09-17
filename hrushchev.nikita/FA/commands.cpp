@@ -126,3 +126,21 @@ void hrushchev::divisionPostfix(postfix_dict& dict, str& res, str& name1, str& n
   dict.insert(res, postfix_data(res_queue, accuracy));
 }
 
+void printQueue(hrushchev::Queue< std::string > queue, std::ostream& out)
+{
+  while (!queue.isEmpty())
+  {
+    out << queue.get();
+    queue.pop();
+  }
+}
+
+void hrushchev::printInfix(infix_dict& dict, std::ostream& out)
+{
+  for (auto it = dict.begin(); it != dict.end(); ++it)
+  {
+    out << it->first << " ";
+    printQueue(it->second, out);
+    out << "\n";
+} 
+}

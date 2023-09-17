@@ -27,6 +27,7 @@ namespace hrushchev
   void subtractPostfix(postfix_dict& dict, str& res, str& name1, str& name2, int accuracy);
   void multiplyPostfix(postfix_dict& dict, str& res, str& name1, str& name2, int accuracy);
   void divisionPostfix(postfix_dict& dict, str& res, str& name1, str& name2, int accuracy);
+  void printInfix(infix_dict& dict, std::ostream& out);
 }
 
 #endif

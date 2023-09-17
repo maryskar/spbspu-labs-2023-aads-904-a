@@ -18,7 +18,8 @@ int main()
   hrn::AVLTree< std::string, std::string > dict_with_vars;
   dict_with_vars.insert("pi", "3.1415");
 
-  hrn::addToInfixDict(dict_with_infix, "1", "pi");
+  hrn::addToInfixDict(dict_with_infix, "1", "sin(pi)");
   hrn::addToPostfixDict(dict_with_postfix, dict_with_infix, dict_with_vars, "p1", "1", 7);
   hrn::calculate(dict_with_postfix, "p1", std::cout);
+  printInfix(dict_with_infix, std::cout);
 }
