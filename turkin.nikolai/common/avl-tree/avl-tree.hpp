@@ -451,7 +451,10 @@ F turkin::AVLtree< K, V, C >::traverse_lnr(F f)
 
 template< typename K, typename V, typename C>
 template< typename F >
-F turkin::AVLtree< K, V, C >::traverse_lnr(F f) const{}
+F turkin::AVLtree< K, V, C >::traverse_lnr(F f) const
+{
+  return static_cast< const F >(traverse_lnr(f));
+}
 
 template< typename K, typename V, typename C>
 template< typename F >
@@ -480,7 +483,10 @@ F turkin::AVLtree< K, V, C >::traverse_rnl(F f)
 
 template< typename K, typename V, typename C>
 template< typename F >
-F turkin::AVLtree< K, V, C >::traverse_rnl(F f) const{}
+F turkin::AVLtree< K, V, C >::traverse_rnl(F f) const
+{
+  return static_cast< const F >(traverse_rnl(f));
+}
 
 template< typename K, typename V, typename C>
 template< typename F >
@@ -513,7 +519,10 @@ F turkin::AVLtree< K, V, C >::traverse_breadth(F f)
 
 template< typename K, typename V, typename C>
 template< typename F >
-F turkin::AVLtree< K, V, C >::traverse_breadth(F f) const{}
+F turkin::AVLtree< K, V, C >::traverse_breadth(F f) const
+{
+  return static_cast< const F >(traverse_breadth(f));
+}
 
 template< typename K, typename V, typename C >
 void turkin::AVLtree< K, V, C >::slr(node_t src)
