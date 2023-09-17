@@ -32,7 +32,7 @@ namespace tarasenko
      fake_->left_ = fake_;
      fake_->right_ = fake_;
      fake_->parent_ = fake_;
-   };
+   }
 
    BinarySearchTree(const BSTree& other):
      fake_(static_cast< root_t* >(::operator new(sizeof(root_t)))),
@@ -52,8 +52,6 @@ namespace tarasenko
        ::operator delete(fake_);
        throw;
      }
-     begin_ = copyBegin(other);
-     end_ = copyEnd(other);
    }
 
    BinarySearchTree(BSTree&& other):
@@ -155,8 +153,6 @@ namespace tarasenko
    const_iterator findMin(const_iterator it);
    void deleteTree(root_t* ptree);
    root_t* copyTree(const BSTree& other);
-   root_t* copyBegin(const BSTree& other);
-   root_t* copyEnd(const BSTree& other);
   };
 
   template< typename T, typename Compare >
@@ -167,20 +163,6 @@ namespace tarasenko
       insert(*it);
     }
     return root_;
-  }
-
-  template< typename T, typename Compare >
-  details::Tree< T, Compare >* BinarySearchTree< T, Compare >::copyBegin(const BSTree& other)
-  {
-    begin_ = find(*other.cbegin()).node_;
-    return begin_;
-  }
-
-  template< typename T, typename Compare >
-  details::Tree< T, Compare >* BinarySearchTree< T, Compare >::copyEnd(const BSTree& other)
-  {
-    end_ = find(*(--(other.cend()))).node_;
-    return end_;
   }
 
   template< typename T, typename Compare >

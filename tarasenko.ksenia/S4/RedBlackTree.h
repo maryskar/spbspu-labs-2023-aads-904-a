@@ -42,8 +42,6 @@ namespace tarasenko
        clear();
        throw;
      }
-     root_.copyBegin(other.root_);
-     root_.copyEnd(other.root_);
    }
 
    RedBlackTree(RBTree&& other):
