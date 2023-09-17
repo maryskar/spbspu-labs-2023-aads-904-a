@@ -10,7 +10,7 @@ turkin::KeySum::KeySum():
 
 void turkin::KeySum::operator()(const std::pair< int, std::string > & pair)
 {
-  if (isADDerror(sum_, pair.first))
+  if (isADDerror(sum_, pair.first) || isSUBerror(sum_, pair.first))
   {
     throw std::overflow_error("ADD error");
   }
