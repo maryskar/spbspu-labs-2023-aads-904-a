@@ -9,10 +9,12 @@
 #include "commands.hpp"
 #include "queue.hpp"
 #include "stack.hpp"
+#include "workwithdict.hpp"
 
 int main()
 {
   namespace hrn = hrushchev;
+  hrn::Commands cmd;
   hrn::AVLTree< std::string, hrn::Queue< std::string > > dict_with_infix;
   hrn::AVLTree< std::string, std::pair< hrn::Queue< std::string >, int > > dict_with_postfix;
   hrn::AVLTree< std::string, std::string > dict_with_vars;
