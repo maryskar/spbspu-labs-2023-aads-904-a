@@ -22,8 +22,7 @@ hrushchev::Commands::Commands()
   dict10_.insert("variables", printVariables);
 }
 
-
-void hrushchev::Commands::runCommand(std::istream& in)
+void hrushchev::Commands::runCommand(std::istream& in, std::ostream& out)
 {
   namespace hrn = hrushchev;
   hrn::AVLTree< std::string, hrn::Queue< std::string > > dict_with_infix;
@@ -76,7 +75,25 @@ void hrushchev::Commands::runCommand(std::istream& in)
     try
     {
       auto func = dict4_.at(command);
-      func(dict_with_infix, std::cout);
+      func(dict_with_infix, out);
+    }
+    catch (...)
+    {
+    }
+
+    try
+    {
+      auto func = dict5_.at(command);
+      func(dict_with_postfix, out);
+    }
+    catch (...)
+    {
+    }
+
+    try
+    {
+      auto func = dict6_.at(command);
+      func(out);
     }
     catch (...)
     {
@@ -87,12 +104,43 @@ void hrushchev::Commands::runCommand(std::istream& in)
       auto func = dict7_.at(command);
       std::string name;
       in >> name;
-      func(dict_with_postfix, name, std::cout);
+      func(dict_with_postfix, name, out);
     }
     catch (...)
     {
     }
 
+    try
+    {
+      auto func = dict8_.at(command);
+      std::string name;
+      std::string value;
+      in >> name >> value;
+      func(dict_with_vars, name, value);
+    }
+    catch (...)
+    {
+    }
+
+    try
+    {
+      auto func = dict9_.at(command);
+      std::string name;
+      in >> name;
+      func(dict_with_vars, name, out);
+    }
+    catch (...)
+    {
+    }
+
+    try
+    {
+      auto func = dict10_.at(command);
+      func(dict_with_vars, out);
+    }
+    catch (...)
+    {
+    }
   }
 }
 
