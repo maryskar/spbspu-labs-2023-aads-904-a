@@ -12,6 +12,7 @@ namespace hrushchev
   {
     public:
       Commands();
+      void runCommand(std::istream& in);
     private:
       using com1 = void(*)(infix_dict&, str&, str&);
       using com2 = void(*)(postfix_dict&, infix_dict&, variables_dict&, str&, str&, int);
