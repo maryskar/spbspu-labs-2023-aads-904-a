@@ -19,11 +19,10 @@ namespace hrushchev
       using com4 = void(*)(infix_dict&, std::ostream&);
       using com5 = void(*)(postfix_dict&, std::ostream&);
       using com6 = void(*)(std::ostream&);
-      using com7 = void(*)(std::ostream&);
-      using com8 = void(*)(postfix_dict&, str&, std::ostream&);
-      using com9 = void(*)(variables_dict&, str&, str&);
-      using com10 = void(*)(variables_dict&, str&, std::ostream&);
-      using com11 = void(*)(variables_dict&, std::ostream&);
+      using com7 = void(*)(postfix_dict&, str&, std::ostream&);
+      using com8 = void(*)(variables_dict&, str&, str&);
+      using com9 = void(*)(variables_dict&, str&, std::ostream&);
+      using com10 = void(*)(variables_dict&, std::ostream&);
 
       AVLTree< std::string, com1 > dict1_;
       AVLTree< std::string, com2 > dict2_;
@@ -34,7 +33,7 @@ namespace hrushchev
       AVLTree< std::string, com7 > dict7_;
       AVLTree< std::string, com8 > dict8_;
       AVLTree< std::string, com9 > dict9_;
-      AVLTree< std::string, com11 > dict11_;
+      AVLTree< std::string, com10 > dict10_;
   };
 }
 

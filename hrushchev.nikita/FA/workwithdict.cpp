@@ -12,4 +12,11 @@ hrushchev::Commands::Commands()
 	dict3_.insert("subtract_postfix", subtractPostfix);
 	dict3_.insert("multiply_postfix", multiplyPostfix);
 	dict3_.insert("division_postfix", divisionPostfix);
+	dict4_.insert("print_infix", printInfix);
+	dict5_.insert("print_postfix", printPostfix);
+	dict6_.insert("help", help);
+	dict7_.insert("calculate", calculate);
+	dict8_.insert("set", set);
+	dict9_.insert("variable", printVariable);
+	dict10_.insert("variables", printVariables);
 }
