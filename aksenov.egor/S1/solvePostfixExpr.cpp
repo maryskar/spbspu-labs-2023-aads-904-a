@@ -8,7 +8,6 @@
 long long aksenov::solvePostfixExpr(Queue< std::string > &queue)
 {
   Stack< long long > stack;
-
   while (!queue.isEmpty())
   {
     std::string elem = queue.get();

@@ -13,10 +13,13 @@ aksenov::Queue< std::string > aksenov::convertToInfix(std::string line)
   while (line.size())
   {
     size_t space = line.find_first_of(delimetr);
-    if (space == line.npos) {
+    if (space == line.npos)
+    {
       infQueue.push(line.substr(0));
       line.clear();
-    } else {
+    }
+    else
+    {
       infQueue.push(line.substr(0, space));
       line = line.substr(space + 1);
     }

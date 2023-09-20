@@ -9,10 +9,10 @@ namespace aksenov
     List< T > *next;
   };
 
-  template< typename T>
+  template< typename T >
   void deleteList(List< T > *head)
   {
-    while(head)
+    while (head)
     {
       auto todel = head;
       head = head->next;
