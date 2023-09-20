@@ -7,7 +7,7 @@
 namespace turkin
 {
   template< typename F >
-  using trvs_t = F (AVLtree< int, std::string, std::less< > >::*)(F f);
+  using trvs_t = F (AVLtree< long long, std::string, std::less< > >::*)(F f);
   template< typename F >
   using trvs_m = AVLtree< std::string, trvs_t< F >, std::less< > >;
   
@@ -15,9 +15,9 @@ namespace turkin
   decltype(auto) make_trvs()
   {
     trvs_m< F > result;
-    result.insert("ascending", &AVLtree< int, std::string, std::less< > >::traverse_lnr);
-    result.insert("descending", &AVLtree< int, std::string, std::less< > >::traverse_rnl);
-    result.insert("breadth", &AVLtree< int, std::string, std::less< > >::traverse_breadth);
+    result.insert("ascending", &AVLtree< long long, std::string, std::less< > >::traverse_lnr);
+    result.insert("descending", &AVLtree< long long, std::string, std::less< > >::traverse_rnl);
+    result.insert("breadth", &AVLtree< long long, std::string, std::less< > >::traverse_breadth);
     return result;
   }
 }

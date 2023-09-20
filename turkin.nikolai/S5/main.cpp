@@ -24,7 +24,7 @@ int main(int argc, char * argv[])
     return 1;
   }
 
-  using tree_t = turkin::AVLtree< int, std::string, std::less< > >;
+  using tree_t = turkin::AVLtree< long long, std::string, std::less< > >;
   auto dict = turkin::genDict< tree_t >(file);
   if (dict.empty())
   {

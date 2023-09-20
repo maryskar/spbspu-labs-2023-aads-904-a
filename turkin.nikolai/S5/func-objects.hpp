@@ -10,7 +10,7 @@ namespace turkin
   {
     public:
       KeySum();
-      void operator()(const std::pair< int, std::string > & pair);
+      void operator()(const std::pair< long long, std::string > & pair);
       int get() const;
     private:
       int sum_;
@@ -20,7 +20,7 @@ namespace turkin
   {
     public:
       StrSum();
-      void operator()(const std::pair< int, std::string > & pair);
+      void operator()(const std::pair< long long, std::string > & pair);
       std::string get() const;
     private:
       std::string sum_;

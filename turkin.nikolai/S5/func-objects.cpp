@@ -8,7 +8,7 @@ turkin::KeySum::KeySum():
   sum_(0)
 {}
 
-void turkin::KeySum::operator()(const std::pair< int, std::string > & pair)
+void turkin::KeySum::operator()(const std::pair< long long, std::string > & pair)
 {
   if (isADDerror(sum_, pair.first) || isSUBerror(sum_, pair.first))
   {
@@ -26,7 +26,7 @@ turkin::StrSum::StrSum():
   sum_("")
 {}
 
-void turkin::StrSum::operator()(const std::pair< int, std::string > & pair)
+void turkin::StrSum::operator()(const std::pair< long long, std::string > & pair)
 {
   sum_ += " " + pair.second;
 }
