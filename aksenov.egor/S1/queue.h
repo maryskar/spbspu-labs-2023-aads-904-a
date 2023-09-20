@@ -35,7 +35,7 @@ namespace aksenov
     return front_ == nullptr;
   }
 
-  template< typename T>
+  template< typename T >
   void Queue< T >::push(const T &val)
   {
     aksenov::List< T > *newTail = new aksenov::List< T >{val, nullptr};
@@ -86,8 +86,8 @@ namespace aksenov
     front_ = tail_ = nullptr;
   }
 
-  template< typename T>
-  Queue< T >::Queue(const Queue< T > &otherQ) :
+  template< typename T >
+  Queue< T >::Queue(const Queue< T > &otherQ):
     tail_(nullptr),
     front_(nullptr)
   {
@@ -100,7 +100,7 @@ namespace aksenov
   }
 
   template< typename T >
-  Queue< T >::Queue(Queue< T > &&otherQ) noexcept :
+  Queue< T >::Queue(Queue< T > &&otherQ) noexcept:
     front_(otherQ.front_),
     tail_(otherQ.tail_)
   {
