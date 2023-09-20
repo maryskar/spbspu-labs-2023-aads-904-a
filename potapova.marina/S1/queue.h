@@ -35,6 +35,10 @@ namespace potapova
       void pop()
       {
         data_.pop_front();
+        if (empty())
+        {
+          end_ptr_ = data_.before_begin();
+        }
       }
 
       size_t size() const
