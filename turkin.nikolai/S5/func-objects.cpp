@@ -14,6 +14,10 @@ void turkin::KeySum::operator()(const std::pair< long long, std::string > & pair
   {
     throw std::overflow_error("num add error");
   }
+  if (isADDerror(pair.first, sum_) || isSUBerror(pair.first, sum_))
+  {
+    throw std::overflow_error("num add error");
+  }
   sum_ += pair.first;
 }
 
