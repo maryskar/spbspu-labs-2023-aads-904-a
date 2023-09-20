@@ -4,10 +4,10 @@
 #include <limits>
 #include <IOstreamOverloads.h>
 #include <DictWithCommands.h>
-#include "ForwardConstIterator.h"
-#include "ForwardIterator.h"
-#include "dictionary.h"
-#include "forwardList.h"
+#include <ForwardConstIterator.h>
+#include <ForwardIterator.h>
+#include <dictionary.h>
+#include <forwardList.h>
 
 int main(int argc, char** argv)
 {

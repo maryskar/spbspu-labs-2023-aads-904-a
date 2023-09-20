@@ -11,7 +11,7 @@
 #include <ConstAVLReverseIter.h>
 #include <DictWithCommands.h>
 #include <IOstreamOverloads.h>
-#include "tree.h"
+#include <tree.h>
 
 int main(int argc, char** argv)
 {
