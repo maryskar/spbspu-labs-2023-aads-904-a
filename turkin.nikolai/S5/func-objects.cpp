@@ -8,16 +8,20 @@ turkin::KeySum::KeySum():
   sum_(0)
 {}
 
+namespace
+{
+  void llsum_check(long long lhs, long long rhs)
+  {
+    if (turkin::isADDerror(lhs, rhs) || turkin::isSUBerror(lhs, rhs) || turkin::isADDerror(rhs, lhs) || turkin::isSUBerror(rhs, lhs))
+    {
+      throw std::overflow_error("num add error");
+    }
+  }
+}
+
 void turkin::KeySum::operator()(const std::pair< long long, std::string > & pair)
 {
-  if (isADDerror(sum_, pair.first) || isSUBerror(sum_, pair.first))
-  {
-    throw std::overflow_error("num add error");
-  }
-  if (isADDerror(pair.first, sum_) || isSUBerror(pair.first, sum_))
-  {
-    throw std::overflow_error("num add error");
-  }
+  llsum_check(sum_, pair.first);
   sum_ += pair.first;
 }
 
