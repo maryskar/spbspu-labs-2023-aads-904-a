@@ -165,18 +165,18 @@ namespace potapova
       void complement(const Dictionary< Key, Value, Compare >& other)
       {
         Dictionary< Key, Value, Compare > result;
-        for (const Node& cur_node : *this)
+        for (const Node& cur_node_this : *this)
         {
-          if (!other.contains(cur_node))
+          for (const Node& cur_node_other : other)
           {
-            result.insert(cur_node.key, cur_node.value);
+            if (!contains(cur_node_other) && cur_node_other.key < cur_node_this.key)
+            {
+              result.insert(cur_node_other.key, cur_node_other.value);
+            }
           }
-        }
-        for (const Node& cur_node : other)
-        {
-          if (!contains(cur_node))
+          if (!other.contains(cur_node_this))
           {
-            result.insert(cur_node.key, cur_node.value);
+            result.insert(cur_node_this.key, cur_node_this.value);
           }
         }
       }
@@ -192,8 +192,30 @@ namespace potapova
           }
         }
       }
-    private:
 
+      void join(const Dictionary< Key, Value, Compare >& other)
+      {
+        Dictionary< Key, Value, Compare > result;
+        for (const Node& cur_node_this : *this)
+        {
+          for (const Node& cur_node_other : other)
+          {
+            if (!contains(cur_node_other) && cur_node_other.key < cur_node_this.key)
+            {
+              result.insert(cur_node_other.key, cur_node_other.value);
+            }
+          }
+          if (!other.contains(cur_node_this))
+          {
+            result.insert(cur_node_this.key, cur_node_this.value);
+          }
+          else if (other.contains(cur_node_this))
+          {
+            result.insert(cur_node_this.key, cur_node_this.value);
+          }
+        }
+      }
+    private:
       ForwardList< Node > data_;
   };
 }
