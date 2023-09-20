@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include <dictionary/dictionary.h>
+#include <avl/AVL.h>
 #include <commands.h>
 
 int main(int argc, char *argv[])
@@ -14,11 +14,11 @@ int main(int argc, char *argv[])
     std::cerr << "Can`t open the file\n";
     return 2;
   }
-  using dictionary = fesenko::Dictionary< int, std::string, std::less< > >;
-  using dictionary_elem = std::pair< int, std::string >;
-  using dict_of_dict = fesenko::Dictionary< std::string, dictionary, std::less< std::string > >;
-  using dict_of_dict_elem = std::pair< std::string, dictionary >;
-  dict_of_dict container;
+  using tree = fesenko::AVL< int, std::string, std::less< > >;
+  using tree_elem = std::pair< int, std::string >;
+  using tree_of_tree = fesenko::AVL< std::string, tree, std::less< std::string > >;
+  using tree_of_tree_elem = std::pair< std::string, tree >;
+  tree_of_tree container;
   try {
     while (in) {
       std::string name;
@@ -26,18 +26,18 @@ int main(int argc, char *argv[])
       if (!in) {
         break;
       }
-      dictionary dict;
-      int key = 0;
-      std::string value;
+      tree tr;
       while (in) {
+        int key = 0;
+        std::string value;
         in >> key >> value;
         if (!in) {
           break;
         }
-        dict.insert(dictionary_elem(key, value));
+        tr.insert(tree_elem(key, value));
       }
       in.clear();
-      container.insert(dict_of_dict_elem(name, dict));
+      container.insert(tree_of_tree_elem(name, tr));
     }
   } catch (const std::exception &e) {
     std::cerr << e.what() << "\n";
@@ -53,30 +53,30 @@ int main(int argc, char *argv[])
       if (command == "print") {
         std::string name;
         std::cin >> name;
-        fesenko::print(dict_of_dict_elem(name, container.at(name)), std::cout);
+        fesenko::print(tree_of_tree_elem(name, container.at(name)), std::cout);
         std::cout << "\n";
       } else {
-        std::string newDictName;
-        std::string dictName1;
-        std::string dictName2;
-        std::cin >> newDictName >> dictName1 >> dictName2;
-        dictionary dict1 = container.at(dictName1);
-        dictionary dict2 = container.at(dictName2);
-        dictionary newDict;
+        std::string newTreeName;
+        std::string treeName1;
+        std::string treeName2;
+        std::cin >> newTreeName >> treeName1 >> treeName2;
+        tree tree1 = container.at(treeName1);
+        tree tree2 = container.at(treeName2);
+        tree newTree;
         if (command == "complement") {
-          newDict = make_complementation(dict1, dict2);
+          newTree = make_complementation(tree1, tree2);
         } else if (command == "intersect") {
-          newDict = make_intersection(dict1, dict2);
+          newTree = make_intersection(tree1, tree2);
         } else if (command == "union") {
-          newDict = make_union(dict1, dict2);
+          newTree = make_union(tree1, tree2);
         } else {
           fesenko::outInvalidCommandMessage(std::cout);
           std::cout << "\n";
           continue;
         }
-        if (container.insert(dict_of_dict_elem(newDictName, newDict)).second == false) {
-          auto it = container.find(newDictName);
-          container.at(it->first) = newDict;
+        if (container.insert(tree_of_tree_elem(newTreeName, newTree)).second == false) {
+          auto it = container.find(newTreeName);
+          container.at(it->first) = newTree;
         }
       }
     }
