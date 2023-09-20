@@ -6,12 +6,12 @@ constexpr long long minLL = std::numeric_limits< long long >::min();
 
 bool turkin::isADDerror(long long lhs, long long rhs) noexcept
 {
-  return lhs > 0 && rhs > 0 && rhs > (maxLL - lhs);
+  return lhs >= 0 && rhs > 0 && rhs >= (maxLL - lhs);
 }
 
 bool turkin::isSUBerror(long long lhs, long long rhs) noexcept
 {
-  return lhs < 0 && rhs < 0 && lhs < (minLL - rhs);
+  return lhs <= 0 && rhs < 0 && lhs <= (minLL - rhs);
 }
 
 bool turkin::isMULerror(long long lhs, long long rhs) noexcept
