@@ -1,6 +1,6 @@
 #include "printRezult.h"
 #include "calculator.h"
-#include "stack.h"
+#include <stack.h>
 
 void dmitriev::printSeriesOfNumbers(std::istream& streamInp, std::ostream& streamOut)
 {
