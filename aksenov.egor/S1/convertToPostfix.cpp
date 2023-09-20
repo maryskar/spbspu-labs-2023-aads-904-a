@@ -37,7 +37,7 @@ aksenov::Queue< std::string > aksenov::getPostfixQueue(Queue< std::string > &inf
     }
     else if (isOperator(elem))
     {
-      while (!stack.isEmpty() && isOperator(stack.get()) && isloverOrSamePriority(elem,stack.get()))
+      while (!stack.isEmpty() && isOperator(stack.get()) && isloverOrSamePriority(elem, stack.get()))
       {
         postfixQueue.push(stack.get());
         stack.pop();
