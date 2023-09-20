@@ -172,6 +172,13 @@ namespace potapova
             result.insert(cur_node.key, cur_node.value);
           }
         }
+        for (const Node& cur_node : other)
+        {
+          if (!contains(cur_node))
+          {
+            result.insert(cur_node.key, cur_node.value);
+          }
+        }
       }
 
       void intersect(const Dictionary< Key, Value, Compare >& other)
