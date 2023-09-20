@@ -21,7 +21,7 @@ namespace turkin
         break;
       }
       StorageC data;
-      int key = 0;
+      long long key = 0;
       std::string value = "";
       while (input)
       {
@@ -42,7 +42,7 @@ namespace turkin
   Storage genDict(std::istream & input)
   {
     Storage result;
-    int key = 0;
+    long long key = 0;
     std::string value = "";
     while (input)
     {
