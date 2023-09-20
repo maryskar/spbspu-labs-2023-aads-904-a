@@ -21,6 +21,7 @@ int getPriority(char op)
 }
 namespace timofeev
 {
+
   Queue< std::string > getPostfixForm(std::string infix)
   {
     Queue< std::string > postfix;
