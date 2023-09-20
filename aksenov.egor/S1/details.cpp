@@ -32,29 +32,29 @@ int aksenov::getPriority(std::string operation)
 
 bool aksenov::isloverOrSamePriority(std::string lhs, std::string rhs)
 {
-  return aksenov::getPriority(lhs) <= getPriority(rhs);
+  return getPriority(lhs) <= getPriority(rhs);
 }
 bool aksenov::isWhiteSpaceOrEmpty(const std::string &str)
 {
   return str.find_first_not_of(" \n") == std::string::npos;
 }
 
-void aksenov::processInput(std::istream &in, aksenov::Stack< long long > &res)
+void aksenov::processInput(std::istream &in, Stack< long long > &res)
 {
   std::string str;
   while (std::getline(in, str))
   {
-    if (aksenov::isWhiteSpaceOrEmpty(str))
+    if (isWhiteSpaceOrEmpty(str))
     {
       continue;
     }
-    aksenov::Queue<std::string> infixQueue = aksenov::convertToInfix(str);
-    aksenov::Queue<std::string> postfixQueue = aksenov::getPostfixQueue(infixQueue);
-    res.push(aksenov::solvePostfixExpr(postfixQueue));
+    Queue<std::string> infixQueue = convertToInfix(str);
+    Queue<std::string> postfixQueue = getPostfixQueue(infixQueue);
+    res.push(solvePostfixExpr(postfixQueue));
   }
 }
 
-void aksenov::out(std::ostream &out, aksenov::Stack< long long > &result)
+void aksenov::out(std::ostream &out, Stack< long long > &result)
 {
   while (!result.isEmpty())
   {

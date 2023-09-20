@@ -63,7 +63,7 @@ namespace aksenov
   template< typename T >
   void Stack< T >::push(const T &val)
   {
-    aksenov::List< T > *newTop = new aksenov::List< T >{val, top_};
+    List< T > *newTop = new List< T >{val, top_};
     top_ = newTop;
     size_++;
   }
@@ -96,7 +96,7 @@ namespace aksenov
     top_(nullptr),
     size_(0)
   {
-    aksenov::List< T > *cur = other.top_;
+    List< T > *cur = other.top_;
     while (cur)
     {
       push(cur->data);
@@ -112,7 +112,7 @@ namespace aksenov
       return *this;
     }
     clear(other);
-    aksenov::List< T > cur = other.top_;
+    List< T > cur = other.top_;
     while (cur)
     {
       push(cur->data);

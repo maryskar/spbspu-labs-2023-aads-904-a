@@ -5,9 +5,9 @@
 #include "stack.h"
 #include "details.h"
 
-long long aksenov::solvePostfixExpr(aksenov::Queue<std::string>& queue)
+long long aksenov::solvePostfixExpr(Queue< std::string > &queue)
 {
-  aksenov::Stack< long long > stack;
+  tack< long long > stack;
 
   while (!queue.isEmpty())
   {
@@ -35,23 +35,23 @@ long long aksenov::solvePostfixExpr(aksenov::Queue<std::string>& queue)
 
       if (elem == "+")
       {
-        result = aksenov::sum(operand1, operand2);
+        result = sum(operand1, operand2);
       }
       else if (elem == "-")
       {
-        result = aksenov::substract(operand1, operand2);
+        result = substract(operand1, operand2);
       }
       else if (elem == "*")
       {
-        result = aksenov::multiply(operand1, operand2);
+        result = multiply(operand1, operand2);
       }
       else if (elem == "/")
       {
-        result = aksenov::divide(operand1, operand2);
+        result = divide(operand1, operand2);
       }
       else if (elem == "%")
       {
-        result = aksenov::remaind(operand1, operand2);
+        result = remaind(operand1, operand2);
       }
       stack.push(result);
     }

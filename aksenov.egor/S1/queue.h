@@ -38,7 +38,7 @@ namespace aksenov
   template< typename T >
   void Queue< T >::push(const T &val)
   {
-    aksenov::List< T > *newTail = new aksenov::List< T >{val, nullptr};
+    List< T > *newTail = new List< T >{val, nullptr};
     if (isEmpty())
     {
       front_ = tail_ = newTail;
@@ -114,7 +114,7 @@ namespace aksenov
     deleteList(front_);
     front_ = nullptr;
     tail_ = nullptr;
-    aksenov::List< T > *cur = other.front_;
+    List< T > *cur = other.front_;
     while (cur)
     {
       push(cur->data);
