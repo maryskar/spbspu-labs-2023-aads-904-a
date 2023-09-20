@@ -28,6 +28,10 @@ turkin::StrSum::StrSum():
 
 void turkin::StrSum::operator()(const std::pair< long long, std::string > & pair)
 {
+  if (sum_.max_size() - sum_.size() < pair.second.size())
+  {
+    throw std::overflow_error("ADD error");
+  }
   sum_ += " " + pair.second;
 }
 
