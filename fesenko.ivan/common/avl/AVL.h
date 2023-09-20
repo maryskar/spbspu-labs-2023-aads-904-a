@@ -62,6 +62,18 @@ namespace fesenko
     bool empty() const noexcept;
     void clear() noexcept;
     key_compare key_comp() const;
+    template< typename F >
+    F traverse_lnr(F) const;
+    template< typename F >
+    F traverse_lnr(F);
+    template< typename F >
+    F traverse_rnl(F) const;
+    template< typename F >
+    F traverse_rnl(F);
+    template< typename F >
+    F traverse_breadth(F) const;
+    template< typename F >
+    F traverse_breadth(F);
    private:
     tree *root_;
     Compare comp_;
