@@ -10,7 +10,7 @@ namespace turkin
   using trvs_t = F (AVLtree< long long, std::string, std::less< > >::*)(F f);
   template< typename F >
   using trvs_m = AVLtree< std::string, trvs_t< F >, std::less< > >;
-  
+
   template< typename F >
   decltype(auto) make_trvs()
   {
