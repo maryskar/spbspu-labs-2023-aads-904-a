@@ -32,13 +32,12 @@ int main(int argc, char * argv[])
     return 0;
   }
 
-  auto key_list = turkin::make_trvs< turkin::KeySum >();
-  auto str_list = turkin::make_trvs< turkin::StrSum >();
-  turkin::KeySum key;
-  turkin::StrSum str;
-
   try
   {
+    auto key_list = turkin::make_trvs< turkin::KeySum >();
+    auto str_list = turkin::make_trvs< turkin::StrSum >();
+    turkin::KeySum key;
+    turkin::StrSum str;
     std::cout << (dict.*key_list.at(argv[1]))(key).get() << (dict.*str_list.at(argv[1]))(str).get() << "\n";
   }
   catch (...)
