@@ -1,12 +1,12 @@
 #ifndef S4_AVL_H
 #define S4_AVL_H
+#include <cstddef>
 #include <functional>
 #include <utility>
-#include <cstddef>
-#include "AVL_iterator.h"
-#include "AVL_reverse_iter.h"
-#include "const_AVL_iterator.h"
-#include "const_AVL_reverse_iter.h"
+#include "AVLIterator.h"
+#include "AVLReverseIter.h"
+#include "ConstAVLIterator.h"
+#include "ConstAVLReverseIter.h"
 #include "tree.h"
 
 namespace mashkin

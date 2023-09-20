@@ -1,11 +1,12 @@
-#include "commands.h"
+#ifndef S4_COMMANDS_H
+#define S4_COMMANDS_H
 #include <iostream>
-#include <stdexcept>
-#include <IOstreamOverloads.h>
+#include <string>
 
 namespace mashkin
 {
-  void print(std::istream& inp, Dictionary< std::string, Dictionary< int, std::string > >& dicts)
+  template< class T >
+  void print(std::istream& inp, T& dicts)
   {
     std::string dictionary;
     inp >> dictionary;
@@ -27,7 +28,8 @@ namespace mashkin
     }
   }
 
-  void complement(std::istream& inp, Dictionary< std::string, Dictionary< int, std::string > >& dicts)
+  template< class T >
+  void complement(std::istream& inp, T& dicts)
   {
     std::string newDict;
     inp >> newDict;
@@ -39,7 +41,7 @@ namespace mashkin
     {
       throw std::logic_error("Logic error");
     }
-    Dictionary< int, std::string > newDictionary;
+    decltype(dicts.begin()->second) newDictionary;
     auto firstDict = dicts.find(first);
     auto firstBegin = firstDict->second.begin();
     auto firstEnd = firstDict->second.end();
@@ -78,7 +80,8 @@ namespace mashkin
     }
   }
 
-  void intersect(std::istream& inp, Dictionary< std::string, Dictionary< int, std::string > >& dicts)
+  template< class T >
+  void intersect(std::istream& inp, T& dicts)
   {
     std::string newDict;
     inp >> newDict;
@@ -94,7 +97,7 @@ namespace mashkin
     {
       throw std::logic_error("Logic error");
     }
-    Dictionary< int, std::string > newDictionary;
+    decltype(dicts.begin()->second) newDictionary;
     auto firstDict = dicts.find(first);
     auto firstBegin = firstDict->second.begin();
     auto firstEnd = firstDict->second.end();
@@ -123,7 +126,8 @@ namespace mashkin
     }
   }
 
-  void unionDicts(std::istream& inp, Dictionary< std::string, Dictionary< int, std::string > >& dicts)
+  template< class T >
+  void unionDicts(std::istream& inp, T& dicts)
   {
     std::string newDict;
     inp >> newDict;
@@ -135,7 +139,7 @@ namespace mashkin
     {
       throw std::logic_error("Logic error");
     }
-    Dictionary< int, std::string > newDictionary = dicts.find(first)->second;
+    decltype(dicts.begin()->second) newDictionary = dicts.find(first)->second;
     auto secondDict = dicts.find(second);
     auto secondBegin = secondDict->second.begin();
     auto secondEnd = secondDict->second.end();
@@ -164,3 +168,4 @@ namespace mashkin
     }
   }
 }
+#endif

@@ -1,44 +1,42 @@
-#ifndef S4_CONST_AVL_ITERATOR_H
-#define S4_CONST_AVL_ITERATOR_H
+#ifndef S4_AVL_REVERSE_ITER_H
+#define S4_AVL_REVERSE_ITER_H
 #include <cassert>
 #include <functional>
 #include <iterator>
 #include <memory>
-#include "AVL.h"
-#include "AVL_iterator.h"
+#include <utility>
+#include "ConstAVLReverseIter.h"
 #include "tree.h"
 
 namespace mashkin
 {
-  template< class K, class V, class C >
-  class AVLMapIter;
-
   template< class Key, class Value, class Comp = std::less< Key > >
-  class ConstAVLMapIter: public std::iterator< std::bidirectional_iterator_tag, std::pair< Key, Value > >
+  class ReverseAVLMapIter: public std::iterator< std::bidirectional_iterator_tag, std::pair< Key, Value > >
   {
   public:
-    using const_iter = ConstAVLMapIter< Key, Value, Comp >;
+    using riter = ReverseAVLMapIter< Key, Value, Comp >;
     using v_type = std::pair< Key, Value >;
     using tree = Tree< v_type >;
-    ConstAVLMapIter();
-    ~ConstAVLMapIter() = default;
-    ConstAVLMapIter(const const_iter&) = default;
-    explicit ConstAVLMapIter(const AVLMapIter< Key, Value, Comp >& rhs);
-    explicit ConstAVLMapIter(tree* rhs);
+    ReverseAVLMapIter();
+    ~ReverseAVLMapIter() = default;
+    ReverseAVLMapIter(const riter&) = default;
+    explicit ReverseAVLMapIter(tree* rhs);
 
-    const_iter& operator=(const const_iter&) = default;
-    const_iter& operator++();
-    const_iter operator++(int);
-    const_iter& operator--();
-    const_iter operator--(int);
+    riter& operator=(const riter&) = default;
+    riter& operator++();
+    riter operator++(int);
+    riter& operator--();
+    riter operator--(int);
 
-    const v_type& operator*() const;
-    const v_type* operator->() const;
+    v_type& operator*();
+    v_type* operator->();
 
-    bool operator!=(const const_iter& rhs) const;
-    bool operator==(const const_iter& rhs) const;
+    bool operator!=(const riter& rhs) const;
+    bool operator==(const riter& rhs) const;
 
   private:
+    template< class K, class V, class C >
+    friend class ConstReverseAVLMapIter;
     template< class K, class V, class C >
     friend class AVL;
     tree* fake_;
@@ -52,16 +50,8 @@ namespace mashkin
     void doWhileRight();
   };
 
-  template< class K, class V, class C >
-  ConstAVLMapIter< K, V, C >::ConstAVLMapIter(const AVLMapIter< K, V, C >& rhs):
-    fake_(rhs.fake_),
-    node_(rhs.node_),
-    comp_(rhs.comp_)
-  {
-  }
-
   template< class Key, class Value, class Comp >
-  ConstAVLMapIter< Key, Value, Comp >::ConstAVLMapIter(tree* rhs):
+  ReverseAVLMapIter< Key, Value, Comp >::ReverseAVLMapIter(tree* rhs):
     fake_(getFake(rhs)),
     node_(rhs),
     comp_()
@@ -69,7 +59,7 @@ namespace mashkin
   }
 
   template< class Key, class Value, class Comp >
-  ConstAVLMapIter< Key, Value, Comp >::ConstAVLMapIter():
+  ReverseAVLMapIter< Key, Value, Comp >::ReverseAVLMapIter():
     fake_(nullptr),
     node_(nullptr),
     comp_()
@@ -77,7 +67,7 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  typename ConstAVLMapIter< K, V, C >::tree* ConstAVLMapIter< K, V, C >::getFake(tree* rhs)
+  typename ReverseAVLMapIter< K, V, C >::tree* ReverseAVLMapIter< K, V, C >::getFake(tree* rhs)
   {
     auto fake = rhs->parent_;
     while (fake->left_ || fake->right_)
@@ -88,19 +78,19 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  bool ConstAVLMapIter< K, V, C >::operator==(const const_iter& rhs) const
+  bool ReverseAVLMapIter< K, V, C >::operator==(const riter& rhs) const
   {
     return node_ == rhs.node_;
   }
 
   template< class K, class V, class C >
-  bool ConstAVLMapIter< K, V, C >::operator!=(const const_iter& rhs) const
+  bool ReverseAVLMapIter< K, V, C >::operator!=(const riter& rhs) const
   {
     return !(rhs == *this);
   }
 
   template< class K, class V, class C >
-  ConstAVLMapIter< K, V, C > ConstAVLMapIter< K, V, C >::operator--(int)
+  ReverseAVLMapIter< K, V, C > ReverseAVLMapIter< K, V, C >::operator--(int)
   {
     assert(node_ != nullptr);
     auto res(*this);
@@ -109,21 +99,105 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  const typename ConstAVLMapIter< K, V, C >::v_type* ConstAVLMapIter< K, V, C >::operator->() const
+  typename ReverseAVLMapIter< K, V, C >::v_type* ReverseAVLMapIter< K, V, C >::operator->()
   {
     assert(node_ != nullptr);
     return std::addressof(node_->data);
   }
 
   template< class K, class V, class C >
-  const typename ConstAVLMapIter< K, V, C >::v_type& ConstAVLMapIter< K, V, C >::operator*() const
+  typename ReverseAVLMapIter< K, V, C >::v_type& ReverseAVLMapIter< K, V, C >::operator*()
   {
     assert(node_ != nullptr);
     return node_->data;
   }
 
   template< class K, class V, class C >
-  void ConstAVLMapIter< K, V, C >::doParentForMinus()
+  void ReverseAVLMapIter< K, V, C >::doParentForMinus()
+  {
+    auto newNode = node_->parent_;
+    while (newNode != fake_ && !comp_(node_->data.first, newNode->data.first))
+    {
+      newNode = newNode->parent_;
+    }
+    node_ = newNode;
+  }
+
+  template< class K, class V, class C >
+  void ReverseAVLMapIter< K, V, C >::doWhileRight()
+  {
+    auto newNode = node_->left_;
+    while (newNode->right_)
+    {
+      newNode = newNode->right_;
+    }
+    node_ = newNode;
+  }
+
+  template< class K, class V, class C >
+  ReverseAVLMapIter< K, V, C >& ReverseAVLMapIter< K, V, C >::operator--()
+  {
+    assert(node_ != nullptr);
+    if (node_ == fake_)
+    {
+      node_ = node_->parent_;
+      while (node_->left_)
+      {
+        node_ = node_->left_;
+      }
+    }
+    else if (!node_->left_ && !node_->right_ && node_->parent_)
+    {
+      if (node_ == node_->parent_->left_)
+      {
+        node_ = node_->parent_;
+      }
+      else
+      {
+        doParentForMinus();
+      }
+    }
+    else if (node_->left_ && node_->right_ && node_->parent_)
+    {
+      doWhileLeft();
+    }
+    else if (node_->left_ && !node_->right_ && node_->parent_)
+    {
+      doParentForMinus();
+    }
+    else if (!node_->parent_)
+    {
+      doWhileLeft();
+    }
+    else if (!node_->left_ && node_->right_ && node_->parent_)
+    {
+      doWhileLeft();
+    }
+    return *this;
+  }
+
+  template< class K, class V, class C >
+  ReverseAVLMapIter< K, V, C > ReverseAVLMapIter< K, V, C >::operator++(int)
+  {
+    assert(node_ != nullptr);
+    auto res(*this);
+    ++(*this);
+    return res;
+  }
+
+  template< class K, class V, class C >
+  void ReverseAVLMapIter< K, V, C >::doWhileLeft()
+  {
+    auto newNode = node_->right_;
+    while (newNode->left_)
+    {
+      newNode = newNode->left_;
+    }
+    node_ = newNode;
+  }
+
+  template< class K, class V, class C >
+  void ReverseAVLMapIter< K, V, C >::doParentForPlus()
   {
     auto newNode = node_->parent_;
     while (newNode != fake_ && comp_(node_->data.first, newNode->data.first))
@@ -141,119 +215,35 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  void ConstAVLMapIter< K, V, C >::doWhileRight()
-  {
-    auto newNode = node_->left_;
-    while (newNode->right_)
-    {
-      newNode = newNode->right_;
-    }
-    node_ = newNode;
-  }
-
-  template< class K, class V, class C >
-  ConstAVLMapIter< K, V, C >& ConstAVLMapIter< K, V, C >::operator--()
-  {
-    assert(node_ != nullptr);
-    if (node_ == fake_)
-    {
-      node_ = node_->parent_;
-      while (node_->right_)
-      {
-        node_ = node_->right_;
-      }
-    }
-    else if (!node_->left_ && !node_->right_ && node_->parent_)
-    {
-      if (node_ == node_->parent_->left_)
-      {
-        doParentForMinus();
-      }
-      else
-      {
-        node_ = node_->parent_;
-      }
-    }
-    else if (node_->left_ && node_->right_ && node_->parent_)
-    {
-      doWhileRight();
-    }
-    else if (node_->left_ && !node_->right_ && node_->parent_)
-    {
-      doWhileRight();
-    }
-    else if (!node_->parent_)
-    {
-      doWhileRight();
-    }
-    else if (!node_->left_ && node_->right_ && node_->parent_)
-    {
-      doParentForMinus();
-    }
-    return *this;
-  }
-
-  template< class K, class V, class C >
-  ConstAVLMapIter< K, V, C > ConstAVLMapIter< K, V, C >::operator++(int)
-  {
-    assert(node_ != nullptr);
-    auto res(*this);
-    ++(*this);
-    return res;
-  }
-
-  template< class K, class V, class C >
-  void ConstAVLMapIter< K, V, C >::doWhileLeft()
-  {
-    auto newNode = node_->right_;
-    while (newNode->left_)
-    {
-      newNode = newNode->left_;
-    }
-    node_ = newNode;
-  }
-
-  template< class K, class V, class C >
-  void ConstAVLMapIter< K, V, C >::doParentForPlus()
-  {
-    auto newNode = node_->parent_;
-    while (newNode != fake_ && !comp_(node_->data.first, newNode->data.first))
-    {
-      newNode = newNode->parent_;
-    }
-    node_ = newNode;
-  }
-
-  template< class K, class V, class C >
-  ConstAVLMapIter< K, V, C >& ConstAVLMapIter< K, V, C >::operator++()
+  ReverseAVLMapIter< K, V, C >& ReverseAVLMapIter< K, V, C >::operator++()
   {
     assert(node_ != nullptr);
     if (!node_->left_ && !node_->right_ && node_->parent_)
     {
       if (node_ == node_->parent_->left_)
       {
-        node_ = node_->parent_;
+        doParentForPlus();
       }
       else
       {
-        doParentForPlus();
+        node_ = node_->parent_;
       }
     }
     else if (node_->left_ && node_->right_ && node_->parent_)
     {
-      doWhileLeft();
+      doWhileRight();
     }
     else if (node_->left_ && !node_->right_ && node_->parent_)
     {
-      doParentForPlus();
+      doWhileRight();
     }
     else if (!node_->parent_)
     {
-      doWhileLeft();
+      doWhileRight();
     }
     else if (!node_->left_ && node_->right_ && node_->parent_)
     {
-      doWhileLeft();
+      doParentForPlus();
     }
     return *this;
   }

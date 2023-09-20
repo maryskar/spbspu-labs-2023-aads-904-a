@@ -5,12 +5,14 @@
 namespace mashkin
 {
   template< class T >
-  void createDictWithCommnads(T& dict)
+  T createDictWithCommnads()
   {
+    T dict;
     dict["print"] = print;
     dict["complement"] = complement;
     dict["intersect"] = intersect;
     dict["union"] = unionDicts;
+    return dict;
   }
 }
 #endif

@@ -1,16 +1,16 @@
-#include <iostream>
-#include <map>
 #include <fstream>
+#include <iostream>
 #include <limits>
+#include <map>
 #include <string>
 #include <utility>
+#include "AVL.h"
+#include "AVLIterator.h"
+#include "AVLReverseIter.h"
+#include "ConstAVLIterator.h"
+#include "ConstAVLReverseIter.h"
 #include "DictWithCommands.h"
 #include "IOrealization.h"
-#include "AVL.h"
-#include "AVL_iterator.h"
-#include "AVL_reverse_iter.h"
-#include "const_AVL_iterator.h"
-#include "const_AVL_reverse_iter.h"
 #include "tree.h"
 
 int main(int argc, char** argv)
@@ -35,15 +35,15 @@ int main(int argc, char** argv)
     dictionaries dicts;
     while (!input.eof())
     {
-      input >> dicts;
       if (input.fail())
       {
         input.clear();
-        input.ignore(maxSize, '\n');
       }
+      input >> dicts;
     }
-    mashkin::AVL< std::string, void (*)(std::istream&, dictionaries&) > commands;
-    mashkin::createDictWithCommnads(commands);
+    using Commands = mashkin::AVL< std::string, void (*)(std::istream&, dictionaries&) >;
+    Commands commands;
+    commands = mashkin::createDictWithCommnads< Commands >();
     std::string command;
     while (!std::cin.eof())
     {
@@ -52,11 +52,18 @@ int main(int argc, char** argv)
       {
         break;
       }
-      if (commands.contains(command))
+      try
       {
-        commands[command](std::cin, dicts);
+        if (commands.contains(command))
+        {
+          commands[command](std::cin, dicts);
+        }
+        else
+        {
+          throw std::logic_error("Logic error");
+        }
       }
-      else
+      catch (const std::logic_error& ex)
       {
         std::cout << "<INVALID COMMAND>\n";
         std::cin.setstate(std::ios::failbit);

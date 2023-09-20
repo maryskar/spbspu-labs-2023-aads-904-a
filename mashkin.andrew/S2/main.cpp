@@ -3,7 +3,7 @@
 #include <iostream>
 #include <limits>
 #include <IOstreamOverloads.h>
-#include "DictWithCommands.h"
+#include <DictWithCommands.h>
 #include "ForwardConstIterator.h"
 #include "ForwardIterator.h"
 #include "dictionary.h"
@@ -25,8 +25,10 @@ int main(int argc, char** argv)
       std::cerr << "Can't open file\n";
       return 1;
     }
+    using dict = mashkin::Dictionary< int, std::string >;
+    using dictionaries = mashkin::Dictionary< std::string, dict >;
     constexpr auto maxSize = std::numeric_limits< std::streamsize >::max();
-    mashkin::dictionaries dicts;
+    dictionaries dicts;
     while (!input.eof())
     {
       if (input.fail())
@@ -35,8 +37,9 @@ int main(int argc, char** argv)
       }
       input >> dicts;
     }
-    mashkin::Dictionary< std::string, void (*)(std::istream&, mashkin::dictionaries&) > commands;
-    commands = mashkin::createDictWithCommnads();
+    using Commands = mashkin::Dictionary< std::string, void (*)(std::istream&, dictionaries&) >;
+    Commands commands;
+    commands = mashkin::createDictWithCommnads< Commands >();
     std::string command;
     while (!std::cin.eof())
     {
