@@ -21,7 +21,7 @@ namespace timofeev
 }
 template < typename T >
 timofeev::Stack< T >::Stack():
-        top_(nullptr)
+  top_(nullptr)
 {}
 template < typename T >
 bool timofeev::Stack< T >::isEmpty() const
@@ -29,8 +29,10 @@ bool timofeev::Stack< T >::isEmpty() const
   return top_ == nullptr;
 }
 template < typename T >
-timofeev::Stack< T >::~Stack() {
+timofeev::Stack< T >::~Stack()
+{
   clear(top_);
+  top_ = nullptr;
 }
 template < typename T >
 void timofeev::Stack< T >::pop()
@@ -41,7 +43,7 @@ void timofeev::Stack< T >::pop()
   }
   else
   {
-    List<T>* temp = top_;
+    List< T >* temp = top_;
     top_ = temp->next;
     delete temp;
   }
