@@ -173,6 +173,18 @@ namespace potapova
           }
         }
       }
+
+      void intersect(const Dictionary< Key, Value, Compare >& other)
+      {
+        Dictionary< Key, Value, Compare > result;
+        for (const Node& cur_node : *this)
+        {
+          if (other.contains(cur_node))
+          {
+            result.insert(cur_node.key, cur_node.value);
+          }
+        }
+      }
     private:
 
       ForwardList< Node > data_;
