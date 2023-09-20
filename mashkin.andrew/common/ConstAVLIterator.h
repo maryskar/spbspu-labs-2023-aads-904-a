@@ -24,7 +24,6 @@ namespace mashkin
     ~ConstAVLMapIter() = default;
     ConstAVLMapIter(const const_iter&) = default;
     explicit ConstAVLMapIter(const AVLMapIter< Key, Value, Comp >& rhs);
-    explicit ConstAVLMapIter(tree* rhs);
 
     const_iter& operator=(const const_iter&) = default;
     const_iter& operator++();
@@ -50,6 +49,8 @@ namespace mashkin
     void doParentForMinus();
     void doWhileLeft();
     void doWhileRight();
+
+    explicit ConstAVLMapIter(tree* rhs);
   };
 
   template< class K, class V, class C >

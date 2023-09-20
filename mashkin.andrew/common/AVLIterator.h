@@ -21,7 +21,6 @@ namespace mashkin
     AVLMapIter();
     ~AVLMapIter() = default;
     AVLMapIter(const iter&) = default;
-    explicit AVLMapIter(tree* rhs);
 
     iter& operator=(const iter&) = default;
     iter& operator++();
@@ -49,6 +48,8 @@ namespace mashkin
     void doParentForMinus();
     void doWhileLeft();
     void doWhileRight();
+
+    explicit AVLMapIter(tree* rhs);
   };
 
   template< class Key, class Value, class Comp >

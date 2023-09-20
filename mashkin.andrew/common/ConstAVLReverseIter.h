@@ -24,7 +24,6 @@ namespace mashkin
     ~ConstReverseAVLMapIter() = default;
     ConstReverseAVLMapIter(const const_riter&) = default;
     explicit ConstReverseAVLMapIter(const ReverseAVLMapIter< Key, Value, Comp >& rhs);
-    explicit ConstReverseAVLMapIter(tree* rhs);
 
     const_riter& operator=(const const_riter&) = default;
     const_riter& operator++();
@@ -50,6 +49,8 @@ namespace mashkin
     void doParentForMinus();
     void doWhileLeft();
     void doWhileRight();
+
+    explicit ConstReverseAVLMapIter(tree* rhs);
   };
 
   template< class K, class V, class C >
