@@ -3,7 +3,7 @@
 #include "stack.h"
 #include "details.h"
 
-aksenov::Queue< std::string > aksenov::getPostfixQueue(aksenov::Queue< std::string > &infQueue)
+aksenov::Queue< std::string > aksenov::getPostfixQueue(Queue< std::string > &infQueue)
 {
   Queue< std::string > postfixQueue;
   Stack< std::string > stack;
@@ -15,7 +15,7 @@ aksenov::Queue< std::string > aksenov::getPostfixQueue(aksenov::Queue< std::stri
     {
       stack.push(elem);
     }
-    else if (aksenov::isNumeric(elem))
+    else if (isNumeric(elem))
     {
       postfixQueue.push(elem);
     }
@@ -35,10 +35,9 @@ aksenov::Queue< std::string > aksenov::getPostfixQueue(aksenov::Queue< std::stri
         throw std::invalid_argument("wrong brackets");
       }
     }
-    else if (aksenov::isOperator(elem))
+    else if (isOperator(elem))
     {
-      while (!stack.isEmpty() && isOperator(stack.get())
-          && isloverOrSamePriority(elem,stack.get()))
+      while (!stack.isEmpty() && isOperator(stack.get()) && isloverOrSamePriority(elem,stack.get()))
       {
         postfixQueue.push(stack.get());
         stack.pop();
@@ -50,7 +49,7 @@ aksenov::Queue< std::string > aksenov::getPostfixQueue(aksenov::Queue< std::stri
       throw std::invalid_argument("wrong input");
     }
   }
-  while ( !stack.isEmpty())
+  while (!stack.isEmpty())
   {
     if(stack.get() == "(" || stack.get() == ")")
     {
