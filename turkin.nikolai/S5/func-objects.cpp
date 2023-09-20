@@ -1,6 +1,7 @@
 #include "func-objects.hpp"
 
 #include <stdexcept>
+#include <iostream>
 
 #include <calc-verify.hpp>
 
@@ -12,8 +13,10 @@ namespace
 {
   void llsum_check(long long lhs, long long rhs)
   {
+    std::cout << "lhs: " << lhs << " rhs: " << rhs << "\n";
     if (turkin::isADDerror(lhs, rhs) || turkin::isSUBerror(lhs, rhs) || turkin::isADDerror(rhs, lhs) || turkin::isSUBerror(rhs, lhs))
     {
+      std::cout<< "ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR\n";
       throw std::overflow_error("num add error");
     }
   }
