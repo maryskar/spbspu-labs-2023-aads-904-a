@@ -35,6 +35,7 @@ namespace aksenov
   Stack< T >::~Stack()
   {
     deleteList(top_);
+    top_ = nullptr;
     size_ = 0;
   }
 
