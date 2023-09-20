@@ -11,9 +11,9 @@ namespace turkin
     public:
       KeySum();
       void operator()(const std::pair< long long, std::string > & pair);
-      int get() const;
+      long long get() const;
     private:
-      int sum_;
+      long long sum_;
   };
 
   class StrSum

@@ -17,7 +17,7 @@ void turkin::KeySum::operator()(const std::pair< long long, std::string > & pair
   sum_ += pair.first;
 }
 
-int turkin::KeySum::get() const
+long long turkin::KeySum::get() const
 {
   return sum_;
 }
