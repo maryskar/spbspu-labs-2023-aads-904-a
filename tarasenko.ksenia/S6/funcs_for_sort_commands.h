@@ -1,5 +1,6 @@
 #ifndef S6_FUNCS_FOR_SORT_COMMANDS_H
 #define S6_FUNCS_FOR_SORT_COMMANDS_H
+
 #include <iostream>
 
 namespace tarasenko

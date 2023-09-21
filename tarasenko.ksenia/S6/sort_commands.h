@@ -1,5 +1,6 @@
 #ifndef S6_SORT_COMMANDS_H
 #define S6_SORT_COMMANDS_H
+
 #include <iostream>
 #include <string>
 #include <functional>
