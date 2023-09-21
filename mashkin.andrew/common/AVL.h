@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <functional>
 #include <utility>
+#include <algorithm>
 #include "AVLIterator.h"
 #include "AVLReverseIter.h"
 #include "ConstAVLIterator.h"
@@ -313,9 +314,8 @@ namespace mashkin
   template< class K, class V, class C >
   void AVL< K, V, C >::swap(AVL& lhs)
   {
-    auto var = lhs;
-    lhs = *this;
-    *this = var;
+    std::swap(fake_, lhs.fake_);
+    std::swap(comp_, lhs.comp_);
   }
 
   template< class K, class V, class C >
@@ -402,7 +402,8 @@ namespace mashkin
   template< class K, class V, class C >
   AVL< K, V, C >& AVL< K, V, C >::operator=(AVL&& rhs)
   {
-    *this = rhs;
+    clear();
+    swap(rhs);
     return *this;
   }
 
