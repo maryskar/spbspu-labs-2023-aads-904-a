@@ -116,12 +116,14 @@ namespace mashkin
   template< class K, class V, class C >
   void ReverseAVLMapIter< K, V, C >::doParentForMinus()
   {
-    auto newNode = node_->parent_;
-    while (newNode != fake_ && !comp_(node_->data.first, newNode->data.first))
+    auto parentNode = node_->parent_;
+    auto childrenNode = node_;
+    while (parentNode != fake_ && parentNode->right_ != childrenNode)
     {
-      newNode = newNode->parent_;
+      childrenNode = parentNode;
+      parentNode = parentNode->parent_;
     }
-    node_ = newNode;
+    node_ = parentNode;
   }
 
   template< class K, class V, class C >
@@ -200,18 +202,20 @@ namespace mashkin
   template< class K, class V, class C >
   void ReverseAVLMapIter< K, V, C >::doParentForPlus()
   {
-    auto newNode = node_->parent_;
-    while (newNode != fake_ && comp_(node_->data.first, newNode->data.first))
+    auto parentNode = node_->parent_;
+    auto childrenNode = node_;
+    while (parentNode != fake_ && parentNode->right_ == childrenNode)
     {
-      newNode = newNode->parent_;
+      childrenNode = parentNode;
+      parentNode = parentNode->parent_;
     }
-    if (newNode == fake_)
+    if (parentNode == fake_)
     {
       node_ = node_->left_;
     }
     else
     {
-      node_ = newNode;
+      node_ = parentNode;
     }
   }
 
