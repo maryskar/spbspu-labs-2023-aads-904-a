@@ -54,6 +54,12 @@ namespace chulkov {
     return cnode_->item_;
   }
 
+  template < typename T >
+  T* ForwardConstIter< T >::operator->() const
+  {
+    return std::addressof(cnode_->item_);
+  }
+
 
 }
 
