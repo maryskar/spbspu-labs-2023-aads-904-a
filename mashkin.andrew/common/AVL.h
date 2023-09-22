@@ -424,8 +424,7 @@ namespace mashkin
 
   template< class K, class V, class C >
   AVL< K, V, C >::AVL(const AVL& lhs):
-    fake_(static_cast< tree* >(::operator new(sizeof(tree)))),
-    comp_()
+    AVL()
   {
     insert(lhs.cbegin(), lhs.cend());
   }
