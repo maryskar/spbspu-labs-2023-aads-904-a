@@ -4,7 +4,7 @@
 #include <utility>
 #include <iterator>
 
-namespace
+namespace details
 {
   template< typename T, typename UnaryPred >
   struct Lcompare
@@ -68,17 +68,17 @@ namespace
 namespace turkin
 {
   template< typename ForwardIt, typename UnaryPred >
-  void qsort(ForwardIt begin, ForwardIt last, UnaryPred p)
+  void quick_sort(ForwardIt begin, ForwardIt last, UnaryPred p)
   {
     if (std::distance(begin, last) < 2)
     {
       return;
     }
     auto pivot = *std::next(begin, std::distance(begin, last) / 2);
-    auto l = partition(begin, last, Lcompare< decltype(pivot), UnaryPred >(pivot));
-    auto b = partition(begin, last, Bcompare< decltype(pivot), UnaryPred >(pivot));
-    qsort(begin, l, p);
-    qsort(b, last, p);
+    auto l = details::partition(begin, last, details::Lcompare< decltype(pivot), UnaryPred >(pivot));
+    auto b = details::partition(begin, last, details::Bcompare< decltype(pivot), UnaryPred >(pivot));
+    quick_sort(begin, l, p);
+    quick_sort(b, last, p);
   }
 }
 

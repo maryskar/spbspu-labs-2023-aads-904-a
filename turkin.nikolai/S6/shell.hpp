@@ -7,7 +7,7 @@
 namespace turkin
 {
   template< typename BidirectionalIt, typename UnaryPred >
-  void shell(BidirectionalIt first, BidirectionalIt last, UnaryPred p)
+  void shell_sort(BidirectionalIt first, BidirectionalIt last, UnaryPred p)
   {
     std::size_t size = std::distance(first, last);
     for (std::size_t gap = size / 2; gap > 0; gap /= 2)
