@@ -82,7 +82,11 @@ namespace chulkov {
     return !(rhs == *this);
   }
 
-
+  template < typename T >
+  bool ForwardConstIter< T >::operator==(const ForwardConstIter& rhs) const
+  {
+    return cnode_ == rhs.cnode_;
+  }
 }
 
 #endif
