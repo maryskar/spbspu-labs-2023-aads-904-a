@@ -102,4 +102,28 @@ namespace chulkov {
     }
     return returnable;
   }
+
+  Dictionary< int, std::string > unite(const std::string& lhs, const std::string& rhs, const Dicts& dicts)
+  {
+    auto lhsCIterator = dicts.cfind(lhs);
+    auto rhsCIterator = dicts.cfind(rhs);
+    if ((lhsCIterator == dicts.cend()) || (rhsCIterator == dicts.cend())) {
+      throw std::invalid_argument(MESSAGE);
+    }
+    if (lhsCIterator->second.isEmpty()) {
+      return rhsCIterator->second;
+    }
+    if (rhsCIterator->second.isEmpty()) {
+      return lhsCIterator->second;
+    }
+    auto returnable = lhsCIterator->second;
+    auto rhsIt = rhsCIterator->second.cbegin();
+    while (rhsIt != rhsCIterator->second.cend()) {
+      if (returnable.cfind(rhsIt->first) == returnable.cend()) {
+        returnable.push(rhsIt->first, rhsIt->second);
+      }
+      ++rhsIt;
+    }
+    return returnable;
+  }
 }
