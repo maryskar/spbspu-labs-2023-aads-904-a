@@ -88,7 +88,7 @@ namespace mashkin
   private:
     void balance(tree* node);
 
-    size_t size_impl(tree* head, size_t size_);
+    size_t size_impl(tree* head, size_t size_) const noexcept;
 
     void rotate_left(tree* node);
     void rotate_right(tree* node);
@@ -377,7 +377,7 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  size_t AVL< K, V, C >::size_impl(tree* head, size_t size_)
+  size_t AVL< K, V, C >::size_impl(tree* head, size_t size_) const noexcept
   {
     if (!head)
     {
