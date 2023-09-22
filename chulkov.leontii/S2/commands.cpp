@@ -66,4 +66,40 @@ namespace chulkov {
     }
     return returnable;
   }
+
+  Dictionary< int, std::string > intersect(const std::string& lhsName, const std::string& rhsName, const Dicts& dicts)
+  {
+    auto lhsCIt = dicts.cfind(lhsName);
+    auto rhsCIt = dicts.cfind(rhsName);
+    if ((lhsCIt == dicts.cend()) || (rhsCIt == dicts.cend())) {
+      throw std::invalid_argument(MESSAGE);
+    }
+    if ((lhsCIt->second.isEmpty()) || (rhsCIt->second.isEmpty())) {
+      return Dictionary< int, std::string >();
+    }
+    auto returnable = Dictionary< int, std::string >();
+    auto lhsIterator = lhsCIt->second.cbegin();
+    auto rhsIterator = rhsCIt->second.cbegin();
+    std::less< int > cmp;
+    while ((lhsIterator != lhsCIt->second.cend()) && (rhsIterator != rhsCIt->second.cend())) {
+      if (cmp(lhsIterator->first, rhsIterator->first)) {
+        while ((lhsIterator != lhsCIt->second.cend()) && cmp(lhsIterator->first, rhsIterator->first)) {
+          ++lhsIterator;
+        }
+      } else if (cmp(rhsIterator->first, lhsIterator->first)) {
+        while ((rhsIterator != rhsCIt->second.cend()) && cmp(rhsIterator->first, lhsIterator->first)) {
+          ++rhsIterator;
+        }
+      }
+      if ((lhsIterator == lhsCIt->second.cend()) || (rhsIterator == rhsCIt->second.cend())) {
+        return returnable;
+      }
+      if (!cmp(lhsIterator->first, rhsIterator->first) && !cmp(rhsIterator->first, lhsIterator->first)) {
+        returnable.push(lhsIterator->first, lhsIterator->second);
+      }
+      ++lhsIterator;
+      ++rhsIterator;
+    }
+    return returnable;
+  }
 }
