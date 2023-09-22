@@ -72,11 +72,11 @@ namespace mashkin
     iter upper_bound(const Key& key);
     const_iter upper_bound(const Key& key) const;
 
-    void clear();
-    size_t size();
-    bool empty();
+    void clear() noexcept;
+    size_t size() const noexcept;
+    bool empty() const noexcept;
 
-    void swap(AVL& lhs);
+    void swap(AVL& lhs) noexcept;
 
     size_t count(const Key& key) const;
 
@@ -95,7 +95,6 @@ namespace mashkin
     void rotate_RightLeft(tree* node);
     void rotate_LeftRight(tree* node);
 
-    size_t checkHeight(tree* head);
     size_t checkHeightImpl(tree* head, size_t height);
 
     tree* ins_impl(const v_type& data, tree* root, tree* before) const;
@@ -138,7 +137,7 @@ namespace mashkin
     {
       return before;
     }
-    if (root->data.first == key)
+    if (!comp_(root->data.first, key) && !comp_(key, root->data.first))
     {
       return root;
     }
@@ -158,7 +157,7 @@ namespace mashkin
   typename AVL< K, V, C >::const_iter AVL< K, V, C >::upper_bound(const K& key) const
   {
     auto toReturn = lower_bound(key);
-    if (toReturn->first == key)
+    if (!comp_(toReturn->first, key) && !comp_(key, toReturn->first))
     {
       toReturn++;
     }
@@ -178,7 +177,7 @@ namespace mashkin
     auto node = fake_->parent_;
     node = search_near_node(key, node, node);
     const_iter toReturn(node);
-    if (!comp_(key, node->data.first) && node->data.first != key)
+    if (comp_(node->data.first, key))
     {
       toReturn++;
     }
@@ -206,13 +205,13 @@ namespace mashkin
   {
     while (node != fake_)
     {
-      size_t left = checkHeight(node->left_);
-      size_t right = checkHeight(node->right_);
+      size_t left = checkHeightImpl(node->left_, 0);
+      size_t right = checkHeightImpl(node->right_, 0);
       if (right - left == 2)
       {
         auto subTree = node->right_;
-        auto subLeft = checkHeight(subTree->left_);
-        auto subRight = checkHeight(subTree->right_);
+        auto subLeft = checkHeightImpl(subTree->left_, 0);
+        auto subRight = checkHeightImpl(subTree->right_, 0);
         if (subLeft <= subRight)
         {
           rotate_left(subTree);
@@ -225,8 +224,8 @@ namespace mashkin
       else if (left - right == 2)
       {
         auto subTree = node->left_;
-        auto subLeft = checkHeight(subTree->left_);
-        auto subRight = checkHeight(subTree->right_);
+        auto subLeft = checkHeightImpl(subTree->left_, 0);
+        auto subRight = checkHeightImpl(subTree->right_, 0);
         if (subRight <= subLeft)
         {
           rotate_right(subTree);
@@ -245,53 +244,54 @@ namespace mashkin
   {
     auto res = pos;
     res++;
-    tree* node;
-    if (pos == cbegin())
+    tree* node = nullptr;
+    tree* toDel = nullptr;
+    if (!pos.node_->left_ || !pos.node_->right_)
     {
-      auto toDel = pos.node_;
+      toDel = pos.node_;
       node = toDel->parent_;
-      node->left_ = toDel->right_;
-      if (toDel->right_)
+      if (!pos.node_->left_ && !pos.node_->right_)
       {
+        if (toDel == node->left_)
+        {
+          node->left_ = nullptr;
+        }
+        else if (toDel == node->right_)
+        {
+          node->right_ = nullptr;
+        }
+      }
+      else if (!pos.node_->left_ && pos.node_->right_)
+      {
+        if (toDel == node->left_)
+        {
+          node->left_ = toDel->right_;
+        }
+        else if (toDel == node->right_)
+        {
+          node->right_ = toDel->right_;
+        }
         toDel->right_->parent_ = node;
       }
-      delete toDel;
-    }
-    else if (!pos.node_->left_ && !pos.node_->right_)
-    {
-      auto toDel = pos.node_;
-      node = toDel->parent_;
-      if (toDel == node->left_)
+      else if (pos.node_->left_ && !pos.node_->right_)
       {
-        node->left_ = nullptr;
+        if (toDel == node->left_)
+        {
+          node->left_ = toDel->left_;
+        }
+        else if (toDel == node->right_)
+        {
+          node->right_ = toDel->left_;
+        }
+        toDel->left_->parent_ = node;
       }
-      else if (toDel == node->right_)
-      {
-        node->right_ = nullptr;
-      }
-      delete toDel;
-    }
-    else if (!pos.node_->left_ && pos.node_->right_)
-    {
-      auto toDel = pos.node_;
-      node = toDel->parent_;
-      if (toDel == node->left_)
-      {
-        node->left_ = toDel->right_;
-      }
-      else if (toDel == node->right_)
-      {
-        node->right_ = toDel->right_;
-      }
-      toDel->right_->parent_ = node;
-      delete toDel;
     }
     else
     {
       auto var = pos.node_;
       --pos;
       var->data = *pos;
-      auto toDel = pos.node_;
+      toDel = pos.node_;
       node = toDel->parent_;
       if (toDel == node->right_)
       {
@@ -305,14 +305,14 @@ namespace mashkin
       {
         toDel->left_->parent_ = node;
       }
-      delete toDel;
     }
+    delete toDel;
     balance(node);
     return iter(res.node_);
   }
 
   template< class K, class V, class C >
-  void AVL< K, V, C >::swap(AVL& lhs)
+  void AVL< K, V, C >::swap(AVL& lhs) noexcept
   {
     std::swap(fake_, lhs.fake_);
     std::swap(comp_, lhs.comp_);
@@ -352,7 +352,7 @@ namespace mashkin
   typename AVL< K, V, C >::const_iter AVL< K, V, C >::find(const K& key) const
   {
     auto it = cbegin();
-    while (it != cend() && it->first != key)
+    while (it != cend() && (comp_(key, it->first) || comp_(it->first, key)))
     {
       it++;
     }
@@ -390,7 +390,7 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  size_t AVL< K, V, C >::size()
+  size_t AVL< K, V, C >::size() const noexcept
   {
     if (empty())
     {
@@ -424,7 +424,8 @@ namespace mashkin
 
   template< class K, class V, class C >
   AVL< K, V, C >::AVL(const AVL& lhs):
-    AVL()
+    fake_(static_cast< tree* >(::operator new(sizeof(tree)))),
+    comp_()
   {
     insert(lhs.cbegin(), lhs.cend());
   }
@@ -562,13 +563,6 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  size_t AVL< K, V, C >::checkHeight(tree* head)
-  {
-    size_t height = 0;
-    return checkHeightImpl(head, height);
-  }
-
-  template< class K, class V, class C >
   typename AVL< K, V, C >::tree* AVL< K, V, C >::ins_impl(const v_type& data, tree* root, tree* before) const
   {
     if (!root)
@@ -581,7 +575,7 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  bool AVL< K, V, C >::empty()
+  bool AVL< K, V, C >::empty() const noexcept
   {
     return fake_ == fake_->parent_;
   }
@@ -612,7 +606,7 @@ namespace mashkin
   template< class K, class V, class C >
   typename AVL< K, V, C >::const_iter AVL< K, V, C >::cend() const
   {
-    return ConstAVLMapIter< K, V, C >(fake_);
+    return const_iter(fake_);
   }
 
   template< class K, class V, class C >
@@ -624,7 +618,7 @@ namespace mashkin
   template< class K, class V, class C >
   typename AVL< K, V, C >::iter AVL< K, V, C >::end()
   {
-    return AVLMapIter< K, V, C >(fake_);
+    return iter(fake_);
   }
 
   template< class K, class V, class C >
@@ -653,7 +647,7 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  void AVL< K, V, C >::clear()
+  void AVL< K, V, C >::clear() noexcept
   {
     if (fake_ == fake_->parent_)
     {
