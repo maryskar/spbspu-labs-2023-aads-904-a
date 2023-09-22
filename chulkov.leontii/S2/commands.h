@@ -11,6 +11,8 @@ namespace chulkov {
   Dictionary< int, std::string > complement(const std::string&, const std::string&, const Dicts&);
   Dictionary< int, std::string > intersect(const std::string&, const std::string&, const Dicts&);
   Dictionary< int, std::string > unite(const std::string&, const std::string&, const Dicts&);
+  std::ostream& printEmptyCommand(std::ostream& out);
+  std::ostream& printInvalidCommand(std::ostream& out);
 }
 
 #endif
