@@ -128,7 +128,7 @@ namespace mashkin
   {
     auto parentNode = node_->parent_;
     auto childrenNode = node_;
-    while (parentNode != fake_ && parentNode->right_ != childrenNode)
+    while (parentNode != fake_ && parentNode->right_ == childrenNode)
     {
       childrenNode = parentNode;
       parentNode = parentNode->parent_;
@@ -214,7 +214,7 @@ namespace mashkin
   {
     auto parentNode = node_->parent_;
     auto childrenNode = node_;
-    while (parentNode != fake_ && parentNode->right_ == childrenNode)
+    while (parentNode != fake_ && parentNode->right_ != childrenNode)
     {
       childrenNode = parentNode;
       parentNode = parentNode->parent_;
