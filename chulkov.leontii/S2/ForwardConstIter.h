@@ -76,6 +76,12 @@ namespace chulkov {
     return res;
   }
 
+  template < typename T >
+  bool ForwardConstIter< T >::operator!=(const ForwardConstIter& rhs) const
+  {
+    return !(rhs == *this);
+  }
+
 
 }
 
