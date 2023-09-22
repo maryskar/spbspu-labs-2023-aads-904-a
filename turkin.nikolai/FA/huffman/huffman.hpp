@@ -5,19 +5,6 @@
 
 namespace turkin
 {
-  class HTree
-  {
-    public:
-      explicit HTree(const phrase_t & phrase);
-    private:
-      encoding_list_t list_;
-  };
-  
-  struct HNode
-  {
-    
-  };
-
   struct PType
   {
     public:
