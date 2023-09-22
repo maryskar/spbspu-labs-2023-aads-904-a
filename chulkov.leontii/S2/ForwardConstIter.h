@@ -39,6 +39,11 @@ namespace chulkov {
     cnode_(nullptr)
   {}
 
+  template < typename T >
+  ForwardConstIter< T >::ForwardConstIter(List< T >* node):
+    cnode_(node)
+  {}
+
 }
 
 #endif
