@@ -124,6 +124,41 @@ namespace chulkov {
     }
     return it;
   }
+
+  template < typename Key, typename Value, typename Compare > void Dictionary< Key, Value, Compare >::clear()
+  {
+    list_.clear();
+  }
+
+  template < typename Key, typename Value, typename Compare >
+  ForwardIter< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::begin()
+  {
+    return list_.begin();
+  }
+
+  template < typename Key, typename Value, typename Compare >
+  bool Dictionary< Key, Value, Compare >::isEmpty() const noexcept
+  {
+    return list_.isEmpty();
+  }
+
+  template < typename Key, typename Value, typename Compare >
+  ForwardIter< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::end()
+  {
+    return list_.end();
+  }
+
+  template < typename Key, typename Value, typename Compare >
+  ForwardConstIter< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::cbegin() const
+  {
+    return list_.cbegin();
+  }
+
+  template < typename Key, typename Value, typename Compare >
+  ForwardConstIter< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::cend() const
+  {
+    return list_.cend();
+  }
 }
 
 #endif
