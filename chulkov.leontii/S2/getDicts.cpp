@@ -21,4 +21,36 @@ namespace chulkov {
     return returnable;
   }
 
+  Dicts getDicts(std::istream& in)
+  {
+    if (!in.good()) {
+      throw std::logic_error("Unable to read!\n");
+    }
+    Dicts dicts;
+    while (!in.eof()) {
+      auto words = getWords(in, '\n');
+      if (words.isEmpty()) {
+        continue;
+      }
+      Dictionary< int, std::string > elem = getDict(words);
+      dicts.push(words.front(), elem);
+    }
+    return dicts;
+  }
+
+  FrdList< std::string > getWords(std::istream& in, char char_)
+  {
+    auto words = FrdList< std::string >();
+    char next = in.get();
+    while ((next != char_) && !in.eof()) {
+      std::string elem;
+      while (!std::isspace(next) && (next != char_) && !in.eof()) {
+        elem.push_back(next);
+        next = in.get();
+      }
+      words.pushBack(elem);
+      next = (next == char_) ? next : in.get();
+    }
+    return words;
+  }
 }
