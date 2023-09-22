@@ -23,17 +23,17 @@ namespace turkin
     std::deque< T > deque = fill< std::deque< T >, T >(amount);
     std::list< T > list = fill< std::list< T >, T >(amount);
     ForwardList< T > forward_list = fill< ForwardList< T >, T >(amount);
-    
+
     UnaryPred p;
-    
+
     merge_sort(forward_list.begin(), forward_list.size(), p);
     out_storage(forward_list.begin(), forward_list.end(), out) << "\n";
-    
+
     quick_sort(list.begin(), list.end(), p);
     out_storage(list.begin(), list.end(), out) << "\n";
     shell_sort(list.begin(), list.end(), p);
     out_storage(list.begin(), list.end(), out) << "\n";
-    
+
     quick_sort(deque.begin(), deque.end(), p);
     out_storage(deque.begin(), deque.end(), out) << "\n";
     shell_sort(deque.begin(), deque.end(), p);
