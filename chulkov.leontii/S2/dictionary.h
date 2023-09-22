@@ -74,6 +74,38 @@ namespace chulkov {
       list_.insertAfter(it, std::pair< Key, Value >{k, v});
     }
   }
+
+  template < typename Key, typename Value, typename Compare >
+  const Value& Dictionary< Key, Value, Compare >::get(const Key& k) const
+  {
+    auto i = cbegin();
+    i = find(k);
+    if (i == cend()) {
+      throw std::out_of_range("Out of range");
+    }
+    return i->second;
+  }
+
+  template < typename Key, typename Value, typename Compare >
+  void Dictionary< Key, Value, Compare >::pop(const Key& k)
+  {
+    auto it = list_.cbegin();
+    auto nextIt = ++list_.cbegin();
+    Compare cmp;
+    if (!cmp(it->first, k) && !cmp(k, it->first)) {
+      list_.popFront();
+      return;
+    }
+    while ((it != list_.cend()) && (cmp(nextIt->first, k) || cmp(k, nextIt->first))) {
+      ++nextIt;
+      ++it;
+    }
+    if (it == list_.cend()) {
+      throw std::logic_error("No such key!\n");
+    } else {
+      list_.eraseAfter(it);
+    }
+  }
 }
 
 #endif
