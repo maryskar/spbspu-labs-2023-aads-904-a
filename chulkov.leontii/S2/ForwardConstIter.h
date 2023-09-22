@@ -68,6 +68,14 @@ namespace chulkov {
     return *this;
   }
 
+  template < typename T >
+  typename ForwardConstIter< T >::ForwardConstIter ForwardConstIter< T >::operator++(int)
+  {
+    ForwardConstIter< T > res(*this);
+    ++(*this);
+    return res;
+  }
+
 
 }
 
