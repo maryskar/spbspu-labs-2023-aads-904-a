@@ -44,6 +44,12 @@ namespace chulkov {
     cnode_(node)
   {}
 
+  template < typename T >
+  ForwardConstIter< T >::ForwardConstIter(const ForwardIter< T >& rhs):
+    cnode_(rhs.node_)
+  {}
+
+
 }
 
 #endif
