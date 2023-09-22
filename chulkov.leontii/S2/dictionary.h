@@ -106,6 +106,24 @@ namespace chulkov {
       list_.eraseAfter(it);
     }
   }
+
+  template < typename Key, typename Value, typename Compare >
+  ForwardIter< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::find(const Key& k)
+  {
+    auto constIt = cfind(k);
+    return ForwardIter< std::pair< Key, Value > >(constIt);
+  }
+
+  template < typename Key, typename Value, typename Compare >
+  ForwardConstIter< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::cfind(const Key& k) const
+  {
+    ForwardConstIter< std::pair< Key, Value > > it = cbegin();
+    Compare cmp;
+    while ((it != cend()) && (cmp(it->first, k) || cmp(k, it->first))) {
+      ++it;
+    }
+    return it;
+  }
 }
 
 #endif
