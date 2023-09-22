@@ -1,9 +1,12 @@
-#include "avl-tree/avl-tree.hpp"
-#include "process-sort.hpp"
 #include <functional>
 #include <iostream>
 #include <string>
 #include <cstddef>
+
+#include "avl-tree/avl-tree.hpp"
+#include "process-sort.hpp"
+
+#include <out-msg.hpp>
 
 int main(int argc, char * argv[])
 {
@@ -28,7 +31,7 @@ int main(int argc, char * argv[])
   }
   catch (...)
   {
-    std::cerr << "bad input\n";
+    outInvalidCMD(std::cout);
     return 1;
   }
   return 0;

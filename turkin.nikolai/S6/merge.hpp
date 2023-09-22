@@ -4,7 +4,7 @@
 #include <cstddef>
 #include <iterator>
 
-namespace
+namespace details
 {
   template< typename ForwardIt, typename UnaryPred >
   void merge(ForwardIt first, size_t lhs, size_t mid, size_t rhs, UnaryPred p)
@@ -82,7 +82,7 @@ namespace turkin
       {
         std::size_t mid = std::min(lhs + cur - 1, size - 1);
         std::size_t rhs = std::min(lhs + 2 * cur - 1, size - 1);
-        merge(first, lhs, mid, rhs, p);
+        details::merge(first, lhs, mid, rhs, p);
       }
     }
   }
