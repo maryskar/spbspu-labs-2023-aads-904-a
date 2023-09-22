@@ -77,8 +77,8 @@ namespace turkin
     auto pivot = *std::next(begin, std::distance(begin, last) / 2);
     auto l = partition(begin, last, Lcompare< decltype(pivot), UnaryPred >(pivot));
     auto b = partition(begin, last, Bcompare< decltype(pivot), UnaryPred >(pivot));
-    quickSort(begin, l, p);
-    quickSort(b, last, p);
+    qsort(begin, l, p);
+    qsort(b, last, p);
   }
 }
 
