@@ -27,6 +27,41 @@ namespace skarlygina
     bool is_empty() const noexcept;
   private:
     ForwardList< std::pair< Key, Value > > list_;
+    Compare compare_;
   };
+
+  template < typename Key, typename Value, typename Compare >
+  Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::begin()
+  {
+    return list_.begin();
+  }
+  template < typename Key, typename Value, typename Compare >
+  Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::end()
+  {
+    return list_.end();
+  }
+
+  template < typename Key, typename Value, typename Compare >
+  CIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::begin() const
+  {
+    return list_.begin();
+  }
+  template < typename Key, typename Value, typename Compare >
+  CIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::end() const
+  {
+    return list_.end();
+  }
+
+  template < typename Key, typename Value, typename Compare >
+  CIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::cbegin() const
+  {
+    return list_.cbegin();
+  }
+  template < typename Key, typename Value, typename Compare >
+  CIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::cend() const
+  {
+    return list_.cend();
+  }
+
 }
 #endif
