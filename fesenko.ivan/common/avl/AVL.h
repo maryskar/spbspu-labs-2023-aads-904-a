@@ -446,6 +446,33 @@ namespace fesenko
   }
 
   template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVL< Key, Value, Compare >::traverse_rnl(F f) const
+  {
+    Stack< tree > stack;
+    tree cur = root_;
+    while (cur != nullptr || !stack.empty()) {
+      if (cur != nullptr) {
+        stack.push(cur);
+        cur = cur->right;
+      } else {
+        cur = stack.top();
+        stack.pop();
+        f(cur->data.second());
+        cur = cur->left;
+      }
+    }
+    return f;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVL< Key, Value, Compare >::traverse_rnl(F f)
+  {
+    return static_cast< const this_t & >(*this).traverse_rnl(f);
+  }
+
+  template< typename Key, typename Value, typename Compare >
   size_t AVL< Key, Value, Compare >::checkHeight(tree *head)
   {
     size_t height = 0;
