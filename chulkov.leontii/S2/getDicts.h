@@ -3,7 +3,6 @@
 #include <iosfwd>
 #include <string>
 #include "commands.h"
-#include "ForwardList.h"
 
 namespace chulkov {
   Dicts getDicts(std::istream&);
