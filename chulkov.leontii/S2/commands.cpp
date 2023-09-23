@@ -7,7 +7,7 @@ namespace chulkov {
 
   std::ostream& printEmptyCommand(std::ostream& out)
   {
-    return out << "<EMPTY>" << std::endl;
+    return out << "<EMPTY>" << '\n';
   }
 
   std::ostream& print(std::ostream& out, const std::string& name, const Dicts& dicts)
