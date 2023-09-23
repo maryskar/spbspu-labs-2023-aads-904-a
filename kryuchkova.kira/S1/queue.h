@@ -16,7 +16,7 @@ namespace kryuchkova
       Queue< T > & operator=(Queue< T > &&);
       ~Queue();
       void push(const T &rhs);
-      T &drop();
+      T &drop() const;
       void pop();
       bool isEmpty() const;
     private:
@@ -99,7 +99,7 @@ namespace kryuchkova
   }
 
   template < typename T >
-  T &Queue< T >::drop()
+  T &Queue< T >::drop() const
   {
     if (isEmpty())
     {
