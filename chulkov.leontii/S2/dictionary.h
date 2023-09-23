@@ -1,7 +1,7 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 #include <stdexcept>
-#include "Forwardlist.h"
+#include "ForwardList.h"
 
 namespace chulkov {
   template < typename Key, typename Value, typename Compare = std::less< Key > >
