@@ -1,6 +1,14 @@
 #include <iostream>
 
+namespace skarlygina
+{
+  std::ostream& printInvalidCommand(std::ostream& out)
+  {
+    return out << "<INVALID COMMAND>\n";
+  };
+}
+
 int main()
 {
-  std::cout << "S2";
+  skarlygina::printInvalidCommand(std::cout);
 }
