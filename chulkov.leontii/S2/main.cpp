@@ -11,12 +11,12 @@ std::ostream& chulkov::printInvalidCommand(std::ostream& out)
 int main(int argc, char* argv[])
 {
   if (argc == 1) {
-    std::cerr << "Can't read file\n" << std::endl;
+    std::cerr << "Can't read file\n" << '\n';
     return 1;
   }
   std::ifstream in_stream(argv[1]);
   if (!in_stream.good()) {
-    std::cerr << "Unable to read the file\n" << std::endl;
+    std::cerr << "Unable to read the file\n" << '\n';
     return 1;
   }
   try {
