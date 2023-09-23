@@ -1,5 +1,6 @@
 #include "huffman.hpp"
-#include "FA/data-types.hpp"
+#include "data-types.hpp"
+#include "huffman-tree.hpp"
 
 turkin::PType::PType(const phrase_t & phrase):
   phrase_(phrase),
@@ -23,10 +24,7 @@ const turkin::encoding_map_t & turkin::PType::get_char_encoding() const
 }
 
 std::pair< turkin::encoding_t, turkin::encoding_map_t > turkin::details::encode(const phrase_t & phrase)
-{
-  encoding_map_t result;
-  result.insert(' ', 0);
-}
+{}
 
 turkin::phrase_t turkin::details::decode(const turkin::encoding_t & encoding, const encoding_map_t & map)
 {}

@@ -27,6 +27,12 @@ namespace turkin
       Dictionary & operator=(const dict & rhs);
       Dictionary & operator=(dict && rhs);
       ~Dictionary() = default;
+
+      dict_t & front();
+      const dict_t & front() const;
+      void push_front(const dict_t & value);
+      void pop_front();
+
       it before_begin() noexcept;
       cit before_begin() const noexcept;
       cit cbefore_begin() const noexcept;
@@ -124,6 +130,30 @@ Dictionary< K, V, C > & Dictionary< K, V, C >::operator=(dict && rhs)
   fl_ = std::move(rhs.fl_);
   cmp_ = rhs.cmp_;
   return * this;
+}
+
+template< typename K, typename V, typename C >
+std::pair< K, V > & Dictionary< K, V, C >::front()
+{
+  return fl_.front();
+}
+
+template< typename K, typename V, typename C >
+const std::pair< K, V > & Dictionary< K, V, C >::front() const
+{
+  return fl_.front();
+}
+
+template< typename K, typename V, typename C >
+void Dictionary< K, V, C >::push_front(const dict_t & value)
+{
+  fl_.push_front(value);
+}
+
+template< typename K, typename V, typename C >
+void Dictionary< K, V, C >::pop_front()
+{
+  fl_.pop_front();
 }
 
 template< typename K, typename V, typename C >

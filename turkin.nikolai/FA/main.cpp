@@ -5,8 +5,7 @@
 
 int main()
 {
-  std::cout << "started\n";
-  std::string st = "aaabbc";
+  std::string st = "aabacdab";
   HTree tree(st);
   return 0;
 }

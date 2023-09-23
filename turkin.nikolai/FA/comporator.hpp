@@ -8,7 +8,7 @@ namespace turkin
 {
   struct SortByFreq
   {
-    bool operator()(const encoding_pair_t & lhs, const encoding_pair_t & rhs);
+    bool operator()(const std::pair< char, node_t * > & lhs, const std::pair< char, node_t * > rhs);
   };
 }
 

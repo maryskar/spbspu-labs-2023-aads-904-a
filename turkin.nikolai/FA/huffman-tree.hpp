@@ -13,15 +13,15 @@ namespace turkin
 {
   class HTree
   {
-    using tree_t = std::pair< char, std::size_t >;
-    using node_t = TreeNode< tree_t >;
-
     public:
       explicit HTree(const phrase_t & phrase);
-
+      ~HTree();
     private:
+      void free(node_t * src);
+      void encode(node_t * src, encoding_t code);
       node_t * root_;
       encoding_list_t list_;
+      encoding_map_t map_;
   };
 }
 
