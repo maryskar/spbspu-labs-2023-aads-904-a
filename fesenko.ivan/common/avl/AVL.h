@@ -424,8 +424,8 @@ namespace fesenko
   {
     Stack< tree > stack;
     tree cur = root_;
-    while (cur != nullptr || !stack.empty()) {
-      if (cur != nullptr) {
+    while (cur || !stack.empty()) {
+      if (cur) {
         stack.push(cur);
         cur = cur->left;
       } else {
@@ -451,8 +451,8 @@ namespace fesenko
   {
     Stack< tree > stack;
     tree cur = root_;
-    while (cur != nullptr || !stack.empty()) {
-      if (cur != nullptr) {
+    while (cur || !stack.empty()) {
+      if (cur) {
         stack.push(cur);
         cur = cur->right;
       } else {
@@ -470,6 +470,36 @@ namespace fesenko
   F AVL< Key, Value, Compare >::traverse_rnl(F f)
   {
     return static_cast< const this_t & >(*this).traverse_rnl(f);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVL< Key, Value, Compare >::traverse_breadth(F f) const
+  {
+    if (!root_) {
+      return f;
+    }
+    Queue< tree > queue;
+    queue.push(root_);
+    while (!queue.empty()) {
+      tree cur = queue.front();
+      queue.pop();
+      f(cur->data);
+      if (cur->left) {
+        queue.push(cur->left);
+      }
+      if (cur->right) {
+        queue.push(cur->right);
+      }
+    }
+    return f;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVL< Key, Value, Compare >::traverse_breadth(F f)
+  {
+    return static_cast< const this_t & >(*this).traverse_breadth(f);
   }
 
   template< typename Key, typename Value, typename Compare >
