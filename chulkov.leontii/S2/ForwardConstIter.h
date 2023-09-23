@@ -49,7 +49,8 @@ namespace chulkov {
     cnode_(rhs.node_)
   {}
 
-  template < typename T > T& ForwardConstIter< T >::operator*() const
+  template < typename T > T&
+  ForwardConstIter< T >::operator*() const
   {
     return cnode_->item_;
   }
