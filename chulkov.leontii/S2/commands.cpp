@@ -24,7 +24,7 @@ namespace chulkov {
     for (std::pair< int, std::string >& data : it->second) {
       out << ' ' << data.first << ' ' << data.second;
     }
-    out << std::endl;
+    out << '\n';
     return out;
   }
 
