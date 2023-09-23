@@ -63,6 +63,16 @@ turkin::HTree::HTree(const phrase_t & phrase):
   }
 }
 
+const turkin::encoding_list_t & turkin::HTree::get_encoding_list()
+{
+  return list_;
+}
+
+const turkin::encoding_map_t & turkin::HTree::get_encoding_map()
+{
+  return map_;
+}
+
 turkin::HTree::~HTree()
 {
   free(root_);

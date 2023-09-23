@@ -15,6 +15,8 @@ namespace turkin
   {
     public:
       explicit HTree(const phrase_t & phrase);
+      const encoding_list_t & get_encoding_list();
+      const encoding_map_t & get_encoding_map();
       ~HTree();
     private:
       void free(node_t * src);

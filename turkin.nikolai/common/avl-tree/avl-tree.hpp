@@ -393,7 +393,9 @@ turkin::AVLIterator< K, V, C > turkin::AVLtree< K, V, C >::find(const K & key)
 template< typename K, typename V, typename C >
 turkin::AVLConstIterator< K, V, C > turkin::AVLtree< K, V, C >::find(const K & key) const
 {
-  return cit(find(key), end_);
+  auto ins = begin();
+  for(; ins != end() && neq< K, C >(key, ins->first); ins++);
+  return ins;
 }
 
 template< typename K, typename V, typename C >
