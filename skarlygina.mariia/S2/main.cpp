@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
     return 1;
   }
   std::ifstream ifile(argv[1]);
-  if (!ifile.good())
+  if (!ifile.is_open())
   {
     std::cerr << "Could not read the file\n";
     return 1;
