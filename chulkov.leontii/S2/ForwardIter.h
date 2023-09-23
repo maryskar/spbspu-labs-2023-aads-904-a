@@ -78,7 +78,6 @@ namespace chulkov {
   template < typename T >
   typename ForwardIter< T >::ForwardIter& ForwardIter< T >::operator++()
   {
-    assert(node_ != nullptr);
     node_ = node_->next_;
     return *this;
   }
