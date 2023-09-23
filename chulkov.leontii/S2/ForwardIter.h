@@ -46,14 +46,12 @@ namespace chulkov {
   template < typename T >
   T& ForwardIter< T >::operator*()
   {
-    assert(node_ != nullptr);
     return node_->item_;
   }
 
   template < typename T >
   T* ForwardIter< T >::operator->()
   {
-    assert(node_ != nullptr);
     return std::addressof(node_->item_);
   }
 
@@ -72,7 +70,6 @@ namespace chulkov {
   template < typename T >
   typename ForwardIter< T >::ForwardIter ForwardIter< T >::operator++(int)
   {
-    assert(node_ != nullptr);
     ForwardIter< T > res(*this);
     ++(*this);
     return res;
