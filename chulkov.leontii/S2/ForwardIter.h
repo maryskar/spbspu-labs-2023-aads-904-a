@@ -16,7 +16,6 @@ namespace chulkov {
   public:
     ForwardIter();
     ForwardIter(const ForwardIter< T >&) = default;
-    ForwardIter(List< T >* node);
     ~ForwardIter() = default;
     ForwardIter< T >& operator++();
     ForwardIter< T > operator++(int);
@@ -30,6 +29,7 @@ namespace chulkov {
   private:
     friend class FrdList< T >;
     friend class ForwardConstIter< T >;
+    ForwardIter(List< T >* node);
     List< T >* node_;
   };
 
