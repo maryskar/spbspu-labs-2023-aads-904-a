@@ -6,6 +6,8 @@
 #include "tree.h"
 #include "AVLIterator.h"
 #include "constAVLIterator.h"
+#include "stack.h"
+#include "queue.h"
 
 namespace fesenko
 {
@@ -420,7 +422,27 @@ namespace fesenko
   template< typename F >
   F AVL< Key, Value, Compare >::traverse_lnr(F f) const
   {
-    
+    Stack< tree > stack;
+    tree cur = root_;
+    while (cur != nullptr || !stack.empty()) {
+      if (cur != nullptr) {
+        stack.push(cur);
+        cur = cur->left;
+      } else {
+        cur = stack.top();
+        stack.pop();
+        f(cur->data.second());
+        cur = cur->right;
+      }
+    }
+    return f;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVL< Key, Value, Compare >::traverse_lnr(F f)
+  {
+    return static_cast< const this_t & >(*this).traverse_lnr(f);
   }
 
   template< typename Key, typename Value, typename Compare >
