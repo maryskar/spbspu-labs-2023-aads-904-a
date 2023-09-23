@@ -417,6 +417,13 @@ namespace fesenko
   }
 
   template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVL< Key, Value, Compare >::traverse_lnr(F f) const
+  {
+    
+  }
+
+  template< typename Key, typename Value, typename Compare >
   size_t AVL< Key, Value, Compare >::checkHeight(tree *head)
   {
     size_t height = 0;

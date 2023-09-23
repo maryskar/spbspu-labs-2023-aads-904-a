@@ -1,6 +1,6 @@
 #include "infixQueueToPostfixQueue.h"
 #include <stdexcept>
-#include "stack.h"
+#include <stack.h>
 #include "symbols.h"
 
 fesenko::Queue< std::string > fesenko::infixQueueToPostfixQueue(Queue< std::string > &infixQueue)
