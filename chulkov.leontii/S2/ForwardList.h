@@ -2,7 +2,6 @@
 #define FORWARDLIST_H
 #include <algorithm>
 #include <stdexcept>
-#include <list.h>
 #include "ForwardConstIter.h"
 #include "ForwardIter.h"
 

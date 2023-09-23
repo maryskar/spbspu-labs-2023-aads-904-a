@@ -1,8 +1,7 @@
 #include "getDicts.h"
 #include <stdexcept>
 #include <string>
-#include "Commands.h"
-#include "Dictionary.h"
+#include "commands.h"
 
 namespace chulkov {
   Dictionary< int, std::string > getDict(const FrdList< std::string >& in)

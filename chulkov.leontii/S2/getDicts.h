@@ -2,7 +2,7 @@
 #define GETDICTS_H
 #include <iosfwd>
 #include <string>
-#include "Commands.h"
+#include "commands.h"
 #include "ForwardList.h"
 
 namespace chulkov {

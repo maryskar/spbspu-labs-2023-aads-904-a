@@ -2,8 +2,7 @@
 #define S2_COMMANDS_H
 #include <iostream>
 #include <string>
-#include "Dictionary.h"
-#include "ForwardList.h"
+#include "dictionary.h"
 
 namespace chulkov {
   using Dicts = Dictionary< std::string, Dictionary< int, std::string > >;
