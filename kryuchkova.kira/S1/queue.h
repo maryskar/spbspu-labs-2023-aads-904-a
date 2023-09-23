@@ -17,7 +17,6 @@ namespace kryuchkova
       ~Queue();
       void push(const T &rhs);
       T &drop();
-      const T &drop() const;
       void pop();
       bool isEmpty() const;
     private:
@@ -101,16 +100,6 @@ namespace kryuchkova
 
   template < typename T >
   T &Queue< T >::drop()
-  {
-    if (isEmpty())
-    {
-      throw std::logic_error("empty");
-    }
-    return head_->data_;
-  }
-
-  template < typename T >
-  const T &Queue< T >::drop() const
   {
     if (isEmpty())
     {

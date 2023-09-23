@@ -110,7 +110,7 @@ namespace kryuchkova
     {
       return *this;
     }
-    Stack< T > newStack;
+    Stack< T > newStack(stack);
     *this = std::move(newStack);
     return *this;
   }
