@@ -35,7 +35,7 @@ namespace kryuchkova
       return {nullptr, nullptr};
     }
     Node< T > *from = head;
-    Node< T > *to = new Node< T >{from->data_, nullptr};
+    Node< T > *to = new Node< T >{ from->data_, nullptr };
     Node< T > *temp = to;
     Node< T > *to_head = temp;
     try
@@ -44,7 +44,7 @@ namespace kryuchkova
       {
         from = from->next_;
         to_head = temp;
-        temp->next_ = new Node< T >{from->data_, nullptr};
+        temp->next_ = new Node< T >{ from->data_, nullptr };
         temp = temp->next_;
       }
     }
