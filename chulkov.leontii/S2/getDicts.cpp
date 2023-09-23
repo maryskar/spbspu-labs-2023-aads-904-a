@@ -23,7 +23,7 @@ namespace chulkov {
   Dicts getDicts(std::istream& in)
   {
     if (!in.good()) {
-      throw std::logic_error("Unable to read!\n");
+      throw std::logic_error("Unable read\n");
     }
     Dicts dicts;
     while (!in.eof()) {
