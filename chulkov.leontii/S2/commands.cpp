@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 namespace chulkov {
-  std::string message = "Unknown dictionary";
+  std::string message = "Unknown dict";
 
   std::ostream& printEmptyCommand(std::ostream& out)
   {
