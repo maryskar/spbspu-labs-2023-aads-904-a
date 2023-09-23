@@ -6,7 +6,7 @@
 
 namespace skarlygina
 {
-  template < typename Key, typename Value, typename Compare >
+  template < typename Key, typename Value, typename Compare = std::less< Key >>
   class Dictionary
   {
   public:

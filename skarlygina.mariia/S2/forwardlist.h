@@ -64,6 +64,17 @@ namespace skarlygina
   }
 
   template < typename T >
+  CIterator< T > ForwardList< T >::cbegin() const
+  {
+    return CIterator< T >(head_);
+  }
+  template < typename T >
+  CIterator< T > ForwardList< T >::cend() const
+  {
+    return ConstIterator< T >(nullptr);
+  }
+
+  template < typename T >
   Iterator< T > ForwardList< T >::begin()
   {
     return Iterator< T >(cbegin());
@@ -84,19 +95,6 @@ namespace skarlygina
   {
     return CIterator< T >(cend());
   }
-
-  template < typename T >
-  CIterator< T > ForwardList< T >::cbegin() const
-  {
-    return CIterator< T >(head_);
-  }
-  template < typename T >
-  CIterator< T > ForwardList< T >::cend() const
-  {
-    return ConstIterator< T >(nullptr);
-  }
-
-
 }
 
 #endif
