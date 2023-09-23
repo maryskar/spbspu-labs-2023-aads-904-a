@@ -17,7 +17,7 @@ namespace kryuchkova
       Stack< T > & operator=(const Stack< T > &);
       Stack< T > & operator=(Stack< T > &&);
       void push(const T &rhs);
-      T &drop() const;
+      T drop();
       bool isEmpty() const;
     private:
       Node< T > *head_;
@@ -64,7 +64,7 @@ namespace kryuchkova
   }
 
   template< typename T >
-  T &Stack< T >::drop() const
+  T Stack< T >::drop()
   {
     if (isEmpty())
     {
