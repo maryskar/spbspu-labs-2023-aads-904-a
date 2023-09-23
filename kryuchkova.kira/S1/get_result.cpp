@@ -12,6 +12,7 @@ namespace kryuchkova
     while(!post.isEmpty())
     {
       ExpressionMember data = post.drop();
+      post.pop();
       if (data.isOperand())
       {
         result.push(data.getOperand());

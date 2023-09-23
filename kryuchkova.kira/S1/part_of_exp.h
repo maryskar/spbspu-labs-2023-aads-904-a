@@ -34,6 +34,8 @@ namespace kryuchkova
     } element;
   };
 
+  bool isFirstStepOperation(const operation_t &op);
+  bool isSecondStepOperation(const operation_t &op);
   bool cmpPriority(const operation_t &lhs, const operation_t &rhs);
 }
 

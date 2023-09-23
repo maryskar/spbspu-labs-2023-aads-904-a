@@ -16,9 +16,9 @@ namespace kryuchkova
       ~Stack();
       Stack< T > & operator=(const Stack< T > &);
       Stack< T > & operator=(Stack< T > &&);
-      void push(T rhs);
+      void push(const T &rhs);
       T drop();
-      bool isEmpty();
+      bool isEmpty() const;
     private:
       Node< T > *head_;
       void deleteStack() noexcept;
@@ -49,7 +49,7 @@ namespace kryuchkova
   }
 
   template< typename T >
-  void Stack< T >::push(T rhs)
+  void Stack< T >::push(const T &rhs)
   {
     Node< T > *new_node = new Node< T >(rhs);
     if (head_ == nullptr)
@@ -78,7 +78,7 @@ namespace kryuchkova
   }
 
   template< typename T >
-  bool Stack< T >::isEmpty()
+  bool Stack< T >::isEmpty() const
   {
     return head_ == nullptr;
   }
@@ -110,18 +110,8 @@ namespace kryuchkova
     {
       return *this;
     }
-    Node< T > *temp = head_;
-    try
-    {
-      copyStack(stack);
-    }
-    catch (...)
-    {
-      deleteStack();
-      head_ = temp;
-      throw;
-    }
-    deleteNode(temp);
+    Stack< T > newStack;
+    *this = std::move(newStack);
     return *this;
   }
 

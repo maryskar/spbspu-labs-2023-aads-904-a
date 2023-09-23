@@ -15,9 +15,11 @@ namespace kryuchkova
       Queue< T > & operator=(const Queue< T > &);
       Queue< T > & operator=(Queue< T > &&);
       ~Queue();
-      void push(T rhs);
-      T drop();
-      bool isEmpty();
+      void push(const T &rhs);
+      T &drop();
+      const T &drop() const;
+      void pop();
+      bool isEmpty() const;
     private:
       Node< T > *head_;
       Node< T > *tail_;
@@ -62,7 +64,7 @@ namespace kryuchkova
   }
 
   template < typename T >
-  void Queue< T >::push(T rhs)
+  void Queue< T >::push(const T &rhs)
   {
     if (head_ == nullptr)
     {
@@ -78,21 +80,47 @@ namespace kryuchkova
   }
 
   template < typename T >
-  T Queue< T >::drop()
+  void Queue< T >::pop()
   {
     if (isEmpty())
     {
       throw std::logic_error("Empty queue");
     }
     Node< T > *tmp = head_;
-    T data = head_->data_;
-    head_ = head_->next_;
+    if (head_ == tail_)
+    {
+      head_ = nullptr;
+      tail_ = nullptr;
+    }
+    else
+    {
+      head_ = head_->next_;
+    }
     delete tmp;
-    return data;
   }
 
   template < typename T >
-  bool Queue< T >::isEmpty()
+  T &Queue< T >::drop()
+  {
+    if (isEmpty())
+    {
+      throw std::logic_error("empty");
+    }
+    return head_->data_;
+  }
+
+  template < typename T >
+  const T &Queue< T >::drop() const
+  {
+    if (isEmpty())
+    {
+      throw std::logic_error("empty");
+    }
+    return head_->data_;
+  }
+
+  template < typename T >
+  bool Queue< T >::isEmpty() const
   {
     return head_ == nullptr;
   }

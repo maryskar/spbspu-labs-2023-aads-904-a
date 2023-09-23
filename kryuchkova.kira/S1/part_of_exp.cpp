@@ -74,12 +74,18 @@ namespace kryuchkova
     return element.operand_;
   }
 
+  bool isFirstStepOperation(const operation_t &op)
+  {
+    return op == operation_t::SUBTRACTION || op == operation_t::ADDITION;
+  }
+
+  bool isSecondStepOperation(const operation_t &op)
+  {
+    return op == operation_t::MULTIPLICATION || op == operation_t::DIVISION || op == operation_t::EUCLIDEAN_DIVISION;
+  }
+  
   bool cmpPriority(const operation_t &lhs, const operation_t &rhs)
   {
-    if (lhs == operation_t::SUBTRACTION || lhs == operation_t::ADDITION)
-    {
-      return rhs == operation_t::MULTIPLICATION || rhs == operation_t::DIVISION || rhs == operation_t::EUCLIDEAN_DIVISION;
-    }
-    return false;
+    return isFirstStepOperation(lhs) && isSecondStepOperation(rhs);
   }
 }
