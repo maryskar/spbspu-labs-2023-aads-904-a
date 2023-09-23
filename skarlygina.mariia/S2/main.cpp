@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 namespace skarlygina
 {
@@ -8,7 +9,18 @@ namespace skarlygina
   };
 }
 
-int main()
+int main(int argc, char* argv[])
 {
+  if (argc == 1)
+  {
+    std::cerr << "Error arguments\n";
+    return 1;
+  }
+  std::ifstream ifile(argv[1]);
+  if (!ifile.good())
+  {
+    std::cerr << "Could not read the file\n";
+    return 1;
+  }
   skarlygina::printInvalidCommand(std::cout);
 }
