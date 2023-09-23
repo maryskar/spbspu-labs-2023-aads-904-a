@@ -101,7 +101,7 @@ namespace chulkov {
       ++it;
     }
     if (it == list_.cend()) {
-      throw std::logic_error("No such key!\n");
+      throw std::logic_error("No such key\n");
     } else {
       list_.eraseAfter(it);
     }
