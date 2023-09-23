@@ -3,12 +3,15 @@
 #include <iterator>
 #include "citerator.h"
 #include "list.h"
+#include "forwardlist.h"
+
 namespace skarlygina
 {
   template < typename T >
   class Iterator : public std::iterator< std::forward_iterator_tag, T >
   {
   public:
+    friend class ForwardList< T >;
     bool operator==(const Iterator&) const;
     bool operator!=(const Iterator&) const;
     explicit Iterator(const CIterator< T >&);
