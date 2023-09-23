@@ -83,7 +83,7 @@ namespace kryuchkova
   {
     return op == operation_t::MULTIPLICATION || op == operation_t::DIVISION || op == operation_t::EUCLIDEAN_DIVISION;
   }
-  
+
   bool cmpPriority(const operation_t &lhs, const operation_t &rhs)
   {
     return isFirstStepOperation(lhs) && isSecondStepOperation(rhs);
