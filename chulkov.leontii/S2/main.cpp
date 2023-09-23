@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
           ++wordCount;
         }
         if (wordCount < 2) {
-          throw std::invalid_argument("You need more args!\n");
+          throw std::invalid_argument("You need more args\n");
         }
         chulkov::ForwardConstIter< std::string > wordsIterator = words.cbegin();
         std::string command = *(wordsIterator++);
@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
         }
 
         if (wordCount < 4) {
-          throw std::invalid_argument("You need less args!\n");
+          throw std::invalid_argument("You need less args\n");
         }
 
         std::string lhs = *(wordsIterator++);

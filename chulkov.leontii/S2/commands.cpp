@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 namespace chulkov {
-  std::string MESSAGE = "Unknown dictionary";
+  std::string message = "Unknown dictionary";
 
   std::ostream& printEmptyCommand(std::ostream& out)
   {
@@ -14,7 +14,7 @@ namespace chulkov {
   {
     auto it = dicts.cfind(name);
     if (it == dicts.cend()) {
-      throw std::invalid_argument(MESSAGE);
+      throw std::invalid_argument(message);
     }
     if (it->second.isEmpty()) {
       printEmptyCommand(out);
@@ -33,7 +33,7 @@ namespace chulkov {
     auto lhsCIterator = dicts.cfind(lhs);
     auto rhsCIterator = dicts.cfind(rhs);
     if ((lhsCIterator == dicts.cend()) || (rhsCIterator == dicts.cend())) {
-      throw std::invalid_argument(MESSAGE);
+      throw std::invalid_argument(message);
     }
     if (lhsCIterator->second.isEmpty() || rhsCIterator->second.isEmpty()) {
       return lhsCIterator->second;
@@ -72,7 +72,7 @@ namespace chulkov {
     auto lhsCIt = dicts.cfind(lhsName);
     auto rhsCIt = dicts.cfind(rhsName);
     if ((lhsCIt == dicts.cend()) || (rhsCIt == dicts.cend())) {
-      throw std::invalid_argument(MESSAGE);
+      throw std::invalid_argument(message);
     }
     if ((lhsCIt->second.isEmpty()) || (rhsCIt->second.isEmpty())) {
       return Dictionary< int, std::string >();
@@ -108,7 +108,7 @@ namespace chulkov {
     auto lhsCIterator = dicts.cfind(lhs);
     auto rhsCIterator = dicts.cfind(rhs);
     if ((lhsCIterator == dicts.cend()) || (rhsCIterator == dicts.cend())) {
-      throw std::invalid_argument(MESSAGE);
+      throw std::invalid_argument(message);
     }
     if (lhsCIterator->second.isEmpty()) {
       return rhsCIterator->second;

@@ -182,7 +182,7 @@ namespace chulkov {
   void FrdList< T >::popFront()
   {
     if (!head_) {
-      throw std::logic_error("ListUnderflow");
+      throw std::logic_error("Underflow");
     } else if (!(head_->next_)) {
       delete head_;
       head_ = nullptr;
@@ -198,7 +198,7 @@ namespace chulkov {
   void FrdList< T >::popAfter(ForwardIter< T >& iter)
   {
     if (!head_ || iter.cnode_->next_ == nullptr) {
-      throw std::logic_error("There is nothing to delete!");
+      throw std::logic_error("There is nothing to delete");
     } else {
       List< T >* subhead = iter.cnode_;
       List< T >* toDelete = subhead->next_;
