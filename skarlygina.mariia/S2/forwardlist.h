@@ -85,6 +85,23 @@ namespace skarlygina
     }
   }
 
+  template < typename T >
+  void ForwardList< T >::pushBack(const T& data_)
+  {
+    if (!size_)
+    {
+      head_ = new List< T >{data_, nullptr};
+      tail_ = head_;
+    }
+    else
+    {
+      tail_->next_ = new List< T >{data_, nullptr};
+      tail_ = tail_->next;
+    }
+    ++size_;
+  }
+
+
   template< typename T >
   ForwardList< T >::ForwardList():
     head_(nullptr),
