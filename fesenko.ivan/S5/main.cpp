@@ -18,8 +18,8 @@ int main(int argc, char *argv[])
   }
   using tree = fesenko::AVL< int, std::string, std::less< > >;
   using tree_elem = std::pair< int, std::string >;
+  tree tr;
   try {
-    tree tr;
     int key = 0;
     std::string value = "";
     while (in) {
