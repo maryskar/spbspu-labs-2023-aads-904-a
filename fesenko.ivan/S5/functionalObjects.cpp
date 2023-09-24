@@ -6,7 +6,7 @@ fesenko::IntSummator::IntSummator():
   sum_(0)
 {}
 
-void fesenko::StrSummator::operator()(const std::pair< int, std::string > &value_type)
+void fesenko::IntSummator::operator()(const std::pair< int, std::string > &value_type)
 {
   if (sum_ > 0 && value_type.first > 0 && sum_ > std::numeric_limits< int >::max() - value_type.first) {
     throw std::overflow_error("Overflow");
