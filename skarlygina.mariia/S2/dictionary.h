@@ -50,7 +50,30 @@ namespace skarlygina
   const Value& Dictionary<Key, Value, Compare>::get(const Key&) const;
 
   template < typename Key, typename Value, typename Compare >
-  void Dictionary<Key, Value, Compare>::pop(const Key&);
+  void Dictionary<Key, Value, Compare>::pop(const Key& k)
+  {
+    auto it = list_.cbegin();
+    auto next_it = ++list_.cbegin();
+    Compare compare;
+    if (!compare(it->first, k) && !cmp(k, it->first))
+    {
+      list_.popFront();
+      return;
+    }
+    while ((it != list_.cend()) && (compare(next_it->first, k) || compare(k, next_it->first)))
+    {
+      ++next_it;
+      ++it;
+    }
+    if (it == list_.cend())
+    {
+      throw std::logic_error("No such key!\n");
+    }
+    else
+    {
+      list_.eraseAfter(it);
+    }
+  }
 
   template < typename Key, typename Value, typename Compare >
   void Dictionary<Key, Value, Compare>::clear();
