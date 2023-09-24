@@ -37,30 +37,75 @@ namespace skarlygina
   private:
     List< T >* head_;
     List< T >* tail_;
+    size_t size_;
+
   };
+
+  template < typename T >
+  bool ForwardList< T >::isEmpty() const
+  {
+    return !size_;
+  }
+
+
+  template< typename T >
+  void ForwardList< T >::clear()
+  {
+    while (head_)
+    {
+      auto temp = head_;
+      head_ = head_->next;
+      delete temp;
+      --size_;
+    }
+  }
 
   template< typename T >
   ForwardList< T >::ForwardList():
     head_(nullptr),
-    tail_(nullptr)
+    tail_(nullptr),
+    size_(0)
   {}
 
   template< typename T >
   ForwardList< T >::ForwardList(const ForwardList< T >& other):
-    List< T >::List(other), 
     head_(nullptr),
-    tail_(nullptr)
-  {}
+    tail_(nullptr),
+    size_(0)
+  {
+    if (!other.isEmpty())
+    {
+      try
+      {
+        List< T >* other_ptr = other.head_;
+        do
+        {
+          pushBack(other_ptr->data);
+          other_ptr = other_ptr->next;
+        } while (other_ptr);
+      }
+      catch (...)
+      {
+        clear();
+        throw;
+      }
+    }
+  }
 
   template< typename T >
   ForwardList< T >::ForwardList(ForwardList< T >&& other) noexcept:
-    List< T >::List(other)
-  {}
+    head_(other.head_),
+    tail_(other.tail_),
+    size_(other.size_)
+  {
+    other.head_ = nullptr;
+    other.tail_ = nullptr;
+  }
 
   template< typename T >
   ForwardList< T >::~ForwardList()
   {
-    List< T >::~List();
+    clear();
   }
 
   template < typename T >
