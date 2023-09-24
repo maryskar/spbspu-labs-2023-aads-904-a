@@ -1,10 +1,11 @@
 #ifndef DATA_TYPES_HPP
 #define DATA_TYPES_HPP
 
+#include <string>
+
 #include <avl-tree/avl-tree.hpp>
 #include <avl-tree/tree-node.hpp>
 #include <queue.hpp>
-#include <string>
 
 namespace turkin
 {

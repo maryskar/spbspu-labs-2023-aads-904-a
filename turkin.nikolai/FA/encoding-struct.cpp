@@ -1,9 +1,11 @@
 #include "encoding-struct.hpp"
 
-#include <sort/merge.hpp>
+#include <iostream>
+
 #include "comporator.hpp"
 #include "data-types.hpp"
-#include <iostream>
+
+#include <sort/merge.hpp>
 
 namespace
 {

@@ -15,10 +15,10 @@ namespace turkin
       HType & operator=(const HType & htree);
       HType & operator=(HType && htree);
       ~HType();
-      
+
       const encoding_list_t & get_encoding_list();
       const encoding_map_t & get_encoding_map();
-      
+
     private:
       void free(node_t * src);
       node_t * copy(node_t * src);
@@ -27,9 +27,9 @@ namespace turkin
       encoding_list_t list_;
       encoding_map_t map_;
   };
-  
+
   using encoding_dict_t = turkin::AVLtree< encoding_t, HType, std::less< > >;
-  
+
   std::ostream & operator<<(std::ostream & out, const encoding_map_t & map);
 }
 
