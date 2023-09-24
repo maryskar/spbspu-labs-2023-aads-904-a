@@ -31,6 +31,12 @@ namespace skarlygina
   };
 
   template < typename Key, typename Value, typename Compare >
+  bool Dictionary< Key, Value, Compare >::is_empty() const noexcept
+  {
+    return list_.isEmpty();
+  }
+
+  template < typename Key, typename Value, typename Compare >
   Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::begin()
   {
     return list_.begin();
