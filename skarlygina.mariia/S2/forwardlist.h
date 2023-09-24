@@ -101,6 +101,57 @@ namespace skarlygina
     ++size_;
   }
 
+  template < typename T >
+  void ForwardList< T >::pushFront(const T& data_)
+  {
+    if (!size_)
+    {
+      head_ = new List< T >{data_, nullptr};
+      tail_ = head_;
+    }
+    else
+    {
+      auto new_head = new List< T >{data_, head_};
+      head_ = new_head;
+    }
+    ++size_;
+  }
+
+  template < typename T >
+  void ForwardList< T >::popFront()
+  {
+    if (!size_)
+    {
+      throw std::logic_error("Pop from the empty list");
+    }
+    auto temp(head_);
+    head_ = head_->next;
+    delete temp;
+    --size_;
+  }
+
+  template < typename T >
+  void ForwardList< T >::popBack()
+  {
+    if (!size_)
+    {
+      throw std::logic_error("Pop from empty list");
+    }
+    if (size_ == 1)
+    {
+      popFront();
+      return;
+    }
+    auto current = head_;
+    while (current->next->next)
+    {
+      current = current->next;
+    }
+    delete current->next;
+    current->next = nullptr;
+    tail_ = current;
+    --size_;
+  }
 
   template< typename T >
   ForwardList< T >::ForwardList():
