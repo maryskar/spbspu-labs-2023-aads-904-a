@@ -422,16 +422,16 @@ namespace fesenko
   template< typename F >
   F AVL< Key, Value, Compare >::traverse_lnr(F f) const
   {
-    Stack< tree > stack;
-    tree cur = root_;
-    while (cur || !stack.empty()) {
-      if (cur) {
+    Stack< tree * > stack;
+    tree *cur = root_;
+    while (cur != nullptr || !stack.isEmpty()) {
+      if (cur != nullptr) {
         stack.push(cur);
         cur = cur->left;
       } else {
         cur = stack.top();
         stack.pop();
-        f(cur->data.second());
+        f(cur->data);
         cur = cur->right;
       }
     }
@@ -449,16 +449,16 @@ namespace fesenko
   template< typename F >
   F AVL< Key, Value, Compare >::traverse_rnl(F f) const
   {
-    Stack< tree > stack;
-    tree cur = root_;
-    while (cur || !stack.empty()) {
-      if (cur) {
+    Stack< tree * > stack;
+    tree *cur = root_;
+    while (cur != nullptr || !stack.isEmpty()) {
+      if (cur != nullptr) {
         stack.push(cur);
         cur = cur->right;
       } else {
         cur = stack.top();
         stack.pop();
-        f(cur->data.second());
+        f(cur->data);
         cur = cur->left;
       }
     }
@@ -479,10 +479,10 @@ namespace fesenko
     if (!root_) {
       return f;
     }
-    Queue< tree > queue;
+    Queue< tree * > queue;
     queue.push(root_);
-    while (!queue.empty()) {
-      tree cur = queue.front();
+    while (!queue.isEmpty()) {
+      tree *cur = queue.front();
       queue.pop();
       f(cur->data);
       if (cur->left) {
