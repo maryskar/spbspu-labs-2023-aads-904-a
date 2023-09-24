@@ -44,6 +44,18 @@ namespace skarlygina
   }
 
   template < typename Key, typename Value, typename Compare >
+  void Dictionary<Key, Value, Compare>::push(const Key&, const Value&) {}
+
+  template < typename Key, typename Value, typename Compare >
+  const Value& Dictionary<Key, Value, Compare>::get(const Key&) const;
+
+  template < typename Key, typename Value, typename Compare >
+  void Dictionary<Key, Value, Compare>::pop(const Key&);
+
+  template < typename Key, typename Value, typename Compare >
+  void Dictionary<Key, Value, Compare>::clear();
+
+  template < typename Key, typename Value, typename Compare >
   Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::begin()
   {
     return list_.begin();
