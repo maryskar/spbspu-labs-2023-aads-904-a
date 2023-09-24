@@ -47,6 +47,31 @@ namespace skarlygina
     return !size_;
   }
 
+  template < typename T >
+  size_t ForwardList< T >::getSize() const
+  {
+    return size_;
+  }
+
+  template < typename T >
+  T ForwardList< T >::front() const
+  {
+    if (!size_)
+    {
+      throw std::logic_error("List is empty");
+    }
+    return head_->data;
+  }
+
+  template < typename T >
+  T ForwardList< T >::back() const
+  {
+    if (!size_)
+    {
+      throw std::logic_error("List is empty");
+    }
+    return tail_->data;
+  }
 
   template< typename T >
   void ForwardList< T >::clear()
