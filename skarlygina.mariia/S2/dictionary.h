@@ -138,6 +138,7 @@ namespace skarlygina
   {
     return list_.begin();
   }
+
   template < typename Key, typename Value, typename Compare >
   Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::end()
   {

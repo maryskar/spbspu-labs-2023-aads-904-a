@@ -1,5 +1,7 @@
 #ifndef FORWARDLIST_H
 #define FORWARDLIST_H
+#include <iosfwd>
+#include <stdexcept>
 #include "iterator.h"
 #include "citerator.h"
 #include "list.h"
@@ -42,7 +44,7 @@ namespace skarlygina
   };
 
   template < typename T >
-  bool ForwardList< T >::isEmpty() const
+  bool ForwardList< T >::isEmpty() const noexcept
   {
     return !size_;
   }
@@ -85,6 +87,38 @@ namespace skarlygina
     }
   }
 
+  template< typename T >
+  Iterator< T > ForwardList< T >::insertAfter(CIterator< T > pos, const T& data_)
+  {
+    auto pos_ptr = const_cast< List< T >* >(pos.ptr_);
+    if (!pos_ptr->next)
+    {
+      pushBack(data_);
+      return Iterator< T >(++pos);
+    }
+    auto temp = pos_ptr->next;
+    pos_ptr->next = new List< T >{data_, temp};
+    temp = nullptr;
+    ++size_;
+    return Iterator< T >(++pos);
+  }
+
+  template< typename T >
+  Iterator< T > ForwardList< T >::eraseAfter(CIterator< T > pos)
+  {
+    auto pos_ptr = const_cast< List< T >* >(pos.ptr_);
+    if (pos_ptr->next == tail_)
+    {
+      popBack();
+      return end();
+    }
+    auto temp = pos_ptr->next->next;
+    delete pos_ptr->next;
+    pos_ptr->next = temp;
+    --size_;
+    return Iterator< T >(++pos);
+  }
+
   template < typename T >
   void ForwardList< T >::pushBack(const T& data_)
   {
@@ -95,7 +129,7 @@ namespace skarlygina
     }
     else
     {
-      tail_->next_ = new List< T >{data_, nullptr};
+      tail_->next = new List< T >{data_, nullptr};
       tail_ = tail_->next;
     }
     ++size_;
@@ -202,21 +236,11 @@ namespace skarlygina
   }
 
   template < typename T >
-  CIterator< T > ForwardList< T >::cbegin() const
-  {
-    return CIterator< T >(head_);
-  }
-  template < typename T >
-  CIterator< T > ForwardList< T >::cend() const
-  {
-    return ConstIterator< T >(nullptr);
-  }
-
-  template < typename T >
   Iterator< T > ForwardList< T >::begin()
   {
     return Iterator< T >(cbegin());
   }
+
   template < typename T >
   Iterator< T > ForwardList< T >::end()
   {
@@ -227,13 +251,22 @@ namespace skarlygina
   CIterator< T > ForwardList< T >::begin() const
   {
     return CIterator< T >(cbegin());
-  } 
+  }
   template < typename T >
   CIterator< T > ForwardList< T >::end() const
   {
     return CIterator< T >(cend());
   }
+
+  template < typename T >
+  CIterator< T > ForwardList< T >::cbegin() const
+  {
+    return CIterator< T >(head_);
+  }
+  template < typename T >
+  CIterator< T > ForwardList< T >::cend() const
+  {
+    return CIterator< T >(nullptr);
+  }
 }
-
 #endif
-
