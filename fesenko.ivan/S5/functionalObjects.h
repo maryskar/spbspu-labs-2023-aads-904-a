@@ -4,6 +4,16 @@
 #include <string>
 namespace fesenko
 {
+  class IntSummator
+  {
+   public:
+    IntSummator();
+    void operator()(const std::pair< int, std::string > &value_type);
+    int getSum() const;
+   private:
+    int sum_;
+  };
+
   class StrSummator
   {
    public:
