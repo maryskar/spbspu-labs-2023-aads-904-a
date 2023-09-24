@@ -18,7 +18,6 @@ int main(int argc, char *argv[])
   }
   using tree = fesenko::AVL< int, std::string, std::less< > >;
   using tree_elem = std::pair< int, std::string >;
-  tree tr;
   try {
     tree tr;
     int key = 0;
@@ -38,9 +37,11 @@ int main(int argc, char *argv[])
     return 2;
   }
   try {
-    auto cmd_list = fesenko::createTreeWithTraverses< fesenko::StrSummator >();
+    auto int_list = fesenko::createTreeWithTraverses< fesenko::IntSummator >();
+    fesenko::IntSummator intSum;
+    auto str_list = fesenko::createTreeWithTraverses< fesenko::StrSummator >();
     fesenko::StrSummator strSum;
-    std::cout << (tr.*cmd_list.at(argv[1]))(strSum).getSum() << "\n";
+    std::cout << (tr.*int_list.at(argv[1]))(intSum).getSum() << " " << (tr.*str_list.at(argv[1]))(strSum).getSum() << "\n";
   } catch (...) {
     fesenko::outInvalidCommandMessage(std::cout);
     std::cout << "\n";
