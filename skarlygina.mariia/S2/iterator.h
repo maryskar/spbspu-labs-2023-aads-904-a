@@ -8,6 +8,9 @@
 namespace skarlygina
 {
   template < typename T >
+  class ForwardList;
+
+  template < typename T >
   class Iterator : public std::iterator< std::forward_iterator_tag, T >
   {
   public:

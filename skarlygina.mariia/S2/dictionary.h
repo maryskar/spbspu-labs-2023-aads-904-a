@@ -26,6 +26,7 @@ namespace skarlygina
     void clear();
     bool is_empty() const noexcept;
     bool is_equal(const Key& k1, const Key& k2) const noexcept;
+
   private:
     ForwardList< std::pair< Key, Value > > list_;
     Compare compare_;
@@ -44,7 +45,46 @@ namespace skarlygina
   }
 
   template < typename Key, typename Value, typename Compare >
-  void Dictionary<Key, Value, Compare>::push(const Key&, const Value&) {}
+  void Dictionary<Key, Value, Compare>::push(const Key& k, const Value& v)
+  {
+    if (list_.isEmpty())
+    {
+      list_.pushBack(std::pair< Key, Value >{k, v});
+      return;
+    }
+    Compare compare;
+    auto it = list_.cbegin();
+    if (compare(k, it->first))
+    {
+      list_.pushFront(std::pair< Key, Value >{k, v});
+      return;
+    }
+    else if (!compare(k, it->first) && !compare(it->first, k))
+    {
+      list_.popFront();
+      list_.pushFront(std::pair< Key, Value >{k, v});
+      return;
+    }
+    auto it_next = ++list_.cbegin();
+    while ((it_next != list_.cend()) && compare(it_next->first, k))
+    {
+      ++it_next;
+      ++it;
+    }
+    if (it_next == list_.cend())
+    {
+      list_.pushBack(std::pair< Key, Value >{k, v});
+    }
+    else if ((it_next != list_.cend()) && !compare(k, it_next->first) && !compare(it_next->first, k))
+    {
+      list_.eraseAfter(it);
+      list_.insertAfter(it, std::pair< Key, Value >{k, v});
+    }
+    else
+    {
+      list_.insertAfter(it, std::pair< Key, Value >{k, v});
+    }
+  }
 
   template < typename Key, typename Value, typename Compare >
   const Value& Dictionary<Key, Value, Compare>::get(const Key& k) const
