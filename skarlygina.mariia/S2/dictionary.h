@@ -25,6 +25,7 @@ namespace skarlygina
     void pop(const Key&);
     void clear();
     bool is_empty() const noexcept;
+    bool is_equal(const Key& k1, const Key& k2) const noexcept;
   private:
     ForwardList< std::pair< Key, Value > > list_;
     Compare compare_;
@@ -34,6 +35,12 @@ namespace skarlygina
   bool Dictionary< Key, Value, Compare >::is_empty() const noexcept
   {
     return list_.isEmpty();
+  }
+
+  template < typename Key, typename Value, typename Compare >
+  bool Dictionary<Key, Value, Compare>::is_equal(const Key& k1, const Key& k2) const noexcept
+  {
+    return !compare_(k1, k2) && !compare_(k2, k1);
   }
 
   template < typename Key, typename Value, typename Compare >
@@ -69,5 +76,22 @@ namespace skarlygina
     return list_.cend();
   }
 
+  template < typename Key, typename Value, typename Compare >
+  Iterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::find(const Key& k)
+  {
+    auto const_it = cfind(k);
+    return Iterator< std::pair< Key, Value > >(const_it);
+  }
+  template < typename Key, typename Value, typename Compare >
+  CIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::cfind(const Key& k) const
+  {
+    CIterator< std::pair< Key, Value > > it = cbegin();
+    Compare compare;
+    while ((it != cend()) && (compare(it->first, k) || compare(k, it->first)))
+    {
+      ++it;
+    }
+    return it;
+  }
 }
 #endif
