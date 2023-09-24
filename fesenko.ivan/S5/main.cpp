@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
     }
     if (tr.empty()) {
       fesenko::outEmptyMessage(std::cout);
+      std::cout << "\n";
     }
   } catch (const std::exception &e) {
     std::cerr << e.what() << "\n";
