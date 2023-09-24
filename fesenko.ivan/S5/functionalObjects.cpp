@@ -1,5 +1,5 @@
 #include "functionalObjects.h"
-#include <limmits>
+#include <stdexcept>
 
 fesenko::StrSummator::StrSummator():
   sum_("")
@@ -7,16 +7,16 @@ fesenko::StrSummator::StrSummator():
 
 void fesenko::StrSummator::operator()(const std::pair< int, std::string > &value_type)
 {
-  if (std::numeric_limits<std::string>::max() - sum_.size() < value_type.second.size()) {
+  if (sum_.max_size() - sum_.size() < value_type.second.size()) {
     throw std::overflow_error("Overflow");
   }
   if (sum_.size() != 0) {
     sum_ += " ";
   }
-  sum_ += pair.second;
+  sum_ += value_type.second;
 }
 
-std::string fesenko::getSum() const
+std::string fesenko::StrSummator::getSum() const
 {
   return sum_;
 }
