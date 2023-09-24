@@ -224,6 +224,10 @@ turkin::AVLConstIterator< K, V, C > turkin::AVLtree< K, V, C >::cend() const noe
 template< typename K, typename V, typename C >
 V & turkin::AVLtree< K, V, C >::at(const K & key)
 {
+  if (root_ == nullptr)
+  {
+    throw std::out_of_range("out of range");
+  }
   auto ins = find(key);
   if (neq< K, C >(ins->first, key))
   {
@@ -235,6 +239,10 @@ V & turkin::AVLtree< K, V, C >::at(const K & key)
 template< typename K, typename V, typename C >
 const V & turkin::AVLtree< K, V, C >::at(const K & key) const
 {
+  if (root_ == nullptr)
+  {
+    throw std::out_of_range("out of range");
+  }
   auto ins = find(key);
   if (neq< K, C >(ins->first, key))
   {
@@ -267,7 +275,7 @@ turkin::AVLIterator< K, V, C > turkin::AVLtree< K, V, C >::insert(const tree_t &
   size_++;
   if (empty())
   {
-    end_ = new TreeNode< tree_t >;
+    end_ = new TreeNode< tree_t > {value, end_, end_, end_, 0};
     root_ = new TreeNode< tree_t > {value, end_, end_, end_, 0};
     increase(root_);
     return it(root_, end_);
