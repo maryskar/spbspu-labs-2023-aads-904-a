@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
   try {
     auto cmd_list = fesenko::createTreeWithTraverses< fesenko::StrSummator >();
     fesenko::StrSummator strSum;
-    std::cout << (tr.*cmd_list.at("ascending"))(strSum).getSum() << "\n";
+    std::cout << (tr.*cmd_list.at(argv[1]))(strSum).getSum() << "\n";
   } catch (...) {
     fesenko::outInvalidCommandMessage(std::cout);
     std::cout << "\n";
