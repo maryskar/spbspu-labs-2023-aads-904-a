@@ -1,9 +1,10 @@
 #ifndef ITERATOR_H
 #define ITERATOR_H
 #include <iterator>
+#include <iosfwd>
+#include <stdexcept>
 #include "citerator.h"
 #include "list.h"
-#include "forwardlist.h"
 
 namespace skarlygina
 {
@@ -11,7 +12,7 @@ namespace skarlygina
   class ForwardList;
 
   template < typename T >
-  class Iterator : public std::iterator< std::forward_iterator_tag, T >
+  class Iterator: public std::iterator< std::forward_iterator_tag, T >
   {
   public:
     friend class ForwardList< T >;
@@ -27,7 +28,7 @@ namespace skarlygina
   };
 
   template < typename T >
-  Iterator< T >::Iterator(const CIterator< T >& other) :
+  Iterator< T >::Iterator(const CIterator< T >& other):
     iterator_(other)
   {}
 
@@ -55,12 +56,12 @@ namespace skarlygina
   template < typename T >
   T& Iterator< T >::operator*()
   {
-    return const_cast<T&>(*iterator_);
+    return const_cast< T& >(*iterator_);
   }
   template < typename T >
   T* Iterator< T >::operator->()
   {
-    return const_cast<T*>(std::addressof(*iterator_));
+    return const_cast< T* >(std::addressof(*iterator_));
   }
 }
 #endif

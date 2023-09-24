@@ -1,13 +1,20 @@
 #ifndef CITERATOR_H
 #define CITERATOR_H
 #include <iterator>
+#include <iosfwd>
+#include <stdexcept>
 #include "list.h"
+
 namespace skarlygina
 {
+  template < typename T >
+  class ForwardList;
+
   template < typename T >
   class CIterator : public std::iterator< std::forward_iterator_tag, T >
   {
   public:
+    friend class ForwardList< T >;
     bool operator ==(const CIterator&) const;
     bool operator!=(const CIterator&) const;
     CIterator& operator++();
@@ -43,7 +50,7 @@ namespace skarlygina
   template < typename T >
   CIterator< T > CIterator< T >::operator++(int)
   {
-    ConstIterator temp = *this;
+    CIterator temp = *this;
     ++(*this);
     return temp;
   }
