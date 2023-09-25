@@ -107,7 +107,7 @@ namespace skarlygina
     auto it = list_.cbegin();
     auto next_it = ++list_.cbegin();
     Compare compare;
-    if (!compare(it->first, k) && !cmp(k, it->first))
+    if (!compare(it->first, k) && !compare(k, it->first))
     {
       list_.popFront();
       return;
