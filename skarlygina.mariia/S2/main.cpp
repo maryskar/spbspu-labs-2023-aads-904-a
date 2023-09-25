@@ -41,7 +41,10 @@ int main(int argc, char* argv[])
       {
         throw std::invalid_argument("You need more args!\n");
       }
-      
+      auto w_iterator = words.cbegin();
+      std::string command = *(w_iterator++);
+      std::string name = *(w_iterator++);
+
     }
     catch (const std::invalid_argument&)
     {
