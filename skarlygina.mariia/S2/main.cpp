@@ -24,59 +24,67 @@ int main(int argc, char* argv[])
     return 1;
   }
 
-  auto data = skarlygina::getDictis(ifile);
-  ifile.close();
-  std::istream& in = std::cin;
-
-  while (!in.eof())
+  try
   {
-    try
+    auto data = skarlygina::getDictis(ifile);
+    ifile.close();
+    std::istream& in = std::cin;
+
+    while (!in.eof())
     {
-      auto words = skarlygina::getWords(in, '\n');
-      if (words.isEmpty())
+      try
       {
-        continue;
-      }
-      if (words.getSize() < 2)
-      {
-        throw std::invalid_argument("You need more args!\n");
-      }
+        auto words = skarlygina::getWords(in, '\n');
+        if (words.isEmpty())
+        {
+          continue;
+        }
+        if (words.getSize() < 2)
+        {
+          throw std::invalid_argument("You need more args!\n");
+        }
 
-      auto w_iterator = words.cbegin();
-      std::string command = *(w_iterator++);
-      std::string name = *(w_iterator++);
+        auto w_iterator = words.cbegin();
+        std::string command = *(w_iterator++);
+        std::string name = *(w_iterator++);
 
-      if (command == "print")
-      {
-        skarlygina::print(std::cout, name, data);
-        continue;
+        if (command == "print")
+        {
+          skarlygina::print(std::cout, name, data);
+          continue;
+        }
+        if (words.getSize() < 4)
+        {
+          throw std::invalid_argument("You need less args!\n");
+        }
+        std::string lhs = *(w_iterator++);
+        std::string rhs = *w_iterator;
+        if (command == "complement")
+        {
+          data.push(name, skarlygina::complement(lhs, rhs, data));
+        }
+        else if (command == "intersect")
+        {
+          data.push(name, skarlygina::intersect(lhs, rhs, data));
+        }
+        else if (command == "union")
+        {
+          data.push(name, skarlygina::unite(lhs, rhs, data));
+        }
+        else
+        {
+          throw std::invalid_argument("Unknown command!\n");
+        }
       }
-      if (words.getSize() < 4)
+      catch (const std::invalid_argument&)
       {
-        throw std::invalid_argument("You need less args!\n");
-      }
-      std::string lhs = *(w_iterator++);
-      std::string rhs = *w_iterator;
-      if (command == "complement")
-      {
-        data.push(name, skarlygina::complement(lhs, rhs, data));
-      }
-      else if (command == "intersect")
-      {
-        data.push(name, skarlygina::intersect(lhs, rhs, data));
-      }
-      else if (command == "union")
-      {
-        data.push(name, skarlygina::unite(lhs, rhs, data));
-      }
-      else
-      {
-        throw std::invalid_argument("Unknown command!\n");
+        skarlygina::printInvalidCommand(std::cout);
       }
     }
-    catch (const std::invalid_argument&)
-    {
-      skarlygina::printInvalidCommand(std::cout);
-    }
+  }
+  catch (const std::exception& e)
+  {
+    std::cerr << e.what();
+    return 1;
   }
 }
