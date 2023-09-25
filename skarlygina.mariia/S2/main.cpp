@@ -41,10 +41,38 @@ int main(int argc, char* argv[])
       {
         throw std::invalid_argument("You need more args!\n");
       }
+
       auto w_iterator = words.cbegin();
       std::string command = *(w_iterator++);
       std::string name = *(w_iterator++);
 
+      if (command == "print")
+      {
+        skarlygina::print(std::cout, name, data);
+        continue;
+      }
+      if (words.getSize() < 4)
+      {
+        throw std::invalid_argument("You need less args!\n");
+      }
+      std::string lhs = *(w_iterator++);
+      std::string rhs = *w_iterator;
+      if (command == "complement")
+      {
+        data.push(name, skarlygina::complement(lhs, rhs, data));
+      }
+      else if (command == "intersect")
+      {
+        data.push(name, skarlygina::intersect(lhs, rhs, data));
+      }
+      else if (command == "union")
+      {
+        data.push(name, skarlygina::unite(lhs, rhs, data));
+      }
+      else
+      {
+        throw std::invalid_argument("Unknown command!\n");
+      }
     }
     catch (const std::invalid_argument&)
     {
