@@ -1,7 +1,9 @@
 #include <iostream>
 #include <fstream>
+#include <utility>
 #include <avl/AVL.h>
 #include <commands.h>
+#include "genDictOfDicts.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,34 +17,8 @@ int main(int argc, char *argv[])
     return 2;
   }
   using tree = fesenko::AVL< int, std::string, std::less< > >;
-  using tree_elem = std::pair< int, std::string >;
   using tree_of_tree = fesenko::AVL< std::string, tree, std::less< std::string > >;
-  using tree_of_tree_elem = std::pair< std::string, tree >;
-  tree_of_tree container;
-  try {
-    while (in) {
-      std::string name;
-      in >> name;
-      if (!in) {
-        break;
-      }
-      tree tr;
-      while (in) {
-        int key = 0;
-        std::string value;
-        in >> key >> value;
-        if (!in) {
-          break;
-        }
-        tr.insert(tree_elem(key, value));
-      }
-      in.clear();
-      container.insert(tree_of_tree_elem(name, tr));
-    }
-  } catch (const std::exception &e) {
-    std::cerr << e.what() << "\n";
-    return 2;
-  }
+  tree_of_tree container = fesenko::genDictOfDicts< tree_of_tree, tree >(in);
   try {
     while (std::cin) {
       std::string command;
@@ -53,7 +29,7 @@ int main(int argc, char *argv[])
       if (command == "print") {
         std::string name;
         std::cin >> name;
-        fesenko::print(tree_of_tree_elem(name, container.at(name)), std::cout);
+        fesenko::print(std::make_pair(name, container.at(name)), std::cout);
         std::cout << "\n";
       } else {
         std::string newTreeName;
@@ -74,7 +50,7 @@ int main(int argc, char *argv[])
           std::cout << "\n";
           continue;
         }
-        if (container.insert(tree_of_tree_elem(newTreeName, newTree)).second == false) {
+        if (container.insert(std::make_pair(newTreeName, newTree)).second == false) {
           auto it = container.find(newTreeName);
           container.at(it->first) = newTree;
         }

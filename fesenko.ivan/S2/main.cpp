@@ -1,7 +1,9 @@
 #include <iostream>
 #include <fstream>
+#include <utility>
 #include <dictionary/dictionary.h>
 #include <commands.h>
+#include "genDictOfDicts.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,34 +17,8 @@ int main(int argc, char *argv[])
     return 2;
   }
   using dictionary = fesenko::Dictionary< int, std::string, std::less< > >;
-  using dictionary_elem = std::pair< int, std::string >;
   using dict_of_dict = fesenko::Dictionary< std::string, dictionary, std::less< std::string > >;
-  using dict_of_dict_elem = std::pair< std::string, dictionary >;
-  dict_of_dict container;
-  try {
-    while (in) {
-      std::string name;
-      in >> name;
-      if (!in) {
-        break;
-      }
-      dictionary dict;
-      int key = 0;
-      std::string value;
-      while (in) {
-        in >> key >> value;
-        if (!in) {
-          break;
-        }
-        dict.insert(dictionary_elem(key, value));
-      }
-      in.clear();
-      container.insert(dict_of_dict_elem(name, dict));
-    }
-  } catch (const std::exception &e) {
-    std::cerr << e.what() << "\n";
-    return 2;
-  }
+  dict_of_dict container = fesenko::genDictOfDicts< dict_of_dict, dictionary >(in);
   try {
     while (std::cin) {
       std::string command;
@@ -53,7 +29,7 @@ int main(int argc, char *argv[])
       if (command == "print") {
         std::string name;
         std::cin >> name;
-        fesenko::print(dict_of_dict_elem(name, container.at(name)), std::cout);
+        fesenko::print(std::make_pair(name, container.at(name)), std::cout);
         std::cout << "\n";
       } else {
         std::string newDictName;
@@ -74,7 +50,7 @@ int main(int argc, char *argv[])
           std::cout << "\n";
           continue;
         }
-        if (container.insert(dict_of_dict_elem(newDictName, newDict)).second == false) {
+        if (container.insert(std::make_pair(newDictName, newDict)).second == false) {
           auto it = container.find(newDictName);
           container.at(it->first) = newDict;
         }
