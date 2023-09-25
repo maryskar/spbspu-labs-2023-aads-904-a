@@ -4,21 +4,21 @@
 #include <string>
 namespace fesenko
 {
-  class IntSummator
+  class NumSummator
   {
    public:
-    IntSummator();
-    void operator()(const std::pair< int, std::string > &value_type);
-    int getSum() const;
+    NumSummator();
+    void operator()(const std::pair< long long, std::string > &value_type);
+    long long getSum() const;
    private:
-    int sum_;
+    long long sum_;
   };
 
   class StrSummator
   {
    public:
     StrSummator();
-    void operator()(const std::pair< int, std::string > &value_type);
+    void operator()(const std::pair< long long, std::string > &value_type);
     std::string getSum() const;
    private:
     std::string sum_;

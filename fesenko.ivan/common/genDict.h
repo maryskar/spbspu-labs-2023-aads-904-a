@@ -8,7 +8,7 @@ namespace fesenko
   Storage genDict(std::istream &in)
   {
     Storage result;
-    int key = 0;
+    long long key = 0;
     std::string value = "";
     while (in) {
       in >> key >> value;
