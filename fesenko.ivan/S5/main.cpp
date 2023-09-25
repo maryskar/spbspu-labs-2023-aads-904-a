@@ -2,6 +2,7 @@
 #include <fstream>
 #include <avl/AVL.h>
 #include <messages.h>
+#include "genDict.h"
 #include "createTreeWithTraverses.h"
 #include "functionalObjects.h"
 
@@ -17,25 +18,11 @@ int main(int argc, char *argv[])
     return 2;
   }
   using tree = fesenko::AVL< int, std::string, std::less< > >;
-  using tree_elem = std::pair< int, std::string >;
-  tree tr;
-  try {
-    int key = 0;
-    std::string value = "";
-    while (in) {
-      in >> key >> value;
-      if (!in) {
-        break;
-      }
-      tr.insert(tree_elem(key, value));
-    }
-    if (tr.empty()) {
-      fesenko::outEmptyMessage(std::cout);
-      std::cout << "\n";
-    }
-  } catch (const std::exception &e) {
-    std::cerr << e.what() << "\n";
-    return 2;
+  tree tr = fesenko::genDict< tree >(std::cin);
+  if (tr.empty()) {
+    fesenko::outEmptyMessage(std::cout);
+    std::cout << "\n";
+    return 0;
   }
   try {
     auto int_list = fesenko::createTreeWithTraverses< fesenko::IntSummator >();
