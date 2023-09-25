@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     return 2;
   }
   using tree = fesenko::AVL< int, std::string, std::less< > >;
-  tree tr = fesenko::genDict< tree >(std::cin);
+  tree tr = fesenko::genDict< tree >(in);
   if (tr.empty()) {
     fesenko::outEmptyMessage(std::cout);
     std::cout << "\n";
