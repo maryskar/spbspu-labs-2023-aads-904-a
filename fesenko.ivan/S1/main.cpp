@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include "stack.h"
-#include "queue.h"
+#include <stack.h>
+#include <queue.h>
 #include "stringToInfixQueue.h"
 #include "infixQueueToPostfixQueue.h"
 #include "calculateInPostfixQueue.h"

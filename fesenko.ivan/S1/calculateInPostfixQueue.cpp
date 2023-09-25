@@ -1,6 +1,6 @@
 #include "calculateInPostfixQueue.h"
 #include <stdexcept>
-#include "stack.h"
+#include <stack.h>
 #include "symbols.h"
 #include "calculate.h"
 

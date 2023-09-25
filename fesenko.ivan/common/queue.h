@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <utility>
 #include <memory>
-#include "list.h"
+#include <dictionary/forward-list/list.h>
 namespace fesenko
 {
   template< typename T >
@@ -140,4 +140,3 @@ void fesenko::Queue< T >::copy(const Queue< T > &other)
   tail_ = res.second;
 }
 #endif
-
