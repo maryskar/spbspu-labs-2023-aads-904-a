@@ -10,7 +10,7 @@ namespace kryuchkova
   {
     T data_;
     Node *next_;
-    Node(T rhs):
+    explicit Node(T rhs):
       data_(rhs),
       next_(nullptr)
     {}
