@@ -121,5 +121,17 @@ typename ForwardList< T >::constIterator ForwardList< T >::cend() const noexcept
 {
 return constIterator(tail_);
 }
+
+template< typename T >
+typename ForwardList< T >::reference ForwardList< T >::front()
+{
+  return fake_->next->data;
+}
+
+template< typename T >
+typename ForwardList< T >::constReference ForwardList< T >::front() const
+{
+  return fake_->next->data;
+}
 }
 #endif
