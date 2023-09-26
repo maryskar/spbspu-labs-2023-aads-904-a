@@ -218,5 +218,18 @@ namespace aksenov
   {
     insertAfter(cbeforeBegin(), std::move(val));
   }
+
+  template< typename T >
+  void ForwardList< T >::pushBack(constReference data)
+  {
+    if (!fake_ || !fake_->next)
+    {
+      pushFront(data);
+      return;
+    }
+    listT< T > *newNode = new listT< T >{data, nullptr};
+    tail_->next = newNode;
+    tail_ = newNode;
+  }
 }
 #endif
