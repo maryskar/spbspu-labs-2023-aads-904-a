@@ -4,8 +4,8 @@
 #include <fstream>
 #include <functional>
 
-#include "datasetCommands.h"
-#include "outputOfSpecialMessages.h"
+#include <datasetCommands.h>
+#include <outputOfSpecialMessages.h>
 
 std::string makeSubStr(std::string& line)
 {
