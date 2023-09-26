@@ -35,6 +35,7 @@ namespace hrushchev
       const_iterator cbegin();
       iterator end();
       const_iterator cend();
+<<<<<<< HEAD:hrushchev.nikita/common/avltree.hpp
       template< typename F >
       F traverse_lnr(F f) const;
       template< typename F >
@@ -47,6 +48,8 @@ namespace hrushchev
       F traverse_rnl(F f);
       template< typename F >
       F traverse_breadth(F f);
+=======
+>>>>>>> master:hrushchev.nikita/S4/avltree.hpp
     private:
       void updateHeight(Tree< data_t >* tree);
       Tree< data_t >* insert(const Key& key, const Value& value, Tree< data_t >* tree);
@@ -79,12 +82,21 @@ namespace hrushchev
 
   template< typename Key, typename Value, typename Compare >
   AVLTree< Key, Value, Compare >::AVLTree(const AVLTree& other):
-  comp_(other.comp_)
+    comp_(other.comp_)
   {
     if (other.node_)
     {
-      node_ = new Tree< data_t >();
-      copyNodes(other.node_, node_);
+      node_ = nullptr;
+      try
+      {
+        node_ = new Tree< data_t >();
+        copyNodes(other.node_, node_);
+      }
+      catch (...)
+      {
+        delete node_;
+        throw;
+      }
     }
     else
     {
@@ -106,12 +118,20 @@ namespace hrushchev
     if (this != &other)
     {
       clear(node_);
-      delete node_;
 
       if (other.node_)
       {
-        node_ = new Tree< data_t >();
-        copyNodes(other.node_, node_);
+        node_ = nullptr;
+        try
+        {
+          node_ = new Tree< data_t >();
+          copyNodes(other.node_, node_);
+        }
+        catch (...)
+        {
+          delete node_;
+          throw;
+        }
       }
       else
       {
@@ -136,7 +156,6 @@ namespace hrushchev
     }
     return *this;
   }
-
 
   template< typename Key, typename Value, typename Compare >
   void AVLTree< Key, Value, Compare >::insert(const Key& key, const Value& value)
@@ -201,6 +220,7 @@ namespace hrushchev
   }
 
   template< typename Key, typename Value, typename Compare >
+<<<<<<< HEAD:hrushchev.nikita/common/avltree.hpp
   template< typename F >
   F AVLTree< Key, Value, Compare >::traverse_lnr(F f) const
   {
@@ -305,6 +325,8 @@ namespace hrushchev
   }
 
   template<typename Key, typename Value, typename Compare>
+=======
+>>>>>>> master:hrushchev.nikita/S4/avltree.hpp
   void AVLTree<Key, Value, Compare>::updateHeight(Tree< data_t >* tree)
   {
     if (!tree)
@@ -314,15 +336,13 @@ namespace hrushchev
     tree->height_ = 1 + std::max(getHeight(tree->left_), getHeight(tree->right_));
   }
 
-  template<typename Key, typename Value, typename Compare>
+  template< typename Key, typename Value, typename Compare >
   Tree< typename AVLTree< Key, Value, Compare >::data_t >* AVLTree< Key, Value, Compare >::insert(const Key& key,
       const Value & value, Tree< data_t >* tree)
   {
     if (!node_)
     {
-      node_ = new Tree< data_t >();
-      node_->data_ = data_t(key, value);
-      node_->height_ = 1;
+      node_ = new Tree< data_t >{data_t(key, value), nullptr, nullptr, nullptr, 1};
       return node_;
     }
 
@@ -336,9 +356,7 @@ namespace hrushchev
     {
       if (!tree->right_)
       {
-        auto temp = new Tree< data_t >();
-        temp->data_ = data_t(key, value);
-        temp->height_ = 1;
+        auto temp = new Tree< data_t >{data_t(key, value), nullptr, nullptr, nullptr, 1};
         tree->right_ = temp;
         temp->head_ = tree;
         updateHeight(tree);
@@ -352,9 +370,7 @@ namespace hrushchev
     {
       if (!tree->left_)
       {
-        auto temp = new Tree< data_t >();
-        temp->data_ = data_t(key, value);
-        temp->height_ = 1;
+        auto temp = new Tree< data_t >{data_t(key, value), nullptr, nullptr, nullptr, 1};
         tree->left_ = temp;
         temp->head_ = tree;
         updateHeight(tree);
@@ -379,7 +395,7 @@ namespace hrushchev
     throw std::out_of_range("No such key in dictionary");
   }
 
-  template<typename Key, typename Value, typename Compare>
+  template< typename Key, typename Value, typename Compare >
   void AVLTree< Key, Value, Compare >::erase(Tree< typename AVLTree<Key, Value, Compare >::data_t> * tree)
   {
     if (!tree)
@@ -439,7 +455,7 @@ namespace hrushchev
     }
   }
 
-  template<typename Key, typename Value, typename Compare>
+  template< typename Key, typename Value, typename Compare >
   void AVLTree< Key, Value, Compare >::rotateLeft(Tree< data_t >* node)
   {
     Tree< data_t >* new_root = node->right_;
@@ -501,14 +517,14 @@ namespace hrushchev
     updateHeight(new_root);
   }
 
-  template<typename Key, typename Value, typename Compare>
+  template< typename Key, typename Value, typename Compare >
   void AVLTree<Key, Value, Compare>::rotateRightLeft(Tree<data_t>* node)
   {
     rotateRight(node->right_);
     rotateLeft(node);
   }
 
-  template<typename Key, typename Value, typename Compare>
+  template< typename Key, typename Value, typename Compare >
   void AVLTree<Key, Value, Compare>::rotateLeftRight(Tree<data_t>* node)
   {
     rotateLeft(node->left_);
@@ -575,16 +591,32 @@ namespace hrushchev
 
     if (source_node->left_)
     {
-      destination_node->left_ = new Tree< data_t >();
-      destination_node->left_->head_ = destination_node;
-      copyNodes(source_node->left_, destination_node->left_);
+      destination_node->left_ = nullptr;
+      try
+      {
+        destination_node->left_ = new Tree< data_t >();
+        destination_node->left_->head_ = destination_node;
+        copyNodes(source_node->left_, destination_node->left_);
+      }
+      catch(...)
+      {
+        delete destination_node->left_;
+      }
     }
 
     if (source_node->right_)
     {
-      destination_node->right_ = new Tree< data_t >();
-      destination_node->right_->head_ = destination_node;
-      copyNodes(source_node->right_, destination_node->right_);
+      destination_node->right_ = nullptr;
+      try
+      {
+        destination_node->right_ = new Tree< data_t >();
+        destination_node->right_->head_ = destination_node;
+        copyNodes(source_node->right_, destination_node->right_);
+      }
+      catch (...)
+      {
+        delete destination_node->right_;
+      }
     }
   }
 }

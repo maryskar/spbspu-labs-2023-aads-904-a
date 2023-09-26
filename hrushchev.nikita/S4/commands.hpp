@@ -7,6 +7,7 @@
 namespace hrushchev
 {
   using dict_t = AVLTree< size_t, std::string >;
+  using main_dict = AVLTree< std::string, dict_t >;
 
   void printDict(std::string name, AVLTree< std::string, dict_t >& dict_of_dict, std::ostream& out);
   void complementDict(std::string name, std::string first, std::string second, AVLTree< std::string, dict_t >& dict_of_dict);

@@ -1,13 +1,11 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <list.hpp>
-#include "forwardlist.hpp"
-#include "forwardlistiterator.hpp"
-#include "forwardlistconstiterator.hpp"
-#include "dictionary.hpp"
+#include <stdexcept>
+#include <dictionary.hpp>
 #include "inputdict.hpp"
 #include "commands.hpp"
+#include "printerror.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -57,13 +55,13 @@ int main(int argc, char* argv[])
         }
         else
         {
-          std::cout << "<INVALID COMMAND>\n";
+          throw std::logic_error("invalig command");
         }
       }
     }
     catch (...)
     {
-      std::cout << "<INVALID COMMAND>\n";
+      hrushchev::printError(std::cout);
     }
   }
 }
