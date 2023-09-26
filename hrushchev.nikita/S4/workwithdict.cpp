@@ -24,7 +24,7 @@ void hrushchev::Commands::runCommand(std::istream& in, std::ostream& out, main_d
       out << "\n";
       continue;
     }
-    catch(...)
+    catch (...)
     {
     }
 
@@ -36,13 +36,9 @@ void hrushchev::Commands::runCommand(std::istream& in, std::ostream& out, main_d
       auto func = dict2_.at(command);
       func(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
     }
-    catch(const std::out_of_range& e)
+    catch (const std::out_of_range& e)
     {
       printError(out);
-    }
-    catch(...)
-    {
-      throw;
     }
   }
 }

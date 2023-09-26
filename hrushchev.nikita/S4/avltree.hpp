@@ -217,7 +217,6 @@ namespace hrushchev
       if (!tree->right_)
       {
         auto temp = new Tree< data_t >{data_t(key, value), nullptr, nullptr, nullptr, 1};
-        temp->height_ = 1;
         tree->right_ = temp;
         temp->head_ = tree;
         updateHeight(tree);
