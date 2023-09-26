@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <cstddef>
+#include "queue.h"
 #include "const_bidirectional_iterator.h"
 namespace romanovich
 {
