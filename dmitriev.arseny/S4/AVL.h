@@ -440,6 +440,19 @@ namespace dmitriev
 			dmitriev::clear(m_root);
 			m_root = nullptr;
 		}
+		bool isEmpty(constIterator it) const noexcept
+		{
+			return dmitriev::isEmpty(it.m_ptr);
+		}
+		bool isEmpty() const noexcept
+		{
+			return dmitriev::isEmpty(m_root);
+		}
+		bool isEqual(const Key& lhs, const Key& rhs) const
+		{
+			return !(Compare{}(rhs, lhs) || Compare{}(lhs, rhs));
+		}
+
 
 	private:
 		tree* m_root;
