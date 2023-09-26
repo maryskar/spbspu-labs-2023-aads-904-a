@@ -446,6 +446,7 @@ namespace dmitriev
 			insert(initList.begin(), initList.end());
 		}
 
+
 		iterator begin()
 		{
 			return iterator(min());
@@ -508,6 +509,62 @@ namespace dmitriev
 		tree* m_root;
 		Compare m_cmp;
 
+		tree* eraseUtil(tree* node, const Key key)
+		{
+			if (isEmpty(node))
+			{
+				return nullptr;
+			}
+
+			if (isEqual(node->data.first, key))
+			{
+				if (isEmpty(node->left) && isEmpty(node->right))
+				{
+					delete node;
+					return nullptr;
+				}
+				else if (isEmpty(node->left))
+				{
+					tree* temp = node->right;
+					delete node;
+					return temp;
+				}
+				else if (isEmpty(node->right))
+				{
+					tree* temp = node->left;
+					delete node;
+					return temp;
+				}
+				else
+				{
+					tree* minNode = findMin(node->right);
+					node->data = minNode->data;
+					node->right = eraseUtil(node->right, minNode->data.first);
+					if (!isEmpty(node->right))
+					{
+						node->right->parent = node;
+					}
+				}
+			}
+			else if (m_cmp(key, node->data.first))
+			{
+				node->left = eraseUtil(node->left, key);
+				if (!isEmpty(node->left))
+				{
+					node->left->parent = node;
+				}
+			}
+			else if (!m_cmp(key, node->data.first))
+			{
+				node->right = eraseUtil(node->right, key);
+				if (!isEmpty(node->left))
+				{
+					node->right->parent = node;
+				}
+			}
+
+			return balance(node);
+		}
 		tree* insertUtil(tree* node, const dataPair& keyValue)
 		{
 			if (isEmpty(node))
