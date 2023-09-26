@@ -1,7 +1,7 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 #include <stdexcept>
-#include "forwardList.h"
+#include "forward-list/forwardList.h"
 
 namespace fesenko
 {
@@ -206,11 +206,11 @@ namespace fesenko
   template< typename Key, typename Value, typename Compare >
   Value &Dictionary< Key, Value, Compare >::operator[](const key_type &key)
   {
-    const_iterator cit = find(key);
-    if (cit == cend()) {
-      return (*((this->insert(std::make_pair(key, mapped_type()))).first));
+    try {
+      return at(key);
+    } catch (const std::out_of_range &e) {
     }
-    return cit->second;
+    return (*((this->insert(std::make_pair(key, mapped_type()))).first));
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -361,7 +361,7 @@ namespace fesenko
     {
       return comp(lhs.first, rhs.first);
     };
-   private:
+   protected:
     Compare comp;
   };
 

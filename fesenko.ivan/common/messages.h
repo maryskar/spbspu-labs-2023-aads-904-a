@@ -1,6 +1,6 @@
 #ifndef MESSAGES_H
 #define MESSAGES_H
-#include <ostream>
+#include <fstream>
 namespace fesenko
 {
   void outInvalidCommandMessage(std::ostream &out);
