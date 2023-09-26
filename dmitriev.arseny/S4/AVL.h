@@ -458,6 +458,15 @@ namespace dmitriev
 		tree* m_root;
 		Compare m_cmp;
 
+		int height(const tree* node) const noexcept
+		{
+			if (isEmpty(node))
+			{
+				return 0;
+			}
+			return node->height;
+		}
+
 		tree* max() const noexcept
 		{
 			return findMax(m_root);
