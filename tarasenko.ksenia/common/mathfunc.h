@@ -1,5 +1,5 @@
-#ifndef MATHFUNCS_H
-#define MATHFUNCS_H
+#ifndef MATHFUNC_H
+#define MATHFUNC_H
 namespace tarasenko
 {
   long long summarize(long long a, long long b);
