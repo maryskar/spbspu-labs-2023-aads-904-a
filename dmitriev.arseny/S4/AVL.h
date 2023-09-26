@@ -458,7 +458,10 @@ namespace dmitriev
 		tree* m_root;
 		Compare m_cmp;
 
-
+		void updateHeight(tree* node) noexcept
+		{
+			node->height = 1 + std::max(height(node->left), height(node->right));
+		}
 		int balanceFactor(const tree* node) const noexcept
 		{
 			if (isEmpty(node))
