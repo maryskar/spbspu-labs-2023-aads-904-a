@@ -3,10 +3,8 @@
 #include <string>
 #include <list.hpp>
 #include "avltree.hpp"
-#include "avltreeiterator.hpp"
-#include "avltreeconstiterator.hpp"
+#include "workwithdict.hpp"
 #include "inputdict.hpp"
-#include "commands.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -25,45 +23,6 @@ int main(int argc, char* argv[])
   using dict_t = hrushchev::AVLTree< size_t, std::string >;
   hrushchev::AVLTree< std::string, dict_t > dict_of_dict;
   hrushchev::inputDict(input, dict_of_dict);
-  std::string command = "";
-  while (std::cin >> command)
-  {
-    try
-    {
-      if (command == "print")
-      {
-        std::string dict_name = "";
-        std::cin >> dict_name;
-        hrushchev::printDict(dict_name, dict_of_dict, std::cout);
-        std::cout << "\n";
-      }
-      else
-      {
-        std::string res_dict_name = "";
-        std::string first_dict_name = "";
-        std::string second_dict_name = "";
-        std::cin >> res_dict_name >> first_dict_name >> second_dict_name;
-        if (command == "complement")
-        {
-          hrushchev::complementDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
-        }
-        else if (command == "intersect")
-        {
-          hrushchev::intersectDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
-        }
-        else if (command == "union")
-        {
-          hrushchev::unionDict(res_dict_name, first_dict_name, second_dict_name, dict_of_dict);
-        }
-        else
-        {
-          std::cout << "<INVALID COMMAND>\n";
-        }
-      }
-    }
-    catch (...)
-    {
-      std::cout << "<INVALID COMMAND>\n";
-    }
-  }
+  hrushchev::Commands dict_wiht_cmd;
+  dict_wiht_cmd.runCommand(std::cin, std::cout, dict_of_dict);
 }
