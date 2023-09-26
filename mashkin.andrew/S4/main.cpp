@@ -4,14 +4,14 @@
 #include <map>
 #include <string>
 #include <utility>
-#include <AVL.h>
-#include <AVLIterator.h>
-#include <AVLReverseIter.h>
-#include <ConstAVLIterator.h>
-#include <ConstAVLReverseIter.h>
+#include <AVL/AVL.h>
+#include <AVL/AVLIterator.h>
+#include <AVL/AVLReverseIter.h>
+#include <AVL/ConstAVLIterator.h>
+#include <AVL/ConstAVLReverseIter.h>
 #include <DictWithCommands.h>
 #include <IOstreamOverloads.h>
-#include <tree.h>
+#include <AVL/tree.h>
 
 int main(int argc, char** argv)
 {
