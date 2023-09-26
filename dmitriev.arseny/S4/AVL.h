@@ -13,11 +13,19 @@ namespace dmitriev
 	class ConstBidirectionalIterator;
 
 	template< typename Key, typename Value, typename Compare = std::less< Key > >
+	class ReverseBidirectionalIterator;
+
+	template< typename Key, typename Value, typename Compare = std::less< Key > >
+	class ConstReverseBidirectionalIterator;
+
+	template< typename Key, typename Value, typename Compare = std::less< Key > >
 	class BidirectionalIterator: public std::iterator< std::bidirectional_iterator_tag, std::pair< Key, Value > >
 	{
 	public:
 		friend class AVL< Key, Value, Compare >;
 		friend class ConstBidirectionalIterator< Key, Value, Compare >;
+		friend class ReverseBidirectionalIterator< Key, Value, Compare >;
+		friend class ConstReverseBidirectionalIterator< Key, Value, Compare >;
 
 		using T = typename AVL< Key, Value, Compare >::dataPair;
 		using tree = typename AVL< Key, Value, Compare >::tree;
@@ -124,13 +132,12 @@ namespace dmitriev
 		tree* m_ptr;
 
 		BidirectionalIterator(const constIterator& other):
-			m_ptr(const_cast<tree*>(other.m_ptr))
+			m_ptr(const_cast< tree* >(other.m_ptr))
 		{}
 		BidirectionalIterator(constIterator&& other):
-			m_ptr(const_cast<tree*>(other.m_ptr))
+			m_ptr(const_cast< tree* >(other.m_ptr))
 		{}
 	};
-
 
 	template< typename Key, typename Value, typename Compare >
 	class ConstBidirectionalIterator: public std::iterator< std::bidirectional_iterator_tag, const std::pair< Key, Value > >
@@ -191,6 +198,161 @@ namespace dmitriev
 			return (m_ptr == other.m_ptr);
 		}
 		bool operator!=(const ConstBidirectionalIterator& other) const noexcept
+		{
+			return !(*this == other);
+		}
+
+		const T& operator*() const
+		{
+			return m_ptr->data;
+		}
+		const T* operator->() const
+		{
+			return std::addressof(m_ptr->data);
+		}
+
+	private:
+		const tree* m_ptr;
+
+	};
+
+	template< typename Key, typename Value, typename Compare >
+	class ReverseBidirectionalIterator: public std::iterator< std::bidirectional_iterator_tag, std::pair< Key, Value > >
+	{
+	public:
+		friend class AVL< Key, Value, Compare >;
+		friend class ConstReverseBidirectionalIterator< Key, Value, Compare >;
+
+		using T = typename AVL< Key, Value, Compare >::dataPair;
+		using tree = typename AVL< Key, Value, Compare >::tree;
+		using basicIterator = BidirectionalIterator< Key, Value, Compare >;
+		using constIterator = ConstReverseBidirectionalIterator< Key, Value, Compare >;
+
+		ReverseBidirectionalIterator() noexcept:
+			m_ptr(nullptr)
+		{}
+		explicit ReverseBidirectionalIterator(tree* other) noexcept:
+			m_ptr(other)
+		{}
+
+		ReverseBidirectionalIterator& operator++() noexcept
+		{
+			basicIterator res(m_ptr);
+			res--;
+			m_ptr = res.m_ptr;
+			return *this;
+		}
+		ReverseBidirectionalIterator operator++(int) noexcept
+		{
+			ReverseBidirectionalIterator prev(m_ptr);
+			++(*this);
+
+			return prev;
+		}
+		ReverseBidirectionalIterator& operator--() noexcept
+		{
+			basicIterator res(m_ptr);
+			res++;
+			m_ptr = res.m_ptr;
+			return *this;
+		}
+		ReverseBidirectionalIterator operator--(int) noexcept
+		{
+			ReverseBidirectionalIterator prev(m_ptr);
+			--(*this);
+
+			return prev;
+		}
+
+		bool operator==(const ReverseBidirectionalIterator& other) const noexcept
+		{
+			return (m_ptr == other.m_ptr);
+		}
+		bool operator!=(const ReverseBidirectionalIterator& other) const noexcept
+		{
+			return !(*this == other);
+		}
+
+		T& operator*()
+		{
+			return m_ptr->data;
+		}
+		T* operator->()
+		{
+			return std::addressof(m_ptr->data);
+		}
+
+	private:
+		tree* m_ptr;
+
+		ReverseBidirectionalIterator(const constIterator& other):
+			m_ptr(const_cast< tree* >(other.m_ptr))
+		{}
+		ReverseBidirectionalIterator(constIterator&& other):
+			m_ptr(const_cast< tree* >(other.m_ptr))
+		{}
+	};
+
+	template< typename Key, typename Value, typename Compare >
+	class ConstReverseBidirectionalIterator: public std::iterator< std::bidirectional_iterator_tag, const std::pair< Key, Value > >
+	{
+	public:
+		friend class AVL< Key, Value, Compare >;
+		friend class ReverseBidirectionalIterator< Key, Value, Compare >;
+
+		using T = typename AVL< Key, Value, Compare >::dataPair;
+		using tree = typename AVL< Key, Value, Compare >::tree;
+		using iterator = ReverseBidirectionalIterator< Key, Value, Compare >;
+		using basicIterator = BidirectionalIterator< Key, Value, Compare >;
+
+		ConstReverseBidirectionalIterator() noexcept:
+			m_ptr(nullptr)
+		{}
+		ConstReverseBidirectionalIterator(const tree* other) noexcept:
+			m_ptr(other)
+		{}
+
+		ConstReverseBidirectionalIterator(const iterator& other) noexcept:
+			m_ptr(other.m_ptr)
+		{}
+		ConstReverseBidirectionalIterator(iterator&& other) noexcept:
+			m_ptr(other.m_ptr)
+		{}
+
+		ConstReverseBidirectionalIterator& operator++() noexcept
+		{
+			basicIterator res(m_ptr);
+			res--;
+			m_ptr = res.m_ptr;
+			return *this;
+		}
+		ConstReverseBidirectionalIterator operator++(int) noexcept
+		{
+			ConstReverseBidirectionalIterator prev(m_ptr);
+			++(*this);
+
+			return prev;
+		}
+		ConstReverseBidirectionalIterator& operator--() noexcept
+		{
+			basicIterator res(m_ptr);
+			res++;
+			m_ptr = res.m_ptr;
+			return *this;
+		}
+		ConstReverseBidirectionalIterator operator--(int) noexcept
+		{
+			ConstReverseBidirectionalIterator prev(m_ptr);
+			--(*this);
+
+			return prev;
+		}
+
+		bool operator==(const ConstReverseBidirectionalIterator& other) const noexcept
+		{
+			return (m_ptr == other.m_ptr);
+		}
+		bool operator!=(const ConstReverseBidirectionalIterator& other) const noexcept
 		{
 			return !(*this == other);
 		}
