@@ -458,6 +458,35 @@ namespace dmitriev
 		tree* m_root;
 		Compare m_cmp;
 
+
+		tree* balance(tree* node)
+		{
+			updateHeight(node);
+			int bf = balanceFactor(node);
+
+			if (bf < -1 && balanceFactor(node->right) <= 0)
+			{
+				return rotateLeft(node);
+			}
+			if (bf < -1 && balanceFactor(node->right) > 0)
+			{
+				node->right = rotateRight(node->right);
+				return rotateLeft(node);
+			}
+
+			if (bf > 1 && balanceFactor(node->left) >= 0)
+			{
+				return rotateRight(node);
+			}
+			if (bf > 1 && balanceFactor(node->left) < 0)
+			{
+				node->left = rotateLeft(node->left);
+				return rotateRight(node);
+			}
+
+			return node;
+		}
+
 		tree* rotateRight(tree* node)
 		{
 			tree* temp = node->left;
