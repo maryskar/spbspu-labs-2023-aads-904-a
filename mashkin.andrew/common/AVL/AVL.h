@@ -120,6 +120,79 @@ namespace mashkin
     tree* fake_;
     Comporator comp_;
   };
+
+  template< class K, class V, class C >
+  template< class F >
+  F AVL< K, V, C >::traverse_breadth_impl(tree* root, size_t height, F& f) const
+  {
+    if (!root)
+    {
+      return f;
+    }
+    if (checkHeight(root) == height)
+    {
+      f(root->data);
+    }
+    traverse_breadth_impl(root->right_, height, f);
+    traverse_breadth_impl(root->left_, height, f);
+    return f;
+  }
+
+  template< class K, class V, class C >
+  template< class F >
+  F AVL< K, V, C >::traverse_breadth(F& f) const
+  {
+    tree* node = fake_->parent_;
+    auto height = checkHeight(node);
+    for (size_t i = 1; i <= height; i++)
+    {
+      traverse_breadth_impl(node, i, f);
+    }
+    return f;
+  }
+
+  template< class K, class V, class C >
+  template< class F >
+  F AVL< K, V, C >::traverse_rnl_impl(tree* root, F& f) const
+  {
+    if (!root)
+    {
+      return f;
+    }
+    traverse_lnr_impl(root->right_, f);
+    f(root->data);
+    traverse_lnr_impl(root->left_, f);
+    return f;
+  }
+
+  template< class K, class V, class C >
+  template< class F >
+  F AVL< K, V, C >::traverse_rnl(F& f) const
+  {
+    return traverse_rnl_impl(fake_->parent_, f);
+  }
+
+  template< class K, class V, class C >
+  template< class F >
+  F AVL< K, V, C >::traverse_lnr_impl(tree* root, F& f) const
+  {
+    if (!root)
+    {
+      return f;
+    }
+    traverse_lnr_impl(root->left_, f);
+    f(root->data);
+    traverse_lnr_impl(root->right_, f);
+    return f;
+  }
+
+  template< class K, class V, class C>
+  template< class F >
+  F AVL< K, V, C >::traverse_lnr(F& f) const
+  {
+    return traverse_lnr_impl(fake_->parent_, f);
+  }
+
   template< class K, class V, class C >
   typename AVL< K, V, C >::const_riter AVL< K, V, C >::rbegin() const
   {
