@@ -1,7 +1,7 @@
 #ifndef QUEUE_HPP
 #define QUEUE_HPP
 #include <stdexcept>
-#include "list.hpp"
+#include <list.hpp>
 
 namespace hrushchev
 {
@@ -47,7 +47,7 @@ namespace hrushchev
     }
     else
     {
-      end_->next = temp;
+      end_->next_ = temp;
     }
     end_ = temp;
   }
@@ -59,7 +59,7 @@ namespace hrushchev
     {
       throw std::logic_error("Empty queue");
     }
-    return begin_->data;
+    return begin_->data_;
   }
 
   template< typename T >
@@ -77,7 +77,7 @@ namespace hrushchev
     }
     else
     {
-      details::List< T >* temp = begin_->next;
+      details::List< T >* temp = begin_->next_;
       delete begin_;
       begin_ = temp;
     }
@@ -100,8 +100,8 @@ namespace hrushchev
       details::List< T >* curent = other.begin_;
       while (curent != nullptr)
       {
-        push(curent->data);
-        curent = curent->next;
+        push(curent->data_);
+        curent = curent->next_;
       }
     }
     catch (...)

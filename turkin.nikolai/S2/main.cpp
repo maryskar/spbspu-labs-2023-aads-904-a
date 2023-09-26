@@ -1,14 +1,11 @@
 #include <iostream>
 #include <fstream>
-#include <string>
-#include <cstddef>
 #include <functional>
 #include <utility>
-#include <dictionary.hpp>
-#include <forward-list.hpp>
-#include <out-msg.hpp>
-#include "cmd-work.hpp"
-#include "file-work.hpp"
+#include <dictionary/dictionary.hpp>
+#include <dictionary/forward-list/forward-list.hpp>
+#include <cmd-work.hpp>
+#include <file-work.hpp>
 
 int main(int argc, char * argv[])
 {
@@ -26,16 +23,16 @@ int main(int argc, char * argv[])
     return 1;
   }
 
-  using dict_t = turkin::Dictionary< std::size_t, std::string, std::less< std::size_t > >;
-  using dict_a = turkin::Dictionary< std::string, dict_t, std::less< std::string > >;
-  using dict_c = turkin::Dictionary< std::string, dict_t (*)(const dict_t &, const dict_t &), std::less< std::string > >;
+  using dict_t = turkin::Dictionary< std::size_t, std::string, std::less< > >;
+  using dict_a = turkin::Dictionary< std::string, dict_t, std::less< > >;
+  using dict_c = turkin::Dictionary< std::string, dict_t (*)(const dict_t &, const dict_t &), std::less< > >;
 
   dict_c commands;
-  commands.emplace("complement", turkin::to_complement< std::size_t, std::string, std::less< std::size_t > >);
-  commands.emplace("intersect", turkin::to_intersect< std::size_t, std::string, std::less< std::size_t > >);
-  commands.emplace("union", turkin::to_union< std::size_t, std::string, std::less< std::size_t > >);
+  commands.insert("complement", turkin::to_complement< dict_t, std::less< > >);
+  commands.insert("intersect", turkin::to_intersect< dict_t >);
+  commands.insert("union", turkin::to_union< dict_t >);
 
-  dict_a dict = turkin::genDicts(file);
+  dict_a dict = turkin::genDicts< dict_a, dict_t >(file);
 
   while (std::cin)
   {
