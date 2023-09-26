@@ -21,7 +21,7 @@ int main(int argc, char** argv)
     return 1;
   }
   mashkin::AVL< std::string, mashkin::AVL< std::string, void (*)(std::ostream&, size_t) > > map;
-  mashkin::createMapOfSortFunctions(map);
+  map = mashkin::createMapOfSortFunctions();
   if (map.contains(argv[1]))
   {
     if (map[argv[1]].contains(argv[2]))
