@@ -3,7 +3,7 @@
 #include <iostream>
 #include <map>
 #include <string>
-#include <AVL.h>
+#include <AVL/AVL.h>
 #include "createMapOfSortFunctions.h"
 
 int main(int argc, char** argv)
