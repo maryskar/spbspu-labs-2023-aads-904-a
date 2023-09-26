@@ -78,8 +78,8 @@ namespace tarasenko
    bool isEmpty() const;
    void pushFront(const T& data);
    void pushBack(const T& data);
-   T& getFront();
-   const T& getFront() const;
+   T getFront();
+   const T getFront() const;
    void popFront();
    void clear();
    iterator insertAfter(const_iterator pos, const T& value);
@@ -191,13 +191,13 @@ namespace tarasenko
   }
 
   template< typename T >
-  T& ForwardList< T >::getFront()
+  T ForwardList< T >::getFront()
   {
     return details::getFront(first_);
   }
 
   template< typename T >
-  const T& ForwardList< T >::getFront() const
+  const T ForwardList< T >::getFront() const
   {
     return details::getFront(first_);
   }
