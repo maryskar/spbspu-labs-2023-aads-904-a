@@ -59,5 +59,13 @@ namespace aksenov
     listT< T > *tail_;
     void pushBack(constReference data);
   };
+
+  template< typename T >
+  ForwardList< T >::ForwardList():
+          fake_(static_cast< listT< T > * >(::operator new (sizeof(listT< T >)))),
+          tail_(nullptr)
+  {
+    fake_->next = tail_;
+  }
 }
 #endif

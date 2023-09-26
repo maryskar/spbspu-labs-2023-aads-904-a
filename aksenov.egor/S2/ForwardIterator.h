@@ -6,6 +6,12 @@
 namespace aksenov
 {
   template< typename T >
+  class ForwardList;
+
+  template< typename T >
+  class ConstForwardIterator;
+
+  template< typename T >
   class ForwardIterator
   {
   public:
