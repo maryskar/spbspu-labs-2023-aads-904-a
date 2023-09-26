@@ -87,19 +87,19 @@ namespace romanovich
   template< typename F >
   void RedBlackTree< Key, Value, Compare >::traverseBreadth(F &f) const
   {
-      rotBst_.traverseBreadth(f);
+    rotBst_.traverseBreadth(f);
   }
   template< typename Key, typename Value, typename Compare >
   template< typename F >
   void RedBlackTree< Key, Value, Compare >::traverseRnl(F &f) const
   {
-      rotBst_.traverseRnl(f);
+    rotBst_.traverseRnl(f);
   }
   template< typename Key, typename Value, typename Compare >
   template< typename F >
   void RedBlackTree< Key, Value, Compare >::traverseLnr(F &f) const
   {
-      rotBst_.traverseLnr(f);
+    rotBst_.traverseLnr(f);
   }
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::const_reverse_iterator
