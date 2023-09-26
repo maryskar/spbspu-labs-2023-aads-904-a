@@ -159,30 +159,9 @@ namespace dmitriev
 
 		ConstBidirectionalIterator& operator++() noexcept
 		{
-			if (isEmpty(m_ptr))
-			{
-				return *this;
-			}
-
-			if (!isEmpty(m_ptr->right))
-			{
-				m_ptr = m_ptr->right;
-				while (!isEmpty(m_ptr->left))
-				{
-					m_ptr = m_ptr->left;
-				}
-			}
-			else
-			{
-				const tree* parent = m_ptr->parent;
-				while (!isEmpty(parent) && (m_ptr == parent->right))
-				{
-					m_ptr = parent;
-					parent = parent->parent;
-				}
-				m_ptr = parent;
-			}
-
+			iterator res(m_ptr);
+			res++;
+			m_ptr = res.m_ptr;
 			return *this;
 		}
 		ConstBidirectionalIterator operator++(int) noexcept
@@ -194,31 +173,9 @@ namespace dmitriev
 		}
 		ConstBidirectionalIterator& operator--() noexcept
 		{
-			if (isEmpty(m_ptr))
-			{
-				return *this;
-			}
-
-			if (!isEmpty(m_ptr->left))
-			{
-				m_ptr = m_ptr->left;
-				while (!isEmpty(m_ptr->right))
-				{
-					m_ptr = m_ptr->right;
-				}
-			}
-			else
-			{
-				const tree* parent = m_ptr->parent;
-				while (!isEmpty(parent) && m_ptr == parent->left)
-				{
-					m_ptr = parent;
-					parent = parent->parent;
-				}
-
-				m_ptr = parent;
-			}
-
+			iterator res(m_ptr);
+			res--;
+			m_ptr = res.m_ptr;
 			return *this;
 		}
 		ConstBidirectionalIterator operator--(int) noexcept
@@ -251,6 +208,7 @@ namespace dmitriev
 		const tree* m_ptr;
 
 	};
+
 
 	template< typename Key, typename Value, typename Compare >
 	class AVL
