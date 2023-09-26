@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
           std::cout << "\n";
           continue;
         }
-        if (container.insert(std::make_pair(newDictName, newDict)).second == false) {
+        if (!container.insert(std::make_pair(newDictName, newDict)).second) {
           auto it = container.find(newDictName);
           container.at(it->first) = newDict;
         }

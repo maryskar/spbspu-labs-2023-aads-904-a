@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
           std::cout << "\n";
           continue;
         }
-        if (container.insert(std::make_pair(newTreeName, newTree)).second == false) {
+        if (!container.insert(std::make_pair(newTreeName, newTree)).second) {
           auto it = container.find(newTreeName);
           container.at(it->first) = newTree;
         }
