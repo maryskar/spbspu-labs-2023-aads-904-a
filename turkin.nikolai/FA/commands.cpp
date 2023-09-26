@@ -221,7 +221,8 @@ std::ostream & turkin::help(phrase_dict_t &, encoding_dict_t &, std::istream & i
   {
     out << "INFO-PHRASE <lhs> <rhs> - выводит фразу lhs, кодировку rhs,";
     out << "частоту символов lhs, коды символов rhs, вес до кодировки и после\n";
-    out << "INFO-STATE <lhs> <rhs> - выводит фразы lhs rhs, их кодировки (lhs - lhs, lhs - rhs, rhs - rhs, rhs - lhs) и разницу в весе\n";
+    out << "INFO-STATE <lhs> <rhs> - выводит фразы lhs rhs, их кодировки";
+    out << "(lhs - lhs, lhs - rhs, rhs - rhs, rhs - lhs) и разницу в весе\n";
     out << "INFO-ALGORITHM - выводит информацию об алгоритме сжатия";
   }
   else if (type == "SAVE")
