@@ -1,11 +1,11 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <queue.h>
+#include <stack.h>
 #include "convertToPostfixNotation.h"
 #include "print.h"
-#include "queue.h"
 #include "solvePostfixNotation.h"
-#include "stack.h"
 
 int main(int argc, char** argv)
 {
