@@ -28,7 +28,7 @@ namespace turkin
 
     merge_sort(forward_list.begin(), forward_list.size(), p);
     out_storage(forward_list.begin(), forward_list.end(), out) << "\n";
-    
+
     quick_sort(list.begin(), list.end(), p);
     out_storage(list.begin(), list.end(), out) << "\n";
     shell_sort(list.begin(), list.end(), p);
