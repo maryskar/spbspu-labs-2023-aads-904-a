@@ -402,6 +402,15 @@ namespace dmitriev
 			clear();
 		}
 
+		iterator begin()
+		{
+			return iterator(min());
+		}
+		iterator end()
+		{
+			return iterator();
+		}
+
 
 		void clear()
 		{
