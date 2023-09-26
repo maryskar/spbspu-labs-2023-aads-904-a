@@ -198,5 +198,25 @@ namespace aksenov
     clear();
     fake_ = tail_ = nullptr;
   }
+
+  template< typename T >
+  void ForwardList< T >::pushFront(constReference val)
+  {
+    listT< T > *newNode = new listT< T >{val, nullptr};
+    if (!fake_ || !fake_->next)
+    {
+      tail_ = fake_->next;
+      fake_->next = newNode;
+      return;
+    }
+    newNode->next = fake_->next;
+    fake_->next = newNode;
+  }
+
+  template< typename T >
+  void ForwardList< T >::pushFront(valueType &&val)
+  {
+    insertAfter(cbeforeBegin(), std::move(val));
+  }
 }
 #endif
