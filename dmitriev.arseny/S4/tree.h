@@ -20,7 +20,25 @@ namespace dmitriev
 		return node == nullptr;
 	}
 
+	template< typename T >
+	void clear(Tree< T >* root)
+	{
+		if (isEmpty(root))
+		{
+			return;
+		}
 
+		if (!isEmpty(root->left))
+		{
+			clear(root->left);
+		}
+		if (!isEmpty(root->right))
+		{
+			clear(root->right);
+		}
+
+		delete root;
+	}
 
 }
 
