@@ -133,5 +133,12 @@ typename ForwardList< T >::constReference ForwardList< T >::front() const
 {
   return fake_->next->data;
 }
+
+template< typename T >
+void ForwardList< T >::swap(ForwardList< T > &val)
+{
+  std::swap(this->fake_, val.fake_);
+  std::swap(this->tail_, val.tail_);
+}
 }
 #endif
