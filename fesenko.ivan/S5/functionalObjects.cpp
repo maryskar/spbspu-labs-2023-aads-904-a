@@ -2,42 +2,31 @@
 #include <stdexcept>
 #include <limits>
 
-fesenko::NumSummator::NumSummator():
-  sum_(0)
+fesenko::Summator::Summator():
+  llSum_(0),
+  strSum_("")
 {}
 
-void fesenko::NumSummator::operator()(const std::pair< long long, std::string > &value_type)
+void fesenko::Summator::operator()(const std::pair< long long, std::string > &value_type)
 {
-  if (sum_ > 0 && value_type.first > 0 && sum_ > std::numeric_limits< long long >::max() - value_type.first) {
+  if (llSum_ > 0 && value_type.first > 0 && llSum_ > std::numeric_limits< long long >::max() - value_type.first) {
     throw std::overflow_error("Overflow");
   }
-  if (sum_ < 0 && value_type.first < 0 && sum_ < std::numeric_limits< long long >::min() - value_type.first) {
+  if (llSum_ < 0 && value_type.first < 0 && llSum_ < std::numeric_limits< long long >::min() - value_type.first) {
     throw std::overflow_error("Overflow");
   }
-  sum_ += value_type.first;
-}
+  llSum_ += value_type.first;
 
-long long fesenko::NumSummator::getSum() const
-{
-  return sum_;
-}
-
-fesenko::StrSummator::StrSummator():
-  sum_("")
-{}
-
-void fesenko::StrSummator::operator()(const std::pair< long long, std::string > &value_type)
-{
-  if (sum_.max_size() - sum_.size() < value_type.second.size()) {
+  if (strSum_.max_size() - strSum_.size() < value_type.second.size()) {
     throw std::overflow_error("Overflow");
   }
-  if (sum_.size() != 0) {
-    sum_ += " ";
+  if (strSum_.size() != 0) {
+    strSum_ += " ";
   }
-  sum_ += value_type.second;
+  strSum_ += value_type.second;
 }
 
-std::string fesenko::StrSummator::getSum() const
+std::pair< long long, std::string > fesenko::Summator::getSum() const
 {
-  return sum_;
+  return std::make_pair(llSum_, strSum_);
 }
