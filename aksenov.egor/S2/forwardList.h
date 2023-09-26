@@ -187,5 +187,16 @@ namespace aksenov
     fake_->next = fake_->next->next;
     delete todel;
   }
+
+  template< typename T >
+  ForwardList< T >::~ForwardList()
+  {
+    if (isEmpty())
+    {
+      return;
+    }
+    clear();
+    fake_ = tail_ = nullptr;
+  }
 }
 #endif
