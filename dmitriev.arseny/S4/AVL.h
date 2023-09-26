@@ -814,6 +814,30 @@ namespace dmitriev
 			return node;
 		}
 
+	};
+
+	template< typename Key, typename Value, typename Compare = std::less< > >
+	AVL< Key, Value, Compare > complementDictionary(const AVL< Key, Value, Compare >& lhs,
+		const AVL< Key, Value, Compare > rhs)
+	{
+		AVL< Key, Value, Compare > newDic;
+
+		for (typename AVL< Key, Value, Compare >::constIterator it = lhs.constBegin(); !newDic.isEmpty(it); it++)
+		{
+			if (newDic.isEmpty(rhs.constFind(it->first)))
+			{
+				newDic.insert(*it);
+			}
+		}
+		for (typename AVL< Key, Value, Compare >::constIterator it = rhs.constBegin(); !newDic.isEmpty(it); it++)
+		{
+			if (newDic.isEmpty(lhs.constFind(it->first)))
+			{
+				newDic.insert(*it);
+			}
+		}
+
+		return newDic;
 	}
 
 }
