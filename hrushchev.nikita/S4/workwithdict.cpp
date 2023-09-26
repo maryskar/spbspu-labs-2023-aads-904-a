@@ -22,6 +22,7 @@ void hrushchev::Commands::runCommand(std::istream& in, std::ostream& out, main_d
       std::string dict_name = "";
       in >> dict_name;
       func(dict_name, dict_of_dict, out);
+      out << "\n";
       continue;
     }
     catch(...)
