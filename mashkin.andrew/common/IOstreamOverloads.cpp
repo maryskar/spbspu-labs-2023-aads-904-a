@@ -2,17 +2,30 @@
 #include <iostream>
 #include <iterator>
 #include <string>
+#include <limits>
 #include "AVL/AVL.h"
 #include "dictionary.h"
 
 namespace mashkin
 {
+  constexpr long maxInt = std::numeric_limits< int >::max();
+  constexpr long minInt = std::numeric_limits< int >::min();
+
   template< class T >
   std::istream& insertPairInDict(std::istream& inp, T& dict)
   {
-    int key = 0;
     std::string value;
-    inp >> key;
+    long var;
+    inp >> var;
+    if (var > maxInt)
+    {
+      throw std::overflow_error("Overflow of int");
+    }
+    else if (var < minInt)
+    {
+      throw std::underflow_error("Underflow of int");
+    }
+    int key = static_cast< int >(var);
     if (!inp)
     {
       return inp;
