@@ -410,7 +410,14 @@ namespace dmitriev
 		{
 			return iterator();
 		}
-
+		constIterator constBegin() const
+		{
+			return iterator(min());
+		}
+		constIterator constEnd() const
+		{
+			return iterator();
+		}
 
 		void clear()
 		{
