@@ -67,5 +67,59 @@ namespace aksenov
   {
     fake_->next = tail_;
   }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::beforeBegin() noexcept
+{
+  return iterator(fake_);
+}
+
+template< typename T >
+typename ForwardList< T >::constIterator ForwardList< T >::beforeBegin() const noexcept
+{
+return cbeforeBegin();
+}
+
+template< typename T >
+typename ForwardList< T >::constIterator ForwardList< T >::cbeforeBegin() const noexcept
+{
+return constIterator(fake_);
+}
+
+template< typename T >
+typename ForwardList< T >::iterator ForwardList< T >::begin() noexcept
+{
+return iterator(fake_->next);
+}
+
+template< typename T >
+typename ForwardList< T >::constIterator ForwardList< T >::begin() const noexcept
+{
+return cbegin();
+}
+
+template< typename T >
+typename ForwardList< T >::constIterator ForwardList< T >::cbegin() const noexcept
+{
+return constIterator(fake_->next);
+}
+
+template< typename T >
+typename ForwardList< T >::iterator ForwardList< T >::end() noexcept
+{
+return iterator(tail_);
+}
+
+template< typename T >
+typename ForwardList< T >::constIterator ForwardList< T >::end() const noexcept
+{
+return cend();
+}
+
+template< typename T >
+typename ForwardList< T >::constIterator ForwardList< T >::cend() const noexcept
+{
+return constIterator(tail_);
+}
 }
 #endif
