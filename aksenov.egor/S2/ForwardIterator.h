@@ -1,5 +1,8 @@
 #ifndef FORWARDITERATOR_H
 #define FORWARDITERATOR_H
+#include <cassert>
+#include <memory>
+#include "List.h"
 namespace aksenov
 {
   template< typename T >
