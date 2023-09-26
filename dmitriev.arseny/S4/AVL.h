@@ -426,6 +426,14 @@ namespace dmitriev
 		{
 			return reverseIterator();
 		}
+		reverseConstIterator reverseConstBegin() const
+		{
+			return reverseConstIterator(max());
+		}
+		reverseConstIterator reverseConstEnd() const
+		{
+			return reverseConstIterator();
+		}
 
 		void clear()
 		{
