@@ -268,5 +268,43 @@ namespace aksenov
     }
     return iterator(pos.node_);
   }
+
+  template < typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::eraseAfter(constIterator pos)
+  {
+    if (!pos.node_ || !pos.node_->next)
+    {
+      throw std::logic_error("Invalid position");
+    }
+    constIterator nextNode = pos.node_->next;
+    if (nextNode.node_ == tail_)
+    {
+      tail_ = pos.node_;
+    }
+    pos.node_->next = nextNode.node_->next;
+    delete nextNode.node_;
+    return iterator(pos.node_->next);
+  }
+
+  template < typename T >
+  typename ForwardList< T >::iterator aksenov::ForwardList< T >::eraseAfter(constIterator first, constIterator last)
+  {
+    if (!first.node_ || first.node_ == last.node_ || !last.node_)
+    {
+      throw std::logic_error("Invalid range to erase.");
+    }
+    constIterator current = first;
+    while (current.node_->next_ != last.node_)
+    {
+      constIterator nextNode = current.node_->next_;
+      current.node_->next_ = nextNode.node_->next_;
+      delete nextNode.node_;
+    }
+    if (last.node_->next_ == tail_)
+    {
+      tail_ = first.node_;
+    }
+    return iterator(last.node_->next_);
+  }
 }
 #endif
