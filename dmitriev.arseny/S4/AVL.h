@@ -402,7 +402,14 @@ namespace dmitriev
 			clear();
 		}
 
-
+		void insert(const dataPair& keyValue)
+		{
+			m_root = insertUtil(m_root, keyValue);
+		}
+		void insert(dataPair&& keyValue)
+		{
+			insert(keyValue);
+		}
 
 		iterator begin()
 		{
@@ -437,19 +444,16 @@ namespace dmitriev
 			return reverseConstIterator();
 		}
 
-		void insert(const dataPair& keyValue)
-		{
-			m_root = insertUtil(m_root, keyValue);
-		}
-		void insert(dataPair&& keyValue)
-		{
-			insert(keyValue);
-		}
+
 
 		void clear()
 		{
 			dmitriev::clear(m_root);
 			m_root = nullptr;
+		}
+		void swap(AVL& other)
+		{
+			std::swap(m_root, other.m_root);
 		}
 		bool isEmpty(constIterator it) const noexcept
 		{
