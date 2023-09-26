@@ -378,6 +378,30 @@ namespace dmitriev
 	public:
 		using dataPair = std::pair< Key, Value >;
 		using tree = Tree< dataPair >;
+		using iterator = BidirectionalIterator< Key, Value, Compare >;
+		using constIterator = ConstBidirectionalIterator< Key, Value, Compare >;
+		using reverseIterator = ReverseBidirectionalIterator< Key, Value, Compare >;
+		using reverseConstIterator = ConstReverseBidirectionalIterator< Key, Value, Compare >;
+
+		AVL():
+			m_root(nullptr),
+			m_cmp()
+		{}
+		AVL(const AVL& other):
+			m_root(copy(other.m_root)),
+			m_cmp()
+		{}
+		AVL(AVL&& other) noexcept:
+			m_root(other.m_root),
+			m_cmp(other.m_cmp)
+		{
+			other.m_root = nullptr;
+		}
+		~AVL()
+		{
+			clear();
+		}
+
 
 
 	private:
