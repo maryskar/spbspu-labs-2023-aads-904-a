@@ -27,6 +27,12 @@ namespace turkin
       Dictionary & operator=(const dict & rhs);
       Dictionary & operator=(dict && rhs);
       ~Dictionary() = default;
+
+      dict_t & front();
+      const dict_t & front() const;
+      void push_front(const dict_t & value);
+      void pop_front();
+
       it before_begin() noexcept;
       cit before_begin() const noexcept;
       cit cbefore_begin() const noexcept;
