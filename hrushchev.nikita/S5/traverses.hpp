@@ -6,11 +6,25 @@
 namespace hrushchev
 { 
   template< typename F >
-  void doAscending(AVLTree< size_t, std::string >& tree, F f);
+  F doAscending(const AVLTree< long long, std::string >& tree, F f)
+  {
+    f = tree.traverse_lnr(f);
+    return f;
+  }
+
   template< typename F >
-  void doDescending(AVLTree< size_t, std::string >& tree, F f);
+  F doDescending(const AVLTree< long long, std::string >& tree, F f)
+  {
+    f = tree.traverse_rnl(f);
+    return f;
+  }
+
   template< typename F >
-  void doBreadth(AVLTree< size_t, std::string >& tree, F f);
+  F doBreadth(const AVLTree< long long, std::string >& tree, F f)
+  {
+    f = tree.traverse_breadth(f);
+    return f;
+  }
 }
 
 #endif

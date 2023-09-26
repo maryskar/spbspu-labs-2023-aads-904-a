@@ -6,6 +6,7 @@
 #include "inputtree.hpp"
 #include "keysummator.hpp"
 #include "stringcreator.hpp"
+#include "traverses.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -46,7 +47,7 @@ int main(int argc, char* argv[])
     hrushchev::StringCreator creator;
     if ((traverse == "ascending"))
     {
-      creator = avlTree.traverse_lnr(creator);
+      creator = hrushchev::doAscending(avlTree, creator);
       std::cout << creator.result_ << "\n";
     }
     if ((traverse == "descending"))
