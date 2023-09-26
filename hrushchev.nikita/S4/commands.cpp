@@ -1,10 +1,7 @@
 #include "commands.hpp"
 #include <string>
 #include <ostream>
-#include <dictionary.hpp>
-
-using dict_t = hrushchev::Dictionary< size_t, std::string >;
-using main_dict = hrushchev::Dictionary< std::string, dict_t >;
+#include "avltree.hpp"
 
 void hrushchev::printDict(std::string name, main_dict& dict_of_dict, std::ostream& out)
 {
@@ -43,7 +40,7 @@ void hrushchev::complementDict(std::string name, std::string first, std::string 
       }
       catch (...)
       {
-        temp.insert(*i);
+        temp.insert(i->first, i->second);
       }
     }
     for (auto i = second_dict.begin(); i != second_dict.end(); i++)
@@ -54,10 +51,10 @@ void hrushchev::complementDict(std::string name, std::string first, std::string 
       }
       catch (...)
       {
-        temp.insert(*i);
+        temp.insert(i->first, i->second);
       }
     }
-    dict_of_dict.push(name, temp);
+    dict_of_dict.insert(name, temp);
   }
   catch(...)
   {
@@ -77,13 +74,13 @@ void hrushchev::intersectDict(std::string name, std::string first, std::string s
       try
       {
         second_dict.at(i->first);
-        temp.insert(*i);
+        temp.insert(i->first, i->second);
       }
       catch (...)
       {
       }
     }
-    dict_of_dict.push(name, temp);
+    dict_of_dict.insert(name, temp);
   }
   catch (...)
   {
@@ -100,13 +97,13 @@ void hrushchev::unionDict(std::string name, std::string first, std::string secon
     dict_t second_dict = dict_of_dict.at(second);
     for (auto i = second_dict.begin(); i != second_dict.end(); i++)
     {
-      temp.insert(*i);
+      temp.insert(i->first, i->second);
     }
     for (auto i = first_dict .begin(); i != first_dict.end(); i++)
     {
-      temp.insert(*i);
+      temp.insert(i->first, i->second);
     }
-    dict_of_dict.push(name, temp);
+    dict_of_dict.insert(name, temp);
   }
   catch (...)
   {
