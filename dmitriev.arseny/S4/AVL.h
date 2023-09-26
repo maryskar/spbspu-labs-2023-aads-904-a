@@ -23,18 +23,102 @@ namespace dmitriev
 		using tree = typename AVL< Key, Value, Compare >::tree;
 		using constIterator = ConstBidirectionalIterator< Key, Value, Compare >;
 
-		BidirectionalIterator();
-		explicit BidirectionalIterator(tree* other);
-		BidirectionalIterator& operator++();
-		BidirectionalIterator operator++(int);
-		BidirectionalIterator& operator--();
-		BidirectionalIterator operator--(int);
+		BidirectionalIterator() noexcept:
+			m_ptr(nullptr)
+		{}
+		explicit BidirectionalIterator(tree* other) noexcept:
+			m_ptr(other)
+		{}
 
-		bool operator==(const BidirectionalIterator& other) const;
-		bool operator!=(const BidirectionalIterator& other) const;
+		BidirectionalIterator& operator++() noexcept
+		{
+			if (isEmpty(m_ptr))
+			{
+				return *this;
+			}
 
-		T& operator*();
-		T* operator->();
+			if (!isEmpty(m_ptr->right))
+			{
+				m_ptr = m_ptr->right;
+				while (!isEmpty(m_ptr->left))
+				{
+					m_ptr = m_ptr->left;
+				}
+			}
+			else
+			{
+				tree* parent = m_ptr->parent;
+				while (!isEmpty(parent) && (m_ptr == parent->right))
+				{
+					m_ptr = parent;
+					parent = parent->parent;
+				}
+				m_ptr = parent;
+			}
+
+			return *this;
+		}
+		BidirectionalIterator operator++(int) noexcept
+		{
+			BidirectionalIterator prev(m_ptr);
+			++(*this);
+
+			return prev;
+		}
+		BidirectionalIterator& operator--() noexcept
+		{
+			if (isEmpty(m_ptr))
+			{
+				return *this;
+			}
+
+			if (!isEmpty(m_ptr->left))
+			{
+				m_ptr = m_ptr->left;
+				while (!isEmpty(m_ptr->right))
+				{
+					m_ptr = m_ptr->right;
+				}
+			}
+			else
+			{
+				tree* parent = m_ptr->parent;
+				while (!isEmpty(parent) && m_ptr == parent->left)
+				{
+					m_ptr = parent;
+					parent = parent->parent;
+				}
+
+				m_ptr = parent;
+			}
+
+			return *this;
+		}
+		BidirectionalIterator operator--(int) noexcept
+		{
+			BidirectionalIterator prev(m_ptr);
+			--(*this);
+
+			return prev;
+		}
+
+		bool operator==(const BidirectionalIterator& other) const noexcept
+		{
+			return (m_ptr == other.m_ptr);
+		}
+		bool operator!=(const BidirectionalIterator& other) const noexcept
+		{
+			return !(*this == other);
+		}
+
+		T& operator*()
+		{
+			return m_ptr->data;
+		}
+		T* operator->()
+		{
+			return std::addressof(m_ptr->data);
+		}
 
 	private:
 		tree* m_ptr;
