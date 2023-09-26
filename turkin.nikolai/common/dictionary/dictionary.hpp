@@ -342,7 +342,7 @@ std::pair< FLIterator< std::pair< K, V > >, FLIterator< std::pair< K, V > > > Di
 }
 
 template< typename K, typename V, typename C >
-std::pair< FLConstIterator< std::pair< K, V > >, FLConstIterator< std::pair< K, V > > > Dictionary< K, V, C >::equal_range(const K & k) const
+std::pair<FLConstIterator<std::pair<K, V>>, FLConstIterator<std::pair<K, V>>> Dictionary<K, V, C>::equal_range(const K & k) const
 {
   return std::make_pair(lower_bound(k), upper_bound(k));
 }
