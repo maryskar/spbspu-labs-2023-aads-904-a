@@ -34,5 +34,22 @@ namespace aksenov
   ForwardIterator< T >::ForwardIterator():
           node_(nullptr)
   {}
+
+  template< typename T >
+  ForwardIterator< T > &ForwardIterator< T >::operator++()
+  {
+    assert(node_ != nullptr);
+    node_ = node_->next;
+    return *this;
+  }
+
+  template< typename T >
+  ForwardIterator< T > &ForwardIterator< T >::operator++(int)
+  {
+    assert(node_);
+    ForwardIterator< T > temp(*this);
+    ++(*this);
+    return temp;
+  }
 }
 #endif
