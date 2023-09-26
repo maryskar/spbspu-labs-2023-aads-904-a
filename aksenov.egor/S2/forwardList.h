@@ -101,6 +101,26 @@ namespace aksenov
   }
 
   template< typename T >
+  ForwardList< T >::ForwardList(ForwardList< T > &&val) noexcept:
+          fake_(val.fake_),
+          tail_(val.tail_)
+  {
+    val.fake_ = nullptr;
+    val.fake_ = nullptr;
+  }
+
+  template< typename T >
+  ForwardList< T > &ForwardList< T >::operator=(const ForwardList< T > &val)
+  {
+    if (this != std::addressof(val))
+    {
+      ForwardList< T > temp(val);
+      swap(temp);
+    }
+    return *this;
+  }
+
+  template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::beforeBegin() noexcept
   {
     return iterator(fake_);
@@ -173,14 +193,7 @@ namespace aksenov
     std::swap(this->tail_, val.tail_);
   }
 
-  template< typename T >
-  ForwardList< T >::ForwardList(ForwardList< T > &&val) noexcept:
-    fake_(val.fake_),
-    tail_(val.tail_)
-  {
-    val.fake_ = nullptr;
-    val.fake_ = nullptr;
-  }
+
 
   template< typename T >
   ForwardList< T > &ForwardList< T >::operator=(ForwardList< T > &&val) noexcept
