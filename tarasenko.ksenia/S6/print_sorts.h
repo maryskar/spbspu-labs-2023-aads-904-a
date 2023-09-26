@@ -21,16 +21,11 @@ namespace tarasenko
     std::list< value_t > bidir_list_1(first, last);
     std::deque< value_t > deque_1(first, last);
 
-    tarasenko::shakerSort(bidir_list_1.begin(), bidir_list_1.end(), comp);
-    tarasenko::print(bidir_list_1.begin(), bidir_list_1.end(), out) << "\n";
     tarasenko::shakerSort(deque_1.begin(), deque_1.end(), comp);
     tarasenko::print(deque_1.begin(), deque_1.end(), out) << "\n";
 
-    tarasenko::ForwardList< value_t > forw_list_2(first, last);
     std::list< value_t > bidir_list_2(first, last);
     std::deque< value_t > deque_2(first, last);
-    tarasenko::quickSort(forw_list_2.begin(), forw_list_2.end(), comp);
-    tarasenko::print(forw_list_2.begin(), forw_list_2.end(), out) << "\n";
     tarasenko::quickSort(bidir_list_2.begin(), bidir_list_2.end(), comp);
     tarasenko::print(bidir_list_2.begin(), bidir_list_2.end(), out) << "\n";
     tarasenko::quickSort(deque_2.begin(), deque_2.end(), comp);
