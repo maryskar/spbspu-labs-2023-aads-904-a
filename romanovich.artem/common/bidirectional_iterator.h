@@ -103,7 +103,8 @@ namespace romanovich
       {
         prev = node_;
         node_ = node_->parent;
-      } while (node_ && node_->left == prev);
+      }
+      while (node_ && node_->left == prev);
     }
     if (!node_)
     {
@@ -154,7 +155,8 @@ namespace romanovich
       {
         prev = node_;
         node_ = node_->parent;
-      } while (node_ && node_->right == prev);
+      }
+      while (node_ && node_->right == prev);
     }
     if (node_ == nullptr)
     {

@@ -281,7 +281,7 @@ namespace romanovich
   template< typename Key, typename Value, typename Compare >
   template< typename P >
   BidirectionalIterator< Key, Value, Compare > RotatableBinarySearchTree< Key, Value, Compare >::insert(const_iterator pos,
-                                                                                                            P &&data)
+      P &&data)
   {
     return bst_.insert(pos, data);
   }
