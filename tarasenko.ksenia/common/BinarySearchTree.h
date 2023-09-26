@@ -1,7 +1,9 @@
-#ifndef S4_BINARYSEARCHTREE_H
-#define S4_BINARYSEARCHTREE_H
+#ifndef BINARYSEARCHTREE_H
+#define BINARYSEARCHTREE_H
 
 #include <utility>
+#include <stack.h>
+#include <queue.h>
 #include "Tree.h"
 #include "bidirect_iter.h"
 #include "const_bidirect_iter.h"
@@ -137,6 +139,18 @@ namespace tarasenko
    iterator upper_bound(const T& data);
    const_iterator upper_bound(const T& data) const;
    Compare value_comp() const;
+   template< typename F >
+   F traverse_lnr(F f);
+   template< typename F >
+   F traverse_lnr(F f) const;
+   template< typename F >
+   F traverse_rnl(F f);
+   template< typename F >
+   F traverse_rnl(F f) const;
+   template< typename F >
+   F traverse_breadth(F f);
+   template< typename F >
+   F traverse_breadth(F f) const;
 
   private:
    root_t* fake_;
@@ -734,6 +748,107 @@ namespace tarasenko
   bool operator!=(const BinarySearchTree< T, Compare >& lhs, const BinarySearchTree< T, Compare >& rhs)
   {
     return !(lhs == rhs);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F BinarySearchTree< T, Compare >::traverse_lnr(F f)
+  {
+    return static_cast< const BSTree& >(*this).traverse_lnr(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F BinarySearchTree< T, Compare >::traverse_lnr(F f) const
+  {
+    if (root_)
+    {
+      Stack< root_t* > s;
+      root_t* curr = root_;
+      while (curr != fake_ || !s.isEmpty())
+      {
+        if (curr != fake_)
+        {
+          s.push(curr);
+          curr = curr->left_;
+        }
+        else
+        {
+          curr = s.getTopElem();
+          s.pop();
+          f(curr->data_);
+          curr = curr->right_;
+        }
+      }
+    }
+    return f;
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F BinarySearchTree< T, Compare >::traverse_rnl(F f)
+  {
+    return static_cast< const BSTree& >(*this).traverse_rnl(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F BinarySearchTree< T, Compare >::traverse_rnl(F f) const
+  {
+    if (root_)
+    {
+      Stack< root_t* > s;
+      root_t* curr = root_;
+      while (curr != fake_ || !s.isEmpty())
+      {
+        if (curr != fake_)
+        {
+          s.push(curr);
+          curr = curr->right_;
+        }
+        else
+        {
+          curr = s.getTopElem();
+          s.pop();
+          f(curr->data_);
+          curr = curr->left_;
+        }
+      }
+    }
+    return f;
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F BinarySearchTree< T, Compare >::traverse_breadth(F f)
+  {
+    return static_cast< const BSTree& >(*this).traverse_breadth(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F BinarySearchTree< T, Compare >::traverse_breadth(F f) const
+  {
+    Queue< root_t* > q;
+    if (root_)
+    {
+      q.push(root_);
+    }
+    while (!q.isEmpty())
+    {
+      root_t* curr = q.getHeadElem();
+      q.popFront();
+      f(curr->data_);
+      if (curr->left_ != fake_)
+      {
+        q.push(curr->left_);
+      }
+      if (curr->right_ != fake_)
+      {
+        q.push(curr->right_);
+      }
+    }
+    return f;
   }
 }
 #endif

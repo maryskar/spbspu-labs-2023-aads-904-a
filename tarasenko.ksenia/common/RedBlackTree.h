@@ -1,10 +1,10 @@
-#ifndef S4_RBTREE_H
-#define S4_RBTREE_H
+#ifndef RBTREE_H
+#define RBTREE_H
 
 #include "Tree.h"
+#include "BinarySearchTree.h"
 #include "bidirect_iter.h"
 #include "const_bidirect_iter.h"
-#include "BinarySearchTree.h"
 
 namespace tarasenko
 {
@@ -117,6 +117,18 @@ namespace tarasenko
    const_iterator upper_bound(const T& data) const;
    Compare value_comp() const;
    bool isEqualTo(const RBTree& other) const;
+   template< typename F >
+   F traverse_lnr(F f);
+   template< typename F >
+   F traverse_lnr(F f) const;
+   template< typename F >
+   F traverse_rnl(F f);
+   template< typename F >
+   F traverse_rnl(F f) const;
+   template< typename F >
+   F traverse_breadth(F f);
+   template< typename F >
+   F traverse_breadth(F f) const;
 
   private:
    BSTree root_;
@@ -574,6 +586,48 @@ namespace tarasenko
   bool operator!=(const RedBlackTree< T, Compare >& lhs, const RedBlackTree< T, Compare >& rhs)
   {
     return !(lhs == rhs);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F RedBlackTree< T, Compare >::traverse_lnr(F f)
+  {
+    return root_.traverse_lnr(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F RedBlackTree< T, Compare >::traverse_lnr(F f) const
+  {
+    return root_.traverse_lnr(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F RedBlackTree< T, Compare >::traverse_rnl(F f)
+  {
+    return root_.traverse_rnl(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F RedBlackTree< T, Compare >::traverse_rnl(F f) const
+  {
+    return root_.traverse_rnl(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F RedBlackTree< T, Compare >::traverse_breadth(F f)
+  {
+    return root_.traverse_breadth(f);
+  }
+
+  template< typename T, typename Compare >
+  template< typename F >
+  F RedBlackTree< T, Compare >::traverse_breadth(F f) const
+  {
+    return root_.traverse_breadth(f);
   }
 }
 #endif

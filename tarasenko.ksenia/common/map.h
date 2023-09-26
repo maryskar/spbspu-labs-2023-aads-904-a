@@ -1,5 +1,5 @@
-#ifndef S4_MAP_H
-#define S4_MAP_H
+#ifndef MAP_H
+#define MAP_H
 
 #include <utility>
 #include "RedBlackTree.h"
@@ -15,7 +15,6 @@ namespace tarasenko
      pair_compare():
        compare_()
      {}
-
      bool operator()(const std::pair< Key, Value >& lhs, const std::pair< Key, Value >& rhs) const
      {
        return compare_(lhs.first, rhs.first);
@@ -249,7 +248,7 @@ namespace tarasenko
   std::pair< typename Map< Key, Value, Compare >::iterator, bool >
     Map< Key, Value, Compare >::insert(std::pair< Key, Value >&& value)
   {
-    const value_type val(std::forward< value_type >(value));
+    const value_type val(std::forward< value_type > (value));
     return insert(val);
   }
 
