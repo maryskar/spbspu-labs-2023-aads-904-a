@@ -12,10 +12,9 @@ hrushchev::Commands::Commands()
 
 void hrushchev::Commands::runCommand(std::istream& in, std::ostream& out, main_dict& dict_of_dict)
 {
-  while (in)
+  std::string command = "";
+  while (in >> command)
   {
-    std::string command;
-    in >> command;
     try
     {
       auto func = dict1_.at(command);
