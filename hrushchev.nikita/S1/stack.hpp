@@ -1,7 +1,7 @@
 #ifndef STACK_HPP
 #define STACK_HPP
 #include <stdexcept>
-#include "list.hpp"
+#include <list.hpp>
 
 namespace hrushchev
 {
@@ -49,7 +49,7 @@ namespace hrushchev
     {
       throw std::logic_error("Empty stack");
     }
-    return top_->data;
+    return top_->data_;
   }
 
   template< typename T >
@@ -59,7 +59,7 @@ namespace hrushchev
     {
       throw std::logic_error("Empty stack");
     }
-    details::List< T >* temp = top_->next;
+    details::List< T >* temp = top_->next_;
     delete top_;
     top_ = temp;
   }
@@ -80,7 +80,7 @@ namespace hrushchev
       while (other_value != nullptr)
       {
         push(other_value->data_);
-        other_value = other_value->next;
+        other_value = other_value->next_;
       }
     }
     catch (...)
