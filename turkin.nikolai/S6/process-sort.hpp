@@ -21,10 +21,6 @@ namespace turkin
   void process(std::size_t amount, std::ostream & out)
   {
     std::deque< T > deque = fill< std::deque< T >, T >(amount);
-<<<<<<< HEAD
-    std::list< T > list = fill< std::list< T >, T >(amount);
-    ForwardList< T > forward_list = fill< ForwardList< T >, T >(amount);
-=======
     std::list< T > list;
     ForwardList< T > forward_list;
     for (auto it: deque)
@@ -32,7 +28,6 @@ namespace turkin
       list.push_front(it);
       forward_list.push_front(it);
     }
->>>>>>> master
 
     UnaryPred p;
 
@@ -43,11 +38,8 @@ namespace turkin
     out_storage(list.begin(), list.end(), out) << "\n";
     shell_sort(list.begin(), list.end(), p);
     out_storage(list.begin(), list.end(), out) << "\n";
-<<<<<<< HEAD
-=======
     merge_sort(list.begin(), list.size(), p);
     out_storage(list.begin(), list.end(), out) << "\n";
->>>>>>> master
 
     quick_sort(deque.begin(), deque.end(), p);
     out_storage(deque.begin(), deque.end(), out) << "\n";
