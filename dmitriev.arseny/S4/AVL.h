@@ -458,6 +458,15 @@ namespace dmitriev
 		tree* m_root;
 		Compare m_cmp;
 
+
+		int balanceFactor(const tree* node) const noexcept
+		{
+			if (isEmpty(node))
+			{
+				return 0;
+			}
+			return height(node->left) - height(node->right);
+		}
 		int height(const tree* node) const noexcept
 		{
 			if (isEmpty(node))
