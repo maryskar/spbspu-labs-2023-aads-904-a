@@ -133,6 +133,7 @@ Dictionary< K, V, C > & Dictionary< K, V, C >::operator=(dict && rhs)
 }
 
 template< typename K, typename V, typename C >
+<<<<<<< HEAD
 std::pair< K, V > & Dictionary< K, V, C >::front()
 {
   return fl_.front();
@@ -157,6 +158,8 @@ void Dictionary< K, V, C >::pop_front()
 }
 
 template< typename K, typename V, typename C >
+=======
+>>>>>>> master
 FLIterator< std::pair< K, V > > Dictionary< K, V, C >::before_begin() noexcept
 {
   return fl_.before_begin();
@@ -372,11 +375,14 @@ std::pair< FLIterator< std::pair< K, V > >, FLIterator< std::pair< K, V > > > Di
 }
 
 template< typename K, typename V, typename C >
+<<<<<<< HEAD
 std::pair< FLConstIterator< std::pair< K, V > >, FLConstIterator< std::pair< K, V > > > Dictionary< K, V, C >::equal_range(const K & k) const
+=======
+std::pair<FLConstIterator<std::pair<K, V>>, FLConstIterator<std::pair<K, V>>> Dictionary<K, V, C>::equal_range(const K & k) const
+>>>>>>> master
 {
   return std::make_pair(lower_bound(k), upper_bound(k));
 }
-
 
 template< typename K, typename V, typename C >
 std::size_t Dictionary< K, V, C >::count(const K & k) const
