@@ -1,13 +1,17 @@
-#include <cstddef>
 #include <fstream>
 #include <iostream>
 #include <limits>
-#include <IOstreamOverloads.h>
+#include <map>
+#include <string>
+#include <utility>
+#include <AVL.h>
+#include <AVLIterator.h>
+#include <AVLReverseIter.h>
+#include <ConstAVLIterator.h>
+#include <ConstAVLReverseIter.h>
 #include <DictWithCommands.h>
-#include <ForwardConstIterator.h>
-#include <ForwardIterator.h>
-#include <dictionary.h>
-#include <forwardList.h>
+#include <IOstreamOverloads.h>
+#include <tree.h>
 
 int main(int argc, char** argv)
 {
@@ -25,8 +29,8 @@ int main(int argc, char** argv)
       std::cerr << "Can't open file\n";
       return 1;
     }
-    using dict = mashkin::Dictionary< int, std::string >;
-    using dictionaries = mashkin::Dictionary< std::string, dict >;
+    using dict = mashkin::AVL< int, std::string >;
+    using dictionaries = mashkin::AVL< std::string, dict >;
     constexpr auto maxSize = std::numeric_limits< std::streamsize >::max();
     dictionaries dicts;
     while (!input.eof())
@@ -37,7 +41,7 @@ int main(int argc, char** argv)
       }
       input >> dicts;
     }
-    using Commands = mashkin::Dictionary< std::string, void (*)(std::istream&, dictionaries&) >;
+    using Commands = mashkin::AVL< std::string, void (*)(std::istream&, dictionaries&) >;
     Commands commands;
     commands = mashkin::createDictWithCommnads< Commands >();
     std::string command;
