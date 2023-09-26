@@ -21,8 +21,8 @@ namespace turkin
         break;
       }
       StorageC data;
-      std::size_t key = 0;
-      std::string value;
+      long long key = 0;
+      std::string value = "";
       while (input)
       {
         input >> key >> value;
@@ -35,6 +35,25 @@ namespace turkin
       input.clear();
       result.insert(name, data);
     }
+    return result;
+  }
+
+  template< class Storage >
+  Storage genDict(std::istream & input)
+  {
+    Storage result;
+    long long key = 0;
+    std::string value = "";
+    while (input)
+    {
+      input >> key >> value;
+      if (!input)
+      {
+        break;
+      }
+      result.insert(key, value);
+    }
+    input.clear();
     return result;
   }
 }
