@@ -123,7 +123,14 @@ namespace dmitriev
 	private:
 		tree* m_ptr;
 
-	}
+		BidirectionalIterator(const constIterator& other):
+			m_ptr(const_cast<tree*>(other.m_ptr))
+		{}
+		BidirectionalIterator(constIterator&& other):
+			m_ptr(const_cast<tree*>(other.m_ptr))
+		{}
+	};
+
 
 	template< typename Key, typename Value, typename Compare >
 	class ConstBidirectionalIterator: public std::iterator< std::bidirectional_iterator_tag, const std::pair< Key, Value > >
