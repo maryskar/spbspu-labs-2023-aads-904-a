@@ -85,7 +85,21 @@ namespace mashkin
 
     bool contains(const Key& key) const;
 
+    template< class F >
+    F traverse_lnr(F& f) const;
+    template< class F >
+    F traverse_rnl(F& f) const;
+    template< class F >
+    F traverse_breadth(F& f) const;
+
   private:
+    template< class F >
+    F traverse_breadth_impl(tree* root, size_t height, F& f) const;
+    template< class F >
+    F traverse_rnl_impl(tree* root, F& f) const;
+    template< class F >
+    F traverse_lnr_impl(tree* root, F& f) const;
+
     void balance(tree* node);
 
     size_t size_impl(tree* head, size_t size_) const noexcept;
