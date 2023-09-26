@@ -840,6 +840,44 @@ namespace dmitriev
 		return newDic;
 	}
 
+	template< typename Key, typename Value, typename Compare = std::less< > >
+	AVL< Key, Value, Compare > intersectDictionary(const AVL< Key, Value, Compare >& lhs,
+		const AVL< Key, Value, Compare > rhs)
+	{
+		AVL< Key, Value, Compare > newDic;
+
+		for (typename AVL< Key, Value, Compare >::constIterator it = lhs.constBegin(); !newDic.isEmpty(it); it++)
+		{
+			if (!newDic.isEmpty(rhs.constFind(it->first)))
+			{
+				newDic.insert(*it);
+			}
+		}
+
+		return newDic;
+	}
+
+	template< typename Key, typename Value, typename Compare = std::less< > >
+	AVL< Key, Value, Compare > unionDictionary(const AVL< Key, Value, Compare >& lhs,
+		const Dictionary< Key, Value, Compare > rhs)
+	{
+		AVL< Key, Value, Compare > newDic;
+
+		for (typename AVL< Key, Value, Compare >::constIterator it = lhs.constBegin(); !newDic.isEmpty(it); it++)
+		{
+			newDic.insert(*it);
+		}
+		for (typename AVL< Key, Value, Compare >::constIterator it = rhs.constBegin(); !newDic.isEmpty(it); it++)
+		{
+			if (newDic.isEmpty(lhs.constFind(it->first)))
+			{
+				newDic.insert(*it);
+			}
+		}
+
+		return newDic;
+	}
+
 }
 
 #endif
