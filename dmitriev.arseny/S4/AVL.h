@@ -402,6 +402,8 @@ namespace dmitriev
 			clear();
 		}
 
+
+
 		iterator begin()
 		{
 			return iterator(min());
@@ -433,6 +435,15 @@ namespace dmitriev
 		reverseConstIterator reverseConstEnd() const
 		{
 			return reverseConstIterator();
+		}
+
+		void insert(const dataPair& keyValue)
+		{
+			m_root = insertUtil(m_root, keyValue);
+		}
+		void insert(dataPair&& keyValue)
+		{
+			insert(keyValue);
 		}
 
 		void clear()
