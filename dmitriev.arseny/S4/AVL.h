@@ -446,6 +446,82 @@ namespace dmitriev
 			insert(initList.begin(), initList.end());
 		}
 
+		Value& at(const Key& key)
+		{
+			iterator it = find(key);
+			if (isEmpty(it))
+			{
+				throw std::out_of_range("no reseults with such key");
+			}
+
+			return it->second;
+		}
+		const Value& at(const Key& key) const
+		{
+			constIterator it = constFind(key);
+			if (isEmpty(it))
+			{
+				throw std::out_of_range("no reseults with such key");
+			}
+
+			return it->second;
+		}
+
+		iterator lowerBound(const Key& key)
+		{
+			iterator res = begin();
+
+			for (; !isEmpty(res.m_ptr) && m_cmp(res->first, key); res++)
+			{}
+
+			return res;
+		}
+		iterator upperBound(const Key& key)
+		{
+			iterator res = begin();
+
+			for (; !isEmpty(res.m_ptr) && !m_cmp(key, res->first); res++)
+			{}
+
+			return res;
+		}
+		constIterator constLowerBound(const Key& key) const
+		{
+			constIterator res = constBegin();
+
+			for (; !isEmpty(res.m_ptr) && m_cmp(res->first, key); res++)
+			{}
+
+			return res;
+		}
+		constIterator constUpperBound(const Key& key) const
+		{
+			constIterator res = constBegin();
+
+			for (; !isEmpty(res.m_ptr) && !m_cmp(key, res->first); res++)
+			{}
+
+			return res;
+		}
+
+		iterator find(const Key& key)
+		{
+			iterator res = begin();
+
+			for (; !isEmpty(res) && !isEqual(res->first, key); res++)
+			{}
+
+			return res;
+		}
+		constIterator constFind(const Key& key) const
+		{
+			constIterator res = constBegin();
+
+			for (; !isEmpty(res) && !isEqual(res->first, key); res++)
+			{}
+
+			return res;
+		}
 
 		iterator begin()
 		{
@@ -478,64 +554,6 @@ namespace dmitriev
 		reverseConstIterator reverseConstEnd() const
 		{
 			return reverseConstIterator();
-		}
-
-		iterator lowerBound(const Key& key)
-		{
-			iterator res = begin();
-
-			for (; !isEmpty(res.m_ptr) && m_cmp(res->first, key); res++)
-			{}
-
-			return res;
-		}
-		iterator upperBound(const Key& key)
-		{
-			iterator res = begin();
-
-			for (; !isEmpty(res.m_ptr) && !m_cmp(key, res->first); res++)
-			{}
-
-			return res;
-		}
-
-		constIterator constLowerBound(const Key& key) const
-		{
-			iterator res = begin();
-
-			for (; !isEmpty(res.m_ptr) && m_cmp(res->first, key); res++)
-			{}
-
-			return res;
-		}
-		constIterator constUpperBound(const Key& key) const
-		{
-			iterator res = begin();
-
-			for (; !isEmpty(res.m_ptr) && !m_cmp(key, res->first); res++)
-			{}
-
-			return res;
-		}
-
-
-		iterator find(const Key& key)
-		{
-			iterator res = begin();
-
-			for (; !isEmpty(res) && !isEqual(res->first, key); res++)
-			{}
-
-			return res;
-		}
-		constIterator constFind(const Key& key) const
-		{
-			constIterator res = constBegin();
-
-			for (; !isEmpty(res) && !isEqual(res->first, key); res++)
-			{}
-
-			return res;
 		}
 
 		void clear()
