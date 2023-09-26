@@ -1,5 +1,5 @@
-#ifndef CONST_ITERATOR_HPP
-#define CONST_ITERATOR_HPP
+#ifndef AVL_ITERATOR_HPP
+#define AVL_ITERATOR_HPP
 
 #include <utility>
 #include <cassert>
@@ -10,56 +10,45 @@ namespace turkin
   template< typename K, typename V, typename C >
   class AVLtree;
   template< typename K, typename V, typename C >
-  class Iterator;
-  template< typename K, typename V, typename C >
-  class ConstIterator
+  class AVLIterator
   {
     friend class AVLtree< K, V, C >;
-    friend class Iterator< K, V, C >;
-    using it = Iterator< K, V, C >;
-    using cit = ConstIterator< K, V, C >;
+    using it = AVLIterator< K, V, C >;
     using tree_t = std::pair< K, V >;
     using node_t = TreeNode< tree_t > *;
     public:
-      ConstIterator();
-      cit & operator=(const cit & rhs) = default;
-      ~ConstIterator() = default;
-      cit & operator++();
-      cit operator++(int);
-      cit & operator--();
-      cit operator--(int);
-      const tree_t & operator*() const;
-      const tree_t * operator->() const;
-      bool operator==(const cit & rhs) const;
-      bool operator!=(const cit & rhs) const;
+      AVLIterator();
+      it & operator=(const it & rhs) = default;
+      ~AVLIterator() = default;
+      it & operator++();
+      it operator++(int);
+      it & operator--();
+      it operator--(int);
+      tree_t & operator*();
+      tree_t * operator->();
+      bool operator==(const it & rhs) const;
+      bool operator!=(const it & rhs) const;
     private:
-      explicit ConstIterator(node_t rhs, node_t end);
-      explicit ConstIterator(const it & rhs);
+      explicit AVLIterator(node_t rhs, node_t end);
       node_t cur_;
       node_t end_;
   };
 }
 
 template< typename K, typename V, typename C >
-turkin::ConstIterator< K, V, C >::ConstIterator():
+turkin::AVLIterator< K, V, C >::AVLIterator():
   cur_(nullptr),
   end_(nullptr)
 {}
 
 template< typename K, typename V, typename C >
-turkin::ConstIterator< K, V, C >::ConstIterator(node_t rhs, node_t end):
+turkin::AVLIterator< K, V, C >::AVLIterator(node_t rhs, node_t end):
   cur_(rhs),
   end_(end)
 {}
 
 template< typename K, typename V, typename C >
-turkin::ConstIterator< K, V, C >::ConstIterator(const it & rhs):
-  cur_(rhs.cur_),
-  end_(rhs.end_)
-{}
-
-template< typename K, typename V, typename C >
-turkin::ConstIterator< K, V, C > & turkin::ConstIterator< K, V, C >::operator++()
+turkin::AVLIterator< K, V, C > & turkin::AVLIterator< K, V, C >::operator++()
 {
   assert(cur_ != nullptr);
   if (cur_->right != end_)
@@ -84,7 +73,7 @@ turkin::ConstIterator< K, V, C > & turkin::ConstIterator< K, V, C >::operator++(
 }
 
 template< typename K, typename V, typename C >
-turkin::ConstIterator< K, V, C > turkin::ConstIterator< K, V, C >::operator++(int)
+turkin::AVLIterator< K, V, C > turkin::AVLIterator< K, V, C >::operator++(int)
 {
   assert(cur_ != nullptr);
   auto result(*this);
@@ -93,7 +82,7 @@ turkin::ConstIterator< K, V, C > turkin::ConstIterator< K, V, C >::operator++(in
 }
 
 template< typename K, typename V, typename C >
-turkin::ConstIterator< K, V, C > & turkin::ConstIterator< K, V, C >::operator--()
+turkin::AVLIterator< K, V, C > & turkin::AVLIterator< K, V, C >::operator--()
 {
   assert(cur_ != nullptr);
   if (cur_->left != end_)
@@ -121,7 +110,7 @@ turkin::ConstIterator< K, V, C > & turkin::ConstIterator< K, V, C >::operator--(
 }
 
 template< typename K, typename V, typename C >
-turkin::ConstIterator< K, V, C > turkin::ConstIterator< K, V, C >::operator--(int)
+turkin::AVLIterator< K, V, C > turkin::AVLIterator< K, V, C >::operator--(int)
 {
   assert(cur_ != nullptr);
   auto result(*this);
@@ -130,27 +119,27 @@ turkin::ConstIterator< K, V, C > turkin::ConstIterator< K, V, C >::operator--(in
 }
 
 template< typename K, typename V, typename C >
-const std::pair< K, V > & turkin::ConstIterator< K, V, C >::operator*() const
+std::pair< K, V > & turkin::AVLIterator< K, V, C >::operator*()
 {
   assert(cur_ != nullptr);
   return cur_->data;
 }
 
 template< typename K, typename V, typename C >
-const std::pair< K, V > * turkin::ConstIterator< K, V, C >::operator->() const
+std::pair< K, V > * turkin::AVLIterator< K, V, C >::operator->()
 {
   assert(cur_ != nullptr);
   return std::addressof(cur_->data);
 }
 
 template< typename K, typename V, typename C >
-bool turkin::ConstIterator< K, V, C >::operator==(const ConstIterator< K, V, C > & rhs) const
+bool turkin::AVLIterator< K, V, C >::operator==(const AVLIterator< K, V, C > & rhs) const
 {
   return cur_ == rhs.cur_;
 }
 
 template< typename K, typename V, typename C >
-bool turkin::ConstIterator< K, V, C >::operator!=(const ConstIterator< K, V, C > & rhs) const
+bool turkin::AVLIterator< K, V, C >::operator!=(const AVLIterator< K, V, C > & rhs) const
 {
   return !(rhs == *this);
 }
