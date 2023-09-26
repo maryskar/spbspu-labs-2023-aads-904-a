@@ -499,6 +499,25 @@ namespace dmitriev
 			return res;
 		}
 
+		constIterator constLowerBound(const Key& key) const
+		{
+			iterator res = begin();
+
+			for (; !isEmpty(res.m_ptr) && m_cmp(res->first, key); res++)
+			{}
+
+			return res;
+		}
+		constIterator constUpperBound(const Key& key) const
+		{
+			iterator res = begin();
+
+			for (; !isEmpty(res.m_ptr) && !m_cmp(key, res->first); res++)
+			{}
+
+			return res;
+		}
+
 
 		iterator find(const Key& key)
 		{
