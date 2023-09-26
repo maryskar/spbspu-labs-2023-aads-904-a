@@ -1,9 +1,9 @@
 #ifndef MASHKIN_ANDREW_STRUCTSFORTRAVERSE_H
 #define MASHKIN_ANDREW_STRUCTSFORTRAVERSE_H
-#include <utility>
 #include <string>
-#include <queue.h>
-#include <stack.h>
+#include <utility>
+#include "queue.h"
+#include "stack.h"
 
 namespace mashkin
 {
