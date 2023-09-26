@@ -31,39 +31,18 @@ int main(int argc, char* argv[])
     return 0;
   }
 
-  std::string traverse = argv[1];
-  if ((traverse == "ascending") || (traverse == "descending") || (traverse == "breadth"))
+  hrushchev::StringCreator creator;
+  auto traverses = hrushchev::createDict< hrushchev::StringCreator >();
+
+  try
   {
-    try
-    {
-      hrushchev::KeySummator summator;
-      summator = avlTree.traverse_lnr(summator);
-      std::cout << summator.result_;
-    }
-    catch (const std::exception& e)
-    {
-      std::cerr << e.what() << "\n";
-      return 1;
-    }
-    hrushchev::StringCreator creator;
-    auto traverses = hrushchev::createDict< hrushchev::StringCreator >();
-    if ((traverse == "ascending"))
-    {
-      creator = traverses.at("ascending")(avlTree, creator);
-      std::cout << creator.result_ << "\n";
-    }
-    if ((traverse == "descending"))
-    {
-      creator = avlTree.traverse_rnl(creator);
-      std::cout << creator.result_ << "\n";
-    }
-    if ((traverse == "breadth"))
-    {
-      creator = avlTree.traverse_breadth(creator);
-      std::cout << creator.result_ << "\n";
-    }
+    creator = traverses.at(argv[1])(avlTree, creator);
+    hrushchev::KeySummator summator;
+    summator = avlTree.traverse_lnr(summator);
+    std::cout << summator.result_;
+    std::cout << creator.result_ << "\n";
   }
-  else
+  catch (...)
   {
     std::cerr << "invalid traverse\n";
     return 1;
