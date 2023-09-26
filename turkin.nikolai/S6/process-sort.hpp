@@ -21,8 +21,13 @@ namespace turkin
   void process(std::size_t amount, std::ostream & out)
   {
     std::deque< T > deque = fill< std::deque< T >, T >(amount);
-    std::list< T > list = fill< std::list< T >, T >(amount);
-    ForwardList< T > forward_list = fill< ForwardList< T >, T >(amount);
+    std::list< T > list;
+    ForwardList< T > forward_list;
+    for (auto it: deque)
+    {
+      list.push_front(it);
+      forward_list.push_front(it);
+    }
 
     UnaryPred p;
 
