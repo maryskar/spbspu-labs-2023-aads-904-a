@@ -418,6 +418,14 @@ namespace dmitriev
 		{
 			return iterator();
 		}
+		reverseIterator reverseBegin()
+		{
+			return reverseIterator(max());
+		}
+		reverseIterator reverseEnd()
+		{
+			return reverseIterator();
+		}
 
 		void clear()
 		{
