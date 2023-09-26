@@ -91,6 +91,12 @@ namespace mashkin
     F traverse_rnl(F& f) const;
     template< class F >
     F traverse_breadth(F& f) const;
+    template< class F >
+    F traverse_lnr(F& f);
+    template< class F >
+    F traverse_rnl(F& f);
+    template< class F >
+    F traverse_breadth(F& f);
 
   private:
     template< class F >
@@ -109,7 +115,7 @@ namespace mashkin
     void rotate_RightLeft(tree* node);
     void rotate_LeftRight(tree* node);
 
-    size_t checkHeightImpl(tree* head, size_t height);
+    size_t checkHeightImpl(tree* head, size_t height) const;
 
     tree* ins_impl(const v_type& data, tree* root, tree* before) const;
 
@@ -123,13 +129,34 @@ namespace mashkin
 
   template< class K, class V, class C >
   template< class F >
+  F AVL< K, V, C >::traverse_breadth(F& f)
+  {
+    return static_cast< const AVL& >(*this).traverse_breadth(f);
+  }
+
+  template< class K, class V, class C >
+  template< class F >
+  F AVL< K, V, C >::traverse_rnl(F& f)
+  {
+    return static_cast< const AVL& >(*this).traverse_rnl(f);
+  }
+
+  template< class K, class V, class C >
+  template< class F >
+  F AVL< K, V, C >::traverse_lnr(F& f)
+  {
+    return static_cast< const AVL& >(*this).traverse_lnr(f);
+  }
+
+  template< class K, class V, class C >
+  template< class F >
   F AVL< K, V, C >::traverse_breadth_impl(tree* root, size_t height, F& f) const
   {
     if (!root)
     {
       return f;
     }
-    if (checkHeight(root) == height)
+    if (checkHeightImpl(root, 0) == height)
     {
       f(root->data);
     }
@@ -143,7 +170,7 @@ namespace mashkin
   F AVL< K, V, C >::traverse_breadth(F& f) const
   {
     tree* node = fake_->parent_;
-    auto height = checkHeight(node);
+    auto height = checkHeightImpl(node, 0);
     for (size_t i = 1; i <= height; i++)
     {
       traverse_breadth_impl(node, i, f);
@@ -635,7 +662,7 @@ namespace mashkin
   }
 
   template< class K, class V, class C >
-  size_t AVL< K, V, C >::checkHeightImpl(tree* head, size_t height)
+  size_t AVL< K, V, C >::checkHeightImpl(tree* head, size_t height) const
   {
     if (!head)
     {
