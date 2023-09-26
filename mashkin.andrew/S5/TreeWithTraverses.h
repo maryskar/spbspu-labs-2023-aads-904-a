@@ -4,12 +4,13 @@
 
 namespace mashkin
 {
-  template< class T >
-  void createTreeWithTraverses(T& dict)
+  AVL< std::string, void (*)(std::ostream&, AVL< int, std::string >&) > createTreeWithTraverses()
   {
+    AVL< std::string, void (*)(std::ostream&, AVL< int, std::string >&) > dict;
     dict["ascending"] = ascend;
     dict["descending"] = descend;
     dict["breadth"] = doBreadthTr;
+    return dict;
   }
 }
 #endif

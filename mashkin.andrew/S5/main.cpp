@@ -49,7 +49,7 @@ int main(int argc, char** argv)
       return 0;
     }
     mashkin::AVL< std::string, void (*)(std::ostream&, dict&) > commands;
-    mashkin::createTreeWithTraverses(commands);
+    commands = mashkin::createTreeWithTraverses();
     try
     {
       if (commands.contains(argv[1]))
