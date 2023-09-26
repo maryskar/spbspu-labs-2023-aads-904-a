@@ -13,3 +13,4 @@ namespace aksenov
   void out(std::ostream &out, Stack< long long > &result);
   bool isloverOrSamePriority(std::string lhs, std::string rhs);
 }
+#endif
