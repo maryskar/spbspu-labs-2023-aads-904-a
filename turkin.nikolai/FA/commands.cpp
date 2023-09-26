@@ -12,7 +12,10 @@ namespace
 
   std::ostream & get_phrase_func(PType & lhs, PType & rhs, std::ostream & out)
   {
-    return out << "encoding for phrase: " << lhs.get_phrase() << " | " << encode(lhs.get_phrase(), rhs.get_encoding_map());
+    out << "encoding for phrase: ";
+    out << lhs.get_phrase() << " | ";
+    out << encode(lhs.get_phrase(), rhs.get_encoding_map());
+    return out;
   }
 
   std::ostream & info_phrase_func(PType & lhs, PType & rhs, std::ostream & out)
@@ -43,7 +46,7 @@ namespace
   }
 }
 
-std::ostream & turkin::new_phrase(phrase_dict_t & p_dict, encoding_dict_t &, std::istream & in, std::ostream & out)
+std::ostream & turkin::new_phrase(pdt & p_dict, edt &, std::istream & in, std::ostream & out)
 {
   phrase_t phrase = "";
   in >> phrase;
@@ -52,7 +55,7 @@ std::ostream & turkin::new_phrase(phrase_dict_t & p_dict, encoding_dict_t &, std
   return out << "added phrase: " << phrase;
 }
 
-std::ostream & turkin::new_encoding(phrase_dict_t & p_dict, encoding_dict_t & e_dict, std::istream & in, std::ostream & out)
+std::ostream & turkin::new_encoding(pdt & p_dict, edt & e_dict, std::istream & in, std::ostream & out)
 {
   phrase_t phrase = "";
   in >> phrase;
@@ -64,7 +67,7 @@ std::ostream & turkin::new_encoding(phrase_dict_t & p_dict, encoding_dict_t & e_
   return out << "added encoding for phrase: " << ptype.get_phrase() << " | " << ptype.get_encoding();
 }
 
-std::ostream & turkin::new_merge(phrase_dict_t & p_dict, encoding_dict_t &, std::istream & in, std::ostream & out)
+std::ostream & turkin::new_merge(pdt & p_dict, edt &, std::istream & in, std::ostream & out)
 {
   phrase_t phrase_a = "";
   phrase_t phrase_b = "";
@@ -77,7 +80,7 @@ std::ostream & turkin::new_merge(phrase_dict_t & p_dict, encoding_dict_t &, std:
   return out << "added phrase: " << phrase;
 }
 
-std::ostream & turkin::get_phrase(phrase_dict_t & p_dict, encoding_dict_t &, std::istream & in, std::ostream & out)
+std::ostream & turkin::get_phrase(pdt & p_dict, edt &, std::istream & in, std::ostream & out)
 {
   phrase_t phrase_a = "";
   phrase_t phrase_b = "";
@@ -87,14 +90,14 @@ std::ostream & turkin::get_phrase(phrase_dict_t & p_dict, encoding_dict_t &, std
   return get_phrase_func(lhs, rhs, out);
 }
 
-std::ostream & turkin::get_encoding(phrase_dict_t &, encoding_dict_t & e_dict, std::istream & in, std::ostream & out)
+std::ostream & turkin::get_encoding(pdt &, edt & e_dict, std::istream & in, std::ostream & out)
 {
   phrase_t phrase = "";
   in >> phrase;
   return out << e_dict.at(phrase).get_encoding_map();
 }
 
-std::ostream & turkin::get_full(phrase_dict_t & p_dict, encoding_dict_t & e_dict, std::istream & in, std::ostream & out)
+std::ostream & turkin::get_full(pdt & p_dict, edt & e_dict, std::istream & in, std::ostream & out)
 {
   phrase_t phrase_a = "";
   phrase_t phrase_b = "";
@@ -104,7 +107,7 @@ std::ostream & turkin::get_full(phrase_dict_t & p_dict, encoding_dict_t & e_dict
   return get_phrase_func(lhs, rhs, out) << e_dict.at(phrase_b).get_encoding_map();
 }
 
-std::ostream & turkin::del_phrase(phrase_dict_t & p_dict, encoding_dict_t &, std::istream & in, std::ostream & out)
+std::ostream & turkin::del_phrase(pdt & p_dict, edt &, std::istream & in, std::ostream & out)
 {
   std::string phrase = "";
   in >> phrase;
@@ -112,7 +115,7 @@ std::ostream & turkin::del_phrase(phrase_dict_t & p_dict, encoding_dict_t &, std
   return out << "deleted: " << phrase;
 }
 
-std::ostream & turkin::del_encoding(phrase_dict_t & p_dict, encoding_dict_t & e_dict, std::istream & in, std::ostream & out)
+std::ostream & turkin::del_encoding(pdt & p_dict, edt & e_dict, std::istream & in, std::ostream & out)
 {
   std::string phrase = "";
   in >> phrase;
@@ -122,7 +125,7 @@ std::ostream & turkin::del_encoding(phrase_dict_t & p_dict, encoding_dict_t & e_
   return out << "deleted: " << phrase;
 }
 
-std::ostream & turkin::re_encoding(phrase_dict_t & p_dict, encoding_dict_t &, std::istream & in, std::ostream & out)
+std::ostream & turkin::re_encoding(pdt & p_dict, edt &, std::istream & in, std::ostream & out)
 {
   phrase_t phrase_a = "";
   phrase_t phrase_b = "";
@@ -132,7 +135,7 @@ std::ostream & turkin::re_encoding(phrase_dict_t & p_dict, encoding_dict_t &, st
   return out << encode(ptype_a.get_phrase(), ptype_b.get_encoding_map());
 }
 
-std::ostream & turkin::info_phrase(phrase_dict_t & p_dict, encoding_dict_t &, std::istream & in, std::ostream & out)
+std::ostream & turkin::info_phrase(pdt & p_dict, edt &, std::istream & in, std::ostream & out)
 {
   phrase_t phrase_a = "";
   phrase_t phrase_b = "";
@@ -142,7 +145,7 @@ std::ostream & turkin::info_phrase(phrase_dict_t & p_dict, encoding_dict_t &, st
   return info_phrase_func(lhs, rhs, out);
 }
 
-std::ostream & turkin::info_state(phrase_dict_t & p_dict, encoding_dict_t &, std::istream & in, std::ostream & out)
+std::ostream & turkin::info_state(pdt & p_dict, edt &, std::istream & in, std::ostream & out)
 {
   phrase_t phrase_a = "";
   phrase_t phrase_b = "";
@@ -152,12 +155,12 @@ std::ostream & turkin::info_state(phrase_dict_t & p_dict, encoding_dict_t &, std
   return info_state_func(lhs, rhs, out);
 }
 
-std::ostream & turkin::info_algorithm(phrase_dict_t &, encoding_dict_t &, std::istream &, std::ostream & out)
+std::ostream & turkin::info_algorithm(pdt &, edt &, std::istream &, std::ostream & out)
 {
   return out << "https://en.wikipedia.org/wiki/Huffman_coding";
 }
 
-std::ostream & turkin::save_phrase(phrase_dict_t & p_dict, encoding_dict_t &, std::istream & in, std::ostream & out)
+std::ostream & turkin::save_phrase(pdt & p_dict, edt &, std::istream & in, std::ostream & out)
 {
   phrase_t phrase_a = "";
   phrase_t phrase_b = "";
@@ -174,7 +177,7 @@ std::ostream & turkin::save_phrase(phrase_dict_t & p_dict, encoding_dict_t &, st
   return out;
 }
 
-std::ostream & turkin::save_full(phrase_dict_t & p_dict, encoding_dict_t &, std::istream & in, std::ostream & out)
+std::ostream & turkin::save_full(pdt & p_dict, edt &, std::istream & in, std::ostream & out)
 {
   phrase_t phrase_a = "";
   phrase_t phrase_b = "";
@@ -192,7 +195,7 @@ std::ostream & turkin::save_full(phrase_dict_t & p_dict, encoding_dict_t &, std:
   return out;
 }
 
-std::ostream & turkin::help(phrase_dict_t &, encoding_dict_t &, std::istream & in, std::ostream & out)
+std::ostream & turkin::help(pdt &, edt &, std::istream & in, std::ostream & out)
 {
   std::string type = "";
   in >> type;
@@ -204,7 +207,8 @@ std::ostream & turkin::help(phrase_dict_t &, encoding_dict_t &, std::istream & i
   }
   else if (type == "GET")
   {
-    out << "GET-PHRASE <lhs> <rhs> - выводит фразу lhs и ее закодированный вид, используя кодировку rhs\n";
+    out << "GET-PHRASE <lhs> <rhs> - выводит фразу lhs";
+    out << "и ее закодированный вид, используя кодировку rhs\n";
     out << "GET-ENCODING <phrase> - выводит коды символов для фразы\n";
     out << "GET-FULL <rhs> <rhs> - выполняет GET PHRASE и GET ENCODING для rhs по фразе lhs";
   }
@@ -228,7 +232,8 @@ std::ostream & turkin::help(phrase_dict_t &, encoding_dict_t &, std::istream & i
   else if (type == "SAVE")
   {
     out << "SAVE-PHRASE <lhs> <rhs> <file> - сохраняет вывод INFO PHRASE для фразы в файл\n";
-    out << "SAVE-FULL <file> - сохраняет вывод INFO PHRASE для всех фраз в файл, используя кодировки lhs - lhs";
+    out << "SAVE-FULL <file> - сохраняет вывод INFO PHRASE";
+    out << "для всех фраз в файл, используя кодировки lhs - lhs";
   }
   else
   {
