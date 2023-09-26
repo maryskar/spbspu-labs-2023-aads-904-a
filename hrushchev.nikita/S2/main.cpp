@@ -1,11 +1,14 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <stdexcept>
+#include <list.hpp>
+#include <forwardlist.hpp>
+#include <forwardlistiterator.hpp>
+#include <forwardlistconstiterator.hpp>
 #include <dictionary.hpp>
+#include <printerror.hpp>
 #include "inputdict.hpp"
 #include "commands.hpp"
-#include "printerror.hpp"
 
 int main(int argc, char* argv[])
 {
