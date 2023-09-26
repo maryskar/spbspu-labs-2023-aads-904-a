@@ -9,6 +9,7 @@ namespace aksenov
   {
     public:
       explicit Queue();
+
       Queue(const Queue< T > &otherQ);
       Queue(Queue< T > &&otherQ) noexcept;
       Queue< T > &operator=(const Queue< T > &other);
