@@ -284,7 +284,7 @@ namespace tarasenko
   {
     std::pair< Key, Value > data(k, v);
     return insert(data);
-  };
+  }
 
   template< typename Key, typename Value, typename Compare >
   typename Map< Key, Value, Compare >::iterator
