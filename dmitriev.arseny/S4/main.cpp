@@ -3,8 +3,8 @@
 #include <fstream>
 #include <functional>
 
-#include "datasetCommands.h"
-#include "outputOfSpecialMessages.h"
+#include <datasetCommands.h>
+#include <outputOfSpecialMessages.h>
 
 std::string makeSubStr(std::string& line)
 {
@@ -33,11 +33,12 @@ std::string makeSubStr(std::string& line)
 
 int main(int argc, char** argv)
 {
-  using dictionary = dmitriev::Dictionary< int, std::string >;
-  using dataset = dmitriev::Dictionary< std::string, dictionary >;
+  using dictionary = dmitriev::AVL< int, std::string >;
+  using dataset = dmitriev::AVL< std::string, dictionary >;
   using iterator = typename dictionary::constIterator;
-  using comands = dmitriev::Dictionary< std::string, void (*)(dataset&, std::string, std::string, std::string) >;
-  using constComands = dmitriev::Dictionary< std::string, void (*)(iterator, iterator, std::string, std::ostream&) >;
+  using comands = dmitriev::AVL< std::string, void (*)(dataset&, std::string, std::string, std::string) >;
+  using constComands = dmitriev::AVL< std::string, void (*)(iterator, iterator, std::string, std::ostream&) >;
+
 
   if (argc != 2)
   {
