@@ -451,7 +451,7 @@ namespace mashkin
     if (it == end())
     {
       V defaultValue;
-      std::pair< K, V > toInsert(std::forward< K >(key), defaultValue);
+      std::pair< K, V > toInsert(key, defaultValue);
       it = insert(toInsert);
       return it->second;
 
