@@ -6,7 +6,7 @@
 #include <stack.hpp>
 #include "data-type.hpp"
 #include "exp-work.hpp"
-#include "oneway-list.hpp"
+#include <dictionary/forward-list/oneway-list.hpp>
 
 int main(int argc, char * argv[])
 {
