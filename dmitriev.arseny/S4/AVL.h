@@ -458,6 +458,49 @@ namespace dmitriev
 		tree* m_root;
 		Compare m_cmp;
 
+		tree* rotateRight(tree* node)
+		{
+			tree* temp = node->left;
+			node->left = temp->right;
+			if (!isEmpty(temp->right))
+			{
+				temp->right->parent = node;
+			}
+			temp->right = node;
+			temp->parent = node->parent;
+			if (!isEmpty(node->parent))
+			{
+				node->parent->right = temp;
+			}
+			node->parent = temp;
+
+			updateHeight(node);
+			updateHeight(temp);
+
+			return temp;
+		}
+		tree* rotateLeft(tree* node)
+		{
+			tree* temp = node->right;
+			node->right = temp->left;
+			if (!isEmpty(temp->left))
+			{
+				temp->left->parent = node;
+			}
+			temp->left = node;
+			temp->parent = node->parent;
+			if (!isEmpty(node->parent))
+			{
+				node->parent->left = temp;
+			}
+			node->parent = temp;
+
+			updateHeight(node);
+			updateHeight(temp);
+
+			return temp;
+		}
+
 		void updateHeight(tree* node) noexcept
 		{
 			node->height = 1 + std::max(height(node->left), height(node->right));
