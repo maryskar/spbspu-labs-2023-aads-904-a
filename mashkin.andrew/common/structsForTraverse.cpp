@@ -10,7 +10,7 @@ namespace mashkin
   {
     if (summ_ >= 0)
     {
-      if (maxInt - summ_ >= key_value.first)
+      if (maxInt - summ_ > key_value.first)
       {
         summ_ += key_value.first;
       }
@@ -21,7 +21,7 @@ namespace mashkin
     }
     else
     {
-      if (minInt - summ_ <= key_value.first)
+      if (minInt - summ_ < key_value.first)
       {
         summ_ += key_value.first;
       }
