@@ -149,5 +149,16 @@ tail_(val.tail_)
 val.fake_ = nullptr;
 val.fake_ = nullptr;
 }
+
+template< typename T >
+ForwardList< T > &ForwardList< T >::operator=(ForwardList< T > &&val) noexcept
+{
+if (this != std::addressof(val))
+{
+ForwardList< T > temp(std::move(val));
+swap(temp);
+}
+return *this;
+}
 }
 #endif
