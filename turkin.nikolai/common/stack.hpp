@@ -2,7 +2,7 @@
 #define STACK_HPP
 
 #include <stdexcept>
-#include "oneway-list.hpp"
+#include <dictionary/forward-list/oneway-list.hpp>
 
 namespace turkin
 {
