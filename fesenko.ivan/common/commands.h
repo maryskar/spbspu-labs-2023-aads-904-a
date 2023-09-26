@@ -2,38 +2,36 @@
 #define DICTIONARYCOMMANDS_H
 #include <fstream>
 #include <string>
-#include "dictionary.h"
 #include "messages.h"
 
 namespace fesenko
 {
-  template< typename Key, typename Value, typename Compare >
-  void print(const std::pair< std::string, Dictionary< Key, Value, Compare > > &rhs, std::ostream &out)
+  template< typename Storage >
+  void print(const std::pair< std::string, Storage > &rhs, std::ostream &out)
   {
-    auto dict = rhs.second;
-    auto cit = dict.cbegin();
-    if (cit == dict.cend()) {
+    auto container = rhs.second;
+    auto cit = container.cbegin();
+    if (cit == container.cend()) {
       outEmptyMessage(out);
       return;
     }
     out << rhs.first;
-    while (cit != dict.cend()) {
+    while (cit != container.cend()) {
       out << " " << cit->first << " " << cit->second;
       cit++;
     }
   }
 
-  template< typename Key, typename Value, typename Compare >
-  Dictionary< Key, Value, Compare > make_complementation(const Dictionary< Key, Value, Compare > &one,
-      const Dictionary< Key, Value, Compare > &two)
+  template< typename Storage >
+  Storage make_complementation(const Storage &one, const Storage &two)
   {
-    Dictionary< Key, Value, Compare > result;
+    Storage result;
     if (std::addressof(one) == std::addressof(two)) {
       return result;
     }
     auto it_one = one.cbegin();
     auto it_two = two.cbegin();
-    Compare comp = Compare{};
+    auto comp = std::less<>();
     while (it_one != one.cend() && it_two != two.cend()) {
       while (it_two != two.cend() && comp(it_two->first, it_one->first)) {
         it_two++;
@@ -53,12 +51,11 @@ namespace fesenko
     return result;
   }
 
-  template< typename Key, typename Value, typename Compare >
-  Dictionary< Key, Value, Compare > make_intersection(const Dictionary< Key, Value, Compare > &one,
-      const Dictionary< Key, Value, Compare > &two)
+  template< typename Storage >
+  Storage make_intersection(const Storage &one, const Storage &two)
   {
-    Dictionary< Key, Value, Compare > result;
-    Compare comp = Compare{};
+    Storage result;
+    auto comp = std::less<>();
     for (auto i = two.cbegin(); i != two.cend(); i++) {
       auto res = two.cend();
       for (auto j = one.cbegin(); j != one.cend(); j++) {
@@ -74,11 +71,10 @@ namespace fesenko
     return result;
   }
 
-  template< typename Key, typename Value, typename Compare >
-  Dictionary< Key, Value, Compare > make_union(const Dictionary< Key, Value, Compare > &one,
-      const Dictionary< Key, Value, Compare > &two)
+  template< typename Storage >
+  Storage make_union(const Storage &one, const Storage &two)
   {
-    Dictionary< Key, Value, Compare > result(one);
+    Storage result(one);
     auto it = two.cbegin();
     while (it != two.cend()) {
       result.insert(*it);

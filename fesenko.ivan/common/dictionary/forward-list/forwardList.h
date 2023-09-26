@@ -1,6 +1,6 @@
 #ifndef FORWARDLIST_H
 #define FORWARDLIST_H
-#include <list.h>
+#include "list.h"
 #include "forwardIterator.h"
 #include "constForwardIterator.h"
 namespace fesenko
