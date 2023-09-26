@@ -69,6 +69,38 @@ namespace aksenov
   }
 
   template< typename T >
+  ForwardList< T >::~ForwardList()
+  {
+    if (isEmpty())
+    {
+      return;
+    }
+    clear();
+    fake_ = tail_ = nullptr;
+  }
+
+  template< typename T >
+  ForwardList< T >::ForwardList(const ForwardList< T > &val)
+  {
+    ForwardList();
+    fake_->next = tail_;
+    try
+    {
+      listT< T > *temp = val.tail_;
+      while (temp)
+      {
+        this->pushBack(temp->data);
+        temp = temp->next;
+      }
+    }
+    catch (...)
+    {
+      clear();
+      throw;
+    }
+  }
+
+  template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::beforeBegin() noexcept
   {
     return iterator(fake_);
@@ -188,16 +220,7 @@ namespace aksenov
     delete todel;
   }
 
-  template< typename T >
-  ForwardList< T >::~ForwardList()
-  {
-    if (isEmpty())
-    {
-      return;
-    }
-    clear();
-    fake_ = tail_ = nullptr;
-  }
+
 
   template< typename T >
   void ForwardList< T >::pushFront(constReference val)
