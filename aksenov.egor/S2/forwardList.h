@@ -140,5 +140,14 @@ void ForwardList< T >::swap(ForwardList< T > &val)
   std::swap(this->fake_, val.fake_);
   std::swap(this->tail_, val.tail_);
 }
+
+template< typename T >
+ForwardList< T >::ForwardList(ForwardList< T > &&val) noexcept:
+fake_(val.fake_),
+tail_(val.tail_)
+{
+val.fake_ = nullptr;
+val.fake_ = nullptr;
+}
 }
 #endif
