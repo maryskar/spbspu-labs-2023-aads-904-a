@@ -425,6 +425,11 @@ namespace dmitriev
 			return *this;
 		}
 
+		void erase(const Key key)
+		{
+			m_root = eraseUtil(m_root, key);
+		}
+
 		void insert(const dataPair& keyValue)
 		{
 			m_root = insertUtil(m_root, keyValue);
