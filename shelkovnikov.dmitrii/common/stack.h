@@ -2,7 +2,7 @@
 #define SPBSPU_LABS_2023_AADS_904_A_STACK_H
 #include <cstddef>
 #include <stdexcept>
-#include "nodeOneWayList.h"
+#include "forwardlist/nodeOneWayList.h"
 namespace dimkashelk
 {
   template < typename T >

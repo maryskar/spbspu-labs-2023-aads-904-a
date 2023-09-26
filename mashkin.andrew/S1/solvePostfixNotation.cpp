@@ -1,9 +1,9 @@
 #include "solvePostfixNotation.h"
 #include <stdexcept>
 #include <string>
-#include "queue.h"
+#include <queue.h>
+#include <stack.h>
 #include "solving.h"
-#include "stack.h"
 
 void solve(mashkin::Stack< int long long >& solution, mashkin::Queue< std::string >& que)
 {
