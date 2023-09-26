@@ -5,9 +5,12 @@
 
 namespace hrushchev
 { 
-  void doAscending(std::ostream& out, AVLTree< size_t, std::string >& tree);
-  void doDescending(std::ostream& out, AVLTree< size_t, std::string >& tree);
-  void doBreadth(std::ostream& out, AVLTree< size_t, std::string >& tree);
+  template< typename F >
+  void doAscending(AVLTree< size_t, std::string >& tree, F f);
+  template< typename F >
+  void doDescending(AVLTree< size_t, std::string >& tree, F f);
+  template< typename F >
+  void doBreadth(AVLTree< size_t, std::string >& tree, F f);
 }
 
 #endif
