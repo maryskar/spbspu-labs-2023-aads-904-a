@@ -70,95 +70,122 @@ namespace aksenov
 
   template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::beforeBegin() noexcept
-{
-  return iterator(fake_);
-}
+  {
+    return iterator(fake_);
+  }
 
-template< typename T >
-typename ForwardList< T >::constIterator ForwardList< T >::beforeBegin() const noexcept
-{
-return cbeforeBegin();
-}
+  template< typename T >
+  typename ForwardList< T >::constIterator ForwardList< T >::beforeBegin() const noexcept
+  {
+    return cbeforeBegin();
+  }
 
-template< typename T >
-typename ForwardList< T >::constIterator ForwardList< T >::cbeforeBegin() const noexcept
-{
-return constIterator(fake_);
-}
+  template< typename T >
+  typename ForwardList< T >::constIterator ForwardList< T >::cbeforeBegin() const noexcept
+  {
+    return constIterator(fake_);
+  }
 
-template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::begin() noexcept
-{
-return iterator(fake_->next);
-}
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::begin() noexcept
+  {
+    return iterator(fake_->next);
+  }
 
-template< typename T >
-typename ForwardList< T >::constIterator ForwardList< T >::begin() const noexcept
-{
-return cbegin();
-}
+  template< typename T >
+  typename ForwardList< T >::constIterator ForwardList< T >::begin() const noexcept
+  {
+    return cbegin();
+  }
 
-template< typename T >
-typename ForwardList< T >::constIterator ForwardList< T >::cbegin() const noexcept
-{
-return constIterator(fake_->next);
-}
+  template< typename T >
+  typename ForwardList< T >::constIterator ForwardList< T >::cbegin() const noexcept
+  {
+    return constIterator(fake_->next);
+  }
 
-template< typename T >
-typename ForwardList< T >::iterator ForwardList< T >::end() noexcept
-{
-return iterator(tail_);
-}
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::end() noexcept
+  {
+    return iterator(tail_);
+  }
 
-template< typename T >
-typename ForwardList< T >::constIterator ForwardList< T >::end() const noexcept
-{
-return cend();
-}
+  template< typename T >
+  typename ForwardList< T >::constIterator ForwardList< T >::end() const noexcept
+  {
+    return cend();
+  }
 
-template< typename T >
-typename ForwardList< T >::constIterator ForwardList< T >::cend() const noexcept
-{
-return constIterator(tail_);
-}
+  template< typename T >
+  typename ForwardList< T >::constIterator ForwardList< T >::cend() const noexcept
+  {
+    return constIterator(tail_);
+  }
 
-template< typename T >
-typename ForwardList< T >::reference ForwardList< T >::front()
-{
-  return fake_->next->data;
-}
+  template< typename T >
+  typename ForwardList< T >::reference ForwardList< T >::front()
+  {
+    return fake_->next->data;
+  }
 
-template< typename T >
-typename ForwardList< T >::constReference ForwardList< T >::front() const
-{
-  return fake_->next->data;
-}
+  template< typename T >
+  typename ForwardList< T >::constReference ForwardList< T >::front() const
+  {
+    return fake_->next->data;
+  }
 
-template< typename T >
-void ForwardList< T >::swap(ForwardList< T > &val)
-{
-  std::swap(this->fake_, val.fake_);
-  std::swap(this->tail_, val.tail_);
-}
+  template< typename T >
+  void ForwardList< T >::swap(ForwardList< T > &val)
+  {
+    std::swap(this->fake_, val.fake_);
+    std::swap(this->tail_, val.tail_);
+  }
 
-template< typename T >
-ForwardList< T >::ForwardList(ForwardList< T > &&val) noexcept:
-fake_(val.fake_),
-tail_(val.tail_)
-{
-val.fake_ = nullptr;
-val.fake_ = nullptr;
-}
+  template< typename T >
+  ForwardList< T >::ForwardList(ForwardList< T > &&val) noexcept:
+    fake_(val.fake_),
+    tail_(val.tail_)
+  {
+    val.fake_ = nullptr;
+    val.fake_ = nullptr;
+  }
 
-template< typename T >
-ForwardList< T > &ForwardList< T >::operator=(ForwardList< T > &&val) noexcept
-{
-if (this != std::addressof(val))
-{
-ForwardList< T > temp(std::move(val));
-swap(temp);
-}
-return *this;
-}
+  template< typename T >
+  ForwardList< T > &ForwardList< T >::operator=(ForwardList< T > &&val) noexcept
+  {
+  if (this != std::addressof(val))
+  {
+    ForwardList< T > temp(std::move(val));
+    swap(temp);
+  }
+  return *this;
+  }
+
+  template< typename T >
+  bool ForwardList< T >::isEmpty() const noexcept
+  {
+    return fake_->next == nullptr;
+  }
+
+  template< typename T >
+  void ForwardList< T >::clear() noexcept
+  {
+    while (!isEmpty())
+    {
+      popFront();
+    }
+  }
+
+  template< typename T >
+  void ForwardList< T >::popFront()
+  {
+    if(fake_->next == tail_)
+    {
+      return;
+    }
+    auto todel = fake_->next;
+    fake_->next = fake_->next->next;
+    delete todel;
+  }
 }
 #endif
