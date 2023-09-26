@@ -19,11 +19,11 @@ int main(int argc, char *argv[])
   using dict = fesenko::Dictionary< int, std::string, std::less< > >;
   using dict_of_dict = fesenko::Dictionary< std::string, dict, std::less< std::string > >;
   using dict_c = fesenko::Dictionary< std::string, dict (*)(const dict &, const dict &), std::less< > >;
-  dict_of_dict container = fesenko::genDictOfDicts< dict_of_dict, dict >(in);
   dict_c commands;
   commands.insert(std::make_pair("complement", fesenko::make_complementation< dict >));
   commands.insert(std::make_pair("intersect", fesenko::make_intersection< dict >));
   commands.insert(std::make_pair("union", fesenko::make_union< dict >));
+  dict_of_dict container = fesenko::genDictOfDicts< dict_of_dict, dict >(in);
   while (std::cin) {
     std::string command;
     std::cin >> command;
@@ -37,13 +37,13 @@ int main(int argc, char *argv[])
         fesenko::print(std::make_pair(name, container.at(name)), std::cout);
         std::cout << "\n";
       } else {
-        auto func = commands.at(command);
         std::string newDictName;
         std::string dictName1;
         std::string dictName2;
         std::cin >> newDictName >> dictName1 >> dictName2;
         dict dict1 = container.at(dictName1);
         dict dict2 = container.at(dictName2);
+        auto func = commands.at(command);
         dict newDict = func(dict1, dict2);
         if (!container.insert(std::make_pair(newDictName, newDict)).second) {
           auto it = container.find(newDictName);
