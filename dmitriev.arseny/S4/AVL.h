@@ -402,6 +402,29 @@ namespace dmitriev
 			clear();
 		}
 
+		AVL& operator=(const AVL& other)
+		{
+			if (this == std::addressof(other))
+			{
+				return *this;
+			}
+
+			AVL< Key, Value, Compare > newTree(other);
+			*this = std::move(newTree);
+			return *this;
+		}
+		AVL& operator=(AVL&& other) noexcept
+		{
+			if (this == std::addressof(other))
+			{
+				return *this;
+			}
+
+			clear();
+			swap(other);
+			return *this;
+		}
+
 		void insert(const dataPair& keyValue)
 		{
 			m_root = insertUtil(m_root, keyValue);
@@ -451,7 +474,7 @@ namespace dmitriev
 			dmitriev::clear(m_root);
 			m_root = nullptr;
 		}
-		void swap(AVL& other)
+		void swap(AVL& other) noexcept
 		{
 			std::swap(m_root, other.m_root);
 		}
