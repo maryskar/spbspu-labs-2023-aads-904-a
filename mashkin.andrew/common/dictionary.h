@@ -2,16 +2,16 @@
 #define S2_DICTIONARY_H
 #include <stdexcept>
 #include <utility>
-#include "forwardConstIterator.h"
-#include "forwardIterator.h"
+#include "ForwardConstIterator.h"
+#include "ForwardIterator.h"
 #include "forwardList.h"
 
 namespace mashkin
 {
   template< typename T >
-  class forwardConstIterator;
+  class ForwardConstIterator;
   template< typename T >
-  class forwardIterator;
+  class ForwardIterator;
   template< typename T >
   class ForwardList;
 
@@ -23,8 +23,8 @@ namespace mashkin
     using key_type = Key;
     using val = Value;
     using value_type = std::pair< const Key, Value >;
-    using iter = forwardIterator< value_type >;
-    using const_iter = forwardConstIterator< value_type >;
+    using iter = ForwardIterator< value_type >;
+    using const_iter = ForwardConstIterator< value_type >;
 
     Dictionary();
     explicit Dictionary(const Compare& comp);
@@ -131,13 +131,7 @@ namespace mashkin
   typename Dictionary< K, V, C >::val& Dictionary< K, V, C >::operator[](const key_type& k)
   {
     auto i = cbegin();
-    for (; i != cend(); i++)
-    {
-      if (i->first == k)
-      {
-        break;
-      }
-    }
+    i = find(k);
     if (i == cend())
     {
       insert(std::pair< K, V >(k, V()));
@@ -149,14 +143,19 @@ namespace mashkin
   template< class K, class V, class C >
   typename Dictionary< K, V, C >::const_iter Dictionary< K, V, C >::find(const key_type& key) const
   {
-    for (auto i = cbegin(); i != cend(); i++)
+    auto i = cbegin();
+    for (; i != cend(); i++)
     {
-      if (i->first == key)
+      if (!comp_(i->first, key))
       {
-        return i;
+        break;
       }
     }
-    return cend();
+    if (i == cend() || comp_(key, i->first))
+    {
+      return cend();
+    }
+    return i;
   }
 
   template< class K, class V, class C >
@@ -182,9 +181,9 @@ namespace mashkin
   template< class K, class V, class C >
   void Dictionary< K, V, C >::swap(Dictionary& other) noexcept
   {
-    auto var = other;
-    other = *this;
-    *this = var;
+    pair_.swap(other.pair_);
+    std::swap(comp_, other.comp_);
+    std::swap(size_, other.size_);
   }
 
   template< class K, class V, class C >
@@ -235,13 +234,7 @@ namespace mashkin
     {
       for (auto i = pair_.before_begin(); i != end(); i++)
       {
-        if (next == end())
-        {
-          pair_.insert_after(i, value);
-          size_++;
-          break;
-        }
-        if (comp_(value.first, next->first))
+        if (next == end() || comp_(value.first, next->first))
         {
           pair_.insert_after(i, value);
           size_++;
@@ -275,17 +268,12 @@ namespace mashkin
   const typename Dictionary< K, V, C >::val& Dictionary< K, V, C >::at(const key_type& k) const
   {
     auto i = cbegin();
-    for (; i != cend(); i++)
-    {
-      if (i->first == k)
-      {
-        return i->second;
-      }
-    }
+    i = find(k);
     if (i == cend())
     {
       throw std::out_of_range("Out of range");
     }
+    return i->second;
   }
 
   template< class K, class V, class C >

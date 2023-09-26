@@ -2,28 +2,26 @@
 #define FORWARDLIST_H
 #include <stdexcept>
 #include <utility>
-#include "forwardConstIterator.h"
-#include "forwardIterator.h"
-#include "nodeList.h"
+#include "ForwardConstIterator.h"
+#include "ForwardIterator.h"
+#include "list.h"
 
 namespace mashkin
 {
   template< typename T >
-  class forwardConstIterator;
+  class ForwardConstIterator;
   template< typename T >
-  class forwardIterator;
+  class ForwardIterator;
 
   template< typename T >
   class ForwardList
   {
   public:
-    using iter = forwardIterator< T >;
-    using citer = forwardConstIterator< T >;
+    using iter = ForwardIterator< T >;
+    using citer = ForwardConstIterator< T >;
     ForwardList();
     ForwardList(const ForwardList< T >& lhs);
     ForwardList(ForwardList< T >&& rhs) noexcept;
-    template< class InputIt >
-    ForwardList(InputIt first, InputIt last);
     ~ForwardList();
 
     ForwardList< T >& operator=(const ForwardList< T >& rhs);
@@ -51,7 +49,7 @@ namespace mashkin
     iter erase_after(citer pos, citer last);
     void clear() noexcept;
 
-    void swap(ForwardList< T >& list);
+    void swap(ForwardList< T >& list) noexcept;
     void reverse() noexcept;
 
     void splice_after(citer pos, ForwardList< T >& other);
@@ -67,24 +65,13 @@ namespace mashkin
     void remove_if(UnaryPredicate p);
 
   private:
-    NodeList< T >* fake_;
-    NodeList< T >* tail_;
+    list_t< T >* fake_;
+    list_t< T >* tail_;
   };
 
   template< class T >
-  template< class InputIt >
-  ForwardList< T >::ForwardList(InputIt first, InputIt last):
-    ForwardList()
-  {
-    if (first != last)
-    {
-      insert_after(before_begin(), first, last);
-    }
-  }
-
-  template< class T >
   ForwardList< T >::ForwardList():
-    fake_(static_cast< NodeList< T >* >(::operator new(sizeof(NodeList< T >)))),
+    fake_(static_cast< list_t< T >* >(::operator new(sizeof(list_t< T >)))),
     tail_(nullptr)
   {
     fake_->next = tail_;
@@ -130,12 +117,12 @@ namespace mashkin
   {
     if (empty())
     {
-      fake_->next = new NodeList< T >{value, nullptr};
+      fake_->next = new list_t< T >{value, nullptr};
       tail_ = fake_->next->next;
     }
     else
     {
-      auto var = new NodeList< T >{value, fake_->next};
+      auto var = new list_t< T >{value, fake_->next};
       fake_->next = var;
     }
   }
@@ -147,59 +134,59 @@ namespace mashkin
   }
 
   template< class T >
-  forwardIterator< T > ForwardList< T >::before_begin() noexcept
+  ForwardIterator< T > ForwardList< T >::before_begin() noexcept
   {
     return iter(fake_);
   }
 
   template< class T >
-  forwardConstIterator< T > ForwardList< T >::cbefore_begin() noexcept
+  ForwardConstIterator< T > ForwardList< T >::cbefore_begin() noexcept
   {
     return before_begin();
   }
 
   template< class T >
-  forwardIterator< T > ForwardList< T >::begin() const noexcept
+  ForwardIterator< T > ForwardList< T >::begin() const noexcept
   {
     return iter(fake_->next);
   }
 
   template< class T >
-  forwardIterator< T > ForwardList< T >::end() const noexcept
+  ForwardIterator< T > ForwardList< T >::end() const noexcept
   {
     return iter(tail_);
   }
 
   template< class T >
-  forwardConstIterator< T > ForwardList< T >::cbegin() const noexcept
+  ForwardConstIterator< T > ForwardList< T >::cbegin() const noexcept
   {
     return begin();
   }
 
   template< class T >
-  forwardConstIterator< T > ForwardList< T >::cend() const noexcept
+  ForwardConstIterator< T > ForwardList< T >::cend() const noexcept
   {
     return end();
   }
 
   template< class T >
-  forwardIterator< T > ForwardList< T >::insert_after(citer position, T&& val)
+  ForwardIterator< T > ForwardList< T >::insert_after(citer position, T&& val)
   {
     return insert_after(position, val);
   }
 
   template< class T >
-  forwardIterator< T > ForwardList< T >::insert_after(citer position, const T& val)
+  ForwardIterator< T > ForwardList< T >::insert_after(citer position, const T& val)
   {
-    position.node->next = new NodeList< T >{val, position.node->next};
+    position.node->next = new list_t< T >{val, position.node->next};
     ++position;
     return iter(position.node);
   }
 
   template< class T >
-  forwardIterator< T > ForwardList< T >::insert_after(citer position, size_t n, const T& val)
+  ForwardIterator< T > ForwardList< T >::insert_after(citer position, size_t n, const T& val)
   {
-    forwardIterator< T > res = position.node;
+    ForwardIterator< T > res = position.node;
     for (auto i = 0; i < n; i++)
     {
       res = insert_after(res, val);
@@ -208,9 +195,9 @@ namespace mashkin
 
   template< class T >
   template< class InpIter >
-  forwardIterator< T > ForwardList< T >::insert_after(citer position, InpIter first, InpIter last)
+  ForwardIterator< T > ForwardList< T >::insert_after(citer position, InpIter first, InpIter last)
   {
-    forwardIterator< T > var = position.node;
+    ForwardIterator< T > var = position.node;
     while (first != last)
     {
       var = insert_after(var, *first);
@@ -238,7 +225,7 @@ namespace mashkin
   }
 
   template< class T >
-  forwardIterator< T > ForwardList< T >::erase_after(citer pos)
+  ForwardIterator< T > ForwardList< T >::erase_after(citer pos)
   {
     if (pos == cend())
     {
@@ -251,7 +238,7 @@ namespace mashkin
   }
 
   template< class T >
-  forwardIterator< T > ForwardList< T >::erase_after(citer pos, citer last)
+  ForwardIterator< T > ForwardList< T >::erase_after(citer pos, citer last)
   {
     while (pos.node->next != last.node)
     {
@@ -270,14 +257,10 @@ namespace mashkin
   }
 
   template< class T >
-  void ForwardList< T >::swap(ForwardList< T >& list)
+  void ForwardList< T >::swap(ForwardList< T >& list) noexcept
   {
-    ForwardList< T > var;
-    var.insert_after(var.before_begin(), list.begin(), list.end());
-    list.clear();
-    list.insert_after(list.before_begin(), begin(), end());
-    clear();
-    isert_after(before_begin(), var.begin(), var.end());
+    std::swap(this->fake_, list.fake_);
+    std::swap(this->tail_, list.tail_);
   }
 
   template< class T >
@@ -299,7 +282,8 @@ namespace mashkin
             var1 = var2;
             var2 = var3;
             var3 = var3->next;
-          } while (var3 != nullptr);
+          }
+          while (var3 != nullptr);
           var2->next = var1;
           var1 = var2;
           var2 = var3;
@@ -317,7 +301,7 @@ namespace mashkin
   template< class T >
   void ForwardList< T >::splice_after(citer pos, ForwardList< T >& other)
   {
-    forwardConstIterator< T > end(pos.node->next);
+    ForwardConstIterator< T > end(pos.node->next);
     auto first = other.begin();
     auto last = other.end();
     pos.node->next = first.node;
@@ -344,7 +328,7 @@ namespace mashkin
     }
     else
     {
-      forwardConstIterator< T > end(pos.node->next);
+      ForwardConstIterator< T > end(pos.node->next);
       auto last = other.end();
       pos.node->next = it.node->next;
       auto otherEnd = it;
@@ -367,7 +351,7 @@ namespace mashkin
   template< class T >
   void ForwardList< T >::splice_after(citer pos, ForwardList< T >& other, citer first, citer last)
   {
-    forwardConstIterator< T > end(pos.node->next);
+    ForwardConstIterator< T > end(pos.node->next);
     pos.node->next = first.node->next;
     first.node->next = last.node->next;
     last.node->next = end.node;
@@ -396,7 +380,7 @@ namespace mashkin
     }
   }
 
-  template< class T>
+  template< class T >
   template< class UnaryPredicate >
   void ForwardList< T >::remove_if(UnaryPredicate p)
   {
