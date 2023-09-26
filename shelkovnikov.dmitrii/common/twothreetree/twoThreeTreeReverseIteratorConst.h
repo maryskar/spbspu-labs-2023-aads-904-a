@@ -63,7 +63,7 @@ namespace dimkashelk
     TwoThreeTreeIteratorConst< Key, Value, Compare > iter_;
     TwoThreeTreeReverseIteratorConst(node_type *node, const dimkashelk::TwoThreeTree< const Key, Value, Compare > *parent):
       iter_(node, parent)
-    {};
+    {}
   };
 }
 #endif

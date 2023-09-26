@@ -68,7 +68,7 @@ namespace dimkashelk
       node_(node),
       prev_(nullptr),
       parent_(parent)
-    {};
+    {}
     void next()
     {
       if (node_ == parent_->fakeNode_)
