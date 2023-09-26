@@ -27,19 +27,19 @@ namespace details
   template< typename T, typename UnaryPred >
   struct Bcompare
   {
-  public:
-    explicit Bcompare(const T & src):
-        src_(src)
+    public:
+      explicit Bcompare(const T & src):
+          src_(src)
       {}
 
-    bool operator()(const T & rhs)
+      bool operator()(const T & rhs)
       {
-      return !p_(src_, rhs);
-    }
+        return !p_(src_, rhs);
+      }
 
-  private:
-    T src_;
-    UnaryPred p_;
+    private:
+      T src_;
+      UnaryPred p_;
   };
 
   template< typename ForwardIt, typename UnaryPred >
