@@ -401,6 +401,12 @@ namespace dmitriev
 		{
 			clear();
 		}
+		AVL(std::initializer_list< std::pair< Key, Value > > initList):
+			m_root(),
+			m_cmp()
+		{
+			insert(initList);
+		}
 
 		AVL& operator=(const AVL& other)
 		{
