@@ -403,10 +403,42 @@ namespace dmitriev
 		}
 
 
+		void clear()
+		{
+			dmitriev::clear(m_root);
+			m_root = nullptr;
+		}
 
 	private:
 		tree* m_root;
 		Compare m_cmp;
+
+		tree* findMax(tree* node) const noexcept
+		{
+			if (isEmpty(node))
+			{
+				return nullptr;
+			}
+			while (!isEmpty(node->right))
+			{
+				node = node->right;
+			}
+
+			return node;
+		}
+		tree* findMin(tree* node) const noexcept
+		{
+			if (isEmpty(node))
+			{
+				return nullptr;
+			}
+			while (!isEmpty(node->left))
+			{
+				node = node->left;
+			}
+
+			return node;
+		}
 
 	}
 
