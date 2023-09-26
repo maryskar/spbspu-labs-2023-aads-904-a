@@ -1,5 +1,4 @@
 #include <iostream>
-#include <sstream>
 #include <string>
 #include <fstream>
 #include <functional>
@@ -36,8 +35,9 @@ int main(int argc, char** argv)
 {
   using dictionary = dmitriev::Dictionary< int, std::string >;
   using dataset = dmitriev::Dictionary< std::string, dictionary >;
-  using comand = std::function< void(dataset& dataSet, std::string name, std::string lhsName, std::string rhsName) >;
-  using constComand = std::function< void(const dataset& dataSet, std::string name, std::ostream& out) >;
+  using iterator = typename dictionary::constIterator;
+  using comands = dmitriev::Dictionary< std::string, void (*)(dataset&, std::string, std::string, std::string) >;
+  using constComands = dmitriev::Dictionary< std::string, void (*)(iterator, iterator, std::string, std::ostream&) >;
 
   if (argc != 2)
   {
@@ -52,13 +52,14 @@ int main(int argc, char** argv)
   }
 
 
-  dmitriev::Dictionary< std::string, comand > comands;
-  comands["complement"] = dmitriev::complementDataset;
-  comands["intersect"] = dmitriev::intersectDataset;
-  comands["union"] = dmitriev::unionDataset;
+  comands cmds;
+  cmds["complement"] = dmitriev::complementDataset;
+  cmds["intersect"] = dmitriev::intersectDataset;
+  cmds["union"] = dmitriev::unionDataset;
 
-  dmitriev::Dictionary< std::string, constComand > constComands;
-  constComands["print"] = dmitriev::printDataset;
+
+  constComands constCmds;
+  constCmds["print"] = dmitriev::printDataset< iterator >;
 
 
   dataset dataSet;
@@ -98,6 +99,7 @@ int main(int argc, char** argv)
     dataSet.insert({name, dict});
   }
 
+
   std::string cmdName = "";
   while (std::getline(std::cin, line))
   {
@@ -105,21 +107,25 @@ int main(int argc, char** argv)
     {
       cmdName = makeSubStr(line);
 
-      if (!comands.isEmpty(comands.find(cmdName)))
+      if (!cmds.isEmpty(cmds.find(cmdName)))
       {
         std::string newName = makeSubStr(line);
         std::string lhsName = makeSubStr(line);
         std::string rhsName = makeSubStr(line);
 
-        auto cmd = comands[cmdName];
-        cmd(dataSet, newName, lhsName, rhsName);
+        cmds[cmdName](dataSet, newName, lhsName, rhsName);
       }
-      else if (!constComands.isEmpty(constComands.find(cmdName)))
+      else if (!constCmds.isEmpty(constCmds.find(cmdName)))
       {
         std::string name = makeSubStr(line);
 
-        auto constCmd = constComands[cmdName];
-        constCmd(dataSet, name, std::cout);
+        if (dataSet.at(name).isEmpty())
+        {
+          std::cout << dmitriev::outOfEmptyDataMsg << '\n';
+          continue;
+        }
+
+        constCmds[cmdName](dataSet.at(name).constBegin(), dataSet.at(name).constEnd(), name, std::cout);
 
         std::cout << '\n';
       }

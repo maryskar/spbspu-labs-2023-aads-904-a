@@ -6,8 +6,8 @@
 #include <cassert>
 #include <initializer_list>
 #include "oneway-list.hpp"
-#include "iterators/iterator.hpp"
-#include "iterators/const-iterator.hpp"
+#include "iterators/fl-iterator.hpp"
+#include "iterators/fl-const-iterator.hpp"
 
 namespace turkin
 {
@@ -15,8 +15,8 @@ namespace turkin
   class ForwardList
   {
     using fl = ForwardList< T >;
-    using it = Iterator< T >;
-    using cit = ConstIterator< T >;
+    using it = FLIterator< T >;
+    using cit = FLConstIterator< T >;
     public:
       ForwardList();
       ForwardList(const fl & rhs);
@@ -155,55 +155,55 @@ const T & ForwardList< T >::front() const
 }
 
 template< typename T >
-Iterator< T > ForwardList< T >::before_begin() noexcept
+FLIterator< T > ForwardList< T >::before_begin() noexcept
 {
   return dummy_;
 };
 
 template< typename T >
-ConstIterator< T > ForwardList< T >::before_begin() const noexcept
+FLConstIterator< T > ForwardList< T >::before_begin() const noexcept
 {
   return cbefore_begin();
 };
 
 template< typename T >
-ConstIterator< T > ForwardList< T >::cbefore_begin() const noexcept
+FLConstIterator< T > ForwardList< T >::cbefore_begin() const noexcept
 {
   return cit(dummy_);
 };
 
 template< typename T >
-Iterator< T > ForwardList< T >::begin() noexcept
+FLIterator< T > ForwardList< T >::begin() noexcept
 {
   return it(dummy_.cur_->next);
 };
 
 template< typename T >
-ConstIterator< T > ForwardList< T >::begin() const noexcept
+FLConstIterator< T > ForwardList< T >::begin() const noexcept
 {
   return cbegin();
 };
 
 template< typename T >
-ConstIterator< T > ForwardList< T >::cbegin() const noexcept
+FLConstIterator< T > ForwardList< T >::cbegin() const noexcept
 {
   return cit(dummy_.cur_->next);
 };
 
 template< typename T >
-Iterator< T > ForwardList< T >::end() noexcept
+FLIterator< T > ForwardList< T >::end() noexcept
 {
   return tail_;
 };
 
 template< typename T >
-ConstIterator< T > ForwardList< T >::end() const noexcept
+FLConstIterator< T > ForwardList< T >::end() const noexcept
 {
   return cend();
 };
 
 template< typename T >
-ConstIterator< T > ForwardList< T >::cend() const noexcept
+FLConstIterator< T > ForwardList< T >::cend() const noexcept
 {
   return cit(tail_);
 };
@@ -230,7 +230,7 @@ std::size_t ForwardList< T >::size() const noexcept
 };
 
 template< typename T >
-Iterator< T > ForwardList< T >::insert_after(cit pos, const T & value)
+FLIterator< T > ForwardList< T >::insert_after(cit pos, const T & value)
 {
   auto tins = it(new OneWayNode< T > {value, nullptr});
   tins.cur_->next = pos.cur_->next;
@@ -241,13 +241,13 @@ Iterator< T > ForwardList< T >::insert_after(cit pos, const T & value)
 
 template< typename T >
 template< class... Args >
-Iterator< T > ForwardList< T >::emplace_after(cit pos, Args &&... args)
+FLIterator< T > ForwardList< T >::emplace_after(cit pos, Args &&... args)
 {
   return insert_after(pos, std::forward< T >(T(args...)));
 }
 
 template< typename T >
-Iterator< T > ForwardList< T >::erase_after(cit pos)
+FLIterator< T > ForwardList< T >::erase_after(cit pos)
 {
   auto * ins = pos.cur_->next;
   if (ins == nullptr)
@@ -261,7 +261,7 @@ Iterator< T > ForwardList< T >::erase_after(cit pos)
 }
 
 template< typename T >
-Iterator< T > ForwardList< T >::erase_after(cit first, cit last)
+FLIterator< T > ForwardList< T >::erase_after(cit first, cit last)
 {
   for (auto ins = first; ins != last; ins++)
   {

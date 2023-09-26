@@ -1,7 +1,7 @@
 #include "inputdict.hpp"
 #include <istream>
 #include <string>
-#include "dictionary.hpp"
+#include <dictionary.hpp>
 
 using dict_t = hrushchev::Dictionary< size_t, std::string >;
 

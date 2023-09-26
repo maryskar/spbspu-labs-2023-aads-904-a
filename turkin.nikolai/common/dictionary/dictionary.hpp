@@ -6,8 +6,8 @@
 #include <memory>
 #include <stdexcept>
 #include "forward-list/forward-list.hpp"
-#include "forward-list/iterators/iterator.hpp"
-#include "forward-list/iterators/const-iterator.hpp"
+#include "forward-list/iterators/fl-iterator.hpp"
+#include "forward-list/iterators/fl-const-iterator.hpp"
 #include <comparator.hpp>
 
 namespace turkin
@@ -17,8 +17,8 @@ namespace turkin
   {
     using dict_t = std::pair< Key, Value >;
     using dict = Dictionary< Key, Value, Compare >;
-    using it = Iterator< dict_t >;
-    using cit = ConstIterator< dict_t >;
+    using it = FLIterator< dict_t >;
+    using cit = FLConstIterator< dict_t >;
     public:
       Dictionary();
       Dictionary(const dict & rhs);
@@ -127,91 +127,91 @@ Dictionary< K, V, C > & Dictionary< K, V, C >::operator=(dict && rhs)
 }
 
 template< typename K, typename V, typename C >
-Iterator< std::pair< K, V > > Dictionary< K, V, C >::before_begin() noexcept
+FLIterator< std::pair< K, V > > Dictionary< K, V, C >::before_begin() noexcept
 {
   return fl_.before_begin();
 }
 
 template< typename K, typename V, typename C >
-ConstIterator< std::pair< K, V > > Dictionary< K, V, C >::before_begin() const noexcept
+FLConstIterator< std::pair< K, V > > Dictionary< K, V, C >::before_begin() const noexcept
 {
   return fl_.before_begin();
 }
 
 template< typename K, typename V, typename C >
-ConstIterator< std::pair< K, V > > Dictionary< K, V, C >::cbefore_begin() const noexcept
+FLConstIterator< std::pair< K, V > > Dictionary< K, V, C >::cbefore_begin() const noexcept
 {
   return fl_.cbefore_begin();
 }
 
 template< typename K, typename V, typename C >
-Iterator< std::pair< K, V > > Dictionary< K, V, C >::begin() noexcept
+FLIterator< std::pair< K, V > > Dictionary< K, V, C >::begin() noexcept
 {
   return fl_.begin();
 }
 
 template< typename K, typename V, typename C >
-ConstIterator< std::pair< K, V > > Dictionary< K, V, C >::begin() const noexcept
+FLConstIterator< std::pair< K, V > > Dictionary< K, V, C >::begin() const noexcept
 {
   return fl_.begin();
 }
 
 template< typename K, typename V, typename C >
-ConstIterator< std::pair< K, V > > Dictionary< K, V, C >::cbegin() const noexcept
+FLConstIterator< std::pair< K, V > > Dictionary< K, V, C >::cbegin() const noexcept
 {
   return fl_.cbegin();
 }
 
 template< typename K, typename V, typename C >
-Iterator< std::pair< K, V > > Dictionary< K, V, C >::end() noexcept
+FLIterator< std::pair< K, V > > Dictionary< K, V, C >::end() noexcept
 {
   return fl_.end();
 }
 
 template< typename K, typename V, typename C >
-ConstIterator< std::pair< K, V > > Dictionary< K, V, C >::end() const noexcept
+FLConstIterator< std::pair< K, V > > Dictionary< K, V, C >::end() const noexcept
 {
   return fl_.end();
 }
 
 template< typename K, typename V, typename C >
-ConstIterator< std::pair< K, V > > Dictionary< K, V, C >::cend() const noexcept
+FLConstIterator< std::pair< K, V > > Dictionary< K, V, C >::cend() const noexcept
 {
   return fl_.cend();
 }
 
 template< typename K, typename V, typename C >
-Iterator< std::pair< K, V > > Dictionary< K, V, C >::rbegin() noexcept
+FLIterator< std::pair< K, V > > Dictionary< K, V, C >::rbegin() noexcept
 {
   return fl_.end();
 }
 
 template< typename Key, typename Value, typename Compare >
-ConstIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::rbegin() const noexcept
+FLConstIterator< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::rbegin() const noexcept
 {
   return fl_.end();
 }
 
 template< typename K, typename V, typename C >
-ConstIterator< std::pair< K, V > > Dictionary< K, V, C >::crbegin() const noexcept
+FLConstIterator< std::pair< K, V > > Dictionary< K, V, C >::crbegin() const noexcept
 {
   return fl_.cend();
 }
 
 template< typename K, typename V, typename C >
-Iterator< std::pair< K, V > > Dictionary< K, V, C >::rend() noexcept
+FLIterator< std::pair< K, V > > Dictionary< K, V, C >::rend() noexcept
 {
   return fl_.begin();
 }
 
 template< typename K, typename V, typename C >
-ConstIterator< std::pair< K, V > > Dictionary< K, V, C >::rend() const noexcept
+FLConstIterator< std::pair< K, V > > Dictionary< K, V, C >::rend() const noexcept
 {
   return fl_.begin();
 }
 
 template< typename K, typename V, typename C >
-ConstIterator< std::pair< K, V > > Dictionary< K, V, C >::crend() const noexcept
+FLConstIterator< std::pair< K, V > > Dictionary< K, V, C >::crend() const noexcept
 {
   return fl_.cbegin();
 }
@@ -235,13 +235,13 @@ void Dictionary< K, V, C >::clear() noexcept
 }
 
 template< typename K, typename V, typename C >
-std::pair< Iterator< std::pair< K, V > >, bool > Dictionary< K, V, C >::insert(const K & k, const V & v)
+std::pair< FLIterator< std::pair< K, V > >, bool > Dictionary< K, V, C >::insert(const K & k, const V & v)
 {
   return insert(std::make_pair(k, v));
 }
 
 template< typename K, typename V, typename C >
-std::pair< Iterator< std::pair< K, V > >, bool > Dictionary< K, V, C >::insert(const std::pair< K, V > & value)
+std::pair< FLIterator< std::pair< K, V > >, bool > Dictionary< K, V, C >::insert(const std::pair< K, V > & value)
 {
   it ins = lower_bound(value.first);
   return std::make_pair(fl_.insert_after(cit(ins), value), true);
@@ -249,19 +249,19 @@ std::pair< Iterator< std::pair< K, V > >, bool > Dictionary< K, V, C >::insert(c
 
 template< typename K, typename V, typename C >
 template< class... Args >
-std::pair< Iterator< std::pair< K, V > >, bool > Dictionary< K, V, C >::emplace(Args &&... args)
+std::pair< FLIterator< std::pair< K, V > >, bool > Dictionary< K, V, C >::emplace(Args &&... args)
 {
   return insert(dict_t(std::forward< Args >(args)...));
 }
 
 template< typename K, typename V, typename C >
-Iterator< std::pair< K, V > > Dictionary< K, V, C >::erase_after(cit pos)
+FLIterator< std::pair< K, V > > Dictionary< K, V, C >::erase_after(cit pos)
 {
   return fl_.erase_after(pos);
 }
 
 template< typename K, typename V, typename C >
-Iterator< std::pair< K, V > > Dictionary< K, V, C >::erase_after(cit first, cit last)
+FLIterator< std::pair< K, V > > Dictionary< K, V, C >::erase_after(cit first, cit last)
 {
   return fl_.erase_after(first, last);
 }
@@ -317,7 +317,7 @@ const V Dictionary< K, V, C >::at(const K & k) const
 }
 
 template< typename K, typename V, typename C >
-Iterator< std::pair< K, V > > Dictionary< K, V, C >::find(const K & k)
+FLIterator< std::pair< K, V > > Dictionary< K, V, C >::find(const K & k)
 {
   for (auto ins = begin(); ins != end(); ins++)
   {
@@ -330,23 +330,22 @@ Iterator< std::pair< K, V > > Dictionary< K, V, C >::find(const K & k)
 }
 
 template< typename K, typename V, typename C >
-ConstIterator< std::pair< K, V > > Dictionary< K, V, C >::find(const K & k) const
+FLConstIterator< std::pair< K, V > > Dictionary< K, V, C >::find(const K & k) const
 {
   return cit(find(k));
 }
 
 template< typename K, typename V, typename C >
-std::pair< Iterator< std::pair< K, V > >, Iterator< std::pair< K, V > > > Dictionary< K, V, C >::equal_range(const K & k)
+std::pair< FLIterator< std::pair< K, V > >, FLIterator< std::pair< K, V > > > Dictionary< K, V, C >::equal_range(const K & k)
 {
   return std::make_pair(lower_bound(k), upper_bound(k));
 }
 
 template< typename K, typename V, typename C >
-std::pair< ConstIterator< std::pair< K, V > >, ConstIterator< std::pair< K, V > > > Dictionary< K, V, C >::equal_range(const K & k) const
+std::pair<FLConstIterator<std::pair<K, V>>, FLConstIterator<std::pair<K, V>>> Dictionary<K, V, C>::equal_range(const K & k) const
 {
   return std::make_pair(lower_bound(k), upper_bound(k));
 }
-
 
 template< typename K, typename V, typename C >
 std::size_t Dictionary< K, V, C >::count(const K & k) const
@@ -363,7 +362,7 @@ std::size_t Dictionary< K, V, C >::count(const K & k) const
 }
 
 template< typename K, typename V, typename C >
-Iterator< std::pair< K, V > > Dictionary< K, V, C >::lower_bound(const K & k)
+FLIterator< std::pair< K, V > > Dictionary< K, V, C >::lower_bound(const K & k)
 {
   auto res = fl_.before_begin();
   for (auto it = begin(); it != end() && cmp_(it->first, k); ++it, ++res);
@@ -371,13 +370,13 @@ Iterator< std::pair< K, V > > Dictionary< K, V, C >::lower_bound(const K & k)
 }
 
 template< typename K, typename V, typename C >
-ConstIterator< std::pair< K, V > > Dictionary< K, V, C >::lower_bound(const K & k) const
+FLConstIterator< std::pair< K, V > > Dictionary< K, V, C >::lower_bound(const K & k) const
 {
   return cit(lower_bound(k));
 }
 
 template< typename K, typename V, typename C >
-Iterator< std::pair< K, V > > Dictionary< K, V, C >::upper_bound(const K & k)
+FLIterator< std::pair< K, V > > Dictionary< K, V, C >::upper_bound(const K & k)
 {
   auto res = fl_.before_begin();
   for (auto it = begin(); it != end() && !cmp_(it->first, k); ++it, ++res);
@@ -385,7 +384,7 @@ Iterator< std::pair< K, V > > Dictionary< K, V, C >::upper_bound(const K & k)
 }
 
 template< typename K, typename V, typename C >
-ConstIterator< std::pair< K, V > > Dictionary< K, V, C >::upper_bound(const K & k) const
+FLConstIterator< std::pair< K, V > > Dictionary< K, V, C >::upper_bound(const K & k) const
 {
   return cit(upper_bound(k));
 }

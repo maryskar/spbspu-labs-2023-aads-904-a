@@ -6,8 +6,11 @@
 #include <stdexcept>
 #include <cassert>
 
-#include "iterators/iterator.hpp"
-#include "iterators/const-iterator.hpp"
+#include <stack.hpp>
+#include <queue.hpp>
+
+#include "iterators/avl-iterator.hpp"
+#include "iterators/avl-const-iterator.hpp"
 #include "tree-node.hpp"
 #include "comparator.hpp"
 
@@ -19,8 +22,8 @@ namespace turkin
     using tree = AVLtree< K, V, C >;
     using tree_t = std::pair< K, V >;
     using node_t = TreeNode< tree_t > *;
-    using it = Iterator< K, V, C >;
-    using cit = ConstIterator< K, V, C >;
+    using it = AVLIterator< K, V, C >;
+    using cit = AVLConstIterator< K, V, C >;
     public:
       AVLtree();
       AVLtree(const tree & rhs);
@@ -64,6 +67,19 @@ namespace turkin
       std::size_t size() const noexcept;
       void clear() noexcept;
       void swap(tree & rhs) noexcept;
+
+      template< typename F >
+      F traverse_lnr(F f);
+      template< typename F >
+      F traverse_lnr(F f) const;
+      template< typename F >
+      F traverse_rnl(F f);
+      template< typename F >
+      F traverse_rnl(F f) const;
+      template< typename F >
+      F traverse_breadth(F f);
+      template< typename F >
+      F traverse_breadth(F f) const;
 
     private:
       node_t root_;
@@ -152,7 +168,7 @@ turkin::AVLtree< K, V, C >::~AVLtree()
 }
 
 template< typename K, typename V, typename C >
-turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::begin() noexcept
+turkin::AVLIterator< K, V, C > turkin::AVLtree< K, V, C >::begin() noexcept
 {
   if (root_ == nullptr)
   {
@@ -167,13 +183,13 @@ turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::begin() noexcept
 }
 
 template< typename K, typename V, typename C >
-turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::begin() const noexcept
+turkin::AVLConstIterator< K, V, C > turkin::AVLtree< K, V, C >::begin() const noexcept
 {
   return cbegin();
 }
 
 template< typename K, typename V, typename C >
-turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::cbegin() const noexcept
+turkin::AVLConstIterator< K, V, C > turkin::AVLtree< K, V, C >::cbegin() const noexcept
 {
   if (root_ == nullptr)
   {
@@ -188,19 +204,19 @@ turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::cbegin() const noex
 }
 
 template< typename K, typename V, typename C >
-turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::end() noexcept
+turkin::AVLIterator< K, V, C > turkin::AVLtree< K, V, C >::end() noexcept
 {
   return it(end_, end_);
 }
 
 template< typename K, typename V, typename C >
-turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::end() const noexcept
+turkin::AVLConstIterator< K, V, C > turkin::AVLtree< K, V, C >::end() const noexcept
 {
   return cend();
 }
 
 template< typename K, typename V, typename C >
-turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::cend() const noexcept
+turkin::AVLConstIterator< K, V, C > turkin::AVLtree< K, V, C >::cend() const noexcept
 {
   return cit(end_, end_);
 }
@@ -235,13 +251,13 @@ V & turkin::AVLtree< K, V, C >::operator[](const K & key)
 }
 
 template< typename K, typename V, typename C >
-turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::insert(const K & k, const V & v)
+turkin::AVLIterator< K, V, C > turkin::AVLtree< K, V, C >::insert(const K & k, const V & v)
 {
   return insert(std::make_pair(k, v));
 }
 
 template< typename K, typename V, typename C >
-turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::insert(const tree_t & value)
+turkin::AVLIterator< K, V, C > turkin::AVLtree< K, V, C >::insert(const tree_t & value)
 {
   auto result = find(value.first);
   if (result != end())
@@ -271,7 +287,7 @@ It turkin::AVLtree< K, V, C >::insert(It first, It last)
 }
 
 template< typename K, typename V, typename C >
-turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::erase(const K & k)
+turkin::AVLIterator< K, V, C > turkin::AVLtree< K, V, C >::erase(const K & k)
 {
   if (empty())
   {
@@ -281,7 +297,7 @@ turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::erase(const K & k)
 }
 
 template< typename K, typename V, typename C >
-turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::erase(it pos)
+turkin::AVLIterator< K, V, C > turkin::AVLtree< K, V, C >::erase(it pos)
 {
   if (empty())
   {
@@ -292,13 +308,13 @@ turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::erase(it pos)
 }
 
 template< typename K, typename V, typename C >
-turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::erase(cit pos)
+turkin::AVLIterator< K, V, C > turkin::AVLtree< K, V, C >::erase(cit pos)
 {
   return cit(erase(it(pos.cur_)), end_);
 }
 
 template< typename K, typename V, typename C >
-turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::erase(cit first, cit last)
+turkin::AVLIterator< K, V, C > turkin::AVLtree< K, V, C >::erase(cit first, cit last)
 {
   for (auto it = first; it != last; it++)
   {
@@ -308,7 +324,7 @@ turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::erase(cit first, cit las
 }
 
 template< typename K, typename V, typename C >
-turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::lower_bound(const K & key)
+turkin::AVLIterator< K, V, C > turkin::AVLtree< K, V, C >::lower_bound(const K & key)
 {
   auto ins = it(root_, end_);
   while (ins != end())
@@ -330,13 +346,13 @@ turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::lower_bound(const K & ke
 }
 
 template< typename K, typename V, typename C >
-turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::lower_bound(const K & key) const
+turkin::AVLConstIterator< K, V, C > turkin::AVLtree< K, V, C >::lower_bound(const K & key) const
 {
   return cit(lower_bound(key), end_);
 }
 
 template< typename K, typename V, typename C >
-turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::upper_bound(const K & key)
+turkin::AVLIterator< K, V, C > turkin::AVLtree< K, V, C >::upper_bound(const K & key)
 {
   auto ins = lower_bound(key);
   if (ins == end())
@@ -347,7 +363,7 @@ turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::upper_bound(const K & ke
 }
 
 template< typename K, typename V, typename C >
-turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::upper_bound(const K & key) const
+turkin::AVLConstIterator< K, V, C > turkin::AVLtree< K, V, C >::upper_bound(const K & key) const
 {
   return cit(upper_bound(key), end_);
 }
@@ -367,7 +383,7 @@ std::size_t turkin::AVLtree< K, V, C >::count(const K & key) const
 }
 
 template< typename K, typename V, typename C >
-turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::find(const K & key)
+turkin::AVLIterator< K, V, C > turkin::AVLtree< K, V, C >::find(const K & key)
 {
   auto ins = begin();
   for(; ins != end() && neq< K, C >(key, ins->first); ins++);
@@ -375,7 +391,7 @@ turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::find(const K & key)
 }
 
 template< typename K, typename V, typename C >
-turkin::ConstIterator< K, V, C > turkin::AVLtree< K, V, C >::find(const K & key) const
+turkin::AVLConstIterator< K, V, C > turkin::AVLtree< K, V, C >::find(const K & key) const
 {
   return cit(find(key), end_);
 }
@@ -406,6 +422,106 @@ void turkin::AVLtree< K, V, C >::swap(tree & rhs) noexcept
 {
   std::swap(root_, rhs.root_);
   std::swap(cmp_, rhs.cmp_);
+}
+
+template< typename K, typename V, typename C>
+template< typename F >
+F turkin::AVLtree< K, V, C >::traverse_lnr(F f)
+{
+  Stack< node_t > stack;
+  node_t cur = root_;
+
+  while (!stack.isEmpty() || cur != end_)
+  {
+    if (cur != end_)
+    {
+      stack.push(cur);
+      cur = cur->left;
+    }
+    else
+    {
+      cur = stack.get();
+      stack.pop();
+      f(cur->data);
+      cur = cur->right;
+    }
+  }
+  return f;
+}
+
+template< typename K, typename V, typename C>
+template< typename F >
+F turkin::AVLtree< K, V, C >::traverse_lnr(F f) const
+{
+  return static_cast< const F >(traverse_lnr(f));
+}
+
+template< typename K, typename V, typename C>
+template< typename F >
+F turkin::AVLtree< K, V, C >::traverse_rnl(F f)
+{
+  Stack< node_t > stack;
+  node_t cur = root_;
+
+  while (!stack.isEmpty() || cur != end_)
+  {
+    if (cur != end_)
+    {
+      stack.push(cur);
+      cur = cur->right;
+    }
+    else
+    {
+      cur = stack.get();
+      stack.pop();
+      f(cur->data);
+      cur = cur->left;
+    }
+  }
+  return f;
+}
+
+template< typename K, typename V, typename C>
+template< typename F >
+F turkin::AVLtree< K, V, C >::traverse_rnl(F f) const
+{
+  return static_cast< const F >(traverse_rnl(f));
+}
+
+template< typename K, typename V, typename C>
+template< typename F >
+F turkin::AVLtree< K, V, C >::traverse_breadth(F f)
+{
+  if (root_ == nullptr)
+  {
+    return f;
+  }
+  Queue< node_t > queue;
+  queue.push(root_);
+
+  while (!queue.isEmpty())
+  {
+    node_t cur = queue.get();
+    queue.pop();
+    f(cur->data);
+
+    if (cur->left != end_)
+    {
+      queue.push(cur->left);
+    }
+    if (cur->right != end_)
+    {
+      queue.push(cur->right);
+    }
+  }
+  return f;
+}
+
+template< typename K, typename V, typename C>
+template< typename F >
+F turkin::AVLtree< K, V, C >::traverse_breadth(F f) const
+{
+  return static_cast< const F >(traverse_breadth(f));
 }
 
 template< typename K, typename V, typename C >
@@ -459,7 +575,7 @@ void turkin::AVLtree< K, V, C >::free(node_t src)
 }
 
 template< typename K, typename V, typename C >
-turkin::Iterator< K, V, C > turkin::AVLtree< K, V, C >::insert(node_t src, const tree_t & value)
+turkin::AVLIterator< K, V, C > turkin::AVLtree< K, V, C >::insert(node_t src, const tree_t & value)
 {
   if (cmp_(value.first, src->data.first))
   {
