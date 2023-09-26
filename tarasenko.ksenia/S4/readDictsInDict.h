@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include "map.h"
+#include <map.h>
 
 namespace tarasenko
 {

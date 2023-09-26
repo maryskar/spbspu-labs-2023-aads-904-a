@@ -1,6 +1,7 @@
 #include "mathfunc.h"
 #include <stdexcept>
 #include <limits>
+
 namespace tarasenko
 {
   long long checkSign(long long val)

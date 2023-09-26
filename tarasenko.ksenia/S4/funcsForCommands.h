@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <functional>
-#include "map.h"
+#include <map.h>
 
 namespace tarasenko
 {

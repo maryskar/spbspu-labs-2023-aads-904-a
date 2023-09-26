@@ -41,7 +41,8 @@ int main(int argc, char* argv[])
     auto it = directs.find(direct);
     if (directs.find(direct) == directs.end())
     {
-      tarasenko::outMessageInvalidCommand(std::cout);
+      std::cout << "Invalid command\n";
+      return 1;
     }
     else
     {
