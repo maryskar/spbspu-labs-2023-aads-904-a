@@ -1,6 +1,7 @@
 #ifndef S6_PRINT_H
 #define S6_PRINT_H
 #include <iostream>
+
 namespace tarasenko
 {
   template< typename OutputIter >

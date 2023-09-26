@@ -2,6 +2,7 @@
 #define S6_BUCKET_H
 
 #include <cmath>
+#include <forward_list.h>
 #include "qsort.h"
 
 namespace tarasenko

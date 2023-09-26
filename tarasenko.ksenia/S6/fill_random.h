@@ -1,9 +1,9 @@
 #ifndef S6_FILL_RANDOM_H
 #define S6_FILL_RANDOM_H
 
-#include <forward_list.h>
 #include <random>
 #include <stdexcept>
+#include <forward_list.h>
 
 namespace tarasenko
 {
