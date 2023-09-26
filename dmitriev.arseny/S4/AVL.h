@@ -413,6 +413,15 @@ namespace dmitriev
 		tree* m_root;
 		Compare m_cmp;
 
+		tree* max() const noexcept
+		{
+			return findMax(m_root);
+		}
+		tree* min() const noexcept
+		{
+			return findMin(m_root);
+		}
+
 		tree* findMax(tree* node) const noexcept
 		{
 			if (isEmpty(node))
