@@ -25,5 +25,14 @@ namespace aksenov
     listT< T > *node_;
   };
 
+  template< typename T >
+  ForwardIterator< T >::ForwardIterator(listT< T > *node):
+          node_(node)
+  {}
+
+  template< typename T >
+  ForwardIterator< T >::ForwardIterator():
+          node_(nullptr)
+  {}
 }
 #endif
