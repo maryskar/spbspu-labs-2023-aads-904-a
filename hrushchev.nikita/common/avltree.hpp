@@ -35,7 +35,6 @@ namespace hrushchev
       const_iterator cbegin();
       iterator end();
       const_iterator cend();
-<<<<<<< HEAD:hrushchev.nikita/common/avltree.hpp
       template< typename F >
       F traverse_lnr(F f) const;
       template< typename F >
@@ -48,8 +47,6 @@ namespace hrushchev
       F traverse_rnl(F f);
       template< typename F >
       F traverse_breadth(F f);
-=======
->>>>>>> master:hrushchev.nikita/S4/avltree.hpp
     private:
       void updateHeight(Tree< data_t >* tree);
       Tree< data_t >* insert(const Key& key, const Value& value, Tree< data_t >* tree);
@@ -220,7 +217,6 @@ namespace hrushchev
   }
 
   template< typename Key, typename Value, typename Compare >
-<<<<<<< HEAD:hrushchev.nikita/common/avltree.hpp
   template< typename F >
   F AVLTree< Key, Value, Compare >::traverse_lnr(F f) const
   {
@@ -244,7 +240,6 @@ namespace hrushchev
     }
     return f;
   }
-
 
 
   template< typename Key, typename Value, typename Compare >
@@ -325,8 +320,6 @@ namespace hrushchev
   }
 
   template<typename Key, typename Value, typename Compare>
-=======
->>>>>>> master:hrushchev.nikita/S4/avltree.hpp
   void AVLTree<Key, Value, Compare>::updateHeight(Tree< data_t >* tree)
   {
     if (!tree)
