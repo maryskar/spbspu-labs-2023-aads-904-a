@@ -51,5 +51,19 @@ namespace aksenov
     ++(*this);
     return temp;
   }
+
+  template< typename T >
+  T &ForwardIterator< T >::operator*()
+  {
+    assert(node_);
+    return node_->data;
+  }
+
+  template< typename T >
+  T *ForwardIterator< T >::operator->()
+  {
+    assert(node_ != nullptr);
+    return std::addressof(node_->data);
+  }
 }
 #endif
