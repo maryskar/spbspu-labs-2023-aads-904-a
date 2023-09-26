@@ -441,6 +441,10 @@ namespace dmitriev
 				insert(*first);
 			}
 		}
+		void insert(std::initializer_list< std::pair< Key, Value > > initList)
+		{
+			insert(initList.begin(), initList.end());
+		}
 
 		iterator begin()
 		{
