@@ -1,7 +1,7 @@
 #ifndef MASHKIN_ANDREW_TRAVERSES_H
 #define MASHKIN_ANDREW_TRAVERSES_H
 #include <iostream>
-#include <AVL.h>
+#include <AVL/AVL.h>
 #include "structsForTraverse.h"
 
 namespace mashkin
