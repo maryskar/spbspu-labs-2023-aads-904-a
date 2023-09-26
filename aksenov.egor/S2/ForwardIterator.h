@@ -1,0 +1,4 @@
+#ifndef FORWARDITERATOR_H
+#define FORWARDITERATOR_H
+
+#endif
