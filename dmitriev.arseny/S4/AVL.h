@@ -480,6 +480,26 @@ namespace dmitriev
 			return reverseConstIterator();
 		}
 
+		iterator lowerBound(const Key& key)
+		{
+			iterator res = begin();
+
+			for (; !isEmpty(res.m_ptr) && m_cmp(res->first, key); res++)
+			{}
+
+			return res;
+		}
+		iterator upperBound(const Key& key)
+		{
+			iterator res = begin();
+
+			for (; !isEmpty(res.m_ptr) && !m_cmp(key, res->first); res++)
+			{}
+
+			return res;
+		}
+
+
 		iterator find(const Key& key)
 		{
 			iterator res = begin();
