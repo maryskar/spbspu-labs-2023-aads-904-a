@@ -2,7 +2,7 @@
 #define QUEUE_H
 #include <cstddef>
 #include <stdexcept>
-#include "list.h"
+#include "ForwardList/list.h"
 
 namespace mashkin
 {

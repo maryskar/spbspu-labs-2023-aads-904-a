@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iterator>
 #include <string>
+#include "AVL/AVL.h"
 #include "dictionary.h"
 
 namespace mashkin

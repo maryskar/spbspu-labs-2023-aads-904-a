@@ -5,8 +5,8 @@
 #include <string>
 #include <IOrealization.h>
 #include "AVL.h"
+#include "AVL/tree.h"
 #include "TreeWithTraverses.h"
-#include "tree.h"
 
 int main(int argc, char** argv)
 {
