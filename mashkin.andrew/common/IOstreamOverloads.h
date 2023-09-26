@@ -17,6 +17,9 @@ namespace mashkin
   std::istream& operator>>(std::istream& inp, AVL< std::string, AVL< int, std::string > >& dicts);
   std::ostream& operator<<(std::ostream& out, const AVL< int, std::string >& dicts);
 
+  std::ostream& operator<<(std::ostream& out, const Queue< std::string >& que);
+  std::ostream& operator<<(std::ostream& out, const Stack< std::string >& stack);
+
   std::ostream& operator<<(std::ostream& out, const QueueForTraverse& queueForTraverse);
   std::ostream& operator<<(std::ostream& out, const StackForTraverse& stackForTraverse);
 }
