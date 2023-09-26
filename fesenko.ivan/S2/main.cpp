@@ -16,16 +16,21 @@ int main(int argc, char *argv[])
     std::cerr << "Can`t open the file\n";
     return 2;
   }
-  using dictionary = fesenko::Dictionary< int, std::string, std::less< > >;
-  using dict_of_dict = fesenko::Dictionary< std::string, dictionary, std::less< std::string > >;
-  dict_of_dict container = fesenko::genDictOfDicts< dict_of_dict, dictionary >(in);
-  try {
-    while (std::cin) {
-      std::string command;
-      std::cin >> command;
-      if (!std::cin) {
-        break;
-      }
+  using dict = fesenko::Dictionary< int, std::string, std::less< > >;
+  using dict_of_dict = fesenko::Dictionary< std::string, dict, std::less< std::string > >;
+  using dict_c = fesenko::Dictionary< std::string, dict (*)(const dict &, const dict &), std::less< > >;
+  dict_c commands;
+  commands.insert(std::make_pair("complement", fesenko::make_complementation< dict >));
+  commands.insert(std::make_pair("intersect", fesenko::make_intersection< dict >));
+  commands.insert(std::make_pair("union", fesenko::make_union< dict >));
+  dict_of_dict container = fesenko::genDictOfDicts< dict_of_dict, dict >(in);
+  while (std::cin) {
+    std::string command;
+    std::cin >> command;
+    if (!std::cin) {
+      break;
+    }
+    try {
       if (command == "print") {
         std::string name;
         std::cin >> name;
@@ -36,28 +41,19 @@ int main(int argc, char *argv[])
         std::string dictName1;
         std::string dictName2;
         std::cin >> newDictName >> dictName1 >> dictName2;
-        dictionary dict1 = container.at(dictName1);
-        dictionary dict2 = container.at(dictName2);
-        dictionary newDict;
-        if (command == "complement") {
-          newDict = make_complementation(dict1, dict2);
-        } else if (command == "intersect") {
-          newDict = make_intersection(dict1, dict2);
-        } else if (command == "union") {
-          newDict = make_union(dict1, dict2);
-        } else {
-          fesenko::outInvalidCommandMessage(std::cout);
-          std::cout << "\n";
-          continue;
-        }
-        if (container.insert(std::make_pair(newDictName, newDict)).second == false) {
+        dict dict1 = container.at(dictName1);
+        dict dict2 = container.at(dictName2);
+        auto func = commands.at(command);
+        dict newDict = func(dict1, dict2);
+        if (!container.insert(std::make_pair(newDictName, newDict)).second) {
           auto it = container.find(newDictName);
           container.at(it->first) = newDict;
         }
       }
+    } catch (...) {
+      fesenko::outInvalidCommandMessage(std::cout);
+      std::cout << "\n";
     }
-  } catch (...) {
-    fesenko::outInvalidCommandMessage(std::cout);
-    std::cout << "\n";
   }
 }
+

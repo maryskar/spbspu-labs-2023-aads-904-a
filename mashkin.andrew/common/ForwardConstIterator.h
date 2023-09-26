@@ -2,10 +2,10 @@
 #define S2_FORWARDCONSTITERATOR_H
 #include <cassert>
 #include <memory>
-#include <list.h>
 #include "ForwardIterator.h"
 #include "dictionary.h"
 #include "forwardList.h"
+#include "list.h"
 
 namespace mashkin
 {
