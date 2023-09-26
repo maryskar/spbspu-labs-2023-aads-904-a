@@ -433,6 +433,14 @@ namespace dmitriev
 		{
 			insert(keyValue);
 		}
+		template< typename inputIterator >
+		void insert(inputIterator first, inputIterator last)
+		{
+			for (; first != last; first++)
+			{
+				insert(*first);
+			}
+		}
 
 		iterator begin()
 		{
