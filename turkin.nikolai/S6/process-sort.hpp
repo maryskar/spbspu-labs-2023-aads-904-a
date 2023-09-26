@@ -33,6 +33,8 @@ namespace turkin
     out_storage(list.begin(), list.end(), out) << "\n";
     shell_sort(list.begin(), list.end(), p);
     out_storage(list.begin(), list.end(), out) << "\n";
+    merge_sort(list.begin(), list.size(), p);
+    out_storage(list.begin(), list.end(), out) << "\n";
 
     quick_sort(deque.begin(), deque.end(), p);
     out_storage(deque.begin(), deque.end(), out) << "\n";

@@ -18,7 +18,6 @@ int main(int argc, char * argv[])
 
   std::string trvs_t = argv[1];
   std::string data_t = argv[2];
-  std::size_t amount = std::stoull(argv[3]);
   turkin::AVLtree< std::string, void (*)(std::size_t, std::ostream &), std::less< > > pr;
   pr.insert("ascending ints", process< int, std::less< int > >);
   pr.insert("ascending floats", process< float, std::less< float > >);
@@ -27,6 +26,7 @@ int main(int argc, char * argv[])
 
   try
   {
+    std::size_t amount = std::stoull(argv[3]);
     pr.at(trvs_t + " " + data_t)(amount, std::cout);
   }
   catch (...)
