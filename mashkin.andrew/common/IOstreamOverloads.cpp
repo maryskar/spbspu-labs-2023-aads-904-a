@@ -116,4 +116,26 @@ namespace mashkin
     }
     return printDictionaries(out, dicts);
   }
+
+  std::ostream& operator<<(std::ostream& out, const QueueForTraverse& queueForTraverse)
+  {
+    std::ostream::sentry sentry(out);
+    if (!sentry)
+    {
+      return out;
+    }
+    out << queueForTraverse.summ_ << " " << queueForTraverse.res_;
+    return out;
+  }
+
+  std::ostream& operator<<(std::ostream& out, const StackForTraverse& stackForTraverse)
+  {
+    std::ostream::sentry sentry(out);
+    if (!sentry)
+    {
+      return out;
+    }
+    out << stackForTraverse.summ_ << " " << stackForTraverse.res_;
+    return out;
+  }
 }
