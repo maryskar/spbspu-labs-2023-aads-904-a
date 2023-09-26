@@ -117,6 +117,46 @@ namespace mashkin
     return printDictionaries(out, dicts);
   }
 
+  std::ostream& operator<<(std::ostream& out, const Queue< std::string >& que)
+  {
+    std::ostream::sentry sentry(out);
+    if (!sentry)
+    {
+      return out;
+    }
+    Queue< std::string > res(que);
+    while (res.isEmpty())
+    {
+      out << res.getHead();
+      res.dequeue();
+      if (res.isEmpty())
+      {
+        out << " ";
+      }
+    }
+    return out;
+  }
+
+  std::ostream& operator<<(std::ostream& out, const Stack< std::string >& stack)
+  {
+    std::ostream::sentry sentry(out);
+    if (!sentry)
+    {
+      return out;
+    }
+    Stack< std::string > res(stack);
+    while (res.isEmpty())
+    {
+      out << res.getTop();
+      res.pop();
+      if (res.isEmpty())
+      {
+        out << " ";
+      }
+    }
+    return out;
+  }
+
   std::ostream& operator<<(std::ostream& out, const QueueForTraverse& queueForTraverse)
   {
     std::ostream::sentry sentry(out);
