@@ -65,12 +65,21 @@ namespace hrushchev
 
   template< typename Key, typename Value, typename Compare >
   AVLTree< Key, Value, Compare >::AVLTree(const AVLTree& other):
-  comp_(other.comp_)
+    comp_(other.comp_)
   {
     if (other.node_)
     {
-      node_ = new Tree< data_t >();
-      copyNodes(other.node_, node_);
+      node_ = nullptr;
+      try
+      {
+        node_ = new Tree< data_t >();
+        copyNodes(other.node_, node_);
+      }
+      catch (...)
+      {
+        delete node_;
+        throw;
+      }
     }
     else
     {
@@ -92,12 +101,20 @@ namespace hrushchev
     if (this != &other)
     {
       clear(node_);
-      delete node_;
 
       if (other.node_)
       {
-        node_ = new Tree< data_t >();
-        copyNodes(other.node_, node_);
+        node_ = nullptr;
+        try
+        {
+          node_ = new Tree< data_t >();
+          copyNodes(other.node_, node_);
+        }
+        catch (...)
+        {
+          delete node_;
+          throw;
+        }
       }
       else
       {
@@ -122,7 +139,6 @@ namespace hrushchev
     }
     return *this;
   }
-
 
   template< typename Key, typename Value, typename Compare >
   void AVLTree< Key, Value, Compare >::insert(const Key& key, const Value& value)
@@ -451,16 +467,32 @@ namespace hrushchev
 
     if (source_node->left_)
     {
-      destination_node->left_ = new Tree< data_t >();
-      destination_node->left_->head_ = destination_node;
-      copyNodes(source_node->left_, destination_node->left_);
+      destination_node->left_ = nullptr;
+      try
+      {
+        destination_node->left_ = new Tree< data_t >();
+        destination_node->left_->head_ = destination_node;
+        copyNodes(source_node->left_, destination_node->left_);
+      }
+      catch(...)
+      {
+        delete destination_node->left_;
+      }
     }
 
     if (source_node->right_)
     {
-      destination_node->right_ = new Tree< data_t >();
-      destination_node->right_->head_ = destination_node;
-      copyNodes(source_node->right_, destination_node->right_);
+      destination_node->right_ = nullptr;
+      try
+      {
+        destination_node->right_ = new Tree< data_t >();
+        destination_node->right_->head_ = destination_node;
+        copyNodes(source_node->right_, destination_node->right_);
+      }
+      catch (...)
+      {
+        delete destination_node->right_;
+      }
     }
   }
 }
