@@ -13,6 +13,15 @@ namespace dmitriev
 		Tree< T >* left;
 		Tree< T >* right;
 	};
+
+	template< typename T >
+	bool isEmpty(const Tree< T >* node) noexcept
+	{
+		return node == nullptr;
+	}
+
+
+
 }
 
 #endif
