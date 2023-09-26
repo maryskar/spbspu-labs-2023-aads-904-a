@@ -5,7 +5,7 @@
 
 namespace hrushchev
 {
-template< typename ForwardIt >
+  template< typename ForwardIt >
   size_t getDistanse(const ForwardIt begin, const ForwardIt end)
   {
     size_t res = 0;
