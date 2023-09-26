@@ -126,6 +126,18 @@ namespace dmitriev
 	}
 
 	template< typename Key, typename Value, typename Compare >
+	class ConstBidirectionalIterator: public std::iterator< std::bidirectional_iterator_tag, const std::pair< Key, Value > >
+	{
+	public:
+		friend class AVL< Key, Value, Compare >;
+		friend class BidirectionalIterator< Key, Value, Compare >;
+
+	private:
+		const tree* m_ptr;
+
+	};
+
+	template< typename Key, typename Value, typename Compare >
 	class AVL
 	{
 	public:
