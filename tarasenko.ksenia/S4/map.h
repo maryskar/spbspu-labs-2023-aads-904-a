@@ -1,5 +1,5 @@
-#ifndef MAP_H
-#define MAP_H
+#ifndef S4_MAP_H
+#define S4_MAP_H
 
 #include <utility>
 #include "RedBlackTree.h"
@@ -15,10 +15,12 @@ namespace tarasenko
      pair_compare():
        compare_()
      {}
+
      bool operator()(const std::pair< Key, Value >& lhs, const std::pair< Key, Value >& rhs) const
      {
        return compare_(lhs.first, rhs.first);
      }
+
     private:
      Compare compare_;
     };
@@ -32,8 +34,8 @@ namespace tarasenko
    using value_compare = details::pair_compare< Key, Value, Compare >;
    using iterator = BidirectionalIterator< value_type, value_compare >;
    using const_iterator = ConstBidirectionalIterator< value_type, value_compare >;
-   using reverse_iterator	= std::reverse_iterator< iterator >;
-   using const_reverse_iterator =	std::reverse_iterator< const_iterator >;
+   using reverse_iterator = std::reverse_iterator< iterator >;
+   using const_reverse_iterator = std::reverse_iterator< const_iterator >;
   public:
    Map():
      root_(),
@@ -225,7 +227,7 @@ namespace tarasenko
 
   template< typename Key, typename Value, typename Compare >
   std::pair< typename Map< Key, Value, Compare >::iterator, bool >
-     Map< Key, Value, Compare >::insert(const std::pair< Key, Value >& value)
+    Map< Key, Value, Compare >::insert(const std::pair< Key, Value >& value)
   {
     if (!isEmpty())
     {
@@ -245,22 +247,22 @@ namespace tarasenko
 
   template< typename Key, typename Value, typename Compare >
   std::pair< typename Map< Key, Value, Compare >::iterator, bool >
-     Map< Key, Value, Compare >::insert(std::pair< Key, Value >&& value)
+    Map< Key, Value, Compare >::insert(std::pair< Key, Value >&& value)
   {
-    const value_type val(std::forward< value_type > >(value));
+    const value_type val(std::forward< value_type >(value));
     return insert(val);
   }
 
   template< typename Key, typename Value, typename Compare >
   typename Map< Key, Value, Compare >::iterator
-     Map< Key, Value, Compare >::insert(const_iterator pos, const value_type& value)
+    Map< Key, Value, Compare >::insert(const_iterator pos, const value_type& value)
   {
     return root_.insert(pos, value);
   }
 
   template< typename Key, typename Value, typename Compare >
   typename Map< Key, Value, Compare >::iterator
-     Map< Key, Value, Compare >::insert(const_iterator pos, value_type&& value)
+    Map< Key, Value, Compare >::insert(const_iterator pos, value_type&& value)
   {
     const value_type val(std::forward< value_type >(value));
     return insert(pos, val);
@@ -278,41 +280,43 @@ namespace tarasenko
 
   template< typename Key, typename Value, typename Compare >
   std::pair< typename Map< Key, Value, Compare >::iterator, bool >
-     Map< Key, Value, Compare >::push(const Key& k, const Value& v)
+    Map< Key, Value, Compare >::push(const Key& k, const Value& v)
   {
     std::pair< Key, Value > data(k, v);
     return insert(data);
-  };
+  }
 
   template< typename Key, typename Value, typename Compare >
   typename Map< Key, Value, Compare >::iterator
-     Map< Key, Value, Compare >::find(const Key& key)
+    Map< Key, Value, Compare >::find(const Key& key)
   {
     return root_.find({key, Value()});
   }
 
   template< typename Key, typename Value, typename Compare >
   typename Map< Key, Value, Compare >::const_iterator
-     Map< Key, Value, Compare >::find(const Key& key) const
+    Map< Key, Value, Compare >::find(const Key& key) const
   {
     return root_.find({key, Value()});
   }
 
   template< typename Key, typename Value, typename Compare >
   typename Map< Key, Value, Compare >::iterator
-     Map< Key, Value, Compare >::erase(iterator pos)
+    Map< Key, Value, Compare >::erase(iterator pos)
   {
     return root_.erase(pos);
   }
+
   template< typename Key, typename Value, typename Compare >
   typename Map< Key, Value, Compare >::iterator
-     Map< Key, Value, Compare >::erase(const_iterator pos)
+    Map< Key, Value, Compare >::erase(const_iterator pos)
   {
     return root_.erase(pos);
   }
+
   template< typename Key, typename Value, typename Compare >
   typename Map< Key, Value, Compare >::iterator
-     Map< Key, Value, Compare >::erase(const_iterator first, const_iterator last)
+    Map< Key, Value, Compare >::erase(const_iterator first, const_iterator last)
   {
     return root_.erase(first, last);
   }
@@ -359,7 +363,7 @@ namespace tarasenko
 
   template< typename Key, typename Value, typename Compare >
   typename Map< Key, Value, Compare >::iterator
-     Map< Key, Value, Compare >::lower_bound(const Key& key)
+    Map< Key, Value, Compare >::lower_bound(const Key& key)
   {
     auto curr = begin();
     while (curr != end())
@@ -382,14 +386,14 @@ namespace tarasenko
 
   template< typename Key, typename Value, typename Compare >
   typename Map< Key, Value, Compare >::const_iterator
-     Map< Key, Value, Compare >::lower_bound(const Key& key) const
+    Map< Key, Value, Compare >::lower_bound(const Key& key) const
   {
     return const_iterator(lower_bound(key));
   }
 
   template< typename Key, typename Value, typename Compare >
   typename Map< Key, Value, Compare >::iterator
-     Map< Key, Value, Compare >::upper_bound(const Key& key)
+    Map< Key, Value, Compare >::upper_bound(const Key& key)
   {
     iterator it = lower_bound(key);
     if (it == end())
@@ -411,7 +415,7 @@ namespace tarasenko
 
   template< typename Key, typename Value, typename Compare >
   typename Map< Key, Value, Compare >::const_iterator
-     Map< Key, Value, Compare >::upper_bound(const Key& key) const
+    Map< Key, Value, Compare >::upper_bound(const Key& key) const
   {
     return const_iterator(upper_bound(key));
   }

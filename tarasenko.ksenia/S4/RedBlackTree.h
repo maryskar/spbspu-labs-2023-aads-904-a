@@ -1,5 +1,5 @@
-#ifndef RBTREE_H
-#define RBTREE_H
+#ifndef S4_RBTREE_H
+#define S4_RBTREE_H
 
 #include "Tree.h"
 #include "bidirect_iter.h"
@@ -19,8 +19,8 @@ namespace tarasenko
    using RBTree = RedBlackTree< T, Compare >;
    using iterator = BidirectionalIterator< T, Compare >;
    using const_iterator = ConstBidirectionalIterator< T, Compare >;
-   using reverse_iterator	= std::reverse_iterator< iterator >;
-   using const_reverse_iterator =	std::reverse_iterator< const_iterator >;
+   using reverse_iterator = std::reverse_iterator< iterator >;
+   using const_reverse_iterator = std::reverse_iterator< const_iterator >;
   public:
    RedBlackTree():
      root_()
@@ -42,8 +42,6 @@ namespace tarasenko
        clear();
        throw;
      }
-     root_.copyBegin(other.root_);
-     root_.copyEnd(other.root_);
    }
 
    RedBlackTree(RBTree&& other):
@@ -578,5 +576,4 @@ namespace tarasenko
     return !(lhs == rhs);
   }
 }
-
 #endif

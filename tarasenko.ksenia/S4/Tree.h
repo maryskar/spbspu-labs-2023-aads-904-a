@@ -13,7 +13,7 @@ namespace tarasenko
         right_(nullptr),
         parent_(nullptr),
         color_(' ')
-      {};
+      {}
 
       Tree(const T& data, Tree< T, Compare >* left, Tree< T, Compare >* right, Tree< T, Compare >* parent):
         data_(data),
@@ -21,7 +21,7 @@ namespace tarasenko
         right_(right),
         parent_(parent),
         color_(' ')
-      {};
+      {}
 
       T data_;
       Tree< T, Compare >* left_;
