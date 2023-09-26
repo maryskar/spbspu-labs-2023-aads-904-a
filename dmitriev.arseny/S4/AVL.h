@@ -19,6 +19,22 @@ namespace dmitriev
 		friend class AVL< Key, Value, Compare >;
 		friend class ConstBidirectionalIterator< Key, Value, Compare >;
 
+		using T = typename AVL< Key, Value, Compare >::dataPair;
+		using tree = typename AVL< Key, Value, Compare >::tree;
+		using constIterator = ConstBidirectionalIterator< Key, Value, Compare >;
+
+		BidirectionalIterator();
+		explicit BidirectionalIterator(tree* other);
+		BidirectionalIterator& operator++();
+		BidirectionalIterator operator++(int);
+		BidirectionalIterator& operator--();
+		BidirectionalIterator operator--(int);
+
+		bool operator==(const BidirectionalIterator& other) const;
+		bool operator!=(const BidirectionalIterator& other) const;
+
+		T& operator*();
+		T* operator->();
 
 	private:
 		tree* m_ptr;
