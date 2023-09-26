@@ -25,6 +25,18 @@ namespace hrushchev
     f = tree.traverse_breadth(f);
     return f;
   }
+
+  template< typename F >
+  using func_type = F(*)(const hrushchev::AVLTree< long long, std::string >&, F);
+  template< typename F >
+  AVLTree< std::string, func_type< F > > createDict()
+  {
+    AVLTree< std::string, func_type< F > > dict;
+    dict.insert("ascending", hrushchev::doAscending);
+    dict.insert("descending", hrushchev::doDescending);
+    dict.insert("breadth", hrushchev::doAscending);
+    return dict;
+  }
 }
 
 #endif

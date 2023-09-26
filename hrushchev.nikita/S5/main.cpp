@@ -10,6 +10,7 @@
 
 int main(int argc, char* argv[])
 {
+
   if (argc != 3)
   {
     std::cout << "Error arg\n";
@@ -45,8 +46,7 @@ int main(int argc, char* argv[])
       return 1;
     }
     hrushchev::StringCreator creator;
-    hrushchev::AVLTree< std::string, hrushchev::StringCreator(*)(const hrushchev::AVLTree< long long, std::string >& tree, hrushchev::StringCreator f) > traverses;
-    traverses.insert("ascending", hrushchev::doAscending);
+    auto traverses = hrushchev::createDict< hrushchev::StringCreator >();
     if ((traverse == "ascending"))
     {
       creator = traverses.at("ascending")(avlTree, creator);
