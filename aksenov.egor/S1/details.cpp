@@ -48,8 +48,8 @@ void aksenov::processInput(std::istream &in, Stack< long long > &res)
     {
       continue;
     }
-    Queue<std::string> infixQueue = convertToInfix(str);
-    Queue<std::string> postfixQueue = getPostfixQueue(infixQueue);
+    Queue< std::string > infixQueue = convertToInfix(str);
+    Queue< std::string > postfixQueue = getPostfixQueue(infixQueue);
     res.push(solvePostfixExpr(postfixQueue));
   }
 }

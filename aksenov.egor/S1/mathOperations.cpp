@@ -27,15 +27,15 @@ long long aksenov::multiply(long long lhs, long long rhs)
   {
     throw std::overflow_error("overflow in multiply");
   }
-  else if ((lhs > 0 && rhs < 0 ) && (lhs > min / rhs))
+  if ((lhs > 0 && rhs < 0 ) && (lhs > min / rhs))
   {
     throw std::underflow_error("underflow in multiply");
   }
-  else if ((lhs < 0 && rhs < 0) && (lhs < max / rhs))
+  if ((lhs < 0 && rhs < 0) && (lhs < max / rhs))
   {
     throw std::overflow_error("overflow in multiply");
   }
-  else if ((lhs < 0 && rhs > 0) && (lhs < min / rhs))
+  if ((lhs < 0 && rhs > 0) && (lhs < min / rhs))
   {
     throw std::underflow_error("underflow in multiply");
   }

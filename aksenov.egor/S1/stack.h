@@ -35,11 +35,10 @@ namespace aksenov
   Stack< T >::~Stack()
   {
     deleteList(top_);
-    top_ = nullptr;
     size_ = 0;
   }
 
-  template< typename T >
+  template< typename T>
   size_t Stack< T >::size() const
   {
     return size_;
@@ -55,7 +54,6 @@ namespace aksenov
     std::swap(top_, other.top_);
     std::swap(size_, other.size_);
   }
-
   template< typename T >
   bool Stack< T >::isEmpty() const
   {

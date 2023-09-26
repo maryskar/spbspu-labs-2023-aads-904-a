@@ -67,8 +67,7 @@ namespace aksenov
     {
       throw std::logic_error("empty queue");
     }
-    else if (front_ == tail_)
-    {
+    else if (front_ == tail_){
       delete tail_;
       tail_ = front_ = nullptr;
     }
@@ -92,7 +91,7 @@ namespace aksenov
     tail_(nullptr),
     front_(nullptr)
   {
-    List< T > *cur = otherQ.front_;
+    aksenov::List< T > *cur = otherQ.front_;
     while (cur)
     {
       push(cur->data);

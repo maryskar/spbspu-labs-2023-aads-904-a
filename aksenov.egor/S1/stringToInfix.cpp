@@ -8,13 +8,12 @@ aksenov::Queue< std::string > aksenov::convertToInfix(std::string line)
   {
     throw std::invalid_argument("empty string");
   }
-  std::string delimetr = "";
+  std::string delimetr = " ";
   Queue< std::string > infQueue;
   while (line.size())
   {
     size_t space = line.find_first_of(delimetr);
-    if (space == line.npos)
-    {
+    if (space == line.npos) {
       infQueue.push(line.substr(0));
       line.clear();
     }

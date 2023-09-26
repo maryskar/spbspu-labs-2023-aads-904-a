@@ -51,7 +51,7 @@ aksenov::Queue< std::string > aksenov::getPostfixQueue(Queue< std::string > &inf
   }
   while (!stack.isEmpty())
   {
-    if (stack.get() == "(" || stack.get() == ")")
+    if(stack.get() == "(" || stack.get() == ")")
     {
       throw std::invalid_argument("wrong brackets");
     }
