@@ -1,18 +1,28 @@
+
 #ifndef FUNCTIONALOBJECTS_H
 #define FUNCTIONALOBJECTS_H
 #include <utility>
 #include <string>
 namespace fesenko
 {
-  class Summator
+  class NumSummator
   {
    public:
-    Summator();
+    NumSummator();
     void operator()(const std::pair< long long, std::string > &value_type);
-    std::pair< long long, std::string > getSum() const;
+    long long getSum() const;
    private:
-    long long llSum_;
-    std::string strSum_;
+    long long sum_;
+  };
+
+  class StrSummator
+  {
+   public:
+    StrSummator();
+    void operator()(const std::pair< long long, std::string > &value_type);
+    std::string getSum() const;
+   private:
+    std::string sum_;
   };
 }
 #endif
