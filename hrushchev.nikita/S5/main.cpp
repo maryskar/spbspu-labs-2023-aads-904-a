@@ -45,9 +45,11 @@ int main(int argc, char* argv[])
       return 1;
     }
     hrushchev::StringCreator creator;
+    hrushchev::AVLTree< std::string, hrushchev::StringCreator(*)(const hrushchev::AVLTree< long long, std::string >& tree, hrushchev::StringCreator f) > traverses;
+    traverses.insert("ascending", hrushchev::doAscending);
     if ((traverse == "ascending"))
     {
-      creator = hrushchev::doAscending(avlTree, creator);
+      creator = traverses.at("ascending")(avlTree, creator);
       std::cout << creator.result_ << "\n";
     }
     if ((traverse == "descending"))
