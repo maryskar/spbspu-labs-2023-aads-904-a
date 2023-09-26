@@ -3,7 +3,7 @@
 
 #include <istream>
 #include <string>
-#include "avltree.hpp"
+#include <avltree.hpp>
 
 namespace hrushchev
 {

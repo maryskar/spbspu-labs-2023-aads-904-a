@@ -1,7 +1,7 @@
 #include "commands.hpp"
 #include <string>
 #include <ostream>
-#include "avltree.hpp"
+#include <avltree.hpp>
 
 void hrushchev::printDict(std::string name, main_dict& dict_of_dict, std::ostream& out)
 {

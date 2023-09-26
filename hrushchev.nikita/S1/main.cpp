@@ -5,8 +5,8 @@
 #include "convertstringtoinfix.hpp"
 #include "convertinfixtopostfix.hpp"
 #include "calcucalepostfix.hpp"
-#include "queue.hpp"
-#include "stack.hpp"
+#include <queue.hpp>
+#include <stack.hpp>
 
 int main(int argc, char* argv[])
 {

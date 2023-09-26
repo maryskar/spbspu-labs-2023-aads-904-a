@@ -5,6 +5,8 @@
 #include <functional>
 #include <stdexcept>
 
+#include <stack.hpp>
+#include <queue.hpp>
 #include "tree.hpp"
 #include "avltreeiterator.hpp"
 #include "avltreeconstiterator.hpp"
@@ -33,6 +35,18 @@ namespace hrushchev
       const_iterator cbegin();
       iterator end();
       const_iterator cend();
+      template< typename F >
+      F traverse_lnr(F f) const;
+      template< typename F >
+      F traverse_rnl(F f) const;
+      template< typename F >
+      F traverse_breadth(F f) const;
+      template< typename F >
+      F traverse_lnr(F f);
+      template< typename F >
+      F traverse_rnl(F f);
+      template< typename F >
+      F traverse_breadth(F f);
     private:
       void updateHeight(Tree< data_t >* tree);
       Tree< data_t >* insert(const Key& key, const Value& value, Tree< data_t >* tree);
@@ -203,6 +217,109 @@ namespace hrushchev
   }
 
   template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVLTree< Key, Value, Compare >::traverse_lnr(F f) const
+  {
+    Stack< Tree< data_t >* > stack;
+    Tree< data_t >* current = node_;
+
+    while (!stack.isEmpty() || current != nullptr)
+    {
+      if (current != nullptr)
+      {
+        stack.push(current);
+        current = current->left_;
+      }
+      else
+      {
+        current = stack.get();
+        stack.pop();
+        f(current->data_);
+        current = current->right_;
+      }
+    }
+    return f;
+  }
+
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVLTree< Key, Value, Compare >::traverse_lnr(F f)
+  {
+     return static_cast< const AVLTree< Key, Value, Compare >& >(*this).traverse_lnr(f);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVLTree< Key, Value, Compare >::traverse_rnl(F f) const
+  {
+    Stack< Tree< data_t >* > stack;
+    Tree< data_t >* current = node_;
+
+    while (!stack.isEmpty() || current != nullptr)
+    {
+      if (current != nullptr)
+      {
+        stack.push(current);
+        current = current->right_;
+      }
+      else
+      {
+        current = stack.get();
+        stack.pop();
+        f(current->data_);
+        current = current->left_;
+      }
+    }
+    return f;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVLTree< Key, Value, Compare >::traverse_rnl(F f)
+  {
+    return static_cast< const AVLTree< Key, Value, Compare >& >(*this).traverse_rnl(f);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVLTree< Key, Value, Compare >::traverse_breadth(F f) const
+  {
+    if (!node_)
+    {
+      return f;
+    }
+
+    Queue< Tree< data_t >* > queue;
+    queue.push(node_);
+
+    while (!queue.isEmpty())
+    {
+      Tree< data_t >* current = queue.get();
+      queue.pop();
+
+      f(current->data_);
+
+      if (current->left_)
+      {
+        queue.push(current->left_);
+      }
+      if (current->right_)
+      {
+        queue.push(current->right_);
+      }
+    }
+    return f;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVLTree< Key, Value, Compare >::traverse_breadth(F f)
+  {
+    return static_cast< const AVLTree< Key, Value, Compare >& >(*this).traverse_breadth(f);
+  }
+
+  template<typename Key, typename Value, typename Compare>
   void AVLTree<Key, Value, Compare>::updateHeight(Tree< data_t >* tree)
   {
     if (!tree)
