@@ -458,6 +458,30 @@ namespace dmitriev
 		tree* m_root;
 		Compare m_cmp;
 
+		tree* insertUtil(tree* node, const dataPair& keyValue)
+		{
+			if (isEmpty(node))
+			{
+				return new tree{keyValue, 1, nullptr, nullptr, nullptr};
+			}
+
+			if (isEqual(keyValue.first, node->data.first))
+			{
+				return node;
+			}
+			if (m_cmp(keyValue.first, node->data.first))
+			{
+				node->left = insertUtil(node->left, keyValue);
+				node->left->parent = node;
+			}
+			else if (!m_cmp(keyValue.first, node->data.first))
+			{
+				node->right = insertUtil(node->right, keyValue);
+				node->right->parent = node;
+			}
+
+			return balance(node);
+		}
 
 		tree* balance(tree* node)
 		{
