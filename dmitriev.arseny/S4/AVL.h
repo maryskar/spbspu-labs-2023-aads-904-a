@@ -425,6 +425,17 @@ namespace dmitriev
 			return *this;
 		}
 
+		Value& operator[](const Key& key)
+		{
+			iterator it = find(key);
+			if (!isEmpty(it))
+			{
+				return it->second;
+			}
+			insert({key, Value()});
+			return find(key)->second;
+		}
+
 		void erase(const Key key)
 		{
 			m_root = eraseUtil(m_root, key);
