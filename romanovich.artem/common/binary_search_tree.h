@@ -90,6 +90,10 @@ namespace romanovich
     TreeNode< data_t > *findMin(TreeNode< data_t > *node) const;
     TreeNode< data_t > *findMax(TreeNode< data_t > *node) const;
     TreeNode< data_t > *copyTree(const TreeNode< data_t > *node);
+    template< typename F >
+    void traverseLnrImpl(tree_t *node, F &f) const;
+    template< typename F >
+    void traverseRnlImpl(tree_t *node, F &f) const;
     tree_t *root_;
     tree_t *fakeNode_;
     size_t size_;
