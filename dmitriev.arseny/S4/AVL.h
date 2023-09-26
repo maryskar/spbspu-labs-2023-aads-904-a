@@ -859,7 +859,7 @@ namespace dmitriev
 
 	template< typename Key, typename Value, typename Compare = std::less< > >
 	AVL< Key, Value, Compare > unionDictionary(const AVL< Key, Value, Compare >& lhs,
-		const Dictionary< Key, Value, Compare > rhs)
+		const AVL< Key, Value, Compare > rhs)
 	{
 		AVL< Key, Value, Compare > newDic;
 
