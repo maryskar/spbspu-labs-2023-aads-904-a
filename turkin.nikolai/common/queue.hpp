@@ -54,7 +54,7 @@ template< typename T >
 turkin::Queue< T >::Queue(Queue< T > && rhs):
   value_(rhs.value_),
   back_(rhs.back_),
-  size_(rhs.size)
+  size_(rhs.size_)
 {
   rhs.value_ = nullptr;
   rhs.back_ = nullptr;
