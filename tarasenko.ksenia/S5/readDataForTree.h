@@ -1,5 +1,6 @@
 #ifndef READDATAFORTREE_H
 #define READDATAFORTREE_H
+
 #include <iostream>
 #include <string>
 #include <RedBlackTree.h>
