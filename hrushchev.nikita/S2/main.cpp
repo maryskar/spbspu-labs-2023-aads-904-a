@@ -58,13 +58,13 @@ int main(int argc, char* argv[])
         }
         else
         {
-          std::cout << "<INVALID COMMAND>\n";
+          throw std::logic_error("invalig command");
         }
       }
     }
     catch (...)
     {
-      std::cout << "<INVALID COMMAND>\n";
+      hrushchev::printError(std::cout);
     }
   }
 }
