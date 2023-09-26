@@ -3,9 +3,8 @@
 #include <limits>
 #include <stdexcept>
 #include <string>
-#include <IOrealization.h>
-#include "AVL.h"
-#include "AVL/tree.h"
+#include <AVL/AVL.h>
+#include <IOstreamOverloads.h>
 #include "TreeWithTraverses.h"
 
 int main(int argc, char** argv)
