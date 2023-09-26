@@ -231,5 +231,42 @@ namespace aksenov
     tail_->next = newNode;
     tail_ = newNode;
   }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, constReference val)
+  {
+    if (!fake_ || !fake_->next)
+    {
+      pushFront(val);
+      return iterator(pos.node_->next);
+    }
+    if (pos == tail_)
+    {
+      pushBack(val);
+      return iterator(pos.node_->next);
+    }
+    listT< T > *newNode = new listT< T >{val, nullptr};
+    listT< T > *prev = pos.node_;
+    newNode->next = prev->next;
+    prev->next = newNode;
+    return iterator(pos.node_->next);
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, valueType &&val)
+  {
+    return insertAfter(pos, val);
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, sizeType count, constReference val)
+  {
+    for (auto i = 0; i < count; ++i)
+    {
+      insertAfter(pos, val);
+      ++pos;
+    }
+    return iterator(pos.node_);
+  }
 }
 #endif
