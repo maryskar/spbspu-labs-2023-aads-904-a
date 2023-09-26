@@ -65,5 +65,17 @@ namespace aksenov
     assert(node_ != nullptr);
     return std::addressof(node_->data);
   }
+
+  template< typename T >
+  bool ForwardIterator< T >::operator==(const ForwardIterator< T > &rhs) const
+  {
+    return node_ == rhs.node_;
+  }
+
+  template< typename T >
+  bool ForwardIterator< T >::operator!=(const ForwardIterator< T > &rhs) const
+  {
+    return !(rhs == *this);
+  }
 }
 #endif
