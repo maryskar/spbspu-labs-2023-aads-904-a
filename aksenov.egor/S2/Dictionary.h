@@ -1,7 +1,7 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 #include <functional>
-#include "ForwardList.h"
+#include "forwardList.h"
 namespace aksenov
 {
   template< typename Key, typename T, typename Compare = std::less< Key > >
