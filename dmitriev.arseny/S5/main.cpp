@@ -49,11 +49,12 @@ int main(int argc, char** argv)
   catch (const std::exception& e)
   {
     std::cerr << e.what() << '\n';
+    return 1;
   }
 
   if (dict.isEmpty())
   {
-    std::cout << "<EMPTY>" << '\n';
+    dmitriev::outOfEmptyDataMsg(std::cout) << '\n';
     return 0;
   }
 
@@ -69,7 +70,6 @@ int main(int argc, char** argv)
     std::cout << res.resultNumber;
     std::cout << res.resultStr;
     std::cout << '\n';
-
   }
   catch (const std::exception&)
   {
