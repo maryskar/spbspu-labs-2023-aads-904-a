@@ -59,6 +59,7 @@ namespace aksenov
     iterator insert(constIterator, P &&value);
     template< typename InputIterator >
     void insert(InputIterator, InputIterator);
+    keyCompare keyComp() const;
   private:
     ForwardList< valueType > data_;
     Compare comp_;
@@ -177,31 +178,24 @@ namespace aksenov
   template< typename Key, typename T, typename Compare >
   typename Dictionary< Key, T, Compare >::iterator Dictionary< Key, T, Compare>::find(const Key &key)
   {
-    auto it = begin();
-    while (it != end())
-    {
-      if (comp_(it->first, key) && comp_(key, it->first))
-      {
-        return it;
+    Compare comp = keyComp();
+    auto cur = cbegin();
+    while (cur != cend()) {
+      if (!comp(cur->first, key) && !comp(key, cur->first)) {
+        break;
       }
-      ++it;
+      cur++;
     }
-    return end();
+    return cur;
+
   }
 
   template< typename Key, typename T, typename Compare >
   typename Dictionary< Key, T, Compare >::constIterator Dictionary< Key, T, Compare>::find(const Key &key) const
   {
-    auto it = begin();
-    while (it != end())
-    {
-      if (comp_(it->first, key) || comp_(key, it->first))
-      {
-        return it;
-      }
-      ++it;
-    }
-    return cend();
+    constIterator cit = (static_cast< const thisT & >(*this)).find(key);
+    return data_.erase_after(cit, cit);
+
   }
 
   template< typename Key, typename T, typename Compare >
@@ -348,5 +342,12 @@ namespace aksenov
       insert(*it);
     }
   }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::keyCompare Dictionary< Key, Value, Compare >::keyComp() const
+  {
+    return comp_;
+  }
+
 }
 #endif
