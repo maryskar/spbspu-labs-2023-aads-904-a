@@ -63,3 +63,4 @@ long double hrushchev::cos(double a)
 {
   return std::cos(a);
 }
+
