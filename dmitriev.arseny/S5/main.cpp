@@ -2,12 +2,15 @@
 #include <fstream>
 #include <string>
 #include <AVL.h>
+#include <outputOfSpecialMessages.h>
+#include "stringCreator.h"
+#include "traverseCommands.h"
 
 
-int main()
+int main(int argc, char** argv)
 {
-  using dictionary = dmitriev::AVL< long long, std::string >;
-
+  using dictionary = dmitriev::AVL< const long long, std::string >;
+  using comands = dmitriev::AVL< std::string, dmitriev::StringCreator(*)(dictionary&, dmitriev::StringCreator) >;
 
   if (argc != 3)
   {
@@ -30,6 +33,17 @@ int main()
   {
     dict.insert({key, value});
   }
+
+  if (dict.isEmpty())
+  {
+    dmitriev::outOfEmptyDataMsg() << '\n';
+    return 0;
+  }
+
+  comands cmds;
+  cmds["ascending"] = dmitriev::doAscending;
+  cmds["descending"] = dmitriev::doDescending;
+  cmds["breadth"] = dmitriev::doBreadth;
 
 
 
