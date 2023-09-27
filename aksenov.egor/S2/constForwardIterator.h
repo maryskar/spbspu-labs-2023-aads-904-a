@@ -1,6 +1,7 @@
 #ifndef CONSTFORWARDITERATOR_H
 #define CONSTFORWARDITERATOR_H
 #include <cassert>
+#include <memory>
 #include "List.h"
 namespace aksenov
 {

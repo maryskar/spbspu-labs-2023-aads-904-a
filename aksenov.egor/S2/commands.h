@@ -20,4 +20,3 @@ namespace aksenov
   void createCommandMap(commandMap &commands);
 }
 #endif
-

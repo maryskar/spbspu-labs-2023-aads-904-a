@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "dictionary.h"
+#include "Dictionary.h"
 #include "commands.h"
 #include <string>
 
