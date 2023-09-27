@@ -98,7 +98,7 @@ namespace aksenov
   template< typename T >
   ForwardList< T > &ForwardList< T >::operator=(const ForwardList< T > &val)
   {
-    if (this != val)
+    if (this != std::addressof(val))
     {
       clear();
       copy(val);
@@ -109,7 +109,7 @@ namespace aksenov
   template< typename T >
   ForwardList< T > &ForwardList< T >::operator=(ForwardList< T > &&val) noexcept
   {
-    if (this != val)
+    if (this != std::addressof(val))
     {
       clear();
       fake_ = val.fake_;
