@@ -8,7 +8,7 @@ namespace timofeev
   class Stack
   {
   public:
-    explicit Stack();
+    Stack();
     ~Stack();
     void push(const T& rhs);
     void pop();
@@ -32,7 +32,6 @@ template < typename T >
 timofeev::Stack< T >::~Stack()
 {
   clear(top_);
-  top_ = nullptr;
 }
 template < typename T >
 void timofeev::Stack< T >::pop()
