@@ -3,6 +3,7 @@
 
 #include <stdexcept>
 #include <iostream>
+#include <utility>
 #include "forwardList.h"
 
 namespace potapova
@@ -64,8 +65,8 @@ namespace potapova
       
       std::pair<Iterator, bool> insert(const Key& key, const Value& value)
       {
-        Iterator prev_node_ptr = data.before_begin();
-        for (Node& cur_node : data)
+        Iterator prev_node_ptr = data_.before_begin();
+        for (Node& cur_node : data_)
         {
           if (cur_node.key == key)
           {
@@ -77,7 +78,7 @@ namespace potapova
           }
           prev_node_ptr = Iterator(&cur_node);
         }
-        return std::make_pair(data.insert_after(prev_node_ptr, Node(key, value)), true);
+        return std::make_pair(data_.insert_after(prev_node_ptr, Node(key, value)), true);
       }
 
       Iterator find(const Key& key)
@@ -169,12 +170,12 @@ namespace potapova
         {
           for (const Node& cur_node_other : other)
           {
-            if (!contains(cur_node_other) && cur_node_other.key < cur_node_this.key)
+            if (!contains(cur_node_other.key) && cur_node_other.key < cur_node_this.key)
             {
               result.insert(cur_node_other.key, cur_node_other.value);
             }
           }
-          if (!other.contains(cur_node_this))
+          if (!other.contains(cur_node_this.key))
           {
             result.insert(cur_node_this.key, cur_node_this.value);
           }
