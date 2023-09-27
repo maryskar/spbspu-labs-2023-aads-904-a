@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <AVL.h>
+#include <outputOfSpecialMessages.h>
 #include "traverseCommands.h"
 #include "keyValueSummator.h"
 
@@ -10,7 +11,7 @@ int main(int argc, char** argv)
 {
   using dictionary = dmitriev::AVL< const int, std::string >;
   using summator = dmitriev::KeyValueSummator;
-  using command = dmitriev::KeyValueSummator(*)(const dictionary&, summator);
+  using command = summator(*)(const dictionary&, summator);
 
 
   if (argc != 3)
@@ -35,7 +36,7 @@ int main(int argc, char** argv)
   }
   if (dict.isEmpty())
   {
-    std::cout << "<EMPTY>" << '\n';
+    std::cout << dmitriev::outOfEmptyDataMsg(std::cout) << '\n';
     return 0;
   }
 
@@ -55,7 +56,7 @@ int main(int argc, char** argv)
     }
     else
     {
-      std::cerr << "<INVALID COMMAND>\n";
+      std::cout << dmitriev::outOfInvalivdComandMsg(std::cout) << '\n';
       return 1;
     }
   }
