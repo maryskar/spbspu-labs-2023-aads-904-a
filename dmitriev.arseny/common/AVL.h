@@ -548,10 +548,12 @@ namespace dmitriev
     }
 
     template< typename F >
-    F traverseBreadth(F f)
+    F traverseBreadth(F f) const
     {
       if (dmitriev::isEmpty(m_root))
+      {
         return f;
+      }
 
       Queue< tree* > q;
       q.push(m_root);
@@ -577,7 +579,13 @@ namespace dmitriev
     }
 
     template< typename F >
-    F traverseLnr(F f)
+    F traverseBreadth(F f)
+    {
+      return static_cast< const AVL< Key, Value, Compare >& >(*this).traverseBreadth(f);
+    }
+
+    template< typename F >
+    F traverseLnr(F f) const
     {
       Stack< tree* > stack;
       tree* curr = m_root;
@@ -601,9 +609,15 @@ namespace dmitriev
     }
 
     template< typename F >
-    F traverseRnl(F f)
+    F traverseLnr(F f)
     {
-      Stack<tree*> stack;
+      return static_cast< const AVL< Key, Value, Compare >& >(*this).traverseLnr(f);
+    }
+
+    template< typename F >
+    F traverseRnl(F f) const
+    {
+      Stack< tree* > stack;
       tree* curr = m_root;
 
       while (!dmitriev::isEmpty(curr) || !stack.isEmpty())
@@ -622,6 +636,12 @@ namespace dmitriev
       }
 
       return f;
+    }
+
+    template< typename F >
+    F traverseRnl(F f)
+    {
+      return static_cast< const AVL< Key, Value, Compare >& >(*this).traverseRnl(f);
     }
 
     iterator begin()
