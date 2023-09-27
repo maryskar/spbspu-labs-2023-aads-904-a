@@ -42,7 +42,7 @@ namespace tarasenko
    }
 
    void call(const std::string& name_of_command, dict_of_dict_t& dict_of_dict,
-             std::istream& input, std::ostream& output)
+      std::istream& input, std::ostream& output)
    {
      try
      {
