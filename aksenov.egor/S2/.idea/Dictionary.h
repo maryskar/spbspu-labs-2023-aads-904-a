@@ -257,5 +257,18 @@ namespace aksenov
     size_ = other.size_;
     other.size_ = 0;
   }
+
+  template< typename Key, typename T, typename Compare >
+  size_t Dictionary< Key, T, Compare >::count(const Key & key) const
+  {
+    auto it = find(key);
+    return (it != end()) ? 1ull : 0ull;
+  }
+
+  template< typename Key, typename T, typename Compare >
+  bool Dictionary< Key, T, Compare >::contains(const Key &key) const
+  {
+    return count(key);
+  }
 }
 #endif
