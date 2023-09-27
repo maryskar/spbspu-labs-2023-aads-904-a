@@ -1,7 +1,7 @@
 #include "commands.hpp"
 #include <string>
 #include <ostream>
-#include "dictionary.hpp"
+#include <dictionary.hpp>
 
 using dict_t = hrushchev::Dictionary< size_t, std::string >;
 using main_dict = hrushchev::Dictionary< std::string, dict_t >;

@@ -2,11 +2,9 @@
 #include <fstream>
 #include <string>
 #include <list.hpp>
-#include <avltree.hpp>
-#include <avltreeiterator.hpp>
-#include <avltreeconstiterator.hpp>
+#include "workwithdict.hpp"
 #include "inputdict.hpp"
-#include "commands.hpp"
+
 
 int main(int argc, char* argv[])
 {
@@ -25,6 +23,7 @@ int main(int argc, char* argv[])
   using dict_t = hrushchev::AVLTree< size_t, std::string >;
   hrushchev::AVLTree< std::string, dict_t > dict_of_dict;
   hrushchev::inputDict(input, dict_of_dict);
+<<<<<<< HEAD
   std::string command = "";
   while (std::cin >> command)
   {
@@ -66,4 +65,8 @@ int main(int argc, char* argv[])
       std::cout << "<INVALID COMMAND>\n";
     }
   }
+=======
+  hrushchev::Commands dict_wiht_cmd;
+  dict_wiht_cmd.runCommand(std::cin, std::cout, dict_of_dict);
+>>>>>>> master
 }

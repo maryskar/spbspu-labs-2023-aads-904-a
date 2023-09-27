@@ -5,7 +5,8 @@
 #include <forwardlist.hpp>
 #include <forwardlistiterator.hpp>
 #include <forwardlistconstiterator.hpp>
-#include "dictionary.hpp"
+#include <dictionary.hpp>
+#include <printerror.hpp>
 #include "inputdict.hpp"
 #include "commands.hpp"
 
@@ -57,13 +58,21 @@ int main(int argc, char* argv[])
         }
         else
         {
+<<<<<<< HEAD
           std::cout << "<INVALID COMMAND>\n";
+=======
+          throw std::logic_error("invalig command");
+>>>>>>> master
         }
       }
     }
     catch (...)
     {
+<<<<<<< HEAD
       std::cout << "<INVALID COMMAND>\n";
+=======
+      hrushchev::printError(std::cout);
+>>>>>>> master
     }
   }
 }
