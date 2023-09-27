@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <limits>
 #include <AVL.h>
 #include <outputOfSpecialMessages.h>
 #include "traverseCommands.h"
