@@ -51,7 +51,7 @@ namespace detail
     }
   }
 
-  template <typename Iter, typename Comp>
+  template <typename Iter, typename Comp >
   Iter partition(Iter first, Iter last, Comp comp)
   {
     auto pivot = last - 1;
