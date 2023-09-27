@@ -8,16 +8,16 @@ namespace aksenov
 
   void printDictionary(const std::string& dataset, std::ostream &out)
   {
-    if (dictionaries.find(dataset) == dictionaries.end()) {
+    auto it = dictionaries.find(dataset);
+    if (it == dictionaries.end()) {
       out << "<EMPTY>" << "\n";
-      return;
+    } else {
+      const dictionary &dict = it->second;
+      for (const auto &pair : dict) {
+        out << pair.first << " " << pair.second << " ";
+      }
+      out << "\n";
     }
-    const dictionary &dict = dictionaries[dataset];
-    for (const auto &pair : dict)
-    {
-      out << pair.first << " " << pair.second << " ";
-    }
-    out << "\n";
   }
 
   void complement(const std::string& newdataset, const std::string& dataset1, const std::string& dataset2) {
