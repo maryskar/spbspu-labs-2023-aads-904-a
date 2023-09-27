@@ -9,7 +9,7 @@ namespace kryuchkova
   long long getResult(Queue< ExpressionMember > &post)
   {
     Stack < long long > result;
-    while(!post.isEmpty())
+    while (!post.isEmpty())
     {
       ExpressionMember data = post.drop();
       post.pop();
@@ -20,7 +20,9 @@ namespace kryuchkova
       else
       {
         long long rhs = result.drop();
+        result.pop();
         long long lhs = result.drop();
+        result.pop();
         if (data.getOperation() == operation_t::ADDITION)
         {
           result.push(calcSum(lhs, rhs));
@@ -51,6 +53,8 @@ namespace kryuchkova
         throw std::invalid_argument("Check expression");
       }
     }
-    return result.drop();
+    long long data = result.drop();
+    result.pop();
+    return data;
   }
 }

@@ -5,7 +5,7 @@
 
 namespace kryuchkova
 {
-  Queue< ExpressionMember > GetPostfixExp(Queue< ExpressionMember > &inf);
+  Queue< ExpressionMember > getPostfixExp(Queue< ExpressionMember > &inf);
 }
 
 #endif

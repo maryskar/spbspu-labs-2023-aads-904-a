@@ -3,7 +3,7 @@
 
 namespace kryuchkova
 {
-  Queue< ExpressionMember > InfixExp(std::string &str)
+  Queue< ExpressionMember > getInfixExp(std::string &str)
   {
     Queue< ExpressionMember > inf;
     size_t j = 0;

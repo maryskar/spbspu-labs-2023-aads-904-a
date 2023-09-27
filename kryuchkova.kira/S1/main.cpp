@@ -42,8 +42,8 @@ int main(int argc, char *argv[])
     {
       try
       {
-        kryuchkova::Queue< kryuchkova::ExpressionMember > inf = kryuchkova::InfixExp(str);
-        kryuchkova::Queue< kryuchkova::ExpressionMember > post = kryuchkova::GetPostfixExp(inf);
+        kryuchkova::Queue< kryuchkova::ExpressionMember > inf = kryuchkova::getInfixExp(str);
+        kryuchkova::Queue< kryuchkova::ExpressionMember > post = kryuchkova::getPostfixExp(inf);
         results.push(kryuchkova::getResult(post));
       }
       catch (const std::exception &e)
@@ -60,9 +60,11 @@ int main(int argc, char *argv[])
   }
 
   std::cout << results.drop();
+  results.pop();
   while (!results.isEmpty())
   {
     std::cout << ' ' << results.drop();
+    results.pop();
   }
   std::cout << '\n';
   return 0;

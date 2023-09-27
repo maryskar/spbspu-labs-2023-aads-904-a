@@ -17,7 +17,8 @@ namespace kryuchkova
       Stack< T > & operator=(const Stack< T > &);
       Stack< T > & operator=(Stack< T > &&);
       void push(const T &rhs);
-      T drop();
+      T &drop() const;
+      void pop();
       bool isEmpty() const;
     private:
       Node< T > *head_;
@@ -40,7 +41,7 @@ namespace kryuchkova
   template< typename T >
   Stack< T >::~Stack()
   {
-    while(!isEmpty())
+    while (!isEmpty())
     {
       Node< T > *temp = head_->next_;
       delete head_;
@@ -64,17 +65,32 @@ namespace kryuchkova
   }
 
   template< typename T >
-  T Stack< T >::drop()
+  void Stack< T >::pop()
   {
     if (isEmpty())
     {
       throw std::logic_error("Empty stack");
     }
     Node< T > *tmp = head_;
-    T data = head_->data_;
-    head_ = head_->next_;
+    if (head_->next_ == nullptr)
+    {
+      head_ = nullptr;
+    }
+    else
+    {
+      head_ = head_->next_;
+    }
     delete tmp;
-    return data;
+  }
+
+  template< typename T >
+  T &Stack< T >::drop() const
+  {
+    if (isEmpty())
+    {
+      throw std::logic_error("empty");
+    }
+    return head_->data_;
   }
 
   template< typename T >

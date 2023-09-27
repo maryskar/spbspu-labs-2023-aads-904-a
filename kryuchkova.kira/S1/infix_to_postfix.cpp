@@ -5,7 +5,7 @@
 
 namespace kryuchkova
 {
-  Queue< ExpressionMember > GetPostfixExp(Queue< ExpressionMember > & inf)
+  Queue< ExpressionMember > getPostfixExp(Queue< ExpressionMember > & inf)
   {
     Queue< ExpressionMember > post;
     Stack< ExpressionMember > stack;
@@ -30,6 +30,7 @@ namespace kryuchkova
             throw std::invalid_argument("Check your expression");
           }
           ExpressionMember temp = stack.drop();
+          stack.pop();
           while (!temp.isParenthesis())
           {
             post.push(temp);
@@ -38,6 +39,7 @@ namespace kryuchkova
               throw std::invalid_argument("Check your expression");
             }
             temp = stack.drop();
+            stack.pop();
           }
         }
       }
@@ -46,10 +48,12 @@ namespace kryuchkova
         if (!stack.isEmpty())
         {
           ExpressionMember temp = stack.drop();
+          stack.pop();
           while (!stack.isEmpty() && !cmpPriority(temp.getOperation(), data.getOperation()) && !temp.isParenthesis())
           {
             post.push(temp);
             temp = stack.drop();
+            stack.pop();
           }
           if (!temp.isParenthesis())
           {
@@ -66,6 +70,7 @@ namespace kryuchkova
     while (!stack.isEmpty())
     {
       post.push(stack.drop());
+      stack.pop();
     }
     return post;
   }
