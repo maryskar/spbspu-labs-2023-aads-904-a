@@ -5,7 +5,6 @@ int main()
   std::istream &in = std::cin;
   std::ostream &out = std::cout;
   romanovich::CommandHandler commandHandler(in, out);
-
   while (in)
   {
     std::string command;

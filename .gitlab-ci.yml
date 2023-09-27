@@ -7,19 +7,6 @@ stages:
 before_script:
   - echo "Using test case timeout $TIMEOUT sec"
 
-<<<<<<< HEAD
-#author:
-#  stage: sanity
-#  script:
-#    - '"$TEST_DIR"/validate-student.sh'
-#  rules:
-#    - if: $CI_MERGE_REQUEST_IID
-#    - if: $CI_COMMIT_TAG
-#    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-#    - if: '$CI_PIPELINE_SOURCE == "push"'
-#    - if: '$CI_PIPELINE_SOURCE == "web"'
-      
-=======
 author:
   stage: sanity
   script:
@@ -30,8 +17,7 @@ author:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     - if: '$CI_PIPELINE_SOURCE == "push"'
     - if: '$CI_PIPELINE_SOURCE == "web"'
-
->>>>>>> parent of c07f6923 (cool)
+      
 branch:
   stage: sanity
   script:
