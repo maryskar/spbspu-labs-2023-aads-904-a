@@ -92,6 +92,7 @@ namespace tarasenko
    }
 
    bool isEmpty() const;
+   size_t size() const;
    void pushFront(const T& data);
    void pushBack(const T& data);
    T getFront();
@@ -176,6 +177,12 @@ namespace tarasenko
   bool ForwardList< T >::isEmpty() const
   {
     return size_ == 0;
+  }
+
+  template< typename T >
+  size_t ForwardList< T >::size() const
+  {
+    return size_;
   }
 
   template< typename T >

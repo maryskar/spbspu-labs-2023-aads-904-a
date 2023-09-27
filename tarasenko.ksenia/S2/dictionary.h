@@ -33,6 +33,12 @@ namespace tarasenko
      other.size_ = 0;
    }
 
+   explicit Dictionary(const Compare& comp):
+     list_(),
+     size_(0),
+     compare_(comp)
+   {}
+
    ~Dictionary() = default;
 
    dict_type& operator=(const dict_type& other)
@@ -91,6 +97,7 @@ namespace tarasenko
    size_t count(const Key& key) const;
    const_iterator find(const Key& key) const;
    size_t remove(const Key& key);
+   Compare key_comp() const;
 
   private:
    ForwardList< std::pair< Key, Value > > list_;
@@ -247,6 +254,12 @@ namespace tarasenko
       ++curr;
     }
     return 0;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Compare Dictionary< Key, Value, Compare >::key_comp() const
+  {
+    return compare_;
   }
 
   template< class Key, class Value, class Compare >

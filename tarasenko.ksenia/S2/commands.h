@@ -8,7 +8,7 @@
 #include <message.h>
 #include <read_trash.h>
 #include "dictionary.h"
-#include "funcs_for_commands.h"
+#include "funcs_for_map_commands.h"
 
 namespace tarasenko
 {
@@ -16,105 +16,80 @@ namespace tarasenko
   class Commands
   {
    using dict_type = Dictionary< Key, Value, Compare >;
+   using dict_of_dict_t = Dictionary< std::string, dict_type, std::greater<> >;
   public:
    Commands():
-     type_create(),
-     type_print()
+     type_1(),
+     type_2()
    {
-     type_create.push("complement", &complement< Key, Value, Compare >);
-     type_create.push("intersect", &intersect< Key, Value, Compare >);
-     type_create.push("union", &unionWith< Key, Value, Compare >);
+     type_1.push("complement", &complementCommand< Key, Value, Compare >);
+     type_1.push("intersect", &intersectCommand< Key, Value, Compare >);
+     type_1.push("union", &unionCommand< Key, Value, Compare >);
+     type_1.push("merge", &mergeCommand< Key, Value, Compare >);
+     type_1.push("add", &addCommand< Key, Value, Compare >);
+     type_1.push("delete", &deleteCommand< Key, Value, Compare >);
+     type_1.push("resort", &resortCommand< Key, Value, Compare >);
+     type_1.push("put", &putCommand< Key, Value, Compare >);
+     type_1.push("copy", &copyCommand< Key, Value, Compare >);
+     type_1.push("random_dict", &randomCommand< Key, Value, Compare >);
+     type_1.push("swap", &swapCommand< Key, Value, Compare >);
+     type_1.push("update", &updateCommand< Key, Value, Compare >);
 
-     type_print.push("print", &print< Key, Value, Compare >);
+     type_2.push("write", &writeCommand< Key, Value, Compare >);
+     type_2.push("print", &printCommand< Key, Value, Compare >);
+     type_2.push("print_if", &printIfCommand< Key, Value, Compare >);
+     type_2.push("subset", &subsetCommand< Key, Value, Compare >);
    }
 
-   void call(const std::string& name_of_command,
-      Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
+   void call(const std::string& name_of_command, dict_of_dict_t& dict_of_dict,
       std::istream& input, std::ostream& output)
    {
      try
      {
-       if (findInTypePrint(name_of_command))
+       if (findInType1(name_of_command))
        {
-         callPrint(name_of_command, dict_of_dict, input, output);
+         type_1.at(name_of_command)(input, dict_of_dict);
        }
-       else if (findInTypeCreate(name_of_command))
+       else if (findInType2(name_of_command))
        {
-         callCreate(name_of_command, dict_of_dict, input);
+         type_2.at(name_of_command)(output, input, dict_of_dict);
        }
        else
        {
          throw std::out_of_range("Invalid command");
        }
      }
-     catch (const std::out_of_range& e)
-     {
-       output << outMessageInvalidCommand << "\n";
-       readTrash(input);
-     }
      catch (const std::invalid_argument& e)
      {
        output << outMessageEmpty << "\n";
        readTrash(input);
      }
+     catch (const std::exception& e)
+     {
+       output << outMessageInvalidCommand << "\n";
+       readTrash(input);
+     }
    }
 
   private:
-   Dictionary< std::string,
-     std::function< dict_type(const dict_type&, const dict_type&) >, Compare > type_create;
-   Dictionary< std::string,
-     std::function< std::ostream&(std::ostream&, const std::string&, const dict_type&) >, Compare > type_print;
-
-   bool findInTypePrint(const std::string& key) const;
-   bool findInTypeCreate(const std::string& key) const;
-   void callCreate(const std::string& name_of_command,
-      Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict, std::istream& input);
-   void callPrint(const std::string& name_of_command,
-      Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
-      std::istream& input, std::ostream& output);
+   using command1_t = std::function< std::istream&(std::istream&, dict_of_dict_t&) >;
+   using command2_t = std::function< std::ostream&(std::ostream&, std::istream&, const dict_of_dict_t&) >;
+   Dictionary< std::string, command1_t, Compare > type_1;
+   Dictionary< std::string, command2_t, Compare > type_2;
+   bool findInType1(const std::string& key) const;
+   bool findInType2(const std::string& key) const;
   };
 
   template< typename Key, typename Value, typename Compare >
-  bool Commands< Key, Value, Compare >::findInTypePrint(const std::string& key) const
+  bool Commands< Key, Value, Compare >::findInType1(const std::string& key) const
   {
-    return type_print.find(key) != type_print.cend();
+    return type_1.find(key) != type_1.cend();
   }
 
   template< typename Key, typename Value, typename Compare >
-  bool Commands< Key, Value, Compare >::findInTypeCreate(const std::string& key) const
+  bool Commands< Key, Value, Compare >::findInType2(const std::string& key) const
   {
-    return type_create.find(key) != type_create.cend();
-  }
-
-  template< typename Key, typename Value, typename Compare >
-  void Commands< Key, Value, Compare >::callCreate(const std::string& name_of_command,
-      Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict, std::istream& input)
-  {
-    std::string name_new_dict = " ";
-    std::string name_dict1 = " ";
-    std::string name_dict2 = " ";
-    input >> name_new_dict >> name_dict1 >> name_dict2;
-    dict_type dict1 = dict_of_dict.at(name_dict1);
-    dict_type dict2 = dict_of_dict.at(name_dict2);
-    auto new_dict = type_create.at(name_of_command)(dict1, dict2);
-    dict_of_dict.push(name_new_dict, new_dict);
-  }
-
-  template< typename Key, typename Value, typename Compare >
-  void Commands< Key, Value, Compare >::callPrint(const std::string& name_of_command,
-     Dictionary< std::string, dict_type, std::greater<> >& dict_of_dict,
-     std::istream& input, std::ostream& output)
-  {
-    std::string name_of_dict = " ";
-    input >> name_of_dict;
-    dict_type given_dict;
-    given_dict = dict_of_dict.at(name_of_dict);
-    if (given_dict.isEmpty())
-    {
-      throw std::invalid_argument("Empty");
-    }
-    type_print.at(name_of_command)(output, name_of_dict, given_dict);
-    output << "\n";
+    return type_2.find(key) != type_2.cend();
   }
 }
 #endif

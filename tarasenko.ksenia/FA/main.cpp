@@ -1,10 +1,9 @@
 #include <iostream>
-#include <fstream>
 #include <string>
+#include <dictionary.h>
+#include <read_dicts_in_dict.h>
+#include <commands.h>
 #include <compare.h>
-#include "commands.h"
-#include "dictionary.h"
-#include "read_dicts_in_dict.h"
 
 int main(int argc, char* argv[])
 {
@@ -22,7 +21,7 @@ int main(int argc, char* argv[])
   using dict_t = tarasenko::Dictionary< size_t, std::string, tarasenko::Comp >;
   tarasenko::Dictionary< std::string, dict_t, std::greater<> > dict_of_dict;
   tarasenko::readDictsInDict(input, dict_of_dict);
-  tarasenko::Commands< size_t, std::string, tarasenko::Comp > commands;
+  tarasenko::Commands< size_t , std::string, tarasenko::Comp > commands;
   std::string name_of_command = " ";
   while (std::cin >> name_of_command)
   {
