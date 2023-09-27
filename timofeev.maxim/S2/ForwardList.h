@@ -326,7 +326,7 @@ namespace timofeev
   return constIter(fakenode_->next);
   }
 
-  template<t ypename T >
+  template< typename T >
   typename ForwardList< T >::constIter ForwardList< T >::before_begin() const noexcept
   {
   return cbefore_begin();
