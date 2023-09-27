@@ -12,7 +12,7 @@ long long getSumm(int sum, int key)
     }
     else
     {
-      throw std::overflow_error("Overflow of int");
+      throw std::overflow_error("overflow");
     }
   }
   else
@@ -23,7 +23,7 @@ long long getSumm(int sum, int key)
     }
     else
     {
-      throw std::underflow_error("Underflow of int");
+      throw std::underflow_error("underflow");
     }
   }
 

@@ -36,7 +36,7 @@ int main(int argc, char** argv)
   }
   if (dict.isEmpty())
   {
-    std::cout << dmitriev::outOfEmptyDataMsg(std::cout) << '\n';
+    dmitriev::outOfEmptyDataMsg(std::cerr) << '\n';
     return 0;
   }
 
@@ -56,7 +56,7 @@ int main(int argc, char** argv)
     }
     else
     {
-      std::cout << dmitriev::outOfInvalivdComandMsg(std::cout) << '\n';
+      dmitriev::outOfInvalivdComandMsg(std::cerr) << '\n';
       return 1;
     }
   }
