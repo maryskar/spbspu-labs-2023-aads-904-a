@@ -4,7 +4,7 @@
 #include <avltree.hpp>
 
 namespace hrushchev
-{ 
+{
   template< typename F >
   F doAscending(const AVLTree< long long, std::string >& tree, F f)
   {
@@ -34,7 +34,7 @@ namespace hrushchev
     AVLTree< std::string, func_type< F > > dict;
     dict.insert("ascending", hrushchev::doAscending);
     dict.insert("descending", hrushchev::doDescending);
-    dict.insert("breadth", hrushchev::doAscending);
+    dict.insert("breadth", hrushchev::doBreadth);
     return dict;
   }
 }

@@ -5,6 +5,7 @@
 #include "workwithdict.hpp"
 #include "inputdict.hpp"
 
+
 int main(int argc, char* argv[])
 {
   if (argc != 2)
