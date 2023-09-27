@@ -3,9 +3,9 @@
 #include <string>
 #include <queue.h>
 #include <stack.h>
-#include "convertToPostfixNotation.h"
+#include <convertToPostfixNotation.h>
+#include <solvePostfixNotation.h>
 #include "print.h"
-#include "solvePostfixNotation.h"
 
 int main(int argc, char** argv)
 {

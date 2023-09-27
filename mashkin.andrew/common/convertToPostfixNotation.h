@@ -1,9 +1,9 @@
 #ifndef CONVERTTOPOSTFIXNOTATION_H
 #define CONVERTTOPOSTFIXNOTATION_H
+#include "queue.h"
+#include "stack.h"
 #include <fstream>
 #include <string>
-#include <queue.h>
-#include <stack.h>
 
 namespace mashkin
 {

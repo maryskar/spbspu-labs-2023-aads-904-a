@@ -1,8 +1,8 @@
 #include "convertToPostfixNotation.h"
-#include <string>
-#include <queue.h>
-#include <stack.h>
 #include "isLessPriority.h"
+#include "queue.h"
+#include "stack.h"
+#include <string>
 
 namespace mashkin
 {
@@ -50,7 +50,7 @@ namespace mashkin
             }
           }
         }
-        else
+        else if (!op.empty())
         {
           que.enqueue(op);
         }
