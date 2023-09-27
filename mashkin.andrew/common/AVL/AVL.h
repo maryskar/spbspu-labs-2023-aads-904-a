@@ -450,7 +450,11 @@ namespace mashkin
     iter it = find(key);
     if (it == end())
     {
-      return insert(std::pair< K, V >(key, V()))->second;
+      V defaultValue;
+      std::pair< K, V > toInsert(key, defaultValue);
+      it = insert(toInsert);
+      return it->second;
+
     }
     return it->second;
   }
