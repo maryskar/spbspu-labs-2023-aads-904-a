@@ -4,6 +4,8 @@
 #include "valueType.h"
 #include "getPriority.h"
 
+using namespace potapova;
+
 namespace
 {
   bool isOpenBracket(const char value)
@@ -16,12 +18,11 @@ namespace
     return value == ')';
   }
 
-  void moveExprInBracketsToPostfix(potapova::Stack< char >& operators_stack,
-      potapova::expr_queue& postfix_expr)
+  void moveExprInBracketsToPostfix(Stack< char >& operators_stack, expr_queue& postfix_expr)
   {
     while (!isOpenBracket(operators_stack.top()))
     {
-      postfix_expr.push(potapova::ArithmExpMember(operators_stack.top()));
+      postfix_expr.push(ArithmExpMember(operators_stack.top()));
       operators_stack.pop();
       if (operators_stack.empty())
       {
@@ -32,7 +33,7 @@ namespace
   }
 }
 
-potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
+expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
 {
   expr_queue postfix_expr;
   Stack< char > operators_stack;

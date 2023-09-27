@@ -8,8 +8,6 @@
 #include "divideExpression.h"
 #include "countPostfixExpression.h"
 
-using namespace potapova;
-
 int main(int argc, char* argv[])
 {
   std::istream* in_ptr = nullptr;
@@ -33,8 +31,8 @@ int main(int argc, char* argv[])
   {
     in_ptr = &std::cin;
   }
-  expr_queue infix_expr;
-  Stack< long long > answer_stack;
+  potapova::expr_queue infix_expr;
+  potapova::Stack< long long > answer_stack;
   *in_ptr >> std::ws;
   while (!in_ptr->eof())
   {
@@ -45,7 +43,7 @@ int main(int argc, char* argv[])
     }
     try
     {
-      expr_queue postfix_queue(composePostfixQueue(infix_expr));
+      potapova::expr_queue postfix_queue(composePostfixQueue(infix_expr));
       if (!postfix_queue.empty())
       {
         answer_stack.push(countPostfixExpression(postfix_queue));
