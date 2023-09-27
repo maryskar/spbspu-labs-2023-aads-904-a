@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include "stack.h"
 #include "valueType.h"
-#include "getPriority.h"
+#include "comparePriority.h"
 
 namespace
 {
@@ -61,7 +61,7 @@ potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
       }
       operators_stack.push(cur_member.operation);
     }
-    else if (!operators_stack.empty() && getPriority(cur_member.operation) <= getPriority(operators_stack.top()))
+    else if (!operators_stack.empty() && potapova::comparePriority(cur_member.operation, operators_stack.top()))
     {
       postfix_expr.push(ArithmExpMember(operators_stack.top()));
       operators_stack.pop();

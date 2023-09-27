@@ -12,5 +12,5 @@ size_t getPriority(const char operation)
 
 bool potapova::comparePriority(const char first, const char second)
 {
-  return getPriority(first) < getPriority(second);
+  return getPriority(first) <= getPriority(second);
 }
