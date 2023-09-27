@@ -15,6 +15,8 @@ namespace aksenov
   class ConstForwardIterator
   {
   public:
+    friend class ForwardList< T >;
+    friend class ConstForwardIterator< T >;
     ConstForwardIterator();
     ~ConstForwardIterator() = default;
     ConstForwardIterator(listT< T > *node);

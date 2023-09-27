@@ -6,6 +6,7 @@
 
 namespace aksenov
 {
+
   using dictionary = Dictionary<int, std::string>;
 
   void printDictionary(const std::string &dataset, std::ostream &out);
