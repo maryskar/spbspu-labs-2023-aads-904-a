@@ -114,5 +114,41 @@ namespace aksenov
     other.size_ = 0;
     return *this;
   }
+
+  template< typename Key, typename T, typename Compare >
+  typename Dictionary< Key, T, Compare >::iterator Dictionary< Key, T, Compare >::begin() noexcept
+  {
+    return data_.begin();
+  }
+
+  template< typename Key, typename T, typename Compare >
+  typename Dictionary< Key, T, Compare >::constIterator Dictionary< Key, T, Compare >::cbegin() const noexcept
+  {
+    return data_.cbegin();
+  }
+
+  template< typename Key, typename T, typename Compare >
+  typename Dictionary< Key, T, Compare >::constIterator Dictionary< Key, T, Compare >::begin() const noexcept
+  {
+    return cbegin();
+  }
+
+  template< typename Key, typename T, typename Compare >
+  typename Dictionary< Key, T, Compare >::iterator Dictionary< Key, T, Compare >::end() noexcept
+  {
+    return data_.end();
+  }
+
+  template< typename Key, typename T, typename Compare >
+  typename Dictionary< Key, T, Compare >::constIterator Dictionary< Key, T, Compare >::cend() const noexcept
+  {
+    return data_.cend();
+  }
+
+  template< typename Key, typename T, typename Compare >
+  typename Dictionary< Key, T, Compare >::constIterator Dictionary< Key, T, Compare >::end() const noexcept
+  {
+    return cend();
+  }
 }
 #endif
