@@ -115,7 +115,6 @@ namespace hrushchev
     if (this != &other)
     {
       clear(node_);
-
       if (other.node_)
       {
         node_ = nullptr;
@@ -240,7 +239,6 @@ namespace hrushchev
     }
     return f;
   }
-
 
   template< typename Key, typename Value, typename Compare >
   template< typename F >

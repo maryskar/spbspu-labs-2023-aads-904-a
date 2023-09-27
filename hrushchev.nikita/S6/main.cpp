@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
     return 1;
   }
 
-  std::function< bool(int, int) > comp = std::less< >();
+  std::function< bool(float, float) > comp = std::less< >();
   if (std::string(argv[1]) == "descending")
   {
     comp = std::greater< >();

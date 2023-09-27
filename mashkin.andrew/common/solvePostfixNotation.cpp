@@ -1,9 +1,9 @@
 #include "solvePostfixNotation.h"
+#include "queue.h"
+#include "solving.h"
+#include "stack.h"
 #include <stdexcept>
 #include <string>
-#include <queue.h>
-#include <stack.h>
-#include "solving.h"
 
 void solve(mashkin::Stack< int long long >& solution, mashkin::Queue< std::string >& que)
 {
@@ -20,7 +20,7 @@ void solve(mashkin::Stack< int long long >& solution, mashkin::Queue< std::strin
   }
   else if (operation == "-")
   {
-    solution.push(mashkin::sum(fNum, sNum * (-1)));
+    solution.push(mashkin::minus(fNum, sNum));
   }
   else if (operation == "*")
   {
@@ -28,11 +28,11 @@ void solve(mashkin::Stack< int long long >& solution, mashkin::Queue< std::strin
   }
   else if (operation == "/")
   {
-    solution.push(fNum / sNum);
+    solution.push(mashkin::divide(fNum, sNum));
   }
   else if (operation == "%")
   {
-    solution.push(mashkin::divide(fNum, sNum));
+    solution.push(mashkin::getRemainderAfterDivision(fNum, sNum));
   }
 }
 

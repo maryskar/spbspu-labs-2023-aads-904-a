@@ -1,7 +1,7 @@
 #ifndef SOLVEPOSTFIXNOTATION_H
 #define SOLVEPOSTFIXNOTATION_H
+#include "queue.h"
 #include <string>
-#include <queue.h>
 
 namespace mashkin
 {
