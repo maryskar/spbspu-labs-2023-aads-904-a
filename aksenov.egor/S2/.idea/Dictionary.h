@@ -180,5 +180,17 @@ namespace aksenov
     }
     return cend();
   }
+
+  template< typename Key, typename T, typename Compare >
+  typename Dictionary< Key, T, Compare >::iterator Dictionary< Key, T, Compare >::eraseAfter(constIterator pos)
+  {
+    return data_.eraseAfter(pos);
+  }
+
+  template< typename Key, typename T, typename Compare >
+  typename Dictionary< Key, T, Compare >::iterator Dictionary< Key, T, Compare >::eraseAfter(constIterator first, constIterator last)
+  {
+    return data_.eraseAfter(first, last);
+  }
 }
 #endif
