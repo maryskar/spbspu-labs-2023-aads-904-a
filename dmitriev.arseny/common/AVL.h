@@ -564,9 +564,37 @@ namespace dmitriev
         f(curr->data);
 
         if (!dmitriev::isEmpty(curr->left))
+        {
           q.push(curr->left);
+        }
         if (!dmitriev::isEmpty(curr->right))
+        {
           q.push(curr->right);
+        }
+      }
+
+      return f;
+    }
+
+    template< typename F >
+    F traverseLnr(F f)
+    {
+      Stack< tree* > stack;
+      tree* curr = m_root;
+
+      while (!dmitriev::isEmpty(curr) || !stack.isEmpty())
+      {
+        while (!dmitriev::isEmpty(curr))
+        {
+          stack.push(curr);
+          curr = curr->left;
+        }
+
+        curr = stack.getTopData();
+        stack.popBack();
+        f(curr->data);
+
+        curr = curr->right;
       }
 
       return f;
