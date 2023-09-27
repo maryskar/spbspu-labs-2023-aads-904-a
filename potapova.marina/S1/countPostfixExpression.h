@@ -1,7 +1,7 @@
 #ifndef COUNTPOSTFIXEXPRESSION_H
 #define COUNTPOSTFIXEXPRESSION_H
 
-#include "valueType.h"
+#include "arithmExpressionMember.h"
 
 namespace potapova
 {

@@ -1,5 +1,5 @@
-#ifndef VALUETYPE_H
-#define VALUETYPE_H
+#ifndef ARITHMEXPRESSIONMEMBER_H
+#define ARITHMEXPRESSIONMEMBER_H
 
 #include <cstdint>
 #include "queue.h"

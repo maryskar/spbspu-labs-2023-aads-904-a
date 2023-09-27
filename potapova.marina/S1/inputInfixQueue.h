@@ -2,7 +2,7 @@
 #define INPUTINFIXQUEUE_H
 
 #include <iostream>
-#include "valueType.h"
+#include "arithmExpressionMember.h"
 
 namespace potapova
 {

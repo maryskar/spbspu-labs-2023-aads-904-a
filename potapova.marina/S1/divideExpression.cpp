@@ -1,7 +1,7 @@
 #include "divideExpression.h"
 #include <stdexcept>
 #include "stack.h"
-#include "valueType.h"
+#include "arithmExpressionMember.h"
 #include "comparePriority.h"
 
 namespace

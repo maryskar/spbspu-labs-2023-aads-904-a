@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
-#include "valueType.h"
+#include "arithmExpressionMember.h"
 #include "queue.h"
 #include "stack.h"
 #include "inputInfixQueue.h"

@@ -1,4 +1,4 @@
-#include "valueType.h"
+#include "arithmExpressionMember.h"
 
 potapova::ArithmExpMember::ArithmExpMember():
   num(0),

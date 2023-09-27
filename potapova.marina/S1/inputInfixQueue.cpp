@@ -1,5 +1,5 @@
 #include "inputInfixQueue.h"
-#include "valueType.h"
+#include "arithmExpressionMember.h"
 #include <cstring>
 #include <cctype>
 #include <string>

@@ -1,7 +1,7 @@
 #ifndef DIVIDEEXPRESSION_H
 #define DIVIDEEXPRESSION_H
 
-#include "valueType.h"
+#include "arithmExpressionMember.h"
 
 namespace potapova
 {
