@@ -12,11 +12,11 @@ namespace aksenov
   class ForwardIterator;
 
   template< typename T >
-  class ConstForwardIterator
+  class ForwardIterator
   {
   public:
     friend class ForwardList< T >;
-    friend class ConstForwardIterator< T >;
+    friend class ForwardIterator< T >;
     ConstForwardIterator();
     ~ConstForwardIterator() = default;
     ConstForwardIterator(listT< T > *node);
