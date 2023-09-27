@@ -270,5 +270,65 @@ namespace aksenov
   {
     return count(key);
   }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename P >
+  std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool > Dictionary<Key, Value, Compare>::insert(P &&value)
+  {
+    auto it = find(value.first);
+    if (it != end())
+    {
+      return { it, false };
+    }
+    else
+    {
+      data_.pushFront(value);
+      size_++;
+      return { begin(), true };
+    }
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::insert(constIterator it, const valueType &value)
+  {
+    auto existing = find(value.first);
+    if (existing != end())
+    {
+      return existing;
+    }
+    else
+    {
+      auto inserted = data_.insert(it.current(), value);
+      size_++;
+      return typename Dictionary<Key, Value, Compare>::iterator(inserted);
+    }
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename P >
+  typename Dictionary< Key, Value, Compare>::iterator Dictionary<Key, Value, Compare >::insert(constIterator it, P &&value)
+  {
+    auto existing = find(value.first);
+    if (existing != end())
+    {
+      return existing;
+    }
+    else
+    {
+      auto inserted = data_.insert(it.current(), std::forward<P>(value));
+      size_++;
+      return typename Dictionary<Key, Value, Compare>::iterator(inserted);
+    }
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename InputIterator >
+  void Dictionary< Key, Value, Compare >::insert(InputIterator first, InputIterator last)
+  {
+    for (auto it = first; it != last; ++it)
+    {
+      insert(*it);
+    }
+  }
 }
 #endif
