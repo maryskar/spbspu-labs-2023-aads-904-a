@@ -1,4 +1,4 @@
-#include "stringCreator.h"
+#include "keyValueSummator.h"
 #include <limits>
 #include <stdexcept>
 
@@ -26,10 +26,12 @@ long long getSumm(int sum, int key)
       throw std::underflow_error("Underflow of int");
     }
   }
+
+  return sum;
 }
 
 
-void dmitriev::StringCreator::operator()(const std::pair< const int, std::string >& val)
+void dmitriev::KeyValueSummator::operator()(const std::pair< const int, std::string >& val)
 {
   resultNumber = getSumm(resultNumber, val.first);
   resultStr += " ";

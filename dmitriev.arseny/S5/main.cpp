@@ -1,15 +1,15 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 #include <AVL.h>
 #include "traverseCommands.h"
-#include "stringCreator.h"
-#include <string>
+#include "keyValueSummator.h"
 
 
 int main(int argc, char** argv)
 {
   using dictionary = dmitriev::AVL< const int, std::string >;
-  using command = dmitriev::StringCreator(*)(const dictionary&, dmitriev::StringCreator);
+  using command = dmitriev::KeyValueSummator(*)(const dictionary&, dmitriev::KeyValueSummator);
 
 
   if (argc != 3)
@@ -47,8 +47,8 @@ int main(int argc, char** argv)
   {
     if (!cmds.isEmpty(cmds.find(argv[1])))
     {
-      std::cout << cmds[argv[1]](dict, dmitriev::StringCreator()).resultNumber;
-      std::cout << cmds[argv[1]](dict, dmitriev::StringCreator()).resultStr;
+      std::cout << cmds[argv[1]](dict, dmitriev::KeyValueSummator()).resultNumber;
+      std::cout << cmds[argv[1]](dict, dmitriev::KeyValueSummator()).resultStr;
       std::cout << '\n';
     }
     else

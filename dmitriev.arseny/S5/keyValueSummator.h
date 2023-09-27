@@ -5,7 +5,7 @@
 
 namespace dmitriev
 {
-  struct StringCreator
+  struct KeyValueSummator
   {
     void operator()(const std::pair< const int, std::string >& val);
 
