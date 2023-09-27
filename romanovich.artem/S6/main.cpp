@@ -39,5 +39,6 @@ int main(int argc, char *argv[])
     std::cerr << "Error while sorting.";
     return 2;
   }
+
   return 0;
 }
