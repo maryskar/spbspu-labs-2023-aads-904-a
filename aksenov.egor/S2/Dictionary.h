@@ -194,7 +194,7 @@ namespace aksenov
   typename Dictionary< Key, T, Compare >::constIterator Dictionary< Key, T, Compare>::find(const Key &key) const
   {
     constIterator cit = (static_cast< const thisT & >(*this)).find(key);
-    return data_.erase_after(cit, cit);
+    return data_.eraseAfter(cit, cit);
 
   }
 
