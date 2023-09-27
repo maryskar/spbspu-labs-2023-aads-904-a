@@ -6,21 +6,21 @@
 namespace dmitriev
 {
   template< typename F >
-  F doAscending(const AVL< const long long, std::string >& tree, F f)
+  F doAscending(const AVL< const int, std::string >& tree, F f)
   {
     f = tree.traverseLnr(f);
     return f;
   }
 
   template< typename F >
-  F doDescending(const AVL< const long long, std::string >& tree, F f)
+  F doDescending(const AVL< const int, std::string >& tree, F f)
   {
     f = tree.traverseRnl(f);
     return f;
   }
 
   template< typename F >
-  F doBreadth(const AVL< const long long, std::string >& tree, F f)
+  F doBreadth(const AVL< const int, std::string >& tree, F f)
   {
     f = tree.traverseBreadth(f);
     return f;

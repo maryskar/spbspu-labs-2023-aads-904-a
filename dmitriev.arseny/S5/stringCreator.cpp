@@ -1,11 +1,37 @@
 #include "stringCreator.h"
+#include <limits>
+#include <stdexcept>
 
-void dmitriev::StringCreator::operator()(const std::pair< const long long, std::string >& val)
+long long getSumm(int sum, int key)
 {
-  if (!result.empty())
+  if (sum >= 0)
   {
-    result += " ";
+    if (std::numeric_limits< int >::max() - sum >= key)
+    {
+      sum += key;
+    }
+    else
+    {
+      throw std::overflow_error("Overflow of int");
+    }
   }
+  else
+  {
+    if (std::numeric_limits< int >::min() - sum <= key)
+    {
+      sum += key;
+    }
+    else
+    {
+      throw std::underflow_error("Underflow of int");
+    }
+  }
+}
 
-  result += val.second;
+
+void dmitriev::StringCreator::operator()(const std::pair< const int, std::string >& val)
+{
+  resultNumber = getSumm(resultNumber, val.first);
+  resultStr += " ";
+  resultStr += val.second;
 }

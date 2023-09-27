@@ -8,7 +8,7 @@
 
 int main(int argc, char** argv)
 {
-  using dictionary = dmitriev::AVL< const long long, std::string >;
+  using dictionary = dmitriev::AVL< const int, std::string >;
   using command = dmitriev::StringCreator(*)(const dictionary&, dmitriev::StringCreator);
 
 
@@ -31,7 +31,6 @@ int main(int argc, char** argv)
   while (file >> key >> value)
   {
     dict.insert({key, value});
-
   }
   if (dict.isEmpty())
   {
@@ -48,7 +47,9 @@ int main(int argc, char** argv)
   {
     if (!cmds.isEmpty(cmds.find(argv[1])))
     {
-      std::cout << cmds[argv[1]](dict, dmitriev::StringCreator()).result << "\n";
+      std::cout << cmds[argv[1]](dict, dmitriev::StringCreator()).resultNumber;
+      std::cout << cmds[argv[1]](dict, dmitriev::StringCreator()).resultStr;
+      std::cout << '\n';
     }
     else
     {

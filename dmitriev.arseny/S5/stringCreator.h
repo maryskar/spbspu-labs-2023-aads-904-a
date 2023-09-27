@@ -7,9 +7,10 @@ namespace dmitriev
 {
   struct StringCreator
   {
-    void operator()(const std::pair< const long long, std::string >& val);
+    void operator()(const std::pair< const int, std::string >& val);
 
-    std::string result = "";
+    int resultNumber = 0;
+    std::string resultStr = "";
   };
 }
 
