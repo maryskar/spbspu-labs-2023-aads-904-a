@@ -40,8 +40,8 @@ namespace mashkin
     mergeSort(forwardList.begin(), std::distance(forwardList.begin(), forwardList.end()), comp);
     mergeSort(queueForMerge.begin(), queueForMerge.size(), comp);
     mergeSort(listForMerge.begin(), listForMerge.size(), comp);
-    oddEvenSort(listForOddEven, comp);
-    oddEvenSort(queueForOddEven, comp);
+    oddEvenSort(listForOddEven.begin(), listForOddEven.end(), comp);
+    oddEvenSort(queueForOddEven.begin(), queueForOddEven.end(), comp);
     quickSort< decltype(queueForQSort), Type, Comporator >( queueForQSort, 0, numOfElem - 1, comp);
 
     print(out, forwardList.begin(), forwardList.end()) << "\n";

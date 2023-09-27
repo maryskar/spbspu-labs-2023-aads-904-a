@@ -37,5 +37,18 @@ namespace detail
       *it = *tempIt++;
     }
   }
+
+  template< class Iter, class Comp >
+  void oddEvenSortImpl(Iter first, Iter second, Iter beforeEnd, Iter last, bool& isSorted, Comp comp)
+  {
+    for (; second != beforeEnd && second != last; std::advance(first, 2), std::advance(second, 2))
+    {
+      if (!comp(*first, *second))
+      {
+        std::swap(*first, *second);
+        isSorted = false;
+      }
+    }
+  }
 }
 #endif

@@ -2,6 +2,8 @@
 #define MASHKIN_ANDREW_ODDEVENSORT_H
 #include <cstddef>
 #include <iterator>
+#include <iostream>
+#include "DetailsOfSortFunction.h"
 
 namespace mashkin
 {
@@ -11,6 +13,30 @@ namespace mashkin
     auto var = *first;
     *first = *second;
     *second = var;
+  }
+
+  template< class Iter, class Comp >
+  void oddEvenSort(Iter first, Iter last, Comp comp)
+  {
+    bool isSorted = false;
+    while (!isSorted)
+    {
+      isSorted = true;
+      auto begin = first;
+      auto second = first;
+      ++second;
+      auto beforeEnd = last;
+      --beforeEnd;
+
+      detail::oddEvenSortImpl(first, second, beforeEnd, last, isSorted, comp);
+
+      first = begin;
+      second = begin;
+      ++first;
+      ++++second;
+
+      detail::oddEvenSortImpl(first, second, beforeEnd, last, isSorted, comp);
+    }
   }
 
   template< class DataStruct, class Comporator >
@@ -30,7 +56,7 @@ namespace mashkin
       {
         if (!comp(*first, *second))
         {
-          swapValOfIter(first, second);
+          std::swap(*first, *second);
           isSorted = false;
         }
       }
