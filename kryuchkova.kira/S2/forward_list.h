@@ -4,7 +4,7 @@
 #include <initializer_list>
 #include "forward_list_const_iterator.h"
 #include "forward_list_iterator.h"
-#include "../common/node.h"
+#include <node.h>
 
 namespace kryuchkova
 {
