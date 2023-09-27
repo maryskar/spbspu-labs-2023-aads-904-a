@@ -4,7 +4,7 @@
 namespace fesenko
 {
   template< typename ForwardIt >
-  std::ostream &print(ForwardIt first, ForwardIt last std::ostream &out)
+  std::ostream &print(ForwardIt first, ForwardIt last, std::ostream &out)
   {
     for (auto it = first; it != last; it++) {
       if (it != first) {
