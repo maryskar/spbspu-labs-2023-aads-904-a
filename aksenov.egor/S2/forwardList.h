@@ -58,6 +58,7 @@ namespace aksenov
       listT< T > *fake_;
       listT< T > *tail_;
       void pushBack(constReference data);
+      void copy(const ForwardList< T > &rhs);
   };
 
   template< typename T >
@@ -80,9 +81,9 @@ namespace aksenov
   }
 
   template< typename T >
-  ForwardList< T >::ForwardList(const ForwardList< T > &val)
+  ForwardList< T >::ForwardList(const ForwardList< T > &val):
+    ForwardList()
   {
-    ForwardList();
     fake_->next = tail_;
     try
     {
@@ -337,6 +338,13 @@ namespace aksenov
     listT< T > *newNode = new listT< T >{data, nullptr};
     tail_->next = newNode;
     tail_ = newNode;
+  }
+  template< typename T >
+  void ForwardList< T >::copy(const ForwardList< T > &rhs)
+  {
+    auto res = copyList(rhs.fake_->next);
+    fake_->next = res.first;
+    tail_ = res.second;
   }
 }
 #endif
