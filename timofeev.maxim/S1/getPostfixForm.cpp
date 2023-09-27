@@ -19,7 +19,7 @@ int getPriority(char op)
     throw std::logic_error("No opperand in string");
   }
 }
-Queue< std::string > timofeev::getPostfixForm(std::string infix)
+timofeev::Queue< std::string > timofeev::getPostfixForm(std::string infix)
 {
   Queue<std::string> postfix;
   Stack<char> opStack;
