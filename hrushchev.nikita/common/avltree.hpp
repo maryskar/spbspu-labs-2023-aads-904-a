@@ -346,6 +346,7 @@ namespace hrushchev
     if (comp_(tree->data_.first, key))
     {
       if (!tree->right_)
+      {
         auto temp = new Tree< data_t >{data_t(key, value), nullptr, nullptr, nullptr, 1};
         tree->right_ = temp;
         temp->head_ = tree;
