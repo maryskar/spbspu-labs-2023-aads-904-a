@@ -84,4 +84,34 @@ namespace timofeev
       throw;
     }
   }
+  void Intersect(std::istream& in, dictOfDicts& dict)
+  {
+    try
+    {
+      std::string newDict, first, second;
+      in >> newDict >> first >> second;
+      if (!dict.contains(first) || dict.contains(second))
+      {
+        throw std::logic_error("Logic error");
+      }
+      else
+      {
+        const auto &dict1 = dict.at(first);
+        const auto &dict2 = dict.at(second);
+        dictionary intersDict;
+        for (const auto &tmp: dict1)
+        {
+          if (dict2.contains(tmp.first))
+          {
+            intersDict.insert(tmp);
+          }
+        }
+        dict.push(newDict, intersDict);
+      }
+    }
+    catch (...)
+    {
+      throw;
+    }
+  }
 }
