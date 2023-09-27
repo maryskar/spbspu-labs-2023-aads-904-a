@@ -114,4 +114,24 @@ namespace timofeev
       throw;
     }
   }
+  void Union(std::istream& in, dictOfDicts& dict)
+  {
+    std::string newDict, first, second;
+    in >> newDict >> first >> second;
+    if (!dict.contains(first) || dict.contains(second))
+    {
+      throw std::logic_error("Logic error");
+    }
+    const auto& dict1 = dict.at(first);
+    const auto& dict2 = dict.at(second);
+    dictionary unDict = dict1;
+    for (const auto& entry : dict2)
+    {
+      if (!unDict.contains(entry.first))
+      {
+        unDict.insert(entry);
+      }
+    }
+    dict.push(newDict, unDict);
+  }
 }
