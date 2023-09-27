@@ -361,8 +361,8 @@ namespace timofeev
   Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(const Dictionary &other)
   {
     clear();
-    data_ = other.data_;
-    compare_ = other.compare_;
+    data_.insert_after(this->data_.before_begin(), other.data_.cbegin(), other.data_.cend());
+    compare_ = other.comp_;
     size_ = other.size_;
     return *this;
   }
