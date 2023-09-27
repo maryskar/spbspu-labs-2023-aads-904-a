@@ -19,14 +19,11 @@ namespace mashkin
       ++second;
       auto beforeEnd = last;
       --beforeEnd;
-
       detail::oddEvenSortImpl(begin, second, beforeEnd, last, isSorted, comp);
-
       first = begin;
       second = begin;
       ++begin;
       ++++second;
-
       detail::oddEvenSortImpl(begin, second, beforeEnd, last, isSorted, comp);
     }
   }
