@@ -150,5 +150,35 @@ namespace aksenov
   {
     return cend();
   }
+
+  template< typename Key, typename T, typename Compare >
+  typename Dictionary< Key, T, Compare >::iterator Dictionary< Key, T, Compare>::find(const Key &key)
+  {
+    auto it = begin();
+    while (it != end())
+    {
+      if (comp_(it->first, key) && comp_(key, it->first))
+      {
+        return it;
+      }
+      ++it;
+    }
+    return end();
+  }
+
+  template< typename Key, typename T, typename Compare >
+  typename Dictionary< Key, T, Compare >::constIterator Dictionary< Key, T, Compare>::find(const Key &key) const
+  {
+    auto it = begin();
+    while (it != end())
+    {
+      if (comp_(it->first, key) || comp_(key, it->first))
+      {
+        return it;
+      }
+      ++it;
+    }
+    return cend();
+  }
 }
 #endif
