@@ -37,9 +37,9 @@ namespace mashkin
     std::list< Type > listForOddEven(forwardList.begin(), forwardList.end());
     std::deque< Type > queueForQSort(forwardList.begin(), forwardList.end());
 
-    mergeSort(forwardList, 0, numOfElem - 1, comp);
-    mergeSort(queueForMerge, 0, numOfElem - 1, comp);
-    mergeSort(listForMerge, 0, numOfElem - 1, comp);
+    mergeSort(forwardList.begin(), forwardList.end(), comp);
+    mergeSort(queueForMerge.begin(), queueForMerge.end(), comp);
+    mergeSort(listForMerge.begin(), listForMerge.end(), comp);
     oddEvenSort(listForOddEven, comp);
     oddEvenSort(queueForOddEven, comp);
     quickSort< decltype(queueForQSort), Type, Comporator >( queueForQSort, 0, numOfElem - 1, comp);
