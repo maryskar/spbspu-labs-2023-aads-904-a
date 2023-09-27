@@ -9,7 +9,8 @@
 int main(int argc, char** argv)
 {
   using dictionary = dmitriev::AVL< const int, std::string >;
-  using command = dmitriev::KeyValueSummator(*)(const dictionary&, dmitriev::KeyValueSummator);
+  using summator = dmitriev::KeyValueSummator;
+  using command = dmitriev::KeyValueSummator(*)(const dictionary&, summator);
 
 
   if (argc != 3)
@@ -47,8 +48,9 @@ int main(int argc, char** argv)
   {
     if (!cmds.isEmpty(cmds.find(argv[1])))
     {
-      std::cout << cmds[argv[1]](dict, dmitriev::KeyValueSummator()).resultNumber;
-      std::cout << cmds[argv[1]](dict, dmitriev::KeyValueSummator()).resultStr;
+      summator res = cmds[argv[1]](dict, summator());
+      std::cout << res.resultNumber;
+      std::cout << res.resultStr;
       std::cout << '\n';
     }
     else
@@ -62,7 +64,6 @@ int main(int argc, char** argv)
     std::cerr << exception.what() << "\n";
     return 1;
   }
-
 
   return 0;
 }
