@@ -3,6 +3,7 @@
 #include <functional>
 #include <stdexcept>
 #include <iostream>
+#include "queue.h"
 #include <cstddef>
 #include "queue.h"
 #include "const_bidirectional_iterator.h"
