@@ -71,6 +71,12 @@ namespace romanovich
     Compare value_comp() const;
     bool equal(const RedBlackTree &rhs) const;
     void remove(const data_t &data);
+    template< typename F >
+    void traverseLnr(F &f) const;
+    template< typename F >
+    void traverseRnl(F &f) const;
+    template< typename F >
+    void traverseBreadth(F &f) const;
   private:
     void balanceAfterInsert(TreeNode< data_t > *operationNode);
     void balanceAfterRemove(TreeNode< data_t > *operationNode);
@@ -78,38 +84,56 @@ namespace romanovich
     RotatableBinarySearchTree< Key, Value, Compare > rotBst_;
   };
   template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  void RedBlackTree< Key, Value, Compare >::traverseBreadth(F &f) const
+  {
+    rotBst_.traverseBreadth(f);
+  }
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  void RedBlackTree< Key, Value, Compare >::traverseRnl(F &f) const
+  {
+    rotBst_.traverseRnl(f);
+  }
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  void RedBlackTree< Key, Value, Compare >::traverseLnr(F &f) const
+  {
+    rotBst_.traverseLnr(f);
+  }
+  template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::const_reverse_iterator
-    RedBlackTree< Key, Value, Compare >::crend() const noexcept
+      RedBlackTree< Key, Value, Compare >::crend() const noexcept
   {
     return rotBst_.crend();
   }
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::const_reverse_iterator
-    RedBlackTree< Key, Value, Compare >::rend() const noexcept
+      RedBlackTree< Key, Value, Compare >::rend() const noexcept
   {
     return rotBst_.rend();
   }
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::reverse_iterator
-    RedBlackTree< Key, Value, Compare >::rend() noexcept
+      RedBlackTree< Key, Value, Compare >::rend() noexcept
   {
     return rotBst_.rend();
   }
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::const_reverse_iterator
-    RedBlackTree< Key, Value, Compare >::crbegin() const noexcept
+      RedBlackTree< Key, Value, Compare >::crbegin() const noexcept
   {
     return rotBst_.crbegin();
   }
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::const_reverse_iterator
-    RedBlackTree< Key, Value, Compare >::rbegin() const noexcept
+      RedBlackTree< Key, Value, Compare >::rbegin() const noexcept
   {
     return rotBst_.rbegin();
   }
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::reverse_iterator
-    RedBlackTree< Key, Value, Compare >::rbegin() noexcept
+      RedBlackTree< Key, Value, Compare >::rbegin() noexcept
   {
     return rotBst_.rbegin();
   }
@@ -176,7 +200,7 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::iterator RedBlackTree< Key, Value, Compare >::erase(RedBlackTree::const_iterator first,
-                                                                                                      RedBlackTree::const_iterator last)
+      RedBlackTree::const_iterator last)
   {
     while (first != last)
     {
@@ -246,14 +270,14 @@ namespace romanovich
   template< typename Key, typename Value, typename Compare >
   template< typename P >
   typename RedBlackTree< Key, Value, Compare >::iterator RedBlackTree< Key, Value, Compare >::insert(RedBlackTree::const_iterator pos,
-                                                                                                       P &&data)
+      P &&data)
   {
     data_t tmp(data);
     return insert(pos, tmp);
   }
   template< typename Key, typename Value, typename Compare >
   typename RedBlackTree< Key, Value, Compare >::iterator RedBlackTree< Key, Value, Compare >::insert(RedBlackTree::const_iterator pos,
-                                                                                                       const data_t &value)
+      const data_t &value)
   {
     auto insertionResult = rotBst_.insert(pos, value);
     if (!insertionResult.second)
@@ -261,7 +285,7 @@ namespace romanovich
       return insertionResult.first;
     }
     TreeNode< data_t > *newNode = insertionResult.first.node_;
-    if (newNode->parent && newNode->parent->color == Color::C_RED)
+    if (newNode->parent && newNode->parent->color == details::Color::red)
     {
       balanceAfterInsert(newNode);
     }
@@ -407,7 +431,7 @@ namespace romanovich
   template< typename Key, typename Value, typename Compare >
   void RedBlackTree< Key, Value, Compare >::initColor()
   {
-    rotBst_.bst_.fakeNode_->color = Color::C_BLACK;
+    rotBst_.bst_.fakeNode_->color = details::Color::black;
   }
   template< typename Key, typename Value, typename Compare >
   RedBlackTree< Key, Value, Compare >::RedBlackTree():
@@ -424,35 +448,35 @@ namespace romanovich
   template< typename Key, typename Value, typename Compare >
   void RedBlackTree< Key, Value, Compare >::balanceAfterRemove(TreeNode< data_t > *operationNode)
   {
-    while (operationNode != rotBst_.root() && operationNode->color == Color::C_BLACK)
+    while (operationNode != rotBst_.root() && operationNode->color == details::Color::black)
     {
       if (operationNode == operationNode->parent->left)
       {
         TreeNode< data_t > *sibling = operationNode->parent->right;
-        if (sibling->color == Color::C_RED)
+        if (sibling->color == details::Color::red)
         {
-          sibling->color = Color::C_BLACK;
-          operationNode->parent->color = Color::C_RED;
+          sibling->color = details::Color::black;
+          operationNode->parent->color = details::Color::red;
           rotBst_.rotateLeftLeft(operationNode->parent);
           sibling = operationNode->parent->right;
         }
-        if (sibling->left->color == Color::C_BLACK && sibling->right->color == Color::C_BLACK)
+        if (sibling->left->color == details::Color::black && sibling->right->color == details::Color::black)
         {
-          sibling->color = Color::C_RED;
+          sibling->color = details::Color::red;
           operationNode = operationNode->parent;
         }
         else
         {
-          if (sibling->right->color == Color::C_BLACK)
+          if (sibling->right->color == details::Color::black)
           {
-            sibling->left->color = Color::C_BLACK;
-            sibling->color = Color::C_RED;
+            sibling->left->color = details::Color::black;
+            sibling->color = details::Color::red;
             rotBst_.rotateRightRight(sibling);
             sibling = operationNode->parent->right;
           }
           sibling->color = operationNode->parent->color;
-          operationNode->parent->color = Color::C_BLACK;
-          sibling->right->color = Color::C_BLACK;
+          operationNode->parent->color = details::Color::black;
+          sibling->right->color = details::Color::black;
           rotBst_.rotateLeftLeft(operationNode->parent);
           operationNode = rotBst_.root();
         }
@@ -460,50 +484,50 @@ namespace romanovich
       else
       {
         TreeNode< data_t > *sibling = operationNode->parent->left;
-        if (sibling->color == Color::C_RED)
+        if (sibling->color == details::Color::red)
         {
-          sibling->color = Color::C_BLACK;
-          operationNode->parent->color = Color::C_RED;
+          sibling->color = details::Color::black;
+          operationNode->parent->color = details::Color::red;
           rotBst_.rotateRightRight(operationNode->parent);
           sibling = operationNode->parent->left;
         }
-        if (sibling->left->color == Color::C_BLACK && sibling->right->color == Color::C_BLACK)
+        if (sibling->left->color == details::Color::black && sibling->right->color == details::Color::black)
         {
-          sibling->color = Color::C_RED;
+          sibling->color = details::Color::red;
           operationNode = operationNode->parent;
         }
         else
         {
-          if (sibling->left->color == Color::C_BLACK)
+          if (sibling->left->color == details::Color::black)
           {
-            sibling->right->color = Color::C_BLACK;
-            sibling->color = Color::C_RED;
+            sibling->right->color = details::Color::black;
+            sibling->color = details::Color::red;
             rotBst_.rotateLeftLeft(sibling);
             sibling = operationNode->parent->left;
           }
           sibling->color = operationNode->parent->color;
-          operationNode->parent->color = Color::C_BLACK;
-          sibling->left->color = Color::C_BLACK;
+          operationNode->parent->color = details::Color::black;
+          sibling->left->color = details::Color::black;
           rotBst_.rotateRightRight(operationNode->parent);
           operationNode = rotBst_.root();
         }
       }
     }
-    operationNode->color = Color::C_BLACK;
+    operationNode->color = details::Color::black;
   }
   template< typename Key, typename Value, typename Compare >
   void RedBlackTree< Key, Value, Compare >::balanceAfterInsert(TreeNode< data_t > *operationNode)
   {
-    while (operationNode->parent && operationNode->parent->color == Color::C_RED)
+    while (operationNode->parent && operationNode->parent->color == details::Color::red)
     {
       if (operationNode->parent == operationNode->parent->parent->left)
       {
         TreeNode< data_t > *uncle = operationNode->parent->parent->right;
-        if (uncle && uncle->color == Color::C_RED)
+        if (uncle && uncle->color == details::Color::red)
         {
-          operationNode->parent->color = Color::C_BLACK;
-          uncle->color = Color::C_BLACK;
-          operationNode->parent->parent->color = Color::C_RED;
+          operationNode->parent->color = details::Color::black;
+          uncle->color = details::Color::black;
+          operationNode->parent->parent->color = details::Color::red;
           operationNode = operationNode->parent->parent;
         }
         else
@@ -513,19 +537,19 @@ namespace romanovich
             operationNode = operationNode->parent;
             rotBst_.rotateLeftLeft(operationNode);
           }
-          operationNode->parent->color = Color::C_BLACK;
-          operationNode->parent->parent->color = Color::C_RED;
+          operationNode->parent->color = details::Color::black;
+          operationNode->parent->parent->color = details::Color::red;
           rotBst_.rotateRightRight(operationNode->parent->parent);
         }
       }
       else
       {
         TreeNode< data_t > *uncle = operationNode->parent->parent->left;
-        if (uncle && uncle->color == Color::C_RED)
+        if (uncle && uncle->color == details::Color::red)
         {
-          operationNode->parent->color = Color::C_BLACK;
-          uncle->color = Color::C_BLACK;
-          operationNode->parent->parent->color = Color::C_RED;
+          operationNode->parent->color = details::Color::black;
+          uncle->color = details::Color::black;
+          operationNode->parent->parent->color = details::Color::red;
           operationNode = operationNode->parent->parent;
         }
         else
@@ -535,13 +559,13 @@ namespace romanovich
             operationNode = operationNode->parent;
             rotBst_.rotateRightRight(operationNode);
           }
-          operationNode->parent->color = Color::C_BLACK;
-          operationNode->parent->parent->color = Color::C_RED;
+          operationNode->parent->color = details::Color::black;
+          operationNode->parent->parent->color = details::Color::red;
           rotBst_.rotateLeftLeft(operationNode->parent->parent);
         }
       }
     }
-    rotBst_.bst_.root_->color = Color::C_BLACK;
+    rotBst_.bst_.root_->color = details::Color::black;
   }
   template< typename Key, typename Value, typename Compare >
   void RedBlackTree< Key, Value, Compare >::remove(const data_t &data)

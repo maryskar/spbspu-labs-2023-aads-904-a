@@ -23,10 +23,10 @@ int main(int argc, char *argv[])
   if (std::getline(input, line))
   {
     std::vector< std::string > lineWords;
-    splitString(lineWords, line, ' ');
+    romanovich::splitString(lineWords, line, ' ');
     if (line.empty())
     {
-      printEmpty(std::cout) << "\n";
+      romanovich::printEmpty(std::cout) << "\n";
       return 0;
     }
     for (size_t i = 0; i < lineWords.size(); i += 2)

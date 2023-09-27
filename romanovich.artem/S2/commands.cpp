@@ -1,5 +1,6 @@
 #include "commands.h"
-#include <printmessages.h>
+#include <istream>
+#include "printmessages.h"
 namespace
 {
   using dict_ref = romanovich::dict_type &;
@@ -47,13 +48,13 @@ namespace
 }
 namespace romanovich
 {
-  std::unordered_map< std::string, CommandHandler > createCommandDictionary(container_type &dictionary)
+  Dictionary< std::string, CommandHandler > createCommandDictionary(container_type &dictionary)
   {
     std::string printCall = "print";
     std::string complementCall = "complement";
     std::string intersectCall = "intersect";
     std::string unionCall = "union";
-    std::unordered_map< std::string, CommandHandler > commands;
+    Dictionary< std::string, CommandHandler > commands;
     using namespace std::placeholders;
     commands[printCall] = std::bind(printCommand, _1, _2, std::ref(dictionary));
     commands[complementCall] = std::bind(performCommand, _1, _2, std::ref(dictionary), ComplementOperation());
@@ -62,9 +63,9 @@ namespace romanovich
     return commands;
   }
   void performCommand(std::istream &in,
-                      std::ostream &out,
-                      container_type &dictionary,
-                      const std::function< void(dict_type &, const dict_type &, const dict_type &) > &operation)
+      std::ostream &out,
+      container_type &dictionary,
+      const std::function< void(dict_type &, const dict_type &, const dict_type &) > &operation)
   {
     std::string newDictName, dictName1, dictName2;
     in >> newDictName >> dictName1 >> dictName2;
