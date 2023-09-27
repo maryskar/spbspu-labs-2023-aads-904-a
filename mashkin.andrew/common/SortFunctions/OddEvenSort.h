@@ -3,10 +3,25 @@
 #include <cstddef>
 #include <iterator>
 #include <iostream>
-#include "DetailsOfSortFunction.h"
 
 namespace mashkin
 {
+  namespace detail
+  {
+    template< class Iter, class Comp >
+    void oddEvenSortImpl(Iter first, Iter second, Iter beforeEnd, Iter last, bool& isSorted, Comp comp)
+    {
+      for (; first != beforeEnd && first != last; std::advance(first, 2), std::advance(second, 2))
+      {
+        if (comp(*second, *first))
+        {
+          std::swap(*first, *second);
+          isSorted = false;
+        }
+      }
+    }
+  }
+
   template< class Iter, class Comp >
   void oddEvenSort(Iter first, Iter last, Comp comp)
   {
