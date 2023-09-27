@@ -22,9 +22,8 @@ std::istream& potapova::inputInfixQueue(expr_queue& dest, std::istream& in)
     ArithmExpMember member;
     if (std::isdigit(*cur_sym_ptr) || (*cur_sym_ptr == '-' && std::isdigit(*(cur_sym_ptr + 1))))
     {
-      member.type = ArithmExpMember::Type::Num;
       char* end_conv_ptr = nullptr;
-      member.num = std::strtoll(cur_sym_ptr, &end_conv_ptr, 10);
+      member = std::strtoll(cur_sym_ptr, &end_conv_ptr, 10);
       if (errno == ERANGE)
       {
         in.setstate(std::ios_base::failbit);
@@ -34,8 +33,7 @@ std::istream& potapova::inputInfixQueue(expr_queue& dest, std::istream& in)
     }
     else if (isOperation(*cur_sym_ptr))
     {
-      member.type = ArithmExpMember::Type::Operation;
-      member.operation = *cur_sym_ptr++;
+      member = *cur_sym_ptr++;
     }
     else
     {

@@ -38,9 +38,9 @@ long long potapova::countPostfixExpression(expr_queue& postfix_queue)
   Stack< long long > operands_stack;
   while (!postfix_queue.empty())
   {
-    if (postfix_queue.front().type == ArithmExpMember::Type::Num)
+    if (postfix_queue.front().getType() == ArithmExpMember::Type::Num)
     {
-      operands_stack.push(postfix_queue.front().num);
+      operands_stack.push(postfix_queue.front().getNum());
       postfix_queue.pop();
     }
     else
@@ -49,17 +49,17 @@ long long potapova::countPostfixExpression(expr_queue& postfix_queue)
       operands_stack.pop();
       long long operand1 = operands_stack.top();
       operands_stack.pop();
-      if (postfix_queue.front().operation == '+' && operand2 < 0)
+      if (postfix_queue.front().getOperation() == '+' && operand2 < 0)
       {
         operand2 *= -1;
-        postfix_queue.front().operation = '-';
+        postfix_queue.front() = '-';
       }
-      if (postfix_queue.front().operation == '-' && operand2 < 0)
+      if (postfix_queue.front().getOperation() == '-' && operand2 < 0)
       {
         operand2 *= -1;
-        postfix_queue.front().operation = '+';
+        postfix_queue.front() = '+';
       }
-      switch (postfix_queue.front().operation)
+      switch (postfix_queue.front().getOperation())
       {
         case '+':
           if (isOverflowPlus(operand1, operand2))

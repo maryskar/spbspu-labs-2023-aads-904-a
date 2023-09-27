@@ -40,11 +40,11 @@ potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
   while (!infix_expr.empty())
   {
     ArithmExpMember& cur_member = infix_expr.front();
-    if (cur_member.type == ArithmExpMember::Type::Num)
+    if (cur_member.getType() == ArithmExpMember::Type::Num)
     {
       postfix_expr.push(cur_member);
     }
-    else if (isCloseBracket(cur_member.operation))
+    else if (isCloseBracket(cur_member.getOperation()))
     {
       if (brackets_stack.empty() || brackets_stack.top() != '(')
       {
@@ -53,23 +53,23 @@ potapova::expr_queue potapova::composePostfixQueue(expr_queue& infix_expr)
       brackets_stack.pop();
       moveExprInBracketsToPostfix(operators_stack, postfix_expr);
     }
-    else if (isOpenBracket(cur_member.operation) || operators_stack.empty() || isOpenBracket(operators_stack.top()))
+    else if (isOpenBracket(cur_member.getOperation()) || operators_stack.empty() || isOpenBracket(operators_stack.top()))
     {
-      if (isOpenBracket(cur_member.operation))
+      if (isOpenBracket(cur_member.getOperation()))
       {
-        brackets_stack.push(cur_member.operation);
+        brackets_stack.push(cur_member.getOperation());
       }
-      operators_stack.push(cur_member.operation);
+      operators_stack.push(cur_member.getOperation());
     }
-    else if (!operators_stack.empty() && potapova::comparePriority(cur_member.operation, operators_stack.top()))
+    else if (!operators_stack.empty() && potapova::comparePriority(cur_member.getOperation(), operators_stack.top()))
     {
       postfix_expr.push(ArithmExpMember(operators_stack.top()));
       operators_stack.pop();
-      operators_stack.push(cur_member.operation);
+      operators_stack.push(cur_member.getOperation());
     }
     else
     {
-      operators_stack.push(cur_member.operation);
+      operators_stack.push(cur_member.getOperation());
     }
     infix_expr.pop();
   }
