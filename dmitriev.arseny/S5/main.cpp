@@ -36,8 +36,12 @@ int main(int argc, char** argv)
   }
   if (dict.isEmpty())
   {
-    dmitriev::outOfEmptyDataMsg(std::cerr) << '\n';
+    dmitriev::outOfEmptyDataMsg(std::cout) << '\n';
     return 0;
+  }
+  for (typename dictionary::iterator it = dict.begin(); it != dict.end(); it++)
+  {
+    std::cout << it->first << ' ' << it->second << '\n';
   }
 
   dmitriev::AVL< std::string, command > cmds;
