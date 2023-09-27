@@ -24,7 +24,7 @@ namespace aksenov
     ConstForwardIterator< T > &operator=(const ConstForwardIterator< T > &rhs) = default;
 
     ConstForwardIterator< T > &operator++();
-    ConstForwardIterator< T > &operator++(int) const;
+    ConstForwardIterator< T > &operator++(int);
 
     const T &operator*() const;
     const T *operator->() const;
@@ -54,7 +54,7 @@ namespace aksenov
   }
 
   template< typename T >
-  ConstForwardIterator< T > &ConstForwardIterator< T >::operator++(int) const
+  ConstForwardIterator< T > &ConstForwardIterator< T >::operator++(int)
   {
     assert(node_ != nullptr);
     ConstForwardIterator< T > temp(*this);
@@ -72,8 +72,9 @@ namespace aksenov
   template< typename T >
   const T *ConstForwardIterator< T >::operator->() const
   {
-    assert(node_ != nullptr);
-    return std::addressof(node_->data);
+    /*assert(node_ != nullptr);
+    return std::addressof(node_->data);*/
+    return (node_ != nullptr) ? &node_->data : nullptr;
   }
 
   template< typename T >

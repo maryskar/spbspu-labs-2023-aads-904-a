@@ -88,10 +88,10 @@ namespace aksenov
 
   template< typename T >
   ForwardList< T >::ForwardList(ForwardList< T > &&val) noexcept:
-          fake_(val.fake_),
-          tail_(val.tail_)
+    fake_(val.fake_),
+    tail_(val.tail_)
   {
-    val.fake_ = nullptr;
+    val.tail_ = nullptr;
     val.fake_ = nullptr;
   }
 
