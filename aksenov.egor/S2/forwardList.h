@@ -62,11 +62,10 @@ namespace aksenov
   };
 
   template< typename T >
-  ForwardList< T >::ForwardList():
-          fake_(static_cast< listT< T > * >(::operator new (sizeof(listT< T >)))),
-          tail_(nullptr)
+  ForwardList< T >::ForwardList()
   {
-    fake_->next = tail_;
+    fake_ = new listT< T >;
+    tail_ = fake_;
   }
 
   template< typename T >
@@ -77,28 +76,14 @@ namespace aksenov
       return;
     }
     clear();
-    fake_ = tail_ = nullptr;
+    delete fake_;
   }
 
   template< typename T >
   ForwardList< T >::ForwardList(const ForwardList< T > &val):
     ForwardList()
   {
-    fake_->next = tail_;
-    try
-    {
-      listT< T > *temp = val.tail_;
-      while (temp)
-      {
-        this->pushBack(temp->data);
-        temp = temp->next;
-      }
-    }
-    catch (...)
-    {
-      clear();
-      throw;
-    }
+    copy(val);
   }
 
   template< typename T >
@@ -113,10 +98,10 @@ namespace aksenov
   template< typename T >
   ForwardList< T > &ForwardList< T >::operator=(const ForwardList< T > &val)
   {
-    if (this != std::addressof(val))
+    if (this != val)
     {
-      ForwardList< T > temp(val);
-      swap(temp);
+      clear();
+      copy(val);
     }
     return *this;
   }
@@ -124,10 +109,13 @@ namespace aksenov
   template< typename T >
   ForwardList< T > &ForwardList< T >::operator=(ForwardList< T > &&val) noexcept
   {
-    if (this != std::addressof(val))
+    if (this != val)
     {
-      ForwardList< T > temp(std::move(val));
-      swap(temp);
+      clear();
+      fake_ = val.fake_;
+      tail_ = val.tail_;
+      val.fake_ = nullptr;
+      val.tail_ = nullptr;
     }
     return *this;
   }
@@ -197,8 +185,11 @@ namespace aksenov
   {
     while (!isEmpty())
     {
-      popFront();
+      listT< T > *temp = fake_->next;
+      fake_->next = temp->next;
+      delete temp;
     }
+    tail_ = fake_;
   }
 
   template< typename T >
@@ -342,9 +333,12 @@ namespace aksenov
   template< typename T >
   void ForwardList< T >::copy(const ForwardList< T > &rhs)
   {
-    auto res = copyList(rhs.fake_->next);
-    fake_->next = res.first;
-    tail_ = res.second;
+    auto it = rhs.begin();
+    while (it != rhs.end())
+    {
+      pushBack(*it);
+      ++it;
+    }
   }
 }
 #endif
