@@ -9,11 +9,11 @@ namespace mashkin
   template <typename Iter, typename Comp >
   void quickSort(Iter first, Iter last, Comp comp)
   {
-    if (std::distance(first, last)>1)
+    if (std::distance(first, last) > 1)
     {
       Iter bound = detail::partition(first, last, comp);
       quickSort(first, bound, comp);
-      quickSort(bound+1, last, comp);
+      quickSort(bound + 1, last, comp);
     }
   }
 }
