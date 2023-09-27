@@ -8,7 +8,7 @@ namespace fesenko
   void oddEvenSort(ForwardIt first, ForwardIt last, Compare comp)
   {
     auto end = first;
-    if (std::next(first) != last) {
+    if (std::next(first) == last) {
       return;
     }
     while (std::next(end) != last) {
