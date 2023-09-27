@@ -1,6 +1,7 @@
 #ifndef S6_QSORT_H
 #define S6_QSORT_H
 #include <iterator>
+#include <functional>
 
 namespace tarasenko
 {
@@ -18,11 +19,13 @@ namespace tarasenko
         return first;
       }
       for (auto i = std::next(first); i != last; ++i)
+      {
         if (p(*i))
         {
           std::swap(*i, *first);
           ++first;
         }
+      }
       return first;
     }
   }
@@ -30,19 +33,18 @@ namespace tarasenko
   template< typename ForwardIt, typename Compare >
   void quickSort(ForwardIt begin, ForwardIt last, Compare comp)
   {
-    if (std::distance(begin, last) < 2)
+    auto dist = std::distance(begin, last);
+    if (dist < 2)
     {
       return;
     }
-    auto pivot = *std::next(begin, std::distance(begin, last) / 2);
-    auto l = details::partition(begin, last, [pivot, comp](const auto& i)
-    {
-      return comp(i, pivot);
-    });
-    auto b = details::partition(begin, last, [pivot, comp](const auto& i)
-    {
-      return !comp(pivot, i);
-    });
+    using namespace std::placeholders;
+    auto pivot = *std::next(begin, dist / 2);
+    auto comp1 = std::bind(comp, _1, pivot);
+    auto l = details::partition(begin, last, comp1);
+    auto comp2 = std::bind(comp, pivot, _1);
+    auto not_comp2 = std::bind(std::logical_not<>{}, comp2);
+    auto b = details::partition(begin, last, not_comp2);
     quickSort(begin, l, comp);
     quickSort(b, last, comp);
   }
