@@ -40,8 +40,8 @@ namespace aksenov
     constIterator cend() const noexcept;
     iterator find(const Key &key);
     constIterator find(const Key &key) const;
-    iterator eraseAfter(constIterator pos);
-    iterator eraseAfter(constIterator first, constIterator last);
+    constIterator eraseAfter(constIterator pos);
+    constIterator eraseAfter(constIterator first, constIterator last);
 
     mappedType &at(const Key &key);
     const mappedType &at(const Key &key) const;
@@ -176,10 +176,25 @@ namespace aksenov
   }
 
   template< typename Key, typename T, typename Compare >
-  typename Dictionary< Key, T, Compare >::iterator Dictionary< Key, T, Compare>::find(const Key &key)
+  typename Dictionary< Key, T, Compare >::iterator Dictionary< Key, T, Compare >::find(const Key &key)
+  {
+    auto it = begin();
+    while (it != end())
+    {
+      if (comp_(it->first, key) || comp_(key, it->first))
+      {
+        return it;
+      }
+      ++it;
+    }
+    return end();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::constIterator Dictionary< Key, Value, Compare >::find(const Key &key) const
   {
     Compare comp = keyComp();
-    auto cur = cbegin();
+    constIterator cur = cbegin();
     while (cur != cend()) {
       if (!comp(cur->first, key) && !comp(key, cur->first)) {
         break;
@@ -187,25 +202,17 @@ namespace aksenov
       cur++;
     }
     return cur;
-
   }
 
-  template< typename Key, typename T, typename Compare >
-  typename Dictionary< Key, T, Compare >::constIterator Dictionary< Key, T, Compare>::find(const Key &key) const
-  {
-    constIterator cit = (static_cast< const thisT & >(*this)).find(key);
-    return data_.eraseAfter(cit, cit);
-
-  }
 
   template< typename Key, typename T, typename Compare >
-  typename Dictionary< Key, T, Compare >::iterator Dictionary< Key, T, Compare >::eraseAfter(constIterator pos)
+  typename Dictionary< Key, T, Compare >::constIterator Dictionary< Key, T, Compare >::eraseAfter(constIterator pos)
   {
     return data_.eraseAfter(pos);
   }
 
   template< typename Key, typename T, typename Compare >
-  typename Dictionary< Key, T, Compare >::iterator Dictionary< Key, T, Compare >::eraseAfter(constIterator first, constIterator last)
+  typename Dictionary< Key, T, Compare >::constIterator Dictionary< Key, T, Compare >::eraseAfter(constIterator first, constIterator last)
   {
     return data_.eraseAfter(first, last);
   }
@@ -219,8 +226,9 @@ namespace aksenov
   template< typename Key, typename T, typename Compare >
   const T & Dictionary< Key, T, Compare >::at(const Key &key) const
   {
-    auto it = find(key);
-    if (it == cend()) {
+    constIterator it = find(key);
+    if (it == cend())
+    {
       throw std::logic_error("No key in dictionary");
     }
     return it->second;

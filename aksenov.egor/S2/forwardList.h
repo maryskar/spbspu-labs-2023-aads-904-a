@@ -51,8 +51,8 @@ namespace aksenov
 
       void popFront();
 
-      iterator eraseAfter(constIterator pos);
-      iterator eraseAfter(constIterator first, constIterator last);
+      constIterator eraseAfter(constIterator pos);
+      constIterator eraseAfter(constIterator first, constIterator last);
 
     private:
       listT< T > *fake_;
@@ -281,7 +281,7 @@ namespace aksenov
   }
 
   template < typename T >
-  typename ForwardList< T >::iterator ForwardList< T >::eraseAfter(constIterator pos)
+  typename ForwardList< T >::constIterator ForwardList< T >::eraseAfter(constIterator pos)
   {
     if (!pos.node_ || !pos.node_->next)
     {
@@ -294,28 +294,16 @@ namespace aksenov
     }
     pos.node_->next = nextNode.node_->next;
     delete nextNode.node_;
-    return iterator(pos.node_->next);
+    return constIterator(pos.node_->next);
   }
 
   template < typename T >
-  typename ForwardList< T >::iterator aksenov::ForwardList< T >::eraseAfter(constIterator first, constIterator last)
+  typename ForwardList< T >::constIterator aksenov::ForwardList< T >::eraseAfter(constIterator first, constIterator last)
   {
-    if (!first.node_ || first.node_ == last.node_ || !last.node_)
-    {
-      throw std::logic_error("Invalid range to erase.");
+    while (first != last) {
+      first = erase_after(first);
     }
-    constIterator current = first;
-    while (current.node_->next_ != last.node_)
-    {
-      constIterator nextNode = current.node_->next_;
-      current.node_->next_ = nextNode.node_->next_;
-      delete nextNode.node_;
-    }
-    if (last.node_->next_ == tail_)
-    {
-      tail_ = first.node_;
-    }
-    return iterator(last.node_->next_);
+    return constIterator(last.node_->next);
   }
 
   template< typename T >
