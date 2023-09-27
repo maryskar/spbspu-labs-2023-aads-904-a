@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <avltree.hpp>
+#include <printerror.hpp>
 #include "commands.hpp"
 #include "queue.hpp"
 
@@ -138,8 +139,9 @@ void hrushchev::Commands::runCommand(std::istream& in, std::ostream& out)
       auto func = dict10_.at(command);
       func(dict_with_vars, out);
     }
-    catch (...)
+    catch (const std::out_of_range& e)
     {
+      printError(out);
     }
   }
 }
