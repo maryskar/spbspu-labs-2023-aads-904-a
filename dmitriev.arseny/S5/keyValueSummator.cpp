@@ -2,7 +2,7 @@
 #include <limits>
 #include <stdexcept>
 
-long long getSumm(int sum, int key)
+int getSumm(int sum, int key)
 {
   if (sum >= 0)
   {
