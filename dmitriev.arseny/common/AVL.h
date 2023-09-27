@@ -2,6 +2,8 @@
 #define AVL_H
 
 #include "tree.h"
+#include "stack.h"
+#include "queue.h"
 
 namespace dmitriev
 {
@@ -543,6 +545,31 @@ namespace dmitriev
       {}
 
       return res;
+    }
+
+    template< typename F >
+    F traverseBreadth(F f)
+    {
+      if (dmitriev::isEmpty(m_root))
+        return f;
+
+      Queue< tree* > q;
+      q.push(m_root);
+
+      while (!q.isEmpty())
+      {
+        tree* curr = q.getTopData();
+        q.popBack();
+
+        f(curr->data);
+
+        if (!dmitriev::isEmpty(curr->left))
+          q.push(curr->left);
+        if (!dmitriev::isEmpty(curr->right))
+          q.push(curr->right);
+      }
+
+      return f;
     }
 
     iterator begin()
