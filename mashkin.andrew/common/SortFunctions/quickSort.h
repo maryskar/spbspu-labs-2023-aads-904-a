@@ -6,7 +6,7 @@
 
 namespace mashkin
 {
-  template <typename Iter, typename Comp >
+  template < typename Iter, typename Comp >
   void quickSort(Iter first, Iter last, Comp comp)
   {
     if (std::distance(first, last) > 1)
