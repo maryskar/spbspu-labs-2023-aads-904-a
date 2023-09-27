@@ -22,8 +22,8 @@ int getPriority(char op)
 
 timofeev::Queue< std::string > timofeev::getPostfixForm(std::string infix)
 {
-  Queue<std::string> postfix;
-  Stack<char> opStack;
+  Queue< std::string > postfix;
+  Stack< char > opStack;
   timofeev::Splitter split(infix);
   while (!split.empty())
   {
@@ -38,7 +38,8 @@ timofeev::Queue< std::string > timofeev::getPostfixForm(std::string infix)
       if (c == "(")
       {
         opStack.push(c[0]);
-      } else if (c == ")")
+      }
+      else if (c == ")")
       {
         while (!opStack.isEmpty() && opStack.get() != '(')
         {
@@ -46,7 +47,8 @@ timofeev::Queue< std::string > timofeev::getPostfixForm(std::string infix)
           opStack.pop();
         }
         opStack.pop();
-      } else
+      }
+      else
       {
         if (!opStack.isEmpty())
         {

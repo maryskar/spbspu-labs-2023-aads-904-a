@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
         {
           continue;
         }
-        timofeev::Queue <std::string> postfix = timofeev::getPostfixForm(str);
+        timofeev::Queue < std::string > postfix = timofeev::getPostfixForm(str);
         result.push(timofeev::getValueOfPostfix(postfix));
       }
     }
@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
         {
           continue;
         }
-        timofeev::Queue <std::string> postfix = timofeev::getPostfixForm(str);
+        timofeev::Queue < std::string > postfix = timofeev::getPostfixForm(str);
         result.push(timofeev::getValueOfPostfix(postfix));
       }
     }

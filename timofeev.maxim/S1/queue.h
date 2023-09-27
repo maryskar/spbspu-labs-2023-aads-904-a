@@ -8,7 +8,7 @@ namespace timofeev
   class Queue
   {
   public:
-     Queue();
+    Queue();
     ~Queue();
 
     T& get();
@@ -56,7 +56,6 @@ void timofeev::Queue< T >::pop()
   {
     throw std::underflow_error("No value in queue");
   }
-
   else if (tail_ == head_)
   {
     delete tail_;
