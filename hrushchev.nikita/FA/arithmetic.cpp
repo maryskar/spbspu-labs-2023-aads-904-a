@@ -54,19 +54,6 @@ long double hrushchev::division(long double a, long double b)
   return a / b;
 }
 
-long long hrushchev::remaind(long long a, long long b)
-{
-  if (b == 0)
-  {
-    throw std::logic_error("Remaind by 0");
-  }
-  if (a < 0)
-  {
-    return b + a % b;
-  }
-  return a % b;
-}
-
 long double hrushchev::sin(double a)
 {
   return std::sin(a);

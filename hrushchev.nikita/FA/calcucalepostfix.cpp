@@ -1,9 +1,9 @@
 #include "calcucalepostfix.hpp"
 #include <string>
 #include <cmath>
+#include "arithmetic.hpp"
 #include "queue.hpp"
 #include "stack.hpp"
-#include "arithmetic.hpp"
 
 long double hrushchev::calculatePostfix(hrushchev::Queue< std::string >& postfixQueue)
 {
@@ -59,10 +59,6 @@ long double hrushchev::calculatePostfix(hrushchev::Queue< std::string >& postfix
       else if (token == "/")
       {
         result = hrn::division(operand1, operand2);
-      }
-      else if (token == "%")
-      {
-        result = hrn::remaind(operand1, operand2);
       }
       stack.push(result);
     }
