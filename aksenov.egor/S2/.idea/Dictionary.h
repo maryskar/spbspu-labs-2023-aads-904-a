@@ -114,6 +114,27 @@ namespace aksenov
     other.size_ = 0;
     return *this;
   }
+  template< typename Key, typename T, typename Compare >
+  T &Dictionary< Key, T, Compare >::operator[](const Key &key)
+  {
+    try
+    {
+      return at(key);
+    }
+    catch (const std::out_of_range &e)
+    {
+      valueType newValue = std::make_pair(key, T{});
+      data_.pushFront(newValue);
+      size_++;
+      return data_.front().second;
+    }
+  }
+
+  template< typename Key, typename T, typename Compare >
+  T &Dictionary< Key, T, Compare >::operator[](Key &&key)
+  {
+    return (*this)[key];
+  }
 
   template< typename Key, typename T, typename Compare >
   typename Dictionary< Key, T, Compare >::iterator Dictionary< Key, T, Compare >::begin() noexcept
@@ -207,6 +228,34 @@ namespace aksenov
       throw std::logic_error("No key in dictionary");
     }
     return it->second;
+  }
+
+  template< typename Key, typename T, typename Compare >
+  bool Dictionary< Key, T, Compare >::isEmpty() const noexcept
+  {
+    return data_.isEmpty();
+  }
+
+  template< typename Key, typename T, typename Compare >
+  size_t Dictionary< Key, T, Compare >::size() const noexcept
+  {
+    return size_;
+  }
+
+  template< typename Key, typename T, typename Compare >
+  void Dictionary< Key, T, Compare >::clear()
+  {
+    data_.clear();
+    size_ = 0;
+  }
+
+  template< typename Key, typename T, typename Compare >
+  void Dictionary< Key, T, Compare >::swap(thisT &other)
+  {
+    std::swap(data_, other.data_);
+    std::swap(comp_, other.comp_);
+    size_ = other.size_;
+    other.size_ = 0;
   }
 }
 #endif
