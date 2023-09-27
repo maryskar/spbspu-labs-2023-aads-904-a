@@ -1,7 +1,7 @@
 #include <limits>
 #include <fstream>
+#include <printmessages.h>
 #include "commands.h"
-#include "../common/printmessages.h"
 romanovich::CommandHandler::CommandHandler(std::istream &in, std::ostream &out_):
   dictionaries_(DictionariesVault::instance()),
   in_(in),

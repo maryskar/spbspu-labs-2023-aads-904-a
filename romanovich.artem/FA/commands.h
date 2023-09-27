@@ -3,7 +3,7 @@
 #include <functional>
 #include <iosfwd>
 #include <memory>
-#include "../common/redblack_tree.h"
+#include <redblack_tree.h>
 #include "hashtable.h"
 #include "dictionariesvault.h"
 namespace romanovich
