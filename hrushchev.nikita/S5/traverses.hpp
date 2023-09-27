@@ -4,7 +4,7 @@
 #include <avltree.hpp>
 
 namespace hrushchev
-{ 
+{
   template< typename F >
   F doAscending(const AVLTree< long long, std::string >& tree, F f)
   {
