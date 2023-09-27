@@ -8,7 +8,7 @@ namespace aksenov
 {
   using dict = aksenov::Dictionary< int, std::string, std::less< > >;
   using dictOfDicts = aksenov::Dictionary< std::string, dict, std::less< > >;
-  template< typename dictOfDicts, typename dict>
+  template< typename dictOfDicts >
   void print(const std::pair< std::string, dictOfDicts > &rhs, std::ostream &out)
   {
     auto cont = rhs.second;
@@ -27,13 +27,46 @@ namespace aksenov
     }
   }
 
-  void complement(const std::string &newdataset, const std::string &dataset1, const std::string &dataset2);
+  template< typename dictOfDicts >
+  dictOfDicts doComplement(const dictOfDicts &first, const dictOfDicts &second)
+  {
+    dictOfDicts res;
+    if (std::addressof(first) == std::addressof(second))
+    {
+      return res;
+    }
+    auto firstIt = first.cbegin();
+    auto secIt = second.cbegin();
+    auto cmp = std::less<>();
+    while (firstIt != first.cend() && secIt != second.cend())
+    {
+      while (secIt != second.cend() && cmp(secIt->first, firstIt->first))
+      {
+        ++secIt;
+      }
+      if (secIt == second.cend())
+      {
+        break;
+      }
+      if (firstIt->first != secIt->first)
+      {
+        res.insert(*firstIt);
+      }
+      ++firstIt;
+    }
+    while (firstIt != first.cend())
+    {
+      res.insert(*firstIt);
+      ++firstIt;
+    }
+    return res;
+  }
 
-  void intersect(const std::string &newdataset, const std::string &dataset1, const std::string &dataset2);
+  //void intersect(const std::string &newdataset, const std::string &dataset1, const std::string &dataset2);
 
-  void unite(const std::string &newdataset, const std::string &dataset1, const std::string &dataset2);
+  //void unite(const std::string &newdataset, const std::string &dataset1, const std::string &dataset2);
 
-  using commandMap = Dictionary< std::string, void (*)(const std::string &, const std::string &, const std::string &) >;
-  void createCommandMap(commandMap &commands);
+  //using commandMap = Dictionary< std::string, void (*)(const std::string &, const std::string &, const std::string &) >;
+  //void createCommandMap(commandMap &commands);
 }
 #endif
