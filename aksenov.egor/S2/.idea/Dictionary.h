@@ -64,5 +64,28 @@ namespace aksenov
     Compare comp_;
     sizeType size_;
   };
+
+  template< typename Key, typename T, typename Compare >
+  Dictionary< Key, T, Compare >::Dictionary():
+    data_(),
+    comp_(),
+    size_(0)
+  {}
+
+  template< typename Key, typename T, typename Compare >
+  Dictionary< Key, T, Compare >::Dictionary(const Dictionary< Key, T, Compare > &other):
+    data_(other.data_),
+    comp_(other.comp_),
+    size_(other.size_)
+  {}
+
+  template< typename Key, typename T, typename Compare >
+  Dictionary< Key, T, Compare >::Dictionary(Dictionary< Key, T, Compare > &&other):
+    data_(std::move(other.data_)),
+    comp_(std::move(other.comp_)),
+    size_(other.size_)
+  {
+    other.size_ = 0;
+  }
 }
 #endif
