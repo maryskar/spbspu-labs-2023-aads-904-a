@@ -3,11 +3,11 @@
 #include "Commands.h"
 namespace timofeev
 {
-  //no overload oper[]
-  void cmdSet(Dictionary< std::string, void (*)(std::istream&, dictOfDicts& dict) >& command)
+  comDict cmdSet(comDict& command)
   {
     command["complement"] = Complement;
     command["intersect"] = Intersect;
     command["union"] = Union;
+    return command;
   }
 }
