@@ -6,7 +6,6 @@
 #include "traverseCommands.h"
 #include "keyValueSummator.h"
 
-
 int main(int argc, char** argv)
 {
   using dictionary = dmitriev::AVL< const int, std::string >;
@@ -26,23 +25,37 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  int key;
+  long key;
   std::string value;
   dictionary dict;
 
-  while (file >> key >> value)
+  try
   {
-    dict.insert({key, value});
+    while (file >> key >> value)
+    {
+      if (key > std::numeric_limits< int >::max())
+      {
+        throw std::overflow_error("overflow");
+      }
+      else if (key < std::numeric_limits< int >::min())
+      {
+        throw std::underflow_error("underflow");
+      }
+
+      dict.insert({static_cast< int >(key), value});
+    }
   }
+  catch (const std::exception& e)
+  {
+    std::cerr << e.what() << '\n';
+  }
+
   if (dict.isEmpty())
   {
-    dmitriev::outOfEmptyDataMsg(std::cout) << '\n';
+    std::cout << "<EMPTY>" << '\n';
     return 0;
   }
-  for (typename dictionary::iterator it = dict.begin(); it != dict.end(); it++)
-  {
-    std::cout << it->first << ' ' << it->second << '\n';
-  }
+
 
   dmitriev::AVL< std::string, command > cmds;
   cmds["ascending"] = dmitriev::doAscending;
@@ -51,22 +64,15 @@ int main(int argc, char** argv)
 
   try
   {
-    if (!cmds.isEmpty(cmds.find(argv[1])))
-    {
-      summator res = cmds[argv[1]](dict, summator());
-      std::cout << res.resultNumber;
-      std::cout << res.resultStr;
-      std::cout << '\n';
-    }
-    else
-    {
-      dmitriev::outOfInvalivdComandMsg(std::cerr) << '\n';
-      return 1;
-    }
+    summator res = cmds.at(argv[1])(dict, summator());
+    std::cout << res.resultNumber;
+    std::cout << res.resultStr;
+    std::cout << '\n';
+
   }
-  catch (const std::exception& exception)
+  catch (const std::exception&)
   {
-    std::cerr << exception.what() << "\n";
+    std::cerr << "invalid tryverse" << '\n';
     return 1;
   }
 
