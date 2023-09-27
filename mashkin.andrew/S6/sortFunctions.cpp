@@ -1,13 +1,13 @@
 #include "sortFunctions.h"
-#include <iostream>
-#include <ForwardList/forwardList.h>
 #include <deque>
+#include <iomanip>
+#include <iostream>
 #include <list>
 #include <random>
-#include <iomanip>
-#include "mergeSort.h"
-#include "OddEvenSort.h"
-#include "quickSort.h"
+#include <ForwardList/forwardList.h>
+#include "SortFunctions/OddEvenSort.h"
+#include "SortFunctions/mergeSort.h"
+#include "SortFunctions/quickSort.h"
 
 namespace mashkin
 {
@@ -37,9 +37,9 @@ namespace mashkin
     std::list< Type > listForOddEven(forwardList.begin(), forwardList.end());
     std::deque< Type > queueForQSort(forwardList.begin(), forwardList.end());
 
-    mergeSort(forwardList.begin(), forwardList.end(), comp);
-    mergeSort(queueForMerge.begin(), queueForMerge.end(), comp);
-    mergeSort(listForMerge.begin(), listForMerge.end(), comp);
+    mergeSort(forwardList.begin(), std::distance(forwardList.begin(), forwardList.end()), comp);
+    mergeSort(queueForMerge.begin(), queueForMerge.size(), comp);
+    mergeSort(listForMerge.begin(), listForMerge.size(), comp);
     oddEvenSort(listForOddEven, comp);
     oddEvenSort(queueForOddEven, comp);
     quickSort< decltype(queueForQSort), Type, Comporator >( queueForQSort, 0, numOfElem - 1, comp);
