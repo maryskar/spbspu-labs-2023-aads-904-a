@@ -28,9 +28,9 @@ namespace romanovich
     BidirectionalIterator(const BidirectionalIterator< Key, Value, Compare > &) = default;
     explicit BidirectionalIterator(ConstBidirectionalIterator< Key, Value, Compare > &);
     explicit BidirectionalIterator(TreeNode< data_t > *root,
-                                     TreeNode< data_t > *node, TreeNode< data_t > *fakeNode);
+        TreeNode< data_t > *node, TreeNode< data_t > *fakeNode);
     BidirectionalIterator< Key, Value, Compare > &
-      operator=(const BidirectionalIterator< Key, Value, Compare > &) = default;
+        operator=(const BidirectionalIterator< Key, Value, Compare > &) = default;
     data_t &operator*();
     data_t *operator->();
     BidirectionalIterator &operator++();
@@ -53,7 +53,7 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   BidirectionalIterator< Key, Value, Compare >::BidirectionalIterator(
-    ConstBidirectionalIterator< Key, Value, Compare > &rhs):
+        ConstBidirectionalIterator< Key, Value, Compare > &rhs):
     node_(const_cast<TreeNode< data_t > *>(rhs.node_)),
     fakeNode_(const_cast<TreeNode< data_t > *>(rhs.fakeNode_)),
     root_(const_cast<TreeNode< data_t > *>(rhs.root_))
@@ -61,8 +61,7 @@ namespace romanovich
   }
   template< typename Key, typename Value, typename Compare >
   BidirectionalIterator< Key, Value, Compare >::BidirectionalIterator(TreeNode< data_t > *root,
-                                                                        TreeNode< data_t > *node,
-                                                                        TreeNode< data_t > *fakeNode):
+      TreeNode< data_t > *node, TreeNode< data_t > *fakeNode):
     node_(node),
     fakeNode_(fakeNode),
     root_(root)
@@ -107,7 +106,8 @@ namespace romanovich
       {
         prev = node_;
         node_ = node_->parent;
-      } while (node_ && node_->left == prev);
+      }
+      while (node_ && node_->left == prev);
     }
     if (!node_)
     {
@@ -158,7 +158,8 @@ namespace romanovich
       {
         prev = node_;
         node_ = node_->parent;
-      } while (node_ && node_->right == prev);
+      }
+      while (node_ && node_->right == prev);
     }
     if (node_ == nullptr)
     {

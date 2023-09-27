@@ -1,7 +1,7 @@
 #ifndef CONVERINFIXTOPOSTFIX_HPP
 #define CONVERINFIXTOPOSTFIX_HPP
 #include <string>
-#include "queue.hpp"
+#include <queue.hpp>
 
 namespace hrushchev
 {

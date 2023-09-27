@@ -1,5 +1,5 @@
 #include "parsing.h"
-void splitString(std::vector< std::string > &elems, const std::string &line, char del)
+void romanovich::splitString(std::vector< std::string > &elems, const std::string &line, char del)
 {
   std::string word;
   size_t startPos = 0;
