@@ -1,3 +1,0 @@
-/home/sonex/cprojects/spbspu-labs-2023-aads-904-a/tarasenko.ksenia/S5/cmake-build-debug/CMakeFiles/S5.dir
-/home/sonex/cprojects/spbspu-labs-2023-aads-904-a/tarasenko.ksenia/S5/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/sonex/cprojects/spbspu-labs-2023-aads-904-a/tarasenko.ksenia/S5/cmake-build-debug/CMakeFiles/rebuild_cache.dir
