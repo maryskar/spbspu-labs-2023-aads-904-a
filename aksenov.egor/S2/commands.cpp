@@ -78,4 +78,10 @@ namespace aksenov
     dictionaries[newdataset] = result_dict;
   }
 
+  void createCommandMap(commandMap &commands)
+  {
+    commands["complement"] = complement;
+    commands["intersect"] = intersect;
+    commands["union"] = unite;
+  }
 }
