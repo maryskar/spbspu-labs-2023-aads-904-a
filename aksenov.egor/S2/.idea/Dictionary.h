@@ -192,5 +192,21 @@ namespace aksenov
   {
     return data_.eraseAfter(first, last);
   }
+
+  template< typename Key, typename T, typename Compare >
+  T & Dictionary< Key, T, Compare >::at(const Key &key)
+  {
+    return const_cast< T & >(static_cast< const Dictionary& >(*this).at(key));
+  }
+
+  template< typename Key, typename T, typename Compare >
+  const T & Dictionary< Key, T, Compare >::at(const Key &key) const
+  {
+    auto it = find(key);
+    if (it == cend()) {
+      throw std::logic_error("No key in dictionary");
+    }
+    return it->second;
+  }
 }
 #endif
