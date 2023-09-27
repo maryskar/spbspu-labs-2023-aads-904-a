@@ -22,5 +22,6 @@ int main(int argc, char *argv[])
   } catch (...) {
     fesenko::outInvalidCommandMessage(std::cout);
     std::cout << "\n";
+    return 2;
   }
 }
