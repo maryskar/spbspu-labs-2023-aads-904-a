@@ -42,7 +42,7 @@ namespace mashkin
     mergeSort(listForMerge.begin(), listForMerge.size(), comp);
     oddEvenSort(listForOddEven.begin(), listForOddEven.end(), comp);
     oddEvenSort(queueForOddEven.begin(), queueForOddEven.end(), comp);
-    quickSort< decltype(queueForQSort), Type, Comporator >( queueForQSort, 0, numOfElem - 1, comp);
+    quickSort(queueForQSort.begin(), queueForQSort.end(), comp);
 
     print(out, forwardList.begin(), forwardList.end()) << "\n";
     print(out, queueForMerge.begin(), queueForMerge.end()) << "\n";

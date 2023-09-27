@@ -5,31 +5,27 @@
 
 namespace mashkin
 {
-  template< class DataStrucct, class Type, class Comparator >
-  int partition(DataStrucct& dataStrucct, int low, int high, Comparator comp)
+  template <typename Iter, typename Comp>
+  Iter partition(Iter first, Iter last, Comp comp)
   {
-    Type pivot = dataStrucct[high];
-    int i = (low - 1);
-    for (auto j = low; j <= high - 1; j++)
-    {
-      if (comp(dataStrucct[j], pivot))
-      {
-        i++;
-        std::swap(dataStrucct[i], dataStrucct[j]);
+    auto pivot = last - 1;
+    auto i = first;
+    for (auto j = first; j != pivot; ++j){
+      if (comp(*j, *pivot)){
+        std::swap(*i++, *j);
       }
     }
-    std::swap(dataStrucct[i + 1], dataStrucct[high]);
-    return (i + 1);
+    std::swap(*i, *pivot);
+    return i;
   }
 
-  template< class DataStruct, class Type, class Comparator  >
-  void quickSort(DataStruct& dataStruct, int low, int high, Comparator comp)
+  template <typename Iter, typename Comp >
+  void quickSort(Iter first, Iter last, Comp comp)
   {
-    if (low < high)
-    {
-      int pivot = partition< DataStruct, Type, Comparator >(dataStruct, low, high, comp);
-      quickSort< DataStruct, Type, Comparator >(dataStruct, low, pivot - 1, comp);
-      quickSort< DataStruct, Type, Comparator >(dataStruct, pivot + 1, high, comp);
+    if (std::distance(first, last)>1){
+      Iter bound = partition(first, last, comp);
+      quickSort(first, bound, comp);
+      quickSort(bound+1, last, comp);
     }
   }
 }
