@@ -10,6 +10,8 @@
 
 int main(int argc, char* argv[])
 {
+  using namespace potapova;
+
   std::istream* in_ptr = nullptr;
   std::ifstream input_file;
   if (argc > 2)
@@ -31,8 +33,8 @@ int main(int argc, char* argv[])
   {
     in_ptr = &std::cin;
   }
-  potapova::expr_queue infix_expr;
-  potapova::Stack< long long > answer_stack;
+  expr_queue infix_expr;
+  Stack< long long > answer_stack;
   *in_ptr >> std::ws;
   while (!in_ptr->eof())
   {
@@ -43,7 +45,7 @@ int main(int argc, char* argv[])
     }
     try
     {
-      potapova::expr_queue postfix_queue(composePostfixQueue(infix_expr));
+      expr_queue postfix_queue(composePostfixQueue(infix_expr));
       if (!postfix_queue.empty())
       {
         answer_stack.push(countPostfixExpression(postfix_queue));
