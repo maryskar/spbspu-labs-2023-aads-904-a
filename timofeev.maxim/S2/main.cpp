@@ -28,14 +28,24 @@ int main(int argc, char **argv)
   dictOfDicts dict;
   while (!inFile.eof())
   {
-    inFile >> dict;
+    std::string name = "";
+    inFile >> name;
+    size_t key;
+    std::string value;
+    dictionary dict_t;
+    while (inFile >> key >> value)
+    {
+      dict_t.insert(std::make_pair(key, value));
+    }
+    dict.insert(std::make_pair(name, dict_t));
     if (inFile.fail())
     {
       inFile.clear();
       inFile.ignore(maxSize, '\n');
     }
   }
-  timofeev::Dictionary< std::string, void (*)(std::istream&, dictOfDicts, std::ostream&) > commands;
+  timofeev::Dictionary< std::string, void (*)(std::istream&, dictOfDicts&) > commands;
+  commands = timofeev::cmdSet(commands);
   std::string firstPart;
   while (!std::cin.eof())
   {
@@ -48,18 +58,12 @@ int main(int argc, char **argv)
       }
       else if (commands.contains(firstPart))
       {
-        commands[firstPart](std::cin, dict, std::cout)
+        commands[firstPart](std::cin, dict);
       }
     }
-    catch (std::logic_error &e)
+    catch (const std::logic_error &e)
     {
       errors::printInvalid(std::cout);
-      std::cin.ignore(maxSize, '\n');
-      break;
-    }
-    catch (std::error &e)
-    {
-      errors::printEmpty(std::cout);
       std::cin.ignore(maxSize, '\n');
       break;
     }
