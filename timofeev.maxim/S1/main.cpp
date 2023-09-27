@@ -9,7 +9,7 @@ void out(timofeev::Stack< long long >& res)
 {
   while (!res.isEmpty())
   {
-    std::cout << res.drop();
+    std::cout << res.get();
     res.pop();
     if (!res.isEmpty())
     {
@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
         {
           continue;
         }
-        timofeev::Queue <std::string> postfix = timofeev::getPostfixForm(str);
+        timofeev::Queue < std::string > postfix = timofeev::getPostfixForm(str);
         result.push(timofeev::getValueOfPostfix(postfix));
       }
     }
@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
         {
           continue;
         }
-        timofeev::Queue <std::string> postfix = timofeev::getPostfixForm(str);
+        timofeev::Queue < std::string > postfix = timofeev::getPostfixForm(str);
         result.push(timofeev::getValueOfPostfix(postfix));
       }
     }
