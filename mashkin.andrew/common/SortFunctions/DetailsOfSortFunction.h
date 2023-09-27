@@ -50,5 +50,21 @@ namespace detail
       }
     }
   }
+
+  template <typename Iter, typename Comp>
+  Iter partition(Iter first, Iter last, Comp comp)
+  {
+    auto pivot = last - 1;
+    auto i = first;
+    for (auto j = first; j != pivot; ++j)
+    {
+      if (comp(*j, *pivot))
+      {
+        std::swap(*i++, *j);
+      }
+    }
+    std::swap(*i, *pivot);
+    return i;
+  }
 }
 #endif
