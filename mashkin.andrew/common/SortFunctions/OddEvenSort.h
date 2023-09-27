@@ -7,14 +7,6 @@
 
 namespace mashkin
 {
-  template< class Iter >
-  void swapValOfIter(Iter& first, Iter& second)
-  {
-    auto var = *first;
-    *first = *second;
-    *second = var;
-  }
-
   template< class Iter, class Comp >
   void oddEvenSort(Iter first, Iter last, Comp comp)
   {
@@ -28,14 +20,14 @@ namespace mashkin
       auto beforeEnd = last;
       --beforeEnd;
 
-      detail::oddEvenSortImpl(first, second, beforeEnd, last, isSorted, comp);
+      detail::oddEvenSortImpl(begin, second, beforeEnd, last, isSorted, comp);
 
       first = begin;
       second = begin;
-      ++first;
+      ++begin;
       ++++second;
 
-      detail::oddEvenSortImpl(first, second, beforeEnd, last, isSorted, comp);
+      detail::oddEvenSortImpl(begin, second, beforeEnd, last, isSorted, comp);
     }
   }
 
