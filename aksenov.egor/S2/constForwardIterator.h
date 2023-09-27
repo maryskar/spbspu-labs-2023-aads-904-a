@@ -12,7 +12,7 @@ namespace aksenov
   class ForwardIterator;
 
   template< typename T >
-  class ForwardIterator
+  class ConstForwardIterator
   {
   public:
     friend class ForwardList< T >;
