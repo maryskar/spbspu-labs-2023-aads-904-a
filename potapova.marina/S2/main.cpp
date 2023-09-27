@@ -4,7 +4,10 @@
 #include "forwardList.h"
 #include "dictionary.h"
 
-using namespace potapova;
+bool compareFunc(const long long& first, const long long& second)
+{
+  return first < second;
+}
 
 int main(int argc, char* argv[])
 {
@@ -30,6 +33,8 @@ int main(int argc, char* argv[])
     std::cerr << "No file to open\n";
     return 1;
   }
+ 
+  bool compareFunc(const long long& first, const long long& second);
 
   return 0;
 }
