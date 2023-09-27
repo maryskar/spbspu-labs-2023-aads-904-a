@@ -4,7 +4,8 @@
 #include <stdexcept>
 #include "ForwardIter.h"
 #include "ForwardConstIter.h"
-#include <List.h>
+//#include <List.h>
+#include "../common/List.h"
 namespace timofeev
 {
   template< typename T >
@@ -247,7 +248,8 @@ namespace timofeev
   }
 
   template< typename T >
-  typename ForwardList< T >::iter ForwardList< T >::insert_after(constIter pos, iter first, iter last)
+  typename ForwardList< T >::iter ForwardList< T >::insert_after(constIter pos,
+    iter first, iter last)
   {
     while (first != last)
     {

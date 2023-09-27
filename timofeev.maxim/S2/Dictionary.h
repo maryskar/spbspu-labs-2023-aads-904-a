@@ -7,8 +7,9 @@ namespace timofeev
   class Dictionary
   {
   public:
-    using iter = ForwardIterator< std::pair < Key, Value > >;
-    using constIter = ForwardConstIterator< std::pair< Key, Value > >;
+    using value_type = std::pair< const Key, Value >;
+    using iter = ForwardIterator< value_type >;
+    using constIter = ForwardConstIterator< value_type >;
 
     void push(Key k, Value v);
 
@@ -34,9 +35,9 @@ namespace timofeev
     constIter end() const;
     constIter cend() const noexcept;
 
-    iter insert(std::pair<  Key, Value > &&value);
-    iter insert(const std::pair< Key, Value > &value);
-    iter insert( constIter pos, const std::pair<  Key, Value >& value ); //
+    iter insert(value_type &&value);
+    iter insert(const value_type &value);
+    iter insert( constIter pos, const value_type& value ); //
     template< class P >
     iter insert( constIter pos, P&& value );
     template< typename InputIt >
@@ -59,7 +60,7 @@ namespace timofeev
     void clear();
 
   private:
-    ForwardList< std::pair< Key, Value > > data_;
+    ForwardList< value_type > data_;
     Compare compare_;
     size_t size_;
   };
@@ -82,7 +83,7 @@ namespace timofeev
   }
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::iter Dictionary<Key, Value,
-    Compare>::insert(Dictionary::constIter pos, const std::pair<Key, Value> &value)
+    Compare>::insert(Dictionary::constIter pos, const value_type &value)
   {
     auto existing = find(value.first);
     if (existing != end())
@@ -106,7 +107,7 @@ namespace timofeev
     }
     catch (const std::out_of_range &e)
     {
-      std::pair< Key, Value > newValue = std::make_pair(key, Value{});
+      value_type newValue = std::make_pair(key, Value{});
       data_.push_front(newValue);
       size_++;
       return data_.front().second;
@@ -173,7 +174,7 @@ namespace timofeev
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iter Dictionary< Key, Value, Compare >::insert(const std::pair< Key, Value > &value)
+  typename Dictionary< Key, Value, Compare >::iter Dictionary< Key, Value, Compare >::insert(const value_type &value)
   {
     if (begin() == end())
     {
@@ -199,7 +200,7 @@ namespace timofeev
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iter Dictionary< Key, Value, Compare >::insert(std::pair< Key, Value > &&value)
+  typename Dictionary< Key, Value, Compare >::iter Dictionary< Key, Value, Compare >::insert(value_type &&value)
   {
     return insert(value);
   }
@@ -207,7 +208,7 @@ namespace timofeev
   template< typename Key, typename Value, typename Compare >
   void Dictionary< Key, Value, Compare >::push(Key k, Value v)
   {
-    insert(std::pair< Key, Value >(k, v));
+    insert(value_type(k, v));
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -350,20 +351,25 @@ namespace timofeev
     size_ = 0;
   }
 
-  template< typename Key, typename Value, typename Compare >
-  Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(Dictionary &&other) noexcept
+  template<typename Key, typename Value, typename Compare>
+  Dictionary<Key, Value, Compare> &Dictionary<Key, Value, Compare>::operator=(Dictionary &&other) noexcept
   {
-    *this = other;
+    if (this != &other)
+    {
+      *this = other;
+    }
     return *this;
   }
 
-  template< typename Key, typename Value, typename Compare >
-  Dictionary< Key, Value, Compare > &Dictionary< Key, Value, Compare >::operator=(const Dictionary &other)
+  template<typename Key, typename Value, typename Compare>
+  Dictionary<Key, Value, Compare> &Dictionary<Key, Value, Compare>::operator=(const Dictionary &other)
   {
-    clear();
-    data_.insert_after(this->data_.before_begin(), other.data_.cbegin(), other.data_.cend());
-    compare_ = other.comp_;
-    size_ = other.size_;
+    if (this != std::addressof(other))
+    {
+      data_ = other.data_;
+      compare_ = other.compare_;
+      size_ = other.size_;
+    }
     return *this;
   }
 
