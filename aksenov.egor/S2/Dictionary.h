@@ -123,10 +123,12 @@ namespace aksenov
     }
     catch (const std::out_of_range &e)
     {
-      valueType newValue = std::make_pair(key, T{});
+      /*valueType newValue = std::make_pair(key, T{});
       data_.pushFront(newValue);
       size_++;
-      return data_.front().second;
+      return data_.front().second;*/
+      insert({key, mappedType{}});
+      return at(key);
     }
   }
 
@@ -269,6 +271,22 @@ namespace aksenov
   bool Dictionary< Key, T, Compare >::contains(const Key &key) const
   {
     return count(key);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool > Dictionary< Key, Value, Compare >::insert(const valueType &value)
+  {
+    auto it = find(value.first);
+    if (it != end())
+    {
+      return std::make_pair(it, false);
+    }
+    else
+    {
+      data_.pushFront(value);
+      size_++;
+      return std::make_pair(begin(), true);
+    }
   }
 
   template< typename Key, typename Value, typename Compare >
