@@ -34,7 +34,7 @@ namespace hrushchev
     AVLTree< std::string, func_type< F > > dict;
     dict.insert("ascending", hrushchev::doAscending);
     dict.insert("descending", hrushchev::doDescending);
-    dict.insert("breadth", hrushchev::doAscending);
+    dict.insert("breadth", hrushchev::doBreadth);
     return dict;
   }
 }
