@@ -26,6 +26,9 @@ namespace fesenko
     print(forwardList.begin(), forwardList.end(), out) << "\n";
 
     std::list< T > list1 = list;
+    selectionSort(list1.begin(), list1.end(), parameter);
+    print(list1.begin(), list1.end(), out) << "\n";
+    list1 = list;
     oddEvenSort(list1.begin(), list1.end(), parameter);
     print(list1.begin(), list1.end(), out) << "\n";
     list1 = list;
