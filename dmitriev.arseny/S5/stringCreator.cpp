@@ -1,6 +1,6 @@
 #include "stringCreator.h"
 
-void dmitriev::StringCreator::operator()(std::pair< int, std::string >& val)
+void dmitriev::StringCreator::operator()(const std::pair< const long long, std::string >& val)
 {
   if (!result.empty())
   {
