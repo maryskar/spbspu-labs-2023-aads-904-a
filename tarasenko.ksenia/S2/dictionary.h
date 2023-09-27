@@ -1,7 +1,6 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 
-#include <iostream>
 #include <stdexcept>
 #include <forward_list.h>
 
@@ -112,7 +111,7 @@ namespace tarasenko
     auto curr = cbegin();
     while (curr != cend())
     {
-      if ((*curr).first == key)
+      if (!compare_(curr->first, key) && !compare_(key, curr->first))
       {
         return (*curr).second;
       }
@@ -134,7 +133,7 @@ namespace tarasenko
     auto curr = begin();
     while (curr != end())
     {
-      if ((*curr).first == key)
+      if (!compare_(curr->first, key) && !compare_(key, curr->first))
       {
         return (*curr).second;
       }
@@ -181,7 +180,7 @@ namespace tarasenko
       ++prev;
       ++curr;
     }
-    if (curr != list_.end() && (*curr).first == value.first)
+    if (curr != list_.end() && !compare_(curr->first, value.first) && !compare_(value.first, curr->first))
     {
       (*curr).second = value.second;
       return std::pair< iterator, bool >(curr, false);
@@ -208,7 +207,7 @@ namespace tarasenko
     auto curr = cbegin();
     while (curr != cend())
     {
-      if (k == curr->first)
+      if (!compare_(curr->first, k) && !compare_(k, curr->first))
       {
         return curr;
       }
@@ -224,7 +223,7 @@ namespace tarasenko
     auto curr = list_.cbegin();
     while (curr != list_.end())
     {
-      if (curr->first == key)
+      if (!compare_(curr->first, key) && !compare_(key, curr->first))
       {
         list_.eraseAfter(prev);
         --size_;
@@ -248,7 +247,7 @@ namespace tarasenko
     auto curr = cbegin();
     while (curr != cend())
     {
-      if (curr->first == key)
+      if (!compare_(curr->first, key) && !compare_(key, curr->first))
       {
         return 1;
       }
@@ -270,7 +269,7 @@ namespace tarasenko
     auto rhs_iter = rhs.cbegin();
     while (lhs_iter != lhs.cend() && rhs_iter != rhs.cend())
     {
-      if (*lhs_iter != *rhs_iter)
+      if (compare_(*lhs_iter, *rhs_iter) || compare_(*rhs_iter, *lhs_iter))
       {
         return false;
       }
