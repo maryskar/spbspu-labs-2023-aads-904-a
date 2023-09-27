@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "AVL.h"
+#include <AVL.h>
 #include "traverseCommands.h"
 #include "stringCreator.h"
 #include <string>
@@ -23,7 +23,6 @@ int main(int argc, char** argv)
     std::cout << "problems with opening file" << '\n';
     return 1;
   }
-
 
   int key;
   std::string value;
@@ -49,8 +48,7 @@ int main(int argc, char** argv)
   {
     if (!cmds.isEmpty(cmds.find(argv[1])))
     {
-      std::cout << cmds[argv[1]](dict, dmitriev::StringCreator()).result;
-      std::cout << "\n";
+      std::cout << cmds[argv[1]](dict, dmitriev::StringCreator()).result << "\n";
     }
     else
     {
