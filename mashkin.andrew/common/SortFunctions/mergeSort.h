@@ -19,7 +19,7 @@ namespace mashkin
     std::advance(mid, size / 2);
     std::advance(last, size);
     mergeSort(first, size / 2, comp);
-    mergeSort(mid, size / 2 + 1, comp);
+    mergeSort(mid, size - size / 2, comp);
     detail::merge(first, mid, last, comp);
   }
 }
