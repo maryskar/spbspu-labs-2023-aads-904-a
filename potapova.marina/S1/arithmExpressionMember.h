@@ -6,29 +6,36 @@
 
 namespace potapova
 {
-  struct ArithmExpMember;
+  class ArithmExpMember;
   using expr_queue = Queue< ArithmExpMember >;
 
-  struct ArithmExpMember
+  class ArithmExpMember
   {
-    enum class Type:
-      std::uint8_t
-    {
-      Num,
-      Operation
-    };
+    public:
+      enum class Type:
+        std::uint8_t
+      {
+        Num,
+        Operation
+      };
 
-    union
-    {
-      long long num;
-      char operation;
-    };
+      ArithmExpMember();
 
-    Type type;
+      explicit ArithmExpMember(long long num);
+      explicit ArithmExpMember(char operation);
+      ArithmExpMember& operator=(long long num);
+      ArithmExpMember& operator=(char operation);
+      long long getNum();
+      char getOperation();
+      Type getType();
+    private:
+      union
+      {
+        long long num_;
+        char operation_;
+      };
 
-    ArithmExpMember();
-    explicit ArithmExpMember(long long num);
-    explicit ArithmExpMember(char operation);
+      Type type_;
   };
 }
 
