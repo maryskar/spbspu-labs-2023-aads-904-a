@@ -87,5 +87,32 @@ namespace aksenov
   {
     other.size_ = 0;
   }
+
+  template< typename Key, typename T, typename Compare >
+  Dictionary< Key, T, Compare > & Dictionary< Key, T, Compare >::operator=(const thisT &other)
+  {
+    if (this == &other)
+    {
+      return *this;
+    }
+    data_ = other.data_;
+    size_ = other.size_;
+    comp_ = other.comp_;
+    return *this;
+  }
+
+  template< typename Key, typename T, typename Compare >
+  Dictionary< Key, T, Compare > & Dictionary< Key, T, Compare >::operator=(thisT &&other)
+  {
+    if (this == &other)
+    {
+      return *this;
+    }
+    data_ = std::move(other.data_);
+    size_ = other.size_;
+    comp_ = std::move(other.comp_);
+    other.size_ = 0;
+    return *this;
+  }
 }
 #endif
