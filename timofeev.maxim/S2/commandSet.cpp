@@ -1,13 +1,10 @@
 #include "commandSet.h"
 #include "Dictionary.h"
 #include "Commands.h"
-namespace timofeev
+timofeev::comDict timofeev::cmdSet(comDict& command)
 {
-  comDict cmdSet(comDict& command)
-  {
-    command["complement"] = Complement;
-    command["intersect"] = Intersect;
-    command["union"] = Union;
-    return command;
-  }
+  command["complement"] = Complement;
+  command["intersect"] = Intersect;
+  command["union"] = Union;
+  return command;
 }
