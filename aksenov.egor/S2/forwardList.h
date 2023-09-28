@@ -351,13 +351,11 @@ namespace aksenov
 
     if (!fake_ || !fake_->next)
     {
-      // Если список пуст, или есть только fake_ элемент, то новый элемент становится и первым, и последним
       fake_->next = newNode;
       tail_ = newNode;
     }
     else
     {
-      // Иначе добавляем новый элемент в конец списка
       tail_->next = newNode;
       tail_ = newNode;
     }
