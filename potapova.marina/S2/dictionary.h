@@ -65,31 +65,31 @@ namespace potapova
         return data_.cend();
       }
       
-      std::pair<Iterator, bool> insert(const Key& key, const Value& value)
+      std::pair< Iterator, bool > insert(const Key& key, const Value& value)
       {
         Iterator prev_node_ptr = data_.before_begin();
-        for (Node& cur_node : data_)
+        for (Iterator cur_node_ptr = data_.begin(); cur_node_ptr != data_.end(); ++cur_node_ptr)
         {
-          if (cur_node.key == key)
+          if (cur_node_ptr.key == key)
           {
-            return std::make_pair(Iterator(&cur_node), false);
+            return std::make_pair(cur_node_ptr, false);
           }
-          if (Compare(cur_node.key, key))
+          if (Compare(cur_node_ptr.key, key))
           {
             break;
           }
-          prev_node_ptr = Iterator(&cur_node);
+          prev_node_ptr = cur_node_ptr;
         }
         return std::make_pair(data_.insert_after(prev_node_ptr, Node(key, value)), true);
       }
 
       Iterator find(const Key& key)
       {
-        for (Node& cur_node : data_)
+        for (Iterator cur_node_ptr = data_.cbegin(); cur_node_ptr != data_.cend(); ++cur_node_ptr)
         {
-          if (cur_node.key == key)
+          if (cur_node_ptr.key == key)
           {
-            return Iterator(&cur_node);
+            return cur_node_ptr;
           }
         }
         return data_.end();
@@ -97,11 +97,11 @@ namespace potapova
 
       ConstIterator find(const Key& key) const
       {
-        for (const Node& cur_node : data_)
+        for (ConstIterator cur_node_ptr = data_.cbegin(); cur_node_ptr != data_.cend(); ++cur_node_ptr)
         {
-          if (cur_node.key == key)
+          if (cur_node_ptr.key == key)
           {
-            return ConstIterator(&cur_node);
+            return cur_node_ptr;
           }
         }
         return cend();
