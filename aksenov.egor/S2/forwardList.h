@@ -48,6 +48,8 @@ namespace aksenov
       iterator insertAfter(constIterator pos, constReference val);
       iterator insertAfter(constIterator pos, valueType &&val);
       iterator insertAfter(constIterator pos, sizeType count, constReference val);
+      template< typename InpIter >
+      iterator insertAfter(constIterator pos, InpIter first, InpIter last);
 
       void pushFront(constReference val);
       void pushFront(valueType &&val);
@@ -65,26 +67,23 @@ namespace aksenov
   };
 
   template< typename T >
-  ForwardList< T >::ForwardList()
+  ForwardList< T >::ForwardList():
+    fake_(static_cast< listT< T >* >(::operator new(sizeof(listT< T >)))),
+    tail_(nullptr)
   {
-    fake_ = new listT< T >;
-    tail_ = fake_;
+    fake_->next = tail_;
   }
 
   template< typename T >
   ForwardList< T >::~ForwardList()
   {
-    if (isEmpty())
-    {
-      return;
-    }
     clear();
     delete fake_;
   }
 
   template< typename T >
   ForwardList< T >::ForwardList(const ForwardList< T > &val):
-    ForwardList()
+          ForwardList()
   {
     copy(val);
   }
@@ -94,32 +93,19 @@ namespace aksenov
     fake_(val.fake_),
     tail_(val.tail_)
   {
-    val.tail_ = nullptr;
-    val.fake_ = nullptr;
   }
 
   template< typename T >
   ForwardList< T > &ForwardList< T >::operator=(const ForwardList< T > &val)
   {
-    if (this != std::addressof(val))
-    {
-      clear();
-      copy(val);
-    }
+    *this = std::move(val);
     return *this;
   }
 
   template< typename T >
   ForwardList< T > &ForwardList< T >::operator=(ForwardList< T > &&val) noexcept
   {
-    if (this != std::addressof(val))
-    {
-      clear();
-      fake_ = val.fake_;
-      tail_ = val.tail_;
-      val.fake_ = nullptr;
-      val.tail_ = nullptr;
-    }
+    insertAfter(beforeBegin(), val.begin(), val.end());
     return *this;
   }
 
@@ -206,11 +192,8 @@ namespace aksenov
   {
     while (!isEmpty())
     {
-      listT< T > *temp = fake_->next;
-      fake_->next = temp->next;
-      delete temp;
+      popFront();
     }
-    tail_ = fake_;
   }
 
   template< typename T >
@@ -235,7 +218,7 @@ namespace aksenov
   template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, constReference val)
   {
-    if (!fake_ || !fake_->next)
+    /*if (!fake_ || !fake_->next)
     {
       pushFront(val);
       return iterator(pos.node_->next);
@@ -249,7 +232,10 @@ namespace aksenov
     listT< T > *prev = pos.node_;
     newNode->next = prev->next;
     prev->next = newNode;
-    return iterator(pos.node_->next);
+    return iterator(pos.node_->next);*/
+    pos.node_->next = new listT< T >{val, pos.node_->next};
+    ++pos;
+    return iterator(pos.node_);
   }
 
   template< typename T >
@@ -269,10 +255,24 @@ namespace aksenov
     return iterator(pos.node_);
   }
 
+  template< class T >
+  template< class InpIter >
+  typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, InpIter first, InpIter last)
+  {
+    ForwardIterator< T > var = pos.node;
+    while (first != last)
+    {
+      var = insert_after(var, *first);
+      first++;
+    }
+    return var;
+  }
+
+
   template< typename T >
   void ForwardList< T >::pushFront(constReference val)
   {
-    listT< T > *newNode = new listT< T >{val, nullptr};
+    /*listT< T > *newNode = new listT< T >{val, nullptr};
     if (!fake_ || !fake_->next)
     {
       tail_ = fake_->next;
@@ -280,7 +280,18 @@ namespace aksenov
       return;
     }
     newNode->next = fake_->next;
-    fake_->next = newNode;
+    fake_->next = newNode;*/
+    if (isEmpty())
+    {
+      fake_->next = new listT< T >{val, nullptr};
+      tail_ = fake_->next->next;
+    }
+    else
+    {
+      auto var = new listT< T >{val, fake_->next};
+      fake_->next = var;
+    }
+
   }
 
   template< typename T >

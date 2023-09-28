@@ -72,7 +72,7 @@ namespace aksenov
 
   template< typename Key, typename T, typename Compare >
   Dictionary< Key, T, Compare >::Dictionary():
-    data_(),
+    data_(ForwardList< valueType >()),
     comp_(),
     size_(0)
   {}
