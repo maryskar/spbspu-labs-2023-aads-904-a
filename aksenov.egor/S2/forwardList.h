@@ -184,7 +184,7 @@ namespace aksenov
   template< typename T >
   bool ForwardList< T >::isEmpty() const noexcept
   {
-    return fake_->next == tail_;
+    return fake_->next == tail_ == nullptr;
   }
 
   template< typename T >
