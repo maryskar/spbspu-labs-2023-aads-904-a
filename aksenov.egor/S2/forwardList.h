@@ -77,9 +77,10 @@ namespace aksenov
   template< typename T >
   ForwardList< T >::~ForwardList()
   {
-    while (!isEmpty())
+    clear();
+    if (isEmpty())
     {
-      popFront();
+      delete fake_;
     }
   }
 
@@ -195,13 +196,20 @@ namespace aksenov
     return fake_->next == tail_;
   }
 
-  template< typename T >
-  void ForwardList< T >::clear() noexcept
+  template <typename T>
+  void ForwardList<T>::clear() noexcept
   {
-    while (!isEmpty())
+    listT<T> *current = fake_->next;
+
+    while (current != nullptr)
     {
-      popFront();
+      listT<T> *temp = current;
+      current = current->next;
+      delete temp;
     }
+
+    fake_->next = nullptr;
+    tail_ = fake_;
   }
 
   template< typename T >
