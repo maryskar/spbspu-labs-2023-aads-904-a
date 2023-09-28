@@ -182,7 +182,12 @@ namespace aksenov
   template< typename Key, typename T, typename Compare >
   typename Dictionary< Key, T, Compare >::iterator Dictionary< Key, T, Compare >::find(const Key &key)
   {
-    auto it = begin();
+    constIterator cit = (static_cast< const thisT & >(*this)).find(key);
+    return data_.eraseAfter(cit, cit);
+
+
+
+    /*auto it = begin();
     while (it != end())
     {
       if (comp_(it->first, key) || comp_(key, it->first))
@@ -191,20 +196,32 @@ namespace aksenov
       }
       ++it;
     }
-    return end();
+    return end();*/
+
+
   }
 
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::constIterator Dictionary< Key, Value, Compare >::find(const Key &key) const
   {
-    for (constIterator it = cbegin(); it != cend(); ++it)
+    /*for (constIterator it = cbegin(); it != cend(); ++it)
     {
       if (!comp_(it->first, key) && !comp_(key, it->first))
       {
         return it;
       }
     }
-    return cend();
+    return cend();*/
+    Compare comp = keyComp();
+    constIterator cur = cbegin();
+    while (cur != cend()) {
+      if (!comp(cur->first, key) && !comp(key, cur->first)) {
+        break;
+      }
+      cur++;
+    }
+    return cur;
+
   }
 
 
@@ -248,12 +265,20 @@ namespace aksenov
   template< typename Key, typename T, typename Compare >
   const T & Dictionary< Key, T, Compare >::at(const Key &key) const
   {
-    constIterator it = find(key);
+    /*constIterator it = find(key);
     if (it == cend())
     {
       throw std::logic_error("No key in dictionary");
     }
-    return it->second;
+    return it->second;*/
+    auto i = cbegin();
+    i = find(key);
+    if (i == cend())
+    {
+      throw std::out_of_range("Out of range");
+    }
+    return i->second;
+
   }
 
   template< typename Key, typename T, typename Compare >

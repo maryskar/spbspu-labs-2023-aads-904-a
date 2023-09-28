@@ -56,8 +56,8 @@ namespace aksenov
 
       void popFront();
 
-      constIterator eraseAfter(constIterator pos);
-      constIterator eraseAfter(constIterator first, constIterator last);
+      iterator eraseAfter(constIterator pos);
+      iterator eraseAfter(constIterator first, constIterator last);
 
     private:
       listT< T > *fake_;
@@ -313,29 +313,27 @@ namespace aksenov
   }
 
   template < typename T >
-  typename ForwardList< T >::constIterator ForwardList< T >::eraseAfter(constIterator pos)
+  typename ForwardList< T >::iterator ForwardList< T >::eraseAfter(constIterator pos)
   {
-    if (!pos.node_ || !pos.node_->next)
+    auto * ins = pos.node_->next;
+    if (ins == nullptr)
     {
-      throw std::logic_error("Invalid position");
+      return iterator(pos.node_);
     }
-    constIterator nextNode = pos.node_->next;
-    if (nextNode.node_ == tail_)
-    {
-      tail_ = pos.node_;
-    }
-    pos.node_->next = nextNode.node_->next;
-    delete nextNode.node_;
-    return constIterator(pos.node_->next);
+    pos.node_->next = ins->next;
+    delete ins;
+    return iterator(pos.node_->next);
+
   }
 
   template < typename T >
-  typename ForwardList< T >::constIterator aksenov::ForwardList< T >::eraseAfter(constIterator first, constIterator last)
+  typename ForwardList< T >::iterator aksenov::ForwardList< T >::eraseAfter(constIterator first, constIterator last)
   {
-    while (first != last) {
-      first = erase_after(first);
+    while (first != last)
+    {
+      eraseAfter(first);
     }
-    return constIterator(last.node_->next);
+    return iterator(last.node_);
   }
 
   template< typename T >
