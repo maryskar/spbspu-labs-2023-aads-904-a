@@ -17,6 +17,8 @@ namespace potapova
         Key key;
         Value value;
 
+        Node() noexcept = default;
+
         Node(const Key& key, const Value& value):
           key(key),
           value(value)
