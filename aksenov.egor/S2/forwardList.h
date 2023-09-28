@@ -78,7 +78,6 @@ namespace aksenov
   ForwardList< T >::~ForwardList()
   {
     clear();
-    ::operator delete(fake_);
   }
 
   template< typename T >
@@ -98,7 +97,13 @@ namespace aksenov
   template< typename T >
   ForwardList< T > &ForwardList< T >::operator=(const ForwardList< T > &val)
   {
-    *this = std::move(val);
+    if (this == std::addressof(val))
+    {
+      return *this;
+    }
+    ForwardList< T > temp(val);
+    clear();
+    swap(temp);
     return *this;
   }
 
