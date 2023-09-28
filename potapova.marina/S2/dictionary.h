@@ -2,7 +2,6 @@
 #define DICTIONARY_H
 
 #include <stdexcept>
-#include <iostream>
 #include <utility>
 #include "forwardList.h"
 
@@ -70,11 +69,11 @@ namespace potapova
         Iterator prev_node_ptr = data_.before_begin();
         for (Iterator cur_node_ptr = data_.begin(); cur_node_ptr != data_.end(); ++cur_node_ptr)
         {
-          if (cur_node_ptr.key == key)
+          if (cur_node_ptr->key == key)
           {
             return std::make_pair(cur_node_ptr, false);
           }
-          if (Compare(cur_node_ptr.key, key))
+          if (Compare(cur_node_ptr->key, key))
           {
             break;
           }
@@ -99,7 +98,7 @@ namespace potapova
       {
         for (ConstIterator cur_node_ptr = data_.cbegin(); cur_node_ptr != data_.cend(); ++cur_node_ptr)
         {
-          if (cur_node_ptr.key == key)
+          if (cur_node_ptr->key == key)
           {
             return cur_node_ptr;
           }
