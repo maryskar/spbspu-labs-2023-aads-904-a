@@ -25,7 +25,7 @@ namespace aksenov
     ForwardIterator< T > &operator=(const ForwardIterator< T > &rhs) = default;
 
     ForwardIterator< T > &operator++();
-    ForwardIterator< T > &operator++(int);
+    ForwardIterator< T > operator++(int);
 
     T &operator*();
     T *operator->();
@@ -55,7 +55,7 @@ namespace aksenov
   }
 
   template< typename T >
-  ForwardIterator< T > &ForwardIterator< T >::operator++(int)
+  ForwardIterator< T > ForwardIterator< T >::operator++(int)
   {
     assert(node_);
     ForwardIterator< T > temp(*this);
