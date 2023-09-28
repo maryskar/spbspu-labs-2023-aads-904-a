@@ -57,10 +57,9 @@ namespace aksenov
   ConstForwardIterator< T > &ConstForwardIterator< T >::operator++(int)
   {
     assert(node_ != nullptr);
-    ConstForwardIterator< T > result(*this);
+    ConstForwardIterator< T > temp(*this);
     ++(*this);
-    return result;
-
+    return temp;
   }
 
   template< typename T >

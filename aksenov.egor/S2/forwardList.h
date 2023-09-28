@@ -34,6 +34,9 @@ namespace aksenov
       iterator end() noexcept;
       constIterator end() const noexcept;
       constIterator cend() const noexcept;
+      iterator last() noexcept;
+      constIterator last() const noexcept;
+      constIterator clast() const noexcept;
 
       bool isEmpty() const noexcept;
       void clear() noexcept;
@@ -170,6 +173,24 @@ namespace aksenov
 
   template< typename T >
   typename ForwardList< T >::constIterator ForwardList< T >::cend() const noexcept
+  {
+    return constIterator(tail_);
+  }
+
+  template< typename T >
+  typename ForwardList< T >::iterator ForwardList< T >::last() noexcept
+  {
+    return tail_;
+  }
+
+  template< typename T >
+  typename ForwardList< T >::constIterator ForwardList< T >::last() const noexcept
+  {
+    return clast();
+  }
+
+  template< typename T >
+  typename ForwardList< T >::constIterator ForwardList< T >::clast() const noexcept
   {
     return constIterator(tail_);
   }

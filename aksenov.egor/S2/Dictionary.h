@@ -42,6 +42,10 @@ namespace aksenov
     constIterator find(const Key &key) const;
     constIterator eraseAfter(constIterator pos);
     constIterator eraseAfter(constIterator first, constIterator last);
+    iterator last() noexcept;
+    constIterator last() const noexcept;
+    constIterator clast() const noexcept;
+
 
     mappedType &at(const Key &key);
     const mappedType &at(const Key &key) const;
@@ -193,15 +197,14 @@ namespace aksenov
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::constIterator Dictionary< Key, Value, Compare >::find(const Key &key) const
   {
-    Compare comp = keyComp();
-    constIterator cur = cbegin();
-    while (cur != cend()) {
-      if (!comp(cur->first, key) && !comp(key, cur->first)) {
-        break;
+    for (constIterator it = cbegin(); it != cend(); ++it)
+    {
+      if (!comp_(it->first, key) && !comp_(key, it->first))
+      {
+        return it;
       }
-      cur++;
     }
-    return cur;
+    return cend();
   }
 
 
@@ -216,6 +219,25 @@ namespace aksenov
   {
     return data_.eraseAfter(first, last);
   }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::last() noexcept
+  {
+    return data_.last();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::constIterator Dictionary< Key, Value, Compare >::last() const noexcept
+  {
+    return clast();
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  typename Dictionary< Key, Value, Compare >::constIterator Dictionary< Key, Value, Compare >::clast() const noexcept
+  {
+    return data_.clast();
+  }
+
 
   template< typename Key, typename T, typename Compare >
   T & Dictionary< Key, T, Compare >::at(const Key &key)
