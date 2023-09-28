@@ -77,8 +77,10 @@ namespace aksenov
   template< typename T >
   ForwardList< T >::~ForwardList()
   {
-    clear();
-    delete fake_;
+    while (!isEmpty())
+    {
+      popFront();
+    }
   }
 
   template< typename T >
@@ -345,15 +347,22 @@ namespace aksenov
   template< typename T >
   void ForwardList< T >::pushBack(constReference data)
   {
+    listT< T > *newNode = new listT< T >{data, nullptr};
+
     if (!fake_ || !fake_->next)
     {
-      pushFront(data);
-      return;
+      // Если список пуст, или есть только fake_ элемент, то новый элемент становится и первым, и последним
+      fake_->next = newNode;
+      tail_ = newNode;
     }
-    listT< T > *newNode = new listT< T >{data, nullptr};
-    tail_->next = newNode;
-    tail_ = newNode;
+    else
+    {
+      // Иначе добавляем новый элемент в конец списка
+      tail_->next = newNode;
+      tail_ = newNode;
+    }
   }
+
   template< typename T >
   void ForwardList< T >::copy(const ForwardList< T > &rhs)
   {
