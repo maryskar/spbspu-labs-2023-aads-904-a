@@ -7,7 +7,7 @@
 
 int main(int argc, char* argv[])
 {
-  /*if (argc != 2)
+  if (argc != 2)
   {
     std::cerr << "error" << "\n";
     return 1;
@@ -17,10 +17,10 @@ int main(int argc, char* argv[])
   {
     std::cerr << "Cannot open file: " << "\n";
     return 1;
-  }*/
+  }
   using dict = aksenov::Dictionary< int, std::string, std::less< > >;
   using dictOfDicts = aksenov::Dictionary< std::string, dict, std::less< > >;
-  dictOfDicts bigData = aksenov::getDictFromInput< dictOfDicts, dict >(std::cin);
+  dictOfDicts bigData = aksenov::getDictFromInput< dictOfDicts, dict >(inputFile);
   while (std::cin.good())
   {
     std::string command;
