@@ -184,7 +184,7 @@ namespace aksenov
   template< typename T >
   bool ForwardList< T >::isEmpty() const noexcept
   {
-    return fake_->next == tail_ == nullptr;
+    return fake_->next == tail_;
   }
 
   template< typename T >
@@ -218,7 +218,7 @@ namespace aksenov
   template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, constReference val)
   {
-    /*if (!fake_ || !fake_->next)
+    if (!fake_ || !fake_->next)
     {
       pushFront(val);
       return iterator(pos.node_->next);
@@ -232,16 +232,16 @@ namespace aksenov
     listT< T > *prev = pos.node_;
     newNode->next = prev->next;
     prev->next = newNode;
-    return iterator(pos.node_->next);*/
-    pos.node_->next = new listT< T >{val, pos.node_->next};
-    ++pos;
-    return iterator(pos.node_);
+    return iterator(pos.node_->next);
   }
 
   template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, valueType &&val)
   {
-    return insertAfter(pos, val);
+    auto newNode = new listT< T >{std::move(val), pos.node_->next};
+    pos.node_->next = newNode;
+    ++pos;
+    return iterator(pos.node_);
   }
 
   template< typename T >
@@ -305,7 +305,7 @@ namespace aksenov
   {
     if(fake_->next == tail_)
     {
-      return;
+      throw std::out_of_range("end of list");
     }
     auto todel = fake_->next;
     fake_->next = fake_->next->next;
