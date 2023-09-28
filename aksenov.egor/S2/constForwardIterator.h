@@ -3,6 +3,9 @@
 #include <cassert>
 #include <memory>
 #include "List.h"
+#include "ForwardIterator.h"
+#include "forwardList.h"
+#include "Dictionary.h"
 namespace aksenov
 {
   template< typename T >
@@ -24,7 +27,7 @@ namespace aksenov
     ConstForwardIterator< T > &operator=(const ConstForwardIterator< T > &rhs) = default;
 
     ConstForwardIterator< T > &operator++();
-    ConstForwardIterator< T > &operator++(int);
+    ConstForwardIterator< T > operator++(int);
 
     const T &operator*() const;
     const T *operator->() const;
@@ -54,7 +57,7 @@ namespace aksenov
   }
 
   template< typename T >
-  ConstForwardIterator< T > &ConstForwardIterator< T >::operator++(int)
+  ConstForwardIterator< T > ConstForwardIterator< T >::operator++(int)
   {
     assert(node_ != nullptr);
     ConstForwardIterator< T > temp(*this);
