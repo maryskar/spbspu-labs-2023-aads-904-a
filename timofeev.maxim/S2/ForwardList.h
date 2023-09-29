@@ -412,7 +412,7 @@ namespace timofeev
   template< typename T >
   void ForwardList< T >::clear()
   {
-    List< T > *node = tail_;
+    List< T > *node = fakenode_->next;
     while (node != nullptr)
     {
       List< T > *tmp = node->next;
@@ -437,20 +437,20 @@ namespace timofeev
   template< typename T >
   void ForwardList< T >::pop_front()
   {
-    if (!tail_)
+    if (!fakenode_->next)
     {
       throw std::out_of_range("out of range");
     }
-    List< T > *tmp = tail_->next;
-    delete tail_;
-    tail_ = tmp;
+    List< T > *tmp = fakenode_->next;
+    delete fakenode_->next;
+    fakenode_->next = fakenode_->next;
     size_--;
   }
 
   template< typename T >
   bool ForwardList< T >::empty() const
   {
-    return fakenode_->next == nullptr;
+    return fakenode_->next == tail_;
   }
 }
 #endif
