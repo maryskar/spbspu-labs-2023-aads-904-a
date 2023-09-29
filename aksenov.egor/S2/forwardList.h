@@ -376,12 +376,11 @@ namespace aksenov
   template< typename T >
   void ForwardList< T >::copy(const ForwardList< T > &rhs)
   {
-    auto it = rhs.begin();
-    while (it != rhs.end())
-    {
-      pushBack(*it);
-      ++it;
-    }
+    auto res = copyList(rhs.head_);
+    head_ = res.first;
+    tail_ = res.second;
+    fake_->next = head_;
+
   }
 }
 #endif
