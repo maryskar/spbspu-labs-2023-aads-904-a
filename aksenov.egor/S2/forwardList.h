@@ -239,6 +239,14 @@ namespace aksenov
     auto *newNode = new listT< T >{val, nullptr};
     newNode->next = pos.node_->next;
     pos.node_->next = newNode;
+    if (pos.node_ == fake_)
+    {
+      if (!tail_)
+      {
+        tail_ = head_;
+      }
+      head_ = newNode;
+    }
     if (newNode->next == nullptr)
     {
       tail_ = newNode;
