@@ -62,6 +62,7 @@ namespace aksenov
   private:
     listT< T > *fake_;
     listT< T > *tail_;
+    listT< T > *head_;
     void pushBack(constReference data);
     void copy(const ForwardList< T > &rhs);
   };
@@ -69,9 +70,10 @@ namespace aksenov
   template< typename T >
   ForwardList< T >::ForwardList():
           fake_(static_cast< listT< T >* >(::operator new(sizeof(listT< T >)))),
-          tail_(nullptr)
+          tail_(nullptr),
+          head_(nullptr)
   {
-    fake_->next = tail_;
+    fake_->next = nullptr;
   }
 
   template< typename T >
@@ -87,15 +89,18 @@ namespace aksenov
   {
     fake_ = val.fake_;
     tail_ = val.tail_;
+    head_ = val.head_;
   }
 
   template< typename T >
   ForwardList< T >::ForwardList(ForwardList< T > &&val) noexcept:
           fake_(val.fake_),
-          tail_(val.tail_)
+          tail_(val.tail_),
+          head_(val.head_)
   {
     val.fake_ = nullptr;
     val.tail_ = nullptr;
+    val.head_ = nullptr;
   }
 
   template< typename T >
@@ -105,6 +110,7 @@ namespace aksenov
     {
       return *this;
     }
+    clear();
     copy(val);
     return *this;
   }
@@ -119,8 +125,10 @@ namespace aksenov
     clear();
     fake_ = val.fake_;
     tail_ = val.tail_;
+    head_ = val.head_;
     val.fake_ = nullptr;
     val.tail_ = nullptr;
+    val.head_ = nullptr;
     return *this;
   }
 
@@ -199,19 +207,14 @@ namespace aksenov
   template< typename T >
   bool ForwardList< T >::isEmpty() const noexcept
   {
-    return fake_ == tail_;
+    return head_ == nullptr;
   }
 
   template <typename T>
   void ForwardList<T>::clear() noexcept
   {
-    while (!isEmpty())
-    {
-      listT<T> *todel = fake_;
-      fake_= fake_->next;
-      delete todel;
-    }
-    tail_ = fake_;
+    deleteList(head_);
+    tail_ = nullptr;
   }
 
   template< typename T >
@@ -224,35 +227,31 @@ namespace aksenov
   template< typename T >
   typename ForwardList< T >::reference ForwardList< T >::front()
   {
-    return fake_->next->data;
+    return head_->data;
   }
 
   template< typename T >
   typename ForwardList< T >::constReference ForwardList< T >::front() const
   {
-    return fake_->next->data;
+    return head_->data;
   }
 
   template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, constReference val)
   {
-    // Создаем новый узел с переданным значением
-    listT< T > *newNode = new listT< T >{val, nullptr};
-
-    // Проверяем, что узел был создан успешно
-    if (!newNode) {
-      throw std::bad_alloc(); // Или обработка ошибки по вашему усмотрению
-    }
-
-    // Устанавливаем указатели на новый узел и следующий за ним узел
-    newNode->next = pos.node_->next;
+    auto *newNode = new listT< T >{val, pos.node_->next};
     pos.node_->next = newNode;
-
-    if (newNode->next == nullptr) {
+    if (pos.node_ == fake_) {
+      head_ = newNode;
+      if (!tail_) {
+        tail_ = head_;
+      }
+      head_ = newNode;
+    } else if (!newNode->next) {
       tail_ = newNode;
     }
+    return iterator(pos.node_->next);
 
-    return iterator(newNode);
   }
 
   template< typename T >
@@ -301,17 +300,7 @@ namespace aksenov
     }
     newNode->next = fake_->next;
     fake_->next = newNode;*/
-    if (isEmpty())
-    {
-      fake_->next = new listT< T >{val, nullptr};
-      tail_ = fake_->next->next;
-    }
-    else
-    {
-      auto var = new listT< T >{val, fake_->next};
-      fake_->next = var;
-    }
-
+    insertAfter(cbeforeBegin(), val);
   }
 
   template< typename T >
@@ -335,14 +324,25 @@ namespace aksenov
   template < typename T >
   typename ForwardList< T >::iterator ForwardList< T >::eraseAfter(constIterator pos)
   {
-    auto * ins = pos.node_->next;
-    if (ins == nullptr)
-    {
-      return iterator(pos.node_);
+    auto next = pos.node_->next;
+    if (next) {
+      pos.node_->next = next->next;
     }
-    pos.node_->next = ins->next;
-    delete ins;
+    if (pos.node_ == fake_) {
+      head_ = pos.node_->next;
+    }
+    if (next) {
+      delete next;
+    }
+    if (head_->next == nullptr) {
+      head_ = tail_;
+    } else if ( !head_) {
+      head_ = nullptr;
+      tail_ = nullptr;
+      fake_->next = nullptr;
+    }
     return iterator(pos.node_->next);
+
 
   }
 
