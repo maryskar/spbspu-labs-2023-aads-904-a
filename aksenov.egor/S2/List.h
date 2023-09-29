@@ -9,10 +9,25 @@ namespace aksenov
   {
     T data;
     listT< T > *next;
+    listT():
+      data(),
+      next(nullptr)
+    {}
+
+    listT(const T &val):
+      data(val),
+      next(nullptr)
+    {}
+
+    listT(const T &rhs, listT< T > *val):
+      data(rhs),
+      next(val)
+    {
+    }
   };
 
-  template< typename T >
-  void deleteList(listT< T > *head)
+  template< class T >
+  void free(listT< T > *head)
   {
     while (head)
     {
@@ -20,34 +35,25 @@ namespace aksenov
       head = head->next;
       delete todel;
     }
-    head = nullptr;
   }
 
-
   template< typename T >
-  std::pair< listT< T > *, listT< T > * > copyList(const listT< T > *head)
+  std::pair< listT< T > *, listT< T > * > copyLst(listT< T > *head)
   {
-    if (head == nullptr)
+    if (!head)
     {
       return {nullptr, nullptr};
     }
-    listT< T > *newHead = nullptr;
-    try
+    listT< T > *newHead = new listT< T >(head->data);
+    listT< T > *cur = newHead;
+    listT< T > *origin = head->next;
+    while (origin)
     {
-      newHead = new listT< T > {head->data, nullptr};
-      head = head->next;
-      auto *cur = newHead;
-      while (head) {
-        cur->next = new listT< T > {head->data, nullptr};
-        cur = cur->next;
-        head = head->next;
-      }
-      return {newHead, cur};
-    } catch (...)
-    {
-      deleteList(newHead);
-      throw;
+      cur->next = new listT< T >(origin->data);
+      cur = cur->next;
+      origin = origin->next;
     }
+    return {newHead, cur};
   }
 
 }

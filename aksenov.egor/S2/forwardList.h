@@ -63,15 +63,14 @@ namespace aksenov
     listT< T > *fake_;
     listT< T > *tail_;
     listT< T > *head_;
-    void pushBack(constReference data);
     void copy(const ForwardList< T > &rhs);
   };
 
   template< typename T >
   ForwardList< T >::ForwardList():
-          fake_(static_cast< listT< T >* >(::operator new(sizeof(listT< T >)))),
-          tail_(nullptr),
-          head_(nullptr)
+    fake_(static_cast< listT< T > * >(::operator new (sizeof(listT< T >)))),
+    tail_(nullptr),
+    head_(nullptr)
   {
     fake_->next = head_;
   }
@@ -85,19 +84,16 @@ namespace aksenov
 
   template< typename T >
   ForwardList< T >::ForwardList(const ForwardList< T > &val):
-          ForwardList()
+    ForwardList()
   {
-    fake_ = val.fake_;
-    tail_ = val.tail_;
-    head_ = val.head_;
+    copy(val);
   }
 
   template< typename T >
   ForwardList< T >::ForwardList(ForwardList< T > &&val) noexcept:
-          fake_(val.fake_),
-          tail_(val.tail_),
-          head_(val.head_)
+    ForwardList()
   {
+    swap(val);
     val.fake_ = nullptr;
     val.tail_ = nullptr;
     val.head_ = nullptr;
@@ -123,12 +119,11 @@ namespace aksenov
       return *this;
     }
     clear();
-    fake_ = val.fake_;
-    tail_ = val.tail_;
     head_ = val.head_;
-    val.fake_ = nullptr;
-    val.tail_ = nullptr;
+    tail_ = val.tail_;
+    fake_->next = head_;
     val.head_ = nullptr;
+    val.tail_ = nullptr;
     return *this;
   }
 
@@ -213,15 +208,17 @@ namespace aksenov
   template <typename T>
   void ForwardList<T>::clear() noexcept
   {
-    deleteList(head_);
+    free(head_);
+    head_ = nullptr;
     tail_ = nullptr;
   }
 
   template< typename T >
   void ForwardList< T >::swap(ForwardList< T > &val)
   {
-    std::swap(this->fake_, val.fake_);
-    std::swap(this->tail_, val.tail_);
+    std::swap(fake_, val.fake_);
+    std::swap(tail_, val.tail_);
+    std::swap(head_, val.head_);
   }
 
   template< typename T >
@@ -239,37 +236,28 @@ namespace aksenov
   template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, constReference val)
   {
-    auto *newNode = new listT< T >{val, pos.node_->next};
+    auto *newNode = new listT< T >{val, nullptr};
+    newNode->next = pos.node_->next;
     pos.node_->next = newNode;
-    if (pos.node_ == fake_) {
-      head_ = newNode;
-      if (!tail_) {
-        tail_ = head_;
-      }
-      head_ = newNode;
-    } else if (!newNode->next) {
+    if (newNode->next == nullptr)
+    {
       tail_ = newNode;
     }
-    return iterator(pos.node_->next);
-
+    return iterator(newNode->next);
   }
 
   template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, valueType &&val)
   {
-    auto newNode = new listT< T >{std::move(val), pos.node_->next};
-    pos.node_->next = newNode;
-    ++pos;
-    return iterator(pos.node_);
+    return insertAfter(pos, val);
   }
 
   template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, sizeType count, constReference val)
   {
-    for (auto i = 0; i < count; ++i)
+    for (ssize_t i = 0; i < count; ++i)
     {
-      insertAfter(pos, val);
-      ++pos;
+      pos = insertAfter(pos, val);
     }
     return iterator(pos.node_);
   }
@@ -278,28 +266,17 @@ namespace aksenov
   template< class InpIter >
   typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, InpIter first, InpIter last)
   {
-    ForwardIterator< T > var = pos.node;
     while (first != last)
     {
-      var = insert_after(var, *first);
-      first++;
+      pos = insertAfter(pos, *first);
     }
-    return var;
+    return iterator(pos.node_);
   }
 
 
   template< typename T >
   void ForwardList< T >::pushFront(constReference val)
   {
-    /*listT< T > *newNode = new listT< T >{val, nullptr};
-    if (!fake_ || !fake_->next)
-    {
-      tail_ = fake_->next;
-      fake_->next = newNode;
-      return;
-    }
-    newNode->next = fake_->next;
-    fake_->next = newNode;*/
     insertAfter(cbeforeBegin(), val);
   }
 
@@ -312,73 +289,47 @@ namespace aksenov
   template< typename T >
   void ForwardList< T >::popFront()
   {
-    if(fake_->next == tail_)
-    {
-      throw std::out_of_range("end of list");
-    }
-    auto todel = fake_->next;
-    fake_->next = fake_->next->next;
-    delete todel;
+
   }
 
   template < typename T >
   typename ForwardList< T >::iterator ForwardList< T >::eraseAfter(constIterator pos)
   {
-    auto next = pos.node_->next;
-    if (next) {
-      pos.node_->next = next->next;
+    if (pos.node_ == nullptr || pos.node_->next == nullptr)
+    {
+      return end();
     }
-    if (pos.node_ == fake_) {
-      head_ = pos.node_->next;
+    listT< T > *todel = pos.node_->next;
+    pos.node_->next = todel->next;
+    if (todel == tail_)
+    {
+      tail_ = pos.node_;
     }
-    if (next) {
-      delete next;
-    }
-    if (head_->next == nullptr) {
-      head_ = tail_;
-    } else if ( !head_) {
-      head_ = nullptr;
-      tail_ = nullptr;
-      fake_->next = nullptr;
-    }
+    delete todel;
     return iterator(pos.node_->next);
-
-
   }
 
   template < typename T >
   typename ForwardList< T >::iterator aksenov::ForwardList< T >::eraseAfter(constIterator first, constIterator last)
   {
-    while (first != last)
+    if (first == last || first.node_ == nullptr)
     {
-      eraseAfter(first);
+      return end();
     }
-    return iterator(last.node_);
-  }
-
-  template< typename T >
-  void ForwardList< T >::pushBack(constReference data)
-  {
-    listT< T > *newNode = new listT< T >{data, nullptr};
-
-    if (!fake_ || !fake_->next)
+    constIterator cur = first;
+    while (cur.node_->next != last.node_->next)
     {
-      fake_->next = newNode;
-      tail_ = newNode;
+      eraseAfter(cur);
     }
-    else
-    {
-      tail_->next = newNode;
-      tail_ = newNode;
-    }
+    return iterator(last.node_->next);
   }
 
   template< typename T >
   void ForwardList< T >::copy(const ForwardList< T > &rhs)
   {
-    auto res = copyList(rhs.head_);
-    head_ = res.first;
-    tail_ = res.second;
+    auto copied = copyLst(rhs.head_);
+    head_ = copied.first;
+    tail_ = copied.second;
     fake_->next = head_;
   }
 }
