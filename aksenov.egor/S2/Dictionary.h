@@ -129,12 +129,7 @@ namespace aksenov
     }
     catch (const std::out_of_range &e)
     {
-      valueType newValue = {key, T()};
-      data_.insertAfter(data_.cbeforeBegin(),  newValue);
-      size_++;
-      return data_.front().second;
-      //insert({key, T{}});
-      //return at(key);
+      return (*((this->insert(std::make_pair(key, mappedType()))).first));
     }
   }
 
@@ -252,25 +247,18 @@ namespace aksenov
   template< typename Key, typename T, typename Compare >
   T & Dictionary< Key, T, Compare >::at(const Key &key)
   {
-    auto i = cbegin();
-    i = find(key);
-    if (i == cend())
-    {
+    iterator it = find(key);
+    if (it == end()) {
       throw std::out_of_range("There is no such key");
     }
-    return i->second;
+    return it->second;
+
   }
 
   template< typename Key, typename T, typename Compare >
   const T & Dictionary< Key, T, Compare >::at(const Key &key) const
   {
-    /*constIterator it = find(key);
-    if (it == cend())
-    {
-      throw std::logic_error("No key in dictionary");
-    }
-    return it->second;*/
-    return at(key);
+    return const_cast< T & >((static_cast< const thisT & >(*this)).at(key));
   }
 
   template< typename Key, typename T, typename Compare >
