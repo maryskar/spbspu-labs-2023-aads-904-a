@@ -40,19 +40,15 @@ namespace aksenov
     auto cmp = std::less<>();
     while (firstIt != first.cend() && secIt != second.cend())
     {
-      while (secIt != second.cend() && cmp(secIt->first, firstIt->first))
-      {
+      if (cmp(firstIt->first, secIt->first)) {
+        res.insert(*firstIt);
+        ++firstIt;
+      } else if(cmp(secIt->first, firstIt->first)) {
+        ++secIt;
+      } else {
+        ++firstIt;
         ++secIt;
       }
-      if (secIt == second.cend())
-      {
-        break;
-      }
-      if (firstIt->first != secIt->first)
-      {
-        res.insert(*firstIt);
-      }
-      ++firstIt;
     }
     while (firstIt != first.cend())
     {
