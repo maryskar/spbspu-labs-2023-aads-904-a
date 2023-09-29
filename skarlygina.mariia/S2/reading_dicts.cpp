@@ -3,39 +3,38 @@
 #include <fstream>
 #include <string>
 #include <stdexcept>
+#include <sstream>
 #include "dictionary.h"
 #include "forwardlist.h"
 #include "commands.h"
 
-skarlygina::Dictionary< int, std::string > getDict(const skarlygina::ForwardList< std::string >& in)
-{
-  skarlygina::Dictionary< int, std::string > ok_dict;
-  int key = 0;
-  std::string string;
-  for (auto i = (++in.cbegin()); i != in.cend(); ++i)
-  {
-    if (std::isdigit(i->front()))
-    {
-      key = std::stoi(*i);
-      continue;
-    }
-    string = *i;
-    ok_dict.push(key, string);
-  }
-  return ok_dict;
-}
-
-skarlygina::Dictis skarlygina::getDictis(std::istream& in)
+skarlygina::Dictionary< std::string, skarlygina::Dictionary< int, std::string > > skarlygina::getDictis(std::istream& in)
 {
   if (!in.good())
+  {
     throw std::logic_error("Unable to read!\n");
-  Dictis dictis;
+  }
+  Dictionary< std::string, Dictionary< int, std::string > > dictis;
   while (!in.eof())
   {
     auto words = getWords(in, '\n');
     if (words.isEmpty())
+    {
       continue;
-    Dictionary< int, std::string > elem = getDict(words);
+    }
+    Dictionary< int, std::string > elem;
+    int key = 0;
+    std::string string;
+    for (auto i = (++words.cbegin()); i != words.cend(); ++i)
+    {
+      if (std::isdigit(i->front()))
+      {
+        key = std::stoi(*i);
+        continue;
+      }
+      string = *i;
+      elem.push(key, string);
+    }
     dictis.push(words.front(), elem);
   }
   return dictis;
@@ -44,17 +43,15 @@ skarlygina::Dictis skarlygina::getDictis(std::istream& in)
 skarlygina::ForwardList< std::string > skarlygina::getWords(std::istream& in, char char_)
 {
   auto words = ForwardList< std::string >();
-  char next = in.get();
-  while ((next != char_) && !in.eof())
+  std::string elem;
+  while (std::getline(in, elem, char_))
   {
-    std::string elem;
-    while (!std::isspace(next) && (next != char_) && !in.eof())
+    std::istringstream iss(elem);
+    std::string word;
+    while (iss >> word)
     {
-      elem.push_back(next);
-      next = in.get();
+      words.pushBack(word);
     }
-    words.pushBack(elem);
-    next = (next == char_) ? next : in.get();
   }
   return words;
 }

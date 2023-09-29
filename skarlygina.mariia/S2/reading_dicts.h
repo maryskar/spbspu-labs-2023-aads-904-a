@@ -7,7 +7,7 @@
 
 namespace skarlygina
 {
-  Dictis getDictis(std::istream&);
+  Dictionary< std::string, Dictionary< int, std::string > > getDictis(std::istream&);
   ForwardList< std::string > getWords(std::istream&, char);
 }
 
