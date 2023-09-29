@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
       {
         std ::string name;
         std::cin >> name;
-        aksenov::print(std::make_pair(name, bigData.at(name)), std::cout);
+        aksenov::print(std::make_pair(name, bigData[name]), std::cout);
       }
       else if (command == "complement")
       {
@@ -44,8 +44,8 @@ int main(int argc, char* argv[])
         std::string dictName1;
         std::string dictName2;
         std::cin >> newName >> dictName1 >> dictName2;
-        dict dict1 = bigData.at(dictName1);
-        dict dict2 = bigData.at(dictName2);
+        dict dict1 = bigData[dictName1];
+        dict dict2 = bigData[dictName2];
         dict resDict = aksenov::doComplement(dict1, dict2);
         if (!bigData.insert(std::make_pair(newName, resDict)).second)
         {

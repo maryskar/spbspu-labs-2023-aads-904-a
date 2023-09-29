@@ -120,7 +120,7 @@ namespace aksenov
     return *this;
 
   }
-  template< typename Key, typename T, typename Compare >
+  /*template< typename Key, typename T, typename Compare >
   T &Dictionary< Key, T, Compare >::operator[](const Key &key)
   {
     try
@@ -131,6 +131,20 @@ namespace aksenov
     {
       return (*((this->insert(std::make_pair(key, mappedType()))).first));
     }
+  }
+
+  template< typename Key, typename T, typename Compare >
+  T &Dictionary< Key, T, Compare >::operator[](Key &&key)
+  {
+    return (*this)[key];
+  }*/
+
+  template< typename Key, typename T, typename Compare >
+  T &Dictionary< Key, T, Compare >::operator[](const Key &key)
+  {
+    auto resultPair = this->insert(std::make_pair(key, T()));
+
+    return resultPair.first->second;
   }
 
   template< typename Key, typename T, typename Compare >
