@@ -85,7 +85,8 @@ namespace aksenov
   ForwardList< T >::ForwardList(const ForwardList< T > &val):
           ForwardList()
   {
-    copy(val);
+    fake_ = val.fake_;
+    tail_ = val.tail_;
   }
 
   template< typename T >
@@ -93,6 +94,8 @@ namespace aksenov
           fake_(val.fake_),
           tail_(val.tail_)
   {
+    val.fake_ = nullptr;
+    val.tail_ = nullptr;
   }
 
   template< typename T >
@@ -196,19 +199,19 @@ namespace aksenov
   template< typename T >
   bool ForwardList< T >::isEmpty() const noexcept
   {
-    return fake_->next == tail_;
+    return fake_ == tail_;
   }
 
   template <typename T>
   void ForwardList<T>::clear() noexcept
   {
-    while (fake_->next != tail_)
+    while (!isEmpty())
     {
-      auto todel = fake_->next;
-      fake_->next = fake_->next->next;
+      listT<T> *todel = fake_;
+      fake_= todel->next;
       delete todel;
     }
-    fake_ = tail_ = nullptr;
+    tail_ = fake_;
   }
 
   template< typename T >
@@ -233,21 +236,23 @@ namespace aksenov
   template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, constReference val)
   {
-    if (!fake_ || !fake_->next)
-    {
-      pushFront(val);
-      return iterator(pos.node_->next);
-    }
-    if (pos == tail_)
-    {
-      pushBack(val);
-      return iterator(pos.node_->next);
-    }
+    // Создаем новый узел с переданным значением
     listT< T > *newNode = new listT< T >{val, nullptr};
-    listT< T > *prev = pos.node_;
-    newNode->next = prev->next;
-    prev->next = newNode;
-    return iterator(pos.node_->next);
+
+    // Проверяем, что узел был создан успешно
+    if (!newNode) {
+      throw std::bad_alloc(); // Или обработка ошибки по вашему усмотрению
+    }
+
+    // Устанавливаем указатели на новый узел и следующий за ним узел
+    newNode->next = pos.node_->next;
+    pos.node_->next = newNode;
+
+    if (newNode->next == nullptr) {
+      tail_ = newNode;
+    }
+
+    return iterator(newNode);
   }
 
   template< typename T >

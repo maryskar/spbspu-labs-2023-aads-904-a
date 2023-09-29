@@ -73,17 +73,17 @@ namespace aksenov
   template< typename Key, typename T, typename Compare >
   Dictionary< Key, T, Compare >::Dictionary():
     data_(),
-    comp_()
+    comp_(),
+    size_(0)
   {
-    size_ = 0;
   }
 
   template< typename Key, typename T, typename Compare >
   Dictionary< Key, T, Compare >::Dictionary(const Dictionary< Key, T, Compare > &other):
     data_(other.data_),
-    comp_(other.comp_)
+    comp_(other.comp_),
+    size_(other.size_)
   {
-    size_ = other.size_;
   }
 
   template< typename Key, typename T, typename Compare >
@@ -98,28 +98,27 @@ namespace aksenov
   template< typename Key, typename T, typename Compare >
   Dictionary< Key, T, Compare > & Dictionary< Key, T, Compare >::operator=(const thisT &other)
   {
-    if (this == &other)
-    {
-      return *this;
+    if (this != std::addressof(other)) {
+      Compare temp = other.comp_;
+      data_ = other.data_;
+      comp_ = std::move(temp);
+      size_ = other.size_;
     }
-    data_ = other.data_;
-    size_ = other.size_;
-    comp_ = other.comp_;
     return *this;
+
   }
 
   template< typename Key, typename T, typename Compare >
   Dictionary< Key, T, Compare > & Dictionary< Key, T, Compare >::operator=(thisT &&other)
   {
-    if (this == &other)
-    {
-      return *this;
+    if (this != std::addressof(other)) {
+      data_ = std::move(other.data_);
+      comp_ = std::move(other.comp_);
+      size_ = other.size_;
+      other.size_ = 0;
     }
-    data_ = std::move(other.data_);
-    size_ = other.size_;
-    comp_ = std::move(other.comp_);
-    other.size_ = 0;
     return *this;
+
   }
   template< typename Key, typename T, typename Compare >
   T &Dictionary< Key, T, Compare >::operator[](const Key &key)
@@ -131,7 +130,7 @@ namespace aksenov
     catch (const std::out_of_range &e)
     {
       valueType newValue = std::make_pair(key, T{});
-      data_.pushFront(newValue);
+      data_.insertAfter(data_.cbeforeBegin(),  newValue);
       size_++;
       return data_.front().second;
       //insert({key, T{}});
@@ -189,6 +188,7 @@ namespace aksenov
 
 
 
+
     /*auto it = begin();
     while (it != end())
     {
@@ -206,14 +206,6 @@ namespace aksenov
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::constIterator Dictionary< Key, Value, Compare >::find(const Key &key) const
   {
-    /*for (constIterator it = cbegin(); it != cend(); ++it)
-    {
-      if (!comp_(it->first, key) && !comp_(key, it->first))
-      {
-        return it;
-      }
-    }
-    return cend();*/
     Compare comp = keyComp();
     constIterator cur = cbegin();
     while (cur != cend()) {
@@ -223,7 +215,6 @@ namespace aksenov
       cur++;
     }
     return cur;
-
   }
 
 
@@ -277,7 +268,7 @@ namespace aksenov
     i = find(key);
     if (i == cend())
     {
-      throw std::out_of_range("Out of range");
+      throw std::out_of_range("There is no such key");
     }
     return i->second;
 
