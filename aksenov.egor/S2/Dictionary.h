@@ -73,9 +73,10 @@ namespace aksenov
   template< typename Key, typename T, typename Compare >
   Dictionary< Key, T, Compare >::Dictionary():
     data_(),
-    comp_(),
-    size_(0)
-  {}
+    comp_()
+  {
+    size_ = 0;
+  }
 
   template< typename Key, typename T, typename Compare >
   Dictionary< Key, T, Compare >::Dictionary(const Dictionary< Key, T, Compare > &other):

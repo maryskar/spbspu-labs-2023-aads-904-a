@@ -78,6 +78,7 @@ namespace aksenov
   ForwardList< T >::~ForwardList()
   {
     clear();
+    ::operator delete(fake_);
   }
 
   template< typename T >
