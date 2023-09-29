@@ -354,71 +354,65 @@ namespace timofeev
   template< typename T >
   ForwardList< T > &ForwardList< T >::operator=(const ForwardList< T > &rhs)
   {
-    if (this == std::addressof(rhs))
+    if (this != &rhs)
     {
-     return *this;
-     }
-    ForwardList< T > tmp(rhs);
+      clear();
+      List< T >* cur = rhs.fakenode_->next;
+      while (cur != nullptr)
+      {
+        insert_after(tail_,cur->data);
+        cur = cur->next;
+      }
+    }
     return *this;
   }
 
   template< typename T >
   ForwardList< T >::ForwardList(ForwardList< T > &&rhs) noexcept:
-  fakenode_(rhs.fakenode_),
-  tail_(std::move(rhs.tail_)),
-  size_(rhs.size_)
-  {}
+    fakenode_(rhs.fakenode_),
+    tail_(rhs.tail_),
+    size_(rhs.size_)
+  {
+    rhs.fakenode_ = nullptr;
+    rhs.tail_ = nullptr;
+    rhs.size_ = 0;
+  }
 
   template< typename T >
   ForwardList< T >::ForwardList(const ForwardList< T > &lhs)
   {
-    fakenode_ = new List< T >{T{}, nullptr};
-    tail_ = fakenode_;
-    try
+    fakenode_ = new List< T >;
+    List< T >* tmp = fakenode_;
+    List< T >* src = lhs.fakenode_;
+    while (src->next != nullptr)
     {
-      List< T > *temp = lhs.fakenode_->next;
-      while (temp)
-      {
-        List< T > *newNode = new List< T > {temp->data, nullptr};
-        if (!fakenode_->next)
-        {
-          fakenode_->next = newNode;
-          tail_ = newNode;
-        }
-        else
-        {
-          tail_->next = newNode;
-          tail_ = newNode;
-        }
-        temp = temp->next;
-      }
+      tmp->next = new List< T >(src->next->data);
+      tmp = tmp->next;
+      src = src->next;
     }
-    catch (...)
-    {
-      clear();
-      throw;
-    }
+    tail_ = tmp;
+    size_ = lhs.size_;
   }
 
   template< typename T >
   ForwardList< T >::ForwardList():
-    fakenode_(static_cast< List< T > * >(::operator new(sizeof(List< T > )))),
-    tail_(nullptr),
+    fakenode_(new List< T >),
+    tail_(fakenode_),
     size_(0)
-  {
-    fakenode_->next = tail_;
-  }
+  {}
 
   template< typename T >
   void ForwardList< T >::clear()
   {
-    List< T > *node = fakenode_->next;
-    while (node != nullptr)
-    {
-      List< T > *tmp = node->next;
-      delete node;
-      node = tmp;
+    List<T>* cur = fakenode_->next;
+    List<T>* next = nullptr;
+    while (cur != nullptr) {
+      next = cur->next;
+      delete cur;
+      cur = next;
     }
+    tail_ = fakenode_;
+    fakenode_->next = nullptr;
     size_ = 0;
   }
 
@@ -426,6 +420,7 @@ namespace timofeev
   ForwardList< T >::~ForwardList()
   {
     clear();
+    delete fakenode_;
   }
 
   template< typename T >
