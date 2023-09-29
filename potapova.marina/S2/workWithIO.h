@@ -21,7 +21,7 @@ namespace potapova
 
   const char* parseValue(const char* cur_sym_ptr, std::string& value)
   {
-    while (*cur_sym_ptr != ' ')
+    while (!(*cur_sym_ptr == ' ' || *cur_sym_ptr == '\0'))
     {
       value.push_back(*cur_sym_ptr);
       ++cur_sym_ptr;
@@ -58,7 +58,7 @@ namespace potapova
   std::ostream& operator<<(std::ostream& out, const Dictionary< Key, Value, Compare >& dict)
   {
     using ConstIterator = Dictionary< Key, Value, Compare >::ConstIterator;
-    if (data_.empty())
+    if (dict.empty())
     {
       out << "<EMPTY>" << '\n';
       return out;
@@ -70,7 +70,7 @@ namespace potapova
     {
       out << ' ' << cur_node_ptr->key << ' ' << cur_node_ptr->value;
     }
-    out << '\n';
+    return out << '\n';
   }
 }
 
