@@ -30,7 +30,7 @@ namespace potapova
   }
 
   template< bool (*Compare)(const long long&, const long long&) >
-  std::istream& inputDict(std::istream& in, const Dictionary< long long, std::string, Compare >& dict, std::string& name)
+  std::istream& inputDict(std::istream& in, Dictionary< long long, std::string, Compare >& dict, std::string& name)
   {
     in >> name;
     in.ignore(1);
@@ -50,6 +50,7 @@ namespace potapova
       }
       std::string new_value;
       cur_sym_ptr = parseValue(++cur_sym_ptr, new_value);
+      dict.insert(new_key, new_value);
     }
     return in;
   }
