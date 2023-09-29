@@ -166,7 +166,7 @@ namespace aksenov
   template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::end() noexcept
   {
-    return iterator(tail_);
+    return iterator(nullptr);
   }
 
   template< typename T >
@@ -178,7 +178,7 @@ namespace aksenov
   template< typename T >
   typename ForwardList< T >::constIterator ForwardList< T >::cend() const noexcept
   {
-    return constIterator(tail_);
+    return constIterator(nullptr);
   }
 
   template< typename T >

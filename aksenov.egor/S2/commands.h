@@ -19,7 +19,7 @@ namespace aksenov
       return;
     }
     out << rhs.first;
-    while (cit != ++cont.cend())
+    while (cit != cont.cend())
     {
       out << " " << cit->first;
       out << " " << cit->second;
