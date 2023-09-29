@@ -20,7 +20,8 @@ int main(int argc, char* argv[])
   }
   using dict = aksenov::Dictionary< int, std::string, std::less< > >;
   using dictOfDicts = aksenov::Dictionary< std::string, dict, std::less< > >;
-  dictOfDicts bigData = aksenov::getDictFromInput< dictOfDicts, dict >(inputFile);
+  dictOfDicts bigData;
+  bigData = aksenov::getDictFromInput< dictOfDicts, dict >(inputFile);
   while (std::cin.good())
   {
     std::string command;

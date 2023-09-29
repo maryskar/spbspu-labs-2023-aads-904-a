@@ -109,7 +109,15 @@ namespace aksenov
   template< typename T >
   ForwardList< T > &ForwardList< T >::operator=(ForwardList< T > &&val) noexcept
   {
-    insertAfter(beforeBegin(), val.begin(), val.end());
+    if (this == std::addressof(val))
+    {
+      return *this;
+    }
+    clear();
+    fake_ = val.fake_;
+    tail_ = val.tail_;
+    val.fake_ = nullptr;
+    val.tail_ = nullptr;
     return *this;
   }
 
