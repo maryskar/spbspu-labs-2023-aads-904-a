@@ -68,8 +68,9 @@ namespace aksenov
 
   template< typename T >
   ForwardList< T >::ForwardList():
-    fake_(static_cast< listT< T > * >(::operator new (sizeof(listT< T >)))),
-    tail_(nullptr),
+    //fake_(static_cast< listT< T > * >(::operator new (sizeof(listT< T >)))),
+    fake_(new listT< T >()),
+    tail_(fake_),
     head_(nullptr)
   {
     fake_->next = head_;
@@ -79,7 +80,7 @@ namespace aksenov
   ForwardList< T >::~ForwardList()
   {
     clear();
-    ::operator delete(fake_);
+    delete fake_;
   }
 
   template< typename T >
@@ -205,12 +206,24 @@ namespace aksenov
     return head_ == nullptr;
   }
 
-  template <typename T>
+  /*template <typename T>
   void ForwardList<T>::clear() noexcept
   {
     free(head_);
     head_ = nullptr;
     tail_ = nullptr;
+  }*/
+  template< typename T >
+  void ForwardList< T >::clear() noexcept
+  {
+    listT< T > *current = head_;
+    while (current) {
+      listT< T > *temp = current;
+      current = current->next;
+      delete temp;  // освобождаем память для каждого узла
+    }
+    head_ = nullptr;
+    tail_ = fake_;
   }
 
   template< typename T >
@@ -236,7 +249,7 @@ namespace aksenov
   template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, constReference val)
   {
-    auto *newNode = new listT< T >{val, nullptr};
+    /*auto *newNode = new listT< T >{val, nullptr};
     newNode->next = pos.node_->next;
     pos.node_->next = newNode;
     if (pos.node_ == fake_)
@@ -251,7 +264,15 @@ namespace aksenov
     {
       tail_ = newNode;
     }
-    return iterator(newNode->next);
+    return iterator(newNode->next);*/
+
+    auto newNode = new listT< T >(val);
+    listT< T > *oldNext = pos.node_->next;
+    pos.node_->next = newNode;
+    newNode->next = oldNext;
+    if (pos.node_ == tail_) {
+      tail_ = newNode;
+    }
   }
 
   template< typename T >
@@ -303,7 +324,7 @@ namespace aksenov
   template < typename T >
   typename ForwardList< T >::iterator ForwardList< T >::eraseAfter(constIterator pos)
   {
-    if (pos.node_ == nullptr || pos.node_->next == nullptr)
+    /*if (pos.node_ == nullptr || pos.node_->next == nullptr)
     {
       return end();
     }
@@ -314,7 +335,14 @@ namespace aksenov
       tail_ = pos.node_;
     }
     delete todel;
-    return iterator(pos.node_->next);
+    return iterator(pos.node_->next);*/
+
+    listT< T > *next = pos.node_->next;
+    pos.node_->next = next->next;
+    if (next == tail_) {
+      tail_ = pos.node_;
+    }
+    delete next;
   }
 
   template < typename T >
