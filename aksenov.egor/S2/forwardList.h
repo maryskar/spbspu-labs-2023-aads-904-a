@@ -273,6 +273,7 @@ namespace aksenov
     if (pos.node_ == tail_) {
       tail_ = newNode;
     }
+    return iterator(newNode);
   }
 
   template< typename T >
