@@ -71,7 +71,7 @@ void timofeev::Queue< T >::pop()
 template < typename T >
 void timofeev::Queue< T >::push(const T& rhs)
 {
-  List< T >* newNode = new List< T >{rhs, nullptr};
+  List< T >* newNode = new List< T >(rhs);
   if (isEmpty())
   {
     head_ = tail_ = newNode;
