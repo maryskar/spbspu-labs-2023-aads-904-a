@@ -307,13 +307,13 @@ namespace timofeev
   template< typename T >
   typename ForwardList< T >::iter ForwardList< T >::end() noexcept
   {
-    return iter(tail_);
+    return iter(tail_->next);
   }
 
   template< typename T >
   typename ForwardList< T >::constIter ForwardList< T >::end() const noexcept
   {
-  return constIter(tail_);
+  return constIter(tail_->next);
   }
 
   template< typename T >
@@ -414,15 +414,13 @@ namespace timofeev
     fakenode_(new List< T >),
     tail_(fakenode_),
     size_(0)
-  {}
+  {
+    tail_->next = nullptr;
+  }
 
   template< typename T >
   void ForwardList< T >::clear()
   {
-    if (empty())
-    {
-      return;
-    }
     List<T>* cur = fakenode_->next;
     List<T>* next = nullptr;
     while (cur != nullptr) {

@@ -5,8 +5,8 @@
 #include "commandSet.h"
 #include "Errors.h"
 int main(int argc, char **argv)
+//int main()
 {
-
   if (argc != 2)
   {
     std::cerr << "Error\n";
@@ -22,10 +22,29 @@ int main(int argc, char **argv)
       return 1;
     }
   }
+
   using dictionary = timofeev::Dictionary< size_t, std::string >;
   using dictOfDicts = timofeev::Dictionary< std::string, dictionary >;
   constexpr auto maxSize = std::numeric_limits< std::streamsize >::max();
   dictOfDicts dict;
+ /* while (std::cin)
+  {
+    std::string name = "";
+    std::cin >> name;
+    size_t key;
+    std::string value;
+    dictionary dict_t;
+    while (std::cin >> key >> value)
+    {
+      dict_t.insert(std::make_pair(key, value));
+    }
+    dict.insert(std::make_pair(name, dict_t));
+    if (std::cin.fail())
+    {
+      std::cin.clear();
+      std::cin.ignore(maxSize, '\n');
+    }
+  }*/
   while (!inFile.eof())
   {
     std::string name = "";
