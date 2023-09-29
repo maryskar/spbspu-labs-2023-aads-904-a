@@ -80,9 +80,10 @@ namespace aksenov
   template< typename Key, typename T, typename Compare >
   Dictionary< Key, T, Compare >::Dictionary(const Dictionary< Key, T, Compare > &other):
     data_(other.data_),
-    comp_(other.comp_),
-    size_(other.size_)
-  {}
+    comp_(other.comp_)
+  {
+    size_ = other.size_;
+  }
 
   template< typename Key, typename T, typename Compare >
   Dictionary< Key, T, Compare >::Dictionary(Dictionary< Key, T, Compare > &&other):
@@ -128,12 +129,12 @@ namespace aksenov
     }
     catch (const std::out_of_range &e)
     {
-      /*valueType newValue = std::make_pair(key, T{});
+      valueType newValue = std::make_pair(key, T{});
       data_.pushFront(newValue);
       size_++;
-      return data_.front().second;*/
-      insert({key, mappedType{}});
-      return at(key);
+      return data_.front().second;
+      //insert({key, T{}});
+      //return at(key);
     }
   }
 

@@ -9,67 +9,67 @@ namespace aksenov
   template< typename T >
   class ForwardList
   {
-    public:
-      using valueType = T;
-      using reference = valueType &;
-      using constReference = const valueType &;
-      using sizeType = std::size_t;
-      using iterator = ForwardIterator< T >;
-      using constIterator = ConstForwardIterator< T >;
+  public:
+    using valueType = T;
+    using reference = valueType &;
+    using constReference = const valueType &;
+    using sizeType = std::size_t;
+    using iterator = ForwardIterator< T >;
+    using constIterator = ConstForwardIterator< T >;
 
-      ForwardList();
-      ~ForwardList();
-      ForwardList(const ForwardList< T > &val);
-      ForwardList(ForwardList< T > &&val) noexcept;
+    ForwardList();
+    ~ForwardList();
+    ForwardList(const ForwardList< T > &val);
+    ForwardList(ForwardList< T > &&val) noexcept;
 
-      ForwardList< T > &operator=(const ForwardList< T > &val);
-      ForwardList< T > &operator=(ForwardList< T > &&val) noexcept;
+    ForwardList< T > &operator=(const ForwardList< T > &val);
+    ForwardList< T > &operator=(ForwardList< T > &&val) noexcept;
 
-      iterator beforeBegin() noexcept;
-      constIterator beforeBegin() const noexcept;
-      constIterator cbeforeBegin() const noexcept;
-      iterator begin() noexcept;
-      constIterator begin() const noexcept;
-      constIterator cbegin() const noexcept;
-      iterator end() noexcept;
-      constIterator end() const noexcept;
-      constIterator cend() const noexcept;
-      iterator last() noexcept;
-      constIterator last() const noexcept;
-      constIterator clast() const noexcept;
+    iterator beforeBegin() noexcept;
+    constIterator beforeBegin() const noexcept;
+    constIterator cbeforeBegin() const noexcept;
+    iterator begin() noexcept;
+    constIterator begin() const noexcept;
+    constIterator cbegin() const noexcept;
+    iterator end() noexcept;
+    constIterator end() const noexcept;
+    constIterator cend() const noexcept;
+    iterator last() noexcept;
+    constIterator last() const noexcept;
+    constIterator clast() const noexcept;
 
-      bool isEmpty() const noexcept;
-      void clear() noexcept;
-      void swap(ForwardList< T > &val);
+    bool isEmpty() const noexcept;
+    void clear() noexcept;
+    void swap(ForwardList< T > &val);
 
-      reference front();
-      constReference front() const;
+    reference front();
+    constReference front() const;
 
-      iterator insertAfter(constIterator pos, constReference val);
-      iterator insertAfter(constIterator pos, valueType &&val);
-      iterator insertAfter(constIterator pos, sizeType count, constReference val);
-      template< typename InpIter >
-      iterator insertAfter(constIterator pos, InpIter first, InpIter last);
+    iterator insertAfter(constIterator pos, constReference val);
+    iterator insertAfter(constIterator pos, valueType &&val);
+    iterator insertAfter(constIterator pos, sizeType count, constReference val);
+    template< typename InpIter >
+    iterator insertAfter(constIterator pos, InpIter first, InpIter last);
 
-      void pushFront(constReference val);
-      void pushFront(valueType &&val);
+    void pushFront(constReference val);
+    void pushFront(valueType &&val);
 
-      void popFront();
+    void popFront();
 
-      iterator eraseAfter(constIterator pos);
-      iterator eraseAfter(constIterator first, constIterator last);
+    iterator eraseAfter(constIterator pos);
+    iterator eraseAfter(constIterator first, constIterator last);
 
-    private:
-      listT< T > *fake_;
-      listT< T > *tail_;
-      void pushBack(constReference data);
-      void copy(const ForwardList< T > &rhs);
+  private:
+    listT< T > *fake_;
+    listT< T > *tail_;
+    void pushBack(constReference data);
+    void copy(const ForwardList< T > &rhs);
   };
 
   template< typename T >
   ForwardList< T >::ForwardList():
-    fake_(static_cast< listT< T >* >(::operator new(sizeof(listT< T >)))),
-    tail_(nullptr)
+          fake_(static_cast< listT< T >* >(::operator new(sizeof(listT< T >)))),
+          tail_(nullptr)
   {
     fake_->next = tail_;
   }
@@ -78,10 +78,6 @@ namespace aksenov
   ForwardList< T >::~ForwardList()
   {
     clear();
-    if (isEmpty())
-    {
-      delete fake_;
-    }
   }
 
   template< typename T >
@@ -93,8 +89,8 @@ namespace aksenov
 
   template< typename T >
   ForwardList< T >::ForwardList(ForwardList< T > &&val) noexcept:
-    fake_(val.fake_),
-    tail_(val.tail_)
+          fake_(val.fake_),
+          tail_(val.tail_)
   {
   }
 
@@ -105,9 +101,7 @@ namespace aksenov
     {
       return *this;
     }
-    ForwardList< T > temp(val);
-    clear();
-    swap(temp);
+    copy(val);
     return *this;
   }
 
@@ -199,17 +193,13 @@ namespace aksenov
   template <typename T>
   void ForwardList<T>::clear() noexcept
   {
-    listT<T> *current = fake_->next;
-
-    while (current != nullptr)
+    while (fake_->next != tail_)
     {
-      listT<T> *temp = current;
-      current = current->next;
-      delete temp;
+      auto todel = fake_->next;
+      fake_->next = fake_->next->next;
+      delete todel;
     }
-
-    fake_->next = nullptr;
-    tail_ = fake_;
+    fake_ = tail_ = nullptr;
   }
 
   template< typename T >
