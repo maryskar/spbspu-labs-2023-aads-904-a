@@ -5,6 +5,15 @@ namespace timofeev
   template< typename T >
   struct List
   {
+    List():
+      data(),
+      next(nullptr)
+    {}
+    List(const T &other):
+      data(other),
+      next(nullptr)
+    {}
+
     T data;
     List< T >* next;
   };

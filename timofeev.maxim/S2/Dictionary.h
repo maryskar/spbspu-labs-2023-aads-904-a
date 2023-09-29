@@ -62,7 +62,7 @@ namespace timofeev
   private:
     ForwardList< value_type > data_;
     Compare compare_;
-    size_t size_;
+    size_t size_d;
   };
 
   template< typename Key, typename Value, typename Compare >
@@ -77,7 +77,7 @@ namespace timofeev
     else
     {
       auto inserted = data_.insert(it.current(), std::forward<P>(value));
-      size_++;
+      size_d++;
       return typename Dictionary< Key, Value, Compare >::iter(inserted);
     }
   }
@@ -93,7 +93,7 @@ namespace timofeev
     else
     {
       auto inserted = data_.insert(pos.current(), value);
-      size_++;
+      size_d++;
       return typename Dictionary< Key, Value, Compare >::iter(inserted);
     }
   }
@@ -109,7 +109,7 @@ namespace timofeev
     {
       value_type newValue = std::make_pair(key, Value{});
       data_.push_front(newValue);
-      size_++;
+      size_d++;
       return data_.front().second;
     }
   }
@@ -129,6 +129,7 @@ namespace timofeev
     {
       erase(first);
       first++;
+      size_d--;
     }
     return iter(last.node_);
   }
@@ -154,7 +155,7 @@ namespace timofeev
     {
       if (cur == pos)
       {
-        size_--;
+        size_d--;
         return data_.erase_after(prev);
       }
       cur++;
@@ -179,7 +180,7 @@ namespace timofeev
     if (begin() == end())
     {
       data_.push_front(value);
-      size_++;
+      size_d++;
       return begin();
     }
     else
@@ -187,8 +188,8 @@ namespace timofeev
       auto it = find(value.first);
       if (it == end())
       {
-        data_.push_front(value);
-        size_++;
+        data_.pushBack(value);
+        size_d++;
         return begin();
       }
       else
@@ -263,7 +264,7 @@ namespace timofeev
     auto it = begin();
     while (it != end())
     {
-      if (compare_(it->first, key) || compare_(key, it->first))
+      if (!compare_(it->first, key) && !compare_(key, it->first))
       {
         return it;
       }
@@ -279,6 +280,7 @@ namespace timofeev
     while (it != end())
     {
       if (!compare_(it->first, key) && !compare_(key, it->first))
+      //if (compare_(it->first, key) || compare_(key, it->first))
       {
         return it;
       }
@@ -292,7 +294,7 @@ namespace timofeev
   {
     std::swap(data_, other.data_);
     std::swap(compare_, other.compare_);
-    std::swap(size_, other.size_);
+    std::swap(size_d, other.size_d);
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -341,14 +343,14 @@ namespace timofeev
   template< typename Key, typename Value, typename Compare >
   size_t Dictionary< Key, Value, Compare >::size() const noexcept
   {
-    return size_;
+    return size_d;
   }
 
   template< typename Key, typename Value, typename Compare >
   void Dictionary< Key, Value, Compare >::clear()
   {
-    data_.clear();
-    size_ = 0;
+    data_.Fclear();
+    size_d = 0;
   }
 
   template<typename Key, typename Value, typename Compare>
@@ -368,7 +370,7 @@ namespace timofeev
     {
       data_ = other.data_;
       compare_ = other.compare_;
-      size_ = other.size_;
+      size_d = other.size_d;
     }
     return *this;
   }
@@ -377,23 +379,23 @@ namespace timofeev
   Dictionary< Key, Value, Compare >::Dictionary(Dictionary &&other) noexcept:
     data_(std::move(other.data_)),
     compare_(std::move(other.compare_)),
-    size_(other.size_)
+    size_d(other.size_d)
   {
-    other.size_ = 0;
+    other.size_d = 0;
   }
 
   template< typename Key, typename Value, typename Compare >
   Dictionary< Key, Value, Compare >::Dictionary(const Dictionary &other):
     data_(other.data_),
     compare_(other.compare_),
-    size_(other.size_)
+    size_d(other.size_d)
   {}
 
   template< typename Key, typename Value, typename Compare >
   Dictionary< Key, Value, Compare >::Dictionary():
     data_(),
     compare_(),
-    size_(0)
+    size_d(0)
   {}
 }
 #endif

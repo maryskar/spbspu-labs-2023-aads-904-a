@@ -31,7 +31,7 @@ int main(int argc, char **argv)
   {
     std::string name = "";
     std::cin >> name;
-    size_t key;
+    size_t key = 0;
     std::string value;
     dictionary dict_t;
     while (std::cin >> key >> value)
