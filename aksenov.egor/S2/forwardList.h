@@ -208,7 +208,7 @@ namespace aksenov
     while (!isEmpty())
     {
       listT<T> *todel = fake_;
-      fake_= todel->next;
+      fake_= fake_->next;
       delete todel;
     }
     tail_ = fake_;
