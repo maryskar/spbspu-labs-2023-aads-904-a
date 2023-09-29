@@ -24,32 +24,39 @@ int main(int argc, char* argv[])
   bigData = aksenov::getDictFromInput< dictOfDicts, dict >(inputFile);
   while (std::cin.good())
   {
-    std::string command;
-    std::cin >> command;
-    if (!std::cin)
+    try
     {
-      break;
-    }
-    if (command == "print")
-    {
-      std ::string name;
-      std::cin >> name;
-      aksenov::print(std::make_pair(name, bigData.at(name)), std::cout);
-    }
-    else if (command == "complement")
-    {
-      std::string newName;
-      std::string dictName1;
-      std::string dictName2;
-      std::cin >> newName >> dictName1 >> dictName2;
-      dict dict1 = bigData.at(dictName1);
-      dict dict2 = bigData.at(dictName2);
-      dict resDict = aksenov::doComplement(dict1, dict2);
-      if (!bigData.insert(std::make_pair(newName, resDict)).second)
+      std::string command;
+      std::cin >> command;
+      if (!std::cin)
       {
-        auto it = bigData.find(newName);
-        bigData.at(it->first) = resDict;
+        break;
       }
+      if (command == "print")
+      {
+        std ::string name;
+        std::cin >> name;
+        aksenov::print(std::make_pair(name, bigData.at(name)), std::cout);
+      }
+      else if (command == "complement")
+      {
+        std::string newName;
+        std::string dictName1;
+        std::string dictName2;
+        std::cin >> newName >> dictName1 >> dictName2;
+        dict dict1 = bigData.at(dictName1);
+        dict dict2 = bigData.at(dictName2);
+        dict resDict = aksenov::doComplement(dict1, dict2);
+        if (!bigData.insert(std::make_pair(newName, resDict)).second)
+        {
+          auto it = bigData.find(newName);
+          bigData.at(it->first) = resDict;
+        }
+      }
+    }
+    catch (...)
+    {
+      std::cout << "something went wrong" << "\n";
     }
   }
   return 0;
