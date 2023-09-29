@@ -380,7 +380,6 @@ namespace aksenov
     head_ = res.first;
     tail_ = res.second;
     fake_->next = head_;
-
   }
 }
 #endif

@@ -20,6 +20,7 @@ namespace aksenov
       head = head->next;
       delete todel;
     }
+    head = nullptr;
   }
 
 
