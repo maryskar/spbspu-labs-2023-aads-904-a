@@ -73,7 +73,7 @@ namespace aksenov
           tail_(nullptr),
           head_(nullptr)
   {
-    fake_->next = nullptr;
+    fake_->next = head_;
   }
 
   template< typename T >
