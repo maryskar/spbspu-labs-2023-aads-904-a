@@ -175,14 +175,6 @@ namespace aksenov
     return cend();
   }
 
-  template< typename Key, typename T, typename Compare >
-  typename Dictionary< Key, T, Compare >::iterator Dictionary< Key, T, Compare >::find(const Key &key)
-  {
-    constIterator cit = (static_cast< const thisT & >(*this)).find(key);
-    return data_.eraseAfter(cit, cit);
-
-
-
 
     /*auto it = begin();
     while (it != end())
@@ -196,27 +188,30 @@ namespace aksenov
     return end();*/
 
 
-  }
-
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::constIterator Dictionary< Key, Value, Compare >::find(const Key &key) const
   {
-    Compare comp = keyComp();
-    constIterator cur = cbegin();
-    while (cur != cend()) {
-      if (!comp(cur->first, key) && !comp(key, cur->first)) {
-        break;
+    for(auto it = data_.cbegin(); it != data_.cend(); ++it)
+    {
+      if (!(comp_(it->first, key)) && !(comp_(key, it->first)))
+      {
+        return it;
       }
-      cur++;
     }
-    return cur;
+    return data_.cend();
   }
 
-
   template< typename Key, typename T, typename Compare >
-  typename Dictionary< Key, T, Compare >::constIterator Dictionary< Key, T, Compare >::eraseAfter(constIterator pos)
+  typename Dictionary< Key, T, Compare >::iterator Dictionary< Key, T, Compare >::find(const Key &key)
   {
-    return data_.eraseAfter(pos);
+    for(auto it = data_.begin(); it != data_.end(); ++it)
+    {
+      if (!(comp_(it->first, key)) && !(comp_(key, it->first)))
+      {
+        return it;
+      }
+    }
+    return data_.end();
   }
 
   template< typename Key, typename T, typename Compare >
