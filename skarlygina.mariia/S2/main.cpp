@@ -10,7 +10,7 @@ namespace skarlygina
   };
 }
 
-int main(int argc, char* argv[])
+int main(int argc, char** argv)
 {
   if (argc == 1)
   {
@@ -59,22 +59,7 @@ int main(int argc, char* argv[])
         }
         std::string lhs = *(w_iterator++);
         std::string rhs = *w_iterator;
-        if (command == "complement")
-        {
-          data.push(name, skarlygina::complement(lhs, rhs, data));
-        }
-        else if (command == "intersect")
-        {
-          data.push(name, skarlygina::intersect(lhs, rhs, data));
-        }
-        else if (command == "union")
-        {
-          data.push(name, skarlygina::unite(lhs, rhs, data));
-        }
-        else
-        {
-          throw std::invalid_argument("Unknown command!\n");
-        }
+        skarlygina::readCommand(data, lhs, rhs, command, name);
       }
       catch (const std::invalid_argument&)
       {

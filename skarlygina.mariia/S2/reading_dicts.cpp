@@ -8,6 +8,26 @@
 #include "forwardlist.h"
 #include "commands.h"
 
+void readCommand(skarlygina::Dictis data, std::string& lhs, std::string& rhs, std::string& command, std::string& name)
+{
+  if (command == "complement")
+  {
+    data.push(name, skarlygina::complement(lhs, rhs, data));
+  }
+  else if (command == "intersect")
+  {
+    data.push(name, skarlygina::intersect(lhs, rhs, data));
+  }
+  else if (command == "union")
+  {
+    data.push(name, skarlygina::unite(lhs, rhs, data));
+  }
+  else
+  {
+    throw std::invalid_argument("Unknown command!\n");
+  }
+}
+
 skarlygina::Dictionary< std::string, skarlygina::Dictionary< int, std::string > > skarlygina::getDictis(std::istream& in)
 {
   if (!in.good())
