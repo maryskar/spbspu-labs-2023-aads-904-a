@@ -381,17 +381,32 @@ namespace timofeev
   template< typename T >
   ForwardList< T >::ForwardList(const ForwardList< T > &lhs)
   {
-    fakenode_ = new List< T >;
-    List< T >* tmp = fakenode_;
-    List< T >* src = lhs.fakenode_;
-    while (src->next != nullptr)
+    fakenode_ = new List< T >{T{}, nullptr};
+    tail_ = fakenode_;
+    try
     {
-      tmp->next = new List< T >(src->next->data);
-      tmp = tmp->next;
-      src = src->next;
+      List< T > *temp = lhs.fakenode_->next;
+      while (temp)
+      {
+        List< T > *newNode = new List< T > {temp->data, nullptr};
+        if (!fakenode_->next)
+        {
+          fakenode_->next = newNode;
+          tail_ = newNode;
+        }
+        else
+        {
+          tail_->next = newNode;
+          tail_ = newNode;
+        }
+        temp = temp->next;
+      }
     }
-    tail_ = tmp;
-    size_ = lhs.size_;
+    catch (...)
+    {
+      clear();
+      throw;
+    }
   }
 
   template< typename T >
@@ -404,6 +419,10 @@ namespace timofeev
   template< typename T >
   void ForwardList< T >::clear()
   {
+    if (empty())
+    {
+      return;
+    }
     List<T>* cur = fakenode_->next;
     List<T>* next = nullptr;
     while (cur != nullptr) {
