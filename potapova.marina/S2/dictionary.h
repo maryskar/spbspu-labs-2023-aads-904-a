@@ -63,7 +63,7 @@ namespace potapova
       {
         return data_.cend();
       }
-      
+
       std::pair< Iterator, bool > insert(const Key& key, const Value& value)
       {
         Iterator prev_node_ptr = data_.before_begin();
