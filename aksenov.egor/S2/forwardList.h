@@ -245,8 +245,6 @@ namespace aksenov
   typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, constReference val)
   {
     auto *newNode = new listT< T >{val, nullptr};
-    newNode->next = pos.node_->next;
-    pos.node_->next = newNode;
     if (pos.node_ == fake_)
     {
       if (!tail_)
@@ -259,6 +257,8 @@ namespace aksenov
     {
       tail_ = newNode;
     }
+    newNode->next = pos.node_->next;
+    pos.node_->next = newNode;
     return iterator(newNode->next);
 
     /*auto newNode = new listT< T >(val);
