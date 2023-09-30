@@ -4,8 +4,8 @@
 
 void skarlygina::formatToPostfix(std::string& str, Queue< std::string >& queue)
 {
-  std::string operation = "";
-  std::string operand = "";
+  std::string operation;
+  std::string operand;
   Stack< std::string > stack;
   size_t i = 0;
 
