@@ -88,7 +88,7 @@ namespace aksenov
   ForwardList< T >::~ForwardList()
   {
     clear();
-    ;
+    ::operator delete(fake_);
   }
 
   template< typename T >
@@ -103,7 +103,7 @@ namespace aksenov
     ForwardList()
   {
     swap(val);
-    val.fake_ = nullptr;
+    //val.fake_ = nullptr;
     val.tail_ = nullptr;
     val.head_ = nullptr;
   }

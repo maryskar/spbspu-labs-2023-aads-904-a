@@ -141,7 +141,7 @@ namespace aksenov
   template< typename Key, typename T, typename Compare >
   T &Dictionary< Key, T, Compare >::operator[](const Key &key)
   {
-    auto resultPair = this->insert({key, T()});
+    auto resultPair = this->insert(std::make_pair(key, T{}));
 
     return resultPair.first->second;
   }
@@ -342,7 +342,7 @@ namespace aksenov
     }
     else
     {
-      data_.pushFront(std::forward< P >(value));
+      data_.pushFront(value);
       size_++;
       return { data_.begin(), true };
     }
@@ -375,7 +375,7 @@ namespace aksenov
     }
     else
     {
-      auto inserted = data_.insert(it.current(), std::forward<P>(value));
+      auto inserted = data_.insert(it.current(), value);
       size_++;
       return typename Dictionary<Key, Value, Compare>::iterator(inserted);
     }
