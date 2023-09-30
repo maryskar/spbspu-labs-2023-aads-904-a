@@ -11,7 +11,7 @@ namespace kryuchkova
     Stack < long long > result;
     while (!post.isEmpty())
     {
-      ExpressionMember data = post.drop();
+      ExpressionMember data = post.getFront();
       post.pop();
       if (data.isOperand())
       {
@@ -19,9 +19,9 @@ namespace kryuchkova
       }
       else
       {
-        long long rhs = result.drop();
+        long long rhs = result.getTop();
         result.pop();
-        long long lhs = result.drop();
+        long long lhs = result.getTop();
         result.pop();
         if (data.getOperation() == operation_t::ADDITION)
         {
@@ -53,7 +53,7 @@ namespace kryuchkova
         throw std::invalid_argument("Check expression");
       }
     }
-    long long data = result.drop();
+    long long data = result.getTop();
     result.pop();
     return data;
   }

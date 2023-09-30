@@ -11,7 +11,7 @@ namespace kryuchkova
     Stack< ExpressionMember > stack;
     while (!inf.isEmpty())
     {
-      ExpressionMember data = inf.drop();
+      ExpressionMember data = inf.getFront();
       inf.pop();
       if (data.isOperand())
       {
@@ -29,7 +29,7 @@ namespace kryuchkova
           {
             throw std::invalid_argument("Check your expression");
           }
-          ExpressionMember temp = stack.drop();
+          ExpressionMember temp = stack.getTop();
           stack.pop();
           while (!temp.isParenthesis())
           {
@@ -38,7 +38,7 @@ namespace kryuchkova
             {
               throw std::invalid_argument("Check your expression");
             }
-            temp = stack.drop();
+            temp = stack.getTop();
             stack.pop();
           }
         }
@@ -47,12 +47,12 @@ namespace kryuchkova
       {
         if (!stack.isEmpty())
         {
-          ExpressionMember temp = stack.drop();
+          ExpressionMember temp = stack.getTop();
           stack.pop();
           while (!stack.isEmpty() && !cmpPriority(temp.getOperation(), data.getOperation()) && !temp.isParenthesis())
           {
             post.push(temp);
-            temp = stack.drop();
+            temp = stack.getTop();
             stack.pop();
           }
           if (!temp.isParenthesis())
@@ -69,7 +69,7 @@ namespace kryuchkova
     }
     while (!stack.isEmpty())
     {
-      post.push(stack.drop());
+      post.push(stack.getTop());
       stack.pop();
     }
     return post;

@@ -59,11 +59,11 @@ int main(int argc, char *argv[])
     return 0;
   }
 
-  std::cout << results.drop();
+  std::cout << results.getTop();
   results.pop();
   while (!results.isEmpty())
   {
-    std::cout << ' ' << results.drop();
+    std::cout << ' ' << results.getTop();
     results.pop();
   }
   std::cout << '\n';
