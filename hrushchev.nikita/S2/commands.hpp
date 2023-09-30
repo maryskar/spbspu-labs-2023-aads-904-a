@@ -2,7 +2,7 @@
 #define COMMANDS_HPP
 
 #include <string>
-#include "dictionary.hpp"
+#include <dictionary.hpp>
 
 namespace hrushchev
 {

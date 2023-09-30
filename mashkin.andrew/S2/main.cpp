@@ -2,12 +2,12 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
-#include <IOstreamOverloads.h>
 #include <DictWithCommands.h>
-#include <ForwardConstIterator.h>
-#include <ForwardIterator.h>
+#include <IOstreamOverloads.h>
 #include <dictionary.h>
-#include <forwardList.h>
+#include <ForwardList/ForwardConstIterator.h>
+#include <ForwardList/ForwardIterator.h>
+#include <ForwardList/forwardList.h>
 
 int main(int argc, char** argv)
 {

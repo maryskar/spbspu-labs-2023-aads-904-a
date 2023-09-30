@@ -2,16 +2,30 @@
 #include <iostream>
 #include <iterator>
 #include <string>
+#include <limits>
+#include "AVL/AVL.h"
 #include "dictionary.h"
 
 namespace mashkin
 {
+  constexpr long maxInt = std::numeric_limits< int >::max();
+  constexpr long minInt = std::numeric_limits< int >::min();
+
   template< class T >
   std::istream& insertPairInDict(std::istream& inp, T& dict)
   {
-    int key = 0;
     std::string value;
-    inp >> key;
+    long var;
+    inp >> var;
+    if (var > maxInt)
+    {
+      throw std::overflow_error("Overflow of int");
+    }
+    else if (var < minInt)
+    {
+      throw std::underflow_error("Underflow of int");
+    }
+    int key = static_cast< int >(var);
     if (!inp)
     {
       return inp;
@@ -114,5 +128,67 @@ namespace mashkin
       return out;
     }
     return printDictionaries(out, dicts);
+  }
+
+  std::ostream& operator<<(std::ostream& out, const Queue< std::string >& que)
+  {
+    std::ostream::sentry sentry(out);
+    if (!sentry)
+    {
+      return out;
+    }
+    Queue< std::string > res(que);
+    while (res.isEmpty())
+    {
+      out << res.getHead();
+      res.dequeue();
+      if (res.isEmpty())
+      {
+        out << " ";
+      }
+    }
+    return out;
+  }
+
+  std::ostream& operator<<(std::ostream& out, const Stack< std::string >& stack)
+  {
+    std::ostream::sentry sentry(out);
+    if (!sentry)
+    {
+      return out;
+    }
+    Stack< std::string > res(stack);
+    while (res.isEmpty())
+    {
+      out << res.getTop();
+      res.pop();
+      if (res.isEmpty())
+      {
+        out << " ";
+      }
+    }
+    return out;
+  }
+
+  std::ostream& operator<<(std::ostream& out, const QueueForTraverse& queueForTraverse)
+  {
+    std::ostream::sentry sentry(out);
+    if (!sentry)
+    {
+      return out;
+    }
+    out << queueForTraverse.summ_ << " " << queueForTraverse.res_;
+    return out;
+  }
+
+  std::ostream& operator<<(std::ostream& out, const StackForTraverse& stackForTraverse)
+  {
+    std::ostream::sentry sentry(out);
+    if (!sentry)
+    {
+      return out;
+    }
+    out << stackForTraverse.summ_ << " " << stackForTraverse.res_;
+    return out;
   }
 }

@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <utility>
 #include <memory>
-#include <list.h>
+#include <dictionary/forward-list/list.h>
 namespace fesenko
 {
   template< typename T >
