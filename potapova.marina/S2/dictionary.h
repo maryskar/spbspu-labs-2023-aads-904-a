@@ -196,24 +196,24 @@ namespace potapova
       Dictionary< Key, Value, Compare > intersect(const Dictionary< Key, Value, Compare >& other) const
       {
         Dictionary< Key, Value, Compare > result;
-        ConstIterator first_node_ptr = cbegin();
-        ConstIterator second_node_ptr = other.cbegin();
-        while (!(first_node_ptr == ConstIterator() || second_node_ptr == ConstIterator()))
+        ConstIterator node_ptr = cbegin();
+        ConstIterator other_node_ptr = other.cbegin();
+        while (node_ptr != cend() && other_node_ptr != other.cend())
         {
-          if (first_node_ptr->key == second_node_ptr->key)
+          if (node_ptr->key == other_node_ptr->key)
           {
-            result.insert(first_node_ptr->key, first_node_ptr->value);
-            ++first_node_ptr;
-            ++second_node_ptr;
+            result.insert(node_ptr->key, node_ptr->value);
+            ++node_ptr;
+            ++other_node_ptr;
             continue;
           }
-          else if (Compare(first_node_ptr->key, second_node_ptr->key))
+          else if (Compare(node_ptr->key, other_node_ptr->key))
           {
-            ++second_node_ptr;
+            ++other_node_ptr;
           }
           else
           {
-            ++first_node_ptr;
+            ++node_ptr;
           }
         }
         return result;
