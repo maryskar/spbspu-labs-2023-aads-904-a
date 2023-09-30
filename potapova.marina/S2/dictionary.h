@@ -226,14 +226,7 @@ namespace potapova
         ConstIterator less_node_ptr = other.cbegin();
         while (greater_node_ptr != ConstIterator() && less_node_ptr != ConstIterator())
         {
-          if (less_node_ptr->key == greater_node_ptr->key)
-          {
-            result.insert(greater_node_ptr->key, greater_node_ptr->value);
-            ++less_node_ptr;
-            ++greater_node_ptr;
-            continue;
-          }
-          else if (Compare(less_node_ptr->key, greater_node_ptr->key))
+          if (Compare(less_node_ptr->key, greater_node_ptr->key))
           {
             std::swap(less_node_ptr, greater_node_ptr);
           }
