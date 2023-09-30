@@ -1,7 +1,7 @@
 #include "calculator.h"
 #include "mathExprPtr.h"
-#include "queue.h"
-#include "stack.h"
+#include <queue.h>
+#include <stack.h>
 
 namespace
 {
