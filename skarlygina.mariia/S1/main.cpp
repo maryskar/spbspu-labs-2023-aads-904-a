@@ -1,9 +1,9 @@
 #include <iostream>
-#include <cstring>
 #include <fstream>
 #include <string>
 #include "queue.h"
 #include "stack.h"
+#include "calculator.h"
 #include "count_postfix.h"
 
 int main(int argc, char* argv[])
