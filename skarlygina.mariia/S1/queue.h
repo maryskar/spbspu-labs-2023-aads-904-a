@@ -2,7 +2,6 @@
 #define QUEUE_H
 #include <cstddef>
 #include <stdexcept>
-#include "list.h"
 
 template< typename T >
 class Queue
