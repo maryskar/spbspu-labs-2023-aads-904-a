@@ -2,9 +2,9 @@
 #define S2_DICTIONARY_H
 #include <stdexcept>
 #include <utility>
-#include "ForwardConstIterator.h"
-#include "ForwardIterator.h"
-#include "forwardList.h"
+#include "ForwardList/ForwardConstIterator.h"
+#include "ForwardList/ForwardIterator.h"
+#include "ForwardList/forwardList.h"
 
 namespace mashkin
 {
