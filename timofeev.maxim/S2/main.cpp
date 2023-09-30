@@ -27,10 +27,14 @@ int main(int argc, char **argv)
   using dictOfDicts = timofeev::Dictionary< std::string, dictionary >;
   constexpr auto maxSize = std::numeric_limits< std::streamsize >::max();
   dictOfDicts dict;
- /* while (std::cin)
+  /*while (std::cin)
   {
     std::string name = "";
     std::cin >> name;
+    if (name == "stop")
+    {
+      break;
+    }
     size_t key = 0;
     std::string value;
     dictionary dict_t;
@@ -38,7 +42,7 @@ int main(int argc, char **argv)
     {
       dict_t.insert(std::make_pair(key, value));
     }
-    dict.insert(std::make_pair(name, dict_t));
+    dict[name] = dict_t;
     if (std::cin.fail())
     {
       std::cin.clear();
@@ -56,7 +60,8 @@ int main(int argc, char **argv)
     {
       dict_t.insert(std::make_pair(key, value));
     }
-    dict.insert(std::make_pair(name, dict_t));
+    auto tmp = std::make_pair(name, dict_t);
+    dict.insert(tmp);
     if (inFile.fail())
     {
       inFile.clear();

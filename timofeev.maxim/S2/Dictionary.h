@@ -276,17 +276,14 @@ namespace timofeev
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::iter Dictionary< Key, Value, Compare >::find(const Key &key)
   {
-    auto it = begin();
-    while (it != end())
+    for(auto it = data_.begin(); it != data_.end(); ++it)
     {
-      if (!compare_(it->first, key) && !compare_(key, it->first))
-      //if (compare_(it->first, key) || compare_(key, it->first))
+      if (!(compare_(it->first, key)) && !(compare_(key, it->first)))
       {
         return it;
       }
-      ++it;
     }
-    return end();
+    return data_.end();
   }
 
   template< typename Key, typename Value, typename Compare >

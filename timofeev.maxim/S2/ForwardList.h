@@ -260,7 +260,7 @@ namespace timofeev
 
   template< typename T >
   typename ForwardList< T >::iter ForwardList< T >::insert_after(constIter pos,
-    iter first, iter last)
+     iter first, iter last)
   {
     while (first != last)
     {
@@ -324,31 +324,31 @@ namespace timofeev
   template< typename T >
   typename ForwardList< T >::constIter ForwardList< T >::end() const noexcept
   {
-  return constIter(nullptr);
+    return constIter(nullptr);
   }
 
   template< typename T >
   typename ForwardList< T >::iter ForwardList< T >::begin() noexcept
   {
-  return iter(fakenode_->next);
+    return iter(fakenode_->next);
   }
 
   template< typename T >
   typename ForwardList< T >::constIter ForwardList< T >::begin() const noexcept
   {
-  return constIter(fakenode_->next);
+    return constIter(fakenode_->next);
   }
 
   template< typename T >
   typename ForwardList< T >::constIter ForwardList< T >::before_begin() const noexcept
   {
-  return cbefore_begin();
+    return cbefore_begin();
   }
 
   template< typename T >
   typename ForwardList< T >::iter ForwardList< T >::before_begin() noexcept
   {
-  return iter(fakenode_);
+    return iter(fakenode_);
   }
 
   template< typename T >
@@ -387,7 +387,7 @@ namespace timofeev
     rhs.size_ = 0;
   }
 
- template< typename T >
+  template< typename T >
   ForwardList< T >::ForwardList(const ForwardList< T > &lhs)
   {
     if (!lhs.fakenode_)
@@ -426,13 +426,8 @@ namespace timofeev
   {
     if (fakenode_)
     {
-      while (!empty())
-      {
-        auto tmp = fakenode_->next;
-        fakenode_->next = fakenode_->next->next;
-        delete tmp;
-        size_--;
-      }
+      clear(fakenode_->next);
+      fakenode_->next = nullptr;
       fakenode_ = nullptr;
       tail_ = nullptr;
     }
