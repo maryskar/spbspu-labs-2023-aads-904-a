@@ -1,5 +1,8 @@
 #ifndef CONSTFORWARDLISTITER_H
 #define CONSTFORWARDLISTITER_H
+#include <iterator>
+#include <cstddef>
+#include <memory>
 #include "listnode.h"
 namespace romanovich
 {
@@ -17,6 +20,7 @@ namespace romanovich
     using difference_type = std::ptrdiff_t;
     using pointer = T*;
     using reference = T&;
+    using iterator_category = std::forward_iterator_tag;
     ConstForwardListIterator();
     explicit ConstForwardListIterator(const ForwardListIterator< T > &other);
     ~ConstForwardListIterator() = default;

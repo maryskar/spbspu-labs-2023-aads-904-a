@@ -6,9 +6,9 @@
 #include <dictionary/forward-list/forward-list.hpp>
 
 #include "out-storage.hpp"
-#include "qsort.hpp"
-#include "shell.hpp"
-#include "merge.hpp"
+#include <sort/qsort.hpp>
+#include <sort/shell.hpp>
+#include <sort/merge.hpp>
 
 #include "random-storage.hpp"
 

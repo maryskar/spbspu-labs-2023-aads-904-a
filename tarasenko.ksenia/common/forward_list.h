@@ -15,6 +15,7 @@ namespace tarasenko
    using iterator = ForwardListIterator< T >;
    using const_iterator = ConstForwardListIterator< T >;
   public:
+   using value_type = T;
    ForwardList():
      null_(static_cast< details::NodeOfList< T >* >(::operator new (sizeof(details::NodeOfList< T >)))),
      first_(nullptr),
@@ -43,6 +44,21 @@ namespace tarasenko
      other.last_ = nullptr;
      other.size_ = 0;
    }
+
+   template< typename InputIt >
+   ForwardList(InputIt first, InputIt last):
+     null_(static_cast< details::NodeOfList< T >* >(::operator new (sizeof(details::NodeOfList< T >)))),
+     first_(nullptr),
+     last_(nullptr),
+     size_(0)
+   {
+     while (first != last)
+     {
+       pushBack(*first);
+       first++;
+     }
+   }
+
    ~ForwardList()
    {
      clear();
@@ -76,10 +92,11 @@ namespace tarasenko
    }
 
    bool isEmpty() const;
+   size_t size() const;
    void pushFront(const T& data);
    void pushBack(const T& data);
-   T& getFront();
-   const T& getFront() const;
+   T getFront();
+   const T getFront() const;
    void popFront();
    void clear();
    iterator insertAfter(const_iterator pos, const T& value);
@@ -163,6 +180,12 @@ namespace tarasenko
   }
 
   template< typename T >
+  size_t ForwardList< T >::size() const
+  {
+    return size_;
+  }
+
+  template< typename T >
   void ForwardList< T >::pushFront(const T& data)
   {
     insertAfter(cbeforeBegin(), data);
@@ -191,13 +214,13 @@ namespace tarasenko
   }
 
   template< typename T >
-  T& ForwardList< T >::getFront()
+  T ForwardList< T >::getFront()
   {
     return details::getFront(first_);
   }
 
   template< typename T >
-  const T& ForwardList< T >::getFront() const
+  const T ForwardList< T >::getFront() const
   {
     return details::getFront(first_);
   }
