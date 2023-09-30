@@ -1,7 +1,7 @@
 #ifndef CONVERTSTRINGTOINFIX_HPP
 #define CONVERTSTRINGTOINFIX_HPP
 #include <string>
-#include "queue.hpp"
+#include <queue.hpp>
 
 namespace hrushchev
 {

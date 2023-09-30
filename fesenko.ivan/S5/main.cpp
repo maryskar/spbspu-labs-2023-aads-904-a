@@ -25,11 +25,10 @@ int main(int argc, char *argv[])
     return 0;
   }
   try {
-    auto num_list = fesenko::createTreeWithTraverses< fesenko::NumSummator >();
-    fesenko::NumSummator numSum;
-    auto str_list = fesenko::createTreeWithTraverses< fesenko::StrSummator >();
-    fesenko::StrSummator strSum;
-    std::cout << (tr.*num_list.at(argv[1]))(numSum).getSum() << " " << (tr.*str_list.at(argv[1]))(strSum).getSum() << "\n";
+    auto list = fesenko::createTreeWithTraverses< fesenko::Summator >();
+    fesenko::Summator sum;
+    auto result = (tr.*list.at(argv[1]))(sum).getSum();
+    std::cout << result.first << " " << result.second << "\n";
   } catch (...) {
     fesenko::outInvalidCommandMessage(std::cout);
     std::cout << "\n";

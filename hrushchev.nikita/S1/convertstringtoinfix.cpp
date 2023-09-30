@@ -1,6 +1,6 @@
 #include "convertstringtoinfix.hpp"
 #include <string>
-#include "queue.hpp"
+#include <queue.hpp>
 
 hrushchev::Queue<std::string> hrushchev::convertStringToInfix(std::string str)
 {

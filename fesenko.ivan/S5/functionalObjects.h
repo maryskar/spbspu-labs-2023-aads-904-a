@@ -23,5 +23,16 @@ namespace fesenko
    private:
     std::string sum_;
   };
+
+  class Summator
+  {
+   public:
+    Summator();
+    void operator()(const std::pair< long long, std::string > &value_type);
+    std::pair< long long, std::string > getSum() const;
+   private:
+    NumSummator numSum_;
+    StrSummator strSum_;
+  };
 }
 #endif

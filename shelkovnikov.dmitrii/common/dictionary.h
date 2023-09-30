@@ -3,22 +3,10 @@
 #include <utility>
 #include <ostream>
 #include <functional>
-#include "forwardlist.h"
+#include "forwardlist/forwardlist.h"
+#include "math_functions.h"
 namespace dimkashelk
 {
-  namespace details
-  {
-    template< typename K, typename Comp >
-    bool isEqual(const K &key1, const K &key2)
-    {
-      return !Comp{}(key1, key2) && !Comp{}(key2, key1);
-    }
-    template< typename K, typename Comp >
-    bool isNotEqual(const K &key1, const K &key2)
-    {
-      return !isEqual< K, Comp >(key1, key2);
-    }
-  }
   template< typename Key, typename Value, typename Compare >
   class Dictionary
   {
@@ -261,84 +249,6 @@ namespace dimkashelk
   void swap(Dictionary< Key, T, Compare > &lhs, Dictionary< Key, T, Compare > &rhs )
   {
     lhs.swap(rhs);
-  }
-  template< typename K, typename V, typename C >
-  Dictionary< K, V, C > getIntersection(const Dictionary< K, V, C > &first, const Dictionary< K, V, C > &second)
-  {
-    Dictionary< K, V, C > result;
-    for (auto it_first = second.cbegin(); it_first != second.cend(); it_first++)
-    {
-      auto res = second.cend();
-      for (auto i = first.cbegin(); i != first.cend(); i++)
-      {
-        if (details::isEqual< K, C >(it_first->first, i->first))
-        {
-          res = i;
-          break;
-        }
-      }
-      if (res != second.cend())
-      {
-        result[res->first] = res->second;
-      }
-    }
-    return result;
-  }
-  template< typename K, typename V, typename C >
-  Dictionary< K, V, C > getComplement(const Dictionary< K, V, C > &first, const Dictionary< K, V, C > &second)
-  {
-    Dictionary< K, V, C > new_dict;
-    if (std::addressof(first) == std::addressof(second))
-    {
-      return new_dict;
-    }
-    auto iter_first = first.cbegin();
-    auto iter_first_end = first.cend();
-    auto iter_second = second.cbegin();
-    auto iter_second_end = second.cend();
-    C comp = C{};
-    while (iter_first != iter_first_end && iter_second != iter_second_end)
-    {
-      while (iter_second != iter_second_end && comp((*iter_second).first, (*iter_first).first))
-      {
-        iter_second++;
-      }
-      if (iter_second == iter_second_end)
-      {
-        break;
-      }
-      if (details::isNotEqual< K, C >(iter_first->first, iter_second->first))
-      {
-        new_dict[iter_first->first] = iter_first->second;
-      }
-      iter_first++;
-    }
-    while (iter_first != iter_first_end)
-    {
-      new_dict[iter_first->first] = iter_first->second;
-      iter_first++;
-    }
-    return new_dict;
-  }
-  template< typename K, typename V, typename C >
-  Dictionary< K, V, C > getUnion(const Dictionary< K, V, C > &first, const Dictionary< K, V, C > &second)
-  {
-    Dictionary< K, V, C > new_dict;
-    auto iter_second = second.cbegin();
-    auto iter_second_end = second.cend();
-    while (iter_second != iter_second_end)
-    {
-      new_dict[iter_second->first] = iter_second->second;
-      iter_second++;
-    }
-    auto iter_first = first.cbegin();
-    auto iter_first_end = first.cend();
-    while (iter_first != iter_first_end)
-    {
-      new_dict[iter_first->first] = iter_first->second;
-      iter_first++;
-    }
-    return new_dict;
   }
 }
 #endif

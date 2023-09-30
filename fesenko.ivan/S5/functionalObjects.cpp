@@ -41,3 +41,19 @@ std::string fesenko::StrSummator::getSum() const
 {
   return sum_;
 }
+
+fesenko::Summator::Summator():
+  numSum_(NumSummator()),
+  strSum_(StrSummator())
+{}
+
+void fesenko::Summator::operator()(const std::pair< long long, std::string > &value_type)
+{
+  numSum_(value_type);
+  strSum_(value_type);
+}
+
+std::pair< long long, std::string > fesenko::Summator::getSum() const
+{
+  return std::make_pair(numSum_.getSum(), strSum_.getSum());
+}
