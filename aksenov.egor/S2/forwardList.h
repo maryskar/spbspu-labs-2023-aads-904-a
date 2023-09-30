@@ -244,23 +244,15 @@ namespace aksenov
   template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, constReference val)
   {
-    auto *newNode = new listT< T >{val, nullptr};
-    if (pos.node_ == fake_)
-    {
-      if (!tail_)
-      {
-        tail_ = head_;
-      }
-      head_ = newNode;
-    }
-    if (newNode->next == nullptr)
+    auto *node = pos.node_;
+    node->next = pos.node_->next;
+    auto newNode = new listT< T >(val, node->next);
+    node->next = newNode;
+    if (tail_ == node)
     {
       tail_ = newNode;
     }
-    newNode->next = pos.node_->next;
-    pos.node_->next = newNode;
     return iterator(newNode->next);
-
     /*auto newNode = new listT< T >(val);
     listT< T > *oldNext = pos.node_->next;
     pos.node_->next = newNode;
