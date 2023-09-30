@@ -21,7 +21,7 @@ List< T >::List(const T& data, List< T >* next):
 template< typename T >
 List< T >::~List()
 {
-  List< T >* current = this;
+  List< T >* current = next;
   while (current != nullptr)
   {
     List< T >* temp = current;
