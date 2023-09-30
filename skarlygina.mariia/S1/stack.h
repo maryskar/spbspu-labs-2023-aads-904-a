@@ -17,14 +17,17 @@ public:
   bool isEmpty() const;
   ~Stack();
 private:
-  List< T >* root_;
-  size_t size;
+  struct List
+  {
+    T data;
+    Node* next;
+  };
+  List* root_;
 };
 
 template< typename T >
 Stack< T >::Stack() :
   root_(nullptr),
-  size(0)
 {}
 
 template< typename T >
@@ -33,7 +36,7 @@ Stack< T >::Stack(const Stack< T >& other):
 {}
 
 template< typename T >
-Stack< T >::Stack(const Stack< T >&& other) :
+Stack< T >::Stack(const Stack< T >&& other):
   root_(other.root_)
 {
   other.root_ = nullptr;
@@ -52,11 +55,6 @@ const T& Stack< T >::top() const
 template< typename T>
 void Stack< T >::push(const T& rhs)
 {
-  const int MAX_SIZE = 100;
-  if (size >= MAX_SIZE)
-  {
-    throw std::overflow_error("Stack is full");
-  }
   List< T >* new_node = new List< T >{rhs, nullptr};
   if (new_node == nullptr)
   {
@@ -65,7 +63,6 @@ void Stack< T >::push(const T& rhs)
   new_node->data = rhs;
   new_node->next = root_;
   root_ = new_node;
-  size++;
 }
 
 template< typename T >
@@ -105,11 +102,9 @@ bool Stack< T >::isEmpty() const
 template< typename T>
 Stack< T >::~Stack()
 {
-  while (root_ != nullptr)
+  while (!isEmpty())
   {
-    List< T >* node_temp = root_;
-    root_ = root_->next;
-    delete node_temp;
+    pop();
   }
 }
 #endif

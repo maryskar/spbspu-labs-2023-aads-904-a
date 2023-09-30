@@ -17,6 +17,11 @@ public:
   bool isEmpty() const;
   ~Queue();
 private:
+  struct List
+  {
+    T data;
+    Node* next;
+  };
   List< T >* head_;
   List< T >* tail_;
 };
