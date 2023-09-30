@@ -22,8 +22,8 @@ private:
     T data;
     Node* next;
   };
-  List< T >* head_;
-  List< T >* tail_;
+  List* head_;
+  List* tail_;
 };
 
 template< typename T >
@@ -39,7 +39,7 @@ Queue< T >::Queue(Queue< T >& other):
 {
   if(!other.isEmpty())
   {
-    head_ = new List< T >(*other.head_);
+    head_ = new List(*other.head_);
     List< T >* current = head_;
     while (current->next != nullptr)
     {
@@ -61,7 +61,7 @@ Queue< T >::Queue(Queue< T >&& other) noexcept:
 template< typename T >
 void Queue< T >::push(const T& rhs)
 {
-  List< T >* new_node = new List< T >{rhs, nullptr};
+  List< T >* new_node = new List{rhs, nullptr};
   if (isEmpty())
   {
     tail_ = head_ = new_node;
@@ -80,7 +80,7 @@ void Queue< T >::pop()
   {
     throw std::out_of_range("Queue is empty");
   }
-  List< T >* head_temp = head_;
+  List* head_temp = head_;
   head_ = head_->next;
   if (head_ == tail_)
   {
@@ -110,7 +110,7 @@ Queue< T >::~Queue()
 {
   while (head_ != nullptr)
   {
-    List< T >* head_temp = head_;
+    List* head_temp = head_;
     head_ = head_->next;
     delete head_temp;
   }

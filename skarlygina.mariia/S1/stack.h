@@ -55,7 +55,7 @@ const T& Stack< T >::top() const
 template< typename T>
 void Stack< T >::push(const T& rhs)
 {
-  List< T >* new_node = new List< T >{rhs, nullptr};
+  List* new_node = new List{rhs, nullptr};
   if (new_node == nullptr)
   {
     throw std::bad_alloc();
@@ -72,7 +72,7 @@ void Stack< T >::pop()
   {
     throw std::out_of_range("Stack is empty");
   }
-  List< T >* node_temp = root_;
+  List* node_temp = root_;
   root_ = node_temp->next;
   delete node_temp;
 }
@@ -89,7 +89,7 @@ const T& Stack< T >::deep() const
   {
     current = current->next;
   }
-  List< T >* deep = current;
+  List* deep = current;
   return deep->data;
 }
 
