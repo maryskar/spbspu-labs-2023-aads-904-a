@@ -244,23 +244,34 @@ namespace aksenov
   template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, constReference val)
   {
-    auto *node = pos.node_;
-    node->next = pos.node_->next;
-    auto newNode = new listT< T >(val, node->next);
-    node->next = newNode;
-    if (tail_ == node)
+    if (!pos.node_)
     {
-      tail_ = newNode;
+      throw std::invalid_argument("invalid pos");
     }
-    return iterator(newNode->next);
-    /*auto newNode = new listT< T >(val);
-    listT< T > *oldNext = pos.node_->next;
-    pos.node_->next = newNode;
-    newNode->next = oldNext;
-    if (pos.node_ == tail_) {
-      tail_ = newNode;
+
+    auto newNode = new listT< T >(val);
+
+    if (pos.node_ == fake_)
+    {
+      newNode->next = fake_->next;
+      fake_->next = newNode;
+      head_ = fake_->next;
+      if (tail_ == fake_)
+      {
+        tail_ = newNode;
+      }
     }
-    return iterator(newNode);*/
+    else
+    {
+      newNode->next = pos.node_->next;
+      pos.node_->next = newNode;
+      if (pos.node_ == tail_)
+      {
+        tail_ = newNode;
+      }
+    }
+
+    return iterator(newNode);
   }
 
   template< typename T >
