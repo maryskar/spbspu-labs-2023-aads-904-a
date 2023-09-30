@@ -1,6 +1,6 @@
 #ifndef PRINT_H
 #define PRINT_H
-#include "stack.h"
+#include <stack.h>
 
 namespace mashkin
 {
