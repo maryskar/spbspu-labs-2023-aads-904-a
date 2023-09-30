@@ -27,44 +27,6 @@ namespace aksenov
     }
   }
 
-  /*template< typename dictOfDicts >
-  dictOfDicts doComplement(const dictOfDicts &first, const dictOfDicts &second)
-  {
-    dictOfDicts res;
-    if (std::addressof(first) == std::addressof(second))
-    {
-      return res;
-    }
-    auto firstIt = first.cbegin();
-    auto secIt = second.cbegin();
-    auto cmp = std::less<>();
-    while (firstIt != first.cend() && secIt != second.cend())
-    {
-      if (cmp(firstIt->first, secIt->first)) {
-        res.insert(*firstIt);
-        ++firstIt;
-      } else if(cmp(secIt->first, firstIt->first)) {
-        ++secIt;
-      } else {
-        ++firstIt;
-        ++secIt;
-      }
-    }
-    while (firstIt != first.cend())
-    {
-      res.insert(*firstIt);
-      ++firstIt;
-    }
-    return res;
-  }*/
-
-  //void intersect(const std::string &newdataset, const std::string &dataset1, const std::string &dataset2);
-
-  //void unite(const std::string &newdataset, const std::string &dataset1, const std::string &dataset2);
-
-  //using commandMap = Dictionary< std::string, void (*)(const std::string &, const std::string &, const std::string &) >;
-  //void createCommandMap(commandMap &commands);
-
   template< typename dictOfDicts >
   dictOfDicts doComplement(const dictOfDicts &first, const dictOfDicts &second)
   {
@@ -78,22 +40,33 @@ namespace aksenov
     auto cmp = std::less<>();
     while (firstIt != first.cend() && secIt != second.cend())
     {
-      if (cmp(firstIt->first, secIt->first)) {
-        res[firstIt->first] = firstIt->second;
-        ++firstIt;
-      } else if(cmp(secIt->first, firstIt->first)) {
-        ++secIt;
-      } else {
-        ++firstIt;
+      while (secIt != second.cend() && cmp(secIt->first, firstIt->first))
+      {
         ++secIt;
       }
+      if (secIt == second.cend())
+      {
+        break;
+      }
+      if (firstIt->first != secIt->first)
+      {
+        res.insert(*firstIt);
+      }
+      ++firstIt;
     }
     while (firstIt != first.cend())
     {
-      res[firstIt->first] = firstIt->second;
+      res.insert(*firstIt);
       ++firstIt;
     }
     return res;
   }
+
+  //void intersect(const std::string &newdataset, const std::string &dataset1, const std::string &dataset2);
+
+  //void unite(const std::string &newdataset, const std::string &dataset1, const std::string &dataset2);
+
+  //using commandMap = Dictionary< std::string, void (*)(const std::string &, const std::string &, const std::string &) >;
+  //void createCommandMap(commandMap &commands);
 }
 #endif
