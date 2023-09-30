@@ -9,21 +9,19 @@ namespace aksenov
   using dict = aksenov::Dictionary< int, std::string, std::less< > >;
   using dictOfDicts = aksenov::Dictionary< std::string, dict, std::less< > >;
   template< typename dictOfDicts >
-  void print(const std::pair< std::string, dictOfDicts > &rhs, std::ostream &out)
+  void print(const std::string &name, const dictOfDicts &rhs, std::ostream &out)
   {
-    auto cont = rhs.second;
-    auto cit = cont.cbegin();
-    if (cit == cont.cend())
+    if (rhs.isEmpty())
     {
       out << "dict is empty" << "\n";
       return;
     }
-    out << rhs.first;
-    while (cit != cont.cend())
+
+    out << name;
+    for(const auto& pairElement : rhs)
     {
-      out << " " << cit->first;
-      out << " " << cit->second;
-      ++cit;
+      out << " " << pairElement.first;
+      out << " " << pairElement.second;
     }
   }
 
@@ -31,7 +29,7 @@ namespace aksenov
   dictOfDicts doComplement(const dictOfDicts &first, const dictOfDicts &second)
   {
     dictOfDicts res;
-    if (std::addressof(first) == std::addressof(second))
+    /*if (std::addressof(first) == std::addressof(second))
     {
       return res;
     }
@@ -59,6 +57,15 @@ namespace aksenov
       res.insert(*firstIt);
       ++firstIt;
     }
+    return res;*/
+    for (const auto& pair : first)
+    {
+      if (second.count(pair.first) == 0)
+      {
+        res.insert(pair);
+      }
+    }
+
     return res;
   }
 

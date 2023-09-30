@@ -28,6 +28,10 @@ int main(int argc, char* argv[])
     {
       std::string command;
       std::cin >> command;
+      if (command == "exit")
+      {
+        return 20;
+      }
       if (!std::cin)
       {
         break;
@@ -36,7 +40,7 @@ int main(int argc, char* argv[])
       {
         std ::string name;
         std::cin >> name;
-        aksenov::print(std::make_pair(name, bigData[name]), std::cout);
+        aksenov::print(name,bigData[name], std::cout);
       }
       else if (command == "complement")
       {
@@ -47,11 +51,7 @@ int main(int argc, char* argv[])
         dict dict1 = bigData[dictName1];
         dict dict2 = bigData[dictName2];
         dict resDict = aksenov::doComplement(dict1, dict2);
-        if (!bigData.insert(std::make_pair(newName, resDict)).second)
-        {
-          auto it = bigData.find(newName);
-          bigData.at(it->first) = resDict;
-        }
+        bigData[newName] = resDict;
       }
     }
     catch (...)

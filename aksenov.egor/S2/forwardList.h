@@ -211,7 +211,6 @@ namespace aksenov
   void ForwardList<T>::clear() noexcept
   {
     free(head_);
-    head_ = nullptr;
     tail_ = nullptr;
   }
 
@@ -308,13 +307,21 @@ namespace aksenov
   template< typename T >
   void ForwardList< T >::popFront()
   {
+    if (head_ != nullptr) {
+      listT<T> *temp = head_;
+      head_ = head_->next;
+      delete temp;
 
+      if (head_ == nullptr) {
+        tail_ = nullptr;
+      }
+    }
   }
 
   template < typename T >
   typename ForwardList< T >::iterator ForwardList< T >::eraseAfter(constIterator pos)
   {
-    /*if (pos.node_ == nullptr || pos.node_->next == nullptr)
+    if (pos.node_ == nullptr || pos.node_->next == nullptr)
     {
       return end();
     }
@@ -324,15 +331,19 @@ namespace aksenov
     {
       tail_ = pos.node_;
     }
+    if(todel == head_)
+    {
+      head_ = head_->next;
+    }
     delete todel;
-    return iterator(pos.node_->next);*/
+    return iterator(pos.node_->next);
 
-    listT< T > *next = pos.node_->next;
+    /*listT< T > *next = pos.node_->next;
     pos.node_->next = next->next;
     if (next == tail_) {
       tail_ = pos.node_;
     }
-    delete next;
+    delete next;*/
   }
 
   template < typename T >
