@@ -63,14 +63,21 @@ namespace aksenov
     listT< T > *fake_;
     listT< T > *tail_;
     listT< T > *head_;
+    listT< T > *initFake()
+    {
+      void *nodeMemory = ::operator new(sizeof(listT< T >));
+      listT< T > *newNode = static_cast< listT< T > * >(nodeMemory);
+      newNode->next = nullptr;
+      return newNode;
+    }
     void copy(const ForwardList< T > &rhs);
   };
 
   template< typename T >
   ForwardList< T >::ForwardList():
-    fake_(static_cast< listT< T > * >(::operator new (sizeof(listT< T >)))),
+    fake_(initFake()),
     //fake_(new listT< T >()),
-    //fake_(new listT< T >()),
+    //fake_(listT< T >()),
     tail_(nullptr),
     head_(nullptr)
   {
@@ -81,7 +88,7 @@ namespace aksenov
   ForwardList< T >::~ForwardList()
   {
     clear();
-    ::operator delete(fake_);
+    ;
   }
 
   template< typename T >

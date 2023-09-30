@@ -141,7 +141,7 @@ namespace aksenov
   template< typename Key, typename T, typename Compare >
   T &Dictionary< Key, T, Compare >::operator[](const Key &key)
   {
-    auto resultPair = this->insert(std::make_pair(key, T()));
+    auto resultPair = this->insert({key, T()});
 
     return resultPair.first->second;
   }
