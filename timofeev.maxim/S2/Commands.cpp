@@ -41,7 +41,7 @@ namespace timofeev
     {
       std::string newDict, first, second;
       in >> newDict >> first >> second;
-      if (dict.count(first) < 0 || dict.count(second) < 0)
+      if (dict.count(first) == 0 || dict.count(second) == 0)
       {
         throw std::logic_error("Logic error");
       }
@@ -90,7 +90,7 @@ namespace timofeev
     {
       std::string newDict, first, second;
       in >> newDict >> first >> second;
-      if (dict.count(first) < 0 || dict.count(second) < 0)
+      if (dict.count(first) == 0 || dict.count(second) == 0)
       {
         throw std::logic_error("Logic error");
       }
@@ -118,7 +118,7 @@ namespace timofeev
   {
     std::string newDict, first, second;
     in >> newDict >> first >> second;
-    if (dict.count(first) < 0 || dict.count(second) < 0)
+    if (dict.count(first) == 0 || dict.count(second) == 0)
     {
       throw std::logic_error("Logic error");
     }
