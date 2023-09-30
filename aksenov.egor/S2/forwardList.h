@@ -248,7 +248,7 @@ namespace aksenov
     {
       throw std::invalid_argument("invalid pos");
     }
-    auto newNode = new listT< T >(val);
+    auto newNode = new listT< T >{val, nullptr};
     if (pos.node_ == fake_)
     {
       newNode->next = fake_->next;
@@ -297,6 +297,7 @@ namespace aksenov
     while (first != last)
     {
       pos = insertAfter(pos, *first);
+      ++first;
     }
     return iterator(pos.node_);
   }

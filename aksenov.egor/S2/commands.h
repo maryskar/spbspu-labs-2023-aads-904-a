@@ -16,12 +16,10 @@ namespace aksenov
       out << "dict is empty" << "\n";
       return;
     }
-
     out << name;
     for(const auto& pairElement : rhs)
     {
-      out << " " << pairElement.first;
-      out << " " << pairElement.second;
+      out << " " << pairElement.first << " " << pairElement.second;
     }
   }
 
@@ -29,35 +27,6 @@ namespace aksenov
   dictOfDicts doComplement(const dictOfDicts &first, const dictOfDicts &second)
   {
     dictOfDicts res;
-    /*if (std::addressof(first) == std::addressof(second))
-    {
-      return res;
-    }
-    auto firstIt = first.cbegin();
-    auto secIt = second.cbegin();
-    auto cmp = std::less<>();
-    while (firstIt != first.cend() && secIt != second.cend())
-    {
-      while (secIt != second.cend() && cmp(secIt->first, firstIt->first))
-      {
-        ++secIt;
-      }
-      if (secIt == second.cend())
-      {
-        break;
-      }
-      if (firstIt->first != secIt->first)
-      {
-        res.insert(*firstIt);
-      }
-      ++firstIt;
-    }
-    while (firstIt != first.cend())
-    {
-      res.insert(*firstIt);
-      ++firstIt;
-    }
-    return res;*/
     for (const auto& pair : first)
     {
       if (second.count(pair.first) == 0)
@@ -65,7 +34,31 @@ namespace aksenov
         res.insert(pair);
       }
     }
+    return res;
+  }
 
+  template< typename dictOfDicts >
+  dictOfDicts intersect(const dictOfDicts &first, const dictOfDicts &second)
+  {
+    dictOfDicts res;
+    for (const auto& pair : first)
+    {
+      if (second.count(pair.first) != 0)
+      {
+        res.insert(pair);
+      }
+    }
+    return res;
+  }
+
+  template< typename dictOfDicts >
+  dictOfDicts unite(const dictOfDicts &first, const dictOfDicts &second)
+  {
+    dictOfDicts res(first);
+    for (auto it : second)
+    {
+      res.insert(*it);
+    }
     return res;
   }
 

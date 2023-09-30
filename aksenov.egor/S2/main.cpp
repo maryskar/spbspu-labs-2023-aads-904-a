@@ -57,6 +57,36 @@ int main(int argc, char *argv[])
         }
 
       }
+      else if (command == "intersect")
+      {
+        std::string newName;
+        std::string dictName1;
+        std::string dictName2;
+        std::cin >> newName >> dictName1 >> dictName2;
+        dict dict1 = bigData.at(dictName1);
+        dict dict2 = bigData.at(dictName2);
+        dict resDict = aksenov::intersect(dict1, dict2);
+        if (!bigData.insert(std::make_pair(newName, resDict)).second) {
+          auto it = bigData.find(newName);
+          bigData.at(it->first) = resDict;
+        }
+
+      }
+      else if (command == "union")
+      {
+        std::string newName;
+        std::string dictName1;
+        std::string dictName2;
+        std::cin >> newName >> dictName1 >> dictName2;
+        dict dict1 = bigData.at(dictName1);
+        dict dict2 = bigData.at(dictName2);
+        dict resDict = aksenov::intersect(dict1, dict2);
+        if (!bigData.insert(std::make_pair(newName, resDict)).second) {
+          auto it = bigData.find(newName);
+          bigData.at(it->first) = resDict;
+        }
+
+      }
     }
     catch (...)
     {
