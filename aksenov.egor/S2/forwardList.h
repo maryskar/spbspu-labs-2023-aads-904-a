@@ -68,8 +68,8 @@ namespace aksenov
 
   template< typename T >
   ForwardList< T >::ForwardList():
-    //fake_(static_cast< listT< T > * >(::operator new (sizeof(listT< T >)))),
-    fake_(new listT< T >()),
+    fake_(static_cast< listT< T > * >(::operator new (sizeof(listT< T >)))),
+    //fake_(new listT< T >()),
     //fake_(new listT< T >()),
     tail_(nullptr),
     head_(nullptr)
@@ -81,7 +81,7 @@ namespace aksenov
   ForwardList< T >::~ForwardList()
   {
     clear();
-    free(fake_);
+    ::operator delete(fake_);
   }
 
   template< typename T >
@@ -238,7 +238,7 @@ namespace aksenov
   template< typename T >
   typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, constReference val)
   {
-    /*auto *newNode = new listT< T >{val, nullptr};
+    auto *newNode = new listT< T >{val, nullptr};
     newNode->next = pos.node_->next;
     pos.node_->next = newNode;
     if (pos.node_ == fake_)
@@ -253,16 +253,16 @@ namespace aksenov
     {
       tail_ = newNode;
     }
-    return iterator(newNode->next);*/
+    return iterator(newNode->next);
 
-    auto newNode = new listT< T >(val);
+    /*auto newNode = new listT< T >(val);
     listT< T > *oldNext = pos.node_->next;
     pos.node_->next = newNode;
     newNode->next = oldNext;
     if (pos.node_ == tail_) {
       tail_ = newNode;
     }
-    return iterator(newNode);
+    return iterator(newNode);*/
   }
 
   template< typename T >

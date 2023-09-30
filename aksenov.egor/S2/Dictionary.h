@@ -1,6 +1,7 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 #include <functional>
+#include <utility>
 #include "forwardList.h"
 namespace aksenov
 {
@@ -73,7 +74,7 @@ namespace aksenov
   template< typename Key, typename T, typename Compare >
   Dictionary< Key, T, Compare >::Dictionary():
     data_(),
-    comp_(),
+    comp_(Compare()),
     size_(0)
   {
   }
@@ -82,7 +83,7 @@ namespace aksenov
   Dictionary< Key, T, Compare >::Dictionary(const Dictionary< Key, T, Compare > &other):
     data_(other.data_),
     comp_(other.comp_),
-    size_(other.size_)
+    size_(other.size())
   {
   }
 
@@ -98,20 +99,18 @@ namespace aksenov
   template< typename Key, typename T, typename Compare >
   Dictionary< Key, T, Compare > & Dictionary< Key, T, Compare >::operator=(const thisT &other)
   {
-    if (this != std::addressof(other)) {
-      Compare temp = other.comp_;
+    if (this != &other) {
       data_ = other.data_;
-      comp_ = std::move(temp);
+      comp_ = other.comp_;
       size_ = other.size_;
     }
     return *this;
-
   }
 
   template< typename Key, typename T, typename Compare >
   Dictionary< Key, T, Compare > & Dictionary< Key, T, Compare >::operator=(thisT &&other)
   {
-    if (this != std::addressof(other)) {
+    if (this != &other) {
       data_ = std::move(other.data_);
       comp_ = std::move(other.comp_);
       size_ = other.size_;
@@ -256,8 +255,8 @@ namespace aksenov
   template< typename Key, typename T, typename Compare >
   T & Dictionary< Key, T, Compare >::at(const Key &key)
   {
-    iterator it = find(key);
-    if (it == end()) {
+    auto it = find(key);
+    if (it == data_.end()) {
       throw std::out_of_range("There is no such key");
     }
     return it->second;
@@ -267,7 +266,12 @@ namespace aksenov
   template< typename Key, typename T, typename Compare >
   const T & Dictionary< Key, T, Compare >::at(const Key &key) const
   {
-    return const_cast< T & >((static_cast< const thisT & >(*this)).at(key));
+    //return const_cast< T & >((static_cast< const thisT & >(*this)).at(key));
+    auto it = find(key);
+    if (it == data_.cend()) {
+      throw std::out_of_range("There is no such key");
+    }
+    return it->second;
   }
 
   template< typename Key, typename T, typename Compare >
@@ -315,7 +319,7 @@ namespace aksenov
   std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool > Dictionary< Key, Value, Compare >::insert(const valueType &value)
   {
     auto it = find(value.first);
-    if (it != end())
+    if (it != data_.end())
     {
       return std::make_pair(it, false);
     }
@@ -323,7 +327,7 @@ namespace aksenov
     {
       data_.pushFront(value);
       size_++;
-      return std::make_pair(begin(), true);
+      return std::make_pair(data_.begin(), true);
     }
   }
 
@@ -332,15 +336,15 @@ namespace aksenov
   std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool > Dictionary<Key, Value, Compare>::insert(P &&value)
   {
     auto it = find(value.first);
-    if (it != end())
+    if (it != data_.end())
     {
       return { it, false };
     }
     else
     {
-      data_.pushFront(value);
+      data_.pushFront(std::forward< P >(value));
       size_++;
-      return { begin(), true };
+      return { data_.begin(), true };
     }
   }
 
