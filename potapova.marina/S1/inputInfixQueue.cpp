@@ -1,11 +1,15 @@
 #include "inputInfixQueue.h"
+#include "arithmExpressionMember.h"
 #include <cstring>
 #include <cctype>
 #include <string>
 
-bool isOperation(const char& sym)
+namespace
 {
-  return (sym == '+' || sym == '-' || sym == '*' || sym == '/' || sym == '%' || sym == '(' || sym == ')');
+  bool isOperation(const char& sym)
+  {
+    return (sym == '+' || sym == '-' || sym == '*' || sym == '/' || sym == '%' || sym == '(' || sym == ')');
+  }
 }
 
 std::istream& potapova::inputInfixQueue(expr_queue& dest, std::istream& in)
@@ -16,11 +20,10 @@ std::istream& potapova::inputInfixQueue(expr_queue& dest, std::istream& in)
   while (*cur_sym_ptr != '\0')
   {
     ArithmExpMember member;
-    if (isdigit(*cur_sym_ptr) || (*cur_sym_ptr == '-' && isdigit(*(cur_sym_ptr + 1))))
+    if (std::isdigit(*cur_sym_ptr) || (*cur_sym_ptr == '-' && std::isdigit(*(cur_sym_ptr + 1))))
     {
-      member.type = ArithmExpMember::Type::Num;
       char* end_conv_ptr = nullptr;
-      member.num = std::strtoll(cur_sym_ptr, &end_conv_ptr, 10);
+      member = std::strtoll(cur_sym_ptr, &end_conv_ptr, 10);
       if (errno == ERANGE)
       {
         in.setstate(std::ios_base::failbit);
@@ -30,8 +33,7 @@ std::istream& potapova::inputInfixQueue(expr_queue& dest, std::istream& in)
     }
     else if (isOperation(*cur_sym_ptr))
     {
-      member.type = ArithmExpMember::Type::Operation;
-      member.operation = *cur_sym_ptr++;
+      member = *cur_sym_ptr++;
     }
     else
     {
@@ -39,7 +41,7 @@ std::istream& potapova::inputInfixQueue(expr_queue& dest, std::istream& in)
       break;
     }
     dest.push(member);
-    if (isspace(*cur_sym_ptr))
+    if (std::isspace(*cur_sym_ptr))
     {
       ++cur_sym_ptr;
     }

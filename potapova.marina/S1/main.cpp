@@ -1,30 +1,41 @@
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
-#include "valueType.h"
+#include "arithmExpressionMember.h"
 #include "queue.h"
 #include "stack.h"
 #include "inputInfixQueue.h"
 #include "divideExpression.h"
-#include "getInputStream.h"
 #include "countPostfixExpression.h"
-#include "printAnswer.h"
 
-int main()
+int main(int argc, char* argv[])
 {
-  const char* argv[]{"", "C:/Users/79213/Desktop/Marina/UniversitySPBSPU/aip_labs/spbspu-labs-2023-aads-904-a/potapova.marina/S1/in.txt"};
-  std::istream* in_ptr;
-  potapova::expr_queue infix_expr;
-  potapova::Stack< std::int64_t > answer_stack;
-  try
+  using namespace potapova;
+
+  std::istream* in_ptr = nullptr;
+  std::ifstream input_file;
+  if (argc > 2)
   {
-    in_ptr = potapova::getInputStream(2, argv);
-  }
-  catch (const std::exception& e)
-  {
-    std::cerr << "Error: " << e.what() << '\n';
+    std::cerr << "Incorrect number of arguments\n";
     return 1;
   }
+  else if (argc == 2)
+  {
+    input_file.open(argv[1]);
+    if (!input_file.is_open())
+    {
+      std::cerr << "Failed to open file\n";
+      return 1;
+    }
+    in_ptr = &input_file;
+  }
+  else
+  {
+    in_ptr = &std::cin;
+  }
+  expr_queue infix_expr;
+  Stack< long long > answer_stack;
+  *in_ptr >> std::ws;
   while (!in_ptr->eof())
   {
     if (!inputInfixQueue(infix_expr, *in_ptr))
@@ -34,10 +45,10 @@ int main()
     }
     try
     {
-      potapova::expr_queue postfix_queue(potapova::composePostfixQueue(infix_expr));
+      expr_queue postfix_queue(composePostfixQueue(infix_expr));
       if (!postfix_queue.empty())
       {
-        answer_stack.push(potapova::countPostfixExpression(postfix_queue));
+        answer_stack.push(countPostfixExpression(postfix_queue));
       }
     }
     catch (const std::exception& e)
@@ -47,10 +58,15 @@ int main()
     }
     *in_ptr >> std::ws;
   }
-  while (!answer_stack.empty())
+  while (answer_stack.size() > 1)
   {
-    std::cout << answer_stack.back() << ' ' << std::endl;
+    std::cout << answer_stack.top() << ' ';
     answer_stack.pop();
   }
+  if (answer_stack.size() == 1)
+  {
+    std::cout << answer_stack.top();
+  }
+  std::cout << '\n';
   return 0;
 }
