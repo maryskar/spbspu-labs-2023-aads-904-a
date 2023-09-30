@@ -87,7 +87,7 @@ namespace potapova
             return !(rhs == *this);
           }
         private:
-          const Node* node_ptr_; 
+          const Node* node_ptr_;
       };
 
       class Iterator
@@ -269,7 +269,7 @@ namespace potapova
 
       void push_front(const T& value)
       {
-        insert_after(before_begin(), value); 
+        insert_after(before_begin(), value);
       }
 
       Iterator erase_after(const Iterator place_ptr)

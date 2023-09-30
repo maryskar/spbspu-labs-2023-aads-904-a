@@ -8,7 +8,7 @@
 namespace potapova
 {
   template< typename Key, typename Value, bool (*Compare)(const Key&, const Key&) >
-  class Dictionary 
+  class Dictionary
   {
     public:
       struct Node
@@ -153,7 +153,7 @@ namespace potapova
       {
         return data_.size();
       }
-      
+
       bool empty() const
       {
         return data_.empty();
