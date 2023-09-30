@@ -115,9 +115,10 @@ namespace kryuchkova
   }
 
   template< typename T >
-  void Queue< T >::copyQueue(const Queue< T > & queue)
+  void Queue< T >::copyQueue(const Queue< T > &queue)
   {
-    std::pair< Node< T > *, Node< T > * > temp = copyNode(queue.head_);
+    assert(isEmpty());
+    std::pair< Node< T > *, Node< T > *> temp = copyNode(queue.head_);
     head_ = temp.first;
     tail_ = temp.second;
   }
