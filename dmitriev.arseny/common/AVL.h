@@ -2,6 +2,8 @@
 #define AVL_H
 
 #include "tree.h"
+#include "stack.h"
+#include "queue.h"
 
 namespace dmitriev
 {
@@ -543,6 +545,103 @@ namespace dmitriev
       {}
 
       return res;
+    }
+
+    template< typename F >
+    F traverseBreadth(F f) const
+    {
+      if (dmitriev::isEmpty(m_root))
+      {
+        return f;
+      }
+
+      Queue< tree* > q;
+      q.push(m_root);
+
+      while (!q.isEmpty())
+      {
+        tree* curr = q.getTopData();
+        q.popBack();
+
+        f(curr->data);
+
+        if (!dmitriev::isEmpty(curr->left))
+        {
+          q.push(curr->left);
+        }
+        if (!dmitriev::isEmpty(curr->right))
+        {
+          q.push(curr->right);
+        }
+      }
+
+      return f;
+    }
+
+    template< typename F >
+    F traverseBreadth(F f)
+    {
+      return static_cast< const AVL< Key, Value, Compare >& >(*this).traverseBreadth(f);
+    }
+
+    template< typename F >
+    F traverseLnr(F f) const
+    {
+      Stack< tree* > stack;
+      tree* curr = m_root;
+
+      while (!dmitriev::isEmpty(curr) || !stack.isEmpty())
+      {
+        while (!dmitriev::isEmpty(curr))
+        {
+          stack.push(curr);
+          curr = curr->left;
+        }
+
+        curr = stack.getTopData();
+        stack.popBack();
+        f(curr->data);
+
+        curr = curr->right;
+      }
+
+      return f;
+    }
+
+    template< typename F >
+    F traverseLnr(F f)
+    {
+      return static_cast< const AVL< Key, Value, Compare >& >(*this).traverseLnr(f);
+    }
+
+    template< typename F >
+    F traverseRnl(F f) const
+    {
+      Stack< tree* > stack;
+      tree* curr = m_root;
+
+      while (!dmitriev::isEmpty(curr) || !stack.isEmpty())
+      {
+        while (!dmitriev::isEmpty(curr))
+        {
+          stack.push(curr);
+          curr = curr->right;
+        }
+
+        curr = stack.getTopData();
+        stack.popBack();
+        f(curr->data);
+
+        curr = curr->left;
+      }
+
+      return f;
+    }
+
+    template< typename F >
+    F traverseRnl(F f)
+    {
+      return static_cast< const AVL< Key, Value, Compare >& >(*this).traverseRnl(f);
     }
 
     iterator begin()
