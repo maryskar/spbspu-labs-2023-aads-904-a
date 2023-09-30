@@ -89,7 +89,7 @@ namespace potapova
         private:
           const Node* node_ptr_; 
       };
-      
+
       class Iterator
       {
         friend ForwardList;
@@ -103,7 +103,7 @@ namespace potapova
           Iterator(Node* const node_ptr):
             node_ptr_(node_ptr)
           {
-            
+
           }
 
           ~Iterator() = default;
@@ -261,8 +261,8 @@ namespace potapova
       Iterator insert_after(const Iterator place_ptr, const T& value)
       {
         Node* const new_node_ptr = new Node(value);
-	      new_node_ptr->next_node_ptr = place_ptr.node_ptr_->next_node_ptr;
-	      place_ptr.node_ptr_->next_node_ptr = new_node_ptr;
+        new_node_ptr->next_node_ptr = place_ptr.node_ptr_->next_node_ptr;
+        place_ptr.node_ptr_->next_node_ptr = new_node_ptr;
         ++size_;
         return Iterator(new_node_ptr);
       }
