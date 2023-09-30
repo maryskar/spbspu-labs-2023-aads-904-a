@@ -248,9 +248,7 @@ namespace aksenov
     {
       throw std::invalid_argument("invalid pos");
     }
-
     auto newNode = new listT< T >(val);
-
     if (pos.node_ == fake_)
     {
       newNode->next = fake_->next;
@@ -258,6 +256,7 @@ namespace aksenov
       head_ = fake_->next;
       if (tail_ == fake_)
       {
+        tail_->next = newNode;
         tail_ = newNode;
       }
     }
@@ -267,6 +266,7 @@ namespace aksenov
       pos.node_->next = newNode;
       if (pos.node_ == tail_)
       {
+        tail_->next = newNode;
         tail_ = newNode;
       }
     }

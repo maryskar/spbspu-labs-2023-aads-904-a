@@ -26,12 +26,12 @@ namespace aksenov
         {
           break;
         }
-        //data.insert(std::make_pair(key, val));
-        data[key] = val;
+        data.insert(std::make_pair(key, val));
+        //data[key] = val;
       }
       in.clear();
-      //res.insert(std::make_pair(name, data));
-      res[name] = data;
+      res.insert(std::make_pair(name, data));
+      //res[name] = data;
     }
     return res;
   }
