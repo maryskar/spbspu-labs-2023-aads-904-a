@@ -35,5 +35,16 @@ int main(int argc, char* argv[])
     std::cerr << "No file to open\n";
     return 1;
   }
+  Dictionary< long long, std::string, compareFunc > dict;
+  std::string in_dict;
+  try
+  {
+    inputDict(*in_ptr, dict, in_dict);
+  }
+  catch (const std::exception& e)
+  {
+    std::cerr << "Error: " << e.what() << '\n';
+    return 1;
+  }
   return 0;
 }
