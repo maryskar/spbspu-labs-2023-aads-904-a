@@ -219,27 +219,34 @@ namespace potapova
         return result;
       }
 
-      void join(const Dictionary< Key, Value, Compare >& other)
+      Dictionary< Key, Value, Compare > join(const Dictionary< Key, Value, Compare >& other) const
       {
         Dictionary< Key, Value, Compare > result;
-        for (const Node& cur_node_this : *this)
+        ConstIterator greater_node_ptr = cbegin();
+        ConstIterator less_node_ptr = other.cbegin();
+        while (greater_node_ptr != ConstIterator() && less_node_ptr != ConstIterator())
         {
-          for (const Node& cur_node_other : other)
+          if (less_node_ptr->key == greater_node_ptr->key)
           {
-            if (!contains(cur_node_other) && cur_node_other.key < cur_node_this.key)
-            {
-              result.insert(cur_node_other.key, cur_node_other.value);
-            }
+            result.insert(greater_node_ptr->key, greater_node_ptr->value);
+            ++less_node_ptr;
+            ++greater_node_ptr;
+            continue;
           }
-          if (!other.contains(cur_node_this))
+          else if (Compare(less_node_ptr->key, greater_node_ptr->key))
           {
-            result.insert(cur_node_this.key, cur_node_this.value);
+            std::swap(less_node_ptr, greater_node_ptr);
           }
-          else if (other.contains(cur_node_this))
-          {
-            result.insert(cur_node_this.key, cur_node_this.value);
-          }
+          result.insert(less_node_ptr->key, less_node_ptr->value);
+          ++less_node_ptr;
         }
+        ConstIterator extra_node_ptr = greater_node_ptr == ConstIterator() ? less_node_ptr : greater_node_ptr;
+        while (extra_node_ptr != ConstIterator())
+        {
+          result.insert(extra_node_ptr->key, extra_node_ptr->value);
+          ++extra_node_ptr;
+        }
+        return result;
       }
     private:
       ForwardList< Node > data_;
