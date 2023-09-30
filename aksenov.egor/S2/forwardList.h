@@ -70,7 +70,8 @@ namespace aksenov
   ForwardList< T >::ForwardList():
     //fake_(static_cast< listT< T > * >(::operator new (sizeof(listT< T >)))),
     fake_(new listT< T >()),
-    tail_(fake_),
+    //fake_(new listT< T >()),
+    tail_(nullptr),
     head_(nullptr)
   {
     fake_->next = head_;
@@ -80,7 +81,7 @@ namespace aksenov
   ForwardList< T >::~ForwardList()
   {
     clear();
-    delete fake_;
+    free(fake_);
   }
 
   template< typename T >
@@ -206,24 +207,12 @@ namespace aksenov
     return head_ == nullptr;
   }
 
-  /*template <typename T>
+  template <typename T>
   void ForwardList<T>::clear() noexcept
   {
     free(head_);
     head_ = nullptr;
     tail_ = nullptr;
-  }*/
-  template< typename T >
-  void ForwardList< T >::clear() noexcept
-  {
-    listT< T > *current = head_;
-    while (current) {
-      listT< T > *temp = current;
-      current = current->next;
-      delete temp;  // освобождаем память для каждого узла
-    }
-    head_ = nullptr;
-    tail_ = fake_;
   }
 
   template< typename T >
