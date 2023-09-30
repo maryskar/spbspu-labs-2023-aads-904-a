@@ -138,7 +138,7 @@ namespace potapova
         {
           if (node.key == key)
           {
-            return data.erase_after(prev_node_ptr);
+            return data_.erase_after(prev_node_ptr);
           }
           prev_node_ptr = Iterator(&node);
         }
