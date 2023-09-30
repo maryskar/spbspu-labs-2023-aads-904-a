@@ -133,8 +133,8 @@ namespace potapova
 
       Iterator erase(const Key& key)
       {
-        Iterator prev_node_ptr = data.before_begin();
-        for (Node& node : data)
+        Iterator prev_node_ptr = data_.before_begin();
+        for (Node& node : data_)
         {
           if (node.key == key)
           {

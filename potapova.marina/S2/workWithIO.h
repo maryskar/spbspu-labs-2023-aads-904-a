@@ -12,7 +12,7 @@ namespace potapova
   {
     char* end_conv_ptr = nullptr;
     key = std::strtoll(cur_sym_ptr, &end_conv_ptr, 10);
-    if (errno == ERANGE || *end_conv_ptr != ' ' && *end_conv_ptr != '\0')
+    if (errno == ERANGE || (*end_conv_ptr != ' ' && *end_conv_ptr != '\0'))
     {
       return nullptr;
     }
@@ -58,7 +58,7 @@ namespace potapova
   template< typename Key, typename Value, bool (*Compare)(const Key&, const Key&) >
   std::ostream& operator<<(std::ostream& out, const Dictionary< Key, Value, Compare >& dict)
   {
-    using ConstIterator = Dictionary< Key, Value, Compare >::ConstIterator;
+    using ConstIterator = typename Dictionary< Key, Value, Compare >::ConstIterator;
     if (dict.empty())
     {
       out << "<EMPTY>" << '\n';
