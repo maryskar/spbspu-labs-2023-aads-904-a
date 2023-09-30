@@ -48,7 +48,7 @@ namespace kryuchkova
         temp = temp->next_;
       }
     }
-    catch(...)
+    catch (...)
     {
       deleteNode(to);
       throw;

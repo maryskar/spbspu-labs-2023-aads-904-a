@@ -90,7 +90,8 @@ namespace kryuchkova
     {
       throw std::logic_error("empty");
     }
-    return head_->data_;
+    T &temp = head_->data_;
+    return temp;
   }
 
   template< typename T >
