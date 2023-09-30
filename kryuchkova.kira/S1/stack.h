@@ -102,6 +102,7 @@ namespace kryuchkova
   template< typename T >
   void Stack< T >::copyStack(const Stack< T > &stack)
   {
+    assert(isEmpty());
     head_ = copyNode(stack.head_);
   }
 
