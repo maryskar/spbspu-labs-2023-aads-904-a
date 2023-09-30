@@ -19,14 +19,14 @@ private:
   struct List
   {
     T data;
-    Node* next;
+    List* next;
   };
   List* root_;
 };
 
 template< typename T >
-Stack< T >::Stack() :
-  root_(nullptr),
+Stack< T >::Stack():
+  root_(nullptr)
 {}
 
 template< typename T >
@@ -83,7 +83,7 @@ const T& Stack< T >::deep() const
   {
     throw std::logic_error("Stack is empty");
   }
-  List< T >* current = this->root_;
+  List* current = this->root_;
   while (current->next != nullptr)
   {
     current = current->next;

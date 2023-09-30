@@ -19,7 +19,7 @@ private:
   struct List
   {
     T data;
-    Node* next;
+    List* next;
   };
   List* head_;
   List* tail_;
@@ -39,7 +39,7 @@ Queue< T >::Queue(Queue< T >& other):
   if(!other.isEmpty())
   {
     head_ = new List(*other.head_);
-    List< T >* current = head_;
+    List* current = head_;
     while (current->next != nullptr)
     {
       current = current->next;
@@ -60,7 +60,7 @@ Queue< T >::Queue(Queue< T >&& other) noexcept:
 template< typename T >
 void Queue< T >::push(const T& rhs)
 {
-  List< T >* new_node = new List{rhs, nullptr};
+  List* new_node = new List{rhs, nullptr};
   if (isEmpty())
   {
     tail_ = head_ = new_node;
