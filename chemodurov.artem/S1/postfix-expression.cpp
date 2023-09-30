@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include "operation-and-parenthesis.hpp"
 
-chemodurov::PostfixExpr::PostfixExpr(chemodurov::operation_t op):
+chemodurov::PostfixExpr::PostfixExpr(operation_t op):
  data_(op),
  isOperand_(false)
 {}

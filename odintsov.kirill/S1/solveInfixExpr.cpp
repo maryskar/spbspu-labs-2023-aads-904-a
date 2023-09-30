@@ -4,8 +4,9 @@
 #include <stdexcept>
 #include <string>
 
+#include <StringSplitter.hpp>
+
 #include "PostfixNode.hpp"
-#include "StringSplitter.hpp"
 #include "convertInfixToPostfixExpr.hpp"
 #include "solvePostfixExpr.hpp"
 

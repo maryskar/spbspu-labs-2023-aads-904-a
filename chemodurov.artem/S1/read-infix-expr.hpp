@@ -2,7 +2,7 @@
 #define READ_INFIX_EXPR_HPP
 #include <iosfwd>
 #include "infix-expression.hpp"
-#include "queue.hpp"
+#include <queue.hpp>
 
 namespace chemodurov
 {

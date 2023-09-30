@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <tuple>
 
-#include "Node.hpp"
+#include <Node.hpp>
 
 namespace odintsov {
   template< typename T >
