@@ -109,7 +109,10 @@ Queue< T >::~Queue()
 {
   while (head_ != nullptr)
   {
-    pop();
+    List* temp = head_;
+    head_ = head_->next;
+    delete temp;
   }
+  tail_ = nullptr;
 }
 #endif
