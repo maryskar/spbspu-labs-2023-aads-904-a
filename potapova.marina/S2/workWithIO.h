@@ -6,11 +6,11 @@
 #include <string>
 #include "dictionary.h"
 
+static const char* parseKey(const char* cur_sym_ptr, long long& key);
+static const char* parseValue(const char* cur_sym_ptr, std::string& value);
+
 namespace potapova
 {
-  static const char* parseKey(const char* cur_sym_ptr, long long& key);
-  static const char* parseValue(const char* cur_sym_ptr, std::string& value);
-
   template< bool (*Compare)(const long long&, const long long&) >
   std::istream& operator>>(std::istream& in, Dictionary< long long, std::string, Compare >& dict)
   {
