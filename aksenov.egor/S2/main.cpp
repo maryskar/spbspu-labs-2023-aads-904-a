@@ -60,6 +60,10 @@ int main(int argc, char *argv[])
         }
       }
     }
+    catch (const std::invalid_argument &e)
+    {
+      std::cout << e.what();
+    }
     catch (...)
     {
       std::cout << "<INVALID COMMAND>" << "\n";

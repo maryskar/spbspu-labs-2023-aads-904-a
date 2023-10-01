@@ -2,6 +2,7 @@
 #define COMMANDMAP_H
 #include <iostream>
 #include <string>
+#include <stdexcept>
 #include "Dictionary.h"
 
 namespace aksenov
@@ -16,8 +17,7 @@ namespace aksenov
   {
     if (rhs.isEmpty())
     {
-      out << "<EMPTY>";
-      return;
+      throw std::invalid_argument("<EMPTY>");
     }
     out << name;
     for(const auto& pairElement : rhs)
