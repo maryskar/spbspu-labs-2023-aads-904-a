@@ -41,15 +41,15 @@ namespace timofeev
       return {nullptr, nullptr};
     }
     auto* new_top = new List<T>(top->data);
-    List<T>* previous = new_top;
+    List<T>* prev = new_top;
     for (List<T>* current = top->next; current; current = current->next)
     {
       auto* node = new List<T>(current->data);
-      previous->next = node;
-      previous = node;
+      prev->next = node;
+      prev = node;
     }
-    previous->next = nullptr;
-    return {new_top, previous};
+    prev->next = nullptr;
+    return {new_top, prev};
   }
 }
 #endif
