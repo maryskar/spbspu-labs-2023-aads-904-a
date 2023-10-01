@@ -43,7 +43,6 @@ int main(int argc, char *argv[])
       {
         try
         {
-          commands.at(firstPart);
           commands[firstPart](std::cin, dict);
         }
         catch (const std::invalid_argument &e)
