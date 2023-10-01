@@ -22,8 +22,7 @@ namespace timofeev
         }
         else
         {
-          out << "<EMPTY>" << '\n';
-          return;
+          throw std::logic_error("logic_error");
         }
       }
       else
