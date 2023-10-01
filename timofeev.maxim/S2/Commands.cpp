@@ -14,7 +14,7 @@ namespace timofeev
         if (!dict_t.empty())
         {
           out << dictName;
-          for (auto & i : dict_t)
+          for (auto & i: dict_t)
           {
             out << " " << i.first << " " << i.second;
           }
@@ -27,7 +27,7 @@ namespace timofeev
       }
       else
       {
-        return;
+        throw std::invalid_argument("EMPTY");
       }
     }
     catch (...)
