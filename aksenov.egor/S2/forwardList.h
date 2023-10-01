@@ -212,8 +212,8 @@ namespace aksenov
     return head_ == nullptr;
   }
 
-  template <typename T>
-  void ForwardList<T>::clear() noexcept
+  template < typename T >
+  void ForwardList< T >::clear() noexcept
   {
     free(head_);
     tail_ = nullptr;
@@ -319,7 +319,7 @@ namespace aksenov
   {
     if (head_ != nullptr)
     {
-      listT<T> *temp = head_;
+      listT< T > *temp = head_;
       head_ = head_->next;
       delete temp;
       if (head_ == nullptr)
@@ -343,7 +343,7 @@ namespace aksenov
     {
       tail_ = pos.node_;
     }
-    if(todel == head_)
+    if (todel == head_)
     {
       head_ = head_->next;
     }
