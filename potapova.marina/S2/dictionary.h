@@ -128,7 +128,7 @@ namespace potapova
 
       Value& operator[](const Key& key)
       {
-        return *insert(key, Value()).first;
+        return insert(key, Value()).first->value;
       }
 
       Iterator erase(const Key& key)
