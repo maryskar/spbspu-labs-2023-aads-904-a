@@ -8,8 +8,6 @@ namespace timofeev
     {
       std::string dictName;
       in >> dictName;
-      if (dict.contains(dictName))
-      {
         dictionary dict_t = dict.at(dictName);
         if (!dict_t.empty())
         {
@@ -24,11 +22,6 @@ namespace timofeev
         {
           throw std::out_of_range("EMPTY");
         }
-      }
-      else
-      {
-        return;
-      }
     }
     catch (...)
     {
