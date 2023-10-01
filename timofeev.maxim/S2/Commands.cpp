@@ -45,39 +45,17 @@ namespace timofeev
       {
         throw std::logic_error("Logic error");
       }
+      dictionary dict1 = dict.at(first);
+      dictionary dict2 = dict.at(second);
       dictionary complDict;
-      const auto &firstDict = dict[first];
-      const auto &secondDict = dict[second];
-      for (const auto &entry: firstDict)
+      for (const auto &tmp: dict1)
       {
-        bool firstFlag = false;
-        for (const auto &tmp: secondDict)
+        if (!dict2.contains(tmp.first))
         {
-          if (entry.first == tmp.first)
-          {
-            firstFlag = true;
-            break;
-          }
-        }
-        if (!firstFlag)
-        {
-          complDict.insert(entry);
+          complDict.insert(tmp);
         }
       }
-      if (first == newDict)
-      {
-        dict[first].clear();
-        dict[first].insert(complDict.begin(), complDict.end());
-      }
-      else if (second == newDict)
-      {
-        dict[second].clear();
-        dict[second].insert(complDict.begin(), complDict.end());
-      }
-      else
-      {
-        dict.push(newDict, complDict);
-      }
+      dict.push(newDict, complDict);
     }
     catch (...)
     {
