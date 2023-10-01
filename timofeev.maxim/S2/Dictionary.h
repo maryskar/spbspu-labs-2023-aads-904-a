@@ -39,6 +39,8 @@ namespace timofeev
     iter insert(constIter pos, const value_type &value );
     template< typename P >
     std::pair< iter, bool > insert(P &&value);
+    template< typename P >
+    iter insert(constIter pos, P &&value );
     template< typename Input >
     void insert(Input first, Input last);
 
@@ -305,6 +307,15 @@ namespace timofeev
     iter res = data_.insert_after(cur, value);
     size_++;
     return std::make_pair(res, true);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename P >
+  typename Dictionary< Key, Value, Compare >::iter Dictionary< Key, Value,
+    Compare >::insert(constIter pos, P &&value)
+  {
+    const value_type tmp(std::forward< P >(value));
+    return insert(pos, tmp);
   }
 
   template< typename Key, typename Value, typename Compare >

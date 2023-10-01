@@ -22,7 +22,7 @@ namespace timofeev
         }
         else
         {
-          throw std::logic_error("logic_error");
+          throw;
         }
       }
       else
