@@ -27,7 +27,7 @@ namespace timofeev
       }
       else
       {
-        return;
+        throw std::invalid_argument("Invalid");
       }
     }
     catch (...)
@@ -55,7 +55,18 @@ namespace timofeev
           complDict.insert(tmp);
         }
       }
-      dict.push(newDict, complDict);
+      if (newDict == first)
+      {
+
+      }
+      else if (newDict == second)
+      {
+
+      }
+      else
+      {
+        dict.push(newDict, complDict);
+      }
     }
     catch (...)
     {
@@ -84,7 +95,18 @@ namespace timofeev
             intersDict.insert(tmp);
           }
         }
-        dict.push(newDict, intersDict);
+        if (newDict == first)
+        {
+
+        }
+        else if (newDict == second)
+        {
+
+        }
+        else
+        {
+          dict.push(newDict, intersDict);
+        }
       }
     }
     catch (...)
@@ -111,6 +133,17 @@ namespace timofeev
         unDict.insert(entry);
       }
     }
-    dict.push(newDict, unDict);
+    if (newDict == first)
+    {
+
+    }
+    else if (newDict == second)
+    {
+
+    }
+    else
+    {
+      dict.push(newDict, unDict);
+    }
   }
 }
