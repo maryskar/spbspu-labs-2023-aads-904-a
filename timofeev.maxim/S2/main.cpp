@@ -4,10 +4,11 @@
 #include "Dictionary.h"
 #include "commandSet.h"
 #include "Errors.h"
-int main(int argc, char **argv)
-//int main()
+#include "inDict.h"
+//int main(int argc, char **argv)
+int main()
 {
-  if (argc != 2)
+ /* if (argc != 2)
   {
     std::cerr << "Error\n";
     return 1;
@@ -21,61 +22,24 @@ int main(int argc, char **argv)
       std::cerr << "File error" << "\n";
       return 1;
     }
-  }
-
-  using dictionary = timofeev::Dictionary< size_t, std::string >;
-  using dictOfDicts = timofeev::Dictionary< std::string, dictionary >;
+  }*/
+  using dictionary = timofeev::Dictionary< size_t, std::string, std::less<> >;
+  using dictOfDicts = timofeev::Dictionary< std::string, dictionary, std::less<> >;
   constexpr auto maxSize = std::numeric_limits< std::streamsize >::max();
   dictOfDicts dict;
-  /*while (std::cin)
-  {
-    std::string name = "";
-    std::cin >> name;
-    if (name == "stop")
-    {
-      break;
-    }
-    size_t key = 0;
-    std::string value;
-    dictionary dict_t;
-    while (std::cin >> key >> value)
-    {
-      dict_t.insert(std::make_pair(key, value));
-    }
-    dict[name] = dict_t;
-    if (std::cin.fail())
-    {
-      std::cin.clear();
-      std::cin.ignore(maxSize, '\n');
-    }
-  }*/
-  while (!inFile.eof())
-  {
-    std::string name = "";
-    inFile >> name;
-    size_t key;
-    std::string value;
-    dictionary dict_t;
-    while (inFile >> key >> value)
-    {
-      dict_t.insert(std::make_pair(key, value));
-    }
-    auto tmp = std::make_pair(name, dict_t);
-    dict.insert(tmp);
-    if (inFile.fail())
-    {
-      inFile.clear();
-      inFile.ignore(maxSize, '\n');
-    }
-  }
+  inDict(std::cin, dict);
   timofeev::Dictionary< std::string, void (*)(std::istream&, dictOfDicts&) > commands;
   commands = timofeev::cmdSet(commands);
-  std::string firstPart;
+  std::string firstPart = "";
   while (!std::cin.eof())
   {
     try
     {
       std::cin >> firstPart;
+      if (firstPart == "out")
+      {
+        return 213124;
+      }
       if (firstPart == "print")
       {
         timofeev::Print(std::cin, dict, std::cout);
@@ -93,7 +57,7 @@ int main(int argc, char **argv)
     }
     catch (...)
     {
-      errors::printError(std::cout);
+      errors::printEmpty(std::cout);
       std::cin.ignore(maxSize, '\n');
       break;
     }
