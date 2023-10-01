@@ -57,11 +57,11 @@ namespace timofeev
       }
       if (newDict == first)
       {
-
+        dict[first] = complDict;
       }
       else if (newDict == second)
       {
-
+        dict[second] = complDict;
       }
       else
       {
@@ -97,11 +97,11 @@ namespace timofeev
         }
         if (newDict == first)
         {
-
+          dict[first] = intersDict;
         }
         else if (newDict == second)
         {
-
+          dict[second] = intersDict;
         }
         else
         {
@@ -135,11 +135,11 @@ namespace timofeev
     }
     if (newDict == first)
     {
-
+      dict[first] = unDict;
     }
     else if (newDict == second)
     {
-
+      dict[second] = unDict;
     }
     else
     {
