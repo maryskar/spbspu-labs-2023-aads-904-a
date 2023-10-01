@@ -39,16 +39,13 @@ int main(int argc, char *argv[])
       {
         timofeev::Print(std::cin, dict, std::cout);
       }
+      else if (dict.contains(firstPart))
+      {
+        commands[firstPart](std::cin, dict);
+      }
       else
       {
-        try
-        {
-          commands[firstPart](std::cin, dict);
-        }
-        catch (const std::invalid_argument &e)
-        {
-          throw;
-        }
+        throw std::invalid_argument("inv");
       }
     }
     catch (const std::invalid_argument &e)
@@ -59,11 +56,6 @@ int main(int argc, char *argv[])
     catch (const std::out_of_range &e)
     {
       errors::printEmpty(std::cout);
-      std::cin.ignore(maxSize, '\n');
-    }
-    catch (...)
-    {
-      errors::printInvalid(std::cout);
       std::cin.ignore(maxSize, '\n');
     }
   }
