@@ -120,7 +120,7 @@ namespace timofeev
     }
     return end();
   }
-  
+
   template< typename Key, typename Value, typename Compare >
   Value &Dictionary< Key, Value, Compare >::operator[](const Key &key)
   {

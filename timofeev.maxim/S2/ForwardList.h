@@ -41,7 +41,7 @@ namespace timofeev
 
     T & front();
     template< typename Input >
-    iter insert_after(Input pos, const T & val); 
+    iter insert_after(Input pos, const T & val);
     iter insert_after(constIter pos, T &&val);
     iter insert_after(constIter pos, size_t count, const T & val);
     iter insert_after(constIter pos, iter first, iter last);
