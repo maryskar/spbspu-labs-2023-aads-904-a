@@ -4,21 +4,35 @@ namespace timofeev
 {
   void Print(std::istream& in, dictOfDicts& dict, std::ostream& out)
   {
-    std::string dictName;
-    in >> dictName;
-    dictionary dict_t = dict.at(dictName);
-    if (!dict_t.empty())
+    try
     {
-      out << dictName;
-      for (auto &i: dict_t)
+      std::string dictName;
+      in >> dictName;
+      if (dict.contains(dictName))
       {
-        out << " " << i.first << " " << i.second;
+        dictionary dict_t = dict.at(dictName);
+        if (!dict_t.empty())
+        {
+          out << dictName;
+          for (auto & i : dict_t)
+          {
+            out << " " << i.first << " " << i.second;
+          }
+          out << "\n";
+        }
+        else
+        {
+          throw std::out_of_range("EMPTY");
+        }
       }
-      out << "\n";
+      else
+      {
+        std::cout << "<INVALID COMMAND>" << "\n";
+      }
     }
-    else
+    catch (...)
     {
-      throw std::out_of_range("EMPTY");
+      throw;
     }
   }
   void Complement(std::istream& in, dictOfDicts& dict)

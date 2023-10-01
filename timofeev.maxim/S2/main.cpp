@@ -39,13 +39,13 @@ int main(int argc, char *argv[])
       {
         timofeev::Print(std::cin, dict, std::cout);
       }
-      else if (dict.contains(firstPart))
+      else if (commands.contains(firstPart))
       {
         commands[firstPart](std::cin, dict);
       }
       else
       {
-        throw std::invalid_argument("inv");
+        throw std::invalid_argument("Invalid");
       }
     }
     catch (const std::invalid_argument &e)
