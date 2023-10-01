@@ -84,9 +84,9 @@ namespace potapova
 
       Iterator find(const Key& key)
       {
-        for (Iterator cur_node_ptr = data_.cbegin(); cur_node_ptr != data_.cend(); ++cur_node_ptr)
+        for (Iterator cur_node_ptr = data_.begin(); cur_node_ptr != data_.end(); ++cur_node_ptr)
         {
-          if (cur_node_ptr.key == key)
+          if (cur_node_ptr->key == key)
           {
             return cur_node_ptr;
           }
@@ -113,7 +113,7 @@ namespace potapova
         {
           throw std::out_of_range("Key was not found in dictionary");
         }
-        return *result_ptr;
+        return result_ptr->value;
       }
 
       const Value& at(const Key& key) const
@@ -123,7 +123,7 @@ namespace potapova
         {
           throw std::out_of_range("Key was not found in dictionary");
         }
-        return *result_ptr;
+        return result_ptr->value;
       }
 
       Value& operator[](const Key& key)
