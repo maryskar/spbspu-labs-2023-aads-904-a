@@ -403,7 +403,7 @@ namespace timofeev
     }
     return *this;
   }
-  
+
   template< typename Key, typename Value, typename Compare >
   Dictionary< Key, Value, Compare >::Dictionary():
     data_(),

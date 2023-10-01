@@ -59,7 +59,6 @@ namespace timofeev
     template<typename ...Args>
     iter emplace_after(constIter pos, Args &&...args);
     iter emplace_front(constIter pos);
-    
   private:
     List< T > *fakenode_;
     List< T > *tail_;
@@ -154,7 +153,7 @@ namespace timofeev
     }
     fakenode_->next = previous;
   }
-  
+
   template< typename T >
   ForwardList< T >::ForwardList(ForwardList< T > &&val) noexcept:
     ForwardList()
