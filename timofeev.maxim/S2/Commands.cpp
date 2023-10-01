@@ -4,8 +4,6 @@ namespace timofeev
 {
   void Print(std::istream& in, dictOfDicts& dict, std::ostream& out)
   {
-    try
-    {
       std::string dictName;
       in >> dictName;
         dictionary dict_t = dict.at(dictName);
@@ -22,11 +20,6 @@ namespace timofeev
         {
           throw std::out_of_range("EMPTY");
         }
-    }
-    catch (...)
-    {
-      throw;
-    }
   }
   void Complement(std::istream& in, dictOfDicts& dict)
   {
