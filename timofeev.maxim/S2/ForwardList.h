@@ -247,7 +247,7 @@ namespace timofeev
   template< typename T >
   bool ForwardList< T >::empty() const noexcept
   {
-    return fakenode_->next == tail_;
+    return fakenode_->next == nullptr;
   }
 
   template <typename T>
