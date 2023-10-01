@@ -131,7 +131,7 @@ namespace potapova
             return node_ptr_->data;
           }
 
-          T* operator->()
+          T* operator->() const
           {
             assert(node_ptr_ != nullptr);
             return std::addressof(node_ptr_->data);
