@@ -31,15 +31,11 @@ int main(int argc, char **argv)
   timofeev::Dictionary< std::string, void (*)(std::istream&, dictOfDicts&) > commands;
   commands = timofeev::cmdSet(commands);
   std::string firstPart = "";
-  while (!std::cin.eof())
+  while (std::cin.good())
   {
     try
     {
       std::cin >> firstPart;
-      if (firstPart == "out")
-      {
-        return 213124;
-      }
       if (firstPart == "print")
       {
         timofeev::Print(std::cin, dict, std::cout);
