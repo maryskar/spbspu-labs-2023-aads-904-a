@@ -7,6 +7,6 @@ namespace timofeev
 {
   using dictionary = timofeev::Dictionary< size_t, std::string, std::less<> >;
   using dictOfDicts = timofeev::Dictionary< std::string, dictionary, std::less<> >;
-  void inDict(std::istream& in, dictOfDicts &dict);
+  dictOfDicts inDict(std::istream& in, dictOfDicts &dict);
 }
 #endif

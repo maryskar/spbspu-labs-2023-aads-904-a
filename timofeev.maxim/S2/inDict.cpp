@@ -1,29 +1,29 @@
 #include "inDict.h"
-void timofeev::inDict(std::istream& in, timofeev::dictOfDicts &dict)
+timofeev::dictOfDicts timofeev::inDict(std::istream& in, timofeev::dictOfDicts &dict)
 {
-  while (!in.eof())
+  while (in)
   {
     std::string name = "";
     in >> name;
-    if (in.fail())
+    if (!in || name == "stop")
     {
-      in.clear();
       break;
     }
-    size_t key = 0;
-    std::string value = "";
-    dictionary dict_t;
-    while (!in.eof())
+    dictionary data;
+    std::string val = "";
+    int key = 0;
+    while (in)
     {
-      in >> key >> value;
-      if (in.fail())
+      in >> key >> val;
+      if (!in)
       {
-        in.clear();
         break;
       }
-      dict_t.push(key, value);
+      data.push(key, val);
     }
     in.clear();
-    dict.push(name, dict_t);
+    dict.push(name, data);
   }
+  return dict;
 }
+

@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
   using dictOfDicts = timofeev::Dictionary< std::string, dictionary, std::less<> >;
   constexpr auto maxSize = std::numeric_limits< std::streamsize >::max();
   dictOfDicts dict;
-  inDict(inFile, dict);
+  dict = timofeev::inDict(inFile, dict);
   timofeev::Dictionary< std::string, void (*)(std::istream&, dictOfDicts&) > commands;
   commands = timofeev::cmdSet(commands);
   std::string firstPart = "";
