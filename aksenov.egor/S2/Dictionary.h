@@ -176,7 +176,8 @@ namespace aksenov
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::constIterator Dictionary< Key, Value, Compare >::find(const Key &key) const
+  typename Dictionary< Key, Value, Compare >::constIterator
+    Dictionary< Key, Value, Compare >::find(const Key &key) const
   {
     for(auto it = data_.cbegin(); it != data_.cend(); ++it)
     {

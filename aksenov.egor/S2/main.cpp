@@ -22,6 +22,8 @@ int main(int argc, char *argv[])
   using dictOfDicts = aksenov::Dictionary< std::string, dict, std::less< > >;
   dictOfDicts bigData;
   bigData = aksenov::getDictFromInput< dictOfDicts, dict >(inputFile);
+  aksenov::commandMap commands;
+  aksenov::createCommandDict(commands);
   while (std::cin.good())
   {
     try
@@ -43,7 +45,7 @@ int main(int argc, char *argv[])
         aksenov::print(name,bigData[name], std::cout);
         std::cout << "\n";
       }
-      else if (command == "complement")
+      else
       {
         std::string newName;
         std::string dictName1;
@@ -51,42 +53,11 @@ int main(int argc, char *argv[])
         std::cin >> newName >> dictName1 >> dictName2;
         dict dict1 = bigData.at(dictName1);
         dict dict2 = bigData.at(dictName2);
-        dict resDict = aksenov::doComplement(dict1, dict2);
+        dict resDict = commands[command](dict1, dict2);
         if (!bigData.insert(std::make_pair(newName, resDict)).second) {
           auto it = bigData.find(newName);
           bigData.at(it->first) = resDict;
         }
-
-      }
-      else if (command == "intersect")
-      {
-        std::string newName;
-        std::string dictName1;
-        std::string dictName2;
-        std::cin >> newName >> dictName1 >> dictName2;
-        dict dict1 = bigData.at(dictName1);
-        dict dict2 = bigData.at(dictName2);
-        dict resDict = aksenov::intersect(dict1, dict2);
-        if (!bigData.insert(std::make_pair(newName, resDict)).second) {
-          auto it = bigData.find(newName);
-          bigData.at(it->first) = resDict;
-        }
-
-      }
-      else if (command == "union")
-      {
-        std::string newName;
-        std::string dictName1;
-        std::string dictName2;
-        std::cin >> newName >> dictName1 >> dictName2;
-        dict dict1 = bigData.at(dictName1);
-        dict dict2 = bigData.at(dictName2);
-        dict resDict = aksenov::intersect(dict1, dict2);
-        if (!bigData.insert(std::make_pair(newName, resDict)).second) {
-          auto it = bigData.find(newName);
-          bigData.at(it->first) = resDict;
-        }
-
       }
     }
     catch (...)

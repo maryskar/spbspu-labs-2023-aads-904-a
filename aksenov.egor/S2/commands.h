@@ -8,6 +8,9 @@ namespace aksenov
 {
   using dict = aksenov::Dictionary< int, std::string, std::less< > >;
   using dictOfDicts = aksenov::Dictionary< std::string, dict, std::less< > >;
+  using commandMap = aksenov::Dictionary< std::string, dict(*)(const dict &, const dict &) >;
+  void createCommandDict(commandMap &commands);
+
   template< typename dictOfDicts >
   void print(const std::string &name, const dictOfDicts &rhs, std::ostream &out)
   {
@@ -55,7 +58,7 @@ namespace aksenov
   dictOfDicts unite(const dictOfDicts &first, const dictOfDicts &second)
   {
     dictOfDicts res(first);
-    for (auto it : second)
+    for (auto it = second.begin(); it != second.end(); ++it)
     {
       res.insert(*it);
     }
