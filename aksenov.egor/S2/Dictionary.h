@@ -364,13 +364,24 @@ namespace aksenov
   typename Dictionary< Key, Value, Compare >::iterator
     Dictionary< Key, Value, Compare >::insert(constIterator it, const valueType &value)
   {
-    Compare comp = keyComp();
+    /*Compare comp = keyComp();
     it++;
     if (comp(it->first, value.first) && comp(value.first, it->first))
     {
       return data_.insert_after(it, value);
     }
-    return (insert(value)).first;
+    return (insert(value)).first;*/
+    auto existing = find(value.first);
+    if (existing != end())
+    {
+      return existing;
+    }
+    else
+    {
+      auto inserted = data_.insert(it, value);
+      size_++;
+      return iterator(inserted);
+    }
 
   }
 
