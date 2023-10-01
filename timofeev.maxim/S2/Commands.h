@@ -3,6 +3,7 @@
 #include "commandSet.h"
 #include "Dictionary.h"
 #include "iostream"
+
 namespace timofeev
 {
   using dictionary = timofeev::Dictionary< size_t, std::string, std::less<> >;
