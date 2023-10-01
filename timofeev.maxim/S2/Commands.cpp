@@ -27,7 +27,7 @@ namespace timofeev
       }
       else
       {
-        throw std::invalid_argument("Invalid");
+        return;
       }
     }
     catch (...)
