@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
   timofeev::Dictionary< std::string, void (*)(std::istream&, dictOfDicts&) > commands;
   commands = timofeev::cmdSet(commands);
   std::string firstPart = "";
-  while (std::cin)
+  while (std::cin.good())
   {
     try
     {
