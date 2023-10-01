@@ -15,10 +15,6 @@ namespace aksenov
   template< typename dictOfDicts >
   void print(const std::string &name, const dictOfDicts &rhs, std::ostream &out)
   {
-    if (rhs.contains(name))
-    {
-      throw std::out_of_range("no key");
-    }
     if (rhs.isEmpty())
     {
       throw std::invalid_argument("empty");

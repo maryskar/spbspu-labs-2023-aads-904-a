@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
       {
         std ::string name;
         std::cin >> name;
-        aksenov::print(name,bigData[name], std::cout);
+        aksenov::print(name,bigData.at(name), std::cout);
         std::cout << "\n";
       }
       else
