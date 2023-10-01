@@ -335,7 +335,8 @@ namespace aksenov
     bool
   > Dictionary<Key, Value, Compare>::insert(P &&value)
   {
-    return insert(std::forward< P >(value));
+    const valueType temp(std::forward< P >(value));
+    return insert(temp);
     /*Compare comp = keyComp();
     iterator cur = data_.beforeBegin();
     iterator sup = begin();
@@ -389,7 +390,8 @@ namespace aksenov
       size_++;
       return typename Dictionary<Key, Value, Compare>::iterator(inserted);
     }*/
-    return insert(it, std::forward< P >(value));
+    const valueType tmp(std::forward< P >(value));
+    return insert(it, tmp);
   }
 
   template< typename Key, typename Value, typename Compare >
