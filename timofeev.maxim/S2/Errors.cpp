@@ -5,8 +5,8 @@ namespace errors
   {
     out << "<INVALID COMMAND>" << '\n';
   }
-  void printError(std::ostream& out)
+  void printEmpty(std::ostream& out)
   {
-    out << "<ERROR>" << '\n';
+    out << "<EMPTY>" << '\n';
   }
 }

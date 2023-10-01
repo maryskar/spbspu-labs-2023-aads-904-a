@@ -4,6 +4,6 @@
 namespace errors
 {
   void printInvalid(std::ostream& out);
-  void printError(std::ostream& out);
+  void printEmpty(std::ostream& out);
 }
 #endif
