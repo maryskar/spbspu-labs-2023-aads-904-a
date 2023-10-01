@@ -1,10 +1,14 @@
 #ifndef LIST_H
 #define LIST_H
+#include <utility>
 namespace timofeev
 {
   template< typename T >
   struct List
   {
+    T data;
+    List< T >* next;
+
     List():
       data(),
       next(nullptr)
@@ -13,12 +17,13 @@ namespace timofeev
       data(other),
       next(nullptr)
     {}
-
-    T data;
-    List< T >* next;
+    List(const T &rhs, List< T > *val):
+      data(rhs),
+      next(val)
+    {}
   };
   template< typename T >
-  void clear(List< T >* top)
+  void clearlist(List< T >* top)
   {
     while (top)
     {
@@ -26,6 +31,25 @@ namespace timofeev
       top = top->next;
       delete tmp;
     }
+  }
+
+  template< typename T >
+  std::pair< List< T > *, List< T > * > copy(List< T > *top)
+  {
+    if (!top)
+    {
+      return {nullptr, nullptr};
+    }
+    auto* new_top = new List<T>(top->data);
+    List<T>* previous = new_top;
+    for (List<T>* current = top->next; current; current = current->next)
+    {
+      auto* node = new List<T>(current->data);
+      previous->next = node;
+      previous = node;
+    }
+    previous->next = nullptr;
+    return {new_top, previous};
   }
 }
 #endif
