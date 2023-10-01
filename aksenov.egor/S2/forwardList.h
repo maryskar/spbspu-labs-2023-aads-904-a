@@ -44,8 +44,8 @@ namespace aksenov
 
     reference front();
     constReference front() const;
-
-    iterator insertAfter(constIterator pos, constReference val);
+    template< typename FwdIt >
+    iterator insertAfter(FwdIt pos, constReference val);
     iterator insertAfter(constIterator pos, valueType &&val);
     iterator insertAfter(constIterator pos, sizeType count, constReference val);
     template< typename InpIter >
@@ -76,8 +76,6 @@ namespace aksenov
   template< typename T >
   ForwardList< T >::ForwardList():
     fake_(initFake()),
-    //fake_(new listT< T >()),
-    //fake_(listT< T >()),
     tail_(nullptr),
     head_(nullptr)
   {
@@ -103,7 +101,6 @@ namespace aksenov
     ForwardList()
   {
     swap(val);
-    //val.fake_ = nullptr;
     val.tail_ = nullptr;
     val.head_ = nullptr;
   }
@@ -242,7 +239,8 @@ namespace aksenov
   }
 
   template< typename T >
-  typename ForwardList< T >::iterator ForwardList< T >::insertAfter(constIterator pos, constReference val)
+  template< typename FwdIt>
+  typename ForwardList< T >::iterator ForwardList< T >::insertAfter(FwdIt pos, constReference val)
   {
     if (!pos.node_)
     {
@@ -348,13 +346,6 @@ namespace aksenov
     }
     delete todel;
     return iterator(pos.node_->next);
-
-    /*listT< T > *next = pos.node_->next;
-    pos.node_->next = next->next;
-    if (next == tail_) {
-      tail_ = pos.node_;
-    }
-    delete next;*/
   }
 
   template < typename T >

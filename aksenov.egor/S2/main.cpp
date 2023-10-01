@@ -41,6 +41,7 @@ int main(int argc, char *argv[])
         std ::string name;
         std::cin >> name;
         aksenov::print(name,bigData[name], std::cout);
+        std::cout << "\n";
       }
       else if (command == "complement")
       {
@@ -90,7 +91,7 @@ int main(int argc, char *argv[])
     }
     catch (...)
     {
-      std::cout << "something went wrong" << "\n";
+      std::cout << "<INVALID COMMAND>" << "\n";
     }
   }
   return 0;

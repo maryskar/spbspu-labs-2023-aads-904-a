@@ -55,6 +55,5 @@ namespace aksenov
     }
     return {newHead, cur};
   }
-
 }
 #endif

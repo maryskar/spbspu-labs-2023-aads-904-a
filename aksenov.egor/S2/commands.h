@@ -13,7 +13,7 @@ namespace aksenov
   {
     if (rhs.isEmpty())
     {
-      out << "dict is empty" << "\n";
+      out << "<EMPTY>" << "\n";
       return;
     }
     out << name;
@@ -61,12 +61,5 @@ namespace aksenov
     }
     return res;
   }
-
-  //void intersect(const std::string &newdataset, const std::string &dataset1, const std::string &dataset2);
-
-  //void unite(const std::string &newdataset, const std::string &dataset1, const std::string &dataset2);
-
-  //using commandMap = Dictionary< std::string, void (*)(const std::string &, const std::string &, const std::string &) >;
-  //void createCommandMap(commandMap &commands);
 }
 #endif
