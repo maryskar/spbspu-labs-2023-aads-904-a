@@ -5,10 +5,10 @@ void timofeev::inDict(std::istream& in, timofeev::dictOfDicts &dict)
   {
     std::string name = "";
     in >> name;
-   /* if (name == "stop")
+    if (!in)
     {
       break;
-    }*/
+    }
     size_t key;
     std::string value;
     dictionary dict_t;

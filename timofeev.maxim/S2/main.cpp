@@ -5,7 +5,7 @@
 #include "commandSet.h"
 #include "Errors.h"
 #include "inDict.h"
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 //int main()
 {
   if (argc != 2)
@@ -16,7 +16,7 @@ int main(int argc, char **argv)
   std::ifstream inFile;
   if (argc == 2)
   {
-    inFile.open(argv[1]);
+    inFile.open(argv[0]);
     if (!inFile.is_open())
     {
       std::cerr << "File error" << "\n";
