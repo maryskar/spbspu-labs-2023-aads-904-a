@@ -5,10 +5,10 @@
 #include "commandSet.h"
 #include "Errors.h"
 #include "inDict.h"
-//int main(int argc, char **argv)
-int main()
+int main(int argc, char **argv)
+//int main()
 {
- /* if (argc != 2)
+  if (argc != 2)
   {
     std::cerr << "Error\n";
     return 1;
@@ -22,12 +22,12 @@ int main()
       std::cerr << "File error" << "\n";
       return 1;
     }
-  }*/
+  }
   using dictionary = timofeev::Dictionary< size_t, std::string, std::less<> >;
   using dictOfDicts = timofeev::Dictionary< std::string, dictionary, std::less<> >;
   constexpr auto maxSize = std::numeric_limits< std::streamsize >::max();
   dictOfDicts dict;
-  inDict(std::cin, dict);
+  inDict(inFile, dict);
   timofeev::Dictionary< std::string, void (*)(std::istream&, dictOfDicts&) > commands;
   commands = timofeev::cmdSet(commands);
   std::string firstPart = "";
