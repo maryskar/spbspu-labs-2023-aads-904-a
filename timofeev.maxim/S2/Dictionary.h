@@ -287,26 +287,24 @@ namespace timofeev
   std::pair< typename Dictionary< Key, Value, Compare >::iter,
     bool > Dictionary< Key, Value, Compare >::insert(const value_type &value)
   {
-    for(auto it = data_.begin(); it != data_.end(); ++it)
+    iter cur = data_.before_begin();
+    for (iter tmp = begin(); tmp != end(); tmp++)
     {
-      if(compare_(it->first, value.first))
+      if (!compare_(value.first, tmp->first) && !compare_(tmp->first, value.first))
       {
-        continue;
+        return std::make_pair(tmp, false);
       }
-      else if(!compare_(it->first, value.first) && !compare_(value.first, it->first))
+      else if (compare_(value.first, tmp->first))
       {
-        return {it, false};
+        iter inserted = data_.insert_after(cur, value);
+        size_++;
+        return std::make_pair(inserted, true);
       }
-      else
-      {
-        auto tmp = data_.insert_after(it, value);
-        ++size_;
-        return {tmp, true};
-      }
+      cur++;
     }
-    data_.insert_after(end(), value);
-    ++size_;
-    return {data_.end(), true};
+    iter res = data_.insert_after(cur, value);
+    size_++;
+    return std::make_pair(res, true);
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -315,13 +313,13 @@ namespace timofeev
   Dictionary<Key, Value, Compare>::insert(P &&value)
   {
     iter cur = data_.before_begin();
-    for (iter sup = begin(); sup != end(); sup++)
+    for (iter tmp = begin(); tmp != end(); tmp++)
     {
-      if (!compare_(value.first, sup->first) && !compare_(sup->first, value.first))
+      if (!compare_(value.first, tmp->first) && !compare_(tmp->first, value.first))
       {
-        return std::make_pair(sup, false);
+        return std::make_pair(tmp, false);
       }
-      else if (compare_(value.first, sup->first))
+      else if (compare_(value.first, tmp->first))
       {
         iter inserted = data_.insert_after(cur, value);
         size_++;
@@ -329,9 +327,9 @@ namespace timofeev
       }
       cur++;
     }
-    iter inserted = data_.insert_after(cur, value);
+    iter res = data_.insert_after(cur, value);
     size_++;
-    return std::make_pair(inserted, true);
+    return std::make_pair(res, true);
   }
 
   template< typename Key, typename Value, typename Compare >
