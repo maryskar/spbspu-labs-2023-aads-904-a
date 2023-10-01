@@ -1,7 +1,7 @@
 #ifndef STACK_H
 #define STACK_H
 #include <stdexcept>
-#include <List.h>
+#include "../common/List.h"
 namespace timofeev
 {
   template < typename T >
@@ -31,7 +31,7 @@ bool timofeev::Stack< T >::isEmpty() const
 template < typename T >
 timofeev::Stack< T >::~Stack()
 {
-  clear(top_);
+  clearlist(top_);
 }
 template < typename T >
 void timofeev::Stack< T >::pop()

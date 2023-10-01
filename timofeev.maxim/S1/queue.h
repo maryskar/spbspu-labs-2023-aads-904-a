@@ -1,7 +1,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 #include <stdexcept>
-#include <List.h>
+#include "../common/List.h"
 namespace timofeev
 {
   template < typename T >
@@ -30,7 +30,7 @@ timofeev::Queue< T >::Queue():
 template < typename T >
 timofeev::Queue< T >::~Queue()
 {
-  clear(head_);
+  clearlist(head_);
   head_ = tail_ = nullptr;
 }
 template < typename T >
@@ -71,7 +71,7 @@ void timofeev::Queue< T >::pop()
 template < typename T >
 void timofeev::Queue< T >::push(const T& rhs)
 {
-  List< T >* newNode = new List< T >(rhs);
+  List< T >* newNode = new List< T >{rhs, nullptr};
   if (isEmpty())
   {
     head_ = tail_ = newNode;
