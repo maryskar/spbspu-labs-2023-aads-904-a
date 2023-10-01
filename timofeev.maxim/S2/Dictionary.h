@@ -266,7 +266,7 @@ namespace timofeev
   template< typename Key, typename Value, typename Compare >
   bool Dictionary< Key, Value, Compare >::contains(const Key &key) const
   {
-    return count(key) > 0;
+    return count(key);
   }
 
   template< typename Key, typename Value, typename Compare >
