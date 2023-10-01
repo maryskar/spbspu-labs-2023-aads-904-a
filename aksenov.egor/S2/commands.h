@@ -32,7 +32,7 @@ namespace aksenov
     dictOfDicts res;
     for (const auto& pair : first)
     {
-      if (second.count(pair.first) == 0)
+      if (!second.contains(pair.first))
       {
         res.insert(pair);
       }
