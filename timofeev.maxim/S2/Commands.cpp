@@ -63,6 +63,10 @@ namespace timofeev
       {
         dict[second] = complDict;
       }
+      else if (dict.contains(newDict))
+      {
+        dict[newDict] = complDict;
+      }
       else
       {
         dict.push(newDict, complDict);
@@ -103,6 +107,10 @@ namespace timofeev
         {
           dict[second] = intersDict;
         }
+        else if (dict.contains(newDict))
+        {
+          dict[newDict] = intersDict;
+        }
         else
         {
           dict.push(newDict, intersDict);
@@ -140,6 +148,10 @@ namespace timofeev
     else if (newDict == second)
     {
       dict[second] = unDict;
+    }
+    else if (dict.contains(newDict))
+    {
+      dict[newDict] = unDict;
     }
     else
     {
