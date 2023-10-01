@@ -22,7 +22,7 @@ namespace timofeev
         }
         else
         {
-          throw;
+          throw std::out_of_range("EMPTY");
         }
       }
       else
@@ -43,7 +43,7 @@ namespace timofeev
       in >> newDict >> first >> second;
       if (dict.count(first) == 0 || dict.count(second) == 0)
       {
-        throw std::logic_error("Logic error");
+        throw std::invalid_argument("Logic error");
       }
       dictionary dict1 = dict.at(first);
       dictionary dict2 = dict.at(second);
@@ -70,7 +70,7 @@ namespace timofeev
       in >> newDict >> first >> second;
       if (dict.count(first) == 0 || dict.count(second) == 0)
       {
-        throw std::logic_error("Logic error");
+        throw std::invalid_argument("Logic error");
       }
       else
       {
@@ -99,7 +99,7 @@ namespace timofeev
     in >> newDict >> first >> second;
     if (dict.count(first) == 0 || dict.count(second) == 0)
     {
-      throw std::logic_error("Logic error");
+      throw std::invalid_argument("Logic error");
     }
     const auto& dict1 = dict.at(first);
     const auto& dict2 = dict.at(second);

@@ -219,7 +219,7 @@ namespace timofeev
     auto it = find(key);
     if (it == data_.end())
     {
-      throw std::out_of_range("out_of_range");
+      throw std::invalid_argument("invalid_argument");
     }
     return it->second;
   }

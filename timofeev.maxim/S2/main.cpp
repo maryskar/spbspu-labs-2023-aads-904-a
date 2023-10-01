@@ -45,16 +45,16 @@ int main(int argc, char *argv[])
       }
       else
       {
-        throw std::logic_error("Invalid");
+        throw std::invalid_argument("Invalid");
       }
     }
-    catch (const std::logic_error &e)
+    catch (const std::invalid_argument &e)
     {
       errors::printInvalid(std::cout);
       std::cin.ignore(maxSize, '\n');
       break;
     }
-    catch (...)
+    catch (const std::out_of_range &e)
     {
       errors::printEmpty(std::cout);
       std::cin.ignore(maxSize, '\n');
