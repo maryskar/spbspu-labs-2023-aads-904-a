@@ -17,7 +17,7 @@ namespace aksenov
   {
     if (rhs.isEmpty())
     {
-      throw std::invalid_argument("<EMPTY>");
+      throw std::invalid_argument("empty");
     }
     out << name;
     for(const auto& pairElement : rhs)
