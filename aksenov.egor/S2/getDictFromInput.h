@@ -12,7 +12,7 @@ namespace aksenov
     {
       std::string name = "";
       in >> name;
-      if (!in || name == "stop")
+      if (!in)
       {
         break;
       }

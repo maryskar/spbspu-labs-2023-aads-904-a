@@ -1,4 +1,5 @@
 #include "commands.h"
+
 void aksenov::createCommandDict(aksenov::commandMap &commands)
 {
   commands["intersect"] = intersect< dict >;

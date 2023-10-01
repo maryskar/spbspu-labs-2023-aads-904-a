@@ -1,9 +1,9 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 #include "Dictionary.h"
 #include "commands.h"
 #include "getDictFromInput.h"
-#include <string>
 
 int main(int argc, char *argv[])
 {

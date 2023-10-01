@@ -1,7 +1,7 @@
 #ifndef STACK_H
 #define STACK_H
 #include <stdexcept>
-#include "list.h"
+#include <list.h>
 namespace aksenov
 {
   template< typename T >
@@ -34,7 +34,7 @@ namespace aksenov
   template< typename T >
   Stack< T >::~Stack()
   {
-    deleteList(top_);
+    free(top_);
     size_ = 0;
   }
 

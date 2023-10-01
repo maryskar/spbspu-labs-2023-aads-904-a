@@ -1,7 +1,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 #include <stdexcept>
-#include "list.h"
+#include <list.h>
 namespace aksenov
 {
   template< typename T >
@@ -82,7 +82,7 @@ namespace aksenov
   template< typename T >
   Queue< T >::~Queue()
   {
-    deleteList(front_);
+    free(front_);
     front_ = tail_ = nullptr;
   }
 

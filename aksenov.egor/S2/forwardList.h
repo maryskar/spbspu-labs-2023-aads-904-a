@@ -3,7 +3,8 @@
 #include <stdexcept>
 #include "constForwardIterator.h"
 #include "ForwardIterator.h"
-#include "List.h"
+#include <List.h>
+
 namespace aksenov
 {
   template< typename T >
@@ -268,7 +269,6 @@ namespace aksenov
         tail_ = newNode;
       }
     }
-
     return iterator(newNode);
   }
 
@@ -302,7 +302,6 @@ namespace aksenov
     return iterator(pos.node_);
   }
 
-
   template< typename T >
   void ForwardList< T >::pushFront(constReference val)
   {
@@ -318,12 +317,13 @@ namespace aksenov
   template< typename T >
   void ForwardList< T >::popFront()
   {
-    if (head_ != nullptr) {
+    if (head_ != nullptr)
+    {
       listT<T> *temp = head_;
       head_ = head_->next;
       delete temp;
-
-      if (head_ == nullptr) {
+      if (head_ == nullptr)
+      {
         tail_ = nullptr;
       }
     }
@@ -352,7 +352,8 @@ namespace aksenov
   }
 
   template < typename T >
-  typename ForwardList< T >::iterator aksenov::ForwardList< T >::eraseAfter(constIterator first, constIterator last)
+  typename ForwardList< T >::iterator
+    ForwardList< T >::eraseAfter(constIterator first, constIterator last)
   {
     if (first == last || first.node_ == nullptr)
     {

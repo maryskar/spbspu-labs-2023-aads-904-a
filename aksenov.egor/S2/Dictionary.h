@@ -3,6 +3,7 @@
 #include <functional>
 #include <utility>
 #include "forwardList.h"
+
 namespace aksenov
 {
   template< typename Key, typename T, typename Compare = std::less< Key > >
@@ -57,10 +58,7 @@ namespace aksenov
     sizeType count(const keyType &key) const;
     bool contains(const Key &key) const;
     std::pair< iterator, bool > insert(const valueType &value);
-    std::pair< iterator, bool > insert(const valueType &&value)
-    {
-      return insert(std::make_pair(std::move(value)));
-    }
+    std::pair< iterator, bool > insert(const valueType &&value);
     void insert(const Key &key, const T &value);
     template< typename P >
     std::pair< iterator, bool > insert(P &&value);
@@ -78,25 +76,23 @@ namespace aksenov
 
   template< typename Key, typename T, typename Compare >
   Dictionary< Key, T, Compare >::Dictionary():
-          data_(),
-          comp_(Compare()),
-          size_(0)
-  {
-  }
+    data_(),
+    comp_(Compare()),
+    size_(0)
+  {}
 
   template< typename Key, typename T, typename Compare >
   Dictionary< Key, T, Compare >::Dictionary(const Dictionary< Key, T, Compare > &other):
-          data_(other.data_),
-          comp_(other.comp_),
-          size_(other.size())
-  {
-  }
+    data_(other.data_),
+    comp_(other.comp_),
+    size_(other.size())
+  {}
 
   template< typename Key, typename T, typename Compare >
   Dictionary< Key, T, Compare >::Dictionary(Dictionary< Key, T, Compare > &&other):
-          data_(std::move(other.data_)),
-          comp_(std::move(other.comp_)),
-          size_(other.size_)
+    data_(std::move(other.data_)),
+    comp_(std::move(other.comp_)),
+    size_(other.size_)
   {
     other.size_ = 0;
   }
@@ -175,9 +171,8 @@ namespace aksenov
     return cend();
   }
 
-  template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::constIterator
-    Dictionary< Key, Value, Compare >::find(const Key &key) const
+  template< typename Key, typename T, typename Compare >
+  typename Dictionary< Key, T, Compare >::constIterator Dictionary< Key, T, Compare >::find(const Key &key) const
   {
     for(auto it = data_.cbegin(); it != data_.cend(); ++it)
     {
@@ -295,17 +290,23 @@ namespace aksenov
   }
 
   template< typename Key, typename Value, typename Compare >
-  std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool >
-    Dictionary< Key, Value, Compare >::insert(const valueType &pairToInsert)
+  std::pair<
+    typename Dictionary< Key, Value, Compare >::iterator,
+    bool
+  > Dictionary< Key, Value, Compare >::insert(const valueType &pairToInsert)
   {
     Compare comp = keyComp();
 
     iterator cur = data_.beforeBegin();
     iterator sup = begin();
-    while (sup != end()) {
-      if (!comp(pairToInsert.first, sup->first) && !comp(sup->first, pairToInsert.first)) {
+    while (sup != end())
+    {
+      if (!comp(pairToInsert.first, sup->first) && !comp(sup->first, pairToInsert.first))
+      {
         return std::make_pair(sup, false);
-      } else if (comp(pairToInsert.first, sup->first)) {
+      }
+      else if (comp(pairToInsert.first, sup->first))
+      {
         iterator inserted = data_.insertAfter(cur, pairToInsert);
         size_++;
         return std::make_pair(inserted, true);
@@ -318,20 +319,32 @@ namespace aksenov
     return std::make_pair(inserted, true);
   }
 
-
+  template< typename Key, typename Value, typename Compare >
+  std::pair<
+    typename Dictionary< Key, Value, Compare >::iterator,
+    bool
+  > Dictionary< Key, Value, Compare >::insert(const valueType &&val)
+  {
+    return insert(std::make_pair(std::move(val)));
+  }
   template< typename Key, typename Value, typename Compare >
   template< typename P >
-  std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool >
-    Dictionary<Key, Value, Compare>::insert(P &&value)
+  std::pair<
+    typename Dictionary< Key, Value, Compare >::iterator,
+    bool
+  > Dictionary<Key, Value, Compare>::insert(P &&value)
   {
     Compare comp = keyComp();
-
     iterator cur = data_.beforeBegin();
     iterator sup = begin();
-    while (sup != end()) {
-      if (!comp(value.first, sup->first) && !comp(sup->first, value.first)) {
+    while (sup != end())
+    {
+      if (!comp(value.first, sup->first) && !comp(sup->first, value.first))
+      {
         return std::make_pair(sup, false);
-      } else if (comp(value.first, sup->first)) {
+      }
+      else if (comp(value.first, sup->first))
+      {
         iterator inserted = data_.insertAfter(cur, value);
         size_++;
         return std::make_pair(inserted, true);
