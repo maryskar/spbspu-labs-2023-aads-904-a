@@ -295,7 +295,7 @@ namespace aksenov
     bool
   > Dictionary< Key, Value, Compare >::insert(const valueType &pairToInsert)
   {
-    Compare comp = keyComp();
+    /*Compare comp = keyComp();
 
     iterator cur = data_.beforeBegin();
     iterator sup = begin();
@@ -316,7 +316,8 @@ namespace aksenov
     }
     iterator inserted = data_.insertAfter(cur, pairToInsert);
     size_++;
-    return std::make_pair(inserted, true);
+    return std::make_pair(inserted, true);*/
+      return insert(std::forward<const valueType&>(pairToInsert));
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -361,7 +362,7 @@ namespace aksenov
   typename Dictionary< Key, Value, Compare >::iterator
     Dictionary< Key, Value, Compare >::insert(constIterator it, const valueType &value)
   {
-    auto existing = find(value.first);
+    /*auto existing = find(value.first);
     if (existing != end())
     {
       return existing;
@@ -371,7 +372,8 @@ namespace aksenov
       auto inserted = data_.insert(it.current(), value);
       size_++;
       return typename Dictionary<Key, Value, Compare>::iterator(inserted);
-    }
+    }*/
+    return insert(it, std::forward<const valueType&>(value));
   }
 
   template< typename Key, typename Value, typename Compare >
