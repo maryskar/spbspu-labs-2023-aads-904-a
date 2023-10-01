@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
   timofeev::Dictionary< std::string, void (*)(std::istream&, dictOfDicts&) > commands;
   commands = timofeev::cmdSet(commands);
   std::string firstPart = "";
-  while (std::cin.good())
+  while (!std::cin.eof())
   {
     try
     {
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
       {
         timofeev::Print(std::cin, dict, std::cout);
       }
-      else if (commands.contains(firstPart))
+      if(commands.contains(firstPart))
       {
         commands[firstPart](std::cin, dict);
       }
