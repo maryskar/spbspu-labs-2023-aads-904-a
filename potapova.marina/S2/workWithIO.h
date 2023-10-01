@@ -30,10 +30,9 @@ namespace potapova
   }
 
   template< bool (*Compare)(const long long&, const long long&) >
-  std::istream& inputDict(std::istream& in, Dictionary< long long, std::string, Compare >& dict, std::string& name)
+  std::istream& operator>>(std::istream& in, Dictionary< long long, std::string, Compare >& dict)
   {
-    in >> name;
-    in.ignore(1);
+    in >> std::ws;
     std::string keys_and_values;
     if (!std::getline(in, keys_and_values))
     {
