@@ -8,19 +8,26 @@ namespace timofeev
     {
       std::string dictName;
       in >> dictName;
-      dictionary dict_t = dict.at(dictName);
-      if (!dict_t.empty())
+      if (dict.contains(dictName))
       {
-        out << dictName;
-        for (auto & i : dict_t)
+        dictionary dict_t = dict.at(dictName);
+        if (!dict_t.empty())
         {
-          out << " " << i.first << " " << i.second;
+          out << dictName;
+          for (auto & i : dict_t)
+          {
+            out << " " << i.first << " " << i.second;
+          }
+          out << "\n";
         }
-        out << "\n";
+        else
+        {
+          throw std::out_of_range("EMPTY");
+        }
       }
       else
       {
-        throw std::out_of_range("EMPTY");
+        return;
       }
     }
     catch (...)
