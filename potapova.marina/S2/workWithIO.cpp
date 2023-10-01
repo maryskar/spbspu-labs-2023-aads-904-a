@@ -2,7 +2,7 @@
 
 namespace potapova
 {
-  const char* parseKey(const char* cur_sym_ptr, long long& key)
+  static const char* parseKey(const char* cur_sym_ptr, long long& key)
   {
     char* end_conv_ptr = nullptr;
     key = std::strtoll(cur_sym_ptr, &end_conv_ptr, 10);
@@ -13,7 +13,7 @@ namespace potapova
     return end_conv_ptr;
   }
 
-  const char* parseValue(const char* cur_sym_ptr, std::string& value)
+  static const char* parseValue(const char* cur_sym_ptr, std::string& value)
   {
     while (!(*cur_sym_ptr == ' ' || *cur_sym_ptr == '\0'))
     {
