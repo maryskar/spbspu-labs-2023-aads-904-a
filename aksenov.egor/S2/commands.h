@@ -16,7 +16,7 @@ namespace aksenov
   {
     if (rhs.isEmpty())
     {
-      out << "<EMPTY>" << "\n";
+      out << "<EMPTY>";
       return;
     }
     out << name;
