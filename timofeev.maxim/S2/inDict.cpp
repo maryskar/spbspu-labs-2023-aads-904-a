@@ -12,8 +12,9 @@ void timofeev::inDict(std::istream& in, timofeev::dictOfDicts &dict)
     size_t key;
     std::string value;
     dictionary dict_t;
-    while (in >> key >> value)
+    while (in)
     {
+      in >> key >> value;
       if (!in)
       {
         break;
