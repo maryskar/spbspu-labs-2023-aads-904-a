@@ -1,7 +1,7 @@
 #ifndef STACK_H
 #define STACK_H
 #include <stdexcept>
-#include "../common/List.h"
+#include <List.h>
 namespace timofeev
 {
   template < typename T >

@@ -1,7 +1,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 #include <stdexcept>
-#include "../common/List.h"
+#include <List.h>
 namespace timofeev
 {
   template < typename T >
