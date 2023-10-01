@@ -317,7 +317,7 @@ namespace aksenov
     iterator inserted = data_.insertAfter(cur, pairToInsert);
     size_++;
     return std::make_pair(inserted, true);*/
-      return insert(std::forward<const valueType&>(pairToInsert));
+    return insert(const_cast<const valueType&&>(pairToInsert));
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -326,7 +326,7 @@ namespace aksenov
     bool
   > Dictionary< Key, Value, Compare >::insert(const valueType &&val)
   {
-    return insert(std::make_pair(std::move(val)));
+    return insert(reinterpret_cast< const valueType && >(val));
   }
   template< typename Key, typename Value, typename Compare >
   template< typename P >
