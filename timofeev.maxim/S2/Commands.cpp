@@ -114,6 +114,7 @@ namespace timofeev
       throw;
     }
   }
+
   void Union(std::istream& in, dictOfDicts& dict)
   {
     std::string newDict, first, second;

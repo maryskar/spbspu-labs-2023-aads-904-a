@@ -10,18 +10,20 @@ void timofeev::inDict(std::istream& in, timofeev::dictOfDicts &dict)
       in.clear();
       break;
     }
-    size_t key;
-    std::string value;
+    size_t key = 0;
+    std::string value = "";
     dictionary dict_t;
-    while (in >> key >> value)
+    while (!in.eof())
     {
+      in >> key >> value;
+      if (in.fail())
+      {
+        in.clear();
+        break;
+      }
       dict_t.push(key, value);
     }
-    if (in.eof())
-    {
-      in.clear();
-    }
+    in.clear();
     dict.push(name, dict_t);
   }
 }
-
