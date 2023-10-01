@@ -6,26 +6,27 @@ namespace timofeev
   {
     std::string dictName;
     in >> dictName;
-    if (!dict.contains(dictName))
+    if (dict.contains(dictName))
     {
-      throw std::invalid_argument("inv");
-    }
-    dictionary dict_t = dict.at(dictName);
-    if (!dict_t.empty())
-    {
-      out << dictName;
-      for (auto &i: dict_t)
+      dictionary dict_t = dict.at(dictName);
+      if (!dict_t.empty())
       {
-        out << " " << i.first << " " << i.second;
+        out << dictName;
+        for (auto &i: dict_t)
+        {
+          out << " " << i.first << " " << i.second;
+        }
+        out << "\n";
+      } else
+      {
+        throw std::out_of_range("EMPTY");
       }
-      out << "\n";
     }
     else
     {
-      throw std::out_of_range("EMPTY");
+      return;
     }
   }
-
   void Complement(std::istream& in, dictOfDicts& dict)
   {
     try
