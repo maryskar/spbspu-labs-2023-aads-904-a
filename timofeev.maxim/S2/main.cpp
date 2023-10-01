@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
   std::ifstream inFile;
   if (argc == 2)
   {
-    inFile.open(argv[0]);
+    inFile.open(argv[1]);
     if (!inFile.is_open())
     {
       std::cerr << "File error" << "\n";
