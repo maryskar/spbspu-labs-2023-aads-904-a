@@ -18,6 +18,7 @@ namespace timofeev
           {
             out << " " << i.first << " " << i.second;
           }
+          out << "\n";
         }
         else
         {
@@ -76,7 +77,7 @@ namespace timofeev
       }
       else
       {
-        dict.insert({newDict, complDict});
+        dict.push(newDict, complDict);
       }
     }
     catch (...)
