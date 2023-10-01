@@ -27,7 +27,7 @@ namespace timofeev
       }
       else
       {
-        std::cout << "<INVALID COMMAND>" << "\n";
+        return;
       }
     }
     catch (...)
