@@ -43,22 +43,21 @@ int main(int argc, char *argv[])
       {
         commands[firstPart](std::cin, dict);
       }
-      else
-      {
-        throw std::invalid_argument("Invalid");
-      }
     }
     catch (const std::invalid_argument &e)
     {
       errors::printInvalid(std::cout);
       std::cin.ignore(maxSize, '\n');
-      break;
     }
     catch (const std::out_of_range &e)
     {
       errors::printEmpty(std::cout);
       std::cin.ignore(maxSize, '\n');
-      break;
+    }
+    catch (...)
+    {
+      errors::printInvalid(std::cout);
+      std::cin.ignore(maxSize, '\n');
     }
   }
   if (std::cin.fail())
