@@ -363,17 +363,14 @@ namespace aksenov
   typename Dictionary< Key, Value, Compare >::iterator
     Dictionary< Key, Value, Compare >::insert(constIterator it, const valueType &value)
   {
-    auto existing = find(value.first);
-    if (existing != end())
+    Compare comp = keyComp();
+    it++;
+    if (comp(it->first, value.first) && comp(value.first, it->first))
     {
-      return existing;
+      return data_.insert_after(it, value);
     }
-    else
-    {
-      auto inserted = data_.insert(it.current(), value);
-      size_++;
-      return typename Dictionary<Key, Value, Compare>::iterator(inserted);
-    }
+    return (insert(value)).first;
+
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -392,7 +389,7 @@ namespace aksenov
       size_++;
       return typename Dictionary<Key, Value, Compare>::iterator(inserted);
     }*/
-    return insert(it, std::forward<const valueType&>(value));
+    return insert(it, std::forward< P >(value));
   }
 
   template< typename Key, typename Value, typename Compare >
