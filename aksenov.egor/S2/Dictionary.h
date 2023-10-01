@@ -314,7 +314,8 @@ namespace aksenov
 
   template< typename Key, typename Value, typename Compare >
   template< typename P >
-  std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool > Dictionary<Key, Value, Compare>::insert(P &&value)
+  std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool >
+    Dictionary<Key, Value, Compare>::insert(P &&value)
   {
     Compare comp = keyComp();
 
@@ -337,7 +338,8 @@ namespace aksenov
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::insert(constIterator it, const valueType &value)
+  typename Dictionary< Key, Value, Compare >::iterator
+    Dictionary< Key, Value, Compare >::insert(constIterator it, const valueType &value)
   {
     auto existing = find(value.first);
     if (existing != end())
@@ -354,7 +356,8 @@ namespace aksenov
 
   template< typename Key, typename Value, typename Compare >
   template< typename P >
-  typename Dictionary< Key, Value, Compare>::iterator Dictionary<Key, Value, Compare >::insert(constIterator it, P &&value)
+  typename Dictionary< Key, Value, Compare>::iterator
+    Dictionary<Key, Value, Compare >::insert(constIterator it, P &&value)
   {
     auto existing = find(value.first);
     if (existing != end())
