@@ -6,6 +6,10 @@ namespace timofeev
   {
     std::string dictName;
     in >> dictName;
+    if (dict.count(dictName) == 0)
+    {
+      std::cout << "<INVALID COMMAND>" << "\n";
+    }
     if (dict.contains(dictName))
     {
       dictionary dict_t = dict.at(dictName);

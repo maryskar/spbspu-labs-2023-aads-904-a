@@ -43,6 +43,11 @@ int main(int argc, char *argv[])
       {
         commands[firstPart](std::cin, dict);
       }
+      else
+      {
+        throw std::logic_error("Invalid");
+      }
+
     }
     catch (const std::invalid_argument &e)
     {
