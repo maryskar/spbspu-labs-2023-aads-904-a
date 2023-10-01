@@ -54,7 +54,8 @@ int main(int argc, char *argv[])
         dict dict1 = bigData.at(dictName1);
         dict dict2 = bigData.at(dictName2);
         dict resDict = commands[command](dict1, dict2);
-        if (!bigData.insert(std::make_pair(newName, resDict)).second) {
+        if (!bigData.insert(std::make_pair(newName, resDict)).second)
+        {
           auto it = bigData.find(newName);
           bigData.at(it->first) = resDict;
         }
@@ -62,7 +63,7 @@ int main(int argc, char *argv[])
     }
     catch (const std::invalid_argument &e)
     {
-      std::cout << "<EMPTY>";
+      std::cout << "<EMPTY>" << "\n";
     }
     catch (...)
     {

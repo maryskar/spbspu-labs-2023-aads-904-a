@@ -234,7 +234,8 @@ namespace aksenov
   T & Dictionary< Key, T, Compare >::at(const Key &key)
   {
     auto it = find(key);
-    if (it == data_.end()) {
+    if (it == data_.end())
+    {
       throw std::out_of_range("There is no such key");
     }
     return it->second;
@@ -245,7 +246,8 @@ namespace aksenov
   const T & Dictionary< Key, T, Compare >::at(const Key &key) const
   {
     auto it = find(key);
-    if (it == data_.cend()) {
+    if (it == data_.cend())
+    {
       throw std::out_of_range("There is no such key");
     }
     return it->second;
