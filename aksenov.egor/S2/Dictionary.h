@@ -58,7 +58,6 @@ namespace aksenov
     sizeType count(const keyType &key) const;
     bool contains(const Key &key) const;
     std::pair< iterator, bool > insert(const valueType &value);
-    std::pair< iterator, bool > insert(const valueType &&value);
     void insert(const Key &key, const T &value);
     template< typename P >
     std::pair< iterator, bool > insert(P &&value);
@@ -239,12 +238,7 @@ namespace aksenov
   template< typename Key, typename T, typename Compare >
   const T & Dictionary< Key, T, Compare >::at(const Key &key) const
   {
-    auto it = find(key);
-    if (it == data_.cend())
-    {
-      throw std::out_of_range("There is no such key");
-    }
-    return it->second;
+    return const_cast< T & >((static_cast< const thisT & >(*this)).at(key));
   }
 
   template< typename Key, typename T, typename Compare >
@@ -316,16 +310,6 @@ namespace aksenov
     iterator inserted = data_.insertAfter(cur, pairToInsert);
     size_++;
     return std::make_pair(inserted, true);
-  }
-
-  template< typename Key, typename Value, typename Compare >
-  std::pair
-  <
-    typename Dictionary< Key, Value, Compare >::iterator,
-    bool
-  > Dictionary< Key, Value, Compare >::insert(const valueType &&val)
-  {
-    return insert(reinterpret_cast< const valueType && >(val));
   }
 
   template< typename Key, typename Value, typename Compare >
