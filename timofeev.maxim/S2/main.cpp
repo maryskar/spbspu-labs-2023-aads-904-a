@@ -51,10 +51,12 @@ int main(int argc, char *argv[])
     catch (const std::invalid_argument &e)
     {
       errors::printInvalid(std::cout);
+      break;
     }
     catch (const std::out_of_range &e)
     {
       errors::printEmpty(std::cout);
+      break;
     }
   }
   return 0;
