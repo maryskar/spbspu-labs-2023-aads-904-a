@@ -74,22 +74,22 @@ namespace timofeev
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iter Dictionary< Key, Value,
-    Compare >::erase(constIter first, constIter last)
+  typename Dictionary< Key, Value, Compare >::iter
+      Dictionary< Key, Value, Compare >::erase(constIter first, constIter last)
   {
     return erase(constIter(first), constIter(last));
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iter Dictionary< Key, Value,
-    Compare >::erase(Dictionary::constIter pos)
+  typename Dictionary< Key, Value, Compare >::iter
+    Dictionary< Key, Value, Compare >::erase(Dictionary::constIter pos)
   {
     return erase(constIter(pos));
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iter Dictionary< Key, Value,
-    Compare >::erase(iter first, iter last)
+  typename Dictionary< Key, Value, Compare >::iter
+      Dictionary< Key, Value, Compare >::erase(iter first, iter last)
   {
     while(first != last)
     {
@@ -101,8 +101,8 @@ namespace timofeev
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iter Dictionary< Key, Value,
-    Compare >::erase(iter pos)
+  typename Dictionary< Key, Value, Compare >::iter
+      Dictionary< Key, Value, Compare >::erase(iter pos)
   {
     if (pos == end())
     {
@@ -144,50 +144,50 @@ namespace timofeev
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iter Dictionary< Key, Value,
-    Compare >::begin() noexcept
+  typename Dictionary< Key, Value, Compare >::iter
+      Dictionary< Key, Value, Compare >::begin() noexcept
   {
     return data_.begin();
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::constIter Dictionary< Key, Value,
-    Compare >::cbegin() const noexcept
+  typename Dictionary< Key, Value, Compare >::constIter
+      Dictionary< Key, Value, Compare >::cbegin() const noexcept
   {
     return data_.cbegin();
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::constIter Dictionary< Key, Value,
-    Compare >::begin() const noexcept
+  typename Dictionary< Key, Value, Compare >::constIter
+      Dictionary< Key, Value, Compare >::begin() const noexcept
   {
     return cbegin();
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iter Dictionary< Key, Value,
-    Compare >::end() noexcept
+  typename Dictionary< Key, Value, Compare >::iter
+      Dictionary< Key, Value, Compare >::end() noexcept
   {
     return data_.end();
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::constIter Dictionary< Key, Value,
-    Compare >::cend() const noexcept
+  typename Dictionary< Key, Value, Compare >::constIter
+      Dictionary< Key, Value, Compare >::cend() const noexcept
   {
     return data_.cend();
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::constIter Dictionary< Key, Value,
-    Compare >::end() const noexcept
+  typename Dictionary< Key, Value, Compare >::constIter
+      Dictionary< Key, Value, Compare >::end() const noexcept
   {
     return cend();
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::constIter Dictionary< Key, Value,
-    Compare >::find(const Key &key) const
+  typename Dictionary< Key, Value, Compare >::constIter
+      Dictionary< Key, Value, Compare >::find(const Key &key) const
   {
     for(auto it = data_.cbegin(); it != data_.cend(); ++it)
     {
@@ -200,8 +200,8 @@ namespace timofeev
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iter Dictionary< Key, Value,
-    Compare >::find(const Key &key)
+  typename Dictionary< Key, Value, Compare >::iter
+      Dictionary< Key, Value, Compare >::find(const Key &key)
   {
     for(auto it = data_.begin(); it != data_.end(); ++it)
     {
@@ -272,8 +272,8 @@ namespace timofeev
   }
 
   template< typename Key, typename Value, typename Compare >
-  std::pair< typename Dictionary< Key, Value, Compare >::iter,
-    bool > Dictionary< Key, Value, Compare >::insert(const value_type &&value)
+  std::pair< typename Dictionary< Key, Value, Compare >::iter, bool >
+      Dictionary< Key, Value, Compare >::insert(const value_type &&value)
   {
     return insert(std::make_pair(std::move(value)));
   }
@@ -286,8 +286,8 @@ namespace timofeev
   }
 
   template< typename Key, typename Value, typename Compare >
-  std::pair< typename Dictionary< Key, Value, Compare >::iter,
-    bool > Dictionary< Key, Value, Compare >::insert(const value_type &value)
+  std::pair< typename Dictionary< Key, Value, Compare >::iter, bool >
+      Dictionary< Key, Value, Compare >::insert(const value_type &value)
   {
     iter cur = data_.before_begin();
     for (iter tmp = begin(); tmp != end(); tmp++)
@@ -311,8 +311,8 @@ namespace timofeev
 
   template< typename Key, typename Value, typename Compare >
   template< typename P >
-  typename Dictionary< Key, Value, Compare >::iter Dictionary< Key, Value,
-    Compare >::insert(constIter pos, P &&value)
+  typename Dictionary< Key, Value, Compare >::iter
+      Dictionary< Key, Value, Compare >::insert(constIter pos, P &&value)
   {
     const value_type tmp(std::forward< P >(value));
     return insert(pos, tmp);
@@ -321,7 +321,7 @@ namespace timofeev
   template< typename Key, typename Value, typename Compare >
   template< typename P >
   std::pair< typename Dictionary< Key, Value, Compare >::iter, bool >
-  Dictionary<Key, Value, Compare>::insert(P &&value)
+      Dictionary<Key, Value, Compare>::insert(P &&value)
   {
     iter cur = data_.before_begin();
     for (iter tmp = begin(); tmp != end(); tmp++)
@@ -345,7 +345,7 @@ namespace timofeev
 
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::iter
-  Dictionary< Key, Value, Compare >::insert(constIter pos, const value_type &value)
+      Dictionary< Key, Value, Compare >::insert(constIter pos, const value_type &value)
   {
     auto it = find(value.first);
     if (it != end())
@@ -388,7 +388,7 @@ namespace timofeev
 
   template< typename Key, typename Value, typename Compare >
   Dictionary< Key, Value, Compare > & Dictionary< Key, Value,
-    Compare >::operator=(const Dictionary< Key, Value, Compare > &other)
+      Compare >::operator=(const Dictionary< Key, Value, Compare > &other)
   {
     if (this != &other)
     {
@@ -401,7 +401,7 @@ namespace timofeev
 
   template< typename Key, typename Value, typename Compare >
   Dictionary< Key, Value, Compare > & Dictionary< Key, Value,
-    Compare >::operator=(Dictionary< Key, Value, Compare > &&other)
+      Compare >::operator=(Dictionary< Key, Value, Compare > &&other)
   {
     if (this != &other)
     {
