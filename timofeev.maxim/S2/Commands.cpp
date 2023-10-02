@@ -25,7 +25,7 @@ namespace timofeev
       }
       else
       {
-        return;
+        throw std::invalid_argument("Logic error");
       }
   }
   void Complement(std::istream& in, dictOfDicts& dict)
