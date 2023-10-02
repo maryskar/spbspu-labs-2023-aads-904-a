@@ -280,7 +280,7 @@ namespace aksenov
 
   template< typename T >
   typename ForwardList< T >::iterator
-    ForwardList< T >::insertAfter(constIterator pos, sizeType count, constReference val)
+      ForwardList< T >::insertAfter(constIterator pos, sizeType count, constReference val)
   {
     for (ssize_t i = 0; i < count; ++i)
     {
@@ -292,7 +292,7 @@ namespace aksenov
   template< class T >
   template< class InpIter >
   typename ForwardList< T >::iterator
-    ForwardList< T >::insertAfter(constIterator pos, InpIter first, InpIter last)
+      ForwardList< T >::insertAfter(constIterator pos, InpIter first, InpIter last)
   {
     while (first != last)
     {
@@ -331,7 +331,7 @@ namespace aksenov
 
   template < typename T >
   typename ForwardList< T >::iterator
-    ForwardList< T >::eraseAfter(constIterator pos)
+      ForwardList< T >::eraseAfter(constIterator pos)
   {
     if (pos.node_ == nullptr || pos.node_->next == nullptr)
     {
@@ -353,7 +353,7 @@ namespace aksenov
 
   template < typename T >
   typename ForwardList< T >::iterator
-    ForwardList< T >::eraseAfter(constIterator first, constIterator last)
+      ForwardList< T >::eraseAfter(constIterator first, constIterator last)
   {
     if (first == last || first.node_ == nullptr)
     {
