@@ -146,34 +146,14 @@ namespace kryuchkova
   std::pair< typename Dictionary< Key, Value, Compare >::iterator,
     bool > Dictionary< Key, Value, Compare >::insert(const val_type & value)
   {
-    Compare comp = key_comp();
-    if (isEmpty() || comp(value.first, cbegin()->first))
+    auto curr = find(value.first);
+    if (curr != end())
     {
-      return {data_.insert_after(cbefore_begin(), value), true};
+      return {curr, false};
     }
-    iterator cur = before_begin();
-    iterator sup = begin();
-    while (sup != end())
-    {
-      if (comp(value.first, sup->first))
-      {
-        if (comp(cur->first, value.first))
-        {
-          return {data_.insert_after(cur, value), true};
-        }
-        else
-        {
-          return {cur, false};
-        }
-      }
-      cur++;
-      sup++;
-    }
-    if (comp(cur->first, value.first))
-    {
-      return {data_.insert_after(cur, value), true};
-    }
-    return {end(), false};
+    data_.push_front(std::move(value));
+    curr = find(value.first);
+    return {curr, true};
   }
 
   template< typename Key, typename Value, typename Compare >
