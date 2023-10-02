@@ -204,22 +204,22 @@ namespace aksenov
     return data_.eraseAfter(first, last);
   }
 
-  template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::last() noexcept
+  template< typename Key, typename T, typename Compare >
+  typename Dictionary< Key, T, Compare >::iterator Dictionary< Key, T, Compare >::last() noexcept
   {
     return data_.last();
   }
 
-  template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::constIterator
-      Dictionary< Key, Value, Compare >::last() const noexcept
+  template< typename Key, typename T, typename Compare >
+  typename Dictionary< Key, T, Compare >::constIterator
+      Dictionary< Key, T, Compare >::last() const noexcept
   {
     return clast();
   }
 
-  template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::constIterator
-      Dictionary< Key, Value, Compare >::clast() const noexcept
+  template< typename Key, typename T, typename Compare >
+  typename Dictionary< Key, T, Compare >::constIterator
+      Dictionary< Key, T, Compare >::clast() const noexcept
   {
     return data_.clast();
   }
@@ -312,21 +312,21 @@ namespace aksenov
     return std::make_pair(inserted, true);
   }
 
-  template< typename Key, typename Value, typename Compare >
+  template< typename Key, typename T, typename Compare >
   template< typename P >
   std::pair
   <
-      typename Dictionary< Key, Value, Compare >::iterator,
+      typename Dictionary< Key, T, Compare >::iterator,
       bool
-  > Dictionary< Key, Value, Compare >::insert(P &&value)
+  > Dictionary< Key, T, Compare >::insert(P &&value)
   {
     const valueType temp(std::forward< P >(value));
     return insert(temp);
   }
 
-  template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iterator
-      Dictionary< Key, Value, Compare >::insert(constIterator it, const valueType &value)
+  template< typename Key, typename T, typename Compare >
+  typename Dictionary< Key, T, Compare >::iterator
+      Dictionary< Key, T, Compare >::insert(constIterator it, const valueType &value)
   {
     auto existing = find(value.first);
     if (existing != end())
@@ -341,18 +341,18 @@ namespace aksenov
     }
   }
 
-  template< typename Key, typename Value, typename Compare >
+  template< typename Key, typename T, typename Compare >
   template< typename P >
-  typename Dictionary< Key, Value, Compare>::iterator
-      Dictionary<Key, Value, Compare >::insert(constIterator it, P &&value)
+  typename Dictionary< Key, T, Compare>::iterator
+      Dictionary<Key, T, Compare >::insert(constIterator it, P &&value)
   {
     const valueType tmp(std::forward< P >(value));
     return insert(it, tmp);
   }
 
-  template< typename Key, typename Value, typename Compare >
+  template< typename Key, typename T, typename Compare >
   template< typename InputIterator >
-  void Dictionary< Key, Value, Compare >::insert(InputIterator first, InputIterator last)
+  void Dictionary< Key, T, Compare >::insert(InputIterator first, InputIterator last)
   {
     for (auto it = first; it != last; ++it)
     {
@@ -360,9 +360,9 @@ namespace aksenov
     }
   }
 
-  template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::keyCompare
-    Dictionary< Key, Value, Compare >::keyComp() const
+  template< typename Key, typename T, typename Compare >
+  typename Dictionary< Key, T, Compare >::keyCompare
+    Dictionary< Key, T, Compare >::keyComp() const
   {
     return comp_;
   }
