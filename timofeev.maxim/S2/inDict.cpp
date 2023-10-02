@@ -13,7 +13,7 @@ timofeev::dictOfDicts timofeev::inDict(std::istream& in, timofeev::dictOfDicts &
     size_t key = 0;
     std::string value = "";
     dictionary dict_t;
-    while (!in.eof())
+    while (in)
     {
       in >> key >> value;
       if (in.fail())

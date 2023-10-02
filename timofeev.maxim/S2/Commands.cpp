@@ -4,8 +4,12 @@ namespace timofeev
 {
   void Print(std::istream& in, dictOfDicts& dict, std::ostream& out)
   {
+    try
+    {
       std::string dictName;
       in >> dictName;
+      if (dict.contains(dictName))
+      {
         dictionary dict_t = dict.at(dictName);
         if (!dict_t.empty())
         {
@@ -20,11 +24,20 @@ namespace timofeev
         {
           throw std::out_of_range("EMPTY");
         }
+      }
+      else
+      {
+        return;
+      }
+    }
+    catch (...)
+    {
+      throw;
+    }
+
   }
   void Complement(std::istream& in, dictOfDicts& dict)
   {
-    try
-    {
       std::string newDict, first, second;
       in >> newDict >> first >> second;
       if (dict.count(first) == 0 || dict.count(second) == 0)
@@ -57,16 +70,9 @@ namespace timofeev
       {
         dict.push(newDict, complDict);
       }
-    }
-    catch (...)
-    {
-      throw;
-    }
   }
   void Intersect(std::istream& in, dictOfDicts& dict)
   {
-    try
-    {
       std::string newDict, first, second;
       in >> newDict >> first >> second;
       if (dict.count(first) == 0 || dict.count(second) == 0)
@@ -102,11 +108,7 @@ namespace timofeev
           dict.push(newDict, intersDict);
         }
       }
-    }
-    catch (...)
-    {
-      throw;
-    }
+
   }
 
   void Union(std::istream& in, dictOfDicts& dict)

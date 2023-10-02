@@ -57,10 +57,5 @@ int main(int argc, char *argv[])
       break;
     }
   }
-  if (std::cin.fail())
-  {
-    std::cin.clear();
-    std::cin.ignore(maxSize, '\n');
-  }
   return 0;
 }
