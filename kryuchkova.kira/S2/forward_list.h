@@ -177,7 +177,9 @@ namespace kryuchkova
   template< typename T >
   ForwardIterator< T > ForwardList< T >::insert_after(const_iterator pos, const T & val)
   {
-    pos.node_->next_ = new Node< T >{val, pos.node_->next_};
+    Node< T > *node = new Node< T >(val);
+    node->next_ = pos.node_->next_;
+    pos.node_->next_ = node;
     ++pos;
     return iterator(pos.node_);
   }
@@ -263,7 +265,7 @@ namespace kryuchkova
   template< typename T >
   ForwardIterator< T > ForwardList< T >::begin() noexcept
   {
-    return iterator(fake_.node_->next);
+    return iterator(fake_.node_->next_);
   }
 
   template< typename T >
@@ -275,7 +277,7 @@ namespace kryuchkova
   template< typename T >
   ConstForwardIterator< T > ForwardList< T >::cbegin() const noexcept
   {
-    return const_iterator(fake_.node_->next);
+    return const_iterator(fake_.node_->next_);
   }
 
   template< typename T >

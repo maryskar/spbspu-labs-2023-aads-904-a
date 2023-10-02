@@ -68,7 +68,7 @@ namespace kryuchkova
     iterator find(const key_type & key);
     const_iterator find(const key_type & key) const;
 
-    bool IsEmpty() const noexcept;
+    bool isEmpty() const noexcept;
     bool isEqualTo(const this_t & other) const noexcept;
     void clear() noexcept;
     void insert(std::initializer_list< val_type > init);
@@ -146,9 +146,9 @@ namespace kryuchkova
   std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool > Dictionary< Key, Value, Compare >::insert(const val_type & value)
   {
     Compare comp = key_comp();
-    if (empty() || comp(value.first, cbegin()->first))
+    if (isEmpty() || comp(value.first, cbegin()->first))
     {
-      return {list_.insert_after(cbefore_begin(), value), true};
+      return {data_.insert_after(cbefore_begin(), value), true};
     }
     iterator cur = before_begin();
     iterator sup = begin();
@@ -158,7 +158,7 @@ namespace kryuchkova
       {
         if (comp(cur->first, value.first))
         {
-          return {list_.insert_after(cur, value), true};
+          return {data_.insert_after(cur, value), true};
         }
         else
         {
@@ -170,7 +170,7 @@ namespace kryuchkova
     }
     if (comp(cur->first, value.first))
     {
-      return {list_.insert_after(cur, value), true};
+      return {data_.insert_after(cur, value), true};
     }
     return {end(), false};
   }
@@ -426,7 +426,7 @@ namespace kryuchkova
   }
 
   template< typename Key, typename Value, typename Compare >
-  bool Dictionary< Key, Value, Compare >::IsEmpty() const noexcept
+  bool Dictionary< Key, Value, Compare >::isEmpty() const noexcept
   {
     return cbegin() == cend();
   }

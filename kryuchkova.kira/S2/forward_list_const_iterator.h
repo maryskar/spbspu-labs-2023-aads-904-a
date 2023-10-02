@@ -43,21 +43,21 @@ namespace kryuchkova
   const T & ConstForwardIterator< T >::operator*() const
   {
     assert(node_ != nullptr);
-    return node_->data;
+    return node_->data_;
   }
 
   template < typename T >
   const T * ConstForwardIterator< T >::operator->() const
   {
     assert(node_ != nullptr);
-    return std::addressof(node_->data);
+    return std::addressof(node_->data_);
   }
 
   template < typename T >
   ConstForwardIterator< T > & ConstForwardIterator< T >::operator++()
   {
     assert(node_ != nullptr);
-    node_ = node_->next;
+    node_ = node_->next_;
     return *this;
   }
 
