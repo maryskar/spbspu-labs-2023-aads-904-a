@@ -120,19 +120,9 @@ void skarlygina::countPostfix(Queue< std::string >& queue, Stack< long long >& r
       stack.pop();
       long long b = stack.top();
       stack.pop();
-      stack.push(switchSymbol(queue.top(), a, b));
+      stack.push(switchSymbol(queue.top(), b, a));
     }
     queue.pop();
   }
-  if (stack.isEmpty())
-  {
-    throw std::runtime_error("Stack is empty");
-  }
-  long long result = stack.top();
-  stack.pop();
-  if (!stack.isEmpty())
-  {
-    throw std::runtime_error("Invalid expression");
-  }
-  res.push(result);
+  res.push(stack.top());
 }
