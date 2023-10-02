@@ -1,6 +1,6 @@
 #include "calculate.h"
 #include <stdexcept>
-#include "mathfunc.h"
+#include <mathfunc.h>
 
 long long tarasenko::calculate(long long a, long long b, char op)
 {
