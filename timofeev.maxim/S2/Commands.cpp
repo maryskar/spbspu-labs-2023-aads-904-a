@@ -4,103 +4,99 @@ namespace timofeev
 {
   void Print(std::istream& in, dictOfDicts& dict, std::ostream& out)
   {
-      std::string dictName;
-      in >> dictName;
-      if (dict.contains(dictName))
+    std::string dictName;
+    in >> dictName;
+    if (dict.contains(dictName))
+    {
+      dictionary dict_t = dict.at(dictName);
+      if (!dict_t.empty())
       {
-        dictionary dict_t = dict.at(dictName);
-        if (!dict_t.empty())
+        out << dictName;
+        for (auto & i : dict_t)
         {
-          out << dictName;
-          for (auto & i : dict_t)
-          {
-            out << " " << i.first << " " << i.second;
-          }
-          out << "\n";
+          out << " " << i.first << " " << i.second;
         }
-        else
-        {
-          throw std::out_of_range("EMPTY");
-        }
+        out << "\n";
       }
       else
       {
-        throw std::invalid_argument("Logic error");
+        throw std::out_of_range("EMPTY");
       }
+    }
+    else
+    {
+      throw std::invalid_argument("Logic error");
+    }
   }
   void Complement(std::istream& in, dictOfDicts& dict)
   {
-      std::string newDict, first, second;
-      in >> newDict >> first >> second;
-      if (dict.count(first) == 0 || dict.count(second) == 0)
+    std::string newDict, first, second;
+    in >> newDict >> first >> second;
+    if (dict.count(first) == 0 || dict.count(second) == 0)
+    {
+      throw std::invalid_argument("Logic error");
+    }
+    dictionary dict1 = dict.at(first);
+    dictionary dict2 = dict.at(second);
+    dictionary complDict;
+    for (const auto &tmp: dict1)
+    {
+      if (!dict2.contains(tmp.first))
       {
-        throw std::invalid_argument("Logic error");
+        complDict.insert(tmp);
       }
-      dictionary dict1 = dict.at(first);
-      dictionary dict2 = dict.at(second);
-      dictionary complDict;
+    }
+    if (newDict == first)
+    {
+      dict[first] = complDict;
+    } else if (newDict == second)
+    {
+      dict[second] = complDict;
+    } else if (dict.contains(newDict))
+    {
+      dict[newDict] = complDict;
+    } else
+    {
+      dict.push(newDict, complDict);
+    }
+  }
+  void Intersect(std::istream& in, dictOfDicts& dict)
+  {
+    std::string newDict, first, second;
+    in >> newDict >> first >> second;
+    if (dict.count(first) == 0 || dict.count(second) == 0)
+    {
+      throw std::invalid_argument("Logic error");
+    }
+    else
+    {
+      const auto &dict1 = dict.at(first);
+      const auto &dict2 = dict.at(second);
+      dictionary intersDict;
       for (const auto &tmp: dict1)
       {
-        if (!dict2.contains(tmp.first))
+        if (dict2.contains(tmp.first))
         {
-          complDict.insert(tmp);
+          intersDict.insert(tmp);
         }
       }
       if (newDict == first)
       {
-        dict[first] = complDict;
+        dict[first] = intersDict;
       }
       else if (newDict == second)
       {
-        dict[second] = complDict;
+        dict[second] = intersDict;
       }
       else if (dict.contains(newDict))
       {
-        dict[newDict] = complDict;
+        dict[newDict] = intersDict;
       }
       else
       {
-        dict.push(newDict, complDict);
+        dict.push(newDict, intersDict);
       }
-  }
-  void Intersect(std::istream& in, dictOfDicts& dict)
-  {
-      std::string newDict, first, second;
-      in >> newDict >> first >> second;
-      if (dict.count(first) == 0 || dict.count(second) == 0)
-      {
-        throw std::invalid_argument("Logic error");
-      }
-      else
-      {
-        const auto &dict1 = dict.at(first);
-        const auto &dict2 = dict.at(second);
-        dictionary intersDict;
-        for (const auto &tmp: dict1)
-        {
-          if (dict2.contains(tmp.first))
-          {
-            intersDict.insert(tmp);
-          }
-        }
-        if (newDict == first)
-        {
-          dict[first] = intersDict;
-        }
-        else if (newDict == second)
-        {
-          dict[second] = intersDict;
-        }
-        else if (dict.contains(newDict))
-        {
-          dict[newDict] = intersDict;
-        }
-        else
-        {
-          dict.push(newDict, intersDict);
-        }
-      }
-
+    }
   }
 
   void Union(std::istream& in, dictOfDicts& dict)

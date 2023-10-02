@@ -24,7 +24,6 @@ int main(int argc, char *argv[])
   }
   using dictionary = timofeev::Dictionary< size_t, std::string, std::less<> >;
   using dictOfDicts = timofeev::Dictionary< std::string, dictionary, std::less<> >;
-  //constexpr auto maxSize = std::numeric_limits< std::streamsize >::max();
   dictOfDicts dict;
   dict = timofeev::inDict(inFile, dict);
   timofeev::Dictionary< std::string, void (*)(std::istream&, dictOfDicts&) > commands;
