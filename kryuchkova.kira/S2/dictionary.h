@@ -15,7 +15,7 @@ namespace kryuchkova
   class ForwardList;
 
   template< typename Key, typename Value, typename Compare = std::less< > >
-  class Dictionary 
+  class Dictionary
   {
   public:
     using key_type = Key;
@@ -78,7 +78,7 @@ namespace kryuchkova
     std::size_t count(const key_type & key) const;
     value_compare value_comp() const;
     Compare key_comp() const;
-  
+
   private:
     ForwardList< val_type > data_;
     Compare comp_;
@@ -143,7 +143,8 @@ namespace kryuchkova
   {}
 
   template< typename Key, typename Value, typename Compare >
-  std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool > Dictionary< Key, Value, Compare >::insert(const val_type & value)
+  std::pair< typename Dictionary< Key, Value, Compare >::iterator,
+    bool > Dictionary< Key, Value, Compare >::insert(const val_type & value)
   {
     Compare comp = key_comp();
     if (isEmpty() || comp(value.first, cbegin()->first))
@@ -177,13 +178,13 @@ namespace kryuchkova
 
   template< typename Key, typename Value, typename Compare >
   template< typename P >
-  std::pair< typename Dictionary< Key, Value, Compare >::iterator, bool > Dictionary< Key, Value, Compare >::insert(P && value)
+  std::pair< typename Dictionary< Key, Value, Compare >::iterator,
+    bool > Dictionary< Key, Value, Compare >::insert(P && value)
   {
     static_assert(std::is_constructible< val_type, P && >::value, "Can`t construct val_t");
     const val_type temp(std::forward< P >(value));
     return insert(temp);
   }
-
 
   template< typename Key, typename Value, typename Compare >
   Dictionary< Key, Value, Compare > & Dictionary< Key, Value, Compare >::operator=(const this_t & other)
@@ -350,7 +351,8 @@ namespace kryuchkova
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::insert(const_iterator pos, const val_type & val)
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key,
+    Value, Compare >::insert(const_iterator pos, const val_type & val)
   {
     Compare comp = key_comp();
     const_iterator moved_pos = pos;
@@ -369,7 +371,8 @@ namespace kryuchkova
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::erase_after(const_iterator first, const_iterator last)
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key,
+    Value, Compare >::erase_after(const_iterator first, const_iterator last)
   {
     return data_.erase_after(first, last);
   }

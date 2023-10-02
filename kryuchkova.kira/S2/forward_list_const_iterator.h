@@ -86,7 +86,7 @@ namespace kryuchkova
   ConstForwardIterator< T >::ConstForwardIterator(const ForwardIterator< T > rhs):
     node_(rhs.node_)
   {}
-  
+
   template < typename T >
   ConstForwardIterator< T >::ConstForwardIterator():
     node_(nullptr)
