@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <limits>
 #include "Dictionary.h"
 #include "commandSet.h"
 #include "Errors.h"

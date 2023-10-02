@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include "ForwardIter.h"
 #include "ForwardConstIter.h"
-#include <../common/List.h>
+#include <List.h>
 namespace timofeev
 {
   template< typename T >
