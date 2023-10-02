@@ -12,52 +12,52 @@ namespace potapova
     private:
       struct Node
       {
-        Node():
-          data(),
-          next_node_ptr(nullptr)
+        Node() noexcept:
+          data_(),
+          next_node_ptr_(nullptr)
         {
 
         }
 
-        Node(const T& data):
-          data(data),
-          next_node_ptr(nullptr)
+        Node(const T& data) noexcept:
+          data_(data),
+          next_node_ptr_(nullptr)
         {
 
         }
 
-        T data;
-        Node* next_node_ptr;
+        T data_;
+        Node* next_node_ptr_;
       };
     public:
       class ConstIterator
       {
         friend ForwardList;
         public:
-          ConstIterator():
+          ConstIterator() noexcept:
             node_ptr_(nullptr)
           {
 
           }
 
-          ConstIterator(const Node* const node_ptr):
+          ConstIterator(const Node* const node_ptr) noexcept:
             node_ptr_(node_ptr)
           {
 
           }
 
-          ~ConstIterator() = default;
-          ConstIterator(const ConstIterator&) = default;
-          ConstIterator& operator=(const ConstIterator&) = default;
+          ~ConstIterator() noexcept = default;
+          ConstIterator(const ConstIterator&) noexcept = default;
+          ConstIterator& operator=(const ConstIterator&) noexcept = default;
 
-          const ConstIterator& operator++()
+          const ConstIterator& operator++() noexcept
           {
             assert(node_ptr_ != nullptr);
-            node_ptr_ = node_ptr_->next_node_ptr;
+            node_ptr_ = node_ptr_->next_node_ptr_;
             return *this;
           }
 
-          ConstIterator operator++(int)
+          ConstIterator operator++(int) noexcept
           {
             assert(node_ptr_ != nullptr);
             const ConstIterator result(*this);
@@ -65,24 +65,24 @@ namespace potapova
             return result;
           }
 
-          const T& operator*() const
+          const T& operator*() const noexcept
           {
             assert(node_ptr_ != nullptr);
-            return node_ptr_->data;
+            return node_ptr_->data_;
           }
 
-          const T* operator->() const
+          const T* operator->() const noexcept
           {
             assert(node_ptr_ != nullptr);
-            return std::addressof(node_ptr_->data);
+            return std::addressof(node_ptr_->data_);
           }
 
-          bool operator==(const ConstIterator& rhs) const
+          bool operator==(const ConstIterator& rhs) const noexcept
           {
             return node_ptr_ == rhs.node_ptr_;
           }
 
-          bool operator!=(const ConstIterator& rhs) const
+          bool operator!=(const ConstIterator& rhs) const noexcept
           {
             return !(rhs == *this);
           }
@@ -94,30 +94,30 @@ namespace potapova
       {
         friend ForwardList;
         public:
-          Iterator():
+          Iterator() noexcept:
             node_ptr_(nullptr)
           {
 
           }
 
-          Iterator(Node* const node_ptr):
+          Iterator(Node* const node_ptr) noexcept:
             node_ptr_(node_ptr)
           {
 
           }
 
-          ~Iterator() = default;
-          Iterator(const Iterator&) = default;
-          Iterator& operator=(const Iterator&) = default;
+          ~Iterator() noexcept = default;
+          Iterator(const Iterator&) noexcept = default;
+          Iterator& operator=(const Iterator&) noexcept = default;
 
-          Iterator& operator++()
+          Iterator& operator++() noexcept
           {
             assert(node_ptr_ != nullptr);
-            node_ptr_ = node_ptr_->next_node_ptr;
+            node_ptr_ = node_ptr_->next_node_ptr_;
             return *this;
           }
 
-          Iterator operator++(int)
+          Iterator operator++(int) noexcept
           {
             assert(node_ptr_ != nullptr);
             const Iterator result(*this);
@@ -125,29 +125,29 @@ namespace potapova
             return result;
           }
 
-          T& operator*()
+          T& operator*() noexcept
           {
             assert(node_ptr_ != nullptr);
-            return node_ptr_->data;
+            return node_ptr_->data_;
           }
 
-          T* operator->() const
+          T* operator->() const noexcept
           {
             assert(node_ptr_ != nullptr);
-            return std::addressof(node_ptr_->data);
+            return std::addressof(node_ptr_->data_);
           }
 
-          bool operator==(const Iterator& rhs) const
+          bool operator==(const Iterator& rhs) const noexcept
           {
             return node_ptr_ == rhs.node_ptr_;
           }
 
-          bool operator!=(const Iterator& rhs) const
+          bool operator!=(const Iterator& rhs) const noexcept
           {
             return !(rhs == *this);
           }
 
-          operator ConstIterator() const
+          operator ConstIterator() const noexcept
           {
             return ConstIterator(node_ptr_);
           }
@@ -155,105 +155,118 @@ namespace potapova
           Node* node_ptr_;
       };
     public:
-      ForwardList():
+      ForwardList() noexcept:
         size_(0)
       {
 
       }
 
-      ForwardList(const ForwardList& other)
+      ForwardList(const ForwardList& other):
+        ForwardList()
       {
         *this = other;
       }
 
-      ForwardList(ForwardList&& other)
+      ForwardList(ForwardList&& other) noexcept:
+        ForwardList()
       {
         *this = std::move(other);
       }
 
       ForwardList< T >& operator=(const ForwardList< T >& other)
       {
-        if (!empty())
+        Iterator cur_elem_ptr = before_begin();
+        ConstIterator cur_other_elem_ptr = other.before_begin();
+        Iterator last_elem_ptr;
+        for (; cur_elem_ptr != end(); ++cur_elem_ptr)
         {
-          clear();
+          if (cur_other_elem_ptr == other.end())
+          {
+            erase_after(last_elem_ptr);
+          }
+          else
+          {
+            *cur_elem_ptr = *cur_other_elem_ptr;
+            ++cur_other_elem_ptr;
+          }
+          last_elem_ptr = cur_elem_ptr;
         }
-        Iterator last_elem_ptr = before_begin();
-        for (const T& cur_elem : other)
+        for (; cur_other_elem_ptr != other.end(); ++cur_other_elem_ptr)
         {
-          last_elem_ptr = insert_after(last_elem_ptr, cur_elem);
+          last_elem_ptr = insert_after(last_elem_ptr, *cur_other_elem_ptr);
         }
         return *this;
       }
 
-      ForwardList< T >& operator=(ForwardList< T >&& other)
+      ForwardList< T >& operator=(ForwardList< T >&& other) noexcept
       {
         if (!empty())
         {
           clear();
         }
-        head_.data = std::move(other.head_.data);
-        head_.next_node_ptr = other.head_.next_node_ptr;
-        other.head_.next_node_ptr = nullptr;
+        head_.data_ = std::move(other.head_.data_);
+        head_.next_node_ptr_ = other.head_.next_node_ptr_;
+        other.head_.next_node_ptr_ = nullptr;
         size_ = other.size_;
         return *this;
       }
 
-      ~ForwardList()
+      ~ForwardList() noexcept
       {
         clear();
       }
 
-      Iterator before_begin()
+      Iterator before_begin() noexcept
       {
         return Iterator(&head_);
       }
 
-      ConstIterator before_begin() const
+      ConstIterator before_begin() const noexcept
       {
         return ConstIterator(&head_);
       }
 
-      ConstIterator cbefore_begin() const
+      ConstIterator cbefore_begin() const noexcept
       {
         return ConstIterator(&head_);
       }
 
-      Iterator begin()
+      Iterator begin() noexcept
       {
-        return Iterator(head_.next_node_ptr);
+        return Iterator(head_.next_node_ptr_);
       }
 
-      ConstIterator begin() const
+      ConstIterator begin() const noexcept
       {
-        return ConstIterator(head_.next_node_ptr);
+        return ConstIterator(head_.next_node_ptr_);
       }
 
-      ConstIterator cbegin() const
+      ConstIterator cbegin() const noexcept
       {
-        return ConstIterator(head_.next_node_ptr);
+        return ConstIterator(head_.next_node_ptr_);
       }
 
-      Iterator end()
+      Iterator end() noexcept
       {
         return Iterator();
       }
 
-      ConstIterator end() const
+      ConstIterator end() const noexcept
       {
         return ConstIterator();
       }
 
-      ConstIterator cend() const
+      ConstIterator cend() const noexcept
       {
         return ConstIterator();
       }
 
-      T& front()
+      T& front() noexcept
       {
         return *begin();
       }
 
-      const T& front() const
+      const T& front() const noexcept
       {
         return *cbegin();
       }
@@ -261,8 +274,8 @@ namespace potapova
       Iterator insert_after(const Iterator place_ptr, const T& value)
       {
         Node* const new_node_ptr = new Node(value);
-        new_node_ptr->next_node_ptr = place_ptr.node_ptr_->next_node_ptr;
-        place_ptr.node_ptr_->next_node_ptr = new_node_ptr;
+        new_node_ptr->next_node_ptr_ = place_ptr.node_ptr_->next_node_ptr_;
+        place_ptr.node_ptr_->next_node_ptr_ = new_node_ptr;
         ++size_;
         return Iterator(new_node_ptr);
       }
@@ -272,37 +285,37 @@ namespace potapova
         insert_after(before_begin(), value);
       }
 
-      Iterator erase_after(const Iterator place_ptr)
+      Iterator erase_after(const Iterator place_ptr) noexcept
       {
-        Node* const deleted_node_ptr = place_ptr.node_ptr_->next_node_ptr;
-        place_ptr.node_ptr_->next_node_ptr = deleted_node_ptr->next_node_ptr;
+        Node* const deleted_node_ptr = place_ptr.node_ptr_->next_node_ptr_;
+        place_ptr.node_ptr_->next_node_ptr_ = deleted_node_ptr->next_node_ptr_;
         delete deleted_node_ptr;
         --size_;
-        return Iterator(place_ptr.node_ptr_->next_node_ptr);
+        return Iterator(place_ptr.node_ptr_->next_node_ptr_);
       }
 
-      void pop_front(const T& value)
+      void pop_front() noexcept
       {
-        erase_after(before_begin(), value);
+        erase_after(before_begin());
       }
 
-      void clear()
+      void clear() noexcept
       {
-        Node* cur_deleted_node_ptr = head_.next_node_ptr;
+        Node* cur_deleted_node_ptr = head_.next_node_ptr_;
         while (cur_deleted_node_ptr != nullptr)
         {
           const Node* const temp = cur_deleted_node_ptr;
-          cur_deleted_node_ptr = cur_deleted_node_ptr->next_node_ptr;
+          cur_deleted_node_ptr = cur_deleted_node_ptr->next_node_ptr_;
           delete temp;
         }
       }
 
-      bool empty() const
+      bool empty() const noexcept
       {
         return size_ == 0;
       }
 
-      size_t size() const
+      size_t size() const noexcept
       {
         return size_;
       }
