@@ -2,6 +2,7 @@
 #define GETDICTFROMINPUT_H
 #include <istream>
 #include <utility>
+
 namespace aksenov
 {
   template< typename DictOfDicts, typename Dict >
