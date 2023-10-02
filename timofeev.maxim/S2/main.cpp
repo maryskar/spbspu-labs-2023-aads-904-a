@@ -24,37 +24,37 @@ int main(int argc, char *argv[])
   }
   using dictionary = timofeev::Dictionary< size_t, std::string, std::less<> >;
   using dictOfDicts = timofeev::Dictionary< std::string, dictionary, std::less<> >;
-  constexpr auto maxSize = std::numeric_limits< std::streamsize >::max();
+  //constexpr auto maxSize = std::numeric_limits< std::streamsize >::max();
   dictOfDicts dict;
   dict = timofeev::inDict(inFile, dict);
   timofeev::Dictionary< std::string, void (*)(std::istream&, dictOfDicts&) > commands;
   commands = timofeev::cmdSet(commands);
-  std::string firstPart = "";
   while (!std::cin.eof())
   {
     try
     {
+      std::string firstPart = "";
       std::cin >> firstPart;
+      if (!std::cin)
+      {
+        break;
+      }
       if (firstPart == "print")
       {
         timofeev::Print(std::cin, dict, std::cout);
       }
-      if(commands.contains(firstPart))
+      else
       {
-        commands[firstPart](std::cin, dict);
+        commands.at(firstPart)(std::cin, dict);
       }
     }
     catch (const std::invalid_argument &e)
     {
       errors::printInvalid(std::cout);
-      std::cin.ignore(maxSize, '\n');
-      break;
     }
     catch (const std::out_of_range &e)
     {
       errors::printEmpty(std::cout);
-      std::cin.ignore(maxSize, '\n');
-      break;
     }
   }
   return 0;

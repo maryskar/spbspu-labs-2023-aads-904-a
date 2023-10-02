@@ -4,8 +4,6 @@ namespace timofeev
 {
   void Print(std::istream& in, dictOfDicts& dict, std::ostream& out)
   {
-    try
-    {
       std::string dictName;
       in >> dictName;
       if (dict.contains(dictName))
@@ -29,12 +27,6 @@ namespace timofeev
       {
         return;
       }
-    }
-    catch (...)
-    {
-      throw;
-    }
-
   }
   void Complement(std::istream& in, dictOfDicts& dict)
   {
