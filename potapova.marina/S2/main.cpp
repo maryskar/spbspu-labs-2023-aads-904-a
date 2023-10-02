@@ -49,8 +49,10 @@ int main(int argc, char* argv[])
       input_file >> name;
       input_file >> variables[name];
     }
-    std::cin >> command;
-    runCommand(command, variables);
+    while (std::cin >> command)
+    {
+      runCommand(command, variables);
+    }
   }
   catch (const std::exception& e)
   {
