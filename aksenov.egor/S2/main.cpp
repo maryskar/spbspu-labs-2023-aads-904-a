@@ -30,10 +30,6 @@ int main(int argc, char *argv[])
     {
       std::string command;
       std::cin >> command;
-      if (command == "exit")
-      {
-        return 20;
-      }
       if (!std::cin)
       {
         break;
