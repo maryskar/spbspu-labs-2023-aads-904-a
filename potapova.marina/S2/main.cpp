@@ -54,6 +54,11 @@ int main(int argc, char* argv[])
       runCommand(command, variables);
     }
   }
+  catch (const std::out_of_range& e)
+  {
+    std::cout << e.what() << '\n';
+    return 1;
+  }
   catch (const std::exception& e)
   {
     std::cerr << "Error: " << e.what() << '\n';

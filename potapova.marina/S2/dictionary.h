@@ -3,6 +3,7 @@
 
 #include <stdexcept>
 #include <utility>
+#include <ostream>
 #include "forwardList.h"
 
 namespace potapova
