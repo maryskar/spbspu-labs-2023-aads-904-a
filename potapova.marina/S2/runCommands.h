@@ -38,7 +38,13 @@ namespace potapova
       std::string first_name;
       std::string second_name;
       std::cin >> new_name >> first_name >> second_name;
-      variables[new_name] = variables.at(first_name).intersect(variables.at(second_name));
+      Dictionary< long long, std::string, compareFunc > first_dict = variables[first_name];
+      Dictionary< long long, std::string, compareFunc > second_dict = variables[second_name];
+      if (first_dict.empty() || second_dict.empty())
+      {
+        throw std::runtime_error("<EMPTY>");
+      }
+      variables[new_name] = first_dict.intersect(second_dict);
     }
     else if (command == "union")
     {
