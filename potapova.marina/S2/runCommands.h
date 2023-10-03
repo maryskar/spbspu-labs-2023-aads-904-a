@@ -20,9 +20,9 @@ namespace potapova
       Dictionary< long long, std::string, compareFunc > dict = variables[name];
       if (!dict.empty())
       {
-        std::cout << name;
+        std::cout << name << " ";
       }
-      std::cout << " " << dict;
+      std::cout << dict;
     }
     else if (command == "complement")
     {
