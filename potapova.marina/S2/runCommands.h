@@ -25,7 +25,7 @@ namespace potapova
       std::string first_name;
       std::string second_name;
       std::cin >> new_name >> first_name >> second_name;
-      variables.insert(new_name, variables.at(first_name).complement(variables.at(second_name)));
+      variables[new_name] = variables.at(first_name).complement(variables.at(second_name));
     }
     else if (command == "intersect")
     {
@@ -33,7 +33,7 @@ namespace potapova
       std::string first_name;
       std::string second_name;
       std::cin >> new_name >> first_name >> second_name;
-      variables.insert(new_name, variables.at(first_name).intersect(variables.at(second_name)));
+      variables[new_name] = variables.at(first_name).intersect(variables.at(second_name));
     }
     else if (command == "union")
     {
@@ -41,7 +41,7 @@ namespace potapova
       std::string first_name;
       std::string second_name;
       std::cin >> new_name >> first_name >> second_name;
-      variables.insert(new_name, variables.at(first_name).join(variables.at(second_name)));
+      variables[new_name] = variables.at(first_name).join(variables.at(second_name));
     }
   }
 }
