@@ -22,7 +22,7 @@ namespace potapova
       {
         std::cout << name;
       }
-      std::cout << " " << dict << '\n';
+      std::cout << " " << dict;
     }
     else if (command == "complement")
     {
