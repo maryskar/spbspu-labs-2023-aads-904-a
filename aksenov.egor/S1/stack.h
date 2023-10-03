@@ -1,7 +1,7 @@
 #ifndef STACK_H
 #define STACK_H
 #include <stdexcept>
-#include "list.h"
+#include <List.h>
 namespace aksenov
 {
   template< typename T >
@@ -21,7 +21,7 @@ namespace aksenov
       bool isEmpty() const;
       size_t size() const;
     private:
-      List< T > *top_;
+      listT< T > *top_;
       size_t size_;
   };
 
@@ -34,7 +34,7 @@ namespace aksenov
   template< typename T >
   Stack< T >::~Stack()
   {
-    deleteList(top_);
+    free(top_);
     size_ = 0;
   }
 
@@ -63,7 +63,7 @@ namespace aksenov
   template< typename T >
   void Stack< T >::push(const T &val)
   {
-    List< T > *newTop = new List< T >{val, top_};
+    listT< T > *newTop = new listT< T >(val, top_);
     top_ = newTop;
     size_++;
   }
@@ -96,7 +96,7 @@ namespace aksenov
     top_(nullptr),
     size_(0)
   {
-    List< T > *cur = other.top_;
+    listT< T > *cur = other.top_;
     while (cur)
     {
       push(cur->data);
@@ -112,7 +112,7 @@ namespace aksenov
       return *this;
     }
     clear(other);
-    List< T > cur = other.top_;
+    listT< T > cur = other.top_;
     while (cur)
     {
       push(cur->data);
