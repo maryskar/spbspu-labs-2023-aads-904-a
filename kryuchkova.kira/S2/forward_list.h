@@ -37,17 +37,13 @@ namespace kryuchkova
     iterator erase_after(const_iterator pos);
     iterator erase_after(const_iterator first, const_iterator last);
 
-    iterator before_begin() noexcept;
-    const_iterator before_begin() const noexcept;
+    iterator before_begin() const noexcept;
     const_iterator cbefore_begin() const noexcept;
-    iterator begin() noexcept;
-    const_iterator begin() const noexcept;
+    iterator begin() const noexcept;
     const_iterator cbegin() const noexcept;
-    iterator end() noexcept;
-    const_iterator end() const noexcept;
+    iterator end() const noexcept;
     const_iterator cend() const noexcept;
-    iterator last() noexcept;
-    const_iterator last() const noexcept;
+    iterator last() const noexcept;
     const_iterator clast() const noexcept;
 
     bool IsEmpty() const noexcept;
@@ -245,15 +241,9 @@ namespace kryuchkova
   }
 
   template< typename T >
-  ForwardIterator< T > ForwardList< T >::before_begin() noexcept
+  ForwardIterator< T > ForwardList< T >::before_begin() const noexcept
   {
     return fake_;
-  }
-
-  template< typename T >
-  ConstForwardIterator< T > ForwardList< T >::before_begin() const noexcept
-  {
-    return cbefore_begin();
   }
 
   template< typename T >
@@ -263,15 +253,9 @@ namespace kryuchkova
   }
 
   template< typename T >
-  ForwardIterator< T > ForwardList< T >::begin() noexcept
+  ForwardIterator< T > ForwardList< T >::begin() const noexcept
   {
     return iterator(fake_.node_->next_);
-  }
-
-  template< typename T >
-  ConstForwardIterator< T > ForwardList< T >::begin() const noexcept
-  {
-    return cbegin();
   }
 
   template< typename T >
@@ -281,15 +265,9 @@ namespace kryuchkova
   }
 
   template< typename T >
-  ForwardIterator< T > ForwardList< T >::end() noexcept
+  ForwardIterator< T > ForwardList< T >::end() const noexcept
   {
     return fake_;
-  }
-
-  template< typename T >
-  ConstForwardIterator< T > ForwardList< T >::end() const noexcept
-  {
-    return cend();
   }
 
   template< typename T >
@@ -299,15 +277,9 @@ namespace kryuchkova
   }
 
   template< typename T >
-  ForwardIterator< T > ForwardList< T >::last() noexcept
+  ForwardIterator< T > ForwardList< T >::last() const noexcept
   {
     return last_;
-  }
-
-  template< typename T >
-  ConstForwardIterator< T > ForwardList< T >::last() const noexcept
-  {
-    return clast();
   }
 
   template< typename T >

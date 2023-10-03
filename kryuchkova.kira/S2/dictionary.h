@@ -7,13 +7,6 @@
 
 namespace kryuchkova
 {
-  template< typename T >
-  class ForwardList;
-  template< typename T >
-  class ConstForwardIterator;
-  template< typename T >
-  class ForwardList;
-
   template< typename Key, typename Value, typename Compare = std::less< > >
   class Dictionary
   {
@@ -43,17 +36,13 @@ namespace kryuchkova
     val & operator[](key_type && key);
     const val & at(const key_type & key) const;
 
-    iterator before_begin() noexcept;
-    const_iterator before_begin() const noexcept;
+    iterator before_begin() const noexcept;
     const_iterator cbefore_begin() const noexcept;
-    iterator begin() noexcept;
-    const_iterator begin() const noexcept;
+    iterator begin() const noexcept;
     const_iterator cbegin() const noexcept;
-    iterator end() noexcept;
-    const_iterator end() const noexcept;
+    iterator end() const noexcept;
     const_iterator cend() const noexcept;
-    iterator last() noexcept;
-    const_iterator last() const noexcept;
+    iterator last() const noexcept;
     const_iterator clast() const noexcept;
 
     std::pair< iterator, bool > insert(const val_type &);
@@ -229,15 +218,9 @@ namespace kryuchkova
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::begin() noexcept
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::begin() const noexcept
   {
     return data_.begin();
-  }
-
-  template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::begin() const noexcept
-  {
-    return cbegin();
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -247,15 +230,9 @@ namespace kryuchkova
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::end() noexcept
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::end() const noexcept
   {
     return data_.end();
-  }
-
-  template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::end() const noexcept
-  {
-    return cend();
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -265,15 +242,9 @@ namespace kryuchkova
   }
 
   template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::before_begin() noexcept
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::before_begin() const noexcept
   {
     return data_.before_begin();
-  }
-
-  template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::before_begin() const noexcept
-  {
-    return cbefore_begin();
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -283,15 +254,9 @@ namespace kryuchkova
   }
 
    template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::last() noexcept
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::last() const noexcept
   {
     return data_.last();
-  }
-
-  template< typename Key, typename Value, typename Compare >
-  typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::last() const noexcept
-  {
-    return clast();
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -313,14 +278,17 @@ namespace kryuchkova
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::const_iterator Dictionary< Key, Value, Compare >::find(const key_type & key) const
   {
-    for (auto i = cbegin(); i != cend(); i++)
+    iterator curr = begin();
+    while (curr != end())
     {
-      if (i->first == key)
+      if (!comp_(curr->first, key) && !comp_(key, curr->first))
       {
-        return i;
+        return curr;
       }
+      ++curr;
     }
     return cend();
+
   }
 
   template< typename Key, typename Value, typename Compare >

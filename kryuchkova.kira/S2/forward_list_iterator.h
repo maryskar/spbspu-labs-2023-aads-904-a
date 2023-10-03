@@ -10,6 +10,8 @@ namespace kryuchkova
 {
   template < typename T >
   class ForwardList;
+  template < typename T >
+  class ConstForwardIterator;
 
   template < typename T >
   class ForwardIterator: public std::iterator< std::forward_iterator_tag, T >
