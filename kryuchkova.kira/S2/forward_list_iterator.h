@@ -58,21 +58,21 @@ namespace kryuchkova
   template < typename T >
   T * ForwardIterator< T >::operator->()
   {
-    assert(node_ == nullptr);
+    assert(node_ != nullptr);
     return std::addressof(node_->data_);
   }
 
   template < typename T >
   const T * ForwardIterator< T >::operator->() const
   {
-    assert(node_ == nullptr);
+    assert(node_ != nullptr);
     return std::addressof(node_->data_);
   }
 
   template < typename T >
   ForwardIterator< T > & ForwardIterator< T >::operator++()
   {
-    assert(node_ == nullptr);
+    assert(node_ != nullptr);
     node_ = node_->next_;
     return *this;
   }
@@ -80,7 +80,7 @@ namespace kryuchkova
   template < typename T >
   ForwardIterator< T > ForwardIterator< T >::operator++(int)
   {
-    assert(node_ == nullptr);
+    assert(node_ != nullptr);
     ForwardIterator< T > temp(*this);
     ++(*this);
     return temp;
