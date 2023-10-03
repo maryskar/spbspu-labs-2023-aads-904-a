@@ -67,7 +67,7 @@ void skarlygina::formatToPostfix(std::string& str, Queue< std::string >& queue)
         std::string operation2 = stack.top();
         if (!isGreaterPriority(operation[0], operation2[0]))
         {
-          while (!stack.isEmpty() && stack.top() != "(" && (!isGreaterPriority(operation[0], operation2[0])))
+          while (!stack.isEmpty() && stack.top() != "(" && (!isGreaterPriority(operation[0], stack.top()[0])))
           {
             queue.push(stack.top());
             stack.pop();
@@ -120,7 +120,7 @@ void skarlygina::countPostfix(Queue< std::string >& queue, Stack< long long >& r
       stack.pop();
       long long b = stack.top();
       stack.pop();
-      stack.push(switchSymbol(queue.top(), b, a));
+      stack.push(switchSymbol(first, b, a));
     }
     queue.pop();
   }
