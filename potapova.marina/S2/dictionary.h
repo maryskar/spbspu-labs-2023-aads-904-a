@@ -111,7 +111,7 @@ namespace potapova
         const Iterator result_ptr = find(key);
         if (result_ptr == data_.end())
         {
-          throw std::out_of_range("Key was not found in dictionary");
+          throw std::out_of_range("<INVALID COMMAND>");
         }
         return result_ptr->value;
       }
@@ -121,7 +121,7 @@ namespace potapova
         const ConstIterator result_ptr = find(key);
         if (result_ptr == data_.end())
         {
-          throw std::out_of_range("Key was not found in dictionary");
+          throw std::out_of_range("<INVALID COMMAND>");
         }
         return result_ptr->value;
       }
