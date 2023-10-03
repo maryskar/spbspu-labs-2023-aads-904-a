@@ -17,7 +17,12 @@ namespace potapova
     {
       std::string name;
       std::cin >> name;
-      std::cout << name << " " << variables[name] << '\n';
+      Dictionary< long long, std::string, compareFunc > dict = variables[name];
+      if (!dict.empty())
+      {
+        std::cout << name;
+      }
+      std::cout << " " << dict << '\n';
     }
     else if (command == "complement")
     {
