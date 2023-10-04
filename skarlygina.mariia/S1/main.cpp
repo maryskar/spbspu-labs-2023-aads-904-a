@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
   */
   //std::cout << "Ответ: " << stack.top() << std::endl;
   //exit(0);
-  
+
   Queue< std::string > queue;
   Stack< long long > stack;
   std::ifstream infile;
