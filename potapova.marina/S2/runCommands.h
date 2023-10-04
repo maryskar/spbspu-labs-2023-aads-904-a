@@ -17,6 +17,7 @@ namespace potapova
     {
       std::string name;
       std::cin >> name;
+      variables.at(name);
       Dictionary< long long, std::string, compareFunc > dict = variables[name];
       if (!dict.empty())
       {
