@@ -3,8 +3,11 @@
 #include <cmath>
 #include <stdexcept>
 
-constexpr long long limit_min = std::numeric_limits< long long >::min();
-constexpr long long limit_max = std::numeric_limits< long long >::max();
+namespace skarlygina
+{
+  constexpr long long limit_min = std::numeric_limits< long long >::min();
+  constexpr long long limit_max = std::numeric_limits< long long >::max();
+}
 
 long long skarlygina::sum(long long b, long long a)
 {
