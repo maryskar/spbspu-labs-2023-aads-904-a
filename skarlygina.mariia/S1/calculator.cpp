@@ -6,7 +6,7 @@
 constexpr long long limit_min = std::numeric_limits< long long >::min();
 constexpr long long limit_max = std::numeric_limits< long long >::max();
 
-long long skarlygina::sum(long long a, long long b)
+long long skarlygina::sum(long long b, long long a)
 {
   if (a < 0 && b < 0)
   {
@@ -25,7 +25,7 @@ long long skarlygina::sum(long long a, long long b)
   return a + b;
 }
 
-long long skarlygina::substraction(long long a, long long b)
+long long skarlygina::substraction(long long b, long long a)
 {
   if ((b < limit_min + a && a > 0) || (b > limit_max + a && a < 0))
   {
@@ -34,7 +34,7 @@ long long skarlygina::substraction(long long a, long long b)
   return b - a;
 }
 
-long long skarlygina::multiplication(long long a, long long b)
+long long skarlygina::multiplication(long long b, long long a)
 {
   if ((a > 0 && b > 0) || (a < 0 && b < 0))
   {
@@ -63,7 +63,7 @@ long long skarlygina::multiplication(long long a, long long b)
   return a * b;
 }
 
-long long skarlygina::division(long long a, long long b)
+long long skarlygina::division(long long b, long long a)
 {
   if (a == 0)
   {
@@ -72,7 +72,7 @@ long long skarlygina::division(long long a, long long b)
   return b / a;
 }
 
-long long skarlygina::remainder(long long a, long long b)
+long long skarlygina::remainder(long long b, long long a)
 {
   if (b > 0)
   {
@@ -96,9 +96,13 @@ bool skarlygina::isGreaterPriority(char op1, char op2)
 
 bool skarlygina::checkString(const std::string& op)
 {
-  if (op.length() == 1)
+  try
   {
-    return isOperation(op[0]);
+    std::stoll(op);
+    return true;
   }
-  return false;
+  catch (const std::invalid_argument& e)
+  {
+    return false;
+  }
 }

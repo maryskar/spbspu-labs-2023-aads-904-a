@@ -1,6 +1,7 @@
 #include "count_postfix.h"
 #include "count.h"
 #include "calculator.h"
+#include <iostream>
 
 void skarlygina::formatToPostfix(std::string& str, Queue< std::string >& queue)
 {
@@ -106,11 +107,13 @@ void skarlygina::formatToPostfix(std::string& str, Queue< std::string >& queue)
 void skarlygina::countPostfix(Queue< std::string >& queue, Stack< long long >& res)
 {
   Stack< long long > stack;
+  //std::cout << queue << "\n";
   while (!queue.isEmpty())
   {
     std::string first = queue.top();
+    //std::cout << first << " queue top count\n";
     queue.pop();
-    if (skarlygina::checkString(first))
+    if (!skarlygina::checkString(first))
     {
       long long a = stack.top();
       stack.pop();
@@ -124,5 +127,6 @@ void skarlygina::countPostfix(Queue< std::string >& queue, Stack< long long >& r
       stack.push(a);
     }
   }
+  //std::cout << stack << " stack\n";
   res.push(stack.top());
 }

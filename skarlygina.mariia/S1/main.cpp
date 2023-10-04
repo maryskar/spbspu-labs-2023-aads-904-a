@@ -11,7 +11,6 @@ int main(int argc, char* argv[])
   Queue< std::string > queue;
   Stack< long long > stack;
   std::ifstream infile;
-
   if (argc == 2)
   {
     infile.open(argv[1]);
@@ -21,31 +20,31 @@ int main(int argc, char* argv[])
       return 1;
     }
   }
-  else if (argc > 2)
+  if (argc > 2)
   {
-    std::cerr << "Too many arguments";
+    std::cerr << "Many argc";
     return 1;
   }
-
   std::istream& file = (argc == 1) ? std::cin : infile;
   try
   {
-    std::string math_string;
-    while (std::getline(file, math_string))
+    while (!file.eof())
     {
-      if (!math_string.empty())
+      std::string math_string;
+      std::getline(file, math_string);
+      if (!math_string[0])
       {
-        skarlygina::formatToPostfix(math_string, queue);
-        skarlygina::countPostfix(queue, stack);
+        continue;
       }
+      skarlygina::formatToPostfix(math_string, queue);
+      skarlygina::countPostfix(queue, stack);
     }
   }
   catch (const std::exception& e)
   {
-    std::cerr << e.what() << "\n";
+    std::cerr << e.what() << "/n";
     return 2;
   }
-
   while (!stack.isEmpty())
   {
     std::cout << stack.top();

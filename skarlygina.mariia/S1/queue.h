@@ -15,6 +15,16 @@ public:
   void pop();
   bool isEmpty() const;
   ~Queue();
+  friend std::ostream& operator<<(std::ostream& os, const Queue< T >& queue)
+  {
+    typename Queue< T >::List* current = queue.head_;
+    while (current != nullptr)
+    {
+      os << current->data << " ";
+      current = current->next;
+    }
+    return os;
+  }
 private:
   struct List
   {
@@ -81,10 +91,6 @@ void Queue< T >::pop()
   }
   List* head_temp = head_;
   head_ = head_->next;
-  if (head_ == tail_)
-  {
-    head_ = tail_ = nullptr;
-  }
   delete head_temp;
 }
 

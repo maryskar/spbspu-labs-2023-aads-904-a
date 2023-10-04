@@ -15,6 +15,16 @@ public:
   const T& deep() const;
   bool isEmpty() const;
   ~Stack();
+  friend std::ostream& operator<<(std::ostream& os, const Stack< T >& queue)
+  {
+    typename Stack< T >::List* current = queue.root_;
+    while (current != nullptr)
+    {
+      os << current->data << " ";
+      current = current->next;
+    }
+    return os;
+  }
 private:
   struct List
   {
@@ -44,10 +54,11 @@ Stack< T >::Stack(const Stack< T >&& other):
 template <class T>
 const T& Stack< T >::top() const
 {
-  if (isEmpty())
+    if (isEmpty())
   {
     throw std::runtime_error("Stack is empty");
   }
+
   return root_->data;
 }
 
