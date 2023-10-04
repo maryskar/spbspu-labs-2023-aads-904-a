@@ -120,13 +120,14 @@ void skarlygina::countPostfix(Queue< std::string >& queue, Stack< long long >& r
       long long b = stack.top();
       stack.pop();
       stack.push(switchSymbol(first, b, a));
-    }
+      //std::cout << "a = " << b << "  b = " << a << "    res = " << switchSymbol(first, b, a) <<  "\n";
+    } 
     else
     {
       long long a = std::stoll(first);
       stack.push(a);
     }
   }
-  //std::cout << stack << " stack\n";
+  std::cout << stack << " stack\n";
   res.push(stack.top());
 }

@@ -10,7 +10,8 @@ int main(int argc, char* argv[])
 {
   Queue< std::string > queue;
   Stack< long long > stack;
-  std::ifstream infile;
+
+    std::ifstream infile;
   if (argc == 2)
   {
     infile.open(argv[1]);
@@ -55,5 +56,15 @@ int main(int argc, char* argv[])
     }
   }
   std::cout << "\n";
+
+  /*
+   std::string math_string;
+  std::getline(std::cin, math_string);
+  skarlygina::formattopostfix(math_string, queue);
+  std::cout << queue << std::endl;
+  skarlygina::countpostfix(queue, stack);
+  std::cout << stack.top() << std::endl;
+  exit(0);
+  */
   return 0;
 }

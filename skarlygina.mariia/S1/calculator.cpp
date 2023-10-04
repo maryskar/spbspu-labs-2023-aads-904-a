@@ -91,7 +91,7 @@ bool skarlygina::isOperation(char op)
 
 bool skarlygina::isGreaterPriority(char op1, char op2)
 {
-  return ((op1 == '*' || op1 == '/' || op1 == '%') && (op2 == '+' || op2 == '-')) || (op1 == op2);
+  return ((op1 == '*' || op1 == '/' || op1 == '%') && (op2 == '+' || op2 == '-'));
 }
 
 bool skarlygina::checkString(const std::string& op)
