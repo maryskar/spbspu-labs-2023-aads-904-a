@@ -3,10 +3,10 @@
 
 namespace kryuchkova
 {
-  Dictionary< std::string, Dictionary< int, std::string, std::less< > >, std::less< std:: string> > readDictOfDict(std::istream & in)
+  Dictionary< std::string, Dictionary< int, std::string, std::less< > >, std::less< > > readDictOfDict(std::istream & in)
   {
     using dictionary = Dictionary< int, std::string, std::less< > >;
-    using dict_of_dict = Dictionary< std::string, dictionary, std::less< std::string > >;
+    using dict_of_dict = Dictionary< std::string, dictionary, std::less< > >;
     using dictionary_elem = std::pair< int, std::string >;
     using dict_of_dict_elem = std::pair< std::string, dictionary >;
     dict_of_dict container;
@@ -16,7 +16,7 @@ namespace kryuchkova
       in >> name;
       if (!in)
       {
-        throw;
+        break;
       }
       dictionary dict;
       int key = 0;
@@ -26,7 +26,7 @@ namespace kryuchkova
         in >> key >> val;
         if (!in)
         {
-          throw;
+          break;
         }
         dict.insert(dictionary_elem(key, val));
       }

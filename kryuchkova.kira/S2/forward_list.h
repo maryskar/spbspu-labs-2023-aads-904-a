@@ -73,13 +73,13 @@ namespace kryuchkova
     fake_(static_cast< Node< T > * >(::operator new (sizeof(Node< T >)))),
     last_(iterator(nullptr))
   {
-    fake_.node_->next_ = nullptr;
+    fake_.node_->next_ = fake_.node_;
   }
 
   template < typename T >
   bool ForwardList< T >::IsEmpty() const noexcept
   {
-    return fake_.node_->next_ == nullptr;
+    return fake_.node_->next_ == fake_.node_;
   }
 
   template < typename T >

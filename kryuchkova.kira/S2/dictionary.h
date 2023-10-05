@@ -136,11 +136,13 @@ namespace kryuchkova
     bool > Dictionary< Key, Value, Compare >::insert(const val_type & value)
   {
     auto curr = find(value.first);
-    if (curr != end())
+    if (curr == end())
     {
+      size_++;
       return {curr, false};
     }
     data_.push_front(std::move(value));
+    size_++;
     curr = find(value.first);
     return {curr, true};
   }

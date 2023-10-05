@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
   }
 
   using dictionary = kryuchkova::Dictionary< int, std::string, std::less< > >;
-  using dict_of_dict = kryuchkova::Dictionary< std::string, dictionary, std::less< std::string > >;
+  using dict_of_dict = kryuchkova::Dictionary< std::string, dictionary, std::less< > >;
   using dict_of_dict_elem = std::pair< std::string, dictionary >;
 
   try

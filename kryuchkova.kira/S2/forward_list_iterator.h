@@ -5,6 +5,7 @@
 #include <memory>
 #include "forward_list_const_iterator.h"
 #include "../common/node.h"
+#include <iostream>
 
 namespace kryuchkova
 {
@@ -42,13 +43,6 @@ namespace kryuchkova
   };
 
   template < typename T >
-  T & ForwardIterator< T >::operator*()
-  {
-    assert(node_ != nullptr);
-    return node_->data_;
-  }
-
-  template < typename T >
   const T & ForwardIterator< T >::operator*() const
   {
     assert(node_ != nullptr);
@@ -56,10 +50,9 @@ namespace kryuchkova
   }
 
   template < typename T >
-  T * ForwardIterator< T >::operator->()
+  T & ForwardIterator< T >::operator*()
   {
-    assert(node_ != nullptr);
-    return std::addressof(node_->data_);
+    return const_cast< T & >((static_cast< const ForwardIterator< T > >(*this)).operator*());
   }
 
   template < typename T >
@@ -67,6 +60,12 @@ namespace kryuchkova
   {
     assert(node_ != nullptr);
     return std::addressof(node_->data_);
+  }
+
+  template < typename T >
+  T * ForwardIterator< T >::operator->()
+  {
+    return const_cast< T * >((static_cast< const ForwardIterator< T > >(*this)).operator->());
   }
 
   template < typename T >
