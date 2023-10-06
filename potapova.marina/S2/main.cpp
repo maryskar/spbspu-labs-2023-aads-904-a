@@ -46,7 +46,6 @@ int main(const int argc, const char* argv[])
   {
     while (!input_file.eof())
     {
-      input_file >> name;
       if (!(input_file >> name))
       {
         std::cerr << "Incorrect data in file\n";
