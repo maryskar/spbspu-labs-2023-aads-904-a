@@ -20,8 +20,7 @@ int main(int argc, char *argv[])
   }
   using dict = aksenov::Dictionary< int, std::string, std::less< > >;
   using dictOfDicts = aksenov::Dictionary< std::string, dict, std::less< > >;
-  dictOfDicts bigData;
-  bigData = aksenov::getDictFromInput< dictOfDicts, dict >(inputFile);
+  dictOfDicts bigData = aksenov::getDictFromInput< dictOfDicts, dict >(inputFile);
   using commandMap = aksenov::Dictionary< std::string, dict(*)(const dict &, const dict &) >;
   commandMap commands;
   aksenov::createCommandDict< commandMap >(commands);
