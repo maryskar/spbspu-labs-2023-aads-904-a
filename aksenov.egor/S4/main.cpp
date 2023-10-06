@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
   using dictOfDicts = aksenov::BST< std::string, dict, std::less< > >;
   dictOfDicts bigData;
   bigData = aksenov::getDictFromInput< dictOfDicts, dict >(inputFile);
-  using commandMap = aksenov::BST< std::string, dict(*)(const dict &, const dict &) >;
+  using commandMap = aksenov::Dictionary< std::string, dict(*)(const dict &, const dict &) >;
   commandMap commands;
   aksenov::createCommandDict< commandMap >(commands);
   while (std::cin.good())
