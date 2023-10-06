@@ -177,20 +177,22 @@ namespace potapova
       {
         Iterator cur_elem_ptr = before_begin();
         ConstIterator cur_other_elem_ptr = other.before_begin();
-        Iterator last_elem_ptr;
-        for (; cur_elem_ptr != end(); ++cur_elem_ptr)
+        Iterator prev_elem_ptr;
+        while (cur_elem_ptr != end())
         {
           if (cur_other_elem_ptr == other.end())
           {
-            erase_after(last_elem_ptr);
+            cur_elem_ptr = erase_after(prev_elem_ptr);
           }
           else
           {
             *cur_elem_ptr = *cur_other_elem_ptr;
             ++cur_other_elem_ptr;
+            prev_elem_ptr = cur_elem_ptr;
+            ++cur_elem_ptr;
           }
-          last_elem_ptr = cur_elem_ptr;
         }
+        Iterator& last_elem_ptr = prev_elem_ptr;
         for (; cur_other_elem_ptr != other.end(); ++cur_other_elem_ptr)
         {
           last_elem_ptr = insert_after(last_elem_ptr, *cur_other_elem_ptr);
