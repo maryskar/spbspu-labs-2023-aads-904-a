@@ -59,6 +59,7 @@ namespace aksenov
     }
     return res;
   }
+
   template< class Storage >
   void createCommandDict(Storage &commands)
   {
