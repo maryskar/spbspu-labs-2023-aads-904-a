@@ -20,7 +20,7 @@ int main(const int argc, const char* argv[])
 {
   using namespace potapova;
   std::ifstream input_file;
-  if (argc > 2)
+  if (argc != 2)
   {
     std::cerr << "Incorrect number of arguments\n";
     return 1;
@@ -47,6 +47,11 @@ int main(const int argc, const char* argv[])
     while (!input_file.eof())
     {
       input_file >> name;
+      if (!(input_file >> name))
+      {
+        std::cerr << "Incorrect data in file\n";
+        return 1;
+      }
       input_file >> variables[name];
     }
     while (std::cin >> command)
