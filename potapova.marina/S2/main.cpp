@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
     {
       if (!runCommand(command, variables))
       {
-        std::cout << "<INVALID COMMAND>";
+        std::cout << "<INVALID COMMAND>" << '\n';
       }
     }
   }
