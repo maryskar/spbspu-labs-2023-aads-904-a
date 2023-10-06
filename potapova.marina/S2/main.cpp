@@ -46,7 +46,7 @@ int main(const int argc, const char* argv[])
   {
     while (!input_file.eof())
     {
-      input_file >> name; 
+      input_file >> name;
       input_file >> variables[name];
     }
     while (std::cin >> command)
