@@ -46,11 +46,7 @@ int main(const int argc, const char* argv[])
   {
     while (!input_file.eof())
     {
-      if (!(input_file >> name))
-      {
-        std::cerr << "Incorrect data in file\n";
-        return 1;
-      }
+      input_file >> name; 
       input_file >> variables[name];
     }
     while (std::cin >> command)
