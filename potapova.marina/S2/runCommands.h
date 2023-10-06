@@ -8,53 +8,59 @@
 
 namespace potapova
 {
-  template< bool (*compareFunc)(const long long&, const long long&),
-      bool (*compareDict)(const std::string& first, const std::string& second) >
-  void runCommand(const std::string& command,
-      Dictionary< std::string, Dictionary< long long, std::string, compareFunc >, compareDict >& variables)
+  template< bool (*compareLongLong)(const long long&, const long long&),
+      bool (*compareString)(const std::string& first, const std::string& second) >
+  using VariablesT = Dictionary< std::string, Dictionary< long long, std::string, compareLongLong >, compareString >;
+
+  template< bool (*compareLongLong)(const long long&, const long long&),
+      bool (*compareString)(const std::string& first, const std::string& second) >
+  bool runCommand(const std::string& command,
+      VariablesT< compareLongLong, compareString >& variables)
   {
+    using VariablesTConstIterator = typename VariablesT< compareLongLong, compareString >::ConstIterator;
     if (command == "print")
     {
       std::string name;
       std::cin >> name;
-      variables.at(name);
-      Dictionary< long long, std::string, compareFunc > dict = variables[name];
-      if (!dict.empty())
+      const VariablesTConstIterator dict_ptr = variables.find(name);
+      if (dict_ptr == variables.cend())
       {
-        std::cout << name << " ";
+        return false;
       }
-      std::cout << dict;
-    }
-    else if (command == "complement")
-    {
-      std::string new_name;
-      std::string first_name;
-      std::string second_name;
-      std::cin >> new_name >> first_name >> second_name;
-      variables[new_name] = variables.at(first_name).complement(variables.at(second_name));
-    }
-    else if (command == "intersect")
-    {
-      std::string new_name;
-      std::string first_name;
-      std::string second_name;
-      std::cin >> new_name >> first_name >> second_name;
-      Dictionary< long long, std::string, compareFunc > first_dict = variables[first_name];
-      Dictionary< long long, std::string, compareFunc > second_dict = variables[second_name];
-      if (first_dict.empty() || second_dict.empty())
+      if (!dict_ptr->value.empty())
       {
-        throw std::runtime_error("<EMPTY>");
+        std::cout << name << ' ';
       }
-      variables[new_name] = first_dict.intersect(second_dict);
+      std::cout << dict_ptr->value;
     }
-    else if (command == "union")
+    else
     {
       std::string new_name;
       std::string first_name;
       std::string second_name;
       std::cin >> new_name >> first_name >> second_name;
-      variables[new_name] = variables.at(first_name).join(variables.at(second_name));
+      const VariablesTConstIterator first_dict_ptr = variables.find(first_name);
+      const VariablesTConstIterator second_dict_ptr = variables.find(second_name);
+      if (first_dict_ptr == variables.cend() || second_dict_ptr == variables.cend())
+      {
+        return false;
+      }
+      const Dictionary< long long, std::string, compareLongLong >& first_dict = first_dict_ptr->value;
+      const Dictionary< long long, std::string, compareLongLong >& second_dict = second_dict_ptr->value;
+      if (command == "complement")
+      {
+        variables[new_name] = first_dict.complement(second_dict);
+      }
+      else if (command == "intersect")
+      {
+        variables[new_name] = first_dict.intersect(second_dict);
+      }
+      else if (command == "union")
+      {
+        variables[new_name] = first_dict.join(second_dict);
+      }
     }
+    return true;
   }
 }
 

@@ -6,12 +6,12 @@
 #include "workWithIO.h"
 #include "runCommands.h"
 
-bool compareFunc(const long long& first, const long long& second)
+bool compareLongLong(const long long& first, const long long& second)
 {
   return first > second;
 }
 
-bool compareDict(const std::string& first, const std::string& second)
+bool compareString(const std::string& first, const std::string& second)
 {
   return first.size() > second.size();
 }
@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
     return 1;
   }
   std::string name;
-  Dictionary< std::string, Dictionary< long long, std::string, compareFunc >, compareDict > variables;
+  VariablesT< compareLongLong, compareString > variables;
   std::string command;
   try
   {
@@ -51,16 +51,11 @@ int main(int argc, char* argv[])
     }
     while (std::cin >> command)
     {
-      runCommand(command, variables);
+      if (!runCommand(command, variables))
+      {
+        std::cout << "<INVALID COMMAND>";
+      }
     }
-  }
-  catch (const std::runtime_error& e)
-  {
-    std::cout << e.what() << '\n';
-  }
-  catch (const std::out_of_range& e)
-  {
-    std::cout << e.what() << '\n';
   }
   catch (const std::exception& e)
   {
