@@ -32,7 +32,12 @@ namespace potapova
   template< bool (*Compare)(const long long&, const long long&) >
   std::istream& operator>>(std::istream& in, Dictionary< long long, std::string, Compare >& dict)
   {
-    in >> std::ws;
+    std::istream::int_type cur_input_sym = in.rdbuf()->sgetc();
+    while (cur_input_sym != '\n' && std::isspace(cur_input_sym))
+    {
+      in.ignore(1);
+      cur_input_sym = in.rdbuf()->sgetc();
+    }
     std::string keys_and_values;
     if (!std::getline(in, keys_and_values))
     {
