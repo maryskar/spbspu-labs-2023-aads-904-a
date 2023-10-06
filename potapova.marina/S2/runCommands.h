@@ -8,9 +8,11 @@
 
 namespace potapova
 {
+  template< bool (*compareLongLong)(const long long&, const long long&) >
+  using VariableT = Dictionary< long long, std::string, compareLongLong >;
   template< bool (*compareLongLong)(const long long&, const long long&),
       bool (*compareString)(const std::string& first, const std::string& second) >
-  using VariablesT = Dictionary< std::string, Dictionary< long long, std::string, compareLongLong >, compareString >;
+  using VariablesT = Dictionary< std::string, VariableT< compareLongLong >, compareString >;
 
   template< bool (*compareLongLong)(const long long&, const long long&),
       bool (*compareString)(const std::string& first, const std::string& second) >
@@ -45,8 +47,8 @@ namespace potapova
       {
         return false;
       }
-      const Dictionary< long long, std::string, compareLongLong >& first_dict = first_dict_ptr->value;
-      const Dictionary< long long, std::string, compareLongLong >& second_dict = second_dict_ptr->value;
+      const VariableT< compareLongLong >& first_dict = first_dict_ptr->value;
+      const VariableT< compareLongLong >& second_dict = second_dict_ptr->value;
       if (command == "complement")
       {
         variables[new_name] = first_dict.complement(second_dict);
