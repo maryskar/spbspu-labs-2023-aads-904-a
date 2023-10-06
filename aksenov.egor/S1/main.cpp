@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "stack.h"
 #include "details.h"
+#include <stack.h>
 
 int main(int argc, char *argv[])
 {

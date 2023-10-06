@@ -1,41 +1,9 @@
 #include <iostream>
-#include <utility>
 #include <fstream>
 #include <string>
 #include "nonBalancedBinarySearchTree.h"
-#include "commands.h"
-//#include "getDictFromInput.h"
-template< typename DictOfDicts, typename Dict >
-DictOfDicts getDictFromInput(std::istream &in)
-{
-  DictOfDicts res;
-  while (in)
-  {
-    std::string name = "";
-    in >> name;
-    if (!in || name == "stop")
-    {
-      break;
-    }
-    Dict data;
-    std::string val = "";
-    int key = 0;
-    while (in)
-    {
-      in >> key >> val;
-      if (!in)
-      {
-        break;
-      }
-      data.insert(std::make_pair(key, val));
-    }
-    in.clear();
-    res.insert(std::make_pair(name, data));
-  }
-  return res;
-}
-
-
+#include <commands.h>
+#include <getDictFromInput.h>
 
 int main(int argc, char *argv[])
 {
@@ -44,6 +12,7 @@ int main(int argc, char *argv[])
     std::cerr << "error" << "\n";
     return 1;
   }
+
   std::ifstream inputFile(argv[1]);
   if (!inputFile.is_open())
   {
@@ -52,9 +21,11 @@ int main(int argc, char *argv[])
   }
   using dict = aksenov::BST< int, std::string, std::less< > >;
   using dictOfDicts = aksenov::BST< std::string, dict, std::less< > >;
-  dictOfDicts bigData = getDictFromInput< dictOfDicts, dict >(inputFile);
-  aksenov::commandMap commands;
-  aksenov::createCommandDict(commands);
+  dictOfDicts bigData;
+  bigData = aksenov::getDictFromInput< dictOfDicts, dict >(inputFile);
+  using commandMap = aksenov::BST< std::string, dict(*)(const dict &, const dict &) >;
+  commandMap commands;
+  aksenov::createCommandDict< commandMap >(commands);
   while (std::cin.good())
   {
     try

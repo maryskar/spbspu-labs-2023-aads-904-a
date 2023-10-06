@@ -1,9 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "Dictionary.h"
-#include "commands.h"
-#include "getDictFromInput.h"
+#include <Dictionary.h>
+#include <commands.h>
+#include <getDictFromInput.h>
 
 int main(int argc, char *argv[])
 {
@@ -22,8 +22,9 @@ int main(int argc, char *argv[])
   using dictOfDicts = aksenov::Dictionary< std::string, dict, std::less< > >;
   dictOfDicts bigData;
   bigData = aksenov::getDictFromInput< dictOfDicts, dict >(inputFile);
-  aksenov::commandMap commands;
-  aksenov::createCommandDict(commands);
+  using commandMap = aksenov::Dictionary< std::string, dict(*)(const dict &, const dict &) >;
+  commandMap commands;
+  aksenov::createCommandDict< commandMap >(commands);
   while (std::cin.good())
   {
     try
@@ -68,3 +69,4 @@ int main(int argc, char *argv[])
   }
   return 0;
 }
+
