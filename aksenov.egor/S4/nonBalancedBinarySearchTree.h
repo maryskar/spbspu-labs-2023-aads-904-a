@@ -503,7 +503,7 @@ namespace aksenov
 
   template < class Key, class T, class Compare >
   BST< Key, T, Compare >::BST():
-    root_(nullptr)
+          root_(nullptr)
   {}
 
   template < class Key, class T, class Compare >
@@ -514,7 +514,7 @@ namespace aksenov
 
   template < class Key, class T, class Compare >
   BST< Key, T, Compare >::BST(const BST& other):
-    root_(nullptr)
+          root_(nullptr)
   {
     if (other.root_)
     {
@@ -622,7 +622,6 @@ namespace aksenov
     std::swap(root_, other.root_);
     std::swap(cmp_, other.cmp_);
   }
-
   template < class Key, class T, class Compare >
   void BST< Key, T, Compare >::clear()
   {
