@@ -16,7 +16,7 @@ bool compareString(const std::string& first, const std::string& second)
   return first.size() > second.size();
 }
 
-int main(int argc, char* argv[])
+int main(const int argc, const char* argv[])
 {
   using namespace potapova;
   std::ifstream input_file;
