@@ -5,10 +5,11 @@
 #include "bidirectionalIterator.h"
 #include "constBidirectionalIterator.h"
 #include "tree.h"
+#include <stack.h>
 
 namespace aksenov
 {
-  template < class Key, class T, class Compare = std::less< Key > >
+  template < class Key, class T, class Compare = std::less<  > >
   class BST
   {
   public:
@@ -20,6 +21,7 @@ namespace aksenov
     using CIter = ConstBidirectionalIterator< Element >;
     friend class BidirectionalIterator< Element >;
     friend class ConstBidirectionalIterator< Element >;
+    //friend class AVL< Key, T, Compare >;
 
     Iter begin();
     CIter begin() const;
@@ -65,6 +67,12 @@ namespace aksenov
     bool isEmpty() const;
     void swap(BST& other) noexcept;
     void clear();
+    template < typename F >
+    F traverse_rnl(F f) const;
+    template < typename F >
+    F traverse_lnr(F f) const;
+    template < typename F >
+    F traverse_breadth(F f) const;
   private:
     Compare cmp_;
     NodePtr root_;
@@ -314,6 +322,64 @@ namespace aksenov
       return helper;
     }
   };
+
+  template< class Key, class T, class Compare >
+  template< typename F >
+  F BST< Key, T, Compare >::traverse_lnr(F f) const
+  {
+    NodePtr tmp = root_;
+    if (!tmp)
+    {
+      return f;
+    }
+    Stack< NodePtr > helper(root_->height_ * 2);
+    while (!helper.isEmpty() || tmp)
+    {
+      if (tmp)
+      {
+        helper.push(tmp);
+        tmp = tmp->left_;
+      }
+      else
+      {
+        tmp = helper.getTop();
+        helper.pop();
+        f(tmp->data_);
+        tmp = tmp->right_;
+      }
+    }
+    return f;
+  }
+
+  template< class Key, class T, class Compare >
+  template< typename F >
+  F BST< Key, T, Compare >::traverse_rnl(F f) const
+  {
+    NodePtr tmp = root_;
+    if (!tmp)
+    {
+      return f;
+    }
+    Stack< NodePtr > helper(root_->height_ * 2);
+    helper.push(tmp);
+    while (!helper.isEmpty() && tmp)
+    {
+      while (tmp->right_)
+      {
+        tmp = tmp->right_;
+        helper.push(tmp);
+      }
+      tmp = helper.getTop();
+      helper.pop();
+      f(tmp->data_);
+      if (tmp->left_)
+      {
+        tmp = tmp->left_;
+        helper.push(tmp);
+      }
+    }
+    return f;
+  }
 
   template< class Key, class T, class Compare >
   typename BST< Key, T, Compare >::Iter BST< Key, T, Compare >::begin()
@@ -634,5 +700,7 @@ namespace aksenov
       }
     }
   }
+
+
 };
 #endif
