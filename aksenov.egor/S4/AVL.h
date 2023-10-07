@@ -108,9 +108,59 @@ namespace aksenov
   };
 
   template< class Key, class T, class Compare >
+  template< class P >
+  typename AVL< Key, T, Compare >::Iter AVL< Key, T, Compare >::insert(AVL::CIter it, P &&value)
+  {
+    Iter insertedIt = data_.insert(it, std::forward< P >(value));
+    balance(insertedIt);
+    return insertedIt;
+  }
+
+  template< class Key, class T, class Compare >
+  typename AVL< Key, T, Compare >::Iter AVL< Key, T, Compare >::insert(Iter iter, const Element &element)
+  {
+    Iter insertedIt = data_.insert(iter, element);
+    balance(insertedIt);
+    return insertedIt;
+  }
+
+  template< class Key, class T, class Compare >
+  void AVL< Key, T, Compare >::insert(const Key &key, const T &value)
+  {
+    insert(std::make_pair(key, value));
+  }
+
+  template< class Key, class T, class Compare >
+  template< class InputIterator >
+  void AVL< Key, T, Compare >::insert(InputIterator first, InputIterator last)
+  {
+    return data_.insert(first, last);
+  }
+
+  template< class Key, class T, class Compare >
+  typename AVL< Key, T, Compare >::Iter AVL< Key, T, Compare >::insert(CIter it, const Element &value)
+  {
+    Iter insertedIt = data_.insert(it, value);
+    balance(insertedIt);
+    return insertedIt;
+  }
+
+  template< class Key, class T, class Compare >
+  template< class P >
+  std::pair< typename AVL< Key, T, Compare >::Iter, bool > AVL< Key, T, Compare >::insert(P &&value)
+  {
+    auto result = data_.insert(std::forward< P >(value));
+    Iter it(result.first);
+    balance(it);
+    return result;
+  }
+
+  template< class Key, class T, class Compare >
   typename AVL< Key, T, Compare >::Iter AVL< Key, T, Compare >::insert(const Element &element)
   {
-
+    Iter it = data_.insert(element);
+    balance(it);
+    return it;
   }
 
   template< class Key, class T, class Compare >
@@ -120,9 +170,64 @@ namespace aksenov
   }
 
   template< class Key, class T, class Compare >
-  void AVL< Key, T, Compare >::swap(AVL &other) noexcept
+  typename AVL< Key, T, Compare >::Iter AVL< Key, T, Compare >::erase(Iter it)
   {
-    data_.swap(other);
+    // Используйте метод удаления BST
+    Iter nextIter = data_.erase(it);
+
+    // Балансируйте AVL-дерево
+    balance(nextIter);
+
+    return nextIter;
+  }
+
+  template< class Key, class T, class Compare >
+  typename AVL< Key, T, Compare >::Iter AVL< Key, T, Compare >::erase(const Key &key)
+  {
+    // Используйте метод удаления BST
+    Iter it = find(key);
+    if (it != end())
+    {
+      Iter nextIter = erase(it);
+      return nextIter;
+    }
+    return end();
+  }
+
+  template< class Key, class T, class Compare >
+  typename AVL< Key, T, Compare >::mappedType &AVL< Key, T, Compare >::operator[](const Key &key)
+  {
+    Element element(key, T());
+    Iter it = insert(element).first;
+    return it->second;
+  }
+
+  template< class Key, class T, class Compare >
+  typename AVL< Key, T, Compare >::mappedType &AVL< Key, T, Compare >::operator[](Key &&key)
+  {
+    return (*this)[key];
+  }
+
+  template< class Key, class T, class Compare >
+  typename AVL< Key, T, Compare >::mappedType &AVL< Key, T, Compare >::at(const Key &key)
+  {
+    Iter it = find(key);
+    if (it != end())
+    {
+      return it->second;
+    }
+    throw std::out_of_range("Key not found in AVL tree");
+  }
+
+  template< class Key, class T, class Compare >
+  const typename AVL< Key, T, Compare >::mappedType &AVL< Key, T, Compare >::at(const Key &key) const
+  {
+    Iter it = find(key);
+    if (it != end())
+    {
+      return it->second;
+    }
+    throw std::out_of_range("Key not found in AVL tree");
   }
 
   template< class Key, class T, class Compare >
@@ -132,15 +237,21 @@ namespace aksenov
   }
 
   template< class Key, class T, class Compare >
-  bool AVL< Key, T, Compare >::contains(const Key &key) const
+  void AVL< Key, T, Compare >::swap(AVL &other) noexcept
   {
-    return data_.contains(key);
+    data_.swap(other.data_);
   }
 
   template< class Key, class T, class Compare >
   size_t AVL< Key, T, Compare >::count(const Key &key) const
   {
     return data_.count(key);
+  }
+
+  template< class Key, class T, class Compare >
+  bool AVL< Key, T, Compare >::contains(const Key &key) const
+  {
+    return data_.contains(key);
   }
 
   template< class Key, class T, class Compare >
@@ -194,7 +305,7 @@ namespace aksenov
   }
 
   template< class Key, class T, class Compare >
-  void AVL< Key, T, Compare >::balance(AVL::Iter toBalance)
+  void AVL< Key, T, Compare >::balance(Iter toBalance)
   {
     node_t< std::pair< Key, T> >* NodeToBalance = toBalance.iter_.node_;
     if (!NodeToBalance)

@@ -21,7 +21,8 @@ namespace aksenov
     using CIter = ConstBidirectionalIterator< Element >;
     friend class BidirectionalIterator< Element >;
     friend class ConstBidirectionalIterator< Element >;
-    //friend class AVL< Key, T, Compare >;
+    template < class, class, class >
+    friend class AVL;
 
     Iter begin();
     CIter begin() const;

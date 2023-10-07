@@ -16,8 +16,8 @@ namespace aksenov
     using NodePtr = node_t< T >*;
     template < class, class, class >
     friend class BinarySearchTree;
-    //template < class, class, class >
-    //friend class AVLtree;
+    template < class, class, class >
+    friend class AVL;
 
     ~BidirectionalIterator() = default;
     BidirectionalIterator(const BidirectionalIterator&) = default;

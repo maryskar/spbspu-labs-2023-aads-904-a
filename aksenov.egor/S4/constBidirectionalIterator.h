@@ -72,11 +72,11 @@ namespace aksenov
 
     template < typename, typename, typename >
     friend class BinarySearchTree;
-    //template < typename, typename, typename >
-    //friend class AVLtree;
+    template < typename, typename, typename >
+    friend class AVL;
 
-    template < typename >
-    friend class TreeIterator;
+    //template < typename >
+    //friend class ;
 
     ~ConstBidirectionalIterator() = default;
     ConstBidirectionalIterator(const ConstBidirectionalIterator&) = default;
