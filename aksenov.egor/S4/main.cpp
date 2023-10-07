@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "nonBalancedBinarySearchTree.h"
+#include "AVL.h"
 #include <commands.h>
 #include <getDictFromInput.h>
 
@@ -12,17 +12,16 @@ int main(int argc, char *argv[])
     std::cerr << "error" << "\n";
     return 1;
   }
-
   std::ifstream inputFile(argv[1]);
   if (!inputFile.is_open())
   {
     std::cerr << "Cannot open file: " << "\n";
     return 1;
   }
-  using dict = aksenov::BST< int, std::string, std::less< > >;
-  using dictOfDicts = aksenov::BST< std::string, dict, std::less< > >;
+  using dict = aksenov::AVL< int, std::string, std::less< > >;
+  using dictOfDicts = aksenov::AVL< std::string, dict, std::less< > >;
   dictOfDicts bigData = aksenov::getDictFromInput< dictOfDicts, dict >(inputFile);
-  using commandMap = aksenov::BST< std::string, dict(*)(const dict &, const dict &) >;
+  using commandMap = aksenov::AVL< std::string, dict(*)(const dict &, const dict &) >;
   commandMap commands;
   aksenov::createCommandDict< commandMap >(commands);
   while (std::cin.good())

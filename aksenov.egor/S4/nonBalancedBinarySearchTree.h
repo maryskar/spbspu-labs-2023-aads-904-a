@@ -689,6 +689,7 @@ namespace aksenov
     std::swap(root_, other.root_);
     std::swap(cmp_, other.cmp_);
   }
+
   template < class Key, class T, class Compare >
   void BST< Key, T, Compare >::clear()
   {
