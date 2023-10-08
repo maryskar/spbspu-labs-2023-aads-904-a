@@ -14,6 +14,6 @@ namespace aksenov
     std::string finalStr_;
   };
 
-  std::ostream &operator<<(std::ostrean &, const Summator &);
+  std::ostream &operator<<(std::ostream &, const Summator &);
 }
 #endif

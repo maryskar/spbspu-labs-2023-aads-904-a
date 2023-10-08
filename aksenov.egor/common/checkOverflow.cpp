@@ -59,7 +59,7 @@ namespace aksenov
     return op1 == maxVal && op2 == -1;
   }
 
-  bool isOverflov(value op1, value, op2, char sign)
+  bool isOverflow(value op1, value op2, char sign)
   {
     if (sign == '+')
     {

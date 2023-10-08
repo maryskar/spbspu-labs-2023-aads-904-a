@@ -4,6 +4,6 @@
 namespace aksenov
 {
   using value = long long;
-  bool isOverflov(value op1, value, op2, char sign);
+  bool isOverflow(value op1, value op2, char sign);
 }
 #endif
