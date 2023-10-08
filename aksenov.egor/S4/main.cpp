@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "AVL.h"
+#include <AVL/AVL.h>
 #include <commands.h>
 #include <getDictFromInput.h>
 
