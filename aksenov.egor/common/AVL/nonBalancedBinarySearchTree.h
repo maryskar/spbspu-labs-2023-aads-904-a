@@ -76,12 +76,12 @@ namespace aksenov
     F traverse_breadth(F f) const
     {
       NodePtr tmp = root_;
+      Stack< NodePtr > helper;
       if (!tmp)
       {
         return f;
       }
-      Stack< NodePtr > helper{root_->height_ * 2};
-      helper.push(tmp);
+
       while (!helper.isEmpty())
       {
         tmp = helper.get();
@@ -353,11 +353,11 @@ namespace aksenov
   F BST< Key, T, Compare >::traverse_lnr(F f) const
   {
     NodePtr tmp = root_;
+    Stack< NodePtr > helper;
     if (!tmp)
     {
       return f;
     }
-    Stack< NodePtr > helper{root_->height_ * 2};
     while (!helper.isEmpty() || tmp)
     {
       if (tmp)
@@ -381,13 +381,12 @@ namespace aksenov
   F BST< Key, T, Compare >::traverse_rnl(F f) const
   {
     NodePtr tmp = root_;
+    Stack< NodePtr > helper;
     if (!tmp)
     {
       return f;
     }
-    Stack< NodePtr > helper{root_->height_ * 2};
-    helper.push(tmp);
-    while (!helper.isEmpty() && tmp)
+    while (!helper.isEmpty() || tmp)
     {
       while (tmp->right_)
       {
