@@ -27,5 +27,21 @@ namespace aksenov
     }
     long long sum_;
   };
+
+  struct stringSummator
+  {
+    stringSummator():
+      str_("")
+    {}
+    std::string str_;
+    void operator()(const std::pair< long long, std::string > &pair)
+    {
+      str_ += " " + pair.second;
+    }
+    std::string get()
+    {
+      return str_;
+    }
+  };
 }
 #endif

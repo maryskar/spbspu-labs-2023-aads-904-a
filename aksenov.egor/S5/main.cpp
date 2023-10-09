@@ -33,11 +33,19 @@ int main()
     return 0;
   }*/
   std::pair< long long, std::string > pair{4, "four"};
+  std::pair< long long, std::string > pair2{5, "five"};
+  std::pair< long long, std::string > pair3{6, "six"};
+  std::pair< long long, std::string > pair4{7, "seven"};
   aksenov::keySummator ksummator;
+  aksenov::stringSummator strSummator;
   try
   {
     ksummator(pair);
-    std::cout << ksummator.get();
+    ksummator(pair2);
+    std::cout << ksummator.get() << "\n";
+    strSummator(pair);
+    strSummator(pair2);
+    std::cout << strSummator.get() << "\n";
   }
 
   catch (const std::invalid_argument &e)
