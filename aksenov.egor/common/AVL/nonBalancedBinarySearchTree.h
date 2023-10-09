@@ -76,16 +76,15 @@ namespace aksenov
     template < typename F >
     F traverse_breadth(F f) const
     {
-      NodePtr tmp = root_;
       Queue< NodePtr > helper;
-      if (!tmp)
+      if (!root_)
       {
         return f;
       }
-      helper.push(tmp);
+      helper.push(root_);
       while (!helper.isEmpty())
       {
-        tmp = helper.get();
+        NodePtr tmp = helper.get();
         helper.pop();
         f(tmp->data_);
         if (tmp->right_)
