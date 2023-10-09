@@ -6,6 +6,7 @@
 #include "constBidirectionalIterator.h"
 #include "tree.h"
 #include <stack.h>
+#include <queue.h>
 
 namespace aksenov
 {
@@ -76,12 +77,11 @@ namespace aksenov
     F traverse_breadth(F f) const
     {
       NodePtr tmp = root_;
-      Stack< NodePtr > helper;
+      Queue< NodePtr > helper;
       if (!tmp)
       {
         return f;
       }
-
       while (!helper.isEmpty())
       {
         tmp = helper.get();
@@ -388,18 +388,17 @@ namespace aksenov
     }
     while (!helper.isEmpty() || tmp)
     {
-      while (tmp->right_)
+      if (tmp)
       {
+        helper.push(tmp);
         tmp = tmp->right_;
-        helper.push(tmp);
       }
-      tmp = helper.get();
-      helper.pop();
-      f(tmp->data_);
-      if (tmp->left_)
+      else
       {
+        tmp = helper.get();
+        helper.pop();
+        f(tmp->data_);
         tmp = tmp->left_;
-        helper.push(tmp);
       }
     }
     return f;

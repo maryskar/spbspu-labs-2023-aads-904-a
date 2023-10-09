@@ -1,12 +1,10 @@
 #include <iostream>
-#include <limits>
 #include <fstream>
 #include <string>
 #include <functional>
 #include "functor.h"
 #include "traverses.h"
 #include <AVL/AVL.h>
-#include <getDictFromInput.h>
 
 int main(int argc, char *argv[])
 {
