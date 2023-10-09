@@ -68,6 +68,8 @@ namespace aksenov
 
     ~AVL() = default;
 
+    AVL(std::initializer_list< Element > il);
+
     AVL(const AVL &other) = default;
 
     AVL(AVL &&other) = default;
@@ -106,6 +108,17 @@ namespace aksenov
     BST< Key, T, Compare > data_;
     void balance(Iter toBalance);
   };
+
+  template < typename Key, typename T, typename Compare >
+  AVL< Key, T, Compare >::AVL(std::initializer_list< Element > il):
+          data_()
+  {
+    for (auto&& element: il)
+    {
+      auto it = data_.insert(element);
+      balance(it);
+    }
+  }
 
   template< class Key, class T, class Compare >
   template< class P >
@@ -172,10 +185,8 @@ namespace aksenov
   template< class Key, class T, class Compare >
   typename AVL< Key, T, Compare >::Iter AVL< Key, T, Compare >::erase(Iter it)
   {
-    // Используйте метод удаления BST
     Iter nextIter = data_.erase(it);
 
-    // Балансируйте AVL-дерево
     balance(nextIter);
 
     return nextIter;
@@ -184,7 +195,6 @@ namespace aksenov
   template< class Key, class T, class Compare >
   typename AVL< Key, T, Compare >::Iter AVL< Key, T, Compare >::erase(const Key &key)
   {
-    // Используйте метод удаления BST
     Iter it = find(key);
     if (it != end())
     {
@@ -338,14 +348,14 @@ namespace aksenov
   template< typename F >
   F AVL< Key, T, Compare >::traverse_breadth(F f) const
   {
-    return data_.traverse_breadth();
+    return data_.traverse_breadth(f);
   }
 
   template< class Key, class T, class Compare >
   template< typename F >
   F AVL< Key, T, Compare >::traverse_rnl(F f) const
   {
-    return data_.traverse_rnl();
+    return data_.traverse_rnl(f);
   }
 
   template< class Key, class T, class Compare >

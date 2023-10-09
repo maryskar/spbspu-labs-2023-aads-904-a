@@ -73,7 +73,31 @@ namespace aksenov
     template < typename F >
     F traverse_lnr(F f) const;
     template < typename F >
-    F traverse_breadth(F f) const;
+    F traverse_breadth(F f) const
+    {
+      NodePtr tmp = root_;
+      if (!tmp)
+      {
+        return f;
+      }
+      Stack< NodePtr > helper{root_->height_ * 2};
+      helper.push(tmp);
+      while (!helper.isEmpty())
+      {
+        tmp = helper.get();
+        helper.pop();
+        f(tmp->data_);
+        if (tmp->right_)
+        {
+          helper.push(tmp->right_);
+        }
+        if (tmp->left_)
+        {
+          helper.push(tmp->left_);
+        }
+      }
+      return f;
+    }
   private:
     Compare cmp_;
     NodePtr root_;
@@ -333,7 +357,7 @@ namespace aksenov
     {
       return f;
     }
-    Stack< NodePtr > helper(root_->height_ * 2);
+    Stack< NodePtr > helper{root_->height_ * 2};
     while (!helper.isEmpty() || tmp)
     {
       if (tmp)
@@ -343,7 +367,7 @@ namespace aksenov
       }
       else
       {
-        tmp = helper.getTop();
+        tmp = helper.get();
         helper.pop();
         f(tmp->data_);
         tmp = tmp->right_;
@@ -361,7 +385,7 @@ namespace aksenov
     {
       return f;
     }
-    Stack< NodePtr > helper(root_->height_ * 2);
+    Stack< NodePtr > helper{root_->height_ * 2};
     helper.push(tmp);
     while (!helper.isEmpty() && tmp)
     {
@@ -370,7 +394,7 @@ namespace aksenov
         tmp = tmp->right_;
         helper.push(tmp);
       }
-      tmp = helper.getTop();
+      tmp = helper.get();
       helper.pop();
       f(tmp->data_);
       if (tmp->left_)

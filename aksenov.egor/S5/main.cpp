@@ -2,11 +2,15 @@
 #include <limits>
 #include <fstream>
 #include <string>
+#include <functional>
+#include "functor.h"
+#include "traverses.h"
 #include <AVL/AVL.h>
+#include <getDictFromInput.h>
 
-int main(int argc, char *argv[])
+int main()
 {
-  std::ifstream inp;
+  /*std::ifstream inp;
   if (argc == 3)
   {
     inp.open(argv[2]);
@@ -21,17 +25,21 @@ int main(int argc, char *argv[])
     std::cerr << "Wrong number of args\n";
     return 1;
   }
-
-  aksenov::AVL< long long, std::string > tree;
-  long long key = 0;
-  std::string val = "";
+  using tree = aksenov::AVL< long long, std::string, std::less< > >;
+  auto dict = aksenov::getDictFromInput< tree >(inp);
+  if (tree.isEmpty())
+  {
+    std::cout << "<EMPTY>" << "\n";
+    return 0;
+  }*/
+  std::pair< long long, std::string > pair{4, "four"};
+  aksenov::keySummator ksummator;
   try
   {
-    while (inp >> key >> val)
-    {
-      tree.insert({key, val});
-    }
+    ksummator(pair);
+    std::cout << ksummator.get();
   }
+
   catch (const std::invalid_argument &e)
   {
     std::cout << "<EMPTY>" << "\n";
