@@ -1,4 +1,3 @@
-
 #ifndef FUNCTIONALOBJECTS_H
 #define FUNCTIONALOBJECTS_H
 #include <utility>
