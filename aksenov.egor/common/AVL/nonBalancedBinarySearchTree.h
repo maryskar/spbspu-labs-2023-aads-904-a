@@ -82,6 +82,7 @@ namespace aksenov
       {
         return f;
       }
+      helper.push(tmp);
       while (!helper.isEmpty())
       {
         tmp = helper.get();

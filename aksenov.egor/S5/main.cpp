@@ -51,12 +51,9 @@ int main(int argc, char *argv[])
     std::cout << (res.*keys.at(argv[1]))(key).get();
     std::cout << (res.*vals.at(argv[1]))(str).get() << "\n";
   }
-  catch (const std::invalid_argument &e)
-  {
-    std::cout << "<EMPTY>" << "\n";
-  }
   catch (...)
   {
     std::cout << "<INVALID COMMAND>" << "\n";
+    return 1;
   }
 }
