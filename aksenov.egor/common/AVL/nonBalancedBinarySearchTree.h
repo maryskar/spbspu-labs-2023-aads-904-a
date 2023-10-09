@@ -87,13 +87,13 @@ namespace aksenov
         NodePtr tmp = helper.get();
         helper.pop();
         f(tmp->data_);
-        if (tmp->right_)
-        {
-          helper.push(tmp->right_);
-        }
         if (tmp->left_)
         {
           helper.push(tmp->left_);
+        }
+        if (tmp->right_)
+        {
+          helper.push(tmp->right_);
         }
       }
       return f;
