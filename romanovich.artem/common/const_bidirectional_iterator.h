@@ -13,10 +13,13 @@ namespace romanovich
     friend class BinarySearchTree< Key, Value, Compare >;
     friend class BidirectionalIterator< Key, Value, Compare >;
     friend class RedBlackTree< Key, Value, Compare >;
-    using iterator_category = std::bidirectional_iterator_tag;
-    using difference_t = std::ptrdiff_t;
     using data_t = std::pair< Key, Value >;
     using const_data_t = const std::pair< Key, Value >;
+    using iterator_category = std::bidirectional_iterator_tag;
+    using value_type = data_t;
+    using difference_type = std::ptrdiff_t;
+    using pointer = data_t *;
+    using reference = data_t &;
     ~ConstBidirectionalIterator() = default;
     ConstBidirectionalIterator();
     ConstBidirectionalIterator(const ConstBidirectionalIterator< Key, Value, Compare > &) = default;

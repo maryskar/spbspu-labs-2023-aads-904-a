@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <map.h>
 #include "commands.h"
-#include "map.h"
 #include "readDictsInDict.h"
 
 int main(int argc, char* argv[])
