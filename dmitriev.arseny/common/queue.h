@@ -92,12 +92,12 @@ void dmitriev::Queue< T >::push(const T& rhs)
 {
   if (m_ptrPairHT.first == nullptr)
   {
-    m_ptrPairHT.first = new List< T >(rhs);
+    m_ptrPairHT.first = new List< T >{rhs};
     m_ptrPairHT.second = m_ptrPairHT.first;
   }
   else
   {
-    m_ptrPairHT.second->next = new List< T >(rhs);
+    m_ptrPairHT.second->next = new List< T >{rhs};
     m_ptrPairHT.second = m_ptrPairHT.second->next;
   }
 }

@@ -6,6 +6,8 @@
 #include "tree.h"
 #include "AVLIterator.h"
 #include "constAVLIterator.h"
+#include "stack.h"
+#include "queue.h"
 
 namespace fesenko
 {
@@ -62,6 +64,18 @@ namespace fesenko
     bool empty() const noexcept;
     void clear() noexcept;
     key_compare key_comp() const;
+    template< typename F >
+    F traverse_lnr(F) const;
+    template< typename F >
+    F traverse_lnr(F);
+    template< typename F >
+    F traverse_rnl(F) const;
+    template< typename F >
+    F traverse_rnl(F);
+    template< typename F >
+    F traverse_breadth(F) const;
+    template< typename F >
+    F traverse_breadth(F);
    private:
     tree *root_;
     Compare comp_;
@@ -402,6 +416,90 @@ namespace fesenko
   typename AVL< Key, Value, Compare >::key_compare AVL< Key, Value, Compare >::key_comp() const
   {
     return comp_;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVL< Key, Value, Compare >::traverse_lnr(F f) const
+  {
+    Stack< tree * > stack;
+    tree *cur = root_;
+    while (cur != nullptr || !stack.isEmpty()) {
+      if (cur != nullptr) {
+        stack.push(cur);
+        cur = cur->left;
+      } else {
+        cur = stack.top();
+        stack.pop();
+        f(cur->data);
+        cur = cur->right;
+      }
+    }
+    return f;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVL< Key, Value, Compare >::traverse_lnr(F f)
+  {
+    return static_cast< const this_t & >(*this).traverse_lnr(f);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVL< Key, Value, Compare >::traverse_rnl(F f) const
+  {
+    Stack< tree * > stack;
+    tree *cur = root_;
+    while (cur != nullptr || !stack.isEmpty()) {
+      if (cur != nullptr) {
+        stack.push(cur);
+        cur = cur->right;
+      } else {
+        cur = stack.top();
+        stack.pop();
+        f(cur->data);
+        cur = cur->left;
+      }
+    }
+    return f;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVL< Key, Value, Compare >::traverse_rnl(F f)
+  {
+    return static_cast< const this_t & >(*this).traverse_rnl(f);
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVL< Key, Value, Compare >::traverse_breadth(F f) const
+  {
+    if (!root_) {
+      return f;
+    }
+    Queue< tree * > queue;
+    queue.push(root_);
+    while (!queue.isEmpty()) {
+      tree *cur = queue.front();
+      queue.pop();
+      f(cur->data);
+      if (cur->left) {
+        queue.push(cur->left);
+      }
+      if (cur->right) {
+        queue.push(cur->right);
+      }
+    }
+    return f;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  template< typename F >
+  F AVL< Key, Value, Compare >::traverse_breadth(F f)
+  {
+    return static_cast< const this_t & >(*this).traverse_breadth(f);
   }
 
   template< typename Key, typename Value, typename Compare >
