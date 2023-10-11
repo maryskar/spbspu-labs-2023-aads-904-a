@@ -1,6 +1,6 @@
 #ifndef STRING_TO_INFIX_H
 #define STRING_TO_INFIX_H
-#include "queue.h"
+#include <queue.h>
 
 namespace aksenov
 {

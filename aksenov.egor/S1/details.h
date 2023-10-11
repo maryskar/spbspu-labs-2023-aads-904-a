@@ -2,7 +2,7 @@
 #define DETAILS_H
 #include <string>
 #include <iostream>
-#include "stack.h"
+#include <stack.h>
 namespace aksenov
 {
   bool isNumeric(std::string const &str);
