@@ -25,15 +25,7 @@ int main(int argc, char *argv[])
   try
   {
     dict_of_dict container = kryuchkova::readDictOfDict(in);
-  }
-  catch(const std::exception & e)
-  {
-    std::cerr << e.what() << '\n';
-  }
-
-  try
-  {
-    dict_of_dict container = kryuchkova::readDictOfDict(in);
+    // dictionary a = container.at(std::string("first"));
     while (std::cin)
     {
       std::string command;

@@ -14,7 +14,7 @@ namespace kryuchkova
     using key_type = Key;
     using val = Value;
     using this_t = Dictionary< Key, Value, Compare >;
-    using val_type = std::pair< const Key, Value >;
+    using val_type = std::pair< Key, Value >;
     using iterator = ForwardIterator< val_type >;
     using const_iterator = ConstForwardIterator< val_type >;
 
@@ -34,6 +34,7 @@ namespace kryuchkova
     this_t & operator=(std::initializer_list< val_type > init);
     val & operator[](const key_type & key);
     val & operator[](key_type && key);
+    val & at(const key_type & key);
     const val & at(const key_type & key) const;
 
     iterator before_begin() const noexcept;
@@ -45,9 +46,9 @@ namespace kryuchkova
     iterator last() const noexcept;
     const_iterator clast() const noexcept;
 
-    std::pair< iterator, bool > insert(const val_type &);
+    iterator insert(const val_type &);
     template< typename P >
-    std::pair< iterator, bool > insert(P &&);
+    iterator insert(P &&);
 
     iterator insert(const_iterator pos, const val_type & val);
     template< typename InputIt >
@@ -132,25 +133,32 @@ namespace kryuchkova
   {}
 
   template< typename Key, typename Value, typename Compare >
-  std::pair< typename Dictionary< Key, Value, Compare >::iterator,
-    bool > Dictionary< Key, Value, Compare >::insert(const val_type & value)
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::insert(const val_type & value)
   {
-    auto curr = find(value.first);
-    if (curr == end())
+    iterator iter = data_.begin();
+    iterator prev = data_.before_begin();
+    for (; iter != data_.end(); iter++)
     {
-      size_++;
-      return {curr, false};
+      if (comp_(value.first, (*iter).first))
+      {
+        break;
+      }
+      prev = iter;
     }
-    data_.push_front(std::move(value));
-    size_++;
-    curr = find(value.first);
-    return {curr, true};
+    if (prev != data_.before_begin() && (prev->first == value.first))
+    {
+      (*prev).second = value.second;
+    }
+    else
+    {
+      data_.insert_after(prev, value);
+    }
+    return prev;
   }
 
   template< typename Key, typename Value, typename Compare >
   template< typename P >
-  std::pair< typename Dictionary< Key, Value, Compare >::iterator,
-    bool > Dictionary< Key, Value, Compare >::insert(P && value)
+  typename Dictionary< Key, Value, Compare >::iterator Dictionary< Key, Value, Compare >::insert(P && value)
   {
     static_assert(std::is_constructible< val_type, P && >::value, "Can`t construct val_t");
     const val_type temp(std::forward< P >(value));
@@ -198,8 +206,20 @@ namespace kryuchkova
   template< typename Key, typename Value, typename Compare >
   const Value & Dictionary< Key, Value, Compare >::at(const key_type & key) const
   {
+    const_iterator it = find(key);
+    if (it == end())
+    {
+      throw std::out_of_range("There is no such key");
+    }
+    return it->second;
+  }
+
+  template< typename Key, typename Value, typename Compare >
+  Value & Dictionary< Key, Value, Compare >::at(const key_type & key)
+  {
     return const_cast< Value & >((static_cast< const this_t & >(*this)).at(key));
   }
+
 
   template< typename Key, typename Value, typename Compare >
   Value & Dictionary< Key, Value, Compare >::operator[](const key_type & key)
@@ -290,7 +310,6 @@ namespace kryuchkova
       ++curr;
     }
     return cend();
-
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -311,7 +330,7 @@ namespace kryuchkova
     {
       return data_.insert_after(pos, val);
     }
-    return (insert(val)).first;
+    return insert(val);
   }
 
   template< typename Key, typename Value, typename Compare >
