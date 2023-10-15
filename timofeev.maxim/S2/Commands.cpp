@@ -28,7 +28,7 @@ namespace timofeev
       throw std::invalid_argument("Logic error");
     }
   }
-  void Complement(std::istream& in, dictOfDicts& dict)
+  void doComplement(std::istream& in, dictOfDicts& dict)
   {
     std::string newDict, first, second;
     in >> newDict >> first >> second;
@@ -60,7 +60,7 @@ namespace timofeev
       dict.push(newDict, complDict);
     }
   }
-  void Intersect(std::istream& in, dictOfDicts& dict)
+  void doIntersect(std::istream& in, dictOfDicts& dict)
   {
     std::string newDict, first, second;
     in >> newDict >> first >> second;
@@ -99,7 +99,7 @@ namespace timofeev
     }
   }
 
-  void Union(std::istream& in, dictOfDicts& dict)
+  void doUnion(std::istream& in, dictOfDicts& dict)
   {
     std::string newDict, first, second;
     in >> newDict >> first >> second;
