@@ -4,8 +4,8 @@
 timofeev::comDict timofeev::cmdSet()
 {
   timofeev::comDict command;
-  command["complement"] = Complement;
-  command["intersect"] = Intersect;
-  command["union"] = Union;
+  command["complement"] = doComplement;
+  command["intersect"] = doIntersect;
+  command["union"] = doUnion;
   return command;
 }
