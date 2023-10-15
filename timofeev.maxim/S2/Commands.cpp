@@ -12,7 +12,7 @@ namespace timofeev
       if (!dict_t.empty())
       {
         out << dictName;
-        for (auto & i : dict_t)
+        for (auto &i: dict_t)
         {
           out << " " << i.first << " " << i.second;
         }
@@ -110,7 +110,7 @@ namespace timofeev
     const auto& dict1 = dict.at(first);
     const auto& dict2 = dict.at(second);
     dictionary unDict = dict1;
-    for (const auto& entry : dict2)
+    for (const auto& entry: dict2)
     {
       if (!unDict.contains(entry.first))
       {

@@ -50,7 +50,6 @@ namespace timofeev
     iter erase(constIter first, constIter last);
 
     bool empty() const noexcept;
-    size_t size() const noexcept;
     void clear();
 
     void swap(Dictionary< Key, Value, Compare > &other);
@@ -64,7 +63,6 @@ namespace timofeev
   private:
     ForwardList< value_type > data_;
     Compare compare_;
-    size_t size_;
   };
 
   template<typename Key, typename Value, typename Compare>
@@ -82,7 +80,7 @@ namespace timofeev
 
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::iter
-    Dictionary< Key, Value, Compare >::erase(Dictionary::constIter pos)
+      Dictionary< Key, Value, Compare >::erase(Dictionary::constIter pos)
   {
     return erase(constIter(pos));
   }
@@ -95,7 +93,6 @@ namespace timofeev
     {
       erase(first);
       first++;
-      size_--;
     }
     return iter(last.node_);
   }
@@ -114,7 +111,6 @@ namespace timofeev
     {
       if (cur == pos)
       {
-        size_--;
         return data_.erase_after(prev);
       }
       cur++;
@@ -133,7 +129,6 @@ namespace timofeev
     }
     value_type newValue = std::make_pair(key, Value{});
     data_.push_front(newValue);
-    size_++;
     return data_.front().second;
   }
 
@@ -237,16 +232,9 @@ namespace timofeev
   }
 
   template< typename Key, typename Value, typename Compare >
-  size_t Dictionary< Key, Value, Compare >::size() const noexcept
-  {
-    return size_;
-  }
-
-  template< typename Key, typename Value, typename Compare >
   void Dictionary< Key, Value, Compare >::clear()
   {
     data_.clear();
-    size_ = 0;
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -254,8 +242,6 @@ namespace timofeev
   {
     std::swap(data_, other.data_);
     std::swap(compare_, other.compare_);
-    size_ = other.size_;
-    other.size_ = 0;
   }
 
   template< typename Key, typename Value, typename Compare >
@@ -299,13 +285,11 @@ namespace timofeev
       else if (compare_(value.first, tmp->first))
       {
         iter inserted = data_.insert_after(cur, value);
-        size_++;
         return std::make_pair(inserted, true);
       }
       cur++;
     }
     iter res = data_.insert_after(cur, value);
-    size_++;
     return std::make_pair(res, true);
   }
 
@@ -333,13 +317,11 @@ namespace timofeev
       else if (compare_(value.first, tmp->first))
       {
         iter inserted = data_.insert_after(cur, value);
-        size_++;
         return std::make_pair(inserted, true);
       }
       cur++;
     }
     iter res = data_.insert_after(cur, value);
-    size_++;
     return std::make_pair(res, true);
   }
 
@@ -355,7 +337,6 @@ namespace timofeev
     else
     {
       auto tmp = data_.insert(pos.node_, value);
-      size_++;
       return iter(tmp);
     }
   }
@@ -373,18 +354,14 @@ namespace timofeev
   template< typename Key, typename Value, typename Compare >
   Dictionary< Key, Value, Compare >::Dictionary(const Dictionary< Key, Value, Compare > &other):
     data_(other.data_),
-    compare_(other.compare_),
-    size_(other.size())
+    compare_(other.compare_)
   {}
 
   template< typename Key, typename Value, typename Compare >
   Dictionary< Key, Value, Compare >::Dictionary(Dictionary< Key, Value, Compare > &&other):
     data_(std::move(other.data_)),
-    compare_(std::move(other.compare_)),
-    size_(other.size_)
-  {
-    other.size_ = 0;
-  }
+    compare_(std::move(other.compare_))
+  {}
 
   template< typename Key, typename Value, typename Compare >
   Dictionary< Key, Value, Compare > & Dictionary< Key, Value,
@@ -394,7 +371,6 @@ namespace timofeev
     {
       data_ = other.data_;
       compare_ = other.compare_;
-      size_ = other.size_;
     }
     return *this;
   }
@@ -407,8 +383,6 @@ namespace timofeev
     {
       data_ = std::move(other.data_);
       compare_ = std::move(other.compare_);
-      size_ = other.size_;
-      other.size_ = 0;
     }
     return *this;
   }
@@ -416,8 +390,7 @@ namespace timofeev
   template< typename Key, typename Value, typename Compare >
   Dictionary< Key, Value, Compare >::Dictionary():
     data_(),
-    compare_(Compare()),
-    size_(0)
+    compare_(Compare())
   {}
 
 }

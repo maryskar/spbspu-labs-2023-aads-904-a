@@ -1,8 +1,8 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
+#include <iostream>
 #include "commandSet.h"
 #include "Dictionary.h"
-#include "iostream"
 
 namespace timofeev
 {
