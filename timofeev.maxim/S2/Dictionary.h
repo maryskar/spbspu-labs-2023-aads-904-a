@@ -89,7 +89,7 @@ namespace timofeev
   typename Dictionary< Key, Value, Compare >::iter
       Dictionary< Key, Value, Compare >::erase(iter first, iter last)
   {
-    while(first != last)
+    while (first != last)
     {
       erase(first);
       first++;
@@ -122,10 +122,10 @@ namespace timofeev
   template< typename Key, typename Value, typename Compare >
   Value &Dictionary< Key, Value, Compare >::operator[](const Key &key)
   {
-    for(auto it = data_.begin(); it != data_.end(); ++it) {
-      if(it->first == key) {
-        return it->second;
-      }
+    auto it = find(key);
+    if(it == end())
+    {
+      return it->second;
     }
     value_type newValue = std::make_pair(key, Value{});
     data_.push_front(newValue);
@@ -367,7 +367,7 @@ namespace timofeev
   Dictionary< Key, Value, Compare > & Dictionary< Key, Value,
       Compare >::operator=(const Dictionary< Key, Value, Compare > &other)
   {
-    if (this != &other)
+    if (this != std::addressof(other))
     {
       data_ = other.data_;
       compare_ = other.compare_;
@@ -379,7 +379,7 @@ namespace timofeev
   Dictionary< Key, Value, Compare > & Dictionary< Key, Value,
       Compare >::operator=(Dictionary< Key, Value, Compare > &&other)
   {
-    if (this != &other)
+    if (this != std::addressof(other))
     {
       data_ = std::move(other.data_);
       compare_ = std::move(other.compare_);
