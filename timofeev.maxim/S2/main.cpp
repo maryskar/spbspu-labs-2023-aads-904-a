@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
   dictOfDicts dict;
   dict = timofeev::inDict(inFile, dict);
   timofeev::Dictionary< std::string, void (*)(std::istream&, dictOfDicts&) > commands;
-  commands = timofeev::cmdSet(commands);
+  commands = timofeev::cmdSet();
   while (!std::cin.eof())
   {
     try

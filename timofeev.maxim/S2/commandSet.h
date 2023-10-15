@@ -8,6 +8,6 @@ namespace timofeev
   using dictOfDicts = timofeev::Dictionary< std::string, dictionary, std::less<> >;
   using comDict = Dictionary< std::string, void (*)(std::istream&, dictOfDicts&) >;
   void Print(std::istream& in, dictOfDicts& dict, std::ostream& out);
-  comDict cmdSet(comDict& command);
+  comDict cmdSet();
 }
 #endif
