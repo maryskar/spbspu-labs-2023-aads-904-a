@@ -29,6 +29,7 @@ namespace chulkov {
     void pushAfter(const ForwardConstIter< T >& iter, const T& item);
     bool isEmpty() const;
     T& front();
+    const T& front() const;
 
     ForwardList< T >& operator=(const ForwardList< T >& other);
     ForwardList< T >& operator=(ForwardList< T >&& other);
@@ -104,6 +105,14 @@ namespace chulkov {
       throw std::logic_error("List is empty");
     }
     return *this->begin();
+  }
+
+  template < typename T >
+  const T& ForwardList< T >::front() const {
+    if (isEmpty()) {
+      throw std::out_of_range("List is empty");
+    }
+    return head_->begin;
   }
 
   template < typename T >
