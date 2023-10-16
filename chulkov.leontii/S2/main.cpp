@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
           throw std::invalid_argument("Unknown command\n");
         }
       } catch (const std::invalid_argument&) {
-        chulkov::printInvalidCommand(std::cout) << '\n';
+        chulkov::printInvalidCommand(std::cout);
       }
     }
   } catch (const std::exception& e) {
