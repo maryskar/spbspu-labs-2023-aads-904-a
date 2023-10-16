@@ -125,11 +125,11 @@ namespace timofeev
     auto it = find(key);
     if(it == end())
     {
-      return it->second;
+      value_type newValue = std::make_pair(key, Value{});
+      data_.push_front(newValue);
+      return data_.front().second;
     }
-    value_type newValue = std::make_pair(key, Value{});
-    data_.push_front(newValue);
-    return data_.front().second;
+    return it->second;
   }
 
   template< typename Key, typename Value, typename Compare >
