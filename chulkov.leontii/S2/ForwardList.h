@@ -136,8 +136,6 @@ namespace chulkov {
     return *this;
   }
 
-
-
   template < typename T >
   ForwardIter< T > ForwardList< T >::insertAfter(ForwardConstIter< T > pos, const T& val)
   {
