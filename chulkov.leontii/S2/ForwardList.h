@@ -30,6 +30,9 @@ namespace chulkov {
     bool isEmpty() const;
     T& front();
 
+    ForwardList< T >& operator=(const ForwardList< T >& other);
+    ForwardList< T >& operator=(ForwardList< T >&& other);
+
     ForwardIter< T > insertAfter(ForwardConstIter< T >, const T&);
     ForwardIter< T > eraseAfter(ForwardConstIter< T > it);
     ForwardIter< T > begin() noexcept;
@@ -114,6 +117,26 @@ namespace chulkov {
     delete temp;
     return ForwardIter< T >(pos.cnode_->next_);
   }
+
+  template < typename T >
+  ForwardList< T >& ForwardList< T >::operator=(const ForwardList< T >& other) {
+    if (this != std::addressof(other)) {
+      ForwardList< T > temp(other);
+      temp.swap(*this);
+    }
+    return *this;
+  }
+
+  template < typename T >
+  ForwardList< T >& ForwardList< T >::operator=(ForwardList< T >&& other) {
+    if (this != std::addressof(other)) {
+      clear();
+      swap(other);
+    }
+    return *this;
+  }
+
+
 
   template < typename T >
   ForwardIter< T > ForwardList< T >::insertAfter(ForwardConstIter< T > pos, const T& val)
