@@ -3,6 +3,10 @@
 #include <stdexcept>
 
 namespace chulkov {
+  std::ostream& chulkov::printInvalidCommand(std::ostream& out)
+  {
+    return out << "<INVALID COMMAND>";
+  };
 
   std::ostream& printEmptyCommand(std::ostream& out)
   {
