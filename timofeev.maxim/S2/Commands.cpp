@@ -46,19 +46,8 @@ namespace timofeev
         complDict.insert(tmp);
       }
     }
-    if (newDict == first)
-    {
-      dict[first] = complDict;
-    } else if (newDict == second)
-    {
-      dict[second] = complDict;
-    } else if (dict.contains(newDict))
-    {
-      dict[newDict] = complDict;
-    } else
-    {
-      dict.push(newDict, complDict);
-    }
+    dict[newDict] = complDict;
+
   }
   void doIntersect(std::istream& in, dictOfDicts& dict)
   {
@@ -80,22 +69,7 @@ namespace timofeev
           intersDict.insert(tmp);
         }
       }
-      if (newDict == first)
-      {
-        dict[first] = intersDict;
-      }
-      else if (newDict == second)
-      {
-        dict[second] = intersDict;
-      }
-      else if (dict.contains(newDict))
-      {
-        dict[newDict] = intersDict;
-      }
-      else
-      {
-        dict.push(newDict, intersDict);
-      }
+      dict[newDict] = intersDict;
     }
   }
 
@@ -117,21 +91,6 @@ namespace timofeev
         unDict.insert(entry);
       }
     }
-    if (newDict == first)
-    {
-      dict[first] = unDict;
-    }
-    else if (newDict == second)
-    {
-      dict[second] = unDict;
-    }
-    else if (dict.contains(newDict))
-    {
-      dict[newDict] = unDict;
-    }
-    else
-    {
-      dict.push(newDict, unDict);
-    }
+    dict[newDict] = unDict;
   }
 }
