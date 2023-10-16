@@ -5,8 +5,8 @@ namespace chulkov {
   template < typename T >
   struct List
   {
-    T item_;
-    List< T >* next_;
+    T data;
+    List< T >* next;
   };
 }
 

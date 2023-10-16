@@ -46,13 +46,13 @@ namespace chulkov {
   template < typename T >
   T& ForwardIter< T >::operator*()
   {
-    return node_->item_;
+    return node_->data;
   }
 
   template < typename T >
   T* ForwardIter< T >::operator->()
   {
-    return std::addressof(node_->item_);
+    return std::addressof(node_->data);
   }
 
   template < typename T >
@@ -78,7 +78,7 @@ namespace chulkov {
   template < typename T >
   typename ForwardIter< T >::ForwardIter& ForwardIter< T >::operator++()
   {
-    node_ = node_->next_;
+    node_ = node_->next;
     return *this;
   }
 

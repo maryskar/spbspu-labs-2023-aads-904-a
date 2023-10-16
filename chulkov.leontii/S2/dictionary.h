@@ -78,8 +78,7 @@ namespace chulkov {
   template < typename Key, typename Value, typename Compare >
   const Value& Dictionary< Key, Value, Compare >::get(const Key& k) const
   {
-    auto i = cbegin();
-    i = find(k);
+    auto i = find(k);
     if (i == cend()) {
       throw std::out_of_range("Out of range");
     }

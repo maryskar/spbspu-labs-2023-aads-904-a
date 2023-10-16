@@ -61,8 +61,8 @@ namespace chulkov {
       List< T >* temp = other.head_;
       try {
         while (temp) {
-          pushBack(temp->item_);
-          temp = temp->next_;
+          pushBack(temp->data);
+          temp = temp->next;
         }
       } catch (...) {
         clear();
@@ -91,7 +91,7 @@ namespace chulkov {
   {
     List< T >* newHead = nullptr;
     while (head_) {
-      newHead = head_->next_;
+      newHead = head_->next;
       delete head_;
       head_ = newHead;
     }
@@ -118,13 +118,13 @@ namespace chulkov {
   template < typename T >
   ForwardIter< T > ForwardList< T >::eraseAfter(ForwardConstIter< T > pos)
   {
-    if (!pos.cnode_ || !pos.cnode_->next_) {
+    if (!pos.cnode_ || !pos.cnode_->next) {
       return ForwardIter< T >(nullptr);
     }
-    List< T >* temp = pos.cnode_->next_;
-    pos.cnode_->next_ = temp->next_;
+    List< T >* temp = pos.cnode_->next;
+    pos.cnode_->next = temp->next;
     delete temp;
-    return ForwardIter< T >(pos.cnode_->next_);
+    return ForwardIter< T >(pos.cnode_->next);
   }
 
   template < typename T >
@@ -151,7 +151,7 @@ namespace chulkov {
     if (!pos.cnode_) {
       return ForwardIter< T >(nullptr);
     }
-    pos.cnode_->next_ = new List< T >{val, pos.cnode_->next_};
+    pos.cnode_->next = new List< T >{val, pos.cnode_->next};
     ++pos;
     return ForwardIter< T >(pos.cnode_);
   }
@@ -170,8 +170,8 @@ namespace chulkov {
       head_ = new List< T >{item, nullptr};
       tail_ = head_;
     } else {
-      tail_->next_ = new List< T >{item, nullptr};
-      tail_ = tail_->next_;
+      tail_->next = new List< T >{item, nullptr};
+      tail_ = tail_->next;
     }
   }
 
@@ -182,11 +182,11 @@ namespace chulkov {
       head_ = tail_ = new List< T >(item);
       return;
     }
-    List< T >* temp = new List< T >(item, iter.cnode_->next_);
-    if (iter.cnode_->next_ == nullptr) {
+    List< T >* temp = new List< T >(item, iter.cnode_->next);
+    if (iter.cnode_->next == nullptr) {
       tail_ = temp;
     }
-    iter.cnode_->next_ = temp;
+    iter.cnode_->next = temp;
   }
 
   template < typename T >
@@ -213,26 +213,26 @@ namespace chulkov {
   {
     if (!head_) {
       throw std::logic_error("Underflow");
-    } else if (!(head_->next_)) {
+    } else if (!(head_->next)) {
       delete head_;
       head_ = nullptr;
       tail_ = nullptr;
       return;
     }
     List< T >* temp = head_;
-    head_ = head_->next_;
+    head_ = head_->next;
     delete temp;
   }
 
   template < typename T >
   void ForwardList< T >::popAfter(ForwardIter< T >& iter)
   {
-    if (!head_ || iter.cnode_->next_ == nullptr) {
+    if (!head_ || iter.cnode_->next == nullptr) {
       throw std::logic_error("There is nothing to delete");
     } else {
       List< T >* subhead = iter.cnode_;
-      List< T >* toDelete = subhead->next_;
-      subhead->next_ = toDelete->next_;
+      List< T >* toDelete = subhead->next;
+      subhead->next = toDelete->next;
       delete toDelete;
     }
   }

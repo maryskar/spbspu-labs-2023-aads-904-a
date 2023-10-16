@@ -22,8 +22,8 @@ namespace chulkov {
     ForwardConstIter< T >& operator=(const ForwardConstIter< T >&) = default;
     ForwardConstIter< T >& operator++();
     ForwardConstIter< T > operator++(int);
-    const T& operator*() const;
-    const T* operator->() const;
+    T& operator*() const;
+    T* operator->() const;
     bool operator!=(const ForwardConstIter< T >&) const;
     bool operator==(const ForwardConstIter< T >&) const;
 
@@ -49,22 +49,22 @@ namespace chulkov {
     cnode_(rhs.node_)
   {}
 
-  template < typename T > T&
-  ForwardConstIter< T >::operator*() const
+  template < typename T >
+  T& ForwardConstIter< T >::operator*() const
   {
-    return cnode_->item_;
+    return cnode_->data;
   }
 
   template < typename T >
   T* ForwardConstIter< T >::operator->() const
   {
-    return std::addressof(cnode_->item_);
+    return std::addressof(cnode_->data);
   }
 
   template < typename T >
   typename ForwardConstIter< T >::ForwardConstIter& ForwardConstIter< T >::operator++()
   {
-    cnode_ = cnode_->next_;
+    cnode_ = cnode_->next;
     return *this;
   }
 
