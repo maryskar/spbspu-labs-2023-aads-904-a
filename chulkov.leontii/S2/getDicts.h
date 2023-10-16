@@ -6,7 +6,7 @@
 
 namespace chulkov {
   Dicts getDicts(std::istream&);
-  FrdList< std::string > getWords(std::istream&, char);
+  ForwardList< std::string > getWords(std::istream&, char);
 }
 
 #endif

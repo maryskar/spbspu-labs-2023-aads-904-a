@@ -6,7 +6,7 @@
 
 namespace chulkov {
   template < typename T >
-  class FrdList;
+  class ForwardList;
   template < typename T >
   class ForwardConstIter;
 
@@ -27,7 +27,7 @@ namespace chulkov {
     ForwardIter< T > eraseAfter(ForwardIter< T > it);
 
   private:
-    friend class FrdList< T >;
+    friend class ForwardList< T >;
     friend class ForwardConstIter< T >;
     ForwardIter(List< T >* node);
     List< T >* node_;

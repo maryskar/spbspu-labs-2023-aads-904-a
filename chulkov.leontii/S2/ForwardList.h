@@ -12,16 +12,16 @@ namespace chulkov {
   class ForwardConstIter;
 
   template < typename T >
-  class FrdList
+  class ForwardList
   {
   public:
-    FrdList();
-    FrdList(const FrdList& other);
-    FrdList(FrdList&& other) noexcept;
-    ~FrdList();
+    ForwardList();
+    ForwardList(const ForwardList& other);
+    ForwardList(ForwardList&& other) noexcept;
+    ~ForwardList();
     void clear();
 
-    void swap(FrdList& other) noexcept;
+    void swap(ForwardList& other) noexcept;
     void pushFront(const T& item);
     void popFront();
     void popAfter(ForwardIter< T >& iter);
@@ -43,13 +43,13 @@ namespace chulkov {
   };
 
   template < typename T >
-  FrdList< T >::FrdList():
+  ForwardList< T >::ForwardList():
     head_(nullptr),
     tail_(nullptr)
   {}
 
   template < typename T >
-  FrdList< T >::FrdList(const FrdList< T >& other):
+  ForwardList< T >::ForwardList(const ForwardList< T >& other):
     head_(nullptr),
     tail_(nullptr)
   {
@@ -68,7 +68,7 @@ namespace chulkov {
   }
 
   template < typename T >
-  FrdList< T >::FrdList(FrdList< T >&& other) noexcept:
+  ForwardList< T >::ForwardList(ForwardList< T >&& other) noexcept:
     head_(other.head_),
     tail_(other.tail_)
   {
@@ -77,13 +77,13 @@ namespace chulkov {
   }
 
   template < typename T >
-  FrdList< T >::~FrdList()
+  ForwardList< T >::~ForwardList()
   {
     clear();
   }
 
   template < typename T >
-  void FrdList< T >::clear()
+  void ForwardList< T >::clear()
   {
     List< T >* newHead = nullptr;
     while (head_) {
@@ -95,7 +95,7 @@ namespace chulkov {
   }
 
   template < typename T >
-  T& FrdList< T >::front()
+  T& ForwardList< T >::front()
   {
     if (!head_) {
       throw std::logic_error("List is empty");
@@ -104,7 +104,7 @@ namespace chulkov {
   }
 
   template < typename T >
-  ForwardIter< T > FrdList< T >::eraseAfter(ForwardConstIter< T > pos)
+  ForwardIter< T > ForwardList< T >::eraseAfter(ForwardConstIter< T > pos)
   {
     if (!pos.cnode_ || !pos.cnode_->next_) {
       return ForwardIter< T >(nullptr);
@@ -116,7 +116,7 @@ namespace chulkov {
   }
 
   template < typename T >
-  ForwardIter< T > FrdList< T >::insertAfter(ForwardConstIter< T > pos, const T& val)
+  ForwardIter< T > ForwardList< T >::insertAfter(ForwardConstIter< T > pos, const T& val)
   {
     if (!pos.cnode_) {
       return ForwardIter< T >(nullptr);
@@ -127,14 +127,14 @@ namespace chulkov {
   }
 
   template < typename T >
-  void FrdList< T >::swap(FrdList< T >& other) noexcept
+  void ForwardList< T >::swap(ForwardList< T >& other) noexcept
   {
     std::swap(head_, other.head_);
     std::swap(tail_, other.tail_);
   }
 
   template < typename T >
-  void FrdList< T >::pushBack(const T& item)
+  void ForwardList< T >::pushBack(const T& item)
   {
     if (!head_) {
       head_ = new List< T >{item, nullptr};
@@ -146,7 +146,7 @@ namespace chulkov {
   }
 
   template < typename T >
-  void FrdList< T >::pushAfter(const ForwardConstIter< T >& iter, const T& item)
+  void ForwardList< T >::pushAfter(const ForwardConstIter< T >& iter, const T& item)
   {
     if (!iter.cnode_) {
       head_ = tail_ = new List< T >(item);
@@ -160,13 +160,13 @@ namespace chulkov {
   }
 
   template < typename T >
-  bool FrdList< T >::isEmpty() const
+  bool ForwardList< T >::isEmpty() const
   {
     return (head_ == nullptr);
   }
 
   template < typename T >
-  void FrdList< T >::pushFront(const T& item)
+  void ForwardList< T >::pushFront(const T& item)
   {
     if (!head_) {
       head_ = new List< T >{item, nullptr};
@@ -179,7 +179,7 @@ namespace chulkov {
   }
 
   template < typename T >
-  void FrdList< T >::popFront()
+  void ForwardList< T >::popFront()
   {
     if (!head_) {
       throw std::logic_error("Underflow");
@@ -195,7 +195,7 @@ namespace chulkov {
   }
 
   template < typename T >
-  void FrdList< T >::popAfter(ForwardIter< T >& iter)
+  void ForwardList< T >::popAfter(ForwardIter< T >& iter)
   {
     if (!head_ || iter.cnode_->next_ == nullptr) {
       throw std::logic_error("There is nothing to delete");
@@ -208,26 +208,26 @@ namespace chulkov {
   }
 
   template < typename T >
-  ForwardIter< T > FrdList< T >::begin() noexcept
+  ForwardIter< T > ForwardList< T >::begin() noexcept
   {
     return ForwardIter< T >(head_);
   }
 
   template < typename T >
-  ForwardIter< T > FrdList< T >::end() noexcept
+  ForwardIter< T > ForwardList< T >::end() noexcept
   {
     return ForwardIter< T >(nullptr);
   }
 
   template < typename T >
-  ForwardConstIter< T > FrdList< T >::cbegin() const noexcept
+  ForwardConstIter< T > ForwardList< T >::cbegin() const noexcept
   {
 
     return ForwardConstIter< T >(head_);
   }
 
   template < typename T >
-  ForwardConstIter< T > FrdList< T >::cend() const noexcept
+  ForwardConstIter< T > ForwardList< T >::cend() const noexcept
   {
     return ForwardConstIter< T >(nullptr);
   }

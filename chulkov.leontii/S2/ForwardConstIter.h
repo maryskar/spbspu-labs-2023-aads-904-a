@@ -6,7 +6,7 @@
 
 namespace chulkov {
   template < typename T >
-  class FrdList;
+  class ForwardList;
   template < typename T >
   class ForwardIter;
 
@@ -28,7 +28,7 @@ namespace chulkov {
     bool operator==(const ForwardConstIter< T >&) const;
 
   private:
-    friend class FrdList< T >;
+    friend class ForwardList< T >;
     friend class ForwardIter< T >;
     ForwardConstIter(List< T >* node);
     List< T >* cnode_;

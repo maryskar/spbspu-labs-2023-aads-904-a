@@ -4,7 +4,7 @@
 #include "commands.h"
 
 namespace chulkov {
-  Dictionary< int, std::string > getDict(const FrdList< std::string >& in)
+  Dictionary< int, std::string > getDict(const ForwardList< std::string >& in)
   {
     Dictionary< int, std::string > returnable;
     int key = 0;
@@ -37,9 +37,9 @@ namespace chulkov {
     return dicts;
   }
 
-  FrdList< std::string > getWords(std::istream& in, char char_)
+  ForwardList< std::string > getWords(std::istream& in, char char_)
   {
-    auto words = FrdList< std::string >();
+    auto words = ForwardList< std::string >();
     char next = in.get();
     while ((next != char_) && !in.eof()) {
       std::string elem;

@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 
     while (!in.eof()) {
       try {
-        chulkov::FrdList< std::string > words = chulkov::getWords(in, '\n');
+        chulkov::ForwardList< std::string > words = chulkov::getWords(in, '\n');
         if (words.isEmpty()) {
           continue;
         }

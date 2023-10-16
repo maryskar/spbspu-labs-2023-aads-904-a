@@ -33,7 +33,7 @@ namespace chulkov {
 
   private:
     Compare cmp;
-    FrdList< std::pair< Key, Value > > list_;
+    ForwardList< std::pair< Key, Value > > list_;
     bool isEqual(const Key& first, const Key& second) const;
   };
 
