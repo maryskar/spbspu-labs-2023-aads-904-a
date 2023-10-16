@@ -5,7 +5,7 @@
 
 std::ostream& chulkov::printInvalidCommand(std::ostream& out)
 {
-  return out << "<INVALID COMMAND>\n";
+  return out << "<INVALID COMMAND>";
 };
 
 int main(int argc, char* argv[])
