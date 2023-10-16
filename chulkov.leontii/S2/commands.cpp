@@ -3,7 +3,6 @@
 #include <stdexcept>
 
 namespace chulkov {
-  std::string message = "Unknown dict";
 
   std::ostream& printEmptyCommand(std::ostream& out)
   {
@@ -12,6 +11,7 @@ namespace chulkov {
 
   std::ostream& print(std::ostream& out, const std::string& name, const Dicts& dicts)
   {
+    std::string message = "Unknown dict";
     auto it = dicts.cfind(name);
     if (it == dicts.cend()) {
       throw std::invalid_argument(message);
@@ -30,6 +30,7 @@ namespace chulkov {
 
   Dictionary< int, std::string > complement(const std::string& lhs, const std::string& rhs, const Dicts& dicts)
   {
+    std::string message = "Unknown dict";
     auto lhsCIterator = dicts.cfind(lhs);
     auto rhsCIterator = dicts.cfind(rhs);
     if ((lhsCIterator == dicts.cend()) || (rhsCIterator == dicts.cend())) {
@@ -69,6 +70,7 @@ namespace chulkov {
 
   Dictionary< int, std::string > intersect(const std::string& lhsName, const std::string& rhsName, const Dicts& dicts)
   {
+    std::string message = "Unknown dict";
     auto lhsCIt = dicts.cfind(lhsName);
     auto rhsCIt = dicts.cfind(rhsName);
     if ((lhsCIt == dicts.cend()) || (rhsCIt == dicts.cend())) {
@@ -105,6 +107,7 @@ namespace chulkov {
 
   Dictionary< int, std::string > unite(const std::string& lhs, const std::string& rhs, const Dicts& dicts)
   {
+    std::string message = "Unknown dict";
     auto lhsCIterator = dicts.cfind(lhs);
     auto rhsCIterator = dicts.cfind(rhs);
     if ((lhsCIterator == dicts.cend()) || (rhsCIterator == dicts.cend())) {

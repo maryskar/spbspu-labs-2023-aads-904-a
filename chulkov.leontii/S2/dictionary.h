@@ -25,8 +25,8 @@ namespace chulkov {
     bool isEmpty() const noexcept;
 
     Iter find(const Key&);
-    Iter begin();
-    Iter end();
+    Iter begin() const;
+    Iter end() const;
     CIter cbegin() const;
     CIter cend() const;
     CIter cfind(const Key&) const;
@@ -131,7 +131,7 @@ namespace chulkov {
   }
 
   template < typename Key, typename Value, typename Compare >
-  ForwardIter< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::begin()
+  ForwardIter< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::begin() const
   {
     return list_.begin();
   }
@@ -143,7 +143,7 @@ namespace chulkov {
   }
 
   template < typename Key, typename Value, typename Compare >
-  ForwardIter< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::end()
+  ForwardIter< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::end() const
   {
     return list_.end();
   }

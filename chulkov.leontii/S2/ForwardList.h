@@ -36,8 +36,8 @@ namespace chulkov {
 
     ForwardIter< T > insertAfter(ForwardConstIter< T >, const T&);
     ForwardIter< T > eraseAfter(ForwardConstIter< T > it);
-    ForwardIter< T > begin() noexcept;
-    ForwardIter< T > end() noexcept;
+    ForwardIter< T > begin() const noexcept;
+    ForwardIter< T > end() const noexcept;
     ForwardConstIter< T > cbegin() const noexcept;
     ForwardConstIter< T > cend() const noexcept;
 
@@ -238,13 +238,13 @@ namespace chulkov {
   }
 
   template < typename T >
-  ForwardIter< T > ForwardList< T >::begin() noexcept
+  ForwardIter< T > ForwardList< T >::begin() const noexcept
   {
     return ForwardIter< T >(head_);
   }
 
   template < typename T >
-  ForwardIter< T > ForwardList< T >::end() noexcept
+  ForwardIter< T > ForwardList< T >::end() const noexcept
   {
     return ForwardIter< T >(nullptr);
   }
