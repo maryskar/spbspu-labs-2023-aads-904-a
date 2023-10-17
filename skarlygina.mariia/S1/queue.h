@@ -28,13 +28,13 @@ namespace skarlygina
   };
 
   template< typename T >
-  Queue< T >::Queue() :
+  Queue< T >::Queue():
     head_(nullptr),
     tail_(nullptr)
   {}
 
   template< typename T >
-  Queue< T >::Queue(Queue< T >& other) :
+  Queue< T >::Queue(Queue< T >& other):
     head_(other.head_),
     tail_(other.tail_)
   {
@@ -51,7 +51,7 @@ namespace skarlygina
   }
 
   template< typename T >
-  Queue< T >::Queue(Queue< T >&& other) noexcept :
+  Queue< T >::Queue(Queue< T >&& other) noexcept:
     head_(other.head_),
     tail_(other.tail_)
   {
@@ -114,5 +114,4 @@ namespace skarlygina
     tail_ = nullptr;
   }
 }
-
 #endif
