@@ -12,6 +12,7 @@ namespace skarlygina
     Stack(const Stack< T >& other);
     Stack(const Stack< T >&& other);
     Stack< T >& operator=(const Stack< T >& other);
+    Stack< T >& operator=(Stack< T >&& other);
     void push(const T& rhs);
     const T& top() const;
     void pop();
@@ -28,20 +29,40 @@ namespace skarlygina
   };
 
   template< typename T >
-  Stack< T >::Stack() :
+  Stack< T >::Stack():
     root_(nullptr)
   {}
 
   template< typename T >
-  Stack< T >::Stack(const Stack< T >& other) :
+  Stack< T >::Stack(const Stack< T >& other):
     root_(other.root_)
   {}
 
   template< typename T >
-  Stack< T >::Stack(const Stack< T >&& other) :
+  Stack< T >::Stack(const Stack< T >&& other):
     root_(other.root_)
   {
     other.root_ = nullptr;
+  }
+
+  Stack< T >& Stack< T >::operator=(const Stack< T >& other)
+  {
+    if (this != std::addressof(other))
+    {
+      Stack< T > temp(other);
+      std::swap(head_, temp.head_);
+    }
+    return *this;
+  }
+
+  template< typename T >
+  Stack< T >& Stack< T >::operator=(Stack< T >&& other)
+  {
+    if (this != std::addressof(other))
+    {
+      head_ = std::move(other.head_);
+    }
+    return *this;
   }
 
   template <class T>
