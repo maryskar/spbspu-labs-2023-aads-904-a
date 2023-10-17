@@ -11,6 +11,7 @@ namespace skarlygina
     Stack();
     Stack(const Stack< T >& other);
     Stack(const Stack< T >&& other);
+    Stack< T >& operator=(const Stack< T >& other);
     void push(const T& rhs);
     const T& top() const;
     void pop();

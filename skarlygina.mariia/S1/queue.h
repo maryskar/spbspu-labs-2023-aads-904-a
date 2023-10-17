@@ -12,6 +12,7 @@ namespace skarlygina
     Queue();
     Queue(Queue< T >& other);
     Queue(Queue< T >&& other) noexcept;
+    Queue< T >& operator=(const Queue< T >& other);
     void push(const T& rhs);
     const T& top() const;
     void pop();
