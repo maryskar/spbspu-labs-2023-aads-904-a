@@ -8,10 +8,9 @@
 
 int main(int argc, char* argv[])
 {
-  Queue< std::string > queue;
-  Stack< long long > stack;
-
-    std::ifstream infile;
+  skarlygina::Queue< std::string > queue;
+  skarlygina::Stack< long long > stack;
+  std::ifstream infile;
   if (argc == 2)
   {
     infile.open(argv[1]);
