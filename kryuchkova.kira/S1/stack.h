@@ -1,0 +1,149 @@
+#ifndef STACK_H
+#define STACK_H
+#include <stdexcept>
+#include <node.h>
+#include <iostream>
+
+namespace kryuchkova
+{
+  template< typename T >
+  class Stack
+  {
+    public:
+      Stack();
+      Stack(const Stack< T > &);
+      Stack(Stack< T > &&);
+      ~Stack();
+      Stack< T > & operator=(const Stack< T > &);
+      Stack< T > & operator=(Stack< T > &&);
+      void push(const T &rhs);
+      const T &getTop() const;
+      void pop();
+      bool isEmpty() const;
+    private:
+      Node< T > *head_;
+      void deleteStack() noexcept;
+      void copyStack(const Stack< T > &);
+  };
+
+  template< typename T >
+  Stack< T >::Stack():
+    head_(nullptr)
+  {}
+
+  template < typename T >
+  void Stack< T >::deleteStack() noexcept
+  {
+    deleteNode(head_);
+    head_ = nullptr;
+  }
+
+  template< typename T >
+  Stack< T >::~Stack()
+  {
+    while (!isEmpty())
+    {
+      Node< T > *temp = head_->next_;
+      delete head_;
+      head_ = temp;
+    }
+  }
+
+  template< typename T >
+  void Stack< T >::push(const T &rhs)
+  {
+    Node< T > *new_node = new Node< T >(rhs);
+    if (head_ == nullptr)
+    {
+      head_ = new_node;
+    }
+    else
+    {
+      new_node->next_ = head_;
+      head_ = new_node;
+    }
+  }
+
+  template< typename T >
+  void Stack< T >::pop()
+  {
+    if (isEmpty())
+    {
+      throw std::logic_error("Empty stack");
+    }
+    Node< T > *tmp = head_;
+    if (head_->next_ == nullptr)
+    {
+      head_ = nullptr;
+    }
+    else
+    {
+      head_ = head_->next_;
+    }
+    delete tmp;
+  }
+
+  template< typename T >
+  const T &Stack< T >::getTop() const
+  {
+    if (isEmpty())
+    {
+      throw std::logic_error("empty");
+    }
+    return head_->data_;
+  }
+
+  template< typename T >
+  bool Stack< T >::isEmpty() const
+  {
+    return head_ == nullptr;
+  }
+
+  template< typename T >
+  void Stack< T >::copyStack(const Stack< T > &stack)
+  {
+    assert(isEmpty());
+    head_ = copyNode(stack.head_);
+  }
+
+  template< typename T >
+  Stack< T >::Stack(Stack< T > &&stack):
+    head_(stack.head_)
+  {
+    stack.head_ = nullptr;
+  }
+
+  template< typename T >
+  Stack< T >::Stack(const Stack< T > &stack):
+    Stack()
+  {
+    copyStack(stack);
+  }
+
+  template< typename T >
+  Stack< T > &Stack< T >::operator=(const Stack< T > &stack)
+  {
+    if (this == std::addressof(stack))
+    {
+      return *this;
+    }
+    Stack< T > newStack(stack);
+    *this = std::move(newStack);
+    return *this;
+  }
+
+  template< typename T >
+  Stack< T > &Stack< T >::operator=(Stack< T > &&stack)
+  {
+    if (this == std::addressof(stack))
+    {
+      return *this;
+    }
+    deleteStack();
+    head_ = stack.head_;
+    stack.head_ = nullptr;
+    return *this;
+  }
+}
+
+#endif
