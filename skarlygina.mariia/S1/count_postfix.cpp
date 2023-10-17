@@ -1,7 +1,7 @@
 #include "count_postfix.h"
+#include <iostream>
 #include "count.h"
 #include "calculator.h"
-#include <iostream>
 
 void skarlygina::formatToPostfix(std::string& str, Queue< std::string >& queue)
 {
