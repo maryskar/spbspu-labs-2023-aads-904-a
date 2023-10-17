@@ -10,9 +10,10 @@ namespace skarlygina
   {
   public:
     Queue();
-    Queue(Queue< T >& other);
+    Queue(const Queue< T >& other);
     Queue(Queue< T >&& other) noexcept;
-    Queue< T >& operator=(const Queue< T >& other);
+    Queue< T >& operator=(Queue< T >& other);
+    Queue< T >& operator=(Queue< T >&& other);
     void push(const T& rhs);
     const T& top() const;
     void pop();
@@ -35,7 +36,7 @@ namespace skarlygina
   {}
 
   template< typename T >
-  Queue< T >::Queue(Queue< T >& other):
+  Queue< T >::Queue(const Queue< T >& other):
     head_(other.head_),
     tail_(other.tail_)
   {
@@ -58,6 +59,29 @@ namespace skarlygina
   {
     other.head_ = nullptr;
     other.tail_ = nullptr;
+  }
+
+  template< typename T >
+  Queue< T >& Queue< T >::operator=(Queue< T >& other)
+  {
+    if (this != std::addressof(other))
+    {
+      Queue< T > temp(other);
+      std::swap(head_, temp.head_);
+      std::swap(tail_, temp.tail_);
+    }
+    return *this;
+  }
+
+  template< typename T >
+  Queue< T >& Queue< T >::operator=(Queue< T >&& other)
+  {
+    if (this != std::addressof(other))
+    {
+      head_ = std::move(other.head_);
+      tail_ = other.tail_;
+    }
+    return *this;
   }
 
   template< typename T >
