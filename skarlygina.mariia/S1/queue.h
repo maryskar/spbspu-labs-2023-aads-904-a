@@ -3,112 +3,116 @@
 #include <cstddef>
 #include <stdexcept>
 
-template< typename T >
-class Queue
+namespace skarlygina
 {
-public:
-  Queue();
-  Queue(Queue< T >& other);
-  Queue(Queue< T >&& other) noexcept;
-  void push(const T& rhs);
-  const T& top() const;
-  void pop();
-  bool isEmpty() const;
-  ~Queue();
-private:
-  struct List
+  template< typename T >
+  class Queue
   {
-    T data;
-    List* next;
+  public:
+    Queue();
+    Queue(Queue< T >& other);
+    Queue(Queue< T >&& other) noexcept;
+    void push(const T& rhs);
+    const T& top() const;
+    void pop();
+    bool isEmpty() const;
+    ~Queue();
+  private:
+    struct List
+    {
+      T data;
+      List* next;
+    };
+    List* head_;
+    List* tail_;
   };
-  List* head_;
-  List* tail_;
-};
 
-template< typename T >
-Queue< T >::Queue():
-  head_(nullptr),
-  tail_(nullptr)
-{}
+  template< typename T >
+  Queue< T >::Queue() :
+    head_(nullptr),
+    tail_(nullptr)
+  {}
 
-template< typename T >
-Queue< T >::Queue(Queue< T >& other):
+  template< typename T >
+  Queue< T >::Queue(Queue< T >& other) :
     head_(other.head_),
     tail_(other.tail_)
-{
-  if(!other.isEmpty())
   {
-    head_ = new List(*other.head_);
-    List* current = head_;
-    while (current->next != nullptr)
+    if (!other.isEmpty())
     {
-      current = current->next;
+      head_ = new List(*other.head_);
+      List* current = head_;
+      while (current->next != nullptr)
+      {
+        current = current->next;
+      }
+      tail_ = current;
     }
-    tail_ = current;
   }
-}
 
-template< typename T >
-Queue< T >::Queue(Queue< T >&& other) noexcept:
-  head_(other.head_),
-  tail_(other.tail_)
-{
-  other.head_ = nullptr;
-  other.tail_ = nullptr;
-}
-
-template< typename T >
-void Queue< T >::push(const T& rhs)
-{
-  List* new_node = new List{rhs, nullptr};
-  if (isEmpty())
+  template< typename T >
+  Queue< T >::Queue(Queue< T >&& other) noexcept :
+    head_(other.head_),
+    tail_(other.tail_)
   {
-    tail_ = head_ = new_node;
+    other.head_ = nullptr;
+    other.tail_ = nullptr;
   }
-  else
+
+  template< typename T >
+  void Queue< T >::push(const T& rhs)
   {
-    tail_->next = new_node;
-    tail_ = tail_->next;
+    List* new_node = new List{ rhs, nullptr };
+    if (isEmpty())
+    {
+      tail_ = head_ = new_node;
+    }
+    else
+    {
+      tail_->next = new_node;
+      tail_ = tail_->next;
+    }
   }
-}
 
-template< typename T >
-void Queue< T >::pop()
-{
-  if (isEmpty())
+  template< typename T >
+  void Queue< T >::pop()
   {
-    throw std::out_of_range("Queue is empty");
-  }
-  List* head_temp = head_;
-  head_ = head_->next;
-  delete head_temp;
-}
-
-template <class T>
-const T& Queue< T >::top() const
-{
-  if (isEmpty())
-  {
-    throw std::runtime_error("Queue is empty");
-  }
-  return head_->data;
-}
-
-template< typename T >
-bool Queue< T >::isEmpty() const
-{
-  return head_ == nullptr;
-}
-
-template< typename T >
-Queue< T >::~Queue()
-{
-  while (head_ != nullptr)
-  {
-    List* temp = head_;
+    if (isEmpty())
+    {
+      throw std::out_of_range("Queue is empty");
+    }
+    List* head_temp = head_;
     head_ = head_->next;
-    delete temp;
+    delete head_temp;
   }
-  tail_ = nullptr;
+
+  template <class T>
+  const T& Queue< T >::top() const
+  {
+    if (isEmpty())
+    {
+      throw std::runtime_error("Queue is empty");
+    }
+    return head_->data;
+  }
+
+  template< typename T >
+  bool Queue< T >::isEmpty() const
+  {
+    return head_ == nullptr;
+  }
+
+  template< typename T >
+  Queue< T >::~Queue()
+  {
+    while (head_ != nullptr)
+    {
+      List* temp = head_;
+      head_ = head_->next;
+      delete temp;
+    }
+    tail_ = nullptr;
+  }
 }
+
 #endif

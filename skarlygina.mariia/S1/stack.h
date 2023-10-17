@@ -2,109 +2,112 @@
 #define STACK_H
 #include <cstddef>
 #include <stdexcept>
-template< typename T >
-class Stack
+namespace skarlygina
 {
-public:
-  Stack();
-  Stack(const Stack< T >& other);
-  Stack(const Stack< T >&& other);
-  void push(const T& rhs);
-  const T& top() const;
-  void pop();
-  const T& deep() const;
-  bool isEmpty() const;
-  ~Stack();
-private:
-  struct List
+  template< typename T >
+  class Stack
   {
-    T data;
-    List* next;
+  public:
+    Stack();
+    Stack(const Stack< T >& other);
+    Stack(const Stack< T >&& other);
+    void push(const T& rhs);
+    const T& top() const;
+    void pop();
+    const T& deep() const;
+    bool isEmpty() const;
+    ~Stack();
+  private:
+    struct List
+    {
+      T data;
+      List* next;
+    };
+    List* root_;
   };
-  List* root_;
-};
 
-template< typename T >
-Stack< T >::Stack():
-  root_(nullptr)
-{}
+  template< typename T >
+  Stack< T >::Stack() :
+    root_(nullptr)
+  {}
 
-template< typename T >
-Stack< T >::Stack(const Stack< T >& other):
-  root_(other.root_)
-{}
+  template< typename T >
+  Stack< T >::Stack(const Stack< T >& other) :
+    root_(other.root_)
+  {}
 
-template< typename T >
-Stack< T >::Stack(const Stack< T >&& other):
-  root_(other.root_)
-{
-  other.root_ = nullptr;
-}
+  template< typename T >
+  Stack< T >::Stack(const Stack< T >&& other) :
+    root_(other.root_)
+  {
+    other.root_ = nullptr;
+  }
 
-template <class T>
-const T& Stack< T >::top() const
-{
+  template <class T>
+  const T& Stack< T >::top() const
+  {
     if (isEmpty())
-  {
-    throw std::runtime_error("Stack is empty");
+    {
+      throw std::runtime_error("Stack is empty");
+    }
+
+    return root_->data;
   }
 
-  return root_->data;
-}
-
-template< typename T>
-void Stack< T >::push(const T& rhs)
-{
-  List* new_node = new List{rhs, nullptr};
-  if (new_node == nullptr)
+  template< typename T>
+  void Stack< T >::push(const T& rhs)
   {
-    throw std::bad_alloc();
+    List* new_node = new List{ rhs, nullptr };
+    if (new_node == nullptr)
+    {
+      throw std::bad_alloc();
+    }
+    new_node->data = rhs;
+    new_node->next = root_;
+    root_ = new_node;
   }
-  new_node->data = rhs;
-  new_node->next = root_;
-  root_ = new_node;
-}
 
-template< typename T >
-void Stack< T >::pop()
-{
-  if (isEmpty())
+  template< typename T >
+  void Stack< T >::pop()
   {
-    throw std::out_of_range("Stack is empty");
+    if (isEmpty())
+    {
+      throw std::out_of_range("Stack is empty");
+    }
+    List* node_temp = root_;
+    root_ = node_temp->next;
+    delete node_temp;
   }
-  List* node_temp = root_;
-  root_ = node_temp->next;
-  delete node_temp;
-}
 
-template< typename T >
-const T& Stack< T >::deep() const
-{
-  if (isEmpty())
+  template< typename T >
+  const T& Stack< T >::deep() const
   {
-    throw std::logic_error("Stack is empty");
+    if (isEmpty())
+    {
+      throw std::logic_error("Stack is empty");
+    }
+    List* current = this->root_;
+    while (current->next != nullptr)
+    {
+      current = current->next;
+    }
+    List* deep = current;
+    return deep->data;
   }
-  List* current = this->root_;
-  while (current->next != nullptr)
+
+  template< typename T >
+  bool Stack< T >::isEmpty() const
   {
-    current = current->next;
+    return root_ == nullptr;
   }
-  List* deep = current;
-  return deep->data;
-}
 
-template< typename T >
-bool Stack< T >::isEmpty() const
-{
-  return root_ == nullptr;
-}
-
-template< typename T>
-Stack< T >::~Stack()
-{
-  while (!isEmpty())
+  template< typename T>
+  Stack< T >::~Stack()
   {
-    pop();
+    while (!isEmpty())
+    {
+      pop();
+    }
   }
 }
 #endif
