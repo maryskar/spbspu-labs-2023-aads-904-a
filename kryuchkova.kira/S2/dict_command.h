@@ -69,14 +69,14 @@ namespace kryuchkova
   {
     Dictionary< Key, Value, Compare > result;
     Compare comp = Compare{};
-    for (auto i = second_.cbegin(); i != second_.cend(); i++)
+    for (auto i = first_.cbegin(); i != first_.cend(); i++)
     {
       auto res = second_.cend();
       for (auto j = first_.cbegin(); j != first_.cend(); j++)
       {
         if (!comp(i->first, j->first) && !comp(j->first, i->first))
         {
-          res = j;
+          res = i;
           break;
         }
       }

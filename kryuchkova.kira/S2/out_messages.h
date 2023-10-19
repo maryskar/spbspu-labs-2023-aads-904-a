@@ -4,8 +4,8 @@
 
 namespace kryuchkova
 {
-  void OutInvalidCommand(std::ostream & out);
-  void outEmpty(std::ostream & out);
+  std::ostream & OutInvalidCommand(std::ostream & out);
+  std::ostream & outEmpty(std::ostream & out);
 }
 
 #endif

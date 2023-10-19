@@ -1,11 +1,11 @@
 #include "out_messages.h"
 
-void kryuchkova::OutInvalidCommand(std::ostream & out)
+std::ostream & kryuchkova::OutInvalidCommand(std::ostream & out)
 {
-  out << "<INVALID COMMAND>";
+  return out << "<INVALID COMMAND>";
 }
 
-void kryuchkova::outEmpty(std::ostream & out)
+std::ostream & kryuchkova::outEmpty(std::ostream & out)
 {
-  out << "<EMPTY>";
+  return out << "<EMPTY>";
 }
