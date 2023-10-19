@@ -3,7 +3,7 @@
 #include <iterator>
 #include <cassert>
 #include <memory>
-#include "../common/node.h"
+#include <node.h>
 
 namespace kryuchkova
 {

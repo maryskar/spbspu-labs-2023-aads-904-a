@@ -4,7 +4,7 @@
 #include <cassert>
 #include <memory>
 #include "forward_list_const_iterator.h"
-#include "../common/node.h"
+#include <node.h>
 #include <iostream>
 
 namespace kryuchkova
