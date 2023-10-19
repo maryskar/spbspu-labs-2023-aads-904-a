@@ -29,6 +29,7 @@ int main(int argc, char *argv[])
   {
     try
     {
+    
       std::string command;
       std::cin >> command;
       if (!std::cin)
@@ -62,17 +63,23 @@ int main(int argc, char *argv[])
         {
           container.insert(dict_of_dict_elem(thirdName, kryuchkova::make_union(firstDict, secondDict)));
         }
+        else
+        {
+          kryuchkova::OutInvalidCommand(std::cout);
+          continue;
+        }
       }
     }
     catch (const std::logic_error & e)
-      {
-        kryuchkova::OutInvalidCommand(std::cout) << '\n';
-        continue;
-      }
-      catch (const std::runtime_error & e)
-      {
-        break;
-      }
+    {
+      kryuchkova::OutInvalidCommand(std::cout);
+      std::cout << '\n';
+      continue;
+    }
+    catch (const std::runtime_error & e)
+    {
+      break;
+    }
   }
   return 0;
 }
