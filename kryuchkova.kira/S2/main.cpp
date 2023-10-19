@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <stdexcept>
 #include "dictionary.h"
 #include "dict_command.h"
 #include "read_dict.h"
@@ -22,11 +23,13 @@ int main(int argc, char *argv[])
   using dict_of_dict = kryuchkova::Dictionary< std::string, dictionary, std::less< > >;
   using dict_of_dict_elem = std::pair< std::string, dictionary >;
 
-  try
+
+  dict_of_dict container = kryuchkova::readDictOfDict(in);
+  while (std::cin)
   {
-    dict_of_dict container = kryuchkova::readDictOfDict(in);
-    while (std::cin)
+    try
     {
+    
       std::string command;
       std::cin >> command;
       if (!std::cin)
@@ -67,10 +70,16 @@ int main(int argc, char *argv[])
         }
       }
     }
+    catch (const std::logic_error & e)
+      {
+        kryuchkova::OutInvalidCommand(std::cout);
+        std::cout << '\n';
+        continue;
+      }
+      catch (const std::runtime_error & e)
+      {
+        break;
+      }
   }
-  catch(const std::exception& e)
-  {
-    std::cerr << e.what() << '\n';
-  }
-
+  return 0;
 }

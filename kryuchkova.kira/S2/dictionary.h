@@ -207,7 +207,7 @@ namespace kryuchkova
   const Value & Dictionary< Key, Value, Compare >::at(const key_type & key) const
   {
     const_iterator it = find(key);
-    if (it == end())
+    if (++it == cend())
     {
       throw std::out_of_range("There is no such key");
     }
