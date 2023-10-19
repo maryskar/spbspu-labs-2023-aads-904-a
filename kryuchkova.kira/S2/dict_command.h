@@ -14,7 +14,7 @@ namespace kryuchkova
     auto cit = dict.cbegin();
     if (cit == dict.cend())
     {
-      outEmpty(out);
+      outEmpty(out) << '\n';
       return;
     }
     out << rhs.first;
@@ -34,29 +34,31 @@ namespace kryuchkova
     {
       return res;
     }
-    auto iter_first_ = first_.cbegin();
-    auto iter_second_ = second_.cbegin();
+    auto iter_first_begin = first_.cbegin();
+    auto iter_first_end = first_.cend();
+    auto iter_second_begin = second_.cbegin();
+    auto iter_second_end = second_.cend();
     Compare comp = Compare{};
-    while (iter_first_ != first_.cend() && iter_second_ != second_.cend())
+    while (iter_first_begin != iter_first_end && iter_second_begin != iter_second_end)
     {
-      while (iter_second_ != second_.cend() && comp(iter_second_->first, iter_first_->first))
+      while (iter_second_begin != iter_second_end && comp((*iter_second_begin).first, (*iter_first_begin).first))
       {
-        iter_second_++;
+        iter_second_begin++;
       }
-      if (iter_second_ == second_.cend())
+      if (iter_second_begin == iter_second_end)
       {
         break;
       }
-      if (iter_first_->first != iter_second_->first)
+      if (iter_first_begin->first != iter_second_begin->first)
       {
-        res.insert(*iter_first_);
+        res.insert(*iter_first_begin);
       }
-      iter_first_++;
+      iter_first_begin++;
     }
-    while (iter_first_ != first_.cend())
+    while (iter_first_begin != iter_first_end)
     {
-      res.insert(*iter_first_);
-      iter_first_++;
+      res.insert(*iter_first_begin);
+      iter_first_begin++;
     }
     return res;
   }
