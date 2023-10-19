@@ -52,15 +52,18 @@ int main(int argc, char *argv[])
         dictionary thirdDict;
         if (command == "intersect")
         {
-          container.insert(dict_of_dict_elem(thirdName, kryuchkova::make_intersection(firstDict, secondDict)));
+          thirdDict = kryuchkova::make_intersection(firstDict, secondDict);
+          container[thirdName] = thirdDict;
         }
         else if (command == "complement")
         {
-          container.insert(dict_of_dict_elem(thirdName, kryuchkova::make_comp(firstDict, secondDict)));
+          thirdDict = kryuchkova::make_comp(firstDict, secondDict);
+          container[thirdName] = thirdDict;
         }
         else if (command == "union")
         {
-          container.insert(dict_of_dict_elem(thirdName, kryuchkova::make_union(firstDict, secondDict)));
+          thirdDict = kryuchkova::make_union(firstDict, secondDict);
+          container[thirdName] = thirdDict;
         }
         else
         {

@@ -4,7 +4,7 @@
 #include <initializer_list>
 #include "forward_list_const_iterator.h"
 #include "forward_list_iterator.h"
-#include <node.h>
+#include "../common/node.h"
 
 namespace kryuchkova
 {
@@ -95,7 +95,7 @@ namespace kryuchkova
       fake_.node_->next_ = temp->next_;
       delete temp;
     }
-    fake_.node_->next_ = nullptr;
+    fake_.node_->next_ = fake_.node_;
     last_.node_ = nullptr;
   }
 

@@ -230,7 +230,8 @@ namespace kryuchkova
     }
     catch (const std::out_of_range & e)
     {}
-    return (*(emplace(key, Value{}).first)).second;
+    insert(std::pair< Key, Value >(key, Value()));
+    return at(key);
   }
 
   template< typename Key, typename Value, typename Compare >
