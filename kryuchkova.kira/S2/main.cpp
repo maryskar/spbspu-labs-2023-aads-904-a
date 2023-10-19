@@ -44,21 +44,21 @@ int main(int argc, char *argv[])
         std::string firstName;
         std::string secondName;
         std::string thirdName;
-        std::cin >> firstName >> secondName >> thirdName;
+        std::cin >> thirdName >> firstName >> secondName;
         dictionary firstDict = container.at(firstName);
         dictionary secondDict = container.at(secondName);
         dictionary thirdDict;
         if (command == "intersect")
         {
-          thirdDict = kryuchkova::make_intersection(firstDict, secondDict);
+          container.insert(dict_of_dict_elem(thirdName, kryuchkova::make_intersection(firstDict, secondDict)));
         }
         else if (command == "complement")
         {
-          thirdDict = kryuchkova::make_comp(firstDict, secondDict);
+          container.insert(dict_of_dict_elem(thirdName, kryuchkova::make_comp(firstDict, secondDict)));
         }
         else if (command == "union")
         {
-          thirdDict = kryuchkova::make_union(firstDict, secondDict);
+          container.insert(dict_of_dict_elem(thirdName, kryuchkova::make_union(firstDict, secondDict)));
         }
         else
         {
