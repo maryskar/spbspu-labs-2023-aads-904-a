@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
         }
         else if (command == "union")
         {
-          thirdDict = kryuchkova::make_union(firstDict, secondDict);
+          thirdDict = kryuchkova::make_union(secondDict, firstDict);
           container[thirdName] = thirdDict;
         }
         else
