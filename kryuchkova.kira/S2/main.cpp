@@ -62,17 +62,11 @@ int main(int argc, char *argv[])
         {
           container.insert(dict_of_dict_elem(thirdName, kryuchkova::make_union(firstDict, secondDict)));
         }
-        else
-        {
-          kryuchkova::OutInvalidCommand(std::cout);
-          continue;
-        }
       }
     }
     catch (const std::logic_error & e)
       {
-        kryuchkova::OutInvalidCommand(std::cout);
-        std::cout << '\n';
+        kryuchkova::OutInvalidCommand(std::cout) << '\n';
         continue;
       }
       catch (const std::runtime_error & e)
