@@ -92,6 +92,7 @@ namespace kryuchkova
   ConstForwardIterator< T >::ConstForwardIterator(Node< T > * node):
     node_(node)
   {}
+
 }
 
 #endif
