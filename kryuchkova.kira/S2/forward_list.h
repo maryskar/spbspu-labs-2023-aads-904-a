@@ -89,7 +89,7 @@ namespace kryuchkova
     {
       return;
     }
-    while (fake_.node_->next_ != nullptr)
+    while (fake_.node_->next_ != fake_.node_)
     {
       Node< T > * temp = fake_.node_->next_;
       fake_.node_->next_ = temp->next_;

@@ -10,7 +10,6 @@ namespace kryuchkova
   template< typename Key, typename Value, typename Compare >
   void print(const std::pair< std::string, Dictionary< Key, Value, Compare > > & rhs, std::ostream & out)
   {
-    std::cout << "aboba\n";
     auto dict = rhs.second;
     auto cit = dict.cbegin();
     if (cit == dict.cend())
