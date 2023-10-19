@@ -29,7 +29,6 @@ int main(int argc, char *argv[])
   {
     try
     {
-    
       std::string command;
       std::cin >> command;
       if (!std::cin)
