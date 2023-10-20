@@ -10,7 +10,7 @@ namespace skarlygina
   public:
     Stack();
     Stack(const Stack< T >& other);
-    Stack(const Stack< T >&& other);
+    Stack(Stack< T >&& other);
     Stack< T >& operator=(const Stack< T >& other);
     Stack< T >& operator=(Stack< T >&& other);
     void push(const T& rhs);
@@ -35,11 +35,18 @@ namespace skarlygina
 
   template< typename T >
   Stack< T >::Stack(const Stack< T >& other):
-    root_(other.root_)
-  {}
+    root_(nullptr)
+  {
+    List< T >* current = other.root_;
+    while (current)
+    {
+      push(current->data);
+      current = current->next;
+    }
+  }
 
   template< typename T >
-  Stack< T >::Stack(const Stack< T >&& other):
+  Stack< T >::Stack(Stack< T >&& other):
     root_(other.root_)
   {
     other.root_ = nullptr;
@@ -51,7 +58,7 @@ namespace skarlygina
     if (this != std::addressof(other))
     {
       Stack< T > temp(other);
-      std::swap(head_, temp.head_);
+      std::swap(root_, temp.root_);
     }
     return *this;
   }
@@ -61,27 +68,29 @@ namespace skarlygina
   {
     if (this != std::addressof(other))
     {
-      head_ = std::move(other.head_);
+      root_ = std::move(other.root_);
     }
     return *this;
   }
 
-  template <class T>
+  template < typename T >
   const T& Stack< T >::top() const
   {
     if (isEmpty())
     {
       throw std::runtime_error("Stack is empty");
     }
-
     return root_->data;
   }
 
-  template< typename T>
+  template< typename T >
   void Stack< T >::push(const T& rhs)
   {
-    List* new_node = new List{ rhs, nullptr };
-    if (new_node == nullptr)
+    try
+    {
+      List* new_node = new List{rhs, nullptr};
+    }
+    catch (const std::bad_alloc& e)
     {
       throw std::bad_alloc();
     }

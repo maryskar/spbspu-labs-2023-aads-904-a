@@ -12,7 +12,7 @@ namespace skarlygina
     Queue();
     Queue(const Queue< T >& other);
     Queue(Queue< T >&& other) noexcept;
-    Queue< T >& operator=(Queue< T >& other);
+    Queue< T >& operator=(const Queue< T >& other);
     Queue< T >& operator=(Queue< T >&& other);
     void push(const T& rhs);
     const T& top() const;
@@ -37,18 +37,17 @@ namespace skarlygina
 
   template< typename T >
   Queue< T >::Queue(const Queue< T >& other):
-    head_(other.head_),
-    tail_(other.tail_)
+    head_(nullptr),
+    tail_(nullptr)
   {
     if (!other.isEmpty())
     {
-      head_ = new List(*other.head_);
-      List* current = head_;
-      while (current->next != nullptr)
+      List* current = other.head_;
+      while (current)
       {
+        push(current->data);
         current = current->next;
       }
-      tail_ = current;
     }
   }
 
@@ -87,7 +86,7 @@ namespace skarlygina
   template< typename T >
   void Queue< T >::push(const T& rhs)
   {
-    List* new_node = new List{ rhs, nullptr };
+    List* new_node = new List{rhs, nullptr};
     if (isEmpty())
     {
       tail_ = head_ = new_node;
