@@ -45,6 +45,7 @@ namespace skarlygina
     other.root_ = nullptr;
   }
 
+  template< typename T >
   Stack< T >& Stack< T >::operator=(const Stack< T >& other)
   {
     if (this != std::addressof(other))
