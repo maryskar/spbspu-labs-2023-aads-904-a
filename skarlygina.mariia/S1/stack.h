@@ -10,9 +10,9 @@ namespace skarlygina
   public:
     Stack();
     Stack(const Stack< T >& other);
-    Stack(Stack< T >&& other);
+    Stack(Stack< T >&& other) noexcept;
     Stack< T >& operator=(const Stack< T >& other);
-    Stack< T >& operator=(Stack< T >&& other);
+    Stack< T >& operator=(Stack< T >&& other) noexcept;
     void push(const T& rhs);
     const T& top() const;
     void pop();
@@ -46,7 +46,7 @@ namespace skarlygina
   }
 
   template< typename T >
-  Stack< T >::Stack(Stack< T >&& other):
+  Stack< T >::Stack(Stack< T >&& other) noexcept:
     root_(other.root_)
   {
     other.root_ = nullptr;
@@ -64,7 +64,7 @@ namespace skarlygina
   }
 
   template< typename T >
-  Stack< T >& Stack< T >::operator=(Stack< T >&& other)
+  Stack< T >& Stack< T >::operator=(Stack< T >&& other) noexcept
   {
     if (this != std::addressof(other))
     {

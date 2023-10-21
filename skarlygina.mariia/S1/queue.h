@@ -13,7 +13,7 @@ namespace skarlygina
     Queue(const Queue< T >& other);
     Queue(Queue< T >&& other) noexcept;
     Queue< T >& operator=(const Queue< T >& other);
-    Queue< T >& operator=(Queue< T >&& other);
+    Queue< T >& operator=(Queue< T >&& other) noexcept;
     void push(const T& rhs);
     const T& top() const;
     void pop();
@@ -61,7 +61,7 @@ namespace skarlygina
   }
 
   template< typename T >
-  Queue< T >& Queue< T >::operator=(Queue< T >& other)
+  Queue< T >& Queue< T >::operator=(const Queue< T >& other)
   {
     if (this != std::addressof(other))
     {
@@ -73,7 +73,7 @@ namespace skarlygina
   }
 
   template< typename T >
-  Queue< T >& Queue< T >::operator=(Queue< T >&& other)
+  Queue< T >& Queue< T >::operator=(Queue< T >&& other) noexcept
   {
     if (this != std::addressof(other))
     {
