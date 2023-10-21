@@ -37,7 +37,7 @@ namespace skarlygina
   Stack< T >::Stack(const Stack< T >& other):
     root_(nullptr)
   {
-    List< T >* current = other.root_;
+    List* current = other.root_;
     while (current)
     {
       push(current->data);
@@ -86,14 +86,7 @@ namespace skarlygina
   template< typename T >
   void Stack< T >::push(const T& rhs)
   {
-    try
-    {
-      List* new_node = new List{rhs, nullptr};
-    }
-    catch (const std::bad_alloc& e)
-    {
-      throw std::bad_alloc();
-    }
+    List* new_node = new List{rhs, nullptr};
     new_node->data = rhs;
     new_node->next = root_;
     root_ = new_node;
