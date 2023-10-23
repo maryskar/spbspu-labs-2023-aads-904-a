@@ -30,11 +30,6 @@ namespace dmitriev
         newData.push_back(dist(mt));
       }
     }
-    //else
-    //{
-    //  throw std::invalid_argument("incorrect data type");
-    //}
-
 
     return newData;
   }
