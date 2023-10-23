@@ -2,6 +2,7 @@
 #define TIMSORT_H
 
 #include <forwardList.h>
+#include "insertionSort.h"
 
 namespace dmitriev
 {
@@ -66,11 +67,33 @@ namespace dmitriev
 
       inplaceMerge(first, mid, last, cmp);
     }
-
-
   }
 
+  template < typename RandomIterator, typename Compare >
+  void timSort(RandomIterator first, RandomIterator last, Compare cmp = Compare())
+  {
+    int minMerge = 32;
+    int n = std::distance(first, last);
+    if (n < 2)
+    {
+      return;
+    }
+    if (n < minMerge)
+    {
+      insertionSort(first, last, cmp);
+      return;
+    }
 
+    int minRun = minRunLength(n);
+    RandomIterator cur = first;
+    while (std::distance(cur, last) >= minRun)
+    {
+      RandomIterator end = std::min(cur + minRun, last);
+      insertionSort(cur, end, cmp);
+      cur = end;
+    }
+    details::merge(first, last, cmp, minRun);
+  }
 
 }
 
