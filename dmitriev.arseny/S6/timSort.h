@@ -1,6 +1,8 @@
 #ifndef TIMSORT_H
 #define TIMSORT_H
 
+#include <forwardList.h>
+
 namespace dmitriev
 {
   namespace details
@@ -15,6 +17,42 @@ namespace dmitriev
       }
       return n + r;
     }
+
+    template< class Iterator, class Comp >
+    void inplaceMerge(Iterator first, Iterator mid, Iterator last, Comp comp)
+    {
+      dmitriev::ForwardList< std::remove_reference_t< decltype(*first) > > temp;
+      temp.insertAfter(temp.beforeBegin(), first, last);
+      Iterator leftIt = first;
+      Iterator rightIt = mid;
+      auto tempIt = temp.begin();
+      while (leftIt != mid && rightIt != last)
+      {
+        if (comp(*leftIt, *rightIt))
+        {
+          *tempIt++ = *leftIt++;
+        }
+        else
+        {
+          *tempIt++ = *rightIt++;
+        }
+      }
+      while (leftIt != mid)
+      {
+        *tempIt++ = *leftIt++;
+      }
+      while (rightIt != last)
+      {
+        *tempIt++ = *rightIt++;
+      }
+      tempIt = temp.begin();
+      for (Iterator it = first; it != last; ++it)
+      {
+        *it = *tempIt++;
+      }
+    }
+
+
   }
 
 
