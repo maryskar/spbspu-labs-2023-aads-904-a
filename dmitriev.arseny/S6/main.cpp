@@ -23,9 +23,10 @@ int main(int argc, char** argv)
     comp = std::less_equal< >();
   }
 
+  size_t size = 0;
   try
   {
-    size_t size = std::stoull((argv[3]));
+    size = std::stoull((argv[3]));
   }
   catch (const std::exception&)
   {
