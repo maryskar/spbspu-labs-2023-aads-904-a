@@ -84,7 +84,7 @@ namespace dmitriev
       return;
     }
 
-    int minRun = minRunLength(n);
+    int minRun = details::minRunLength(n);
     RandomIterator cur = first;
     while (std::distance(cur, last) >= minRun)
     {
@@ -94,7 +94,6 @@ namespace dmitriev
     }
     details::merge(first, last, cmp, minRun);
   }
-
 }
 
 #endif
