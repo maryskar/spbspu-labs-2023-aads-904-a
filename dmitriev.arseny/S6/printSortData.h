@@ -71,7 +71,7 @@ namespace dmitriev
 
     quickSort< typename ForwardList< Value >::iterator, Compare >(forwardList.begin(), forwardList.end(), cmp);
     details::print(forwardList.begin(), forwardList.end(), out);
-    out << '\n';
+    //out << '\n';
   }
 
 }
