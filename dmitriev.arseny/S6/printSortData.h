@@ -52,6 +52,10 @@ namespace dmitriev
       forwardList.pushFront(val);
     }
 
+    details::print(deque1.begin(), deque1.end(), out);
+    out << '\n';
+
+
     quickSort< typename std::deque< Value >::iterator, Compare >(deque1.begin(), deque1.end(), cmp);
     details::print(deque1.begin(), deque1.end(), out);
     out << '\n';
@@ -71,7 +75,7 @@ namespace dmitriev
 
     quickSort< typename ForwardList< Value >::iterator, Compare >(forwardList.begin(), forwardList.end(), cmp);
     details::print(forwardList.begin(), forwardList.end(), out);
-    //out << '\n';
+    out << '\n';
   }
 
 }
