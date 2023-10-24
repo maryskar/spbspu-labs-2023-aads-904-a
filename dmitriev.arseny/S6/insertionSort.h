@@ -1,5 +1,5 @@
-#ifndef INSERTIONSORT
-#define INSERTIONSORT
+#ifndef INSERTIONSORT_H
+#define INSERTIONSORT_H
 
 #include <functional>
 
