@@ -9,7 +9,7 @@ int main(int argc, char** argv)
 {
   if (argc != 4)
   {
-    std::cout << "Error arg\n";
+    std::cout << "trror arg" << '\n';
     return 1;
   }
 
@@ -23,10 +23,18 @@ int main(int argc, char** argv)
     comp = std::less_equal< >();
   }
 
-  size_t size = std::stoull((argv[3]));
+  try
+  {
+    size_t size = std::stoull((argv[3]));
+  }
+  catch (const std::exception&)
+  {
+    std::cout << "invalid number" << '\n';
+    return 1;
+  }
   if (size < 1)
   {
-    std::cerr << "Invalid size\n";
+    std::cerr << "invalid size" << '\n';
     return 1;
   }
 
@@ -40,7 +48,7 @@ int main(int argc, char** argv)
   }
   else
   {
-    std::cerr << "Invalid data type\n";
+    std::cerr << "invalid data type" << '\n';
     return 1;
   }
 
