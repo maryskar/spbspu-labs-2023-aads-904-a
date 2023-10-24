@@ -30,7 +30,6 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  bool dataTypeCondition = false;
   if (std::string(argv[2]) == "ints")
   {
     dmitriev::printSortData< int >(size, std::cout, comp);
