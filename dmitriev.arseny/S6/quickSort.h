@@ -1,5 +1,5 @@
-#ifndef QUICKSORT
-#define QUICKSORT
+#ifndef QUICKSORT_H
+#define QUICKSORT_H
 
 #include <algorithm>
 #include <iterator>
