@@ -56,7 +56,7 @@ namespace dmitriev
     template < typename RandomIterator, typename Compare >
     void merge(RandomIterator first, RandomIterator last, Compare cmp, int minRun)
     {
-      const int n = std::distance(first, last);
+      int n = std::distance(first, last);
       if (n <= minRun)
       {
         return;

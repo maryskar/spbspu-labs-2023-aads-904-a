@@ -18,7 +18,7 @@ int main(int argc, char** argv)
   {
     comp = std::greater_equal< >();
   }
-  else if(std::string(argv[1]) == "ascending")
+  else if (std::string(argv[1]) == "ascending")
   {
     comp = std::less_equal< >();
   }
@@ -43,7 +43,7 @@ int main(int argc, char** argv)
   {
     dmitriev::printSortData< int >(size, std::cout, comp);
   }
-  else if(std::string(argv[2]) == "floats")
+  else if (std::string(argv[2]) == "floats")
   {
     dmitriev::printSortData< float >(size, std::cout, comp);
   }
