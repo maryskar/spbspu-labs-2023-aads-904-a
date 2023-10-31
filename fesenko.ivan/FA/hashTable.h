@@ -2,12 +2,13 @@
 #define HASHTABLE_H
 #include <vector>
 #include <string>
+#include "wordType.h"
 namespace fesenko
 {
   class HashTable
   {
    public:
-    using data_t = std::vector< std::string >;
+    using data_t = std::vector< WordType >;
     HashTable();
     HashTable(const HashTable &other);
     HashTable(HashTable &&other);
