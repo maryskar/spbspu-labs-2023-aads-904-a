@@ -220,17 +220,17 @@ namespace potapova
 
       Iterator before_begin() noexcept
       {
-        return Iterator(&head_);
+        return Iterator(std::addressof(head_));
       }
 
       ConstIterator before_begin() const noexcept
       {
-        return ConstIterator(&head_);
+        return ConstIterator(std::addressof(head_));
       }
 
       ConstIterator cbefore_begin() const noexcept
       {
-        return ConstIterator(&head_);
+        return ConstIterator(std::addressof(head_));
       }
 
       Iterator begin() noexcept
