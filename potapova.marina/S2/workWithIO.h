@@ -1,31 +1,10 @@
-#ifndef WORKWITHIO
-#define WORKWITHIO
+#ifndef WORKWITHIO_H
+#define WORKWITHIO_H
 
 #include <istream>
 #include <ostream>
 #include <string>
 #include "dictionary.h"
-
-static const char* parseKey(const char* cur_sym_ptr, long long& key) noexcept
-{
-  char* end_conv_ptr = nullptr;
-  key = std::strtoll(cur_sym_ptr, &end_conv_ptr, 10);
-  if (errno == ERANGE || (*end_conv_ptr != ' ' && *end_conv_ptr != '\0'))
-  {
-    return nullptr;
-  }
-  return end_conv_ptr;
-}
-
-static const char* parseValue(const char* cur_sym_ptr, std::string& value) noexcept
-{
-  while (!(*cur_sym_ptr == ' ' || *cur_sym_ptr == '\0'))
-  {
-    value.push_back(*cur_sym_ptr);
-    ++cur_sym_ptr;
-  }
-  return cur_sym_ptr;
-}
 
 namespace potapova
 {
@@ -38,23 +17,16 @@ namespace potapova
       in.ignore(1);
       cur_input_sym = in.rdbuf()->sgetc();
     }
-    std::string keys_and_values;
-    if (!std::getline(in, keys_and_values))
+    long long key;
+    std::string value;
+    while (cur_input_sym != '\n' && cur_input_sym != EOF)
     {
-      return in;
-    }
-    const char* cur_sym_ptr(keys_and_values.c_str());
-    while (*cur_sym_ptr != '\0')
-    {
-      long long new_key = 0;
-      if ((cur_sym_ptr = parseKey(cur_sym_ptr, new_key)) == nullptr)
+      if (!(in >> key) || !(in >> value))
       {
-        in.setstate(std::ios_base::failbit);
-        break;
+        return in;
       }
-      std::string new_value;
-      cur_sym_ptr = parseValue(++cur_sym_ptr, new_value);
-      dict.insert(new_key, new_value);
+      dict.insert(key, value);
+      cur_input_sym = in.rdbuf()->sgetc();
     }
     return in;
   }
