@@ -8,18 +8,19 @@
 
 namespace potapova
 {
-  template< bool (*compareLongLong)(const long long&, const long long&) >
-  using VariableT = Dictionary< long long, std::string, compareLongLong >;
-  template< bool (*compareLongLong)(const long long&, const long long&),
-      bool (*compareString)(const std::string& first, const std::string& second) >
-  using VariablesT = Dictionary< std::string, VariableT< compareLongLong >, compareString >;
+  template< bool (*Int64Comp)(const long long&, const long long&)>
+  using VariableT = Dictionary< long long, std::string, Int64Comp >;
+  template< bool (*Int64Comp)(const long long&, const long long&),
+      bool (*StringComp)(const std::string& first, const std::string& second) >
+  using VariablesT = Dictionary< std::string, VariableT< Int64Comp >, StringComp >;
 
-  template< bool (*compareLongLong)(const long long&, const long long&),
-      bool (*compareString)(const std::string& first, const std::string& second) >
+  template< bool (*Int64Comp)(const long long&, const long long&),
+      bool (*StringComp)(const std::string& first, const std::string& second) >
   bool runCommand(const std::string& command,
-      VariablesT< compareLongLong, compareString >& variables)
+      VariablesT< Int64Comp, StringComp >& variables)
   {
-    using VariablesTConstIterator = typename VariablesT< compareLongLong, compareString >::ConstIterator;
+    using VariablesTConstIterator = typename VariablesT< Int64Comp, StringComp >::ConstIterator;
+    
     if (command == "print")
     {
       std::string name;
@@ -37,6 +38,16 @@ namespace potapova
     }
     else
     {
+      using MethodType = VariableT< Int64Comp >(VariableT< Int64Comp >::*)(const VariableT< Int64Comp >&) const;
+      Dictionary< std::string, MethodType, StringComp > commands;
+      commands.insert("complement", &VariableT< Int64Comp >::complement);
+      commands.insert("intersect", &VariableT< Int64Comp >::intersect);
+      commands.insert("union", &VariableT< Int64Comp >::join);
+      const typename Dictionary< std::string, MethodType, StringComp >::Iterator method_ptr = commands.find(command);
+      if (method_ptr == commands.end())
+      {
+        return false;
+      }
       std::string new_name;
       std::string first_name;
       std::string second_name;
@@ -47,20 +58,9 @@ namespace potapova
       {
         return false;
       }
-      const VariableT< compareLongLong >& first_dict = first_dict_ptr->value;
-      const VariableT< compareLongLong >& second_dict = second_dict_ptr->value;
-      if (command == "complement")
-      {
-        variables[new_name] = first_dict.complement(second_dict);
-      }
-      else if (command == "intersect")
-      {
-        variables[new_name] = first_dict.intersect(second_dict);
-      }
-      else if (command == "union")
-      {
-        variables[new_name] = first_dict.join(second_dict);
-      }
+      const VariableT< Int64Comp >& first_dict = first_dict_ptr->value;
+      const VariableT< Int64Comp >& second_dict = second_dict_ptr->value;
+      variables[new_name] = (first_dict.*(method_ptr->value))(second_dict);
     }
     return true;
   }
