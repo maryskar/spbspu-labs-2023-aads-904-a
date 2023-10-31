@@ -6,9 +6,17 @@
 #include "workWithIO.h"
 #include "runCommands.h"
 
-bool compareLongLong(const long long& first, const long long& second)
+namespace
 {
-  return first > second;
+  bool int64Comp(const long long& first, const long long& second)
+  {
+    return first > second;
+  }
+
+  bool stringComp(const std::string& first, const std::string& second)
+  {
+    return first.size() > second.size();
+  }
 }
 
 bool compareString(const std::string& first, const std::string& second)
