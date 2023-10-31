@@ -70,7 +70,7 @@ namespace potapova
         Iterator prev_node_ptr = data_.before_begin();
         for (Iterator cur_node_ptr = data_.begin(); cur_node_ptr != data_.end(); ++cur_node_ptr)
         {
-          if (cur_node_ptr->key == key)
+          if (!Compare(cur_node_ptr->key, key) && !Compare(key, cur_node_ptr->key))
           {
             return std::make_pair(cur_node_ptr, false);
           }
@@ -172,7 +172,7 @@ namespace potapova
         ConstIterator less_node_ptr = other.cbegin();
         while (greater_node_ptr != ConstIterator() && less_node_ptr != ConstIterator())
         {
-          if (less_node_ptr->key == greater_node_ptr->key)
+          if (!Compare(less_node_ptr->key, greater_node_ptr->key) && !Compare(greater_node_ptr->key, less_node_ptr->key))
           {
             ++less_node_ptr;
             ++greater_node_ptr;
@@ -201,7 +201,7 @@ namespace potapova
         ConstIterator other_node_ptr = other.cbegin();
         while (node_ptr != cend() && other_node_ptr != other.cend())
         {
-          if (node_ptr->key == other_node_ptr->key)
+          if (!Compare(node_ptr->key, other_node_ptr->key) && !Compare(other_node_ptr->key, node_ptr->key))
           {
             result.insert(node_ptr->key, node_ptr->value);
             ++node_ptr;
