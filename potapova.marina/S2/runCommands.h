@@ -20,7 +20,7 @@ namespace potapova
       VariablesT< Int64Comp, StringComp >& variables)
   {
     using VariablesTConstIterator = typename VariablesT< Int64Comp, StringComp >::ConstIterator;
-    
+
     if (command == "print")
     {
       std::string name;
