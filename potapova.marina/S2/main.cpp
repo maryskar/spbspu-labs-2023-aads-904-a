@@ -19,49 +19,38 @@ namespace
   }
 }
 
-bool compareString(const std::string& first, const std::string& second)
-{
-  return first.size() > second.size();
-}
-
 int main(const int argc, const char* argv[])
 {
   using namespace potapova;
-  std::ifstream input_file;
   if (argc != 2)
   {
-    std::cerr << "Incorrect number of arguments\n";
+    std::cerr << "Incorrect count of arguments\n";
     return 1;
   }
-  else if (argc == 2)
+  std::ifstream input_file(argv[1]);
+  if (!input_file.is_open())
   {
-    input_file.open(argv[1]);
-    if (!input_file.is_open())
-    {
-      std::cerr << "Failed to open file\n";
-      return 1;
-    }
-  }
-  else
-  {
-    std::cerr << "No file to open\n";
+    std::cerr << "Failed to open file\n";
     return 1;
   }
-  std::string name;
-  VariablesT< compareLongLong, compareString > variables;
-  std::string command;
+  VariablesT<int64Comp, stringComp> variables;
   try
   {
-    while (!input_file.eof())
+    std::string name;
+    while (input_file >> name)
     {
-      input_file >> name;
-      input_file >> variables[name];
+      if (!(input_file >> variables[name]))
+      {
+        std::cerr << "Incorrect data in file\n";
+        return 1;
+      }
     }
+    std::string command;
     while (std::cin >> command)
     {
       if (!runCommand(command, variables))
       {
-        std::cout << "<INVALID COMMAND>" << '\n';
+        std::cout << "<INVALID COMMAND>\n";
       }
     }
   }
