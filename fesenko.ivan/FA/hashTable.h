@@ -8,17 +8,55 @@ namespace fesenko
   class HashTable
   {
    public:
+    using this_t = HashTable;
     using data_t = std::vector< WordType >;
     HashTable();
-    HashTable(const HashTable &other);
-    HashTable(HashTable &&other);
-    HashTable &operator=(const HashTable &other);
-    HashTable &operator=(HashTable &&other);
-    ~HashTable();
+    HashTable(const this_t &) = default;
+    HashTable(this_t &&);
+    this_t &operator=(const this_t &);
+    this_t &operator=(this_t &&);
+    ~HashTable() = default;
    private:
     size_t size_;
     size_t capacity_;
     data_t data_;
   };
+
+  HashTable::HashTable():
+    size_(0),
+    capacity_(100),
+    data_(data_t(100))
+  {}
+
+  HashTable::HashTable(this_t &&other):
+    size_(other.size_),
+    capacity_(other.capacity_),
+    data_(std::move(other.data_))
+  {
+    other.size_ = 0;
+    other.capacity_ = 0;
+  }
+
+  HashTable &HashTable::operator=(const this_t &other)
+  {
+    if (this != std::addressof(other)) {
+      data_ = other.data_;
+      size_ = other.size_;
+      capacity_ = other.capacity_;
+    }
+    return *this;
+  }
+
+  HashTable &HashTable::operator=(this_t &&other)
+  {
+    if (this != std::addressoff(other)) {
+      data_ = std::move(other.data_);
+      size_ = other.size_;
+      capacity = other.capacity_;
+      other.size_ = 0;
+      other.capacity_ = 0;
+    }
+    return *this;
+  }
 }
 #endif
