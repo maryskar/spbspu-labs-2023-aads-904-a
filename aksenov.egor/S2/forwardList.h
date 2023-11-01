@@ -372,8 +372,8 @@ namespace aksenov
   void ForwardList< T >::copy(const ForwardList< T > &rhs)
   {
     assert(fake_);
+    clear();
     auto copied = copyLst(rhs.head_);
-    free(head_);
     head_ = copied.first;
     tail_ = copied.second;
     fake_->next = head_;
