@@ -371,7 +371,7 @@ namespace aksenov
   template< typename T >
   void ForwardList< T >::copy(const ForwardList< T > &rhs)
   {
-    assert(head_ == nullptr);
+    assert(fake_ == nullptr);
     auto copied = copyLst(rhs.head_);
     free(head_);
     head_ = copied.first;
