@@ -22,8 +22,7 @@ int main(int argc, char *argv[])
   using dictOfDicts = aksenov::Dictionary< std::string, dict, std::less< > >;
   dictOfDicts bigData;
   bigData = aksenov::getDictFromInput< dictOfDicts, dict >(inputFile);
-  aksenov::commandMap commands;
-  aksenov::createCommandDict(commands);
+  aksenov::commandMap commands = aksenov::createCommandDict();
   while (std::cin.good())
   {
     try
