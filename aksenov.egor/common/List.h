@@ -19,11 +19,10 @@ namespace aksenov
       next(nullptr)
     {}
 
-    listT(const T &rhs, listT< T > *val):
+    explicit listT(const T &rhs, listT< T > *val):
       data(rhs),
       next(val)
-    {
-    }
+    {}
   };
 
   template< class T >

@@ -75,9 +75,8 @@ namespace aksenov
   template< typename T >
   const T *ConstForwardIterator< T >::operator->() const
   {
-    /*assert(node_ != nullptr);
-    return std::addressof(node_->data);*/
-    return (node_ != nullptr) ? &node_->data : nullptr;
+    assert(node_ != nullptr);
+    return std::addressof(node_->data);
   }
 
   template< typename T >

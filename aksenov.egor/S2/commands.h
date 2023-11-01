@@ -20,7 +20,7 @@ namespace aksenov
       throw std::invalid_argument("empty");
     }
     out << name;
-    for(const auto& pairElement : rhs)
+    for (const auto &pairElement: rhs)
     {
       out << " " << pairElement.first << " " << pairElement.second;
     }
