@@ -373,6 +373,7 @@ namespace aksenov
   {
     assert(head_ == nullptr);
     auto copied = copyLst(rhs.head_);
+    free(head_);
     head_ = copied.first;
     tail_ = copied.second;
     fake_->next = head_;
