@@ -30,6 +30,11 @@ namespace dmitriev
       delete[] m_arr;
     }
 
+    void clear()
+    {
+      m_values.clear();
+      m_size = 0;
+    }
 
   private:
     fList m_values;
