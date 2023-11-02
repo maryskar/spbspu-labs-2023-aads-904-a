@@ -8,14 +8,29 @@
 
 namespace potapova
 {
-  template< typename Int64Comparator = std::less< long long > >
-  using VariableT = Dictionary< long long, std::string, Int64Comparator >;
+  template< typename Comparator = std::less< long long > >
+  using VariableT = Dictionary< long long, std::string, Comparator >;
   template< typename Int64Comparator = std::less< long long >, typename StrComparator = std::less< std::string > >
   using VariablesT = Dictionary< std::string, VariableT< Int64Comparator >, StrComparator >;
+  template< typename VarComparator = std::less< long long >>
+  using CommandT = VariableT<VarComparator>(VariableT<VarComparator>::*)(const VariableT<VarComparator>&) const;
+  template< typename VarComparator = std::less< long long > >
+  using CommandsT = Dictionary< std::string, CommandT< VarComparator > >;
+
+  template< typename VarComparator = std::less< long long > >
+  CommandsT< VarComparator > getCommands()
+  {
+    CommandsT< VarComparator > commands;
+    commands.insert("complement", &VariableT< VarComparator >::complement);
+    commands.insert("intersect", &VariableT< VarComparator >::intersect);
+    commands.insert("union", &VariableT< VarComparator >::join);
+    return commands;
+  }
 
   template< typename Int64Comparator, typename StrComparator >
   bool runCommand(const std::string& command,
-      VariablesT< Int64Comparator, StrComparator >& variables)
+      VariablesT< Int64Comparator, StrComparator >& variables,
+      const CommandsT< Int64Comparator >& commands)
   {
     using VariablesTConstIterator = typename VariablesT< Int64Comparator, StrComparator >::ConstIterator;
 
@@ -36,13 +51,8 @@ namespace potapova
     }
     else
     {
-      using MethodType = VariableT< Int64Comparator >(VariableT< Int64Comparator >::*)(const VariableT< Int64Comparator >&) const;
-      Dictionary< std::string, MethodType, StrComparator > commands;
-      commands.insert("complement", &VariableT< Int64Comparator >::complement);
-      commands.insert("intersect", &VariableT< Int64Comparator >::intersect);
-      commands.insert("union", &VariableT< Int64Comparator >::join);
-      const typename Dictionary< std::string, MethodType, StrComparator >::Iterator method_ptr = commands.find(command);
-      if (method_ptr == commands.end())
+      typename CommandsT< Int64Comparator >::ConstIterator command_ptr = commands.find(command);
+      if (command_ptr == commands.end())
       {
         return false;
       }
@@ -58,7 +68,7 @@ namespace potapova
       }
       const VariableT< Int64Comparator >& first_dict = first_dict_ptr->value;
       const VariableT< Int64Comparator >& second_dict = second_dict_ptr->value;
-      variables[new_name] = (first_dict.*(method_ptr->value))(second_dict);
+      variables[new_name] = (first_dict.*(command_ptr->value))(second_dict);
     }
     return true;
   }

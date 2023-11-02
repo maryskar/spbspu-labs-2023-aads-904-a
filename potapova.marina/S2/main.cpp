@@ -35,7 +35,7 @@ int main(const int argc, const char* argv[])
     std::string command;
     while (std::cin >> command)
     {
-      if (!runCommand(command, variables))
+      if (!runCommand(command, variables, getCommands()))
       {
         std::cout << "<INVALID COMMAND>\n";
       }
