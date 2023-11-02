@@ -30,6 +30,10 @@ namespace dmitriev
       delete[] m_arr;
     }
 
+    bool isEmpty(constIterator it) const noexcept
+    {
+      return it == constEnd();
+    }
     void clear()
     {
       m_values.clear();
