@@ -10,24 +10,28 @@ namespace potapova
   class ForwardList
   {
     private:
-      struct Node
+      struct Node;
+      
+      struct NodeBase
       {
-        Node() noexcept:
-          data_(),
+        NodeBase() noexcept:
           next_node_ptr_(nullptr)
         {
 
         }
+        Node* next_node_ptr_;
+      };
 
+      struct Node: public NodeBase
+      {
         Node(const T& data) noexcept:
-          data_(data),
-          next_node_ptr_(nullptr)
+          NodeBase(),
+          data_(data)
         {
 
         }
 
         T data_;
-        Node* next_node_ptr_;
       };
     public:
       class ConstIterator
@@ -40,8 +44,16 @@ namespace potapova
 
           }
 
+          ConstIterator(const NodeBase* const node_ptr) noexcept:
+            node_ptr_(node_ptr),
+            data_ptr(nullptr)
+          {
+
+          }
+
           ConstIterator(const Node* const node_ptr) noexcept:
-            node_ptr_(node_ptr)
+            node_ptr_(node_ptr),
+            data_ptr(std::addressof(node_ptr->data_))
           {
 
           }
@@ -53,6 +65,10 @@ namespace potapova
           const ConstIterator& operator++() noexcept
           {
             assert(node_ptr_ != nullptr);
+            if (node_ptr_->next_node_ptr_ != nullptr)
+            {
+              data_ptr = std::addressof(node_ptr_->next_node_ptr_->data_);
+            }
             node_ptr_ = node_ptr_->next_node_ptr_;
             return *this;
           }
@@ -68,13 +84,15 @@ namespace potapova
           const T& operator*() const noexcept
           {
             assert(node_ptr_ != nullptr);
-            return node_ptr_->data_;
+            assert(data_ptr != nullptr);
+            return *data_ptr;
           }
 
           const T* operator->() const noexcept
           {
             assert(node_ptr_ != nullptr);
-            return std::addressof(node_ptr_->data_);
+            assert(data_ptr != nullptr);
+            return data_ptr;
           }
 
           bool operator==(const ConstIterator& rhs) const noexcept
@@ -87,7 +105,8 @@ namespace potapova
             return !(rhs == *this);
           }
         private:
-          const Node* node_ptr_;
+          const NodeBase* node_ptr_;
+          const T* data_ptr;
       };
 
       class Iterator
@@ -100,8 +119,16 @@ namespace potapova
 
           }
 
+          Iterator(NodeBase* const node_ptr) noexcept:
+            node_ptr_(node_ptr),
+            data_ptr(nullptr)
+          {
+
+          }
+
           Iterator(Node* const node_ptr) noexcept:
-            node_ptr_(node_ptr)
+            node_ptr_(node_ptr),
+            data_ptr(std::addressof(node_ptr->data_))
           {
 
           }
@@ -113,6 +140,10 @@ namespace potapova
           Iterator& operator++() noexcept
           {
             assert(node_ptr_ != nullptr);
+            if (node_ptr_->next_node_ptr_ != nullptr)
+            {
+              data_ptr = std::addressof(node_ptr_->next_node_ptr_->data_);
+            }
             node_ptr_ = node_ptr_->next_node_ptr_;
             return *this;
           }
@@ -128,13 +159,15 @@ namespace potapova
           T& operator*() noexcept
           {
             assert(node_ptr_ != nullptr);
-            return node_ptr_->data_;
+            assert(data_ptr != nullptr);
+            return *data_ptr;
           }
 
           T* operator->() const noexcept
           {
             assert(node_ptr_ != nullptr);
-            return std::addressof(node_ptr_->data_);
+            assert(data_ptr != nullptr);
+            return data_ptr;
           }
 
           bool operator==(const Iterator& rhs) const noexcept
@@ -152,7 +185,8 @@ namespace potapova
             return ConstIterator(node_ptr_);
           }
         private:
-          Node* node_ptr_;
+          NodeBase* node_ptr_;
+          T* data_ptr;
       };
     public:
       ForwardList() noexcept:
@@ -175,9 +209,9 @@ namespace potapova
 
       ForwardList< T >& operator=(const ForwardList< T >& other)
       {
-        Iterator cur_elem_ptr = before_begin();
-        ConstIterator cur_other_elem_ptr = other.before_begin();
-        Iterator prev_elem_ptr;
+        Iterator cur_elem_ptr = begin();
+        ConstIterator cur_other_elem_ptr = other.begin();
+        Iterator prev_elem_ptr = before_begin();
         while (cur_elem_ptr != end())
         {
           if (cur_other_elem_ptr == other.end())
@@ -206,7 +240,6 @@ namespace potapova
         {
           clear();
         }
-        head_.data_ = std::move(other.head_.data_);
         head_.next_node_ptr_ = other.head_.next_node_ptr_;
         other.head_.next_node_ptr_ = nullptr;
         size_ = other.size_;
@@ -322,7 +355,7 @@ namespace potapova
         return size_;
       }
     private:
-      Node head_;
+      NodeBase head_;
       size_t size_;
   };
 }
