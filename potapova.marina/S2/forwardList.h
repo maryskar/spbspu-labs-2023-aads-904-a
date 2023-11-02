@@ -22,7 +22,7 @@ namespace potapova
         Node* next_node_ptr_;
       };
 
-      struct Node: public NodeBase
+      struct Node : public NodeBase
       {
         Node(const T& data) noexcept:
           NodeBase(),
@@ -39,21 +39,8 @@ namespace potapova
         friend ForwardList;
         public:
           ConstIterator() noexcept:
-            node_ptr_(nullptr)
-          {
-
-          }
-
-          ConstIterator(const NodeBase* const node_ptr) noexcept:
-            node_ptr_(node_ptr),
-            data_ptr(nullptr)
-          {
-
-          }
-
-          ConstIterator(const Node* const node_ptr) noexcept:
-            node_ptr_(node_ptr),
-            data_ptr(std::addressof(node_ptr->data_))
+            node_ptr_(nullptr),
+            data_ptr_(nullptr)
           {
 
           }
@@ -62,12 +49,12 @@ namespace potapova
           ConstIterator(const ConstIterator&) noexcept = default;
           ConstIterator& operator=(const ConstIterator&) noexcept = default;
 
-          const ConstIterator& operator++() noexcept
+          ConstIterator& operator++() noexcept
           {
             assert(node_ptr_ != nullptr);
             if (node_ptr_->next_node_ptr_ != nullptr)
             {
-              data_ptr = std::addressof(node_ptr_->next_node_ptr_->data_);
+              data_ptr_ = std::addressof(node_ptr_->next_node_ptr_->data_);
             }
             node_ptr_ = node_ptr_->next_node_ptr_;
             return *this;
@@ -84,15 +71,15 @@ namespace potapova
           const T& operator*() const noexcept
           {
             assert(node_ptr_ != nullptr);
-            assert(data_ptr != nullptr);
-            return *data_ptr;
+            assert(data_ptr_ != nullptr);
+            return *data_ptr_;
           }
 
           const T* operator->() const noexcept
           {
             assert(node_ptr_ != nullptr);
-            assert(data_ptr != nullptr);
-            return data_ptr;
+            assert(data_ptr_ != nullptr);
+            return data_ptr_;
           }
 
           bool operator==(const ConstIterator& rhs) const noexcept
@@ -106,7 +93,21 @@ namespace potapova
           }
         private:
           const NodeBase* node_ptr_;
-          const T* data_ptr;
+          const T* data_ptr_;
+
+          ConstIterator(const NodeBase* const node_ptr, const T* const data_ptr = nullptr) noexcept:
+            node_ptr_(node_ptr),
+            data_ptr_(data_ptr)
+          {
+
+          }
+
+          ConstIterator(const Node* const node_ptr) noexcept:
+            node_ptr_(node_ptr),
+            data_ptr_(node_ptr == nullptr ? nullptr : std::addressof(node_ptr->data_))
+          {
+
+          }
       };
 
       class Iterator
@@ -114,21 +115,8 @@ namespace potapova
         friend ForwardList;
         public:
           Iterator() noexcept:
-            node_ptr_(nullptr)
-          {
-
-          }
-
-          Iterator(NodeBase* const node_ptr) noexcept:
-            node_ptr_(node_ptr),
-            data_ptr(nullptr)
-          {
-
-          }
-
-          Iterator(Node* const node_ptr) noexcept:
-            node_ptr_(node_ptr),
-            data_ptr(std::addressof(node_ptr->data_))
+            node_ptr_(nullptr),
+            data_ptr_(nullptr)
           {
 
           }
@@ -142,7 +130,7 @@ namespace potapova
             assert(node_ptr_ != nullptr);
             if (node_ptr_->next_node_ptr_ != nullptr)
             {
-              data_ptr = std::addressof(node_ptr_->next_node_ptr_->data_);
+              data_ptr_ = std::addressof(node_ptr_->next_node_ptr_->data_);
             }
             node_ptr_ = node_ptr_->next_node_ptr_;
             return *this;
@@ -159,15 +147,15 @@ namespace potapova
           T& operator*() noexcept
           {
             assert(node_ptr_ != nullptr);
-            assert(data_ptr != nullptr);
-            return *data_ptr;
+            assert(data_ptr_ != nullptr);
+            return *data_ptr_;
           }
 
           T* operator->() const noexcept
           {
             assert(node_ptr_ != nullptr);
-            assert(data_ptr != nullptr);
-            return data_ptr;
+            assert(data_ptr_ != nullptr);
+            return data_ptr_;
           }
 
           bool operator==(const Iterator& rhs) const noexcept
@@ -182,11 +170,25 @@ namespace potapova
 
           operator ConstIterator() const noexcept
           {
-            return ConstIterator(node_ptr_);
+            return ConstIterator(node_ptr_, data_ptr_);
           }
         private:
           NodeBase* node_ptr_;
-          T* data_ptr;
+          T* data_ptr_;
+
+          Iterator(NodeBase* const node_ptr, T* const data_ptr = nullptr) noexcept:
+            node_ptr_(node_ptr),
+            data_ptr_(data_ptr)
+          {
+
+          }
+
+          Iterator(Node* const node_ptr) noexcept:
+            node_ptr_(node_ptr),
+            data_ptr_(node_ptr == nullptr ? nullptr : std::addressof(node_ptr->data_))
+          {
+
+          }
       };
     public:
       ForwardList() noexcept:
