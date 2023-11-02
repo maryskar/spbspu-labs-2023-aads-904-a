@@ -304,8 +304,7 @@ namespace timofeev
   }
 
   template< typename T >
-  typename ForwardList< T >::iter
-      ForwardList< T >::insert_after(constIter pos, T &&val)
+  typename ForwardList< T >::iter ForwardList< T >::insert_after(constIter pos, T &&val)
   {
     return insert_after(pos, val);
   }
@@ -324,7 +323,7 @@ namespace timofeev
 
   template< class T >
   typename ForwardList< T >::iter
-      ForwardList< T >::insert_after(constIter pos, iter first, iter last)
+    ForwardList< T >::insert_after(constIter pos, iter first, iter last)
   {
     while (first != last)
     {
