@@ -25,6 +25,11 @@ namespace dmitriev
       m_hash()
     {}
 
+    ~UnorderedMap()
+    {
+      delete[] m_arr;
+    }
+
 
   private:
     fList m_values;
