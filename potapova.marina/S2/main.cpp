@@ -6,19 +6,6 @@
 #include "workWithIO.h"
 #include "runCommands.h"
 
-namespace
-{
-  bool int64Comp(const long long& first, const long long& second)
-  {
-    return first > second;
-  }
-
-  bool stringComp(const std::string& first, const std::string& second)
-  {
-    return first.size() > second.size();
-  }
-}
-
 int main(const int argc, const char* argv[])
 {
   using namespace potapova;
@@ -33,7 +20,7 @@ int main(const int argc, const char* argv[])
     std::cerr << "Failed to open file\n";
     return 1;
   }
-  VariablesT<int64Comp, stringComp> variables;
+  VariablesT<> variables;
   try
   {
     std::string name;

@@ -8,8 +8,8 @@
 
 namespace potapova
 {
-  template< bool (*Compare)(const long long&, const long long&) >
-  std::istream& operator>>(std::istream& in, Dictionary< long long, std::string, Compare >& dict)
+  template< typename Comparator >
+  std::istream& operator>>(std::istream& in, Dictionary< long long, std::string, Comparator >& dict)
   {
     std::istream::int_type cur_input_sym = in.rdbuf()->sgetc();
     while (cur_input_sym != '\n' && std::isspace(cur_input_sym))
@@ -31,10 +31,10 @@ namespace potapova
     return in;
   }
 
-  template< typename Key, typename Value, bool (*Compare)(const Key&, const Key&) >
-  std::ostream& operator<<(std::ostream& out, const Dictionary< Key, Value, Compare >& dict)
+  template< typename Key, typename Value, typename Comparator >
+  std::ostream& operator<<(std::ostream& out, const Dictionary< Key, Value, Comparator >& dict)
   {
-    using ConstIterator = typename Dictionary< Key, Value, Compare >::ConstIterator;
+    using ConstIterator = typename Dictionary< Key, Value, Comparator >::ConstIterator;
     if (dict.empty())
     {
       out << "<EMPTY>" << '\n';

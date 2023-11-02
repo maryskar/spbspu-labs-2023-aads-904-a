@@ -8,7 +8,7 @@
 
 namespace potapova
 {
-  template< typename Key, typename Value, bool (*Compare)(const Key&, const Key&) >
+  template< typename Key, typename Value, typename Comparator = std::less< Key > >
   class Dictionary
   {
     public:
@@ -70,11 +70,11 @@ namespace potapova
         Iterator prev_node_ptr = data_.before_begin();
         for (Iterator cur_node_ptr = data_.begin(); cur_node_ptr != data_.end(); ++cur_node_ptr)
         {
-          if (!Compare(cur_node_ptr->key, key) && !Compare(key, cur_node_ptr->key))
+          if (!comparator(cur_node_ptr->key, key) && !comparator(key, cur_node_ptr->key))
           {
             return std::make_pair(cur_node_ptr, false);
           }
-          if (Compare(cur_node_ptr->key, key))
+          if (comparator(key, cur_node_ptr->key))
           {
             break;
           }
@@ -87,7 +87,7 @@ namespace potapova
       {
         for (Iterator cur_node_ptr = data_.begin(); cur_node_ptr != data_.end(); ++cur_node_ptr)
         {
-          if (cur_node_ptr->key == key)
+          if (!comparator(cur_node_ptr->key, key) && !comparator(key, cur_node_ptr->key))
           {
             return cur_node_ptr;
           }
@@ -99,7 +99,7 @@ namespace potapova
       {
         for (ConstIterator cur_node_ptr = data_.cbegin(); cur_node_ptr != data_.cend(); ++cur_node_ptr)
         {
-          if (cur_node_ptr->key == key)
+          if (!comparator(cur_node_ptr->key, key) && !comparator(key, cur_node_ptr->key))
           {
             return cur_node_ptr;
           }
@@ -137,7 +137,7 @@ namespace potapova
         Iterator prev_node_ptr = data_.before_begin();
         for (Node& node : data_)
         {
-          if (node.key == key)
+          if (!comparator(node.key, key) && !comparator(key, node.key))
           {
             return data_.erase_after(prev_node_ptr);
           }
@@ -165,20 +165,20 @@ namespace potapova
         data_.clear();
       }
 
-      Dictionary< Key, Value, Compare > complement(const Dictionary< Key, Value, Compare >& other) const
+      Dictionary< Key, Value, Comparator > complement(const Dictionary< Key, Value, Comparator >& other) const
       {
-        Dictionary< Key, Value, Compare > result;
+        Dictionary< Key, Value, Comparator > result;
         ConstIterator greater_node_ptr = cbegin();
         ConstIterator less_node_ptr = other.cbegin();
         while (greater_node_ptr != ConstIterator() && less_node_ptr != ConstIterator())
         {
-          if (!Compare(less_node_ptr->key, greater_node_ptr->key) && !Compare(greater_node_ptr->key, less_node_ptr->key))
+          if (!comparator(less_node_ptr->key, greater_node_ptr->key) && !comparator(greater_node_ptr->key, less_node_ptr->key))
           {
             ++less_node_ptr;
             ++greater_node_ptr;
             continue;
           }
-          else if (Compare(less_node_ptr->key, greater_node_ptr->key))
+          else if (comparator(greater_node_ptr->key, less_node_ptr->key))
           {
             std::swap(less_node_ptr, greater_node_ptr);
           }
@@ -194,21 +194,21 @@ namespace potapova
         return result;
       }
 
-      Dictionary< Key, Value, Compare > intersect(const Dictionary< Key, Value, Compare >& other) const
+      Dictionary< Key, Value, Comparator > intersect(const Dictionary< Key, Value, Comparator >& other) const
       {
-        Dictionary< Key, Value, Compare > result;
+        Dictionary< Key, Value, Comparator > result;
         ConstIterator node_ptr = cbegin();
         ConstIterator other_node_ptr = other.cbegin();
         while (node_ptr != cend() && other_node_ptr != other.cend())
         {
-          if (!Compare(node_ptr->key, other_node_ptr->key) && !Compare(other_node_ptr->key, node_ptr->key))
+          if (!comparator(node_ptr->key, other_node_ptr->key) && !comparator(other_node_ptr->key, node_ptr->key))
           {
             result.insert(node_ptr->key, node_ptr->value);
             ++node_ptr;
             ++other_node_ptr;
             continue;
           }
-          else if (Compare(node_ptr->key, other_node_ptr->key))
+          else if (comparator(other_node_ptr->key, node_ptr->key))
           {
             ++other_node_ptr;
           }
@@ -220,14 +220,14 @@ namespace potapova
         return result;
       }
 
-      Dictionary< Key, Value, Compare > join(const Dictionary< Key, Value, Compare >& other) const
+      Dictionary< Key, Value, Comparator > join(const Dictionary< Key, Value, Comparator >& other) const
       {
-        Dictionary< Key, Value, Compare > result;
+        Dictionary< Key, Value, Comparator > result;
         ConstIterator greater_node_ptr = cbegin();
         ConstIterator less_node_ptr = other.cbegin();
         while (greater_node_ptr != ConstIterator() && less_node_ptr != ConstIterator())
         {
-          if (Compare(less_node_ptr->key, greater_node_ptr->key))
+          if (comparator(greater_node_ptr->key, less_node_ptr->key))
           {
             std::swap(less_node_ptr, greater_node_ptr);
           }
@@ -244,6 +244,7 @@ namespace potapova
       }
     private:
       ForwardList< Node > data_;
+      Comparator comparator;
   };
 }
 
