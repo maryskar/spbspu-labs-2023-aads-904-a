@@ -3,14 +3,26 @@
 
 #include <forwardList.h>
 
-template < class Key, class Value, class Compare = std::equal_to< Key >, class Hash = std::hash< Key > >
+template < typename Key, typename Value, typename Compare = std::equal_to< Key >, typename Hash = std::hash< Key > >
 class UnorderedMap
 {
 public:
-
+  using dataPair = std::pair< const Key, Value >;
+  using dataType = MapNode< Key, Value >;
+  using fList = dmitriev::ForwardList< dataType >;
+  using iterator = typename fList::iterator;
+  using constIterator = typename fList::constIterator;
 
 
 private:
+  fList m_values;
+
+  size_t m_size;
+  size_t m_capacity;
+  iterator* m_arr;
+
+  Compare m_cmp;
+  Hash m_hash;
 
 }
 
