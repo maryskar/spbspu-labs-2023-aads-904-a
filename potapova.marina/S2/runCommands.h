@@ -1,7 +1,8 @@
 #ifndef INPUTCOMMANDS_H
 #define INPUTCOMMANDS_H
 
-#include <iostream>
+#include <istream>
+#include <ostream>
 #include <string>
 #include "workWithIO.h"
 #include "dictionary.h"
@@ -28,7 +29,9 @@ namespace potapova
   }
 
   template< typename Int64Comparator, typename StrComparator >
-  bool runCommand(const std::string& command,
+  bool runCommand(std::istream& in,
+      std::ostream& out,
+      const std::string& command,
       VariablesT< Int64Comparator, StrComparator >& variables,
       const CommandsT< Int64Comparator >& commands)
   {
@@ -37,7 +40,7 @@ namespace potapova
     if (command == "print")
     {
       std::string name;
-      std::cin >> name;
+      in >> name;
       const VariablesTConstIterator dict_ptr = variables.find(name);
       if (dict_ptr == variables.cend())
       {
@@ -45,9 +48,9 @@ namespace potapova
       }
       if (!dict_ptr->value.empty())
       {
-        std::cout << name << ' ';
+        out << name << ' ';
       }
-      std::cout << dict_ptr->value;
+      out << dict_ptr->value;
     }
     else
     {
@@ -59,7 +62,7 @@ namespace potapova
       std::string new_name;
       std::string first_name;
       std::string second_name;
-      std::cin >> new_name >> first_name >> second_name;
+      in >> new_name >> first_name >> second_name;
       const VariablesTConstIterator first_dict_ptr = variables.find(first_name);
       const VariablesTConstIterator second_dict_ptr = variables.find(second_name);
       if (first_dict_ptr == variables.cend() || second_dict_ptr == variables.cend())

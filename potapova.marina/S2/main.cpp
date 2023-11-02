@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <fstream>
+#include <limits>
 #include "forwardList.h"
 #include "dictionary.h"
 #include "workWithIO.h"
@@ -35,9 +36,10 @@ int main(const int argc, const char* argv[])
     std::string command;
     while (std::cin >> command)
     {
-      if (!runCommand(command, variables, getCommands()))
+      if (!runCommand(std::cin, std::cout, command, variables, getCommands()))
       {
         std::cout << "<INVALID COMMAND>\n";
+        std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
       }
     }
   }
