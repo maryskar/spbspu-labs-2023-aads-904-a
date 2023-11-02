@@ -11,7 +11,7 @@ namespace potapova
   {
     private:
       struct Node;
-      
+
       struct NodeBase
       {
         NodeBase() noexcept:
