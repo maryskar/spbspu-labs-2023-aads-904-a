@@ -35,6 +35,13 @@ namespace dmitriev
       m_values.clear();
       m_size = 0;
     }
+    void swap(UnorderedMap& other) noexcept
+    {
+      m_values.swap(other.m_values);
+      std::swap(m_size, other.m_size);
+      std::swap(m_capacity, other.m_capacity);
+      std::swap(m_arr, other.m_arr);
+    }
 
   private:
     fList m_values;
