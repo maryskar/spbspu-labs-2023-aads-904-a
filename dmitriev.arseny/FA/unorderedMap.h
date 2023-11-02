@@ -16,6 +16,15 @@ namespace dmitriev
     using iterator = typename fList::iterator;
     using constIterator = typename fList::constIterator;
 
+    UnorderedMap():
+      m_values(),
+      m_size(0),
+      m_capacity(4),
+      m_arr(new iterator[m_capacity]),
+      m_cmp(),
+      m_hash()
+    {}
+
 
   private:
     fList m_values;
@@ -29,7 +38,5 @@ namespace dmitriev
 
   };
 }
-
-
 
 #endif
