@@ -17,12 +17,15 @@ namespace chulkov {
 
     Dictionary& operator=(const Dictionary& dict) = default;
     Dictionary& operator=(Dictionary&& dict) = default;
+    Value& operator[](const Key& k);
+    const Value& operator[](const Key& k) const;
 
     void push(const Key&, const Value&);
-    const Value& get(const Key&) const;
+    Value& get(const Key& k);
     void pop(const Key& key);
     void clear();
     bool isEmpty() const noexcept;
+    bool contains(const Key& key) const;
 
     Iter find(const Key&);
     Iter begin() const;
@@ -50,7 +53,6 @@ namespace chulkov {
       list_.pushBack(std::pair< Key, Value >{k, v});
       return;
     }
-    Compare cmp;
     auto it = list_.cbegin();
     if (cmp(k, it->first)) {
       list_.pushFront(std::pair< Key, Value >{k, v});
@@ -76,13 +78,23 @@ namespace chulkov {
   }
 
   template < typename Key, typename Value, typename Compare >
-  const Value& Dictionary< Key, Value, Compare >::get(const Key& k) const
-  {
+  Value& Dictionary< Key, Value, Compare >::get(const Key& k) {
     auto i = find(k);
-    if (i == cend()) {
-      throw std::out_of_range("Out of range");
+    if (i == end()) {
+      throw std::out_of_range("Key not found");
     }
     return i->second;
+  }
+
+  template < typename Key, typename Value, typename Compare >
+  bool Dictionary< Key, Value, Compare >::contains(const Key& key) const
+  {
+    for (const auto& pair : list_) {
+      if (isEqual(pair.first, key)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   template < typename Key, typename Value, typename Compare >
@@ -100,17 +112,44 @@ namespace chulkov {
       ++it;
     }
     if (it == list_.cend()) {
-      throw std::logic_error("No such key\n");
+      throw std::logic_error("No such key");
     } else {
       list_.eraseAfter(it);
     }
   }
 
   template < typename Key, typename Value, typename Compare >
+  Value& Dictionary< Key, Value, Compare >::operator[](const Key& k) {
+    auto i = cfind(k);
+    if (i == cend()) {
+      push(k, Value());
+      i = cfind(k);
+    }
+    return i->second;
+  }
+
+  template < typename Key, typename Value, typename Compare >
+  const Value& Dictionary< Key, Value, Compare >::operator[](const Key& k) const {
+    auto i = cfind(k);
+    if (i == cend()) {
+      throw std::out_of_range("Key not found");
+    }
+    return i->second;
+  }
+
+  template < typename Key, typename Value, typename Compare >
   ForwardIter< std::pair< Key, Value > > Dictionary< Key, Value, Compare >::find(const Key& k)
   {
-    auto constIt = cfind(k);
-    return ForwardIter< std::pair< Key, Value > >(constIt);
+    auto i = begin();
+    for (; i != end(); i++) {
+      if (!cmp(i->first, k)) {
+        break;
+      }
+    }
+    if (i == end() || cmp(k, i->first)) {
+      return end();
+    }
+    return i;
   }
 
   template < typename Key, typename Value, typename Compare >
