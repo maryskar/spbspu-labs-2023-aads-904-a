@@ -135,13 +135,13 @@ namespace potapova
       Iterator erase(const Key& key)
       {
         Iterator prev_node_ptr = data_.before_begin();
-        for (Node& node : data_)
+        for (Iterator cur_node_ptr = data.begin(); cur_node_ptr != data.end(); ++cur_node_ptr)
         {
-          if (!comparator(node.key, key) && !comparator(key, node.key))
+          if (!comparator(cur_node_ptr->key, key) && !comparator(key, cur_node_ptr->key))
           {
             return data_.erase_after(prev_node_ptr);
           }
-          prev_node_ptr = Iterator(&node);
+          prev_node_ptr = cur_node_ptr;
         }
       }
 

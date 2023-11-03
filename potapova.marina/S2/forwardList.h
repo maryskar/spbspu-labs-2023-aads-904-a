@@ -200,7 +200,7 @@ namespace potapova
       ForwardList(const ForwardList& other):
         ForwardList()
       {
-        *this = other;
+        insertRange(other.cbegin(), other.cend());
       }
 
       ForwardList(ForwardList&& other) noexcept:
@@ -211,8 +211,10 @@ namespace potapova
 
       ForwardList< T >& operator=(const ForwardList< T >& other)
       {
+        ForwardList< T > reserve_copy;
+        reserve_copy.insertRange(cbegin(), cend());
         Iterator cur_elem_ptr = begin();
-        ConstIterator cur_other_elem_ptr = other.begin();
+        ConstIterator cur_other_elem_ptr = other.cbegin();
         Iterator prev_elem_ptr = before_begin();
         while (cur_elem_ptr != end())
         {
@@ -228,10 +230,14 @@ namespace potapova
             ++cur_elem_ptr;
           }
         }
-        Iterator& last_elem_ptr = prev_elem_ptr;
-        for (; cur_other_elem_ptr != other.end(); ++cur_other_elem_ptr)
+        try
         {
-          last_elem_ptr = insert_after(last_elem_ptr, *cur_other_elem_ptr);
+          insertRange(cur_other_elem_ptr, other.cend(), prev_elem_ptr);
+        }
+        catch (const std::bad_alloc&)
+        {
+          *this = std::move(reserve_copy);
+          throw std::bad_alloc();
         }
         return *this;
       }
@@ -359,6 +365,16 @@ namespace potapova
     private:
       NodeBase head_;
       size_t size_;
+
+      void insertRange(ConstIterator begin_ptr,
+          const ConstIterator end_ptr,
+          Iterator last_elem_ptr = Iterator())
+      {
+        for (; begin_ptr != end_ptr; ++begin_ptr)
+        {
+          last_elem_ptr = insert_after(last_elem_ptr, *begin_ptr);
+        }
+      }
   };
 }
 

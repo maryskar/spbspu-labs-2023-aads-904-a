@@ -11,22 +11,15 @@ namespace potapova
   template< typename Comparator >
   std::istream& operator>>(std::istream& in, Dictionary< long long, std::string, Comparator >& dict)
   {
-    std::istream::int_type cur_input_sym = in.rdbuf()->sgetc();
-    while (cur_input_sym != '\n' && std::isspace(cur_input_sym))
-    {
-      in.ignore(1);
-      cur_input_sym = in.rdbuf()->sgetc();
-    }
-    long long key;
+    long long key = 0;
     std::string value;
-    while (cur_input_sym != '\n' && cur_input_sym != EOF)
+    while (in.rdbuf()->sgetc() != '\n' && !in.eof())
     {
       if (!(in >> key) || !(in >> value))
       {
         return in;
       }
       dict.insert(key, value);
-      cur_input_sym = in.rdbuf()->sgetc();
     }
     return in;
   }
