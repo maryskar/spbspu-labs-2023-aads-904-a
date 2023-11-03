@@ -52,13 +52,16 @@ int main(int argc, char* argv[])
 
         std::string lhs = *(wordsIterator++);
         std::string rhs = *wordsIterator;
+        using Dig = chulkov::Dictionary< int, std::string >;
+        using CommandFunction = Dig (*)(const std::string&, const std::string&, const chulkov::Dicts&);
+        chulkov::Dictionary< std::string, CommandFunction > commands;
+        commands.push("complement", chulkov::complement);
+        commands.push("intersect", chulkov::intersect);
+        commands.push("union", chulkov::unite);
 
-        if (command == "complement") {
-          data.push(name, chulkov::complement(lhs, rhs, data));
-        } else if (command == "intersect") {
-          data.push(name, chulkov::intersect(lhs, rhs, data));
-        } else if (command == "union") {
-          data.push(name, chulkov::unite(lhs, rhs, data));
+        if (commands.contains(command)) {
+          auto& function = commands.get(command);
+          data.push(name, function(lhs, rhs, data));
         } else {
           throw std::invalid_argument("Unknown command\n");
         }
