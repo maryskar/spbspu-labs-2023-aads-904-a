@@ -514,7 +514,7 @@ namespace dmitriev
     }
     void swap(ForwardList& other) noexcept
     {
-      std::swap(m_beforeHead->next, other.m_beforeHead->next);
+      std::swap(m_beforeHead, other.m_beforeHead);
     }
     void clear() noexcept
     {
