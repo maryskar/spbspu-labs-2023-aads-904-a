@@ -24,6 +24,8 @@ namespace fesenko
     size_t max_size() const noexcept;
     mapped_type &operator[](const key_type &);
     mapped_type &operator[](key_type &&);
+    mapped_type &at(const key_type &);
+    const mapped_type &at(const key_type &) const;
    private:
     size_t size_;
     size_t capacity_;
@@ -91,6 +93,17 @@ namespace fesenko
   WordType &HashTable::operator[](key_type &&key)
   {
     return (*this)[key];
+  }
+
+  const WordType &HashTable::at(const key_type &key) const
+  {
+    uint32_t index = generate_jenkins_hash(key, capacity_);
+    return data_.at(index);
+  }
+
+  WordType &HashTable::at(const key_type &key)
+  {
+    return const_cast< WordType & >((static_cast< const this_t & >(*this)).at(key));
   }
 }
 #endif
