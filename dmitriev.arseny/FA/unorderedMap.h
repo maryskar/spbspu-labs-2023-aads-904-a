@@ -76,7 +76,10 @@ namespace dmitriev
     }
 
 
-
+    size_t count(const Key& key) const noexcept
+    {
+      return isEmpty(find(key));
+    }
     iterator find(const Key& key)
     {
       size_t index = m_hash(key) % m_capacity;
@@ -131,7 +134,7 @@ namespace dmitriev
 
     bool isEmpty() const noexcept
     {
-      return m_values.isEmpty();
+      return m_size == 0;
     }
     bool isEmpty(constIterator it) const noexcept
     {
