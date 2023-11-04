@@ -124,6 +124,47 @@ namespace dmitriev
     Compare m_cmp;
     Hash m_hash;
 
+    iterator findInSameIndexes(iterator it, size_t index, const Key& key)
+    {
+      if (isEmpty(it))
+      {
+        throw std::logic_error("invalid argument");
+      }
+
+      for (iterator next = std::next(it); !isEmpty(next); it++, next++)
+      {
+        bool indexesEqual = next->index == index;
+        bool keysEqual = m_cmp(next->key, key);
+
+        if (!indexesEqual || keysEqual)
+        {
+          return it;
+        }
+      }
+
+      return it;
+    }
+    constIterator findInSameIndexes(constIterator it, size_t index, const Key& key) const
+    {
+      if (isEmpty(it))
+      {
+        throw std::logic_error("invalid argument");
+      }
+
+      for (constIterator next = std::next(it); !isEmpty(next); it++, next++)
+      {
+        bool indexesEqual = next->index == index;
+        bool keysEqual = m_cmp(next->key, key);
+
+        if (!indexesEqual || keysEqual)
+        {
+          return it;
+        }
+      }
+
+      return it;
+    }
+
   };
 }
 
