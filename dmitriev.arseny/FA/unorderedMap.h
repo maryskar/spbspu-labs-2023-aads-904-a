@@ -52,6 +52,29 @@ namespace dmitriev
       delete[] m_arr;
     }
 
+    UnorderedMap& operator=(const UnorderedMap& other)
+    {
+      if (this == std::addressof(other))
+      {
+        return *this;
+      }
+
+      UnorderedMap< Key, Value, Compare, Hash > newMap(other);
+      swap(newMap);
+      return *this;
+    }
+    UnorderedMap& operator=(UnorderedMap&& other) noexcept
+    {
+      if (this == std::addressof(other))
+      {
+        return *this;
+      }
+
+      clear();
+      swap(other);
+      return *this;
+    }
+
     iterator begin() noexcept
     {
       return m_values.begin();
