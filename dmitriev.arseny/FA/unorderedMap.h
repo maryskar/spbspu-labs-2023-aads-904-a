@@ -30,12 +30,34 @@ namespace dmitriev
       delete[] m_arr;
     }
 
+    iterator begin() noexcept
+    {
+      return m_values.begin();
+    }
+    iterator end() noexcept
+    {
+      return m_values.end();
+    }
+    constIterator constBegin() const noexcept
+    {
+      return m_values.constBegin();
+    }
+    constIterator constEnd() const noexcept
+    {
+      return m_values.constEnd();
+    }
+
     bool isEmpty(constIterator it) const noexcept
     {
       return it == constEnd();
     }
     void clear()
     {
+      for (size_t i = 0; i < m_size; i++)
+      {
+        m_arr[i] = end();
+      }
+
       m_values.clear();
       m_size = 0;
     }
