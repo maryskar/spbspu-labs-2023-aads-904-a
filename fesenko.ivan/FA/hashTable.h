@@ -16,6 +16,9 @@ namespace fesenko
     this_t &operator=(const this_t &);
     this_t &operator=(this_t &&);
     ~HashTable() = default;
+    bool empty() const noexcept;
+    size_t size() const noexcept;
+    size_t max_size() const noexcept;
    private:
     size_t size_;
     size_t capacity_;
@@ -49,14 +52,29 @@ namespace fesenko
 
   HashTable &HashTable::operator=(this_t &&other)
   {
-    if (this != std::addressoff(other)) {
+    if (this != std::addressof(other)) {
       data_ = std::move(other.data_);
       size_ = other.size_;
-      capacity = other.capacity_;
+      capacity_ = other.capacity_;
       other.size_ = 0;
       other.capacity_ = 0;
     }
     return *this;
+  }
+
+  bool HashTable::empty() const noexcept
+  {
+    return size_ == 0;
+  }
+
+  size_t HashTable::size() const noexcept
+  {
+    return size_;
+  }
+
+  size_t HashTable::max_size() const noexcept
+  {
+    return capacity_;
   }
 }
 #endif
