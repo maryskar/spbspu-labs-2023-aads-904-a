@@ -24,7 +24,29 @@ namespace dmitriev
       m_cmp(),
       m_hash()
     {}
-
+    UnorderedMap(const UnorderedMap& other):
+      m_values(),
+      m_size(0),
+      m_capacity(other.m_capacity),
+      m_arr(new iterator[m_capacity]),
+      m_cmp(other.m_cmp),
+      m_hash(other.m_hash)
+    {
+      for (constIterator it = other.m_values.constBegin(); it != other.m_values.constEnd(); it++)
+      {
+        insert({it->key, it->value});
+      }
+    }
+    UnorderedMap(UnorderedMap&& other) noexcept:
+      m_values(other.m_values),
+      m_size(0),
+      m_capacity(other.m_capacity),
+      m_arr(other.m_arr),
+      m_cmp(other.m_cmp),
+      m_hash(other.m_hash)
+    {
+      other.m_arr = nullptr;
+    }
     ~UnorderedMap()
     {
       delete[] m_arr;
