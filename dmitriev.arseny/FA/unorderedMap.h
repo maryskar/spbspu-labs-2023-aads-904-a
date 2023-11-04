@@ -75,6 +75,41 @@ namespace dmitriev
       return *this;
     }
 
+    iterator find(const Key& key)
+    {
+      size_t index = m_hash(key) % m_capacity;
+      if (isEmpty(m_arr[index]))
+      {
+        return end();
+      }
+
+      iterator result = findInSameIndexes(m_arr[index], index, key);
+
+      if (!isNextIndexCorrect(result, index))
+      {
+        return end();
+      }
+
+      return ++result;
+    }
+    constIterator find(const Key& key) const
+    {
+      size_t index = m_hash(key) % m_capacity;
+      if (isEmpty(m_arr[index]))
+      {
+        return constEnd();
+      }
+
+      constIterator result = findInSameIndexes(m_arr[index], index, key);
+
+      if (!isNextIndexCorrect(result, index))
+      {
+        return constEnd();
+      }
+
+      return ++result;
+    }
+
     iterator begin() noexcept
     {
       return m_values.begin();
