@@ -124,6 +124,15 @@ namespace dmitriev
     Compare m_cmp;
     Hash m_hash;
 
+    bool isNextIndexCorrect(constIterator it, size_t index) const
+    {
+      if (isEmpty(it) || isEmpty(std::next(it)))
+      {
+        return false;
+      }
+
+      return std::next(it)->index == index;
+    }
     iterator findInSameIndexes(iterator it, size_t index, const Key& key)
     {
       if (isEmpty(it))
