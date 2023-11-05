@@ -83,6 +83,17 @@ namespace dmitriev
       return *this;
     }
 
+    Value& operator[](const Key& key)
+    {
+      iterator it = find(key);
+      if (!isEmpty(it))
+      {
+        return it->value;
+      }
+
+      return insert({key, Value()})->value;
+    }
+
     Value& at(const Key& key)
     {
       iterator it = find(key);
