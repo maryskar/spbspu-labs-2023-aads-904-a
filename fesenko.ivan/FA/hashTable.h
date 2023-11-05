@@ -38,6 +38,8 @@ namespace fesenko
     word_type &at(const key_type &);
     const word_type &at(const key_type &) const;
     void insert(const value_type &);
+    template< typename P >
+    void insert(P &&);
     void erase(const key_type &);
     void clear() noexcept;
     bool find(const key_type &);
@@ -179,6 +181,15 @@ namespace fesenko
     } else {
       data_[index].collision_list.push_fornt(value);
     }
+  }
+
+  template< typename T >
+  template< typename P >
+  void HashTable< T >::insert(P &&value)
+  {
+    static_assert(std::is_constructible< value_type, P && >::value, "Can`t construct value type");
+    const value_type temp(std::forward< P >(value));
+    insert(temp);
   }
 
   template< typename T >
