@@ -140,6 +140,10 @@ namespace dmitriev
       return m_values.constEnd();
     }
 
+    size_t bucketCount() const noexcept
+    {
+      return m_capacity;
+    }
     size_t size() const noexcept
     {
       return m_size;
