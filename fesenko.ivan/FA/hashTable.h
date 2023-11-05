@@ -38,6 +38,8 @@ namespace fesenko
     word_type &at(const key_type &);
     const word_type &at(const key_type &) const;
     void insert(const value_type &);
+    void erase(const key_type &);
+    void clear() noexcept;
    private:
     size_t size_;
     size_t capacity_;
@@ -170,10 +172,57 @@ namespace fesenko
   {
     uint32_t index = generate_jenkins_hash(value.first, capacity_);
     if (data_[index].word.empty()) {
-      data_[index] = value.second;
+      data_[index].word = value.first;
+      data_[index].data = value.second;
       size_++;
     } else {
       data_[index].collision_list.push_fornt(value);
+    }
+  }
+
+  template< typename T >
+  void HashTable< T >::erase(const key_type &key)
+  {
+    uint32_t index = generate_jenkins_hash(key, capacity_);
+    word_type &wt = data_[index];
+    if (key.compare(wt.word) == 0) {
+      wt.word = "";
+      wt.data.clear();
+      if (!wt.collision_list.empty()) {
+        auto pair = wt.collision_list.front();
+        wt.collision_list.pop_front();
+        wt.word = pair.first;
+        wt.data = pair.second;
+      } else {
+        size_--;
+      }
+    } else if (!wt.collision_list.empty()) {
+      auto copy = wt.collision_list;
+      while (!wt.collision_list.empty()) {
+        if (key.compare(wt.collision_list.front().first) == 0) {
+          wt.collision_list.pop_front();
+          break;
+        } else {
+          copy.push_front(wt.collision_list.front());
+          wt.collision_list.pop_front();
+        }
+      }
+      while (!copy.empty()) {
+        wt.collision_list.push_back(copy.front());
+        copy.pop_front();
+      }
+    }
+  }
+
+  template< typename T >
+  void HashTable< T >::clear() noexcept
+  {
+    for (auto &it: data_) {
+      if (!it.word.empty()) {
+        it.word = "";
+        it.data.clear();
+        it.collision_list.clear();
+      }
     }
   }
 }
