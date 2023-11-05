@@ -3,10 +3,12 @@
 #include "dictionary/forward-list/forwardList.h"
 namespace fesenko
 {
+  template< typename T >
   struct WordType
   {
     std::string word = "";
-    ForwardList< size_t > numbers;
+    T data;
+    ForwardList< std::pair< std::string, T > > collision_list;
   };
 }
 #endif
