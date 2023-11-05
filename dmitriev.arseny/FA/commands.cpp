@@ -52,7 +52,7 @@ size_t hammingDistance(const std::string& lhs, const std::string& rhs)
     }
   }
 
-  distance += std::abs(static_cast<int>(lhs.length() - rhs.length()));
+  distance += std::abs(static_cast< int >(lhs.length() - rhs.length()));
 
   return distance;
 }
