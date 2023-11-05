@@ -16,12 +16,20 @@ namespace fesenko
     using value_type = std::pair< key_type, mapped_type >;
     using word_type = WordType< T >;
     using data_t = std::vector< word_type >;
+    typedef typename std::vector< word_type >::iterator iterator;
+    typedef typename std::vector< word_type >::const_iterator const_iterator;
     HashTable();
     HashTable(const this_t &) = default;
     HashTable(this_t &&);
     this_t &operator=(const this_t &);
     this_t &operator=(this_t &&);
     ~HashTable() = default;
+    iterator begin() noexcept;
+    const_iterator begin() const noexcept;
+    const_iterator cbegin() const noexcept;
+    iterator end() noexcept;
+    const_iterator end() const noexcept;
+    const_iterator cend() const noexcept;
     bool empty() const noexcept;
     size_t size() const noexcept;
     size_t max_size() const noexcept;
@@ -75,6 +83,42 @@ namespace fesenko
       other.capacity_ = 0;
     }
     return *this;
+  }
+
+  template< typename T >
+  typename HashTable< T >::iterator HashTable< T >::begin() noexcept
+  {
+    return data_.begin();
+  }
+
+  template< typename T >
+  typename HashTable< T >::const_iterator HashTable< T >::begin() const noexcept
+  {
+    return data_.cbegin();
+  }
+
+  template< typename T >
+  typename HashTable< T >::const_iterator HashTable< T >::cbegin() const noexcept
+  {
+    return data_.cbegin();
+  }
+
+   template< typename T >
+  typename HashTable< T >::iterator HashTable< T >::end() noexcept
+  {
+    return data_.end();
+  }
+
+  template< typename T >
+  typename HashTable< T >::const_iterator HashTable< T >::end() const noexcept
+  {
+    return data_.cend();
+  }
+
+  template< typename T >
+  typename HashTable< T >::const_iterator HashTable< T >::cend() const noexcept
+  {
+    return data_.cend();
   }
 
   template< typename T >
