@@ -12,6 +12,7 @@ namespace fesenko
     using this_t = HashTable;
     using key_type = std::string;
     using mapped_type = WordType;
+    using value_type = std::pair< const key_type, mapped_type >;
     using data_t = std::vector< mapped_type >;
     HashTable();
     HashTable(const this_t &) = default;
@@ -26,6 +27,7 @@ namespace fesenko
     mapped_type &operator[](key_type &&);
     mapped_type &at(const key_type &);
     const mapped_type &at(const key_type &) const;
+    void insert(const value_type &);
    private:
     size_t size_;
     size_t capacity_;
@@ -104,6 +106,12 @@ namespace fesenko
   WordType &HashTable::at(const key_type &key)
   {
     return const_cast< WordType & >((static_cast< const this_t & >(*this)).at(key));
+  }
+
+  void HashTable::insert(const value_type &value)
+  {
+    uint32_t index = generate_jenkins_hash(value.first, capacity_);
+    data_[index] = value.second;
   }
 }
 #endif
