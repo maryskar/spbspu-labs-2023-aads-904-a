@@ -140,6 +140,22 @@ namespace dmitriev
       return m_values.constEnd();
     }
 
+    size_t bucketSize(size_t index) const
+    {
+      if (index >= m_capacity)
+      {
+        throw std::invalid_argument("incorrect arg");
+      }
+      iterator it = m_arr[index];
+      size_t result = 0;
+
+      while (isNextIndexCorrect(it++, index))
+      {
+        result++;
+      }
+
+      return result;
+    }
     size_t bucketCount() const noexcept
     {
       return m_capacity;
