@@ -24,6 +24,14 @@ namespace dmitriev
       m_cmp(),
       m_hash()
     {}
+    UnorderedMap(size_t capacity):
+      m_values(),
+      m_size(0),
+      m_capacity(capacity),
+      m_arr(new iterator[m_capacity]),
+      m_cmp(),
+      m_hash()
+    {}
     UnorderedMap(const UnorderedMap& other):
       m_values(),
       m_size(0),
