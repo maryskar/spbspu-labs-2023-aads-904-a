@@ -83,6 +83,27 @@ namespace dmitriev
       return *this;
     }
 
+    Value& at(const Key& key)
+    {
+      iterator it = find(key);
+      if (isEmpty(it))
+      {
+        throw std::out_of_range("no results with such key");
+      }
+
+      return it->value;
+    }
+    const Value& at(const Key& key) const
+    {
+      constIterator it = find(key);
+      if (isEmpty(it))
+      {
+        throw std::out_of_range("no results with such key");
+      }
+
+      return it->value;
+    }
+
     iterator erase(const Key& key)
     {
       size_t index = m_hash(key) % m_capacity;
