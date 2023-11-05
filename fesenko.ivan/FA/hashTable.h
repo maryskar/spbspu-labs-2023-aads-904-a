@@ -40,6 +40,7 @@ namespace fesenko
     void insert(const value_type &);
     void erase(const key_type &);
     void clear() noexcept;
+    bool find(const key_type &);
    private:
     size_t size_;
     size_t capacity_;
@@ -224,6 +225,13 @@ namespace fesenko
         it.collision_list.clear();
       }
     }
+  }
+
+  template< typename T >
+  bool HashTable< T >::find(const key_type &key)
+  {
+    uint32_t index = generate_jenkins_hash(key, capacity_);
+    return !data_[index].word.empty();
   }
 }
 #endif
