@@ -6,7 +6,7 @@
 
 namespace dmitriev
 {
-  template < typename Key, typename Value, typename Compare = std::equal_to< Key >, typename Hash = std::hash< Key > >
+  template < class Key, class Value, class Compare = std::equal_to< Key >, class Hash = std::hash< Key > >
   class UnorderedMap
   {
   public:
@@ -24,7 +24,7 @@ namespace dmitriev
       m_cmp(),
       m_hash()
     {}
-    UnorderedMap(size_t capacity):
+    explicit UnorderedMap(size_t capacity):
       m_values(),
       m_size(0),
       m_capacity(capacity),
@@ -32,6 +32,11 @@ namespace dmitriev
       m_cmp(),
       m_hash()
     {}
+    UnorderedMap(std::initializer_list< dataPair > iList):
+      UnorderedMap()
+    {
+      insert(iList);
+    }
     UnorderedMap(const UnorderedMap& other):
       m_values(),
       m_size(0),
@@ -40,7 +45,7 @@ namespace dmitriev
       m_cmp(other.m_cmp),
       m_hash(other.m_hash)
     {
-      for (constIterator it = other.m_values.constBegin(); it != other.m_values.constEnd(); it++)
+      for (constIterator it = other.constBegin(); it != other.constEnd(); it++)
       {
         insert({it->key, it->value});
       }
@@ -67,7 +72,7 @@ namespace dmitriev
         return *this;
       }
 
-      UnorderedMap< Key, Value, Compare, Hash > newMap(other);
+      UnorderedMap newMap(other);
       swap(newMap);
       return *this;
     }
@@ -126,7 +131,7 @@ namespace dmitriev
       iterator it = findInSameIndexes(m_arr[index], index, key);
       iterator sought = std::next(it);
 
-      if (isEmpty(sought) || !m_cmp(sought->key, key))
+      if (!isNextKeyCorrect(it, key))
       {
         return end();
       }
@@ -176,7 +181,7 @@ namespace dmitriev
       }
 
       iterator it = findInSameIndexes(m_arr[index], data.index, data.key);
-      if (!isEmpty(std::next(it)) && m_cmp(std::next(it)->key, data.key))
+      if (isNextKeyCorrect(it, data.key))
       {
         return std::next(it);
       }
@@ -212,7 +217,7 @@ namespace dmitriev
       }
 
       iterator it = findInSameIndexes(m_arr[index], data.index, data.key);
-      if (!isEmpty(std::next(it)) && m_cmp(std::next(it)->key, data.key))
+      if (isNextKeyCorrect(it, data.key))
       {
         return std::next(it);
       }
@@ -361,6 +366,15 @@ namespace dmitriev
     Compare m_cmp;
     Hash m_hash;
 
+    bool isNextKeyCorrect(constIterator it, const Key& key) const
+    {
+      if (isEmpty(it) || isEmpty(std::next(it)))
+      {
+        return false;
+      }
+
+      return m_cmp(std::next(it)->key, key);
+    }
     bool isNextIndexCorrect(constIterator it, size_t index) const
     {
       if (isEmpty(it) || isEmpty(std::next(it)))
