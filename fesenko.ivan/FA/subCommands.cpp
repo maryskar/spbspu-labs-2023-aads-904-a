@@ -155,7 +155,9 @@ std::ostream &fesenko::print_dict_cmd(const data_t &data, std::istream &in, std:
   }
   const hash_t &hash = data.at(dict_name).data;
   for (auto &it: hash) {
-    print_word(hash, it.word, out);
+    if (!it.word.empty()) {
+      print_word(hash, it.word, out);
+    }
   }
   return out;
 }

@@ -36,7 +36,7 @@ fesenko::ForwardList< std::string > fesenko::parse_text_line(const std::string l
   for (size_t i = 0; i < line.size(); i++) {
     char c = line[i];
     if (std::isalnum(c)) {
-      word += std::tolower(c);;
+      word += std::tolower(c);
     } else if (!word.empty()) {
       list.push_front(word);
       word = "";
@@ -89,6 +89,9 @@ void fesenko::make_complementation(data_t &data, std::string new_dict_name, std:
     return;
   }
   for (auto &it: dict1) {
+    if (it.word.empty()) {
+      continue;
+    }
     if (dict2.find(it.word)) {
       list_t new_list;
       list_t &list1 = it.data;
@@ -139,6 +142,9 @@ void fesenko::make_intersection(data_t &data, std::string new_dict_name, std::st
     return;
   }
   for (auto &it: dict1) {
+    if (it.word.empty()) {
+      continue;
+    }
     if (dict2.find(it.word)) {
       list_t new_list;
       list_t &list1 = it.data;
@@ -178,6 +184,9 @@ void fesenko::make_union(data_t &data, std::string new_dict_name, std::string di
     return;
   }
   for (auto &it: dict2) {
+    if (it.word.empty()) {
+      continue;
+    }
     if (!new_dict.find(it.word)) {
       new_dict.insert(std::make_pair(it.word, it.data));
     } else {
