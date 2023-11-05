@@ -1,15 +1,15 @@
 #ifndef SUBFUNCTIONS_H
 #define SUBFUNCTIONS_H
-#include <unordered_map>
-#include <forward_list>
 #include <ostream>
+#include <dictionary/forward-list/forwardList.h>
+#include "hashTable.h"
 namespace fesenko
 {
-  using list_t = std::forward_list< size_t >;
-  using hash_t = std::unordered_map< std::string, list_t >;
-  using data_t = std::unordered_map< std::string, hash_t >;
+  using list_t = ForwardList< size_t >;
+  using hash_t = HashTable< list_t >;
+  using data_t = HashTable< hash_t >;
   std::string get_cmd_word(std::string &line);
-  std::forward_list< std::string > parse_text_line(const std::string line);
+  ForwardList< std::string > parse_text_line(const std::string line);
   void print_word(const hash_t &hash, const std::string word, std::ostream &out);
   void insert_in_asc_order(list_t &list, size_t number);
   void make_complementation(data_t &data, std::string new_dict_name, std::string dict_name1, std::string dict_name2);

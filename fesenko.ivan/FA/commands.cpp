@@ -1,7 +1,7 @@
 #include "commands.h"
-#include <messages.h>
 #include <stdexcept>
 #include <string>
+#include <messages.h>
 #include "subCommands.h"
 
 fesenko::Commands::Commands():
@@ -25,10 +25,10 @@ fesenko::Commands::Commands():
 void fesenko::Commands::make(const std::string &command, data_t &data, std::istream &in, std::ostream &out)
 {
   try {
-    if (type1.find(command) != type1.cend()) {
-      type1.at(command)(data, in);
-    } else if (type2.find(command) != type2.cend()) {
-      type2.at(command)(data, in, out);
+    if (type1.find(command)) {
+      type1.at(command).data(data, in);
+    } else if (type2.find(command)) {
+      type2.at(command).data(data, in, out);
     } else {
       throw std::logic_error("No command");
     }

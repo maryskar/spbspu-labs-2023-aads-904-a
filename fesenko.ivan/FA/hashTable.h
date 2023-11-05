@@ -38,11 +38,11 @@ namespace fesenko
     word_type &at(const key_type &);
     const word_type &at(const key_type &) const;
     void insert(const value_type &);
-    template< typename P >
-    void insert(P &&);
+    void insert(value_type &&);
     void erase(const key_type &);
     void clear() noexcept;
     bool find(const key_type &);
+    bool find(const key_type &) const;
    private:
     size_t size_;
     size_t capacity_;
@@ -179,16 +179,14 @@ namespace fesenko
       data_[index].data = value.second;
       size_++;
     } else {
-      data_[index].collision_list.push_fornt(value);
+      data_[index].collision_list.push_front(value);
     }
   }
 
   template< typename T >
-  template< typename P >
-  void HashTable< T >::insert(P &&value)
+  void HashTable< T >::insert(value_type &&value)
   {
-    static_assert(std::is_constructible< value_type, P && >::value, "Can`t construct value type");
-    const value_type temp(std::forward< P >(value));
+    const value_type temp(value);
     insert(temp);
   }
 
@@ -220,7 +218,7 @@ namespace fesenko
         }
       }
       while (!copy.empty()) {
-        wt.collision_list.push_back(copy.front());
+        wt.collision_list.push_front(copy.front());
         copy.pop_front();
       }
     }
@@ -240,6 +238,13 @@ namespace fesenko
 
   template< typename T >
   bool HashTable< T >::find(const key_type &key)
+  {
+    uint32_t index = generate_jenkins_hash(key, capacity_);
+    return !data_[index].word.empty();
+  }
+
+  template< typename T >
+  bool HashTable< T >::find(const key_type &key) const
   {
     uint32_t index = generate_jenkins_hash(key, capacity_);
     return !data_[index].word.empty();

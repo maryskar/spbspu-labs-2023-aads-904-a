@@ -26,9 +26,9 @@ std::string fesenko::get_cmd_word(std::string &line)
   return word;
 }
 
-std::forward_list< std::string > fesenko::parse_text_line(const std::string line)
+fesenko::ForwardList< std::string > fesenko::parse_text_line(const std::string line)
 {
-  std::forward_list< std::string > list;
+  ForwardList< std::string > list;
   if (line.empty()) {
     return list;
   }
@@ -52,7 +52,7 @@ std::forward_list< std::string > fesenko::parse_text_line(const std::string line
 
 void fesenko::print_word(const hash_t &hash, const std::string word, std::ostream &out)
 {
-  const list_t &list = hash.at(word);
+  const list_t &list = hash.at(word).data;
   out << word;
   for (auto &it: list) {
     out << " " << it;
@@ -81,26 +81,28 @@ void fesenko::insert_in_asc_order(list_t &list, size_t number)
 void fesenko::make_complementation(data_t &data, std::string new_dict_name, std::string dict_name1, std::string dict_name2)
 {
   hash_t new_dict;
-  hash_t &dict1 = data.at(dict_name1);
-  hash_t &dict2 = data.at(dict_name2);
+  hash_t &dict1 = data.at(dict_name1).data;
+  hash_t &dict2 = data.at(dict_name2).data;
   if (dict_name1 == dict_name2) {
-    data[new_dict_name] = new_dict;
+    data[new_dict_name].word = new_dict_name;
+    data[new_dict_name].data = new_dict;
     return;
   }
   for (auto &it: dict1) {
-    if (dict2.find(it.first) != dict2.end()) {
+    if (dict2.find(it.word)) {
       list_t new_list;
-      list_t &list1 = it.second;
-      list_t &list2 = dict2.at(it.first);
+      list_t &list1 = it.data;
+      list_t &list2 = dict2.at(it.word).data;
       make_complementation(new_list, list1, list2);
       if (!new_list.empty()) {
-        new_dict.insert(std::make_pair(it.first, new_list));
+        new_dict.insert(std::make_pair(it.word, new_list));
       }
     } else {
-      new_dict.insert(it);
+      new_dict.insert(std::make_pair(it.word, it.data));
     }
   }
-  data[new_dict_name] = new_dict;
+  data[new_dict_name].word = new_dict_name;
+  data[new_dict_name].data = new_dict;
 }
 
 void fesenko::make_complementation(list_t &new_list, const list_t &list1, const list_t &list2)
@@ -129,24 +131,26 @@ void fesenko::make_complementation(list_t &new_list, const list_t &list1, const 
 void fesenko::make_intersection(data_t &data, std::string new_dict_name, std::string dict_name1, std::string dict_name2)
 {
   hash_t new_dict;
-  hash_t &dict1 = data.at(dict_name1);
-  hash_t &dict2 = data.at(dict_name2);
+  hash_t &dict1 = data.at(dict_name1).data;
+  hash_t &dict2 = data.at(dict_name2).data;
   if (dict_name1 == dict_name2) {
-    data[new_dict_name] = dict1;
+    data[new_dict_name].word = new_dict_name;
+    data[new_dict_name].data = dict1;
     return;
   }
   for (auto &it: dict1) {
-    if (dict2.find(it.first) != dict2.end()) {
+    if (dict2.find(it.word)) {
       list_t new_list;
-      list_t &list1 = it.second;
-      list_t &list2 = dict2.at(it.first);
+      list_t &list1 = it.data;
+      list_t &list2 = dict2.at(it.word).data;
       make_intersection(new_list, list1, list2);
       if (!new_list.empty()) {
-        new_dict.insert(std::make_pair(it.first, new_list));
+        new_dict.insert(std::make_pair(it.word, new_list));
       }
     }
   }
-  data[new_dict_name] = new_dict;
+  data[new_dict_name].word = new_dict_name;
+  data[new_dict_name].data = new_dict;
 }
 
 void fesenko::make_intersection(list_t &new_list, const list_t &list1, const list_t &list2)
@@ -168,21 +172,22 @@ void fesenko::make_intersection(list_t &new_list, const list_t &list1, const lis
 
 void fesenko::make_union(data_t &data, std::string new_dict_name, std::string dict_name1, std::string dict_name2)
 {
-  hash_t new_dict = data.at(dict_name1);
-  hash_t &dict2 = data.at(dict_name2);
+  hash_t new_dict = data.at(dict_name1).data;
+  hash_t &dict2 = data.at(dict_name2).data;
   if (dict_name1 == dict_name2) {
     return;
   }
   for (auto &it: dict2) {
-    if (new_dict.find(it.first) == new_dict.end()) {
-      new_dict.insert(it);
+    if (!new_dict.find(it.word)) {
+      new_dict.insert(std::make_pair(it.word, it.data));
     } else {
-      list_t &new_list = new_dict.at(it.first);
-      list_t &list2 = it.second;
+      list_t &new_list = new_dict.at(it.word).data;
+      list_t &list2 = it.data;
       make_union(new_list, list2);
     }
   }
-  data[new_dict_name] = new_dict;
+  data[new_dict_name].word = new_dict_name;
+  data[new_dict_name].data = new_dict;
 }
 
 void fesenko::make_union(list_t &new_list, const list_t &list2)

@@ -1,13 +1,10 @@
 #include <iostream>
-#include <unordered_map>
-#include <forward_list>
 #include "commands.h"
-
 int main()
 {
-  using list_t = std::forward_list< size_t >;
-  using hash_t = std::unordered_map< std::string, list_t >;
-  using data_t = std::unordered_map< std::string, hash_t >;
+  using list_t = fesenko::ForwardList< size_t >;
+  using hash_t = fesenko::HashTable< list_t >;
+  using data_t = fesenko::HashTable< hash_t >;
   data_t data;
   fesenko::Commands commands;
   std::string cmd = "";

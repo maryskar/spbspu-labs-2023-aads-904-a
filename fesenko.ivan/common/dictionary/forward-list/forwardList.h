@@ -205,7 +205,7 @@ namespace fesenko
   template< typename T >
   void ForwardList< T >::push_front(const value_type &val)
   {
-     insert_after(cbefore_begin(), val);
+    insert_after(cbefore_begin(), val);
   }
 
   template< typename T >
@@ -292,7 +292,15 @@ namespace fesenko
   template< typename T >
   void ForwardList< T >::reverse() noexcept
   {
-    std::reverse(this.begin(), this.end());
+    if (this->empty()) {
+      return;
+    }
+    ForwardList< T > reverse;
+    while (!this->empty()) {
+      reverse.push_front(this->front());
+      this->pop_front();
+    }
+    *this = reverse;
   }
 }
 #endif

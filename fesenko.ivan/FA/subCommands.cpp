@@ -17,10 +17,10 @@ void fesenko::read_file_cmd(data_t &data, std::istream &in)
   if (!fin.is_open()) {
     throw std::invalid_argument("Can`t open the file");
   }
-  data[dict_name].clear();
-  hash_t &dict = data.at(dict_name);
+  data[dict_name].data.clear();
+  hash_t &dict = data.at(dict_name).data;
   size_t counter = 0;
-  std::forward_list< std::string > word_list;
+  ForwardList< std::string > word_list;
   while (std::getline(fin, line)) {
     counter++;
     word_list = parse_text_line(line);
@@ -28,7 +28,7 @@ void fesenko::read_file_cmd(data_t &data, std::istream &in)
     while (!word_list.empty()) {
       word = word_list.front();
       word_list.pop_front();
-      insert_in_asc_order(dict[word], counter);
+      insert_in_asc_order(dict[word].data, counter);
     }
   }
 }
@@ -53,7 +53,7 @@ void fesenko::delete_word_cmd(data_t &data, std::istream &in)
   if (!line.empty()) {
     throw std::invalid_argument("Wrong input");
   }
-  data.at(dict_name).erase(word);
+  data.at(dict_name).data.erase(word);
 }
 
 void fesenko::complement_cmd(data_t &data, std::istream &in)
@@ -110,7 +110,7 @@ void fesenko::rename_cmd(data_t &data, std::istream &in)
   if (dict_name.compare(new_dict_name) == 0) {
     return;
   }
-  hash_t temp = data.at(dict_name);
+  hash_t temp = data.at(dict_name).data;
   data.erase(dict_name);
   data.insert(std::make_pair(new_dict_name, temp));
 }
@@ -124,10 +124,10 @@ void fesenko::insert_cmd(data_t &data, std::istream &in)
   if (line.empty()) {
     throw std::invalid_argument("Wrong input");
   }
-  hash_t &dict = data.at(dict_name);
+  hash_t &dict = data.at(dict_name).data;
   while (!line.empty()) {
     size_t number = stoull(get_cmd_word(line));
-    insert_in_asc_order(dict[word], number);
+    insert_in_asc_order(dict[word].data, number);
   }
 }
 
@@ -140,7 +140,7 @@ std::ostream &fesenko::print_word_cmd(const data_t &data, std::istream &in, std:
   if (!line.empty()) {
     throw std::invalid_argument("Wrong input");
   }
-  const hash_t &hash = data.at(dict_name);
+  const hash_t &hash = data.at(dict_name).data;
   print_word(hash, word, out);
   return out;
 }
@@ -153,9 +153,9 @@ std::ostream &fesenko::print_dict_cmd(const data_t &data, std::istream &in, std:
   if (!line.empty()) {
     throw std::invalid_argument("Wrong input");
   }
-  const hash_t &hash = data.at(dict_name);
+  const hash_t &hash = data.at(dict_name).data;
   for (auto &it: hash) {
-    print_word(hash, it.first, out);
+    print_word(hash, it.word, out);
   }
   return out;
 }
@@ -169,8 +169,8 @@ std::ostream &fesenko::find_cmd(const data_t &data, std::istream &in, std::ostre
   if (!line.empty()) {
     throw std::invalid_argument("Wrong input");
   }
-  const hash_t &hash = data.at(dict_name);
-  if (hash.find(word) == hash.end()) {
+  const hash_t &hash = data.at(dict_name).data;
+  if (!hash.find(word)) {
     out << "Not found\n";
   } else {
     print_word(hash, word, out);
