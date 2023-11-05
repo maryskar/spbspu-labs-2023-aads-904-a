@@ -83,6 +83,38 @@ namespace dmitriev
       return *this;
     }
 
+    iterator erase(const Key& key)
+    {
+      size_t index = m_hash(key) % m_capacity;
+      if (isEmpty(m_arr[index]))
+      {
+        return end();
+      }
+
+      iterator it = findInSameIndexes(m_arr[index], index, key);
+      iterator sought = std::next(it);
+
+      if (isEmpty(sought) || !m_cmp(sought->key, key))
+      {
+        return end();
+      }
+
+      if (!(isEmpty(std::next(sought)) || isNextIndexCorrect(sought, index)))
+      {
+        size_t prIndex = std::next(sought)->index;
+        m_arr[prIndex] = it;
+      }
+
+      iterator result = m_values.eraseAfter(it);
+
+      if (!isNextIndexCorrect(m_arr[index], index))
+      {
+        m_arr[index] = end();
+      }
+
+      return result;
+    }
+
     iterator insert(const dataPair& keyValue)
     {
       if (m_size >= m_capacity * 0.75)
