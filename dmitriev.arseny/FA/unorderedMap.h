@@ -83,7 +83,78 @@ namespace dmitriev
       return *this;
     }
 
+    iterator insert(const dataPair& keyValue)
+    {
+      if (m_size >= m_capacity * 0.75)
+      {
+        rehash(m_capacity * 2);
+      }
 
+      size_t index = m_hash(keyValue.first) % m_capacity;
+      dataType data{index, keyValue.first, keyValue.second};
+
+      if (isEmpty())
+      {
+        m_arr[index] = m_values.beforeBegin();
+
+        m_size++;
+        return m_values.insertAfter(m_arr[index], data);
+      }
+
+      if (isEmpty(m_arr[index]))
+      {
+        size_t prIndex = m_values.begin()->index;
+        m_arr[prIndex] = m_values.insertAfter(m_values.beforeBegin(), data);
+        m_arr[index] = m_values.beforeBegin();
+
+        m_size++;
+        return m_arr[prIndex];
+      }
+
+      iterator it = findInSameIndexes(m_arr[index], data.index, data.key);
+      if (!isEmpty(std::next(it)) && m_cmp(std::next(it)->key, data.key))
+      {
+        return std::next(it);
+      }
+
+      return m_values.insertAfter(m_arr[index], data);
+    }
+    iterator insert(dataPair&& keyValue)
+    {
+      if (m_size >= m_capacity * 0.75)
+      {
+        rehash(m_capacity * 2);
+      }
+
+      size_t index = m_hash(keyValue.first) % m_capacity;
+      dataType data{index, std::move(keyValue.first), std::move(keyValue.second)};
+
+      if (isEmpty())
+      {
+        m_arr[index] = m_values.beforeBegin();
+
+        m_size++;
+        return m_values.insertAfter(m_arr[index], std::move(data));
+      }
+
+      if (isEmpty(m_arr[index]))
+      {
+        size_t prIndex = m_values.begin()->index;
+        m_arr[prIndex] = m_values.insertAfter(m_values.beforeBegin(), std::move(data));
+        m_arr[index] = m_values.beforeBegin();
+
+        m_size++;
+        return m_arr[prIndex];
+      }
+
+      iterator it = findInSameIndexes(m_arr[index], data.index, data.key);
+      if (!isEmpty(std::next(it)) && m_cmp(std::next(it)->key, data.key))
+      {
+        return std::next(it);
+      }
+
+      return m_values.insertAfter(m_arr[index], std::move(data));
+    }
 
     size_t count(const Key& key) const noexcept
     {
