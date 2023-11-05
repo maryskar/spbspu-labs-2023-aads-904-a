@@ -132,6 +132,10 @@ namespace dmitriev
       return m_values.constEnd();
     }
 
+    size_t size() const noexcept
+    {
+      return m_size;
+    }
     bool isEmpty() const noexcept
     {
       return m_size == 0;
