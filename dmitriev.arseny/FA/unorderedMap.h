@@ -84,6 +84,7 @@ namespace dmitriev
     }
 
 
+
     size_t count(const Key& key) const noexcept
     {
       return isEmpty(find(key));
@@ -140,6 +141,19 @@ namespace dmitriev
       return m_values.constEnd();
     }
 
+    void rehash(size_t count)
+    {
+      if (count < m_capacity * 0.75)
+      {
+        return;
+      }
+      UnorderedMap newMap(count);
+      for (auto it = begin(); it != end(); it++)
+      {
+        newMap.insert({it->key, it->value});
+      }
+      swap(newMap);
+    }
     size_t bucketSize(size_t index) const
     {
       if (index >= m_capacity)
