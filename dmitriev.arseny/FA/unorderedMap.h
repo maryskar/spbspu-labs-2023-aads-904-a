@@ -155,6 +155,18 @@ namespace dmitriev
 
       return m_values.insertAfter(m_arr[index], std::move(data));
     }
+    template< typename Iterator >
+    void insert(Iterator first, Iterator last)
+    {
+      while (first != last)
+      {
+        insert(*first++);
+      }
+    }
+    void insert(std::initializer_list< dataPair > iList)
+    {
+      insert(iList.begin(), iList.end());
+    }
 
     size_t count(const Key& key) const noexcept
     {
