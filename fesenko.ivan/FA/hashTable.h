@@ -47,13 +47,15 @@ namespace fesenko
     size_t size_;
     size_t capacity_;
     data_t data_;
+    bool shouldResize() const;
+    void resize(size_t newCapacity);
   };
 
   template< typename T >
   HashTable< T >::HashTable():
     size_(0),
-    capacity_(100),
-    data_(data_t(100))
+    capacity_(20),
+    data_(data_t(20))
   {}
 
   template< typename T >
@@ -181,6 +183,9 @@ namespace fesenko
     } else {
       data_[index].collision_list.push_front(value);
     }
+    if (shouldResize()) {
+      resize(capacity_ * 2);
+    }
   }
 
   template< typename T >
@@ -248,6 +253,35 @@ namespace fesenko
   {
     uint32_t index = generate_jenkins_hash(key, capacity_);
     return !data_[index].word.empty();
+  }
+
+  template< typename T >
+  bool HashTable< T >::shouldResize() const
+  {
+    double loadFactor = double(size_) / capacity_;
+    return loadFactor > 0.7;
+  }
+
+  template< typename T >
+  void HashTable< T >::resize(size_t newCapacity)
+  {
+    data_t newData(newCapacity);
+    for (auto &it: data_) {
+      if (!it.word.empty()) {
+        uint32_t newIndex = generate_jenkins_hash(it.word, newCapacity);
+        newData[newIndex].word = it.word;
+        newData[newIndex].data = it.data;
+        while (!it.collision_list.empty()) {
+          auto pair = it.collision_list.front();
+          it.collision_list.pop_front();
+          newIndex = generate_jenkins_hash(pair.first, newCapacity);
+          newData[newIndex].word = pair.first;
+          newData[newIndex].data = pair.second;
+        }
+      }
+    }
+    data_ = std::move(newData);
+    capacity_ = newCapacity;
   }
 }
 #endif
