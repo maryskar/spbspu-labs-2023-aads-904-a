@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
       }
       if (firstPart == "print")
       {
-        timofeev::Print(std::cin, dict, std::cout);
+        timofeev::doPrint(std::cin, dict, std::cout);
       }
       else
       {

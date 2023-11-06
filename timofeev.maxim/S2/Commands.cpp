@@ -2,7 +2,7 @@
 #include "commandSet.h"
 namespace timofeev
 {
-  void Print(std::istream& in, dictOfDicts& dict, std::ostream& out)
+  void doPrint(std::istream& in, dictOfDicts& dict, std::ostream& out)
   {
     std::string dictName;
     in >> dictName;
