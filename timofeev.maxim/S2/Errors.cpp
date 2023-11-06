@@ -1,5 +1,5 @@
 #include "Errors.h"
-namespace errors
+namespace timofeev
 {
   void printInvalid(std::ostream& out)
   {
