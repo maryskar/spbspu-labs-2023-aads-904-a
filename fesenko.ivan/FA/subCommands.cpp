@@ -19,6 +19,7 @@ void fesenko::read_file_cmd(data_t &data, std::istream &in)
   }
   data[dict_name].data.clear();
   hash_t &dict = data.at(dict_name).data;
+  data.insert(dict_name);
   size_t counter = 0;
   ForwardList< std::string > word_list;
   while (std::getline(fin, line)) {
@@ -28,7 +29,16 @@ void fesenko::read_file_cmd(data_t &data, std::istream &in)
     while (!word_list.empty()) {
       word = word_list.front();
       word_list.pop_front();
-      insert_in_asc_order(dict[word].data, counter);
+      dict.insert(word);
+      if (dict[word].word == word) {
+        insert_in_asc_order(dict[word].data, counter);
+      } else {
+        for (auto &it: dict[word].collision_list) {
+          if (it.first == word) {
+            insert_in_asc_order(it.second, counter);
+          }
+        }
+      }
     }
   }
 }
@@ -141,7 +151,7 @@ std::ostream &fesenko::print_word_cmd(const data_t &data, std::istream &in, std:
     throw std::invalid_argument("Wrong input");
   }
   const hash_t &hash = data.at(dict_name).data;
-  print_word(hash, word, out);
+  print_word(hash.at(word).data, word, out);
   return out;
 }
 
@@ -156,7 +166,12 @@ std::ostream &fesenko::print_dict_cmd(const data_t &data, std::istream &in, std:
   const hash_t &hash = data.at(dict_name).data;
   for (auto &it: hash) {
     if (!it.word.empty()) {
-      print_word(hash, it.word, out);
+      print_word(it.data, it.word, out);
+      if (!it.collision_list.empty()) {
+        for (auto &it2: it.collision_list) {
+          print_word(it2.second, it2.first, out);
+        }
+      }
     }
   }
   return out;
@@ -175,7 +190,7 @@ std::ostream &fesenko::find_cmd(const data_t &data, std::istream &in, std::ostre
   if (!hash.find(word)) {
     out << "Not found\n";
   } else {
-    print_word(hash, word, out);
+    print_word(hash.at(word).data, word, out);
   }
   return out;
 }

@@ -26,12 +26,32 @@ void fesenko::Commands::make(const std::string &command, data_t &data, std::istr
 {
   try {
     if (type1.find(command)) {
-      type1.at(command).data(data, in);
-    } else if (type2.find(command)) {
-      type2.at(command).data(data, in, out);
-    } else {
-      throw std::logic_error("No command");
+      if (type1[command].word == command) {
+        type1.at(command).data(data, in);
+        return;
+      } else if (!type1[command].collision_list.empty()) {
+        for (auto &it : type1[command].collision_list) {
+          if (it.first == command) {
+            it.second(data, in);
+            return;
+          }
+        }
+      }
     }
+    if (type2.find(command)) {
+      if (type2[command].word == command) {
+        type2.at(command).data(data, in, out);
+        return;
+      } else if (!type2[command].collision_list.empty()) {
+        for (auto &it : type2[command].collision_list) {
+          if (it.first == command) {
+            it.second(data, in, out);
+            return;
+          }
+        }
+      }
+    }
+    throw std::logic_error("No command");
   } catch (...) {
     outInvalidCommandMessage(out);
     out << "\n";
