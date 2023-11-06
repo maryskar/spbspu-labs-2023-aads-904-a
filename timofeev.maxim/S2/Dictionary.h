@@ -123,7 +123,7 @@ namespace timofeev
   Value &Dictionary< Key, Value, Compare >::operator[](const Key &key)
   {
     auto it = find(key);
-    if(it == end())
+    if (it == end())
     {
       value_type newValue = std::make_pair(key, Value{});
       data_.push_front(newValue);
@@ -184,7 +184,7 @@ namespace timofeev
   typename Dictionary< Key, Value, Compare >::constIter
     Dictionary< Key, Value, Compare >::find(const Key &key) const
   {
-    for(auto it = data_.cbegin(); it != data_.cend(); ++it)
+    for (auto it = data_.cbegin(); it != data_.cend(); ++it)
     {
       if (!(compare_(it->first, key)) && !(compare_(key, it->first)))
       {
@@ -198,7 +198,7 @@ namespace timofeev
   typename Dictionary< Key, Value, Compare >::iter
     Dictionary< Key, Value, Compare >::find(const Key &key)
   {
-    for(auto it = data_.begin(); it != data_.end(); ++it)
+    for (auto it = data_.begin(); it != data_.end(); ++it)
     {
       if (!(compare_(it->first, key)) && !(compare_(key, it->first)))
       {

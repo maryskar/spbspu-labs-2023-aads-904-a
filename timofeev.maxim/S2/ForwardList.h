@@ -56,7 +56,7 @@ namespace timofeev
     void splice_after(constIter pos, ForwardList< T > &other);
     void splice_after(constIter pos, ForwardList< T > &&other);
 
-    template<typename ...Args>
+    template< typename ...Args >
     iter emplace_after(constIter pos, Args &&...args);
     iter emplace_front(constIter pos);
   private:
@@ -372,7 +372,7 @@ namespace timofeev
     {
       tail_ = pos.node_;
     }
-    if(todel == fakenode_->next)
+    if (todel == fakenode_->next)
     {
       fakenode_->next = fakenode_->next->next;
     }

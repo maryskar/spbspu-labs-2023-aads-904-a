@@ -3,7 +3,6 @@
 #include <iostream>
 #include "commandSet.h"
 #include "Dictionary.h"
-
 namespace timofeev
 {
   using dictionary = timofeev::Dictionary< size_t, std::string, std::less<> >;
@@ -12,5 +11,4 @@ namespace timofeev
   void doIntersect(std::istream& in, dictOfDicts& dict);
   void doUnion(std::istream& in, dictOfDicts& dict);
 }
-
 #endif
