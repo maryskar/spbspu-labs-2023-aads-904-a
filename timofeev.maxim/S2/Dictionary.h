@@ -87,7 +87,7 @@ namespace timofeev
 
   template< typename Key, typename Value, typename Compare >
   typename Dictionary< Key, Value, Compare >::iter
-      Dictionary< Key, Value, Compare >::erase(iter first, iter last)
+    Dictionary< Key, Value, Compare >::erase(iter first, iter last)
   {
     while (first != last)
     {

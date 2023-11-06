@@ -311,7 +311,7 @@ namespace timofeev
 
   template< typename T >
   typename ForwardList< T >::iter
-      ForwardList< T >::insert_after(constIter pos, size_t count, const T & val)
+    ForwardList< T >::insert_after(constIter pos, size_t count, const T & val)
   {
     for (size_t i = 0; i < count; i++)
     {
@@ -382,7 +382,7 @@ namespace timofeev
 
   template < typename T >
   typename ForwardList< T >::iter
-      timofeev::ForwardList< T >::erase_after(constIter first, constIter last)
+    timofeev::ForwardList< T >::erase_after(constIter first, constIter last)
   {
     if (first == last || first.node_ == nullptr)
     {
