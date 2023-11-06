@@ -53,7 +53,7 @@ fesenko::ForwardList< std::string > fesenko::parse_text_line(const std::string l
 void fesenko::print_word(const list_t &list, const std::string word, std::ostream &out)
 {
   out << word;
-  for (auto &it : list) {
+  for (auto &it: list) {
     out << " " << it;
   }
   out << "\n";

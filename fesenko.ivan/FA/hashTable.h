@@ -9,7 +9,7 @@ namespace fesenko
   template< typename T >
   class HashTable
   {
-    public:
+   public:
     using this_t = HashTable;
     using key_type = std::string;
     using mapped_type = T;
@@ -45,7 +45,7 @@ namespace fesenko
     void clear() noexcept;
     bool find(const key_type &);
     bool find(const key_type &) const;
-    private:
+   private:
     size_t size_;
     size_t capacity_;
     data_t data_;
@@ -54,14 +54,14 @@ namespace fesenko
   };
 
   template< typename T >
-  HashTable< T >::HashTable() :
+  HashTable< T >::HashTable():
     size_(0),
     capacity_(20),
     data_(data_t(20))
   {}
 
   template< typename T >
-  HashTable< T >::HashTable(this_t &&other) :
+  HashTable< T >::HashTable(this_t &&other):
     size_(other.size_),
     capacity_(other.capacity_),
     data_(std::move(other.data_))
@@ -171,7 +171,7 @@ namespace fesenko
   template< typename T >
   WordType< T > &HashTable< T >::at(const key_type &key)
   {
-    return const_cast<WordType< T > &>((static_cast<const this_t &>(*this)).at(key));
+    return const_cast< WordType< T > & >((static_cast< const this_t & >(*this)).at(key));
   }
 
   template< typename T >
@@ -257,7 +257,7 @@ namespace fesenko
   template< typename T >
   void HashTable< T >::clear() noexcept
   {
-    for (auto &it : data_) {
+    for (auto &it: data_) {
       if (!it.word.empty()) {
         it.word = "";
         it.data.clear();
@@ -291,7 +291,7 @@ namespace fesenko
   void HashTable< T >::resize(size_t newCapacity)
   {
     data_t newData(newCapacity);
-    for (auto &it : data_) {
+    for (auto &it: data_) {
       if (!it.word.empty()) {
         uint32_t newIndex = generate_jenkins_hash(it.word, newCapacity);
         newData[newIndex].word = it.word;
