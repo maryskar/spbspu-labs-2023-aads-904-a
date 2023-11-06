@@ -362,7 +362,7 @@ namespace aksenov
 
   template< typename Key, typename T, typename Compare >
   typename Dictionary< Key, T, Compare >::keyCompare
-    Dictionary< Key, T, Compare >::keyComp() const
+      Dictionary< Key, T, Compare >::keyComp() const
   {
     return comp_;
   }
