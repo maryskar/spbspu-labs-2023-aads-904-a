@@ -111,7 +111,7 @@ void skarlygina::countPostfix(Queue< std::string >& queue, Stack< long long >& r
   {
     std::string first = queue.top();
     queue.pop();
-    if (!skarlygina::checkString(first))
+    if (!std::stoll(first))
     {
       long long a = stack.top();
       stack.pop();
