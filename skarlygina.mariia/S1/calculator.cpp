@@ -96,16 +96,3 @@ bool skarlygina::isGreaterPriority(char op1, char op2)
 {
   return ((op1 == '*' || op1 == '/' || op1 == '%') && (op2 == '+' || op2 == '-'));
 }
-
-bool skarlygina::checkString(const std::string& op)
-{
-  try
-  {
-    std::stoll(op);
-    return true;
-  }
-  catch (const std::invalid_argument& e)
-  {
-    return false;
-  }
-}

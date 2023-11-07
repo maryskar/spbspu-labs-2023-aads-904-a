@@ -10,6 +10,5 @@ namespace skarlygina
   long long remainder(long long a, long long b);
   bool isOperation(char op);
   bool isGreaterPriority(char op1, char op2);
-  bool checkString(const std::string& op);
 }
 #endif
