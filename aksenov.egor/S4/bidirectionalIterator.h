@@ -33,12 +33,10 @@ namespace aksenov
 
     bool operator!=(const BidirectionalIterator&) const;
     bool operator==(const BidirectionalIterator&) const;
-
-    explicit BidirectionalIterator(NodePtr node):
-    iter_(node)
-    {}
-
   private:
+    explicit BidirectionalIterator(NodePtr node):
+      iter_(node)
+    {}
     ConstBidirectionalIterator< T > iter_;
   };
 
