@@ -1,7 +1,7 @@
 #include "solvePostfixExpr.h"
 #include <stdexcept>
 #include "mathOperations.h"
-#include "details.h"
+#include "helpFunctions.h"
 #include <queue.h>
 #include <stack.h>
 
