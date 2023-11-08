@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "details.h"
+#include "helpFunctions.h"
 #include <stack.h>
 
 int main(int argc, char *argv[])

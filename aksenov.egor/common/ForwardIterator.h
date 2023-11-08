@@ -20,7 +20,6 @@ namespace aksenov
     friend class ConstForwardIterator< T >;
     ForwardIterator();
     ~ForwardIterator() = default;
-    ForwardIterator(listT< T > *node);
     ForwardIterator(const ForwardIterator< T > &) = default;
 
     ForwardIterator< T > &operator=(const ForwardIterator< T > &rhs) = default;
@@ -35,16 +34,17 @@ namespace aksenov
     bool operator==(const ForwardIterator< T > &rhs) const;
   private:
     listT< T > *node_;
+    explicit ForwardIterator(listT< T > *node);
   };
 
   template< typename T >
   ForwardIterator< T >::ForwardIterator(listT< T > *node):
-          node_(node)
+    node_(node)
   {}
 
   template< typename T >
   ForwardIterator< T >::ForwardIterator():
-          node_(nullptr)
+    node_(nullptr)
   {}
 
   template< typename T >

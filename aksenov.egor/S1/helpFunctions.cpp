@@ -1,4 +1,4 @@
-#include "details.h"
+#include "helpFunctions.h"
 #include "stringToInfix.h"
 #include "convertToPostfix.h"
 #include "solvePostfixExpr.h"

@@ -1,5 +1,5 @@
 #include "convertToPostfix.h"
-#include "details.h"
+#include "helpFunctions.h"
 #include <queue.h>
 #include <stack.h>
 

@@ -1,7 +1,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 #include <stdexcept>
-#include "List.h"
+#include <List.h>
 namespace timofeev
 {
   template < typename T >
@@ -30,7 +30,7 @@ timofeev::Queue< T >::Queue():
 template < typename T >
 timofeev::Queue< T >::~Queue()
 {
-  clear(head_);
+  clearlist(head_);
   head_ = tail_ = nullptr;
 }
 template < typename T >

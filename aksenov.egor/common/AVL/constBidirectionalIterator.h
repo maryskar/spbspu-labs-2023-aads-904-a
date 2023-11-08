@@ -63,20 +63,19 @@ namespace aksenov
   }
 
   template < typename T >
-  class ConstBidirectionalIterator : public std::iterator< std::bidirectional_iterator_tag, T >
+  class ConstBidirectionalIterator: public std::iterator< std::bidirectional_iterator_tag, T >
   {
   public:
     friend struct node_t< T >;
     using TreeNode = node_t< T >;
     using NodePtr = node_t< T >*;
 
+    template< typename >
+    friend class BidirectionalIterator;
     template < typename, typename, typename >
-    friend class BinarySearchTree;
+    friend class BST;
     template < typename, typename, typename >
     friend class AVL;
-
-    //template < typename >
-    //friend class ;
 
     ~ConstBidirectionalIterator() = default;
     ConstBidirectionalIterator(const ConstBidirectionalIterator&) = default;
@@ -92,9 +91,10 @@ namespace aksenov
 
     bool operator!=(const ConstBidirectionalIterator&) const;
     bool operator==(const ConstBidirectionalIterator&) const;
-    explicit ConstBidirectionalIterator(NodePtr node): node_(node)
-    {}
   private:
+    explicit ConstBidirectionalIterator(NodePtr node):
+      node_(node)
+    {}
     NodePtr node_;
   };
 
@@ -157,3 +157,4 @@ namespace aksenov
   }
 }
 #endif
+
