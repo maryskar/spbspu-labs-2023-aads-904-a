@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <getDicts.h>
+#include <commands.h>
 
 std::ostream& chulkov::printInvalidCommand(std::ostream& out)
 {
