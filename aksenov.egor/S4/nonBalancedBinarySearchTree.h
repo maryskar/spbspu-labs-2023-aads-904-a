@@ -565,12 +565,12 @@ namespace aksenov
   template < class Key, class T, class Compare >
   typename BST< Key, T, Compare >::CIter BST< Key, T, Compare >::upper_bound(const Key& key) const
   {
-    return const_cast<BST<Key, T, Compare>*>(this)->upper_bound(key);
+    return const_cast< BST< Key, T, Compare >* >(this)->upper_bound(key);
   }
 
   template < class Key, class T, class Compare >
   BST< Key, T, Compare >::BST():
-          root_(nullptr)
+    root_(nullptr)
   {}
 
   template < class Key, class T, class Compare >
@@ -581,7 +581,7 @@ namespace aksenov
 
   template < class Key, class T, class Compare >
   BST< Key, T, Compare >::BST(const BST& other):
-          root_(nullptr)
+    root_(nullptr)
   {
     if (other.root_)
     {
@@ -606,7 +606,7 @@ namespace aksenov
 
   template < class Key, class T, class Compare >
   BST< Key, T, Compare >::BST(BST  &&other) noexcept:
-  root_(other.root_)
+    root_(other.root_)
   {
     other.root_ = nullptr;
   }
@@ -625,12 +625,12 @@ namespace aksenov
   template < class Key, class T, class Compare >
   typename BST< Key, T, Compare >::BST &BST< Key, T, Compare >::operator=(BST&& other) noexcept
   {
-  if (this != std::addressof(other))
-  {
-  BST< Key, T, Compare > tmp(std::move(other));
-  swap(other);
-  }
-  return *this;
+    if (this != std::addressof(other))
+    {
+    BST< Key, T, Compare > tmp(std::move(other));
+    swap(other);
+    }
+    return *this;
   }
 
   template <class Key, class T, class Compare>
@@ -702,6 +702,6 @@ namespace aksenov
       }
     }
   }
-};
+}
 #endif
 

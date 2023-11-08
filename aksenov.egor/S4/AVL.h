@@ -18,6 +18,7 @@ namespace aksenov
     using Iter = BidirectionalIterator< Element >;
     using CIter = ConstBidirectionalIterator< Element >;
 
+    friend struct node_t< Element >;
     friend class BidirectionalIterator< Element >;
     friend class ConstBidirectionalIterator< Element >;
 
@@ -385,6 +386,5 @@ namespace aksenov
   {
     return data_.end();
   }
-
 }
 #endif

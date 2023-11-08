@@ -70,8 +70,10 @@ namespace aksenov
     using TreeNode = node_t< T >;
     using NodePtr = node_t< T >*;
 
+    template< typename >
+    friend class BidirectionalIterator;
     template < typename, typename, typename >
-    friend class BinarySearchTree;
+    friend class BST;
     template < typename, typename, typename >
     friend class AVL;
 
@@ -89,10 +91,10 @@ namespace aksenov
 
     bool operator!=(const ConstBidirectionalIterator&) const;
     bool operator==(const ConstBidirectionalIterator&) const;
+  private:
     explicit ConstBidirectionalIterator(NodePtr node):
       node_(node)
     {}
-  private:
     NodePtr node_;
   };
 
