@@ -34,8 +34,8 @@ void HashTable::insert(Node* key)
 {
   std::string lowercaseKey = key->key_;
 
-  lowercaseKey.erase(std::remove_if(lowercaseKey.begin(), lowercaseKey.end(), [](char c) {return !std::isalpha(c);}), lowercaseKey.end());
-  std::transform(lowercaseKey.begin(), lowercaseKey.end(), lowercaseKey.begin(), [](char c) {return std::tolower(c);});
+  lowercaseKey.erase(std::remove_if(lowercaseKey.begin(), lowercaseKey.end(), [](char c) {return !std::isalpha(c); }), lowercaseKey.end());
+  std::transform(lowercaseKey.begin(), lowercaseKey.end(), lowercaseKey.begin(), [](char c) {return std::tolower(c); });
 
   if (!lowercaseKey.empty())
   {
@@ -89,7 +89,7 @@ void HashTable::insertFromFile(const std::string filename)
     {
       if (std::all_of(word.begin(), word.end(), ::isalpha))
       {
-        Node* node = new Node{word, 0};
+        Node* node = new Node{ word, 0 };
         insert(node);
       }
     }
