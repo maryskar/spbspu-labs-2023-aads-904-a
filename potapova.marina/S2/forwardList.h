@@ -22,7 +22,7 @@ namespace potapova
         Node* next_node_ptr_;
       };
 
-      struct Node : public NodeBase
+      struct Node: public NodeBase
       {
         Node(const T& data) noexcept:
           NodeBase(),
@@ -234,10 +234,10 @@ namespace potapova
         {
           insertRange(cur_other_elem_ptr, other.cend(), prev_elem_ptr);
         }
-        catch (const std::bad_alloc&)
+        catch (const std::bad_alloc& e)
         {
           *this = std::move(reserve_copy);
-          throw std::bad_alloc();
+          throw e;
         }
         return *this;
       }

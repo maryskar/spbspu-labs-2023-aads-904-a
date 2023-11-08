@@ -27,7 +27,7 @@ int main(const int argc, const char* argv[])
     std::string name;
     while (input_file >> name)
     {
-      if (!(input_file >> variables[name]))
+      if (!inputDict(input_file, variables[name]))
       {
         std::cerr << "Incorrect data in file\n";
         return 1;
