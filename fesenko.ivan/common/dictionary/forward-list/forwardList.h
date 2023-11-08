@@ -1,5 +1,6 @@
 #ifndef FORWARDLIST_H
 #define FORWARDLIST_H
+#include <algorithm>
 #include "list.h"
 #include "forwardIterator.h"
 #include "constForwardIterator.h"
@@ -45,6 +46,7 @@ namespace fesenko
     iterator erase_after(const_iterator);
     iterator erase_after(const_iterator, const_iterator);
     void pop_front();
+    void reverse() noexcept;
    private:
     List< T > *fakeNode_;
     List< T > *begin_;
@@ -203,7 +205,7 @@ namespace fesenko
   template< typename T >
   void ForwardList< T >::push_front(const value_type &val)
   {
-     insert_after(cbefore_begin(), val);
+    insert_after(cbefore_begin(), val);
   }
 
   template< typename T >
@@ -285,6 +287,20 @@ namespace fesenko
     begin_ = res.first;
     end_ = res.second;
     fakeNode_->next = begin_;
+  }
+
+  template< typename T >
+  void ForwardList< T >::reverse() noexcept
+  {
+    if (this->empty()) {
+      return;
+    }
+    ForwardList< T > reverse;
+    while (!this->empty()) {
+      reverse.push_front(this->front());
+      this->pop_front();
+    }
+    *this = reverse;
   }
 }
 #endif
