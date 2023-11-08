@@ -98,6 +98,7 @@ namespace chulkov {
     tail_ = nullptr;
   }
 
+
   template < typename T >
   T& ForwardList< T >::front()
   {
