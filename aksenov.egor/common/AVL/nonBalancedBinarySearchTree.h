@@ -6,6 +6,7 @@
 #include "constBidirectionalIterator.h"
 #include "tree.h"
 #include <stack.h>
+#include <queue.h>
 
 namespace aksenov
 {
@@ -73,7 +74,30 @@ namespace aksenov
     template < typename F >
     F traverse_lnr(F f) const;
     template < typename F >
-    F traverse_breadth(F f) const;
+    F traverse_breadth(F f) const
+    {
+      Queue< NodePtr > helper;
+      if (!root_)
+      {
+        return f;
+      }
+      helper.push(root_);
+      while (!helper.isEmpty())
+      {
+        NodePtr tmp = helper.get();
+        helper.pop();
+        f(tmp->data_);
+        if (tmp->left_)
+        {
+          helper.push(tmp->left_);
+        }
+        if (tmp->right_)
+        {
+          helper.push(tmp->right_);
+        }
+      }
+      return f;
+    }
   private:
     Compare cmp_;
     NodePtr root_;
@@ -329,11 +353,11 @@ namespace aksenov
   F BST< Key, T, Compare >::traverse_lnr(F f) const
   {
     NodePtr tmp = root_;
+    Stack< NodePtr > helper;
     if (!tmp)
     {
       return f;
     }
-    Stack< NodePtr > helper(root_->height_ * 2);
     while (!helper.isEmpty() || tmp)
     {
       if (tmp)
@@ -343,7 +367,7 @@ namespace aksenov
       }
       else
       {
-        tmp = helper.getTop();
+        tmp = helper.get();
         helper.pop();
         f(tmp->data_);
         tmp = tmp->right_;
@@ -357,26 +381,24 @@ namespace aksenov
   F BST< Key, T, Compare >::traverse_rnl(F f) const
   {
     NodePtr tmp = root_;
+    Stack< NodePtr > helper;
     if (!tmp)
     {
       return f;
     }
-    Stack< NodePtr > helper(root_->height_ * 2);
-    helper.push(tmp);
-    while (!helper.isEmpty() && tmp)
+    while (!helper.isEmpty() || tmp)
     {
-      while (tmp->right_)
+      if (tmp)
       {
+        helper.push(tmp);
         tmp = tmp->right_;
-        helper.push(tmp);
       }
-      tmp = helper.getTop();
-      helper.pop();
-      f(tmp->data_);
-      if (tmp->left_)
+      else
       {
+        tmp = helper.get();
+        helper.pop();
+        f(tmp->data_);
         tmp = tmp->left_;
-        helper.push(tmp);
       }
     }
     return f;

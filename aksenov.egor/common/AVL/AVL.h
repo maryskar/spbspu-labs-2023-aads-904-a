@@ -18,7 +18,6 @@ namespace aksenov
     using Iter = BidirectionalIterator< Element >;
     using CIter = ConstBidirectionalIterator< Element >;
 
-    friend struct node_t< Element >;
     friend class BidirectionalIterator< Element >;
     friend class ConstBidirectionalIterator< Element >;
 
@@ -69,6 +68,8 @@ namespace aksenov
 
     ~AVL() = default;
 
+    AVL(std::initializer_list< Element > il);
+
     AVL(const AVL &other) = default;
 
     AVL(AVL &&other) = default;
@@ -107,6 +108,17 @@ namespace aksenov
     BST< Key, T, Compare > data_;
     void balance(Iter toBalance);
   };
+
+  template < typename Key, typename T, typename Compare >
+  AVL< Key, T, Compare >::AVL(std::initializer_list< Element > il):
+    data_()
+  {
+    for (auto&& element: il)
+    {
+      auto it = data_.insert(element);
+      balance(it);
+    }
+  }
 
   template< class Key, class T, class Compare >
   template< class P >
@@ -174,7 +186,9 @@ namespace aksenov
   typename AVL< Key, T, Compare >::Iter AVL< Key, T, Compare >::erase(Iter it)
   {
     Iter nextIter = data_.erase(it);
+
     balance(nextIter);
+
     return nextIter;
   }
 
@@ -334,14 +348,14 @@ namespace aksenov
   template< typename F >
   F AVL< Key, T, Compare >::traverse_breadth(F f) const
   {
-    return data_.traverse_breadth();
+    return data_.traverse_breadth(f);
   }
 
   template< class Key, class T, class Compare >
   template< typename F >
   F AVL< Key, T, Compare >::traverse_rnl(F f) const
   {
-    return data_.traverse_rnl();
+    return data_.traverse_rnl(f);
   }
 
   template< class Key, class T, class Compare >
