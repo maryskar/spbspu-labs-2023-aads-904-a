@@ -606,7 +606,7 @@ namespace aksenov
 
   template < class Key, class T, class Compare >
   BST< Key, T, Compare >::BST(BST  &&other) noexcept:
-    root_(other.root_)
+  root_(other.root_)
   {
     other.root_ = nullptr;
   }
@@ -625,12 +625,12 @@ namespace aksenov
   template < class Key, class T, class Compare >
   typename BST< Key, T, Compare >::BST &BST< Key, T, Compare >::operator=(BST&& other) noexcept
   {
-    if (this != std::addressof(other))
-    {
-      BST< Key, T, Compare > tmp(std::move(other));
-      swap(other);
-    }
-    return *this;
+  if (this != std::addressof(other))
+  {
+  BST< Key, T, Compare > tmp(std::move(other));
+  swap(other);
+  }
+  return *this;
   }
 
   template <class Key, class T, class Compare>
@@ -686,8 +686,8 @@ namespace aksenov
   template < class Key, class T, class Compare >
   void BST< Key, T, Compare >::swap(BST& other) noexcept
   {
-    std::swap(root_, other.root_);
-    std::swap(cmp_, other.cmp_);
+  std::swap(root_, other.root_);
+  std::swap(cmp_, other.cmp_);
   }
 
   template < class Key, class T, class Compare >
@@ -702,7 +702,6 @@ namespace aksenov
       }
     }
   }
-
-
 };
 #endif
+

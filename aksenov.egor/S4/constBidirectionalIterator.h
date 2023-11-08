@@ -75,9 +75,6 @@ namespace aksenov
     template < typename, typename, typename >
     friend class AVL;
 
-    //template < typename >
-    //friend class ;
-
     ~ConstBidirectionalIterator() = default;
     ConstBidirectionalIterator(const ConstBidirectionalIterator&) = default;
     ConstBidirectionalIterator& operator=(const ConstBidirectionalIterator&) = default;
@@ -92,7 +89,8 @@ namespace aksenov
 
     bool operator!=(const ConstBidirectionalIterator&) const;
     bool operator==(const ConstBidirectionalIterator&) const;
-    explicit ConstBidirectionalIterator(NodePtr node): node_(node)
+    explicit ConstBidirectionalIterator(NodePtr node):
+      node_(node)
     {}
   private:
     NodePtr node_;
@@ -157,3 +155,4 @@ namespace aksenov
   }
 }
 #endif
+

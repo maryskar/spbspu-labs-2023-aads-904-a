@@ -172,19 +172,14 @@ namespace aksenov
   template< class Key, class T, class Compare >
   typename AVL< Key, T, Compare >::Iter AVL< Key, T, Compare >::erase(Iter it)
   {
-    // Используйте метод удаления BST
     Iter nextIter = data_.erase(it);
-
-    // Балансируйте AVL-дерево
     balance(nextIter);
-
     return nextIter;
   }
 
   template< class Key, class T, class Compare >
   typename AVL< Key, T, Compare >::Iter AVL< Key, T, Compare >::erase(const Key &key)
   {
-    // Используйте метод удаления BST
     Iter it = find(key);
     if (it != end())
     {
@@ -390,7 +385,6 @@ namespace aksenov
   {
     return data_.end();
   }
-
 
 }
 #endif
