@@ -1,6 +1,6 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
-#include <iostream> 
+#include <iostream>
 #include <string>
 
 struct Node
@@ -9,10 +9,10 @@ struct Node
   Node* next;
   size_t frequency_;
 
-  Node() :
+  Node():
     key_(""), frequency_(0), next(nullptr)
   {}
-  Node(std::string key, size_t frequency) :
+  Node(std::string key, size_t frequency):
     key_(key), frequency_(frequency), next(nullptr)
   {}
 };
@@ -32,6 +32,6 @@ public:
   Node* getItem(std::string key);
   void print();
   size_t getLength();
-  void incrementValue() { length++; }
+  void incrementValue() {length++;}
 };
 #endif
