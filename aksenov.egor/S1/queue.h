@@ -1,7 +1,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 #include <stdexcept>
-#include "list.h"
+#include <List.h>
 namespace aksenov
 {
   template< typename T >
@@ -19,8 +19,8 @@ namespace aksenov
       T get() const;
       bool isEmpty() const;
     private:
-      aksenov::List< T > *front_;
-      aksenov::List< T > *tail_;
+      aksenov::listT< T > *front_;
+      aksenov::listT< T > *tail_;
   };
 
   template< typename T >
@@ -38,7 +38,7 @@ namespace aksenov
   template< typename T >
   void Queue< T >::push(const T &val)
   {
-    List< T > *newTail = new List< T >{val, nullptr};
+    listT< T > *newTail = new listT< T >(val);
     if (isEmpty())
     {
       front_ = tail_ = newTail;
@@ -82,7 +82,7 @@ namespace aksenov
   template< typename T >
   Queue< T >::~Queue()
   {
-    deleteList(front_);
+    free(front_);
     front_ = tail_ = nullptr;
   }
 
@@ -91,7 +91,7 @@ namespace aksenov
     tail_(nullptr),
     front_(nullptr)
   {
-    aksenov::List< T > *cur = otherQ.front_;
+    listT< T > *cur = otherQ.front_;
     while (cur)
     {
       push(cur->data);
@@ -114,7 +114,7 @@ namespace aksenov
     deleteList(front_);
     front_ = nullptr;
     tail_ = nullptr;
-    List< T > *cur = other.front_;
+    listT< T > *cur = other.front_;
     while (cur)
     {
       push(cur->data);
