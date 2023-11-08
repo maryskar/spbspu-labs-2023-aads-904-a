@@ -3,7 +3,7 @@
 #include <string>
 #include <utility>
 #include <iosfwd>
-#include "stdexcept"
+#include <stdexcept>
 #include <checkOverflow.h>
 
 namespace aksenov
@@ -21,7 +21,7 @@ namespace aksenov
       }
       sum_ += pair.first;
     }
-    long long get()
+    long long get() const
     {
       return sum_;
     }
@@ -38,7 +38,7 @@ namespace aksenov
     {
       str_ += " " + pair.second;
     }
-    std::string get()
+    std::string get() const
     {
       return str_;
     }
