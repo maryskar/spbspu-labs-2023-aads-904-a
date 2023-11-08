@@ -44,10 +44,10 @@ int main(int argc, char *argv[])
   }
   try
   {
-    auto keys = aksenov::makeTraverse< aksenov::keySummator >();
-    auto vals = aksenov::makeTraverse< aksenov::stringSummator >();
-    aksenov::stringSummator str;
-    aksenov::keySummator key;
+    auto keys = aksenov::makeTraverse< aksenov::KeySummator >();
+    auto vals = aksenov::makeTraverse< aksenov::StringSummator >();
+    aksenov::StringSummator str;
+    aksenov::KeySummator key;
     std::cout << (res.*keys.at(argv[1]))(key).get();
     std::cout << (res.*vals.at(argv[1]))(str).get() << "\n";
   }

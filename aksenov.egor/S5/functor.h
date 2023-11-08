@@ -8,9 +8,9 @@
 
 namespace aksenov
 {
-  struct keySummator
+  struct KeySummator
   {
-    keySummator():
+    KeySummator():
       sum_(0)
     {}
     void operator()(const std::pair< long long, std::string > &pair)
@@ -25,15 +25,15 @@ namespace aksenov
     {
       return sum_;
     }
+  private:
     long long sum_;
   };
 
-  struct stringSummator
+  struct StringSummator
   {
-    stringSummator():
+    StringSummator():
       str_("")
     {}
-    std::string str_;
     void operator()(const std::pair< long long, std::string > &pair)
     {
       str_ += " " + pair.second;
@@ -42,6 +42,8 @@ namespace aksenov
     {
       return str_;
     }
+  private:
+    std::string str_;
   };
 }
 #endif
