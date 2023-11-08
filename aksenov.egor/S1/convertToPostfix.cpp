@@ -1,7 +1,7 @@
 #include "convertToPostfix.h"
-#include "queue.h"
-#include "stack.h"
-#include "details.h"
+#include "helpFunctions.h"
+#include <queue.h>
+#include <stack.h>
 
 aksenov::Queue< std::string > aksenov::getPostfixQueue(Queue< std::string > &infQueue)
 {

@@ -1,9 +1,9 @@
 #include "solvePostfixExpr.h"
 #include <stdexcept>
 #include "mathOperations.h"
-#include "queue.h"
-#include "stack.h"
-#include "details.h"
+#include "helpFunctions.h"
+#include <queue.h>
+#include <stack.h>
 
 long long aksenov::solvePostfixExpr(Queue< std::string > &queue)
 {

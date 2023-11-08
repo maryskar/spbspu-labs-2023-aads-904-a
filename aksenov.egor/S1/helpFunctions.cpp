@@ -1,9 +1,9 @@
-#include "details.h"
-#include "stack.h"
-#include "queue.h"
+#include "helpFunctions.h"
 #include "stringToInfix.h"
 #include "convertToPostfix.h"
 #include "solvePostfixExpr.h"
+#include <stack.h>
+#include <queue.h>
 bool aksenov::isNumeric(std::string const &str)
 {
   char* p = nullptr;
