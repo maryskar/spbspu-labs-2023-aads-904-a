@@ -43,8 +43,8 @@ namespace timofeev
     tree* node_;
   };
 
-  template<typename Key, typename Value, typename Compare>
-  AVLConstIter<Key, Value, Compare>::AVLConstIter():
+  template< typename Key, typename Value, typename Compare >
+  AVLConstIter< Key, Value, Compare >::AVLConstIter():
     node_(nullptr)
   {}
 

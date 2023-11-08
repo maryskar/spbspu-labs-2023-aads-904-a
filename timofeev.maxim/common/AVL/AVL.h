@@ -58,7 +58,6 @@ namespace timofeev
     void swap(AVL &rhs);
     bool contains(const Key& key) const;
     void push(const Key& key, const Value& value);
-    bool operator==(const AVL& rhs) const; //
   private:
     tree* root_;
     Compare comp_;
@@ -193,32 +192,6 @@ namespace timofeev
     delete node;
   }
 
-//
-  template< typename Key, typename Value, typename Compare >
-  bool AVL< Key, Value, Compare >::operator==(const AVL& rhs) const
-  {
-    if(this == &rhs)
-    {
-      return true;
-    }
-    constIter it1 = this->begin();
-    constIter it2 = rhs.begin();
-    while(it1 != this->end() && it2 != rhs.end())
-    {
-      if(it1->first != it2->first || it1->second != it2->second)
-      {
-        return false;
-      }
-      ++it1;
-      ++it2;
-    }
-    if(it1 != this->end() || it2 != rhs.end())
-    {
-      return false;
-    }
-    return true;
-  }
-//
   template< typename Key, typename Value, typename Compare >
   AVL< Key, Value, Compare > &AVL< Key, Value, Compare >::operator=(AVL &&rhs)
   {
@@ -440,10 +413,14 @@ namespace timofeev
   typename AVL< Key, Value, Compare >::tree *AVL< Key, Value, Compare >::rotateRight(tree *node)
   {
     if (node == nullptr)
+    {
       return nullptr;
+    }
     tree *newRoot = node->left_;
     if (newRoot == nullptr)
+    {
       return node;
+    }
     node->left_ = newRoot->right_;
     if (node->left_ != nullptr)
     {

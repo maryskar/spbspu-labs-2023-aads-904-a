@@ -44,7 +44,7 @@ namespace timofeev
     tree* node_;
   };
 
-  template<typename Key, typename Value, typename Compare>
+  template< typename Key, typename Value, typename Compare >
   AVLIterator< Key, Value, Compare > &AVLIterator<Key, Value, Compare>::operator--()
   {
     assert(node_ != nullptr);
