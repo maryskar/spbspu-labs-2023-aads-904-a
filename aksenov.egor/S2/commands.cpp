@@ -1,8 +1,12 @@
 #include "commands.h"
-
-void aksenov::createCommandDict(aksenov::commandMap &commands)
+namespace aksenov
 {
-  commands["intersect"] = intersect< dict >;
-  commands["union"] = unite< dict >;
-  commands["complement"] = doComplement< dict >;
+  commandMap createCommandDict()
+  {
+    commandMap commands;
+    commands["intersect"] = intersect< dict >;
+    commands["union"] = unite< dict >;
+    commands["complement"] = doComplement< dict >;
+    return commands;
+  }
 }

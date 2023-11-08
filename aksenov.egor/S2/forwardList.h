@@ -1,6 +1,7 @@
 #ifndef FORWARDLIST_H
 #define FORWARDLIST_H
 #include <stdexcept>
+#include <cassert>
 #include "constForwardIterator.h"
 #include "ForwardIterator.h"
 #include <List.h>
@@ -370,6 +371,7 @@ namespace aksenov
   template< typename T >
   void ForwardList< T >::copy(const ForwardList< T > &rhs)
   {
+    assert(tail_ == nullptr);
     auto copied = copyLst(rhs.head_);
     head_ = copied.first;
     tail_ = copied.second;

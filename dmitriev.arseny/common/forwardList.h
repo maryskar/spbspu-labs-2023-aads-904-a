@@ -284,7 +284,7 @@ namespace dmitriev
     iterator eraseAfter(constIterator pos)
     {
       throwIfIteratorEmpty(pos);
-      throwIfIteratorEmpty(pos.m_ptr->next);
+      throwIfIteratorEmpty(std::next(pos));
 
       iterator notConstPos(pos);
       iterator tail(notConstPos.m_ptr->next->next);
@@ -450,7 +450,7 @@ namespace dmitriev
 
     const T& front() const
     {
-      throwIfIteratorEmpty(begin());
+      throwIfIteratorEmpty(constBegin());
 
       return m_beforeHead->next->data;
     }
@@ -514,7 +514,7 @@ namespace dmitriev
     }
     void swap(ForwardList& other) noexcept
     {
-      std::swap(m_beforeHead->next, other.m_beforeHead->next);
+      std::swap(m_beforeHead, other.m_beforeHead);
     }
     void clear() noexcept
     {
@@ -525,7 +525,7 @@ namespace dmitriev
   private:
     list* m_beforeHead;
 
-    void throwIfIteratorEmpty(constIterator it)
+    void throwIfIteratorEmpty(constIterator it) const
     {
       if (dmitriev::isEmpty(it.m_ptr))
       {

@@ -111,7 +111,7 @@ namespace aksenov
   template< typename Key, typename T, typename Compare >
   Dictionary< Key, T, Compare > & Dictionary< Key, T, Compare >::operator=(thisT &&other)
   {
-    if (this != &other)
+    if (this != std::addressof(other))
     {
       data_ = std::move(other.data_);
       comp_ = std::move(other.comp_);
@@ -362,7 +362,7 @@ namespace aksenov
 
   template< typename Key, typename T, typename Compare >
   typename Dictionary< Key, T, Compare >::keyCompare
-    Dictionary< Key, T, Compare >::keyComp() const
+      Dictionary< Key, T, Compare >::keyComp() const
   {
     return comp_;
   }

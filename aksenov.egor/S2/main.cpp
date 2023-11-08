@@ -23,8 +23,7 @@ int main(int argc, char *argv[])
 
   dictOfDicts bigData;
   bigData = aksenov::getDictFromInput< dictOfDicts, dict >(inputFile);
-  aksenov::commandMap commands;
-  aksenov::createCommandDict(commands);
+  aksenov::commandMap commands = aksenov::createCommandDict();
   while (std::cin.good())
   {
     try
