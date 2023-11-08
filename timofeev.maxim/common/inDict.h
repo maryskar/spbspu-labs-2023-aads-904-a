@@ -2,7 +2,7 @@
 #define S2_INDICT_H
 #include <istream>
 #include <limits>
-#include "../common/Dictionary.h"
+#include "Dictionary.h"
 namespace timofeev
 {
   template< typename A, typename  B >

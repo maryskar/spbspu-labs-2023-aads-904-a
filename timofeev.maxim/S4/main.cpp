@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 {
   if (argc != 2)
   {
-    std::cerr << "Error\n";
+    std::cerr << "Error" << "\n";
     return 1;
   }
   std::ifstream inFile;
