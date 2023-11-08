@@ -35,7 +35,7 @@ namespace timofeev
     ForwardIterator< T > operator++(int);
 
   private:
-    List<T> *node_;
+    List< T > *node_;
   };
 
   template< typename T >

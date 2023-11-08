@@ -251,7 +251,7 @@ namespace timofeev
   }
 
   template <typename T>
-  void ForwardList<T>::clear() noexcept
+  void ForwardList< T >::clear() noexcept
   {
     clearlist(fakenode_->next);
     tail_ = nullptr;
