@@ -32,7 +32,7 @@ namespace timofeev
     constIter cend() const noexcept;
 
     void remove(const T &value);
-    template<typename Comparator>
+    template< typename Comparator >
     void remove_if(Comparator p);
 
     bool empty() const noexcept;

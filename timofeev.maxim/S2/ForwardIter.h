@@ -38,8 +38,8 @@ namespace timofeev
     List<T> *node_;
   };
 
-  template<typename T>
-  ForwardIterator<T>::ForwardIterator(List< T > *node):
+  template< typename T >
+  ForwardIterator< T >::ForwardIterator(List< T > *node):
     node_(node)
   {}
 

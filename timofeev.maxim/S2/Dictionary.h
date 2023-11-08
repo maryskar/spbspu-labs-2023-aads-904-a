@@ -65,7 +65,7 @@ namespace timofeev
     Compare compare_;
   };
 
-  template<typename Key, typename Value, typename Compare>
+  template< typename Key, typename Value, typename Compare >
   void Dictionary<Key, Value, Compare>::push(Key k, Value v)
   {
     insert(std::make_pair(k,v));
