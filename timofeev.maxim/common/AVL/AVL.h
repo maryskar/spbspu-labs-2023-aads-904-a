@@ -157,7 +157,7 @@ namespace timofeev
       tmp->left_ = delNode->left_;
       tmp->right_ = delNode->right_;
     }
-    if(tmp != delNode)
+    if (tmp != delNode)
     {
       delete delNode;
       balance(tmp);
@@ -179,12 +179,12 @@ namespace timofeev
     {
       return;
     }
-    if(node->left_)
+    if (node->left_)
     {
       free(node->left_);
       node->left_ = nullptr;
     }
-    if(node->right_)
+    if (node->right_)
     {
       free(node->right_);
       node->right_ = nullptr;
