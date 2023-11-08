@@ -1,34 +1,11 @@
-#include "Commands.h"
+#ifndef COMMANDS_H
+#define COMMANDS_H
 #include "commandSet.h"
+#include "iostream"
 namespace timofeev
 {
-  void doPrint(std::istream& in, dictOfDicts& dict, std::ostream& out)
-  {
-    std::string dictName;
-    in >> dictName;
-    if (dict.contains(dictName))
-    {
-      dictionary dict_t = dict.at(dictName);
-      if (!dict_t.empty())
-      {
-        out << dictName;
-        for (auto &i: dict_t)
-        {
-          out << " " << i.first << " " << i.second;
-        }
-        out << "\n";
-      }
-      else
-      {
-        throw std::out_of_range("EMPTY");
-      }
-    }
-    else
-    {
-      throw std::invalid_argument("Logic error");
-    }
-  }
-  void doComplement(std::istream& in, dictOfDicts& dict)
+  template< typename T, typename B >
+  void doComplement(std::istream& in, T& dict, B complDict)
   {
     std::string newDict, first, second;
     in >> newDict >> first >> second;
@@ -36,9 +13,8 @@ namespace timofeev
     {
       throw std::invalid_argument("Logic error");
     }
-    dictionary dict1 = dict.at(first);
-    dictionary dict2 = dict.at(second);
-    dictionary complDict;
+    const auto dict1 = dict.at(first);
+    const auto dict2 = dict.at(second);
     for (const auto &tmp: dict1)
     {
       if (!dict2.contains(tmp.first))
@@ -47,9 +23,10 @@ namespace timofeev
       }
     }
     dict[newDict] = complDict;
-
   }
-  void doIntersect(std::istream& in, dictOfDicts& dict)
+
+  template< typename T, typename B >
+  void doIntersect(std::istream& in, T& dict, B intersDict)
   {
     std::string newDict, first, second;
     in >> newDict >> first >> second;
@@ -61,7 +38,6 @@ namespace timofeev
     {
       const auto &dict1 = dict.at(first);
       const auto &dict2 = dict.at(second);
-      dictionary intersDict;
       for (const auto &tmp: dict1)
       {
         if (dict2.contains(tmp.first))
@@ -73,7 +49,8 @@ namespace timofeev
     }
   }
 
-  void doUnion(std::istream& in, dictOfDicts& dict)
+  template< typename T, typename B >
+  void doUnion(std::istream& in, T& dict, B unDict)
   {
     std::string newDict, first, second;
     in >> newDict >> first >> second;
@@ -81,10 +58,9 @@ namespace timofeev
     {
       throw std::invalid_argument("Logic error");
     }
-    const auto& dict1 = dict.at(first);
     const auto& dict2 = dict.at(second);
-    dictionary unDict = dict1;
-    for (const auto& entry: dict2)
+    unDict = dict.at(first);
+    for (const auto& entry : dict2)
     {
       if (!unDict.contains(entry.first))
       {
@@ -93,4 +69,7 @@ namespace timofeev
     }
     dict[newDict] = unDict;
   }
+
 }
+
+#endif
