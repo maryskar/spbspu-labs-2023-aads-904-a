@@ -171,7 +171,7 @@ namespace chulkov
     };
     template < typename Key, typename Value, typename Compare >
     BinSTree< Key, Value, Compare >::TreeIt::TreeIt(const BinSTree< Key, Value, Compare >::CTreeIt& it):
-                                                                                                      it_(it)
+      it_(it)
     {}
     template < typename Key, typename Value, typename Compare >
     bool BinSTree< Key, Value, Compare >::TreeIt::operator==(const BinSTree< Key, Value, Compare >::TreeIt& other) const
@@ -206,11 +206,11 @@ namespace chulkov
     }
     template < typename Key, typename Value, typename Compare >
     BinSTree< Key, Value, Compare >::BinSTree():
-                                                root_(nullptr)
+      root_(nullptr)
     {}
     template < typename Key, typename Value, typename Compare >
     BinSTree< Key, Value, Compare >::BinSTree(const BinSTree< Key, Value, Compare >& src):
-                                                                                        root_(nullptr)
+      root_(nullptr)
     {
       try
       {
@@ -224,7 +224,7 @@ namespace chulkov
     }
     template < typename Key, typename Value, typename Compare >
     BinSTree< Key, Value, Compare >::BinSTree(BinSTree< Key, Value, Compare >&& other) noexcept:
-                                                                                              root_(other.root_)
+      root_(other.root_)
     {
       other.root_ = nullptr;
     }
