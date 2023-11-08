@@ -7,11 +7,6 @@
 
 namespace aksenov
 {
-  using dict = aksenov::Dictionary< int, std::string, std::less< > >;
-  using dictOfDicts = aksenov::Dictionary< std::string, dict, std::less< > >;
-  using commandMap = aksenov::Dictionary< std::string, dict(*)(const dict &, const dict &) >;
-  commandMap createCommandDict();
-
   template< typename dictOfDicts >
   void print(const std::string &name, const dictOfDicts &rhs, std::ostream &out)
   {
@@ -20,7 +15,7 @@ namespace aksenov
       throw std::invalid_argument("empty");
     }
     out << name;
-    for (const auto &pairElement: rhs)
+    for(const auto& pairElement : rhs)
     {
       out << " " << pairElement.first << " " << pairElement.second;
     }
@@ -63,6 +58,14 @@ namespace aksenov
       res.insert(*it);
     }
     return res;
+  }
+
+  template< class Storage >
+  void createCommandDict(Storage &commands)
+  {
+    commands["intersect"] = intersect;
+    commands["union"] = unite;
+    commands["complement"] = doComplement;
   }
 }
 #endif
