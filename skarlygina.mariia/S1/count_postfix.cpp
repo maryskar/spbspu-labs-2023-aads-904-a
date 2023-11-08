@@ -1,5 +1,4 @@
 #include "count_postfix.h"
-#include <iostream>
 #include "count.h"
 #include "calculator.h"
 
