@@ -63,7 +63,7 @@ namespace aksenov
   }
 
   template < typename T >
-  class ConstBidirectionalIterator : public std::iterator< std::bidirectional_iterator_tag, T >
+  class ConstBidirectionalIterator: public std::iterator< std::bidirectional_iterator_tag, T >
   {
   public:
     friend struct node_t< T >;

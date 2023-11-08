@@ -7,7 +7,7 @@
 namespace aksenov
 {
   template < class T >
-  class BidirectionalIterator : public std::iterator< std::bidirectional_iterator_tag, T >
+  class BidirectionalIterator: public std::iterator< std::bidirectional_iterator_tag, T >
   {
 
   public:
