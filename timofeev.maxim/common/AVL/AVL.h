@@ -203,7 +203,7 @@ namespace timofeev
   template< typename Key, typename Value, typename Compare >
   void AVL< Key, Value, Compare >::copyTree(const AVL &node)
   {
-    for(auto it = node.cbegin(); it != node.cend(); ++it)
+    for (auto it = node.cbegin(); it != node.cend(); ++it)
     {
       insert(*it);
     }
