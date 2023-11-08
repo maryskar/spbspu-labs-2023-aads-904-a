@@ -22,7 +22,6 @@ int main(int argc, char** argv)
   }
   try
   {
-    using Dicts = chulkov::Dictionary< std::string, chulkov::Dictionary< int, std::string > >;
     auto data = chulkov::getDictsFromStream< Dict, AllDicts >(fin);
     fin.close();
     while (!std::cin.eof())
