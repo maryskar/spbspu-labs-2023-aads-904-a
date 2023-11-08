@@ -13,8 +13,8 @@ namespace potapova
   using VariableT = Dictionary< long long, std::string, Comparator >;
   template< typename Int64Comparator = std::less< long long >, typename StrComparator = std::less< std::string > >
   using VariablesT = Dictionary< std::string, VariableT< Int64Comparator >, StrComparator >;
-  template< typename VarComparator = std::less< long long >>
-  using CommandT = VariableT<VarComparator>(VariableT<VarComparator>::*)(const VariableT<VarComparator>&) const;
+  template< typename VarComparator = std::less< long long > >
+  using CommandT = VariableT< VarComparator >(VariableT< VarComparator >::*)(const VariableT< VarComparator >&) const;
   template< typename VarComparator = std::less< long long > >
   using CommandsT = Dictionary< std::string, CommandT< VarComparator > >;
 
@@ -30,13 +30,13 @@ namespace potapova
 
   template< typename Int64Comparator, typename StrComparator >
   bool runCommand(std::istream& in,
-      std::ostream& out,
-      const std::string& command,
-      VariablesT< Int64Comparator, StrComparator >& variables,
-      const CommandsT< Int64Comparator >& commands)
+    std::ostream& out,
+    const std::string& command,
+    VariablesT< Int64Comparator, StrComparator >& variables,
+    const CommandsT< Int64Comparator >& commands)
   {
     using VariablesTConstIterator = typename VariablesT< Int64Comparator, StrComparator >::ConstIterator;
-
+    
     if (command == "print")
     {
       std::string name;
@@ -46,7 +46,7 @@ namespace potapova
       {
         return false;
       }
-      if (!dict_ptr->value.empty())
+      if (!dict_ptr->second.empty())
       {
         out << name << ' ';
       }
@@ -69,9 +69,9 @@ namespace potapova
       {
         return false;
       }
-      const VariableT< Int64Comparator >& first_dict = first_dict_ptr->value;
-      const VariableT< Int64Comparator >& second_dict = second_dict_ptr->value;
-      variables[new_name] = (first_dict.*(command_ptr->value))(second_dict);
+      const VariableT< Int64Comparator >& first_dict = first_dict_ptr->second;
+      const VariableT< Int64Comparator >& second_dict = second_dict_ptr->second;
+      variables[new_name] = (first_dict.*(command_ptr->second))(second_dict);
     }
     return true;
   }

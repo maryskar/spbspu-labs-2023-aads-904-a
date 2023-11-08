@@ -17,7 +17,7 @@ namespace potapova
     {
       return in;
     }
-    std::stringstream dict_data_stream(dict_data);
+    std::stringstream dict_data_stream(dict_data); 
     long long key = 0;
     std::string value;
     while (dict_data_stream >> key && dict_data_stream >> value)
@@ -41,11 +41,11 @@ namespace potapova
       return out;
     }
     ConstIterator cur_node_ptr = dict.begin();
-    out << cur_node_ptr->key << ' ' << cur_node_ptr->value;
+    out << cur_node_ptr->first << ' ' << cur_node_ptr->second;
     ++cur_node_ptr;
     for (; cur_node_ptr != dict.end(); ++cur_node_ptr)
     {
-      out << ' ' << cur_node_ptr->key << ' ' << cur_node_ptr->value;
+      out << ' ' << cur_node_ptr->first << ' ' << cur_node_ptr->second;
     }
     return out << '\n';
   }

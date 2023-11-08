@@ -1,105 +1,84 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 
-#include <stdexcept>
 #include <utility>
-#include <ostream>
+#include <stdexcept>
 #include "forwardList.h"
 
 namespace potapova
 {
   template< typename Key, typename Value, typename Comparator = std::less< Key > >
-  class Dictionary
+  class Dictionary 
   {
     public:
-      struct Node
+      using Iterator = typename ForwardList< std::pair< const Key, Value > >::Iterator;
+      using ConstIterator = typename ForwardList< std::pair< const Key, Value > >::ConstIterator;
+
+      Iterator begin() noexcept
       {
-        Key key;
-        Value value;
+        return data.begin();
+      }
 
-        Node() noexcept = default;
+      ConstIterator begin() const noexcept
+      {
+        return data.begin();
+      }
 
-        Node(const Key& key, const Value& value):
-          key(key),
-          value(value)
+      ConstIterator cbegin() const noexcept
+      {
+        return data.cbegin();
+      }
+
+      Iterator end() noexcept
+      {
+        return data.end();
+      }
+
+      ConstIterator end() const noexcept
+      {
+        return data.end();
+      }
+
+      ConstIterator cend() const noexcept
+      {
+        return data.cend();
+      }
+
+      std::pair<Iterator, bool> insert(const Key& key, const Value& value)
+      {
+        Iterator prev_node_ptr = data.before_begin();
+        for (Iterator cur_node_ptr = data.begin(); cur_node_ptr != data.end(); ++cur_node_ptr)
         {
-
-        }
-
-        operator std::pair< Key, Value >()
-        {
-          return std::make_pair(key, value);
-        }
-      };
-
-      using Iterator = typename ForwardList< Node >::Iterator;
-      using ConstIterator = typename ForwardList< Node >::ConstIterator;
-
-      Iterator begin()
-      {
-        return data_.begin();
-      }
-
-      ConstIterator begin() const
-      {
-        return data_.begin();
-      }
-
-      ConstIterator cbegin() const
-      {
-        return data_.cbegin();
-      }
-
-      Iterator end()
-      {
-        return data_.end();
-      }
-
-      ConstIterator end() const
-      {
-        return data_.end();
-      }
-
-      ConstIterator cend() const
-      {
-        return data_.cend();
-      }
-
-      std::pair< Iterator, bool > insert(const Key& key, const Value& value)
-      {
-        Iterator prev_node_ptr = data_.before_begin();
-        for (Iterator cur_node_ptr = data_.begin(); cur_node_ptr != data_.end(); ++cur_node_ptr)
-        {
-          if (!comparator(cur_node_ptr->key, key) && !comparator(key, cur_node_ptr->key))
+          if (!comparator(cur_node_ptr->first, key) && !comparator(key, cur_node_ptr->first))
           {
             return std::make_pair(cur_node_ptr, false);
           }
-          if (comparator(key, cur_node_ptr->key))
+          if (comparator(key, cur_node_ptr->first))
           {
             break;
           }
           prev_node_ptr = cur_node_ptr;
         }
-        return std::make_pair(data_.insert_after(prev_node_ptr, Node(key, value)), true);
+        return std::make_pair(data.insert_after(prev_node_ptr, std::make_pair(key, value)), true);
       }
 
-      Iterator find(const Key& key)
+      Iterator find(const Key& key) noexcept
       {
-        for (Iterator cur_node_ptr = data_.begin(); cur_node_ptr != data_.end(); ++cur_node_ptr)
+        for (Iterator cur_node_ptr = data.begin(); cur_node_ptr != data.end(); ++cur_node_ptr)
         {
-          if (!comparator(cur_node_ptr->key, key) && !comparator(key, cur_node_ptr->key))
+          if (!comparator(cur_node_ptr->first, key) && !comparator(key, cur_node_ptr->first))
           {
             return cur_node_ptr;
           }
         }
-        return data_.end();
+        return data.end();
       }
 
-      ConstIterator find(const Key& key) const
+      ConstIterator find(const Key& key) const noexcept
       {
-        for (ConstIterator cur_node_ptr = data_.cbegin(); cur_node_ptr != data_.cend(); ++cur_node_ptr)
+        for (ConstIterator cur_node_ptr = data.cbegin(); cur_node_ptr != data.cend(); ++cur_node_ptr)
         {
-          if (!comparator(cur_node_ptr->key, key) && !comparator(key, cur_node_ptr->key))
+          if (!comparator(cur_node_ptr->first, key) && !comparator(key, cur_node_ptr->first))
           {
             return cur_node_ptr;
           }
@@ -110,9 +89,9 @@ namespace potapova
       Value& at(const Key& key)
       {
         const Iterator result_ptr = find(key);
-        if (result_ptr == data_.end())
+        if (result_ptr == data.end())
         {
-          throw std::out_of_range("<INVALID COMMAND>");
+          throw std::out_of_range("Key was not found in dictionary");
         }
         return result_ptr->value;
       }
@@ -120,49 +99,49 @@ namespace potapova
       const Value& at(const Key& key) const
       {
         const ConstIterator result_ptr = find(key);
-        if (result_ptr == data_.end())
+        if (result_ptr == data.cend())
         {
-          throw std::out_of_range("<INVALID COMMAND>");
+          throw std::out_of_range("Key was not found in dictionary");
         }
         return result_ptr->value;
       }
 
       Value& operator[](const Key& key)
       {
-        return insert(key, Value()).first->value;
+        return insert(key, Value()).first->second;
       }
 
-      Iterator erase(const Key& key)
+      Iterator erase(const Key& key) noexcept
       {
-        Iterator prev_node_ptr = data_.before_begin();
-        for (Iterator cur_node_ptr = data_.begin(); cur_node_ptr != data_.end(); ++cur_node_ptr)
+        Iterator prev_node_ptr = data.before_begin();
+        for (Iterator cur_node_ptr = data.begin(); cur_node_ptr != data.end(); ++cur_node_ptr)
         {
           if (!comparator(cur_node_ptr->key, key) && !comparator(key, cur_node_ptr->key))
           {
-            return data_.erase_after(prev_node_ptr);
+            return data.erase_after(prev_node_ptr);
           }
           prev_node_ptr = cur_node_ptr;
         }
       }
 
-      bool contains(const Key& key) const
+      bool contains(const Key& key) const noexcept
       {
         return find(key) == cend();
       }
 
-      size_t size() const
+      size_t size() const noexcept
       {
-        return data_.size();
+        return data.size();
+      }
+      
+      bool empty() const noexcept
+      {
+        return data.empty();
       }
 
-      bool empty() const
+      void clear() noexcept
       {
-        return data_.empty();
-      }
-
-      void clear()
-      {
-        data_.clear();
+        data.clear();
       }
 
       Dictionary< Key, Value, Comparator > complement(const Dictionary< Key, Value, Comparator >& other) const
@@ -172,23 +151,24 @@ namespace potapova
         ConstIterator less_node_ptr = other.cbegin();
         while (greater_node_ptr != ConstIterator() && less_node_ptr != ConstIterator())
         {
-          if (!comparator(less_node_ptr->key, greater_node_ptr->key) && !comparator(greater_node_ptr->key, less_node_ptr->key))
+          if (!comparator(less_node_ptr->first, greater_node_ptr->first) &&
+            !comparator(greater_node_ptr->first, less_node_ptr->first))
           {
             ++less_node_ptr;
             ++greater_node_ptr;
             continue;
           }
-          else if (comparator(greater_node_ptr->key, less_node_ptr->key))
+          else if (comparator(greater_node_ptr->first, less_node_ptr->first))
           {
             std::swap(less_node_ptr, greater_node_ptr);
           }
-          result.insert(less_node_ptr->key, less_node_ptr->value);
+          result.insert(less_node_ptr->first, less_node_ptr->second);
           ++less_node_ptr;
         }
-        ConstIterator extra_node_ptr = greater_node_ptr == ConstIterator() ? less_node_ptr : greater_node_ptr;
+        ConstIterator extra_node_ptr = greater_node_ptr == ConstIterator() ? less_node_ptr: greater_node_ptr;
         while (extra_node_ptr != ConstIterator())
         {
-          result.insert(extra_node_ptr->key, extra_node_ptr->value);
+          result.insert(extra_node_ptr->first, extra_node_ptr->second);
           ++extra_node_ptr;
         }
         return result;
@@ -201,14 +181,15 @@ namespace potapova
         ConstIterator other_node_ptr = other.cbegin();
         while (node_ptr != cend() && other_node_ptr != other.cend())
         {
-          if (!comparator(node_ptr->key, other_node_ptr->key) && !comparator(other_node_ptr->key, node_ptr->key))
+          if (!comparator(node_ptr->first, other_node_ptr->first) &&
+            !comparator(other_node_ptr->first, node_ptr->first))
           {
-            result.insert(node_ptr->key, node_ptr->value);
+            result.insert(node_ptr->first, node_ptr->second);
             ++node_ptr;
             ++other_node_ptr;
             continue;
           }
-          else if (comparator(other_node_ptr->key, node_ptr->key))
+          else if (comparator(other_node_ptr->first, node_ptr->first))
           {
             ++other_node_ptr;
           }
@@ -227,23 +208,23 @@ namespace potapova
         ConstIterator less_node_ptr = other.cbegin();
         while (greater_node_ptr != ConstIterator() && less_node_ptr != ConstIterator())
         {
-          if (comparator(greater_node_ptr->key, less_node_ptr->key))
+          if (comparator(greater_node_ptr->first, less_node_ptr->first))
           {
             std::swap(less_node_ptr, greater_node_ptr);
           }
-          result.insert(less_node_ptr->key, less_node_ptr->value);
+          result.insert(less_node_ptr->first, less_node_ptr->second);
           ++less_node_ptr;
         }
-        ConstIterator extra_node_ptr = greater_node_ptr == ConstIterator() ? less_node_ptr : greater_node_ptr;
+        ConstIterator extra_node_ptr = greater_node_ptr == ConstIterator() ? less_node_ptr: greater_node_ptr;
         while (extra_node_ptr != ConstIterator())
         {
-          result.insert(extra_node_ptr->key, extra_node_ptr->value);
+          result.insert(extra_node_ptr->first, extra_node_ptr->second);
           ++extra_node_ptr;
         }
         return result;
       }
     private:
-      ForwardList< Node > data_;
+      ForwardList< std::pair< const Key, Value > > data;
       Comparator comparator;
   };
 }
