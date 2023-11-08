@@ -111,7 +111,7 @@ namespace aksenov
 
   template < typename Key, typename T, typename Compare >
   AVL< Key, T, Compare >::AVL(std::initializer_list< Element > il):
-          data_()
+    data_()
   {
     for (auto&& element: il)
     {
@@ -400,7 +400,5 @@ namespace aksenov
   {
     return data_.end();
   }
-
-
 }
 #endif
