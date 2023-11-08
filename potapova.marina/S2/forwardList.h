@@ -234,10 +234,10 @@ namespace potapova
         {
           insertRange(cur_other_elem_ptr, other.cend(), prev_elem_ptr);
         }
-        catch (const std::bad_alloc& e)
+        catch (const std::bad_alloc&)
         {
           *this = std::move(reserve_copy);
-          throw e;
+          throw;
         }
         return *this;
       }

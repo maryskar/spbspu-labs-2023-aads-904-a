@@ -50,7 +50,7 @@ namespace potapova
       {
         out << name << ' ';
       }
-      out << dict_ptr->value;
+      printDict(out, dict_ptr->second);
     }
     else
     {

@@ -32,7 +32,7 @@ namespace potapova
   }
 
   template< typename Key, typename Value, typename Comparator >
-  std::ostream& operator<<(std::ostream& out, const Dictionary< Key, Value, Comparator >& dict)
+  std::ostream& printDict(std::ostream& out, const Dictionary< Key, Value, Comparator >& dict)
   {
     using ConstIterator = typename Dictionary< Key, Value, Comparator >::ConstIterator;
     if (dict.empty())
