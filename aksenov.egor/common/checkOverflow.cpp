@@ -1,5 +1,7 @@
 #include "checkOverflow.h"
+
 #include <limits>
+
 namespace aksenov
 {
   const value maxVal = std::numeric_limits< value >::max();

@@ -2,8 +2,10 @@
 #include <fstream>
 #include <string>
 #include <functional>
+
 #include "functor.h"
 #include "traverses.h"
+
 #include <AVL/AVL.h>
 
 int main(int argc, char *argv[])

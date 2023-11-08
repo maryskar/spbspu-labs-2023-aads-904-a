@@ -1,7 +1,10 @@
 #ifndef TRAVERSES_H
 #define TRAVERSES_H
+
 #include <string>
+
 #include <AVL/AVL.h>
+
 namespace aksenov
 {
   template< typename F >
