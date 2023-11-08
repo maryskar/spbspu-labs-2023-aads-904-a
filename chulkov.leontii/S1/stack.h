@@ -1,7 +1,7 @@
 #ifndef STACK_H
 #define STACK_H
 #include <stdexcept>
-#include "list.h"
+#include <list.h>
 
 namespace chulkov {
   template < typename T >
