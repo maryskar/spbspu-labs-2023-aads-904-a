@@ -8,7 +8,7 @@
 namespace potapova
 {
   template< typename Key, typename Value, typename Comparator = std::less< Key > >
-  class Dictionary 
+  class Dictionary
   {
     public:
       using Iterator = typename ForwardList< std::pair< const Key, Value > >::Iterator;
@@ -44,7 +44,7 @@ namespace potapova
         return data.cend();
       }
 
-      std::pair<Iterator, bool> insert(const Key& key, const Value& value)
+      std::pair< Iterator, bool > insert(const Key& key, const Value& value)
       {
         Iterator prev_node_ptr = data.before_begin();
         for (Iterator cur_node_ptr = data.begin(); cur_node_ptr != data.end(); ++cur_node_ptr)
@@ -133,7 +133,7 @@ namespace potapova
       {
         return data.size();
       }
-      
+
       bool empty() const noexcept
       {
         return data.empty();
