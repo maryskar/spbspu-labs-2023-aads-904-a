@@ -1,9 +1,9 @@
 #include <iostream>
 #include <fstream>
-#include "Dictionary.h"
-#include "commandSet.h"
-#include "Errors.h"
-#include "inDict.h"
+#include <Dictionary.h>
+#include <commands/commandSet.h>
+#include <Errors.h>
+#include <inDict.h>
 int main(int argc, char *argv[])
 {
   if (argc != 2)
@@ -23,10 +23,12 @@ int main(int argc, char *argv[])
   }
   using dictionary = timofeev::Dictionary< size_t, std::string, std::less<> >;
   using dictOfDicts = timofeev::Dictionary< std::string, dictionary, std::less<> >;
+  using command = timofeev::Dictionary< std::string, void (*)(std::istream&, dictOfDicts&, dictionary) >;
+  dictionary lildict;
   dictOfDicts dict;
-  dict = timofeev::inDict(inFile, dict);
-  timofeev::Dictionary< std::string, void (*)(std::istream&, dictOfDicts&) > commands;
-  commands = timofeev::cmdSet();
+  dict = timofeev::inDict< dictOfDicts, dictionary >(inFile, dict);
+  command commands;
+  commands = timofeev::cmdSet< command, dictionary >();
   while (!std::cin.eof())
   {
     try
@@ -39,11 +41,11 @@ int main(int argc, char *argv[])
       }
       if (firstPart == "print")
       {
-        timofeev::doPrint(std::cin, dict, std::cout);
+        timofeev::doPrint< dictOfDicts >(std::cin, dict, std::cout);
       }
       else
       {
-        commands.at(firstPart)(std::cin, dict);
+        commands.at(firstPart)(std::cin, dict, lildict);
       }
     }
     catch (const std::invalid_argument &e)
