@@ -36,7 +36,7 @@ namespace potapova
     const CommandsT< Int64Comparator >& commands)
   {
     using VariablesTConstIterator = typename VariablesT< Int64Comparator, StrComparator >::ConstIterator;
-    
+
     if (command == "print")
     {
       std::string name;

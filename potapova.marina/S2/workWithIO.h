@@ -17,7 +17,7 @@ namespace potapova
     {
       return in;
     }
-    std::stringstream dict_data_stream(dict_data); 
+    std::stringstream dict_data_stream(dict_data);
     long long key = 0;
     std::string value;
     while (dict_data_stream >> key && dict_data_stream >> value)
