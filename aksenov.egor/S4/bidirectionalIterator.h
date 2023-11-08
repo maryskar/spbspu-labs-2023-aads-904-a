@@ -31,12 +31,12 @@ namespace aksenov
     T& operator*();
     T* operator->();
 
-    bool operator!=(const BidirectionalIterator&) const;
-    bool operator==(const BidirectionalIterator&) const;
-  private:
     explicit BidirectionalIterator(NodePtr node):
       iter_(node)
     {}
+    bool operator!=(const BidirectionalIterator&) const;
+    bool operator==(const BidirectionalIterator&) const;
+  private:
     ConstBidirectionalIterator< T > iter_;
   };
 

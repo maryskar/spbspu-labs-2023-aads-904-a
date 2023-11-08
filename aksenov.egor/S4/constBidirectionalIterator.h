@@ -89,10 +89,10 @@ namespace aksenov
 
     bool operator!=(const ConstBidirectionalIterator&) const;
     bool operator==(const ConstBidirectionalIterator&) const;
-  private:
     explicit ConstBidirectionalIterator(NodePtr node):
       node_(node)
     {}
+  private:
     NodePtr node_;
   };
 
