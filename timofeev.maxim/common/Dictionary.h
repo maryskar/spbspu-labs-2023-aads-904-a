@@ -2,7 +2,7 @@
 #define DICTIONARY_H
 #include <functional>
 #include <utility>
-#include "ForwardList.h"
+#include "ForwardList/ForwardList.h"
 namespace timofeev
 {
   template< typename Key, typename Value, typename Compare = std::less< Key > >
