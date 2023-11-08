@@ -1,14 +1,15 @@
 #include <iostream>
 #include <fstream>
-#include <Dictionary.h>
+#include <AVL/AVL.h>
 #include <commands/commandSet.h>
 #include <Errors.h>
 #include <inDict.h>
+
 int main(int argc, char *argv[])
 {
   if (argc != 2)
   {
-    std::cerr << "Error\n";
+    std::cerr << "Error" << "\n";
     return 1;
   }
   std::ifstream inFile;
@@ -21,14 +22,14 @@ int main(int argc, char *argv[])
       return 1;
     }
   }
-  using dictionary = timofeev::Dictionary< size_t, std::string, std::less<> >;
-  using dictOfDicts = timofeev::Dictionary< std::string, dictionary, std::less<> >;
-  using command = timofeev::Dictionary< std::string, void (*)(std::istream&, dictOfDicts&, dictionary) >;
-  dictionary lildict;
-  dictOfDicts dict;
-  dict = timofeev::inDict< dictOfDicts, dictionary >(inFile, dict);
+  using lilAVl = timofeev::AVL< size_t, std::string, std::less<> >;
+  using hugeAVL = timofeev::AVL< std::string, lilAVl, std::less<> >;
+  using command = timofeev::AVL< std::string, void (*)(std::istream&, hugeAVL&, lilAVl) >;
+  lilAVl lildict;
+  hugeAVL dict;
+  dict = timofeev::inDict< hugeAVL, lilAVl >(inFile, dict);
   command commands;
-  commands = timofeev::cmdSet< command, dictionary >();
+  commands = timofeev::cmdSet< command, lilAVl >();
   while (!std::cin.eof())
   {
     try
@@ -41,7 +42,7 @@ int main(int argc, char *argv[])
       }
       if (firstPart == "print")
       {
-        timofeev::doPrint< dictOfDicts >(std::cin, dict, std::cout);
+        timofeev::doPrint< hugeAVL >(std::cin, dict, std::cout);
       }
       else
       {
